@@ -1,15 +1,87 @@
 {
-  "name": "calc",
+  "name": "api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Shoppre API",
+  "main": "server/index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha \"server/api/customer/*.spec.js\"",
+    "test-package": "mocha \"server/api/package/*.spec.js\"",
+    "user-login": "curl -X POST   http://localhost:5000/api/user/login   -H 'content-type: application/json'   -d '{ \"username\": \"manjeshpv@gmail.com\",\"password\" : \"Password123\"}'> logs/credentials.json",
+    "ops-login": "curl -X POST   http://localhost:5000/api/user/login   -H 'content-type: application/json'   -d '{ \"username\": \"saneel@shoppre.com\",\"password\" : \"Password123\"}'> logs/ops-credentials.json",
+    "test-oauth": "NODE_ENV=test mocha \"server/components/oauth/*.spec.js\"",
+    "test-ship": "NODE_ENV=test mocha --timeout 10000 \"server/api/shipRequest/*.spec.js\"",
+    "test-dtdc": "mocha \"dtdc/test.js\"",
+    "test-dtdc-eco": "mocha \"dtdc/eco.spec.js\"",
+    "test-dtdc-fedex": "mocha \"dtdc/fedex.test.js\"",
+    "start": "nodemon --ignore node_modules/ -e js server/app",
+    "ssh-copy-id": "ssh-copy-id pulse@staging-app1.shoppre.com",
+    "tunnel": "ssh -R 5557:localhost:5557 pulse@staging-app1.shoppre.com",
+    "lint": "eslint --fix --ext .js --ignore-path .gitignore .",
+    "validate": "npm ls",
+    "build-email": "nodemon ./server/components/ses/render",
+    "dev-email": "node ./server/components/ses/serve"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shoppre/api.git"
+  },
+  "author": "Vikas Kumar <vikas@shoppre.com>",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shoppre/api/issues"
+  },
+  "homepage": "https://github.com/shoppre/api#readme",
+  "private": true,
+  "pre-commit": [
+    "lint"
+  ],
   "dependencies": {
-    "csvtojson": "^1.1.9",
-    "mocha": "^5.1.1"
+    "aws-sdk": "^2.238.1",
+    "bcrypt": "^2.0.1",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.2",
+    "boot.js": "github:quezx/boot.js",
+    "bowser": "^1.8.1",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "debug": "^3.1.0",
+    "dialogflow-fulfillment": "^0.3.0-beta.2",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "geoip-lite": "^1.2.1",
+    "handlebars": "^4.0.11",
+    "lodash": "^4.17.4",
+    "moment": "^2.19.2",
+    "morgan": "~1.9.0",
+    "mysql2": "^1.5.0",
+    "ngeohash": "^0.6.0",
+    "node-php-password": "^0.1.2",
+    "oauth2-server": "github:quezx/node-oauth2-server",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "sequelize": "^4.22.7",
+    "useragent": "^2.2.1",
+    "winston": "^2.4.0",
+    "winston-daily-rotate-file": "^1.7.2",
+    "winston-raven-sentry": "^1.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.11.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "nodemon": "^1.12.1",
+    "mocha": "^5.1.1",
+    "precommit-hook": "^3.0.0",
+    "supertest": "^3.0.0"
+  },
+  "engines": {
+    "node": "^6.10.0",
+    "npm": "^3.8.6"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "docs/*"
+    ],
+    "delay": "2500"
   }
 }
