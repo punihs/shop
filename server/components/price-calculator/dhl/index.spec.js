@@ -11,9 +11,9 @@ describe('DHL Calculator Tests', () => {
   it('US 30Kg, nondoc', (done) => {
     const country = 'US'; // All existing countries in DHL DB
 
-    const weight = 30; // 0.1 - ~
+    const weight = 0.25; // 0.1 - ~
 
-    const type = 'nondoc'; // doc | nondoc
+    const type = 'doc'; // doc | nondoc
 
 
     const price = getPrice({

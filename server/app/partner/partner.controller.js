@@ -1,6 +1,6 @@
 
 
-const { Partner, Country } = require('../../conn/sqldb');
+const { Partner } = require('../../conn/sqldb');
 
 exports.index = (req, res, next) => {
   const options = {
@@ -22,7 +22,6 @@ exports.show = (req, res, next) => Partner
   })
   .then((partner) => {
     if (!partner) return res.render('404');
-    console.log(partner);
     return res.render('partner/show', partner.toJSON());
   })
   .catch(next);

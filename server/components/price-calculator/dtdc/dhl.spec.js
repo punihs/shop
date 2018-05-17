@@ -3,7 +3,7 @@ const assert = require('assert');
 const getPrice = require('./dhl.js');
 
 // Tests are hierarchical. Here we define a test suite for our calculator.
-describe('dtdc dhl price Tests', () => {
+describe('DTDC DHL price Tests', () => {
   it('us doc 0.5kg', (done) => {
     const country = 'US'; // All existing countries in DHL DB
     const weight = 0.5; // 0.1 - ~

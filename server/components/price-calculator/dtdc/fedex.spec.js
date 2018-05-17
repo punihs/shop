@@ -4,7 +4,7 @@ const assert = require('assert');
 
 describe('DTDC FEDEX Calculator Tests', () => {
   it('USA 0.5Kg, doc', (done) => {
-    const country = 'United States Of America'; // All existing countries in DHL DB
+    const country = 'US'; // All existing countries in DHL DB
     const weight = 0.5; // 0.1 - ~
     const type = 'doc';
     const price = getPrice({
@@ -20,7 +20,7 @@ describe('DTDC FEDEX Calculator Tests', () => {
   });
 
   it('USA 1Kg, doc', (done) => {
-    const country = 'United States Of America'; // All existing countries in DHL DB
+    const country = 'US'; // All existing countries in DHL DB
     const weight = 1; // 0.1 - ~
     const type = 'doc';
     const price = getPrice({
@@ -36,7 +36,7 @@ describe('DTDC FEDEX Calculator Tests', () => {
   });
 
   it('USA 1Kg, doc', (done) => {
-    const country = 'United States Of America'; // All existing countries in DHL DB
+    const country = 'US'; // All existing countries in DHL DB
     const weight = 1; // 0.1 - ~
     const type = 'doc';
     const price = getPrice({
@@ -52,7 +52,7 @@ describe('DTDC FEDEX Calculator Tests', () => {
   });
 
   it('USA 1Kg, doc', (done) => {
-    const country = 'United States Of America'; // All existing countries in DHL DB
+    const country = 'US'; // All existing countries in DHL DB
     const weight = 1.5; // 0.1 - ~
     const type = 'doc';
     const price = getPrice({
@@ -68,7 +68,7 @@ describe('DTDC FEDEX Calculator Tests', () => {
   });
 
   it('USA 1Kg, doc', (done) => {
-    const country = 'United States Of America'; // All existing countries in DHL DB
+    const country = 'US'; // All existing countries in DHL DB
     const weight = 2; // 0.1 - ~
     const type = 'doc';
     const price = getPrice({
@@ -84,7 +84,7 @@ describe('DTDC FEDEX Calculator Tests', () => {
   });
   // nod doc test case
   it('USA 1Kg, doc', (done) => {
-    const country = 'United States Of America'; // All existing countries in DHL DB
+    const country = 'US'; // All existing countries in DHL DB
     const weight = 3; // 0.1 - ~
     const type = 'nondoc';
     const price = getPrice({
@@ -100,7 +100,7 @@ describe('DTDC FEDEX Calculator Tests', () => {
   });
 
   it('USA 1Kg, doc', (done) => {
-    const country = 'United States Of America'; // All existing countries in DHL DB
+    const country = 'US'; // All existing countries in DHL DB
     const weight = 3.5; // 0.1 - ~
     const type = 'nondoc';
     const price = getPrice({
@@ -115,7 +115,7 @@ describe('DTDC FEDEX Calculator Tests', () => {
     done();
   });
   it('USA 1Kg, doc', (done) => {
-    const country = 'United States Of America'; // All existing countries in DHL DB
+    const country = 'US'; // All existing countries in DHL DB
     const weight = 4; // 0.1 - ~
     const type = 'nondoc';
     const price = getPrice({
@@ -130,7 +130,7 @@ describe('DTDC FEDEX Calculator Tests', () => {
     done();
   });
   it('USA 1Kg, doc', (done) => {
-    const country = 'United States Of America'; // All existing countries in DHL DB
+    const country = 'US'; // All existing countries in DHL DB
     const weight = 6; // 0.1 - ~
     const type = 'nondoc';
     const price = getPrice({
@@ -146,7 +146,7 @@ describe('DTDC FEDEX Calculator Tests', () => {
   });
 
   it('USA 1Kg, doc', (done) => {
-    const country = 'United States Of America'; // All existing countries in DHL DB
+    const country = 'US'; // All existing countries in DHL DB
     const weight = 7.5; // 0.1 - ~
     const type = 'nondoc';
     const price = getPrice({
@@ -161,7 +161,7 @@ describe('DTDC FEDEX Calculator Tests', () => {
     done();
   });
   it('USA 1Kg, doc', (done) => {
-    const country = 'United States Of America'; // All existing countries in DHL DB
+    const country = 'US'; // All existing countries in DHL DB
     const weight = 8; // 0.1 - ~
     const type = 'nondoc';
     const price = getPrice({
@@ -176,7 +176,7 @@ describe('DTDC FEDEX Calculator Tests', () => {
     done();
   });
   it('USA 1Kg, doc', (done) => {
-    const country = 'United States Of America'; // All existing countries in DHL DB
+    const country = 'US'; // All existing countries in DHL DB
     const weight = 9.5; // 0.1 - ~
     const type = 'nondoc';
     const price = getPrice({
@@ -191,7 +191,7 @@ describe('DTDC FEDEX Calculator Tests', () => {
     done();
   });
   it('USA 1Kg, doc', (done) => {
-    const country = 'United States Of America'; // All existing countries in DHL DB
+    const country = 'US'; // All existing countries in DHL DB
     const weight = 14.5; // 0.1 - ~
     const type = 'nondoc';
     const price = getPrice({
@@ -207,7 +207,7 @@ describe('DTDC FEDEX Calculator Tests', () => {
   });
 
   it('USA 1Kg, doc', (done) => {
-    const country = 'United States Of America'; // All existing countries in DHL DB
+    const country = 'US'; // All existing countries in DHL DB
     const weight = 16.5; // 0.1 - ~
     const type = 'nondoc';
     const price = getPrice({
@@ -222,7 +222,7 @@ describe('DTDC FEDEX Calculator Tests', () => {
     done();
   });
   it('USA 1Kg, doc', (done) => {
-    const country = 'United States Of America'; // All existing countries in DHL DB
+    const country = 'US'; // All existing countries in DHL DB
     const weight = 19; // 0.1 - ~
     const type = 'nondoc';
     const price = getPrice({
@@ -237,7 +237,7 @@ describe('DTDC FEDEX Calculator Tests', () => {
     done();
   });
   it('USA 1Kg, doc', (done) => {
-    const country = 'United States Of America'; // All existing countries in DHL DB
+    const country = 'US'; // All existing countries in DHL DB
     const weight = 20; // 0.1 - ~
     const type = 'nondoc';
     const price = getPrice({

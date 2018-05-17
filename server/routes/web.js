@@ -1,5 +1,7 @@
+const shipRequest = require('./../app/shipRequest');
+const partner = require('./../app/partner');
 
 module.exports = (app) => {
-  app.use('/shipRequests', require('./../app/shipRequest'));
-  app.use('/partners', require('./../app/partner'));
+  app.use('/shipRequests', shipRequest);
+  app.use('/partners', partner);
 };

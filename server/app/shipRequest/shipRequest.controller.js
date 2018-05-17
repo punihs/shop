@@ -28,7 +28,7 @@ exports.show = (req, res, next) => ShipRequest
   })
   .then((shipRequest) => {
     if (!shipRequest) return res.render('404');
-    console.log(shipRequest);
+
     return res.render('shipRequest/show', shipRequest.toJSON());
   })
   .catch(next);

@@ -15,9 +15,10 @@ const search = require('./api/search');
 const packages = require('./api/package');
 const shipRequest = require('./api/shipRequest');
 const customer = require('./api/customer');
+const web = require('./routes/web');
 
 module.exports = (app) => {
-  require('./routes/web')(app);
+  web(app);
   app.use('/api/user', login);
   app.use('/api/search', search);
   app.use('/api/packages', authenticate(), packages);
