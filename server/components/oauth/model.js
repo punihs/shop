@@ -27,16 +27,16 @@ const oAuthModel = {
         log('accessToken', accessToken);
         if (!accessToken) return Promise.resolve({ message: 'no tokens found.' });
         if (!accessToken.session_id) return Promise.resolve({ message: 'no session_id' });
-        const { session_id, customer_id } = accessToken;
+        const { session_id: sessionId, customer_id: customerId } = accessToken;
         const expires = new Date();
         return Promise.all([
           AccessToken.update(
             { expires },
-            { where: { customer_id, session_id } },
+            { where: { customer_id: customerId, session_id: sessionId } },
           ),
           RefreshToken.update(
             { expires },
-            { where: { customer_id, session_id } },
+            { where: { customer_id: customerId, session_id: sessionId } },
           ),
         ]);
       });

@@ -2,8 +2,9 @@ const _ = require('lodash');
 const Sequelize = require('sequelize');
 
 const config = require('../../config/environment');
-
 const oauthComponent = require('../../components/oauth/sequelize');
+
+const { log } = console;
 
 const sqlDefaults = {
   dialect: 'mysql',
@@ -16,7 +17,7 @@ const db = {
 
 [
   'Customer', 'Store', 'Package', 'ShipRequest', 'Address', 'AdminNotification', 'Country',
-  'PackageCharge', 'ShippingRate', 'Group', 'Partner',
+  'PackageCharge', 'ShippingRate', 'Group', 'Partner', 'AccountDocument', 'Admin',
 ].forEach((model) => {
   db[model] = db.sequelize.import(`../../api/${_.camelCase(model)}/${_.camelCase(model)}.model.js`);
 });
@@ -29,5 +30,9 @@ Object.keys(db).forEach((modelName) => {
     db[modelName].associate(db);
   }
 });
+
+db.AccountDocument
+  .find()
+  .then(x => log(x.toJSON()));
 
 module.exports = db;
