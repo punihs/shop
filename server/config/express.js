@@ -13,7 +13,9 @@ module.exports = (app) => {
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(cookieParser());
   app.use(cors());
+  app.enable('trust proxy');
   app.set('view engine', 'jade');
+  app.set('views', `${config.root}/server/views`);
   app.set('appPath', path.join(config.root, 'client'));
   oauthComponent(app, routes);
 };

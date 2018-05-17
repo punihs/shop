@@ -16,7 +16,7 @@ const db = {
 
 [
   'Customer', 'Store', 'Package', 'ShipRequest', 'Address', 'AdminNotification', 'Country',
-  'PackageCharge', 'ShippingRate', 'Group',
+  'PackageCharge', 'ShippingRate', 'Group', 'Partner',
 ].forEach((model) => {
   db[model] = db.sequelize.import(`../../api/${_.camelCase(model)}/${_.camelCase(model)}.model.js`);
 });

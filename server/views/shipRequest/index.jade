@@ -1,0 +1,10 @@
+div
+  ul
+    each shipRequest in shipRequests
+      h1= shipRequest.Country.name
+      h2= shipRequest.estimated
+      h2= shipRequest.full_name
+      h2= shipRequest.address
+      h2= shipRequest.weight
+      hr
+

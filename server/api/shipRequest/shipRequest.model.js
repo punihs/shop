@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     order_id: DataTypes.STRING,
     package_ids: DataTypes.STRING,
-    country: DataTypes.INTEGER,
     full_name: DataTypes.STRING,
     address: DataTypes.STRING,
     phone: DataTypes.STRING,
@@ -51,6 +50,12 @@ module.exports = (sequelize, DataTypes) => {
 
   ShipRequest.associate = (db) => {
     ShipRequest.belongsTo(db.Customer);
+    ShipRequest.belongsTo(db.Country, {
+      foreignKey: 'country',
+    });
+    db.Country.hasMany(ShipRequest, {
+      foreignKey: 'country',
+    });
     //    schedule_pickup_id,
   };
 

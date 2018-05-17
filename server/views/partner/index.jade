@@ -1,0 +1,7 @@
+div
+  ul
+    each partner in partners
+      h1
+        a(href='/partners/#{partner.name}')= partner.name
+      hr
+
