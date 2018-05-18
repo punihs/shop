@@ -17,7 +17,9 @@ const db = {
 
 [
   'Customer', 'Store', 'Package', 'ShipRequest', 'Address', 'AdminNotification', 'Country',
-  'PackageCharge', 'ShippingRate', 'Group', 'Partner', 'AccountDocument', 'Admin',
+  'PackageCharge', 'ShippingRate', 'Group', 'Partner', 'Page', 'PackageMail', 'PackagePhoto',
+  'PackageItem', 'AccountDocument', 'Admin', 'TotalDetail', 'UrlFeedback', 'WalletTransaction',
+  'StoreCatClub', 'StoreCategory',
 ].forEach((model) => {
   db[model] = db.sequelize.import(`../../api/${_.camelCase(model)}/${_.camelCase(model)}.model.js`);
 });
@@ -31,7 +33,7 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
-db.AccountDocument
+db.StoreCategory
   .find()
   .then(x => log(x.toJSON()));
 
