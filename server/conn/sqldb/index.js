@@ -4,8 +4,6 @@ const Sequelize = require('sequelize');
 const config = require('../../config/environment');
 const oauthComponent = require('../../components/oauth/sequelize');
 
-const { log } = console;
-
 const sqlDefaults = {
   dialect: 'mysql',
   timezone: '+05:30',
@@ -17,6 +15,14 @@ const db = {
 
 [
   'Customer', 'Store', 'Package', 'ShipRequest', 'Address', 'AdminNotification', 'Country',
+  'PackageCharge', 'ShippingRate', 'Group', 'Partner', 'AccountDocument', 'Admin', 'Announcement', 'Campaign',
+  'CampaignStatistic', 'CampaignExpense', 'Cashback', 'ChatEmail', 'City', 'Contact', 'CountryGuide', 'CustomerContact',
+  'CustomerSource', 'CustomerSurvey', 'DirectPayment', 'Dump', 'EmailTemplate', 'Estimation', 'Faq', 'FaqCategory',
+  'FavoriteStore', 'Feedback', 'FirstVisit', 'FlashSale', 'PackageInvoice',
+  'HomePageContent', 'IncomingOrder', 'ItemCategory', 'Keyword', 'LockerCharge', 'LoyaltyHistory', 'loyaltyMisc',
+  'LoyaltyPoint', 'MarketingDashboard', 'Migration', 'Org', 'PasswordReset', 'PaymentGateway', 'PhotoRequest',
+  'PromoCode', 'PromoCodeApplied', 'RefferCode', 'Review', 'ScanDocument', 'ScanRequest', 'ScheduledMail',
+  'SchedulePickup', 'Service', 'ServicePartner', 'ShipMail', 'ShippingPreference',
   'PackageCharge', 'ShippingRate', 'Group', 'Partner', 'Page', 'PackageMail', 'PackagePhoto',
   'PackageItem', 'AccountDocument', 'Admin', 'TotalDetail', 'UrlFeedback', 'WalletTransaction',
   'StoreCatClub', 'StoreCategory', 'State', 'ShoppreSupporter', 'ShoppreEmployee', 'ShopperRequestSelf',
@@ -34,15 +40,5 @@ Object.keys(db).forEach((modelName) => {
     db[modelName].associate(db);
   }
 });
-
-db.ShipOption
-  .findAll({
-    attributes: ['id', 'ship_request_id'],
-    limit: 2,
-    include: [{
-      model: db.ShipRequest,
-      attributes: ['id'],
-    }],
-  }).then(x => log(x.map(y => y.toJSON())));
 
 module.exports = db;
