@@ -1,5 +1,6 @@
+
 module.exports = (sequelize, DataTypes) => {
-  const StoreCategory = sequelize.define('StoreCategory', {
+  const State = sequelize.define('State', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -7,12 +8,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
-    category: DataTypes.STRING,
-    slug: DataTypes.STRING,
+    name: DataTypes.STRING,
   }, {
-    tableName: 'store_categories',
-    timestamps: true,
+    tableName: 'states',
+    timestamps: false,
     underscored: true,
   });
-  return StoreCategory;
+
+  return State;
 };
+

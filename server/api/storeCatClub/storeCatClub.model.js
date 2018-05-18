@@ -22,7 +22,6 @@ module.exports = (sequelize, DataTypes) => {
 
   StoreCatClub.associate = (db) => {
     StoreCatClub.belongsTo(db.Store);
-    // StoreCatClub.belongsTo(db.StoreCategory);
   };
   return StoreCatClub;
 };

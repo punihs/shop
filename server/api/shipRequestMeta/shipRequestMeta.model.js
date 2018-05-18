@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const StoreCategory = sequelize.define('StoreCategory', {
+  const ShipRequestMeta = sequelize.define('ShipRequestMeta', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -7,12 +7,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
-    category: DataTypes.STRING,
-    slug: DataTypes.STRING,
+    keywords: DataTypes.STRING,
   }, {
-    tableName: 'store_categories',
+    tableName: 'ship_request_meta',
     timestamps: true,
     underscored: true,
   });
-  return StoreCategory;
+  return ShipRequestMeta;
 };

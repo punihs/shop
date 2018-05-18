@@ -24,7 +24,6 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   PackageItem.associate = (db) => {
-    // PackageItem.hasMany(db.ItemCategory)
     PackageItem.belongsTo(db.Package);
   };
 

@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const PackageMail = sequelize.define('PackageMail', {
+  const ShopperMail = sequelize.define('ShopperMail', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -7,16 +7,17 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
+    personal_shopper_id: DataTypes.INTEGER,
     condition: DataTypes.STRING,
+    type: {
+      type: DataTypes.ENUM,
+      values: ['shoppre', 'self'],
+    },
+
   }, {
-    tableName: 'package_mails',
+    tableName: 'shopper_mails',
     timestamps: true,
     underscored: true,
   });
-
-  PackageMail.associations = (db) => {
-    PackageMail.belongsTo(db.Package);
-  };
-  return PackageMail;
+  return ShopperMail;
 };
-

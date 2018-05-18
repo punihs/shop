@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   WalletTransaction.associate = (db) => {
-    WalletTransaction.belongsTo(db.Customer);// WalletTransaction.belongsTo(db.ShopperBalance)
+    WalletTransaction.belongsTo(db.Customer);
   };
 
   return WalletTransaction;

@@ -19,7 +19,9 @@ const db = {
   'Customer', 'Store', 'Package', 'ShipRequest', 'Address', 'AdminNotification', 'Country',
   'PackageCharge', 'ShippingRate', 'Group', 'Partner', 'Page', 'PackageMail', 'PackagePhoto',
   'PackageItem', 'AccountDocument', 'Admin', 'TotalDetail', 'UrlFeedback', 'WalletTransaction',
-  'StoreCatClub', 'StoreCategory',
+  'StoreCatClub', 'StoreCategory', 'State', 'ShoppreSupporter', 'ShoppreEmployee', 'ShopperRequestSelf',
+  'ShopperRequest', 'ShopperOrderSelf', 'ShopperOrder', 'ShopperMail', 'ShopperBalance', 'ShipTracking',
+  'ShipRequestMeta', 'ShipOption',
 ].forEach((model) => {
   db[model] = db.sequelize.import(`../../api/${_.camelCase(model)}/${_.camelCase(model)}.model.js`);
 });
@@ -33,8 +35,14 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
-db.StoreCategory
-  .find()
-  .then(x => log(x.toJSON()));
+db.ShipOption
+  .findAll({
+    attributes: ['id', 'ship_request_id'],
+    limit: 2,
+    include: [{
+      model: db.ShipRequest,
+      attributes: ['id'],
+    }],
+  }).then(x => log(x.map(y => y.toJSON())));
 
 module.exports = db;

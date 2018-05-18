@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const StoreCategory = sequelize.define('StoreCategory', {
+  const ShopperBalance = sequelize.define('ShopperBalance', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -7,12 +7,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
-    category: DataTypes.STRING,
-    slug: DataTypes.STRING,
+    customer_id: DataTypes.INTEGER,
+    amount: DataTypes.DOUBLE,
+
   }, {
-    tableName: 'store_categories',
+    tableName: 'shopper_balances',
     timestamps: true,
     underscored: true,
   });
-  return StoreCategory;
+  return ShopperBalance;
 };
