@@ -4,6 +4,8 @@ const Sequelize = require('sequelize');
 const config = require('../../config/environment');
 const oauthComponent = require('../../components/oauth/sequelize');
 
+const { log } = console;
+
 const sqlDefaults = {
   dialect: 'mysql',
   timezone: '+05:30',
@@ -40,5 +42,9 @@ Object.keys(db).forEach((modelName) => {
     db[modelName].associate(db);
   }
 });
+
+db.AccountDocument
+  .find()
+  .then(x => log(x.toJSON()));
 
 module.exports = db;
