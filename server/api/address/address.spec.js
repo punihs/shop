@@ -18,18 +18,22 @@ describe('GET /api/address', () => {
 });
 
 
-describe('POST /api/packages', () => {
-  it('save packages', (done) => {
+describe('POST /api/address', () => {
+  it('save address', (done) => {
     request(app)
-      .post('/api/packages')
+      .post('/api/address')
       .send({
-        type: 'doc',
-        seller: 'Amazon',
-        reference: 'AMZ123',
-        locker: 'M123',
-        weight: 1,
-        number_of_items: 1,
-        price: 100,
+        salutation: 'Mr',
+        first_name: 'Manjesh',
+        last_name: 'V',
+        country_id: 1,
+        line1: 'Badanehithlu',
+        line2: 'Thirthahalli',
+        city: 'Shimoga',
+        state: 'Karnataka',
+        is_default: true,
+        country_code: 91,
+        pincode: 577432,
       })
       .set('Authorization', `Bearer ${opsAuth.access_token}`)
       .expect('Content-Type', /json/)

@@ -2,6 +2,8 @@ const { Address } = require('../../conn/sqldb');
 
 exports.index = (req, res) => {
   const address = Address.findAll({
+    attributes: ['id'],
+    limit: Number(req.query.limit) || 20,
     customer_id: req.user.id,
   });
 
