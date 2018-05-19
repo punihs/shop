@@ -15,16 +15,13 @@ const db = {
 
 [
   // - Enums
-  'State', 'Country', 'PaymentGateway',
+  'Country', 'PaymentGateway',
 
   // - Basic
-  'User', 'UserMeta', 'UserSource', 'Group',
+  'User', 'UserMeta', 'Group',
 
   // - Customer Account
   'Address', 'UserDocument', 'ShippingPreference',
-
-  // - Pricing
-  'ShippingRate', 'Estimation',
 
   'Order',
 
@@ -32,54 +29,19 @@ const db = {
   'PackageItem',
   'PackageItemCategory',
 
-
   'PhotoRequest',
 
   'Shipment', 'ShipmentMeta',
 
-  // - Pickups & Dropoffs
-  'Pickup',
-
-  'Coupon', 'ShipmentCoupon', 'Cashback',
-
-  // - Mail Infra
-  'EmailTemplate',
-
   // - Notifications
   'Notification',
-  'Announcement',
-
-  // - Logging
-  'Review',
-  'Survey',
-
-  // - Finance
-  'WalletTransaction',
-
-  // - HR
-  'Supporter', 'Employee',
-
-  // - Shoppre Digital - Marketing
-  'HttpReferrer',
 
   // - Organitation
   'ShippingPartner',
 
   // - Product
-  'Store', 'StoreCategory', 'Category',
-  'StoreUser',
+  'Store',
 
-  'Org',
-  'Service', 'ServicePartner',
-
-  'CountryGuide', 'Faq', 'FaqCategory',
-  'Campaign', 'CampaignStatistic', 'CampaignExpense',
-
-  // - SEO
-  'Page',
-
-  // - Content Marketing
-  'Content',
 ].forEach((model) => {
   db[model] = db.sequelize.import(`../../api/${_.camelCase(model)}/${_.camelCase(model)}.model.js`);
 });

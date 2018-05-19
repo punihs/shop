@@ -66,8 +66,6 @@ module.exports = (sequelize, DataTypes) => {
 
     Shipment.belongsTo(db.Country);
     db.Country.hasMany(Shipment);
-
-    Shipment.belongsTo(db.Pickup);
   };
 
   return Shipment;

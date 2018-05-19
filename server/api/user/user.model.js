@@ -64,7 +64,6 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(db.Package, {
       foreignKey: 'customer_id',
     });
-    User.belongsTo(db.HttpReferrer);
     User.belongsTo(db.Group);
     User.belongsTo(db.User, {
       foreignKey: 'referred_user_id',

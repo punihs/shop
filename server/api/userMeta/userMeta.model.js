@@ -18,7 +18,6 @@ module.exports = (sequelize, DataTypes) => {
 
   UserMeta.associate = (db) => {
     UserMeta.belongsTo(db.User);
-    UserMeta.belongsTo(db.UserSource);
   };
 
   return UserMeta;
