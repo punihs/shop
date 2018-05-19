@@ -19,4 +19,12 @@ module.exports = {
     PENDING: 'pending',
     SUCCESS: 'success',
   },
+  SHIPMENT_STATES: {
+    REQUESTED: 'requested',
+    INQUEUE: 'inqueue',
+    INREVIEW: 'inreview',
+    DISPATCHED: 'dispatched',
+    DELIVERED: 'delivered',
+    CANCELED: 'canceled',
+  },
 };

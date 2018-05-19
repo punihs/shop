@@ -44,6 +44,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'packages',
     timestamps: true,
     underscored: true,
+    paranoid: true,
   });
 
   Package.associate = (db) => {

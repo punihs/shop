@@ -22,7 +22,7 @@ module.exports = (app) => {
   app.use('/api/user', login);
   app.use('/api/search', search);
   app.use('/api/packages', authenticate(), packages);
-  app.use('/api/ship_requests', shipment);
+  app.use('/api/shipments', shipment);
   app.use('/api/users', user);
   app.get('/secured', authenticate(), (req, res) => res.json({ name, version }));
 

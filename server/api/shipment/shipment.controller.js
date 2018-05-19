@@ -2,7 +2,7 @@ const moment = require('moment');
 
 const {
   Country, User, Shipment, Package, Address, PackageCharge,
-  ShippingRate, AdminNotification,
+  ShippingRate, Notification, ShipmentMeta,
 } = require('../../conn/sqldb');
 const ses = require('../../conn/ses');
 const logger = require('../../components/logger');
@@ -10,11 +10,45 @@ const logger = require('../../components/logger');
 exports.index = (req, res, next) => {
   const options = {};
   if (req.query.customer_id) { options.where = { customer_id: req.query.customer_id }; }
+  if (req.query.state) { options.where = { status: req.query.state }; }
 
   return Shipment
     .findAll(options)
     .then(shipments => res.json(shipments))
     .catch(next);
+};
+
+
+exports.shipOrder = (req, res) => res.json({});
+
+exports.unread = async (req, res) => {
+  const { id } = req.params;
+  const status = await Shipment.update({ admin_read: false }, { where: { id } });
+  return res.json(status);
+};
+
+exports.update = async (req, res) => {
+  // normal update
+  // tracking update
+  const { id } = req.params;
+  const status = await Shipment.update(req.body, { where: { id } });
+  return res.json(status);
+};
+
+
+exports.metaUpdate = async (req, res) => {
+  // normal update
+  // tracking update
+  const { id } = req.params;
+  const status = await ShipmentMeta.update(req.body, { where: { id } });
+  return res.json(status);
+};
+
+
+exports.destroy = async (req, res) => {
+  const { id } = req.params;
+  const status = await Shipment.destroy({ where: { id } });
+  return res.json(status);
 };
 
 
@@ -152,67 +186,55 @@ exports.create = async (req, res, next) => {
     .create(shipment)
     .catch(next);
 
-  const adminNotification = {};
-  adminNotification.user_id = userId;
-  adminNotification.action_type = 'shipment';
-  adminNotification.action_id = sR.id;
-  adminNotification.action_description = `New shipment request created - Order# ${sR.order_id}`;
-  AdminNotification.create(adminNotification);
+  const notification = {};
+  notification.user_id = userId;
+  notification.action_type = 'shipment';
+  notification.action_id = sR.id;
+  notification.action_description = `New shipment request created - Order# ${sR.order_id}`;
+  Notification.create(notification);
 
-  const shipOption = {};
-  shipOption.shipment_id = sR.id;
-
-  shipOption.repack = req.repack;
-  shipOption.sticker = req.sticker;
-  shipOption.extrapack = req.extrapack;
-  shipOption.original = req.original;
-  shipOption.gift_wrap = req.gift_wrap;
-  shipOption.gift_note = req.gift_note;
-  shipOption.giftnote_txt = req.giftnote_txt;
-  shipOption.liquid = req.liquid;
-  shipOption.max_weight = req.max_weight;
-
-  shipOption.repack_amt = (req.repack === 1) ? 100.00 : 0;
-  shipOption.sticker_amt = (req.sticker === 1) ? 0 : 0;
-  shipOption.original_amt = 0;
+  const meta = Object.assign({ shipment_id: sR.id }, req.body);
+  meta.repack_amt = (req.repack === 1) ? 100.00 : 0;
+  meta.sticker_amt = (req.sticker === 1) ? 0 : 0;
+  meta.original_amt = 0;
 
   if (packageIds.length) {
-    shipOption.consolid = '1';
-    shipOption.consolid_amt = (packageIds.length - 1) * 100.00;
+    meta.consolid = '1';
+    meta.consolid_amt = (packageIds.length - 1) * 100.00;
   }
 
-  shipOption.giftwrap_amt = (req.gift_wrap === 1) ? 100.00 : 0;
-  shipOption.giftnote_amt = (req.gift_note === 1) ? 50.00 : 0;
+  meta.giftwrap_amt = (req.gift_wrap === 1) ? 100.00 : 0;
+  meta.giftnote_amt = (req.gift_note === 1) ? 50.00 : 0;
 
-  shipOption.extrapack_amt = (req.extrapack === 1) ? 500.00 : 0;
+  meta.extrapack_amt = (req.extrapack === 1) ? 500.00 : 0;
 
   if (req.liquid === '1') {
     if (req.weight < 5) {
-      shipOption.liquid_amt = 1150.00;
+      meta.liquid_amt = 1150.00;
     }
     if (req.weight >= 5 && req.weight < 10
     ) {
-      shipOption.liquid_amt = 1650.00;
+      meta.liquid_amt = 1650.00;
     }
     if (req.weight >= 10 && req.weight < 15
     ) {
-      shipOption.liquid_amt = 2750.00;
+      meta.liquid_amt = 2750.00;
     }
     if (req.weight >= 15) {
-      shipOption.liquid_amt = 3150.00;
+      meta.liquid_amt = 3150.00;
     }
   }
-  shipOption.profoma_taxid = req.invoice_taxid;
-  shipOption.profoma_personal = req.invoice_personal;
-  shipOption.invoice_include = req.invoice_include;
+  meta.profoma_taxid = req.invoice_taxid;
+  meta.profoma_personal = req.invoice_personal;
+  meta.invoice_include = req.invoice_include;
 
   let packageLevelCharges = sR.package_level_charges;
 
-  packageLevelCharges += shipOption.repack_amt + shipOption.sticker_amt
-    + shipOption.extrapack_amt + shipOption.original_amt + shipOption.giftwrap_amt
-    + shipOption.giftnote_amt + shipOption.consolid_amt;
+  packageLevelCharges += meta.repack_amt + meta.sticker_amt
+    + meta.extrapack_amt + meta.original_amt + meta.giftwrap_amt
+    + meta.giftnote_amt + meta.consolid_amt;
 
-  packageLevelCharges += shipOption.liquid_amt;
+  packageLevelCharges += meta.liquid_amt;
 
   const updateShip = await Shipment.findById(sR.id);
 
@@ -238,11 +260,11 @@ exports.create = async (req, res, next) => {
       ToAddresses: [user.email],
     },
     Template: 'shoppre',
-    TemplateData: {
+    TemplateData: JSON.stringify({
       packages,
       address,
       ship_request: updateShip,
-    },
+    }),
   }, (err, data) => {
     if (err) {
       logger.log('SES err', err);

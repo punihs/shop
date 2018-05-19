@@ -50,6 +50,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'ship_requests',
     timestamps: false,
     underscored: true,
+    paranoid: true,
   });
 
   Shipment.associate = (db) => {
