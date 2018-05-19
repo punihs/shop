@@ -7,7 +7,7 @@
     "start": "kill -9 $(lsof -t -i:5000); nodemon --ignore node_modules/ -e js server/app",
     "user-login": "curl -X POST   http://localhost:5000/api/user/login   -H 'content-type: application/json'   -d '{ \"username\": \"manjeshpv@gmail.com\",\"password\" : \"Password123\"}'> logs/credentials.json",
     "ops-login": "curl -X POST   http://localhost:5000/api/user/login   -H 'content-type: application/json'   -d '{ \"username\": \"saneel@shoppre.com\",\"password\" : \"Password123\"}'> logs/ops-credentials.json",
-    "test": "NODE_ENV=test mocha --opts .mocharc server/api/order/*.spec.js --exit",
+    "test": "NODE_ENV=test mocha --opts .mocharc server/api/**/*.spec.js --exit",
     "ssh-copy-id": "ssh-copy-id pulse@staging-app1.shoppre.com",
     "tunnel": "ssh -R 5557:localhost:5557 pulse@staging-app1.shoppre.com",
     "lint": "eslint --fix --ext .js --ignore-path .gitignore .",
