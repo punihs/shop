@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     locker: DataTypes.STRING,
     phone: DataTypes.STRING,
     country_code: DataTypes.STRING,
-    wallet_balance_amt: DataTypes.DECIMAL(15, 2),
+    wallet_balance_amount: DataTypes.DECIMAL(15, 2),
     email_verify: {
       type: DataTypes.ENUM,
       values: ['yes', 'no'],
@@ -67,10 +67,9 @@ module.exports = (sequelize, DataTypes) => {
     User.belongsTo(db.Group);
     User.belongsTo(db.User, {
       foreignKey: 'referred_user_id',
-      as: 'RefferedUser',
+      as: 'ReferredUser',
     });
   };
-
 
   User.prototype.verifyPassword = function verifyPassword(password, cb) {
     return bcrypt.verify(password, this.password)
@@ -78,16 +77,16 @@ module.exports = (sequelize, DataTypes) => {
       : cb(null, false);
   };
 
-  User.prototype.revokeTokens = (db) => {
+  User.prototype.revokeTokens = (db, userId) => {
     const expires = new Date();
     return Promise.all([
       db.AccessToken.update(
         { expires },
-        { where: { user_id: this.id } },
+        { where: { user_id: userId } },
       ),
       db.RefreshToken.update(
         { expires },
-        { where: { user_id: this.id } },
+        { where: { user_id: userId } },
       ),
     ]);
   };

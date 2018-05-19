@@ -4,10 +4,10 @@ const auth = require('../../../logs/credentials');
 const opsAuth = require('../../../logs/ops-credentials');
 
 
-describe('GET /api/packages', () => {
-  it('return packages', (done) => {
+describe('GET /api/packageItemCategory', () => {
+  it('return packageItemCategory', (done) => {
     request(app)
-      .get('/api/packages')
+      .get('/api/packageItemCategories')
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
       .expect(200)
@@ -17,19 +17,12 @@ describe('GET /api/packages', () => {
   });
 });
 
-
-describe('POST /api/packages', () => {
-  it('save packages', (done) => {
+describe('POST /api/packageItemCategories', () => {
+  it('save  packageItemCategory', (done) => {
     request(app)
-      .post('/api/packages')
+      .post('/api/packageItemCategories')
       .send({
-        type: 'doc',
-        seller: 'Amazon_test',
-        reference: 'AMZ123',
-        locker: 'M123',
-        weight: 1,
-        number_of_items: 1,
-        price: 100,
+        name: 'punith',
       })
       .set('Authorization', `Bearer ${opsAuth.access_token}`)
       .expect('Content-Type', /json/)

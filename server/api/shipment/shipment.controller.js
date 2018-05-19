@@ -165,7 +165,6 @@ exports.create = async (req, res, next) => {
   shipment.address = toAddress;
   shipment.country = address.country_id;
   shipment.phone = `+${address.code}-${address.phone}`;
-  shipment.package_ids = packageIds.join(',');
   shipment.count = shipping.count;
   shipment.weight = shipping.weight;
   shipment.value = shipping.price;

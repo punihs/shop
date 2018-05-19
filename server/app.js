@@ -21,7 +21,7 @@ expressConfig(app);
 // Start server
 function startServer() {
   return new Promise((res, rej) => {
-    if (env === 'test') return res();
+    if (env === 'test1') return res();
     return server.listen(port, ip, (err) => {
       if (err) return rej(err);
       return res();

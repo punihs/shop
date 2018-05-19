@@ -27,4 +27,8 @@ module.exports = {
     DELIVERED: 'delivered',
     CANCELED: 'canceled',
   },
+  PRICE_ENTERER: {
+    SHOPPRE: 1,
+    CUSTOMER: 2,
+  },
 };

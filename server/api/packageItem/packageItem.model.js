@@ -1,3 +1,5 @@
+const { PRICE_ENTERER: { SHOPPRE, CUSTOMER } } = require('../../config/constants');
+
 module.exports = (sequelize, DataTypes) => {
   const PackageItem = sequelize.define('PackageItem', {
     id: {
@@ -7,16 +9,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
-    item: DataTypes.STRING,
+    name: DataTypes.STRING,
     quantity: DataTypes.INTEGER,
-    price: DataTypes.DOUBLE,
-    total: DataTypes.DOUBLE,
-    file_name: DataTypes.STRING,
-    confirm_by: {
+    price_amount: DataTypes.DOUBLE,
+    total_amount: DataTypes.DOUBLE,
+    photo_object: DataTypes.STRING,
+    price_entered_by: {
       type: DataTypes.ENUM,
-      values: ['shoppre', 'user'],
+      values: [SHOPPRE, CUSTOMER],
     },
-
   }, {
     tableName: 'package_items',
     timestamps: true,
@@ -25,7 +26,8 @@ module.exports = (sequelize, DataTypes) => {
 
   PackageItem.associate = (db) => {
     PackageItem.belongsTo(db.Package);
-    PackageItem.hasOne(db.PackageItemCategory);
+    PackageItem.belongsTo(db.PackageItemCategory);
+    db.PackageItemCategory.belongsTo(db.PackageItem);
   };
 
   return PackageItem;
