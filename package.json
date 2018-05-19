@@ -4,17 +4,10 @@
   "description": "Shoppre API",
   "main": "server/index.js",
   "scripts": {
-    "test-api": "mocha \"server/api/**/*.spec.js\"",
-    "test-component": "mocha \"server/components/**/*.spec.js\"",
-    "test-package": "mocha \"server/api/package/*.spec.js\"",
+    "start": "kill -9 $(lsof -t -i:5000); nodemon --ignore node_modules/ -e js server/app",
     "user-login": "curl -X POST   http://localhost:5000/api/user/login   -H 'content-type: application/json'   -d '{ \"username\": \"manjeshpv@gmail.com\",\"password\" : \"Password123\"}'> logs/credentials.json",
     "ops-login": "curl -X POST   http://localhost:5000/api/user/login   -H 'content-type: application/json'   -d '{ \"username\": \"saneel@shoppre.com\",\"password\" : \"Password123\"}'> logs/ops-credentials.json",
-    "test-oauth": "NODE_ENV=test mocha \"server/components/oauth/*.spec.js\"",
-    "test-ship": "NODE_ENV=test mocha debug --timeout 10000 \"server/api/shipRequest/*.spec.js\"",
-    "test-dtdc": "mocha \"dtdc/test.js\"",
-    "test-dtdc-eco": "mocha \"dtdc/eco.spec.js\"",
-    "test-dtdc-fedex": "mocha \"server/components/price-calculator/dtdc/index.spec.js\"",
-    "start": "kill -9 $(lsof -t -i:5000); nodemon --ignore node_modules/ -e js server/app",
+    "test": "NODE_ENV=test mocha --opts .mocharc server/api/**/*.spec.js --exit",
     "ssh-copy-id": "ssh-copy-id pulse@staging-app1.shoppre.com",
     "tunnel": "ssh -R 5557:localhost:5557 pulse@staging-app1.shoppre.com",
     "lint": "eslint --fix --ext .js --ignore-path .gitignore .",
@@ -34,7 +27,8 @@
   "homepage": "https://github.com/shoppre/api#readme",
   "private": true,
   "pre-commit": [
-    "lint"
+    "lint",
+    "test"
   ],
   "dependencies": {
     "aws-sdk": "^2.238.1",
@@ -71,8 +65,9 @@
     "eslint": "^4.11.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
-    "nodemon": "^1.12.1",
     "mocha": "^5.1.1",
+    "nock": "^9.2.6",
+    "nodemon": "^1.12.1",
     "precommit-hook": "^3.0.0",
     "supertest": "^3.0.0"
   },

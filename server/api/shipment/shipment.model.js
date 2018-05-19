@@ -9,11 +9,9 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
     },
     order_id: DataTypes.STRING,
-    package_ids: DataTypes.STRING,
-    full_name: DataTypes.STRING,
+    customer_name: DataTypes.STRING,
     address: DataTypes.STRING,
     phone: DataTypes.STRING,
-    payment_gateway_name: DataTypes.STRING,
     count: DataTypes.INTEGER,
     weight: DataTypes.DECIMAL(8, 2),
     value: DataTypes.DECIMAL(8, 2),
@@ -47,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
     value_by_shipping_partner: DataTypes.DOUBLE,
     tracking_code: DataTypes.STRING,
   }, {
-    tableName: 'ship_requests',
+    tableName: 'shipments',
     timestamps: false,
     underscored: true,
     paranoid: true,
@@ -64,6 +62,7 @@ module.exports = (sequelize, DataTypes) => {
       as: 'Creator',
     });
 
+    Shipment.belongsTo(db.PaymentGateway);
     Shipment.belongsTo(db.Country);
     db.Country.hasMany(Shipment);
   };

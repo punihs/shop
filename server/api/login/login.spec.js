@@ -7,8 +7,8 @@ describe('GET /api/user/login', () => {
     request(app)
       .post('/api/user/login')
       .send({
-        username: 'manjeshpv@gmail.com',
-        password: 'password',
+        username: 'vikas@shoppre.com',
+        password: 'admin1234',
       })
       .expect('Content-Type', /html/)
       .expect(200)

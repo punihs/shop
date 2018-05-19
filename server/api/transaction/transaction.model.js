@@ -1,6 +1,6 @@
 
 module.exports = (sequelize, DataTypes) => {
-  const Address = sequelize.define('Address', {
+  const Transaction = sequelize.define('Transaction', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -9,19 +9,19 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
     },
   }, {
-    tableName: 'address',
+    tableName: 'transactions',
     timestamps: false,
     underscored: true,
   });
 
-  Address.associate = (db) => {
-    Address.belongsTo(db.Country);
-    Address.belongsTo(db.User, {
+  Transaction.associate = (db) => {
+    Transaction.belongsTo(db.Country);
+    Transaction.belongsTo(db.User, {
       foreignKey: 'customer_id',
       as: 'Customer',
     });
   };
 
-  return Address;
+  return Transaction;
 };
 

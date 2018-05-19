@@ -32,7 +32,7 @@ const db = {
   'PhotoRequest',
 
   'Shipment', 'ShipmentMeta',
-
+  'Transaction',
   // - Notifications
   'Notification',
 

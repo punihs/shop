@@ -1,18 +1,15 @@
 const request = require('supertest');
-const assert = require('assert');
 const app = require('./../../app');
 const auth = require('../../../logs/credentials');
 
-describe('GET /api/ship_requests', () => {
-  it('return ship_requests', (done) => {
+describe('GET /api/shipments', () => {
+  it('return 400 on no packages for shipments', (done) => {
     request(app)
-      .post('/api/ship_requests')
+      .get('/api/shipments')
       .set('Authorization', `bearer ${auth.access_token}`)
-      .send()
       .expect('Content-Type', /json/)
       .expect(200)
-      .then((res) => {
-        assert.equal(63, res.body.length);
+      .then(() => {
         done();
       });
   });

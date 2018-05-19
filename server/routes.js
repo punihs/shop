@@ -14,7 +14,9 @@ const login = require('./api/login');
 const search = require('./api/search');
 const packages = require('./api/package');
 const shipment = require('./api/shipment');
+const address = require('./api/address');
 const user = require('./api/user');
+const shippingRate = require('./api/shippingRate');
 const web = require('./routes/web');
 
 module.exports = (app) => {
@@ -22,7 +24,9 @@ module.exports = (app) => {
   app.use('/api/user', login);
   app.use('/api/search', search);
   app.use('/api/packages', authenticate(), packages);
+  app.use('/api/address', authenticate(), address);
   app.use('/api/shipments', shipment);
+  app.use('/api/shippingRates', shippingRate);
   app.use('/api/users', user);
   app.get('/secured', authenticate(), (req, res) => res.json({ name, version }));
 

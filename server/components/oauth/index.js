@@ -6,5 +6,5 @@ module.exports = oauth2Server({
   model,
   refreshTokenLifetime: 60 * 24 * 3600, // 60 days
   grants: ['authorization_code', 'password', 'refresh_token', 'client_credentials'],
-  debug: true,
+  debug: false,
 });
