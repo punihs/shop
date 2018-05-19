@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
 
   CampaignStatistic.associate = (db) => {
     CampaignStatistic.belongsTo(db.Campaign);
-    CampaignStatistic.belongsTo(db.Customer);
+    CampaignStatistic.belongsTo(db.User);
   };
 
   return CampaignStatistic;

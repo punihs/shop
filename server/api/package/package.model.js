@@ -47,8 +47,16 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Package.associate = (db) => {
-    Package.hasOne(db.PackageCharge);
-    Package.belongsTo(db.Customer);
+    Package.hasOne(db.PackageMeta);
+    Package.belongsTo(db.User, {
+      foreignKey: 'customer_id',
+      as: 'Customer',
+    });
+
+    Package.belongsTo(db.User, {
+      foreignKey: 'created_by',
+      as: 'Creator',
+    });
   };
 
   return Package;

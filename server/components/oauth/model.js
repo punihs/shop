@@ -7,7 +7,7 @@ const geohash = require('ngeohash');
 
 const config = require('../../config/environment');
 const {
-  App, Customer, AccessToken, AuthCode, RefreshToken, Session,
+  App, User, AccessToken, AuthCode, RefreshToken, Session,
 } = require('../../conn/sqldb');
 
 const log = debug('components/oauth');
@@ -21,22 +21,22 @@ const oAuthModel = {
           access_token: token,
           created_at: { $gt: new Date('2017-03-23') },
         },
-        attributes: ['session_id', 'customer_id'],
+        attributes: ['session_id', 'user_id'],
       })
       .then((accessToken) => {
         log('accessToken', accessToken);
         if (!accessToken) return Promise.resolve({ message: 'no tokens found.' });
         if (!accessToken.session_id) return Promise.resolve({ message: 'no session_id' });
-        const { session_id: sessionId, customer_id: customerId } = accessToken;
+        const { session_id: sessionId, user_id: userId } = accessToken;
         const expires = new Date();
         return Promise.all([
           AccessToken.update(
             { expires },
-            { where: { customer_id: customerId, session_id: sessionId } },
+            { where: { user_id: userId, session_id: sessionId } },
           ),
           RefreshToken.update(
             { expires },
-            { where: { customer_id: customerId, session_id: sessionId } },
+            { where: { user_id: userId, session_id: sessionId } },
           ),
         ]);
       });
@@ -46,21 +46,21 @@ const oAuthModel = {
     return AccessToken
       .findOne({
         where: { access_token: bearerToken.replace('h-', '') },
-        attributes: ['access_token', 'expires', 'session_id', 'app_id', 'customer_id'],
+        attributes: ['access_token', 'expires', 'session_id', 'app_id', 'user_id'],
         raw: true,
       })
       .then((t) => {
         const token = t;
         if (!token) return callback(null, false);
 
-        return Customer
-          .findById(token.customer_id, {
+        return User
+          .findById(token.user_id, {
             attributes: ['id', ['email', 'emailId'], ['name', 'firstName']],
             raw: true,
           })
           .then((user) => {
             token.user = user;
-            delete token.Customer;
+            delete token.User;
             callback(null, token);
             return token;
           });
@@ -90,11 +90,11 @@ const oAuthModel = {
     callback(null, true);
   },
 
-  getCustomerFromClient(clientId, clientSecret, cb) {
+  getUserFromClient(clientId, clientSecret, cb) {
     const options = {
       where: { client_id: clientId },
       include: [{
-        model: Customer,
+        model: User,
         attributes: ['id', 'name', 'emailid', 'password'],
       }],
       attributes: ['id', 'client_id', 'redirect_uri'],
@@ -104,8 +104,8 @@ const oAuthModel = {
     return App
       .find(options)
       .then((client) => {
-        if (!client || !client.Customer) return cb(null, false);
-        cb(null, client.Customer.toJSON());
+        if (!client || !client.User) return cb(null, false);
+        cb(null, client.User.toJSON());
         return client;
       }).catch(cb);
   },
@@ -116,7 +116,7 @@ const oAuthModel = {
       .build({ expires })
       .set('app_id', client.id)
       .set('access_token', accessToken)
-      .set('customer_id', user.id)
+      .set('user_id', user.id)
       .set('session_id', sessionId)
       .save()
       .then(token => callback(null, token))
@@ -128,7 +128,7 @@ const oAuthModel = {
 
     const agent = useragent.parse(ua);
     const { id: userId } = req.user;
-    const session = { customer_id: userId };
+    const session = { user_id: userId };
 
     if (agent) {
       Object.assign(session, {
@@ -185,7 +185,7 @@ const oAuthModel = {
     AuthCode
       .find({
         where: { auth_code: authCode },
-        attributes: ['app_id', 'expires', ['customer_id', 'userId'], 'session_id', ['app_id', 'clientId']],
+        attributes: ['app_id', 'expires', ['user_id', 'userId'], 'session_id', ['app_id', 'clientId']],
       })
       .then((authCodeModel) => {
         if (!authCodeModel) return callback(null, false);
@@ -201,7 +201,7 @@ const oAuthModel = {
       .build({ expires })
       .set('app_id', client.id)
       .set('auth_code', authCode)
-      .set('customer_id', user.id)
+      .set('user_id', user.id)
       .set('session_id', sessionId)
       .save()
       .then(code => callback(null, code))
@@ -209,22 +209,22 @@ const oAuthModel = {
   },
 
   getUser(username, password, callback) {
-    log('getCustomer', username, password);
+    log('getUser', username, password);
     const where = { $or: { email: username } };
-    return Customer
+    return User
       .find({
         where,
         attributes: ['id', 'password'],
       })
       .then((user) => {
-        log('gotCustomer', user);
+        log('gotUser', user);
         if (!user) return callback(null, false);
 
         if (config.env === 'test') return callback(null, user.toJSON());
         // Send mail for client login
-        return user.verifyPassword(password, (err, verifiedCustomer) => {
+        return user.verifyPassword(password, (err, verifiedUser) => {
           if (err) return callback(null, false);
-          return callback(null, verifiedCustomer);
+          return callback(null, verifiedUser);
         });
       })
       .catch(callback);
@@ -235,7 +235,7 @@ const oAuthModel = {
       .build({ expires })
       .set('app_id', client.id)
       .set('refresh_token', refreshToken)
-      .set('customer_id', user.id)
+      .set('user_id', user.id)
       .set('session_id', sessionId)
       .save()
       .then(token => callback(null, token))
@@ -246,10 +246,10 @@ const oAuthModel = {
     return RefreshToken
       .findOne({
         where: { refresh_token: refreshToken },
-        attributes: [['app_id', 'clientId'], ['customer_id', 'userId'], 'expires', 'session_id'],
+        attributes: [['app_id', 'clientId'], ['user_id', 'userId'], 'expires', 'session_id'],
 
         // only non suspended users should be allowed to refresh token
-        include: [{ model: Customer, attributes: ['id'] }],
+        include: [{ model: User, attributes: ['id'] }],
       })
       .then((refreshTokenModel) => {
         if (!refreshTokenModel) return callback(null, false);

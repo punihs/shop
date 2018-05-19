@@ -60,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   ShippingPreference.associate = (db) => {
-    ShippingPreference.belongsTo(db.Customer);
+    ShippingPreference.belongsTo(db.User);
   };
 
   return ShippingPreference;

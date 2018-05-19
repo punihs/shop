@@ -1,7 +1,7 @@
-const shipRequest = require('./../app/shipRequest');
-const partner = require('./../app/partner');
+const shipment = require('./../app/shipment');
+const shippingPartner = require('./../app/shippingPartner');
 
 module.exports = (app) => {
-  app.use('/shipRequests', shipRequest);
-  app.use('/partners', partner);
+  app.use('/shipments', shipment);
+  app.use('/shipping_partners', shippingPartner);
 };

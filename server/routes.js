@@ -13,8 +13,8 @@ const authenticate = require('./components/oauth/authenticate');
 const login = require('./api/login');
 const search = require('./api/search');
 const packages = require('./api/package');
-const shipRequest = require('./api/shipRequest');
-const customer = require('./api/customer');
+const shipment = require('./api/shipment');
+const user = require('./api/user');
 const web = require('./routes/web');
 
 module.exports = (app) => {
@@ -22,8 +22,8 @@ module.exports = (app) => {
   app.use('/api/user', login);
   app.use('/api/search', search);
   app.use('/api/packages', authenticate(), packages);
-  app.use('/api/ship_requests', shipRequest);
-  app.use('/api/customers', customer);
+  app.use('/api/ship_requests', shipment);
+  app.use('/api/users', user);
   app.get('/secured', authenticate(), (req, res) => res.json({ name, version }));
 
   app.get('/', (req, res) => res.json({ name, version }));
@@ -34,13 +34,13 @@ module.exports = (app) => {
   app.use((e, req, res, next) => {
     if (!next) return null;
     const err = e;
-    const { body, headers, user } = req;
+    const { body, headers, user: u } = req;
 
     logger.error(err.message, err, {
       url: req.originalUrl,
       body,
       headers,
-      user,
+      user: u,
     });
 
     return res.status(500).json({ message: err.message, stack: err.stack });

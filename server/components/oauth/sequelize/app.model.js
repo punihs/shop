@@ -47,8 +47,8 @@ module.exports = function AppModel(sequelize, DataTypes) {
     App.hasMany(db.AccessToken);
     App.hasMany(db.RefreshToken);
 
-    App.belongsTo(db.Customer, {
-      foreignKey: 'customer_id',
+    App.belongsTo(db.User, {
+      foreignKey: 'user_id',
     });
   };
 

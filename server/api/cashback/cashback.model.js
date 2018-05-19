@@ -7,8 +7,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
-    ship_request_id: DataTypes.INTEGER,
-    customer_id: DataTypes.INTEGER,
     amount: DataTypes.INTEGER,
   }, {
     tableName: 'cashbacks',
@@ -18,6 +16,8 @@ module.exports = (sequelize, DataTypes) => {
 
   Cashback.associate = (db) => {
     Cashback.belongsTo(db.Campaign);
+    Cashback.belongsTo(db.Shipment);
+    Cashback.belongsTo(db.User);
   };
 
   return Cashback;

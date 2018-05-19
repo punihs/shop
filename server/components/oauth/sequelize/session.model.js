@@ -39,8 +39,8 @@ module.exports = function SessionModel(sequelize, DataTypes) {
           foreignKey: 'session_id',
         });
 
-        Session.belongsTo(db.Customer, {
-          foreignKey: 'customer_id',
+        Session.belongsTo(db.User, {
+          foreignKey: 'user_id',
         });
       },
     },

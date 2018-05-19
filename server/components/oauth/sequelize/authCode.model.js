@@ -49,8 +49,8 @@ module.exports = function AuthCodeModel(sequelize, DataTypes) {
       foreignKey: 'session_id',
     });
 
-    AuthCode.belongsTo(db.Customer, {
-      foreignKey: 'customer_id',
+    AuthCode.belongsTo(db.User, {
+      foreignKey: 'user_id',
     });
   };
 

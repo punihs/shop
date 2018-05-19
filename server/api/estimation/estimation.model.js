@@ -1,3 +1,5 @@
+const { SHIPMENT_TYPES: { DOC, NONDOC } } = require('../../config/constants');
+
 module.exports = (sequelize, DataTypes) => {
   const Estimation = sequelize.define('Estimation', {
     id: {
@@ -7,16 +9,22 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
-    customer_id: DataTypes.INTEGER,
     amount: DataTypes.DOUBLE,
-    time: DataTypes.TIME,
-    country: DataTypes.INTEGER,
     weight: DataTypes.DOUBLE,
+    type: {
+      type: DataTypes.ENUM,
+      values: [DOC, NONDOC],
+    },
   }, {
     tableName: 'estimations',
-    timestamps: false,
+    timestamps: true,
     underscored: true,
   });
+
+  Estimation.associate = (db) => {
+    Estimation.belongsTo(db.User);
+    Estimation.belongsTo(db.Country);
+  };
 
   return Estimation;
 };

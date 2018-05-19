@@ -6,7 +6,7 @@ exports.index = (req, res, next) => {
   const attributes = ['id', 'name'];
   let field = 'name';
 
-  if (req.query.type === 'Customer') {
+  if (req.query.type === 'User') {
     attributes.push('locker');
     field = 'locker';
   }

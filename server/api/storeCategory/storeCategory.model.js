@@ -7,12 +7,21 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
-    category: DataTypes.STRING,
-    slug: DataTypes.STRING,
+    url: DataTypes.STRING,
+    rank: DataTypes.INTEGER,
+    info: DataTypes.STRING,
+    featured: {
+      type: DataTypes.ENUM,
+      values: ['0', '1'],
+    },
   }, {
-    tableName: 'store_categories',
+    tableName: 'store_cat_clubs',
     timestamps: true,
     underscored: true,
   });
+
+  StoreCategory.associate = (db) => {
+    StoreCategory.belongsTo(db.Store);
+  };
   return StoreCategory;
 };

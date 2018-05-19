@@ -1,5 +1,8 @@
 const moment = require('moment');
 const { Package } = require('./../../conn/sqldb');
+const { PACKAGE_STATES } = require('./../../config/constants');
+
+const { INREVIEW } = PACKAGE_STATES;
 
 exports.index = (req, res, next) => {
   const options = {
@@ -10,7 +13,7 @@ exports.index = (req, res, next) => {
     limit: Number(req.query.limit) || 20,
   };
 
-  const states = ['processing', 'values', 'review', 'delivered', 'ship'];
+  const states = Object.values(PACKAGE_STATES);
   if (states.includes(req.query.status)) options.where.status = req.query.status;
 
   return Package
@@ -21,9 +24,9 @@ exports.index = (req, res, next) => {
 
 exports.create = (req, res, next) => {
   const pack = req.body;
-  pack.customer_id = 2319;
+  pack.created_by = req.user.id;
   pack.order_id = `${moment().format('YYYYMMDDhhmmss')}.${pack.customer_id}`;
-  pack.status = 'inreveiw';
+  pack.status = INREVIEW;
   return Package
     .create(pack)
     .then(({ id }) => res.status(201).json({ id }))

@@ -9,14 +9,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     github_issue_id: DataTypes.INTEGER,
     name: DataTypes.STRING,
+    slug: DataTypes.STRING,
     comment: DataTypes.STRING,
-    coupon_code: DataTypes.STRING,
-    cashback: DataTypes.STRING,
-    begin_date: DataTypes.DATE,
-    end_date: DataTypes.DATE,
+    begins_at: DataTypes.DATE,
+    ends_at: DataTypes.DATE,
     type: DataTypes.STRING,
     image: DataTypes.STRING,
-    slug: DataTypes.STRING,
   }, {
     tableName: 'campaigns',
     timestamps: true,
@@ -24,7 +22,8 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Campaign.associate = (db) => {
-    Campaign.belongsTo(db.Customer);
+    Campaign.belongsTo(db.User);
+    Campaign.hasOne(db.Coupon);
   };
 
   return Campaign;

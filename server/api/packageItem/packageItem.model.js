@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     file_name: DataTypes.STRING,
     confirm_by: {
       type: DataTypes.ENUM,
-      values: ['shoppre', 'customer'],
+      values: ['shoppre', 'user'],
     },
 
   }, {
@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
 
   PackageItem.associate = (db) => {
     PackageItem.belongsTo(db.Package);
+    PackageItem.hasOne(db.PackageItemCategory);
   };
 
   return PackageItem;

@@ -1,10 +1,10 @@
 div
   ul
-    each shipRequest in shipRequests
-      h1= shipRequest.Country.name
-      h2= shipRequest.estimated
-      h2= shipRequest.full_name
-      h2= shipRequest.address
-      h2= shipRequest.weight
+    each shipment in shipments
+      h1= shipment.Country.name
+      h2= shipment.estimated
+      h2= shipment.full_name
+      h2= shipment.address
+      h2= shipment.weight
       hr
 

@@ -48,8 +48,8 @@ module.exports = function RefreshTokenModel(sequelize, DataTypes) {
       foreignKey: 'app_id',
     });
 
-    RefreshToken.belongsTo(db.Customer, {
-      foreignKey: 'customer_id',
+    RefreshToken.belongsTo(db.User, {
+      foreignKey: 'user_id',
     });
 
     RefreshToken.belongsTo(db.Session, {
