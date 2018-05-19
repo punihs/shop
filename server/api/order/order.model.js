@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     tracking_code: DataTypes.STRING,
     invoice_code: DataTypes.STRING,
     comments: DataTypes.STRING,
-    invoice_path: DataTypes.STRING,
+    object: DataTypes.STRING,
     status: {
       type: DataTypes.ENUM,
       values: [PENDING, RECEIVED],

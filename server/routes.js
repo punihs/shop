@@ -11,6 +11,7 @@ const authenticate = require('./components/oauth/authenticate');
 
 // - Routers
 const login = require('./api/login');
+const orders = require('./api/order');
 const search = require('./api/search');
 const packages = require('./api/package');
 const shipment = require('./api/shipment');
@@ -26,6 +27,7 @@ module.exports = (app) => {
   app.use('/api/packages', authenticate(), packages);
   app.use('/api/address', authenticate(), address);
   app.use('/api/shipments', shipment);
+  app.use('/api/orders', orders);
   app.use('/api/shippingRates', shippingRate);
   app.use('/api/users', user);
   app.get('/secured', authenticate(), (req, res) => res.json({ name, version }));
