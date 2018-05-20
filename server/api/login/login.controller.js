@@ -61,7 +61,7 @@ exports.refresh = (req, res, next) => App
   .then((app) => {
     if (!app) return res.status(400).json({ message: 'Invalid Token' });
     const options = {
-      url: `${config.OAUTH_SERVER}${config.OAUTH_ENDPOINT}`,
+      url: `${config.PREFIX}api.${config.DOMAIN}/oauth/token`,
       auth: {
         user: app.client_id,
         pass: app.client_secret,
