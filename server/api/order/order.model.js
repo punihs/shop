@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
+    name: DataTypes.STRING,
     tracking_code: DataTypes.STRING,
     invoice_code: DataTypes.STRING,
     comments: DataTypes.STRING,

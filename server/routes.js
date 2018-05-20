@@ -29,7 +29,7 @@ module.exports = (app) => {
   app.use('/api/packages', authenticate(), packages);
   app.use('/api/address', authenticate(), address);
   app.use('/api/shipments', shipment);
-  app.use('/api/orders', orders);
+  app.use('/api/orders', authenticate(), orders);
   app.use('/api/shippingRates', shippingRate);
   app.use('/api/packageItems', authenticate(), packageItem);
   app.use('/api/packageItemCategories', authenticate(), packageItemCategory);

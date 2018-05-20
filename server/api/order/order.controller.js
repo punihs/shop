@@ -6,20 +6,20 @@ const { ORDER_STATES: { RECEIVED } } = require('../../config/constants');
 
 exports.index = (req, res, next) => {
   const options = {
-    attributes: ['id', 'store_id', 'invoice_code'],
+    attributes: ['id', 'store_id', 'invoice_code', 'tracking_code', 'status'],
     include: [{
       model: Store,
       attributes: ['id', 'name'],
     }],
     where: {
-      customer_id: 942,
+      customer_id: req.user.id,
     },
     limit: Number(req.query.limit) || 20,
   };
 
   return Order
     .findAll(options)
-    .then(orders => res.json(orders))
+    .then(orders => res.json({ items: orders, total: 10 }))
     .catch(next);
 };
 
@@ -48,3 +48,23 @@ exports.create = async (req, res, next) => {
         .catch(next);
     });
 };
+
+exports.download = (req, res, next) => {
+  const { id } = req.params;
+  return Order
+    .findById(id, {
+      attributes: ['object', 'name'],
+      include: [{
+        model: Store,
+        attributes: ['id', 'name'],
+      }],
+    })
+    .then((order) => {
+      const { object, Store: store } = order.toJSON();
+      const ext = object.split('.').pop();
+      return minio.downloadLink({ object, name: `Shoppre-Order-${id}-${store.name}-${order.name}.${ext}` });
+    })
+    .then(url => res.redirect(url))
+    .catch(next);
+};
+
