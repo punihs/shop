@@ -4,6 +4,7 @@
   "description": "Shoppre API",
   "main": "server/index.js",
   "scripts": {
+
     "start": "kill -9 $(lsof -t -i:5000); nodemon --ignore node_modules/ -e js server/app",
     "user-login": "curl -X POST   http://localhost:5000/api/user/login   -H 'content-type: application/json'   -d '{ \"username\": \"manjeshpv@gmail.com\",\"password\" : \"Password123\"}'> logs/credentials.json",
     "ops-login": "curl -X POST   http://localhost:5000/api/user/login   -H 'content-type: application/json'   -d '{ \"username\": \"saneel@shoppre.com\",\"password\" : \"Password123\"}'> logs/ops-credentials.json",

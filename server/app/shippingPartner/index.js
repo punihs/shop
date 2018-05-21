@@ -5,6 +5,6 @@ const controller = require('./shippingPartner.controller');
 const router = express.Router();
 
 router.get('/', controller.index);
-router.get('/:name', controller.show);
+router.get('/:slug', controller.show);
 
 module.exports = router;

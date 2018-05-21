@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
-    name: DataTypes.INTEGER,
+    name: DataTypes.STRING,
+    slug: DataTypes.STRING,
   }, {
     tableName: 'shipping_partners',
     timestamps: false,

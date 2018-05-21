@@ -15,7 +15,7 @@ module.exports = (app) => {
   app.use(cors());
   app.enable('trust proxy');
   app.set('view engine', 'jade');
-  app.set('views', `${config.root}/server/views`);
+  app.set('views', `${config.root}/server/app`);
   app.set('appPath', path.join(config.root, 'client'));
   oauthComponent(app, routes);
 };
