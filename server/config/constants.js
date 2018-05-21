@@ -3,10 +3,6 @@ module.exports = {
     DOC: 1,
     NONDOC: 2,
   },
-  ORDER_STATES: {
-    PENDING: 'pending',
-    RECEIVED: 'received',
-  },
   PACKAGE_STATES: {
     PROCESSING: 'processing',
     VALUES: 'values',

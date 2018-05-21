@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
-    order_id: DataTypes.STRING,
+    order_code: DataTypes.STRING,
     customer_name: DataTypes.STRING,
     address: DataTypes.STRING,
     phone: DataTypes.STRING,

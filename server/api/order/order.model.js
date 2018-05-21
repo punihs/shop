@@ -1,4 +1,3 @@
-const { SHIPMENT_TYPES: { PENDING, RECEIVED } } = require('../../config/constants');
 
 module.exports = (sequelize, DataTypes) => {
   const Order = sequelize.define('Order', {
@@ -14,10 +13,6 @@ module.exports = (sequelize, DataTypes) => {
     invoice_code: DataTypes.STRING,
     comments: DataTypes.STRING,
     object: DataTypes.STRING,
-    status: {
-      type: DataTypes.ENUM,
-      values: [PENDING, RECEIVED],
-    },
   }, {
     tableName: 'orders',
     timestamps: true,

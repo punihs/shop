@@ -1,4 +1,3 @@
-
 const MinioClient = require('minio').Client;
 const Bluebird = require('bluebird');
 const {
@@ -118,4 +117,3 @@ Minio.uploadLink = (minioObject) => {
 };
 
 module.exports = Minio;
-
