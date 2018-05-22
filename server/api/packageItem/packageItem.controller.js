@@ -48,12 +48,15 @@ exports.create = async (req, res, next) => {
     .catch(next);
 };
 
-exports.show = async (req, res, next) => PackageItem
-  .find({
-    attributes: ['id', 'quantity', 'price_amount', 'total_amount'],
-  })
-  .then(packageitems => res.json(packageitems))
-  .catch(next);
+exports.show = (req, res, next) => {
+  PackageItem
+    .find({
+      attributes: ['id', 'quantity', 'price_amount', 'total_amount'],
+      where: { id: req.param.id },
+    })
+    .then(packageitems => res.json(packageitems))
+    .catch(next);
+};
 
 exports.destroy = async (req, res) => {
   const { id } = req.params;
