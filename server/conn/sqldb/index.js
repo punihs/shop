@@ -10,6 +10,7 @@ const sqlDefaults = {
 };
 
 const db = {
+  Sequelize,
   sequelize: new Sequelize(config.MYSQL, sqlDefaults),
 };
 
