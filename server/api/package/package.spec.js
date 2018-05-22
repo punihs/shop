@@ -3,7 +3,6 @@ const app = require('./../../app');
 const auth = require('../../../logs/credentials');
 const opsAuth = require('../../../logs/ops-credentials');
 
-
 describe('GET /api/packages', () => {
   it('return packages', (done) => {
     request(app)
@@ -24,6 +23,7 @@ describe('POST /api/packages', () => {
       .post('/api/packages')
       .send({
         type: 'doc',
+        order_id: 1,
         seller: 'Amazon_test',
         reference: 'AMZ123',
         locker: 'M123',
@@ -39,3 +39,4 @@ describe('POST /api/packages', () => {
       });
   });
 });
+

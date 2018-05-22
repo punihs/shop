@@ -63,3 +63,9 @@ exports.download = (req, res, next) => {
     .catch(next);
 };
 
+exports.update = async (req, res) => {
+  const { id } = req.params;
+  const status = await Order.update(req.body, { where: { id } });
+  return res.json(status);
+};
+

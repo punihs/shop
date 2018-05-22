@@ -8,7 +8,10 @@ const ses = require('../../conn/ses');
 const logger = require('../../components/logger');
 
 exports.index = (req, res, next) => {
-  const options = {};
+  const options = {
+    limit: Number(req.query.limit) || 20,
+    attributes: ['id', 'number_of_packages'],
+  };
   if (req.query.customer_id) { options.where = { customer_id: req.query.customer_id }; }
   if (req.query.state) { options.where = { status: req.query.state }; }
 

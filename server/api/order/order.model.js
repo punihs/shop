@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       as: 'Creator',
     });
     Order.belongsTo(db.Store);
+    Order.belongsTo(db.Package);
   };
 
   return Order;

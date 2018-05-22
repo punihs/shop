@@ -1,7 +1,6 @@
+const _ = require('lodash');
 const moment = require('moment');
-const {
-  Package,
-} = require('../../conn/sqldb');
+const { Package, Order } = require('../../conn/sqldb');
 
 const { PACKAGE_STATES } = require('./../../config/constants');
 
@@ -40,16 +39,30 @@ exports.destroy = async (req, res) => {
   return res.json(status);
 };
 
-
 exports.create = async (req, res, next) => {
-  const pack = req.body;
+  const allowed = [
+    'type',
+    'seller',
+    'reference',
+    'locker',
+    'weight',
+    'number_of_items',
+    'price',
+  ];
+
+  const pack = _.pick(req.body, allowed);
 
   // internal user
   pack.created_by = req.user.id;
-  pack.order_id = `${moment().format('YYYYMMDDhhmmss')}.${pack.customer_id}`;
+  pack.order_code = `${moment().format('YYYYMMDDhhmmss')}.${pack.customer_id}`;
 
   return Package
     .create(pack)
-    .then(({ id }) => res.status(201).json({ id }))
+    .then(({ id }) => {
+      Order
+        .update({ package_id: id }, { where: { id: req.body.order_id } });
+      res.status(201).json({ id });
+    })
     .catch(next);
 };
+

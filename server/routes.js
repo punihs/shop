@@ -17,6 +17,7 @@ const packages = require('./api/package');
 const packageItem = require('./api/packageItem');
 const packageItemCategory = require('./api/packageItemCategory');
 const shipment = require('./api/shipment');
+const shipmentPackage = require('./api/shipment/package');
 const address = require('./api/address');
 const user = require('./api/user');
 const shippingRate = require('./api/shippingRate');
@@ -28,7 +29,7 @@ module.exports = (app) => {
   app.use('/api/search', search);
   app.use('/api/packages', authenticate(), packages);
   app.use('/api/address', authenticate(), address);
-  app.use('/api/shipments', shipment);
+  app.use('/api/shipments', authenticate(), shipment, shipmentPackage);
   app.use('/api/orders', authenticate(), orders);
   app.use('/api/shippingRates', shippingRate);
   app.use('/api/packageItems', authenticate(), packageItem);

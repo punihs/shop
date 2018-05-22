@@ -4,8 +4,9 @@
   "description": "Shoppre API",
   "main": "server/index.js",
   "scripts": {
+    "kill": "kill -9 $(lsof -t -i:5000);",
     "start": "nodemon --ignore node_modules/ -e js server/app",
-    "user-login": "curl -X POST   http://localhost:5000/api/user/login   -H 'content-type: application/json'   -d '{ \"username\": \"manjeshpv@gmail.com\",\"password\" : \"Password123\"}'> logs/credentials.json",
+    "user-login": "curl -X POST   http://localhost:5000/api/user/login   -H 'content-type: application/json'   -d '{ \"username\": \"vikas@shoppre.com\",\"password\" : \"admin1234\"}'> logs/credentials.json",
     "ops-login": "curl -X POST   http://localhost:5000/api/user/login   -H 'content-type: application/json'   -d '{ \"username\": \"saneel@shoppre.com\",\"password\" : \"Password123\"}'> logs/ops-credentials.json",
     "test": "NODE_ENV=test mocha --opts .mocharc server/api/**/*.spec.js --exit",
     "ssh-copy-id": "ssh-copy-id pulse@staging-app1.shoppre.com",
