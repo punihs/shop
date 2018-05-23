@@ -1,20 +1,21 @@
-# HeadHonchos API
+# API
 
+[![Build Status](https://drone.shoppre.com/api/badges/shoppre/api/status.svg)](https://drone.shoppre.com/shoppre/api)
 
 # In Production
 ```sh
-git clone https://github.com/quezx/hapi
+git clone https://github.com/shoppre/api
 
 npm i --production
-# create systemd service unit file using `sudo nano /etc/systemd/system/hapi.service`
-sudo systemctl enable hapi
-sudo systemctl start hapi
+# create systemd service unit file using `sudo nano /etc/systemd/system/api.service`
+sudo systemctl enable api
+sudo systemctl start api
 ```
 
 # For Developers
 
 ```sh
-git clone https://github.com/quezx/hapi
+git clone https://github.com/shoppre/api
 npm i
 npm start
 ```

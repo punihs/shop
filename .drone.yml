@@ -1,0 +1,22 @@
+pipeline:
+  build:
+    image: node:8.11
+    commands:
+      - pwd
+      - ls
+      - git log --oneline -n 5
+      - npm -v
+      - node -v
+      - npm install
+      - echo 'NODE_ENV="test"' > .env
+      - echo 'MYSQL="mysql://yog27ray:Easy%402020@staging-app1.shoppre.com/shoppre_q_test"' >> .env
+      - echo 'MINIO_ENDPOINT="testing-minio.shoppre.com"' >> .env
+      - echo 'MINIO_ACCESS_KEY="MY7D7R77YLKUOOJMJJWA"' >> .env
+      - echo 'MINIO_SECRET_KEY="TPgpASRPPVBR/gryHVIrqi0JzNNjBV7rTHeRosdm"' >> .env
+      - echo 'MINIO_PORT=80' >> .env
+      - echo 'MINIO_BUCKET=shoppre-q-test' >> .env
+      - npm run clear-db
+      - npm run migrate
+      - npm run seed
+      - npm run login
+      - npm test

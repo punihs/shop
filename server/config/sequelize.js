@@ -38,5 +38,6 @@ const settings = {
 
 module.exports = {
   development: settings,
+  test: settings,
   production: settings,
 };

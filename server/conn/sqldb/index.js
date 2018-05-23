@@ -7,6 +7,12 @@ const oauthComponent = require('../../components/oauth/sequelize');
 const sqlDefaults = {
   dialect: 'mysql',
   timezone: '+05:30',
+  define: {
+    charset: 'utf8',
+    dialectOptions: {
+      collate: 'utf8_general_ci',
+    },
+  },
 };
 
 const db = {
