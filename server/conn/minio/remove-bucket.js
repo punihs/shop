@@ -1,6 +1,7 @@
 const minio = require('.');
 
 const { MINIO_BUCKET } = require('./../../config/environment');
+
 const { log } = console;
 
 

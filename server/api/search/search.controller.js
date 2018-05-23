@@ -7,7 +7,7 @@ exports.index = (req, res, next) => {
   let field = 'name';
 
   if (req.query.type === 'User') {
-    attributes = ['id', 'name', 'locker_code'];
+    attributes = ['id', 'last_name', 'first_name', 'locker_code'];
     field = 'locker_code';
   }
 

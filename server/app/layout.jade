@@ -12,9 +12,9 @@ html(lang='en')
     link(rel='shortcut icon', href="/img/favicon.png')}}")
     link(rel='icon', type='image/png', href="/img/favicon.png')}}", sizes='60x60')
     // Bootstrap
-    link(href="/css/bootstrap.min.css')}}", rel='stylesheet')
+    link(href="/bower_components/bootstrap/dist/css/bootstrap.css", rel='stylesheet')
     // Font Awesome
-    link(href="/css/font-awesome.min.css')}}", rel='stylesheet')
+    link(href="/bower_components/components-font-awesome/css/fontawesome-all.css", rel='stylesheet')
     link(rel='stylesheet', href='https://cdn.datatables.net/1.10.16/css/dataTables.jqueryui.min.css')
     link(href="/css/txtProgress.min.css')}}", rel='stylesheet')
     link(href="/css/style1.css')}}", rel='stylesheet')
@@ -53,8 +53,8 @@ html(lang='en')
     include ./partials/_header
     block content
     include ./partials/_footer
-    script(src="/js/jquery.min.js")
-    script(src="/js/bootstrap.min.js")
+    script(src="/bower_components/jquery/jquery.js")
+    script(src="/bower_components/bootstrap/dist/js/bootstrap.min.js")
     script(src="/js/txtProgress.min.js")
     script(src="/js/validate.min.js")
     script.

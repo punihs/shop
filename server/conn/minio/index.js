@@ -2,7 +2,7 @@ const MinioClient = require('minio').Client;
 const Bluebird = require('bluebird');
 const {
   MINIO_ENDPOINT, MINIO_PORT, MINIO_ACCESS_KEY, MINIO_SECRET_KEY, env,
-  DOMAIN, PREFIX,
+  DOMAIN, PREFIX, MINIO_BUCKET,
 } = require('../../config/environment');
 const logger = require('../../components/logger');
 
@@ -17,7 +17,7 @@ Bluebird.promisifyAll(Object.getPrototypeOf(Minio));
 
 Minio.bufferUpload = (minioObject) => {
   const minObj = minioObject;
-  minObj.bucket = minObj.bucket || 'shoppre'; // Bucket name always in lowercaseObj
+  minObj.bucket = minObj.bucket || MINIO_BUCKET; // Bucket name always in lowercaseObj
   return Minio.putObjectAsync(
     minObj.bucket, minObj.object,
     minObj.buffer, 'application/octet-stream',
@@ -42,7 +42,7 @@ Minio.base64UploadMulti = minioObjects => Promise.all(minioObjects.map(m => Mini
 
 Minio.viewLink = (minioObject) => {
   const minObj = minioObject;
-  minObj.bucket = minObj.bucket || 'shoppre'; // Bucket name always in lowercaseObj
+  minObj.bucket = minObj.bucket || MINIO_BUCKET; // Bucket name always in lowercaseObj
   minObj.expires = minObj.expires || 24 * 60 * 60; // Expired in one day
   if (!minObj.object) {
     logger.error('Minio: View File not found', minObj);
@@ -60,7 +60,7 @@ Minio.viewLink = (minioObject) => {
 Minio.downloadLinkBase = (minioObject) => {
   if (!minioObject.name) return logger.error('File Name required for download');
   const minObj = minioObject;
-  minObj.bucket = minObj.bucket || 'shoppre'; // Bucket name always in lowercaseObj
+  minObj.bucket = minObj.bucket || MINIO_BUCKET; // Bucket name always in lowercaseObj
   minObj.expires = minObj.expires || 24 * 60 * 60; // Expired in one day
   minObj.headers = {
     'response-content-disposition':
@@ -78,7 +78,7 @@ Minio.agreementCompat = function agreementCompat(filePath) {
 
 Minio.downloadLink = (minioObject, qualify = false) => {
   const minObj = minioObject;
-  minObj.bucket = minObj.bucket || 'shoppre'; // Bucket name always in lowercase
+  minObj.bucket = minObj.bucket || MINIO_BUCKET; // Bucket name always in lowercase
   return Minio
     .statObjectAsync(minObj.bucket, qualify
       ? qualifyBucket(minObj.object)
@@ -92,7 +92,7 @@ Minio.downloadLink = (minioObject, qualify = false) => {
 
 Minio.retryDownloadLink = (minioObject) => {
   const minObj = minioObject;
-  minObj.bucket = minObj.bucket || 'shoppre'; // Bucket name always in lowercase
+  minObj.bucket = minObj.bucket || MINIO_BUCKET; // Bucket name always in lowercase
   return Minio.statObjectAsync(minObj.bucket, qualifyBucket(minObj.object))
     .then(() => Minio.downloadLinkBase(minObj))
     .catch((e) => {
@@ -111,7 +111,7 @@ Minio.retryDownloadLink = (minioObject) => {
 
 Minio.uploadLink = (minioObject) => {
   const minObj = minioObject;
-  minObj.bucket = minObj.bucket || 'shoppre'; // Bucket name always in lowercaseObj
+  minObj.bucket = minObj.bucket || MINIO_BUCKET; // Bucket name always in lowercaseObj
   minObj.expires = minObj.expires || 24 * 60 * 60; // Expired in one day
   return Minio.presignedPutObjectAsync(minObj.bucket, qualifyBucket(minObj.object), minObj.expires);
 };
