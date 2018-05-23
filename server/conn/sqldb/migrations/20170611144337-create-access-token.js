@@ -11,7 +11,11 @@ module.exports = {
       },
       user_id: keys('users'),
       session_id: keys('sessions'),
-      appId: keys('apps'),
+      app_id: keys('apps'),
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+      },
       access_token: {
         type: DataTypes.STRING,
         allowNull: false,

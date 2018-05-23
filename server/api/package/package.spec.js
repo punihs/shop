@@ -24,12 +24,12 @@ describe('POST /api/packages', () => {
       .send({
         type: 'doc',
         order_id: 1,
-        seller: 'Amazon_test',
-        reference: 'AMZ123',
-        locker: 'M123',
+        store_id: 1,
+        reference_code: 'AMZ123',
+        locker_code: 'M123',
         weight: 1,
         number_of_items: 1,
-        price: 100,
+        price_amount: 100,
       })
       .set('Authorization', `Bearer ${opsAuth.access_token}`)
       .expect('Content-Type', /json/)

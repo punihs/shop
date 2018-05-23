@@ -1,12 +1,12 @@
+const { engine, timestamps, keys } = require('../helper.js');
 
-module.exports = (sequelize, DataTypes) => {
-  const Package = sequelize.define('Package', {
+module.exports = {
+  up: (queryInterface, DataTypes) => queryInterface.createTable('packages', Object.assign({
     id: {
-      type: DataTypes.INTEGER,
+      allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      allowNull: false,
-      unique: true,
+      type: DataTypes.INTEGER,
     },
     order_code: DataTypes.STRING,
     type: DataTypes.STRING,
@@ -39,28 +39,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM,
       values: ['0', '1'],
     },
-  }, {
-    tableName: 'packages',
-    timestamps: true,
-    underscored: true,
-    paranoid: true,
-  });
-
-  Package.associate = (db) => {
-    Package.hasOne(db.PackageMeta);
-    Package.hasOne(db.Store);
-    Package.belongsTo(db.Shipment);
-    Package.belongsTo(db.User, {
-      foreignKey: 'customer_id',
-      as: 'Customer',
-    });
-
-    Package.belongsTo(db.User, {
-      foreignKey: 'created_by',
-      as: 'Creator',
-    });
-  };
-
-  return Package;
+    store_id: keys('stores'),
+    shipment_id: keys('shipments'),
+    created_by: keys('users'),
+    customer_id: keys('users'),
+  }, timestamps(3, DataTypes)), engine),
+  down(queryInterface) {
+    return queryInterface.dropTable('packages');
+  },
 };
-

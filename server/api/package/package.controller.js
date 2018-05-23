@@ -6,7 +6,7 @@ const { PACKAGE_STATES } = require('./../../config/constants');
 
 exports.index = (req, res, next) => {
   const options = {
-    attributes: ['id', 'received'],
+    attributes: ['id', 'received_at'],
     where: {
       customer_id: req.user.id,
     },
@@ -42,12 +42,12 @@ exports.destroy = async (req, res) => {
 exports.create = async (req, res, next) => {
   const allowed = [
     'type',
-    'seller',
-    'reference',
-    'locker',
+    'store_id',
+    'reference_code',
+    'locker_code',
     'weight',
     'number_of_items',
-    'price',
+    'price_amount',
   ];
 
   const pack = _.pick(req.body, allowed);

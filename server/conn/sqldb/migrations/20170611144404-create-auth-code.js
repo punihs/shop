@@ -2,7 +2,7 @@ const { engine, timestamps, keys } = require('../helper.js');
 
 module.exports = {
   up(queryInterface, DataTypes) {
-    return queryInterface.createTable('access_tokens', Object.assign({
+    return queryInterface.createTable('auth_codes', Object.assign({
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,6 +12,10 @@ module.exports = {
       user_id: keys('users'),
       session_id: keys('sessions'),
       app_id: keys('apps'),
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+      },
       auth_code: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -23,6 +27,6 @@ module.exports = {
     }, timestamps(3, DataTypes)), engine);
   },
   down(queryInterface) {
-    return queryInterface.dropTable('access_tokens');
+    return queryInterface.dropTable('auth_codes');
   },
 };

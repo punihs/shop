@@ -9,6 +9,8 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
     },
     name: DataTypes.STRING,
+    logo: DataTypes.STRING,
+    type: DataTypes.STRING,
   }, {
     tableName: 'stores',
     timestamps: false,

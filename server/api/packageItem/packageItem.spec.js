@@ -32,26 +32,28 @@ describe('GET /api/packageItems/:id', () => {
 
 describe('POST /api/packageItem', () => {
   it('save packageItem', (done) => {
-    request(app)
-      .post('/api/packageItems')
-      .send({
-        name: 'saree',
-        package_id: 12,
-        package_item_category_id: 29,
-        quantity: 1,
-        price_amount: 200,
-        confirmed_by: 1,
-        photo_file: {
-          filename: 'x.txt',
-          base64: 'aGVsbG8=',
-        },
-      })
-      .set('Authorization', `Bearer ${opsAuth.access_token}`)
-      .expect('Content-Type', /json/)
-      .expect(201)
-      .then(() => {
-        done();
-      });
+    setTimeout(() => {
+      request(app)
+        .post('/api/packageItems')
+        .send({
+          name: 'saree',
+          package_id: 1,
+          package_item_category_id: 29,
+          quantity: 1,
+          price_amount: 200,
+          confirmed_by: 1,
+          photo_file: {
+            filename: 'x.txt',
+            base64: 'aGVsbG8=',
+          },
+        })
+        .set('Authorization', `Bearer ${opsAuth.access_token}`)
+        .expect('Content-Type', /json/)
+        .expect(201)
+        .then(() => {
+          done();
+        });
+    }, 1000);
   });
 });
 

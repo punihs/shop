@@ -28,7 +28,7 @@ module.exports = (app) => {
   app.use('/api/user', login);
   app.use('/api/search', search);
   app.use('/api/packages', authenticate(), packages);
-  app.use('/api/address', authenticate(), address);
+  app.use('/api/addresses', authenticate(), address);
   app.use('/api/shipments', authenticate(), shipment, shipmentPackage);
   app.use('/api/orders', authenticate(), orders);
   app.use('/api/shippingRates', shippingRate);

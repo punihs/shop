@@ -7,7 +7,7 @@ const opsAuth = require('../../../logs/ops-credentials');
 describe('GET /api/address', () => {
   it('return address', (done) => {
     request(app)
-      .get('/api/address')
+      .get('/api/addresses')
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
       .expect(200)
@@ -18,10 +18,10 @@ describe('GET /api/address', () => {
 });
 
 
-describe('POST /api/address', () => {
+describe('POST /api/addresses', () => {
   it('save address', (done) => {
     request(app)
-      .post('/api/address')
+      .post('/api/addresses')
       .send({
         salutation: 'Mr',
         first_name: 'Manjesh',

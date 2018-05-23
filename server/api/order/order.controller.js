@@ -48,18 +48,19 @@ exports.create = async (req, res, next) => {
     if (!['txt', 'pdf'].includes(extension)) return res.status(400).end('Invalid File');
   }
 
-
   const order = req.body;
+  order.created_by = req.user.id;
+  order.customer_id = req.user.id;
 
   return Order
     .create(order).then((saved) => {
       const { id } = saved;
       if (req.body.invoice_file) {
-        const { base64String, filename } = req.body.invoice_file;
+        const { base64: base64String, filename } = req.body.invoice_file;
 
         const extension = filename.split('.').pop();
         const object = `orders/${id - (id % 10000)}/${id}/${id}_${moment().format('YYYY_MM_DD_h_mm_ss')}.${extension}`;
-        return minio
+        minio
           .base64Upload({
             base64String,
             object,

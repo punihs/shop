@@ -3,12 +3,12 @@ const { sequelize } = require('./../../components/search');
 
 exports.index = (req, res, next) => {
   if (!req.query.type) return res.status(400).end();
-  const attributes = ['id', 'name'];
+  let attributes = ['id', 'name'];
   let field = 'name';
 
   if (req.query.type === 'User') {
-    attributes.push('locker');
-    field = 'locker';
+    attributes = ['id', 'last_name', 'first_name', 'locker_code'];
+    field = 'locker_code';
   }
 
   return sequelize(db[req.query.type], field, {

@@ -9,11 +9,11 @@ describe('Orders', () => {
     request(app)
       .post('/api/orders')
       .send({
-        customer_id: 327,
+        customer_id: 2,
         store_id: 1,
-        tracking_code: 'DTDC123',
+        tracking_code: 'DELHIVERY123',
         invoice_code: 'INV123',
-        comments: 1,
+        comments: 'Items recieved in good condition',
         invoice_file: {
           filename: 'x.txt',
           base64: 'aGVsbG8=',

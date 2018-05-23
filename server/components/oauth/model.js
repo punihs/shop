@@ -55,7 +55,7 @@ const oAuthModel = {
 
         return User
           .findById(token.user_id, {
-            attributes: ['id', ['email', 'emailId'], ['name', 'firstName']],
+            attributes: ['id', 'email', 'first_name', 'last_name'],
             raw: true,
           })
           .then((user) => {
@@ -95,7 +95,7 @@ const oAuthModel = {
       where: { client_id: clientId },
       include: [{
         model: User,
-        attributes: ['id', 'name', 'emailid', 'password'],
+        attributes: ['id', 'first_name', 'email', 'password'],
       }],
       attributes: ['id', 'client_id', 'redirect_uri'],
     };

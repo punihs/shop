@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body
+  style="margin: 0; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; height: 100% !important; line-height: 1.6em; -webkit-font-smoothing: antialiased; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; width: 100% !important; background-color: #f6f6f6;">
+<table width="100%" style="font-family:Arial,sans-serif;font-size:14px;">
+  <tbody>
+  <tr>
+    <td valign="middle">
+
+      <p><strong>Dear Team,</strong></p>
+
+      <p><strong>Customer created and submited personal shopper request. Check below details.</strong></p>
+
+      <!--@if(!$orders->isEmpty())-->
+      <!--@foreach($orders as $order)-->
+      <div class="sellerbox">
+        <div class="title">
+          <p>{{seller}}</p>
+          <p>Order Number : {{reference_number}}</p>
+          <p>{{updated_at}}</p>
+        </div>
+        <table border="1" style="border-collapse: collapse;font-size: 14px;width: 100%;max-width: 800px;text-align: left;">
+          <tr>
+            <th>Item Description</th>
+            <th>Qty</th>
+            <th width="170px">Each</th>
+            <th width="120px">Price</th>
+          </tr>
+          <!--@php-->
+          <!--$requests = $order->requests;-->
+          <!--@endphp-->
+          <!--@foreach($requests as $request)-->
+          <tr>
+            <td>
+              <p>{{item_name}}</p>
+              <span class="color">{{item_color}}</span>
+            </td>
+            <td>
+              <span class="quantity">{{quantity}}</span>
+            </td>
+            <td><i class="fa fa-rupee"></i> {{price}}</td>
+            <td><i class="fa fa-rupee"></i> {{total_price}}</td>
+          </tr>
+          <!--@endforeach-->
+          <tr>
+            <td colspan="2"></td>
+            <td>Sales Tax :</td>
+            <td><i class="fa fa-rupee"></i> {{sales_tax}}</td>
+          </tr>
+          <tr>
+            <td colspan="2"></td>
+            <td colspan="">Shipping to Bengaluru :</td>
+            <td><i class="fa fa-rupee"></i> {{delivery_charge}}</td>
+          </tr>
+          <tr>
+            <td colspan="2"></td>
+            <td colspan="">Personal Shopper Cost :</td>
+            <td><i class="fa fa-rupee"></i> {{personal_shopper_cost}}</td>
+          </tr>
+          <tr>
+            <td colspan="2"></td>
+            <td colspan="">Merchant Total :</td>
+            <td><i class="fa fa-rupee"></i> {{sub_total}}</td>
+          </tr>
+        </table>
+      </div>
+      <!--@endforeach-->
+      <!--@endif-->
+
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+      <table cellpadding="0" border="0" width="100%" style="margin-top: 15px;background-color:#1f2533;" cellspacing="0">
+        <tbody>
+        <tr>
+          <td valign="top" width="100">
+            <a target="_blank" href="http://www.shoppre.com/" style="text-decoration:none;color:#1f2533;font-weight:bold">
+              <img src="http://www.shoppre.com/img/logo.png" style="display:block;background-color:#1f2533;color:#010101;padding:10px;padding-left:30px;width: 100px;" alt="" border="0" class="CToWUd">
+            </a>
+          </td>
+          <td valign="top" width="300" style="color:#fff;font-size:12px;text-align:right;padding: 30px 30px 0 0;line-height: 0px;">All Rights Reserved. Copyright © <a target="_blank" href="http://www.shoppre.com/" style="text-decoration:none;color:#fff;font-weight:bold">Shoppre.com</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

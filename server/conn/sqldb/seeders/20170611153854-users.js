@@ -2,14 +2,18 @@ module.exports = {
   up(queryInterface) {
     return queryInterface.bulkInsert('users', [{
       id: 1,
-      name: 'Saneel E S',
+      salutation: 'Mr',
+      first_name: 'Saneel',
+      last_name: 'E S',
       email: 'saneel@gmail.com',
       phone: '917891378913',
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6', // admin1234
       group_id: 1,
     }, {
       id: 2,
-      name: 'Venkat',
+      salutation: 'Mr',
+      first_name: 'Venkat',
+      last_name: 'Customer',
       email: 'venkat@gmail.com',
       phone: '919844717202',
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
