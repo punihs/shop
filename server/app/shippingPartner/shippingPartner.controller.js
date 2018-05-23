@@ -1,19 +1,21 @@
-const { Partner, sequelize } = require('../../conn/sqldb');
+const { ShippingPartner, sequelize } = require('../../conn/sqldb');
 const Sequelize = require('sequelize');
 
 exports.index = (req, res, next) => {
   const options = {
-    attributes: ['id', 'name'],
+    attributes: ['id', 'name', 'slug'],
   };
 
-  return Partner
+  return ShippingPartner
     .findAll(options)
-    .then(partners => res.render('partner/index', { partners: partners.map(x => x.toJSON()) }))
+    .then(shippingPartners => res.render('shippingPartner/index', {
+      shippingPartners: shippingPartners.map(x => x.toJSON()),
+    }))
     .catch(next);
 };
 
 exports.show = async (req, res) => {
-  const partner = await Partner
+  const shippingPartner = await ShippingPartner
     .find({
       where: {
         slug: req.params.slug,
@@ -22,17 +24,17 @@ exports.show = async (req, res) => {
       raw: true,
     });
 
-  if (!partner) return res.render('404');
+  if (!shippingPartner) return res.render('404');
 
   const countQuery = `
-    SELECT count(1) as cnt FROM partners
-    join \`ship_trackings\` on partners.slug = ship_trackings.carrier
+    SELECT count(1) as cnt FROM shipping_partners
+    join \`ship_trackings\` on shipping_partners.slug = ship_trackings.carrier
     JOIN ship_requests on ship_requests.id = ship_trackings.ship_request_id
-    where partners.id = ${partner.id}
+    where shipping_partners.id = ${shippingPartner.id}
     `;
 
   const [count] = await sequelize.query(countQuery, { type: Sequelize.QueryTypes.SELECT });
 
-  return res.render('partner/show', { partner, count });
+  return res.render('shippingPartner/show', { shippingPartner, count });
 };
 

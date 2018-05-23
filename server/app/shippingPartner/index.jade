@@ -1,0 +1,9 @@
+extends ./../layout.jade
+block content
+  div
+    ul
+      each shippingPartner in shippingPartners
+        h1
+          a(href='/shipping_partners/#{shippingPartner.slug}')= shippingPartner.name
+        hr
+
