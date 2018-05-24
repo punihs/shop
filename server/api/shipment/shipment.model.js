@@ -12,23 +12,20 @@ module.exports = (sequelize, DataTypes) => {
     customer_name: DataTypes.STRING,
     address: DataTypes.STRING,
     phone: DataTypes.STRING,
-    count: DataTypes.INTEGER,
+    package_count: DataTypes.INTEGER,
     weight: DataTypes.DECIMAL(8, 2),
-    value: DataTypes.DECIMAL(8, 2),
-    sub_total: DataTypes.DECIMAL(8, 2),
-    discount: DataTypes.DECIMAL(8, 2),
-    package_level_charges: DataTypes.DECIMAL(8, 2),
-    estimated: DataTypes.DECIMAL(8, 2),
-    wallet: DataTypes.DECIMAL(8, 2),
-    coupon: DataTypes.DECIMAL(8, 2),
-    loyalty: DataTypes.DECIMAL(8, 2),
-    payment_gateway_fee: DataTypes.DECIMAL(8, 2),
+    value_amount: DataTypes.DECIMAL(8, 2),
+    sub_total_amount: DataTypes.DECIMAL(8, 2),
+    discount_amount: DataTypes.DECIMAL(8, 2),
+    package_level_charges_amount: DataTypes.DECIMAL(8, 2),
+    estimated_amount: DataTypes.DECIMAL(8, 2),
+    wallet_amount: DataTypes.DECIMAL(8, 2),
+    coupon_amount: DataTypes.DECIMAL(8, 2),
+    loyalty_amount: DataTypes.DECIMAL(8, 2),
+    payment_gateway_fee_amount: DataTypes.DECIMAL(8, 2),
     final_amount: DataTypes.DECIMAL(8, 2),
-    is_axis_banned_item: {
-      type: DataTypes.ENUM,
-      values: ['0', '1'],
-    },
-    courier_charge: DataTypes.DECIMAL(8, 2),
+    is_axis_banned_item: DataTypes.BOOLEAN,
+    courier_charge_amount: DataTypes.DECIMAL(8, 2),
     payment_status: DataTypes.STRING,
     shipping_status: DataTypes.STRING,
     admin_info: DataTypes.STRING,
@@ -36,14 +33,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM,
       values: ['yes', 'no'],
     },
-    is_missed: DataTypes.INTEGER,
-    promo_code: DataTypes.STRING,
-    pick_up_charge: DataTypes.INTEGER,
-    shipment_type: DataTypes.STRING,
+    is_missed: DataTypes.BOOLEAN,
+
+    // - ShippingPartner
+    tracking_code: DataTypes.STRING,
+    pick_up_charge_amount: DataTypes.INTEGER,
     number_of_packages: DataTypes.INTEGER,
     weight_by_shipping_partner: DataTypes.DOUBLE,
     value_by_shipping_partner: DataTypes.DOUBLE,
-    tracking_code: DataTypes.STRING,
   }, {
     tableName: 'shipments',
     timestamps: false,
@@ -64,6 +61,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Shipment.belongsTo(db.PaymentGateway);
     Shipment.belongsTo(db.Country);
+    Shipment.belongsTo(db.ShipmentType);
     db.Country.hasMany(Shipment);
   };
 

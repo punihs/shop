@@ -1,4 +1,4 @@
-
+const _ = require('lodash');
 const { Order, Store } = require('./../../conn/sqldb');
 const minio = require('./../../conn/minio');
 const logger = require('./../../components/logger');
@@ -6,7 +6,7 @@ const { GROUPS: { OPS, CUSTOMER } } = require('./../../config/constants');
 
 exports.index = (req, res, next) => {
   const options = {
-    attributes: ['id', 'store_id', 'invoice_code', 'tracking_code', 'name'],
+    attributes: ['id', 'store_id', 'invoice_code', 'tracking_code', 'package_id', 'name'],
     include: [{
       model: Store,
       attributes: ['id', 'name'],
@@ -96,7 +96,23 @@ exports.download = (req, res, next) => {
 
 exports.update = async (req, res) => {
   const { id } = req.params;
-  const status = await Order.update(req.body, { where: { id } });
+  const order = _.pick(req.body, ['store_id', 'invoice_code', 'tracking_code', 'name']);
+  const { invoice_file: invoiceFile } = req.body;
+
+  if (invoiceFile && !['txt', 'pdf'].includes(invoiceFile.filename.split('.').pop())) {
+    return res.status(400).end('Invalid File');
+  }
+
+  const { object } = invoiceFile
+    ? await minio
+      .base64UploadCustom('orders', id, invoiceFile)
+    : {};
+
+  if (invoiceFile) order.object = object;
+
+  const status = await Order
+    .update(order, { where: { id: req.body.order_id } });
+
   return res.json(status);
 };
 

@@ -8,5 +8,6 @@ router.get('/', controller.index);
 router.get('/:id', controller.show);
 router.get('/:id/download', controller.download);
 router.post('/', controller.create);
+router.put('/:id', controller.update);
 
 module.exports = router;
