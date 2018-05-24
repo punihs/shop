@@ -48,6 +48,25 @@ describe('Orders', () => {
       });
   });
 
+
+  it('save order by with out image', (done) => {
+    request(app)
+      .post('/api/orders')
+      .send({
+        customer_id: 2,
+        store_id: 1,
+        tracking_code: 'DLV879',
+        invoice_code: 'DLV879',
+        comments: 'Saved with out photo',
+      })
+      .set('Authorization', `Bearer ${opsAuth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(201)
+      .then(() => {
+        done();
+      });
+  });
+
   it('return orders for user', (done) => {
     request(app)
       .get('/api/orders')

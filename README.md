@@ -19,3 +19,9 @@ git clone https://github.com/shoppre/api
 npm i
 npm start
 ```
+
+Ports
+api 5000
+accounts 5001
+ops 5002
+member 5003

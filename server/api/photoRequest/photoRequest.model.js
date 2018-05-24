@@ -19,10 +19,9 @@ module.exports = (sequelize, DataTypes) => {
     charge: DataTypes.DECIMAL(8, 2),
   }, {
     tableName: 'photo_requests',
-    timestamps:
-      true,
-    underscored:
-      true,
+    timestamps: true,
+    underscored: true,
+    paranoid: true,
   });
 
   PhotoRequest.associate = (db) => {

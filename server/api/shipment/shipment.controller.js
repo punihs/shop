@@ -13,7 +13,7 @@ exports.index = (req, res, next) => {
     attributes: ['id', 'number_of_packages'],
   };
   if (req.query.customer_id) { options.where = { customer_id: req.query.customer_id }; }
-  if (req.query.state) { options.where = { status: req.query.state }; }
+  if (req.query.status) { options.where = { shipping_status: req.query.status }; }
 
   return Shipment
     .findAll(options)

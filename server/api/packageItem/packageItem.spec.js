@@ -1,8 +1,8 @@
 const request = require('supertest');
 const app = require('./../../app');
+const { Package } = require('../../conn/sqldb');
 const auth = require('../../../logs/credentials');
 const opsAuth = require('../../../logs/ops-credentials');
-const { Package } = require('./../../conn/sqldb');
 
 describe('GET /api/packageItem', () => {
   it('return packageItem', (done) => {
@@ -40,14 +40,14 @@ describe('POST /api/packageItem', () => {
     request(app)
       .post('/api/packageItems')
       .send({
-        name: 'saree',
+        name: 'kurtha2',
         package_id: 1,
-        package_item_category_id: 29,
+        package_item_category_id: 9,
         quantity: 1,
         price_amount: 200,
         confirmed_by: 1,
         photo_file: {
-          filename: 'x.txt',
+          filename: 'x.jpg',
           base64: 'aGVsbG8=',
         },
       })
