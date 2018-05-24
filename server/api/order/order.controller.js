@@ -1,6 +1,8 @@
-const moment = require('moment');
+
 const { Order, Store } = require('./../../conn/sqldb');
 const minio = require('./../../conn/minio');
+const logger = require('./../../components/logger');
+const { GROUPS: { OPS, CUSTOMER } } = require('./../../config/constants');
 
 exports.index = (req, res, next) => {
   const options = {
@@ -9,11 +11,13 @@ exports.index = (req, res, next) => {
       model: Store,
       attributes: ['id', 'name'],
     }],
-    where: {
-      customer_id: req.user.id,
-    },
+    where: { },
     limit: Number(req.query.limit) || 20,
   };
+
+  if (req.user.group_id === CUSTOMER) {
+    options.where.customer_id = req.user.id;
+  }
 
   return Order
     .findAll(options)
@@ -41,35 +45,34 @@ exports.show = (req, res, next) => {
 };
 
 exports.create = async (req, res, next) => {
-  if (req.body.invoice_file) {
-    const { filename } = req.body.invoice_file;
+  const IS_OPS = req.user.group_id === OPS;
 
-    const extension = filename.split('.').pop();
-    if (!['txt', 'pdf'].includes(extension)) return res.status(400).end('Invalid File');
+  try {
+    const { invoice_file: invoiceFile } = req.body;
+
+    if (invoiceFile && !['txt', 'pdf'].includes(invoiceFile.filename.split('.').pop())) {
+      return res.status(400).end('Invalid File');
+    }
+
+    const order = req.body;
+    order.created_by = req.user.id;
+
+    if (!IS_OPS) order.customer_id = req.user.id;
+
+    const saved = await Order.create(order);
+    const { id } = saved;
+
+    if (req.body.invoice_file) {
+      minio
+        .base64UploadCustom('orders', id, invoiceFile)
+        .then(({ object }) => saved.update({ object }))
+        .catch(err => logger.error('order.express', err, req.user, req.body));
+    }
+
+    return res.status(201).json({ id });
+  } catch (e) {
+    return next(e);
   }
-
-  const order = req.body;
-  order.created_by = req.user.id;
-  order.customer_id = req.user.id;
-
-  return Order
-    .create(order).then((saved) => {
-      const { id } = saved;
-      if (req.body.invoice_file) {
-        const { base64: base64String, filename } = req.body.invoice_file;
-
-        const extension = filename.split('.').pop();
-        const object = `orders/${id - (id % 10000)}/${id}/${id}_${moment().format('YYYY_MM_DD_h_mm_ss')}.${extension}`;
-        minio
-          .base64Upload({
-            base64String,
-            object,
-          })
-          .then(() => saved.update({ object }));
-      }
-
-      return res.status(201).json({ id });
-    }).catch(next);
 };
 
 exports.download = (req, res, next) => {

@@ -1,3 +1,4 @@
+const moment = require('moment');
 const MinioClient = require('minio').Client;
 const Bluebird = require('bluebird');
 const {
@@ -31,6 +32,18 @@ function qualifyBucket(bucketName) {
   }
   return bucket.toLowerCase();
 }
+
+Minio.base64UploadCustom = (type, id, file) => {
+  const { base64: base64String, filename } = file;
+  const extension = filename.split('.').pop();
+  const object = `${type}/${id - (id % 10000)}/${id}/${id}_${moment().format('YYYY_MM_DD_h_mm_ss')}.${extension}`;
+  return Minio
+    .base64Upload({
+      base64String,
+      object,
+    })
+    .then(() => ({ object }));
+};
 
 Minio.base64Upload = (minioObject) => {
   const minObj = minioObject;

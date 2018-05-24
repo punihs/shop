@@ -1,4 +1,8 @@
 module.exports = {
+  GROUPS: {
+    OPS: 1,
+    CUSTOMER: 2,
+  },
   SHIPMENT_TYPES: {
     DOC: 1,
     NONDOC: 2,
