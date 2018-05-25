@@ -22,7 +22,7 @@ describe('POST /api/packages', () => {
     request(app)
       .post('/api/packages')
       .send({
-        type: 'Nondoc',
+        type: 1,
         store_id: 1,
         reference_code: 'FLIP123',
         locker_code: 'SHPR91-685',
@@ -46,15 +46,15 @@ describe('POST /api/packages update meta', () => {
       .send({
         seller: 'Amazon.in',
         reference_code: '123',
-        type: 'nondoc',
+        type: 1,
         locker_code: 'SHPR91-685',
         number_of_items: '2',
-        price: '2000',
+        price_amount: '2000',
         weight: '2',
         is_item_damaged: '1',
-        liquid: '1',
+        is_liquid: false,
         is_featured_seller: '1',
-        received: '2018-05-24',
+        recieved_at: '2018-05-24',
         status: 'review',
       })
       .set('Authorization', `Bearer ${opsAuth.access_token}`)

@@ -12,7 +12,7 @@ module.exports = {
     quantity: DataTypes.INTEGER,
     price_amount: DataTypes.DOUBLE,
     total_amount: DataTypes.DOUBLE,
-    photo_object: DataTypes.STRING,
+    object: DataTypes.STRING,
     price_entered_by: DataTypes.INTEGER,
     package_id: keys('packages'),
     package_item_category_id: keys('package_item_categories'),

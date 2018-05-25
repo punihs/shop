@@ -17,7 +17,7 @@ module.exports = {
       values: ['pending', 'completed'],
     },
     description: DataTypes.STRING,
-    charge: DataTypes.DECIMAL(8, 2),
+    charge_amount: DataTypes.DECIMAL(8, 2),
     group_id: keys('packages'),
   }, timestamps(3, DataTypes)), engine),
   down(queryInterface) {

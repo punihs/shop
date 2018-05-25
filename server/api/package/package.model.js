@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
     },
     order_code: DataTypes.STRING,
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     reference_code: DataTypes.STRING,
     locker_code: DataTypes.STRING,
     weight: DataTypes.STRING,

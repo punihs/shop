@@ -21,7 +21,7 @@ exports.create = async (req, res, next) => {
   const packageItem = req.body;
   const { base64: base64String, filename } = req.body.photo_file;
   const extension = filename.split('.').pop();
-  if (!['jpg', 'jpeg', 'png', 'PNG', 'bmp'].includes(extension)) {
+  if (!['jpg', 'jpeg', 'png', 'bmp'].includes(extension.toLowerCase())) {
     return res.status(400).end('Invalid File');
   }
 
@@ -42,7 +42,7 @@ exports.create = async (req, res, next) => {
           object,
           base64String,
         })
-        .then(() => saved.update({ photo_object: object }));
+        .then(() => saved.update({ object }));
       return res.status(201).json({ id });
     })
     .catch(next);

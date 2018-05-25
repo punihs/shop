@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       values: ['pending', 'completed'],
     },
     description: DataTypes.STRING,
-    charge: DataTypes.DECIMAL(8, 2),
+    charge_amount: DataTypes.DECIMAL(8, 2),
   }, {
     tableName: 'photo_requests',
     timestamps: true,

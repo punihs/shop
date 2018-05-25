@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     quantity: DataTypes.INTEGER,
     price_amount: DataTypes.DOUBLE,
     total_amount: DataTypes.DOUBLE,
-    photo_object: DataTypes.STRING,
+    object: DataTypes.STRING,
     price_entered_by: {
       type: DataTypes.ENUM,
       values: [SHOPPRE, CUSTOMER],
