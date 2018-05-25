@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     customer_name: DataTypes.STRING,
     address: DataTypes.STRING,
     phone: DataTypes.STRING,
-    package_count: DataTypes.INTEGER,
+    packages_count: DataTypes.INTEGER,
     weight: DataTypes.DECIMAL(8, 2),
     value_amount: DataTypes.DECIMAL(8, 2),
     sub_total_amount: DataTypes.DECIMAL(8, 2),
