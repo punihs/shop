@@ -1,3 +1,8 @@
+const {
+  PHOTO_REQUEST_STATUS: { PENDING, COMPLETED },
+  PHOTO_REQUEST_TYPE: { STANDARD, ADVANCED },
+} = require('../../config/constants');
+
 module.exports = (sequelize, DataTypes) => {
   const PhotoRequest = sequelize.define('PhotoRequest', {
     id: {
@@ -9,14 +14,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     type: {
       type: DataTypes.ENUM,
-      values: ['standard', 'advanced'],
+      values: [STANDARD, ADVANCED],
     },
     status: {
       type: DataTypes.ENUM,
-      values: ['pending', 'completed'],
+      values: [PENDING, COMPLETED],
     },
     description: DataTypes.STRING,
-    charge_amount: DataTypes.DECIMAL(8, 2),
   }, {
     tableName: 'photo_requests',
     timestamps: true,

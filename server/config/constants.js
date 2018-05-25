@@ -31,4 +31,12 @@ module.exports = {
     SHOPPRE: 1,
     CUSTOMER: 2,
   },
+  PHOTO_REQUEST_TYPE: {
+    STANDARD: 1,
+    ADVANCED: 2,
+  },
+  PHOTO_REQUEST_STATUS: {
+    PENDING: 1,
+    COMPLETED: 2,
+  },
 };
