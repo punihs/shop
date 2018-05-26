@@ -9,7 +9,7 @@ exports.index = (req, res, next) => {
 
   return Transaction
     .findAll(options)
-    .then(transaction => res.json(transactions))
+    .then(transaction => res.json(transaction))
     .catch(next);
 };
 
@@ -17,7 +17,7 @@ exports.create = async (req, res, next) => {
   const transaction = req.body;
   return Transaction
     .create(transaction)
-    .then(saved => res.json(saved))
+    .then(({ id }) => res.json({ id }))
     .catch(next);
 };
 
