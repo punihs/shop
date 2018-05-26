@@ -22,13 +22,15 @@ const address = require('./api/address');
 const user = require('./api/user');
 const shippingRate = require('./api/shippingRate');
 const transaction = require('./api/transaction');
-const web = require('./routes/web');
+const shippingPartner = require('./api/shippingPartner');
+const health = require('./api/health');
 
 module.exports = (app) => {
-  web(app);
+  app.use('/api/health', health);
   app.use('/api/user', login);
   app.use('/api/search', search);
   app.use('/api/packages', authenticate(), packages);
+  app.use('/api/shippingPartners', shippingPartner);
   app.use('/api/addresses', authenticate(), address);
   app.use('/api/shipments', authenticate(), shipment, shipmentPackage);
   app.use('/api/transactions', authenticate(), transaction);

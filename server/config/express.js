@@ -1,7 +1,6 @@
 const path = require('path');
 const cors = require('cors');
 const logger = require('morgan');
-const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const oauthComponent = require('./../components/oauth/express');
@@ -10,7 +9,6 @@ const routes = require('../routes');
 
 module.exports = (app) => {
   app.use(logger('dev'));
-  app.use(express.static(`${config.root}/public`));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(cookieParser());

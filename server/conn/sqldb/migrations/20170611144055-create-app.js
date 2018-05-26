@@ -11,6 +11,7 @@ module.exports = {
         unique: true,
       },
       user_id: keys('users'),
+      port: DataTypes.STRING(5),
       name: DataTypes.STRING,
       client_id: {
         type: DataTypes.STRING(64),
