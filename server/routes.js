@@ -21,6 +21,7 @@ const shipmentPackage = require('./api/shipment/package');
 const address = require('./api/address');
 const user = require('./api/user');
 const shippingRate = require('./api/shippingRate');
+const transaction = require('./api/transaction');
 const web = require('./routes/web');
 
 module.exports = (app) => {
@@ -30,6 +31,7 @@ module.exports = (app) => {
   app.use('/api/packages', authenticate(), packages);
   app.use('/api/addresses', authenticate(), address);
   app.use('/api/shipments', authenticate(), shipment, shipmentPackage);
+  app.use('/api/transactions', authenticate(), transaction);
   app.use('/api/orders', authenticate(), orders);
   app.use('/api/shippingRates', shippingRate);
   app.use('/api/packageItems', authenticate(), packageItem);

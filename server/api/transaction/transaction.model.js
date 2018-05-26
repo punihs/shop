@@ -8,20 +8,21 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
+    amount: DataTypes.STRING,
+    description: DataTypes.STRING,
   }, {
     tableName: 'transactions',
-    timestamps: false,
+    timestamps: true,
     underscored: true,
   });
 
   Transaction.associate = (db) => {
-    Transaction.belongsTo(db.Country);
+    // Transaction.belongsTo(db.Country);      // Need to discuss
     Transaction.belongsTo(db.User, {
       foreignKey: 'customer_id',
       as: 'Customer',
     });
   };
-
   return Transaction;
 };
 
