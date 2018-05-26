@@ -1,9 +1,7 @@
-extends ./../layout.jade
-block content
-  div
-    ul
-      each shippingPartner in shippingPartners
-        h1
-          a(href='/shipping_partners/#{shippingPartner.slug}')= shippingPartner.name
-        hr
+div
+  ul
+    each partner in partners
+      h1
+        a(href='/partners/#{partner.name}')= partner.name
+      hr
 

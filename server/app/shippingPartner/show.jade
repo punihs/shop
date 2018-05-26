@@ -1,5 +1,382 @@
-extends ./../layout.jade
+extends ../layout
 block content
-  div
-    h1= partner.name
-    h1= count.cnt
+  meta(itemprop="url" content="https://www.shoppre.com/shipping-partners/#{shippingPartner.name}")
+  meta(itemprop="name" content="#{shippingPartner.name}")
+  meta(itemprop="hasMap" content="https://www.google.com/maps/embed/v1/place?q=28.5505360081979,77.1312047168612&amp;zoom=14&amp;key=AIzaSyAFPyDz6Zt8KQQ4_SZzJSqW_K1HnT4jWYA&amp;center=28.5505360081979,77.1312047168612")
+  .container
+    .movie-card#oceans-11
+      img(src="/img/dhl.png", style='margin-left:50px' itemprop="logo")
+      h1(itemprop="name")= shippingPartner.name
+    .lead(itemprop="description")= shippingPartner.description
+
+    ul#js-breadcrumbs.city__breadcrumbs(itemscope='', itemtype='http://schema.org/BreadcrumbList')
+      li(itemprop='itemListElement', itemscope='', itemtype='http://schema.org/ListItem')
+        a(href='/', itemprop='item')
+          span(itemprop='name') International Couriers & International Shipping
+        meta(itemprop='position', content='1')
+      li(itemprop='itemListElement', itemscope='', itemtype='http://schema.org/ListItem')
+        a.js-hotel-city-link(href='/shipping-partners', itemprop='item')
+          span(itemprop='name') International Shipping Partners in India
+        meta(itemprop='position', content='2')
+      li(itemprop='itemListElement', itemscope='', itemtype='http://schema.org/ListItem')
+        a.js-hotel-locality-link(href='/shipping-partners/#{shippingPartner.slug}', itemprop='item')
+          span(itemprop='name')= shippingPartner.name
+        meta(itemprop='position', content='3')
+    br
+    br
+    span(itemprop="paymentAccepted")
+      | Cash and
+      span(itemprop="paymentAccepted" title="Cards accepted at #{shippingPartner.name}") Cards accepted
+    span(itemprop='aggregateRating' title='#{ratingMap[rating]}')
+      span= rating
+      span out of 5
+    .small(itemprop='ratingCount')= ratingCount
+    .panel
+      .panel-heading
+        h2#social-links
+          a(href="#social-links") Social Links
+      .panel-body
+        ul
+          li: a(href='#{shippingPartner.facebook_url}' itemprop="sameAs") Facebook
+    .container
+      .row
+        .col-sm-4
+          table(dhl)
+            thead
+              tr
+                th Items Send with DHL
+                th Items Can't be sent with DHL
+              tr
+                td Saree
+                td Gold
+              tr
+                td Footwears
+                td Silver
+              tr
+                td SaBranded Food Itemsree
+                td Diamonds
+              tr
+                td Playstation 4, iPhone
+                td Gem Stones
+              tr
+                td Book
+                td Drugs / Narcotics
+              tr
+                td Documents (Applications)
+                td Live Animals
+              tr
+                td Handicrafts
+                td Pornography
+              tr
+                td Utensils
+                td Currency
+              tr
+                td Sports Accessories
+                td Bullion
+              tr
+                td Artificial Jewelleries
+                td Counterfeit or Pirated goods or material
+        .col-sm-3
+          table(dhl): thead
+            tr
+              th Pickup Destination India
+              th Destination Countries
+            tr
+              td Hyderabad
+              td United States
+            tr
+              td Tirpura
+              td Canada
+            tr
+              td Gurgaon
+              td Australia
+            tr
+              td Mumbai
+              td United Kingdom
+            tr
+              td Bengaluru
+              td Germany
+            tr
+              td Jodhpur
+              td Sri Lanka
+            tr
+              td Thane
+              td New Zealand
+            tr
+              td Rajkot
+              td Mauritius
+            tr
+              td Gurgaon
+              td France
+            tr
+              td Across India
+              td Across world
+        .col-sm-3
+          table(dhl)
+            thead
+              tr
+                th Terms & Conditions
+              tr
+                td Shipment Should not cross more than 70kg per AWB
+              tr
+                td 70kg Shipment: One Box should not cross 28kg
+              tr
+                td Required Airwaybill, Proforma Invoice & Supporting Documents
+              tr
+                td Shimpent Value to USA Should not cross more than INR25000/-
+              tr
+                td Medicine Shipment need Original prescription
+        .col-sm-2
+          table(dhl)
+            thead
+              tr
+                th Service DHL
+              tr
+                td Door Step Pickup
+              tr
+                td International Courier
+              tr
+                td Document Courier
+              tr
+                td Medicine Courier
+              tr
+                td Food & Personal Goods Courier
+          .row
+
+            .col-sm-12
+              table(dhl)
+                thead
+                  tr
+                    th Safety policies:
+                  tr
+                    td 1. Insurance – 500 INR
+                  tr
+                    td 2. Fragile – 5000 INR
+                  tr
+                  br
+
+
+      .row
+        .col-sm-2
+          br
+          table(border='1px' style='text-align:center')
+            thead
+              tr
+                th Shipment Count by Partner
+                  tbody
+                    tr
+                      td
+                        h4= count.cnt
+                        br
+
+        .col-sm-2
+          br
+          table(border='1px' style='text-align:center')
+            thead
+              tr
+                th Pickup Count by Partner
+                  tbody
+                    tr
+                      td
+                        h4= PickupCountBypartner.cnt
+                        br
+        .col-sm-2
+          br
+          table(border='1px' style='text-align:center')
+            thead
+              tr
+                th Countries Served Till Now by Partner
+                  tbody
+                    tr
+                      td
+                        h4= contrytillserved.cnt
+                        br
+        .col-sm-2
+          br
+          table(border='1px' style='text-align:center')
+            thead
+              tr
+                th Followers Count by Partners
+                  tbody
+                    tr
+                      td
+                        h4= follwerscount.cnt
+                        br
+
+        .col-sm-3
+          br
+          table(border='1px' style='text-align:center')
+            thead
+              tr
+                th Keywords Count by Partner
+                  tbody
+                    tr
+                      td
+                        h4= keywordscount.cnt
+                        br
+                        br
+      .row
+        .col-sm-3
+          br
+          table(border='1px' style='text-align:center;')
+            thead
+              tr
+                th Shipping Date
+                th Number of Shipments
+                  tbody
+                    each shipdate in shipByDates
+                      tr
+                        td
+                          h5= shipdate.created_at
+                        td
+                          h5= shipdate.cnt
+        .col-sm-3
+          br
+          table(border='1px' style='text-align:center;')
+            thead
+              tr
+                th Keywords by Partner
+                  tbody
+                    each keywords in keywordsByPartner
+                      tr
+                        td
+                          h5= keywords.name
+
+        .col-sm-2
+          br
+          table(border='1px' style='text-align:center;')
+            thead
+              tr
+                th Followers by Partner
+                  tbody
+                    each followers in follwerByPartners
+                      tr
+                        td
+                          h5= followers.name
+        .col-sm-2
+          br
+          table(border='1px' style='text-align:left')
+            thead
+              tr
+                th Name
+                th count
+                  tbody
+                    each cp in contriesBypartner
+                      tr
+                        td
+                          h5= cp.name
+
+                        td
+                          h5= cp.cnt
+
+        if !interNationalcities
+          .col-sm-2
+            br
+            table(border='1px' style='text-align:center;')
+              thead
+                tr
+                  th Followers by Partner
+                    tbody
+                      each interNationalcity in interNationalcities
+                        tr
+                          td
+                            h5= interNationalcity.id
+                          td
+                            h5= interNationalcity.name
+
+      .row
+        br
+        .col-sm-4
+          table(border='1px' style='text-align:center')
+            thead
+              tr
+                th Countries
+                th Country code
+                th Zone code
+                  tbody
+                    each country in countries
+                      tr
+                        td
+                          a(href='www.shoppre.com', target='_blank')= country.name
+
+                        td
+                          h5= country.country_code
+                        td
+                          h5= country.zone
+        .col-sm-8
+          table(border='1px' style='text-align:left')
+            thead
+              tr
+                th Name
+                th url
+                  tbody
+                    each quicklinks in quickLink
+                      tr
+                        td
+                          h5= quicklinks.name
+
+                        td
+                          a(href=quicklinks.url, target='_blank')= quicklinks.url
+          .row
+            br
+          .col-sm-12
+            table(border='1px' style='text-align:left')
+              thead
+                tr
+                  th  ID
+                  th  OrderID
+                  th  CustomerID
+                  th  SchedulePickupID
+                  th  Name
+
+                    tbody
+                      each shipbypartners in shipbypartner
+                        tr
+                          td
+                            h5= shipbypartners.id
+                          td
+                            h5= shipbypartners.order_id
+                          td
+                            h5= shipbypartners.customer_id
+                          td
+                            h5= shipbypartners.pickup_id
+                          td
+                            h5= shipbypartners.customer_name
+            if !issue
+              .col-sm-12
+                br
+                table(border='1px' style='text-align:left')
+                  thead
+                    tr
+                      th  ID
+                      th  Name
+                      th  Description
+                        tbody
+                          each issues in issue
+                            tr
+                              td
+                                h5= issues.id
+                              td
+                                h5= issues.name
+            if !reviews
+              .col-sm-12
+                br
+                table(border='1px' style='text-align:left')
+                  thead
+                    tr
+                      th  person
+                      th  review
+                      th  rating
+                        tbody
+                          each review in reviews
+                            tr
+                              td
+                                h5= review.person
+                              td
+                                h5= review.review
+                              td
+                                h5= review.rating
+
+
+    .div
+      img(src="http://cp.shoppre.com/cases/wp-content/uploads/2018/05/Screenshot_3-300x140.png",style= 'alt="" width="591" height="276"')

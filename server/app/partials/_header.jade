@@ -1,1 +1,101 @@
-h2 Shoppre
+header
+  .mo_login
+    if !loggedIn
+      a(href="{{env('PREFIX')}}myaccount.{{env('DOMAIN')}}/login")
+        i.fa.fa-unlock-alt
+        |  Login
+      a(href="{{env('PREFIX')}}myaccount.{{env('DOMAIN')}}/register")
+        i.fa.fa-user
+        |  Signup
+    else
+      a(href='javascript:void(0)')
+        i.fa.fa-user
+        |  My Locker
+      a(href="{{route('customer.logout')}}")
+        i.fa.fa-lock
+        |  Logout
+    .clearfix
+  nav.navbar.navbar-top
+    .container-fluid
+      .collapse.navbar-collapse
+        ul.nav.navbar-nav
+          li
+            a(href="{{route('about')}}") About Shoppre
+          li
+            a(href='https://goo.gl/forms/fEYWqUJjfguCjqif1') Become a Partner
+          li
+            a(href="{{route('faq')}}") FAQ
+          li
+            a(href='https://www.quora.com/search?q=shoppre.com', target='_blank') Ask Questions
+
+        ul.nav.navbar-nav.navbar-right
+
+          li.padding_li_top
+            a(href='mailto:support@shoppre.com')
+              i.fa.fa-envelope.icon_margen
+              | support@shoppre.com
+          li.padding_li_top
+            a(href='tel:+91-80 4094 4077')
+              i.fa.fa-mobile.icon_margen
+              | +91 804094 4077
+          if loggedIn
+
+            li
+              a(href="{{env('PREFIX')}}myaccount.{{env('DOMAIN')}}/locker")
+                i.fa.fa-user
+                |  {{Auth::guard('customer')->user()->name}}
+            li
+              a(href="{{route('customer.logout')}}")
+                i.fa.fa-sign-out
+                |  Logout
+            |                     @else
+            li
+              a(href="{{env('PREFIX')}}myaccount.{{env('DOMAIN')}}/login")
+                i.fa.fa-unlock-alt
+                |  Login
+            li
+              a(href="{{env('PREFIX')}}myaccount.{{env('DOMAIN')}}/register")
+                i.fa.fa-user
+                |                                 Sign up
+
+
+
+      // /.navbar-collapse
+    // /.container-fluid
+  nav.navbar.navbar-default
+    .container-fluid
+      .navbar-header
+        button.navbar-toggle.collapsed.nav-icon-right(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1', aria-expanded='false')
+          span.sr-only Toggle navigation
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        a.navbar-brand(href="{{route('home')}}")
+          img(src='https://myaccount.shoppre.com/img/logo.png', alt='Shoppre - Borderless Shipping From India')
+      #bs-example-navbar-collapse-1.collapse.navbar-collapse
+        ul.nav.navbar-nav.navbar-right
+
+          li
+            a(href="{{route('home')}}") Home
+          li.hidden-sm.hidden-md.hidden-lg
+            a(href="{{route('about')}}") About Shoppre
+          li
+            button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', data-hover='dropdown')
+              strong SERVICES
+              span.caret
+            ul.dropdown-menu
+              li
+                a(href="{{route('services')}}") Shoppre Services
+              li
+                a(href="{{route('consolidationService')}}") Consolidation Service
+              li
+                a(href="{{env('PREFIX')}}myaccount.{{env('DOMAIN')}}/personal-shopper") How Personal Shopper Works
+              li
+                a(href="{{route('stores')}}") Browse Categories
+          li
+            a(href="{{route('howitworks')}}") How Shoppre Works
+          li
+            a(href="{{route('pricing')}}") Price Calculator
+          li
+            a(href="{{route('contact')}}") Contact us
+
