@@ -24,8 +24,8 @@ const getPrice = (params, provider) => {
   const gst = Math.ceil(baseCostWithProfit * (otherCharges.gst - 1));
   const fuelSurcharge = Math.ceil(baseCostWithProfit * (otherCharges.fuelSurcharge - 1));
   return {
-    baseCost_from_upstream: baseCost,
-    baseCost: baseCostWithProfit,
+    base_cost_from_upstream: baseCost,
+    base_cost: baseCostWithProfit,
     gst,
     fuel_surcharge: fuelSurcharge,
     final_cost: baseCost + gst + fuelSurcharge,

@@ -1,10 +1,10 @@
 const debug = require('debug');
 
-const dtdc = require('../../components/price-calculator/dtdc/index');
-const dhl = require('../../components/price-calculator/dhl/getPrice');
-const dtdcfedex = require('../../components/price-calculator/dtdc/fedex');
-const dtdcdhl = require('../../components/price-calculator/dtdc/dhl');
-const dtdceco = require('../../components/price-calculator/dtdc/eco');
+const dtdc = require('../../components/shippingRate/dtdc/index');
+const dhl = require('../../components/shippingRate/dhl/getPrice');
+const dtdcfedex = require('../../components/shippingRate/dtdc/fedex');
+const dtdcdhl = require('../../components/shippingRate/dtdc/dhl');
+const dtdceco = require('../../components/shippingRate/dtdc/eco');
 
 const providers = {
   dtdc,
@@ -14,7 +14,7 @@ const providers = {
   dtdceco,
 };
 const log = debug('pricing');
-const priceCalculator = require('../../components/price-calculator');
+const priceCalculator = require('../../components/shippingRate');
 
 const { WebhookClient } = require('dialogflow-fulfillment');
 const { Card, Suggestion } = require('dialogflow-fulfillment');

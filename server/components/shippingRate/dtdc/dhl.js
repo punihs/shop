@@ -1,6 +1,8 @@
-
+const debug = require('debug');
 const countries = require('./data/countries');
 const data = require('./data/dhl');
+
+const log = debug('components/shippingRate/dtdc/dhl');
 
 const getMultiplier = ({ zone, weight }) => data.multiplier.find((x) => {
   const [from, to] = x.weight.split(' to ');
@@ -11,8 +13,12 @@ const getMultiplier = ({ zone, weight }) => data.multiplier.find((x) => {
 const getPrice = ({
   country = 'US',
   weight = 0.5,
-  type = 'doc',
+  type: t = 'doc',
 }) => {
+  let type = t;
+  log('dhl', { type, country, weight });
+  if (weight > 2.5 && type === 'doc') type = 'nondoc';
+
   const maxContinuousWeight = data[type][data[type].length - 1].weight;
 
   const ctry = countries.find(x => (x.country_code === country));

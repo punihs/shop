@@ -7,22 +7,27 @@ const getPrice = require('./index');
 const assert = require('assert');
 
 describe('DHL Calculator Tests', () => {
-  it('US 2Kg, nondoc', (done) => {
-    const country = 'US'; // All existing countries in DHL DB
-    const weight = 2; // 0.1 - ~
-    const type = 'nondoc';
-    const price = getPrice({
-      country,
-      weight,
-      type,
-    });
+  [
 
-    const actual = 796 + (307 * 3);
-    assert.equal(price, actual);
-    // Invoke done when the test is complete.
-    done();
-  });
-  ['doc', 'nondoc'].forEach((type) => {
+    ['US', 'nondoc', 2, 796 + (307 * 3)],
+    ['US', 'nondoc', 0.25, 796],
+    ['US', 'nondoc', 0.5, 796],
+    ['US', 'nondoc', 1, 796 + (307 * 1)],
+
+
+  ]
+    .map(([country, type, weight, actual]) => it(`${country} ${weight} ${type}kg`, (done) => {
+      assert.equal(actual, getPrice({
+        country,
+        weight,
+        type,
+      }));
+      done();
+    }));
+
+  [
+    // 'doc',
+  ].forEach((type) => {
     it(`US 0.25Kg,${type}`, (done) => {
       const country = 'US'; // All existing countries in DHL DB
       const weight = 0.25; // 0.1 - ~
