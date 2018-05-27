@@ -1,4 +1,4 @@
-const countries = require('./data/countries');
+const { countries } = require('../constants');
 
 module.exports = {
   up(queryInterface) {

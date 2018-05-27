@@ -1,4 +1,4 @@
-const packageItemCategories = require('./data/package_item_categories');
+const { packageItemCategories } = require('../constants');
 
 module.exports = {
   up(queryInterface) {

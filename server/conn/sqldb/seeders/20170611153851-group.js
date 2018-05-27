@@ -1,14 +1,14 @@
+const { groups } = require('./../constants');
+
+// console.log('groups', groups);
 module.exports = {
   up(queryInterface) {
     return queryInterface.bulkInsert(
-      'groups', [
-        { id: 1, name: 'Ops' },
-        { id: 2, name: 'Members' },
-      ],
+      'groups', groups,
       {},
     );
   },
   down(queryInterface) {
-    return queryInterface.bulkDelete('groups', { id: [1, 2, 3, 4] });
+    return queryInterface.bulkDelete('groups', { id: groups.map(x => x.id) });
   },
 };

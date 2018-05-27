@@ -5,7 +5,7 @@ const {
 module.exports = {
   up: (queryInterface, DataTypes) => queryInterface
     .createTable('packages', Object
-      .assign(properties('package', DataTypes), properties('package', DataTypes), {
+      .assign(properties('package', DataTypes), {
         store_id: keys('stores'),
         shipment_id: keys('shipments'),
         created_by: keys('users'),

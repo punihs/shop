@@ -28,6 +28,7 @@ const db = {
   'User', 'UserMeta', 'Group',
 
   // - Customer Account
+  // Shoppre.com - Inspired by MyUS.com
   'Address', 'UserDocument', 'ShippingPreference',
 
   'Order',
@@ -38,7 +39,7 @@ const db = {
 
   'PhotoRequest',
 
-  'Shipment', 'ShipmentMeta', 'ShipmentType',
+  'Shipment', 'ShipmentMeta', 'ShipmentType', 'ShipmentIssue', 'ShippingPartner',
   'Transaction',
   // - Notifications
   'Notification',
@@ -48,6 +49,35 @@ const db = {
 
   // - Product
   'Store',
+
+  // Shoppre Digital Inspired by Marketo.com
+  // - Website - Google My Business - Hardy
+  // - SEO - MOZ
+  // - Marketing Emails - iContact
+  // - Content Curation - Mousree, Vishwa
+  // - Digital content - blog, social media
+  // - Website Informative content - Research based work
+  // - Design - Sujith Greenpepper,
+  // - Mobile App Design - Krutika
+  // - Mobile App Development - Yogendra
+
+  // - As a Internal Employee
+  // - Seed Internal Employee login in db
+  // - Creater SEO Product
+
+  // - As a enduser
+  // - Vismaya Signup to SD
+  // - Creates a Org
+  // - Automatically signup to SEO
+  // - Vismaya Create object_types related shoppre business
+  // - services,
+  // - shipping_partners, payment_gateways,
+  // - countries, stores, cities
+  // - customers, packages, package_items, shipments
+  'Product',
+
+  'Org',
+  'ObjectType', 'Keyword', 'Seo',
 
 ].forEach((model) => {
   db[model] = db.sequelize.import(`../../api/${_.camelCase(model)}/${_.camelCase(model)}.model.js`);

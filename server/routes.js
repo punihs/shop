@@ -25,9 +25,11 @@ const pricing = require('./api/pricing');
 const transaction = require('./api/transaction');
 const shippingPartner = require('./api/shippingPartner');
 const health = require('./api/health');
+const seo = require('./api/seo');
 
 module.exports = (app) => {
   app.use('/api/health', health);
+  app.use('/api/seo', seo);
   app.use('/api/user', login);
   app.use('/api/search', search);
   app.use('/api/packages', authenticate(), packages, packageMeta);

@@ -1,4 +1,4 @@
-const stores = require('./data/stores');
+const { stores } = require('../constants');
 
 module.exports = {
   up(queryInterface) {

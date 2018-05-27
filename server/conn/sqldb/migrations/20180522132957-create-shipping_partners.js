@@ -9,6 +9,7 @@ module.exports = {
       type: DataTypes.INTEGER,
     },
     name: DataTypes.STRING,
+    slug: DataTypes.STRING,
   }, timestamps(3, DataTypes)), engine),
   down(queryInterface) {
     return queryInterface.dropTable('shipping_partners');

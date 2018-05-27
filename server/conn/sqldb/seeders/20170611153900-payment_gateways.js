@@ -1,4 +1,4 @@
-const paymentGateways = require('./data/payment_gateways');
+const { paymentGateways } = require('../constants');
 
 module.exports = {
   up(queryInterface) {

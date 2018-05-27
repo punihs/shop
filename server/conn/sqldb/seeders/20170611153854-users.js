@@ -1,27 +1,11 @@
+const { users } = require('./../constants');
+
 module.exports = {
   up(queryInterface) {
-    return queryInterface.bulkInsert('users', [{
-      id: 1,
-      salutation: 'Mr',
-      first_name: 'Saneel',
-      last_name: 'E S',
-      email: 'saneel@gmail.com',
-      phone: '917891378913',
-      password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6', // admin1234
-      group_id: 1,
-    }, {
-      id: 2,
-      salutation: 'Mr',
-      first_name: 'Venkat',
-      last_name: 'Customer',
-      email: 'venkat@gmail.com',
-      phone: '919844717202',
-      password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
-      group_id: 2,
-    }], {});
+    return queryInterface.bulkInsert('users', users, {});
   },
 
   down(queryInterface) {
-    return queryInterface.bulkDelete('users', { id: [1, 2] });
+    return queryInterface.bulkDelete('users', { id: users.map(x => x.id) });
   },
 };
