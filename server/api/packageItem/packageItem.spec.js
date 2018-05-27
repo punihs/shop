@@ -60,3 +60,47 @@ describe('POST /api/packageItem', () => {
   });
 });
 
+describe('PUT /api/packageItem update meta', () => {
+  it('PUT packageItem', (done) => {
+    request(app)
+      .put('/api/packageItems/1/meta')
+      .send({
+        name: 'mobile',
+        package_item_category_id: 7,
+        quantity: 2,
+        price_amount: 3000,
+      })
+      .set('Authorization', `Bearer ${opsAuth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+describe('Destroy /api/packageItem update meta', () => {
+  it('Destroy destroy packageItem', (done) => {
+    request(app)
+      .delete('/api/packageItems/1')
+      .set('Authorization', `Bearer ${opsAuth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+describe('PUT /api/packageItem update image to null', () => {
+  it('PUT packageItem/2/image', (done) => {
+    request(app)
+      .put('/api/packageItems/2/image')
+      .set('Authorization', `Bearer ${opsAuth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});

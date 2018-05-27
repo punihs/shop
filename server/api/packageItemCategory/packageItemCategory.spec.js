@@ -32,3 +32,16 @@ describe('POST /api/packageItemCategories', () => {
       });
   });
 });
+
+describe('delete /api/packageItemCategories/1', () => {
+  it('delete  packageItemCategory', (done) => {
+    request(app)
+      .delete('/api/packageItemCategories/1')
+      .set('Authorization', `Bearer ${opsAuth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});

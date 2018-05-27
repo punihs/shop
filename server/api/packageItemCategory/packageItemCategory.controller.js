@@ -22,3 +22,9 @@ exports.create = async (req, res, next) => {
     .then(({ id }) => res.status(201).json({ id }))
     .catch(next);
 };
+
+exports.destroy = async (req, res) => {
+  const { id } = req.params;
+  const status = await PackageItemCategory.destroy({ where: { id } });
+  return res.status(200).json(status);
+};

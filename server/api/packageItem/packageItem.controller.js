@@ -64,9 +64,23 @@ exports.destroy = async (req, res) => {
   return res.json(status);
 };
 
+exports.destroy = async (req, res) => {
+  const { id } = req.params;
+  const status = await PackageItem.destroy({ where: { id } });
+  return res.json(status);
+};
 
 exports.metaUpdate = async (req, res) => {
   const { id } = req.params;
-  const status = await PackageItem.update(req.body, { where: { id } });
+  const packageItem = req.body;
+  packageItem.total = packageItem.price_amount * packageItem.quantity;
+  const status = await PackageItem.update(packageItem, { where: { package_id: id } });
   return res.json(status);
 };
+
+exports.update = async (req, res) => {
+  const { id } = req.params;
+  const status = await PackageItem.update({ object: null }, { where: { id } });
+  return res.json(status);
+};
+

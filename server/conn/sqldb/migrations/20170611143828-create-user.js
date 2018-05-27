@@ -12,13 +12,35 @@ module.exports = {
       salutation: DataTypes.STRING,
       first_name: DataTypes.STRING,
       last_name: DataTypes.STRING,
-      locker_code: DataTypes.STRING,
-      phone: DataTypes.BIGINT,
-      email: DataTypes.STRING(50),
+      email: DataTypes.STRING,
       password: DataTypes.STRING,
+      locker_code: DataTypes.STRING,
+      country_code: DataTypes.STRING,
+      phone: DataTypes.STRING,
+      wallet_balance_amount: DataTypes.DECIMAL(15, 2),
+      email_verify: {
+        type: DataTypes.ENUM,
+        values: ['yes', 'no'],
+      },
+      email_token: DataTypes.STRING,
+      remember_token: DataTypes.STRING,
+      admin_info: DataTypes.STRING,
+      admin_read: {
+        type: DataTypes.ENUM,
+        values: ['yes', 'no'],
+      },
+      is_prime: DataTypes.INTEGER,
+      is_seller: {
+        type: DataTypes.ENUM,
+        values: ['0', '1'],
+      },
+      medium: DataTypes.STRING,
+      google_contacts_accessed: DataTypes.BOOLEAN,
+      otp: DataTypes.STRING,
       group_id: keys('groups'),
-    }, timestamps(3, DataTypes)), engine)
-      .then(() => queryInterface.addColumn('users', 'referred_by', keys('users')));
+      country_id: keys('countries'),
+      referred_by: keys('users'),
+    }, timestamps(3, DataTypes)), engine);
   },
   down(queryInterface) {
     return queryInterface.dropTable('users');

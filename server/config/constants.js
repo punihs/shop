@@ -3,9 +3,9 @@ module.exports = {
     OPS: 1,
     CUSTOMER: 2,
   },
-  SHIPMENT_TYPES: {
-    DOC: 1,
-    NONDOC: 2,
+  CONSIGNMENT_TYPES: {
+    DOC: '1',
+    NONDOC: '2',
   },
   PACKAGE_STATES: {
     PROCESSING: 'processing',
@@ -28,15 +28,15 @@ module.exports = {
     CANCELED: 'canceled',
   },
   PRICE_ENTERER: {
-    SHOPPRE: 1,
-    CUSTOMER: 2,
+    SHOPPRE: '1',
+    CUSTOMER: '2',
   },
-  PHOTO_REQUEST_TYPE: {
-    STANDARD: 1,
-    ADVANCED: 2,
+  PHOTO_REQUEST_TYPES: {
+    STANDARD: '1',
+    ADVANCED: '2',
   },
-  PHOTO_REQUEST_STATUS: {
-    PENDING: 1,
-    COMPLETED: 2,
+  PHOTO_REQUEST_STATES: {
+    PENDING: '1',
+    COMPLETED: '2',
   },
 };

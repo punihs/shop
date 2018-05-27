@@ -1,10 +1,15 @@
 const Sequelize = require('sequelize');
 
+const r = require;
+
 const { DataTypes } = Sequelize;
 module.exports = {
   engine: {
     engine: 'InnoDB',
     charset: 'utf8mb4',
+  },
+  properties(model) {
+    return r(`../../api/${model}/${model}.property`)(DataTypes);
   },
   keys(model) {
     return {

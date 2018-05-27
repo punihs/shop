@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     tableName: 'package_item_categories',
     timestamps: true,
+    paranoid: true,
     underscored: true,
   });
 
