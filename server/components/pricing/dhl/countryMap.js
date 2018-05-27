@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 const fedex = require('./../dtdc/data/fedex.countries');
-const country = require('./countries');
+const country = require('./data/countries');
 
 const extraCountriesInFedex = [
   { country: 'Ivory Coast', country_code: 'CI' },

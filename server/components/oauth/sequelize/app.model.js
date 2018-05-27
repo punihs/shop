@@ -37,6 +37,7 @@ module.exports = function AppModel(sequelize, DataTypes) {
       },
       allowNull: false,
     },
+    port: DataTypes.STRING,
   }, {
     tableName: 'apps',
     timestamps: false,

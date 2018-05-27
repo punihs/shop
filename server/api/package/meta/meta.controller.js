@@ -1,6 +1,6 @@
 const {
   PackageMeta,
-} = require('../../conn/sqldb');
+} = require('../../../conn/sqldb');
 
 exports.show = (req, res, next) => {
   const { id } = req.params;
@@ -15,7 +15,7 @@ exports.show = (req, res, next) => {
     .catch(next);
 };
 
-exports.metaUpdate = async (req, res) => {
+exports.update = async (req, res) => {
   const { id } = req.params;
   const packageMeta = req.body;
   const status = await PackageMeta.update(packageMeta, { where: { package_id: id } });

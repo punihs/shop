@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('./../../app');
+const { User } = require('./../../conn/sqldb');
 const auth = require('../../../logs/credentials');
 const opsAuth = require('../../../logs/ops-credentials');
 
@@ -36,7 +37,7 @@ describe(' POST /api/users', () => {
   });
 });
 
-describe('GET /api/users/1', () => {
+describe('GET /api/users/:id', () => {
   it('will fetch user', (done) => {
     request(app)
       .get('/api/users/1')
@@ -62,10 +63,21 @@ describe('PUT /api/users/1/unread', () => {
   });
 });
 
-describe('delete /api/users/1', () => {
+describe('delete /api/users/:id', () => {
+  let userId;
+
+  before((done) => {
+    User
+      .create({ })
+      .then((user) => {
+        userId = user.id;
+        done();
+      });
+  });
+
   it('will destroy the user', (done) => {
     request(app)
-      .delete('/api/users/1')
+      .delete(`/api/users/${userId}`)
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
       .expect(200)

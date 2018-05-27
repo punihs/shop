@@ -1,8 +1,8 @@
 const debug = require('debug');
-const doc = require('./doc.json');
-const nondoc = require('./nondoc.json');
-const multiplier = require('./multiplier.json');
-const countries = require('./countries.json');
+const doc = require('./data/doc.json');
+const nondoc = require('./data/nondoc.json');
+const multiplier = require('./data/multiplier.json');
+const countries = require('./data/countries.json');
 
 const log = debug('components/price/dhl');
 const types = {

@@ -1,6 +1,6 @@
 const { ShippingPartner, sequelize } = require('../../conn/sqldb');
 const Sequelize = require('sequelize');
-const countries = require('./../../components/shippingRate/dhl/countries');
+const countries = require('./../../components/pricing/dhl/data/countries');
 
 exports.index = (req, res, next) => {
   const options = {
@@ -11,6 +11,7 @@ exports.index = (req, res, next) => {
     .then(partners => res.render('shippingPartner/index', { partners: partners.map(x => x.toJSON()) }))
     .catch(next);
 };
+
 exports.show = async (req, res) => {
   const shippingPartner = await ShippingPartner
     .find({

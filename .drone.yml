@@ -17,6 +17,5 @@ pipeline:
       - echo 'MINIO_BUCKET=shoppre-q-test' >> .env
       - npm run clear-db
       - npm run migrate
-      - npm run seed
       - npm run login
       - npm test

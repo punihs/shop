@@ -1,12 +1,13 @@
-const app = require('./../../app');
-const auth = require('../../../logs/credentials');
-const opsAuth = require('../../../logs/ops-credentials');
 const request = require('supertest');
 
-describe('GET /api/packageMeta/:id', () => {
-  it('get packageMeta 12', (done) => {
+const app = require('../../../app');
+const auth = require('../../../../logs/credentials');
+const opsAuth = require('../../../../logs/ops-credentials');
+
+describe('GET /api/packages/:id/meta', () => {
+  it('get packageMeta', (done) => {
     request(app)
-      .get('/api/packageMeta/1/')
+      .get('/api/packages/1/meta')
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
       .expect(200)
@@ -16,10 +17,10 @@ describe('GET /api/packageMeta/:id', () => {
   });
 });
 
-describe('PUT /api/packageMeta update meta', () => {
-  it('PUT packageItem', (done) => {
+describe('PUT /api/packages/1/meta update meta', () => {
+  it('PUT packageMeta', (done) => {
     request(app)
-      .put('/api/packageMeta/1/')
+      .put('/api/packages/1/meta')
       .send({
         storage_amount: 100,
         wrong_address_amount: 0.00,

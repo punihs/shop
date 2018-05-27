@@ -1,12 +1,12 @@
 const debug = require('debug');
 
-const dtdc = require('../../components/shippingRate/dtdc/index');
-const dhl = require('../../components/shippingRate/dhl/getPrice');
-const dtdcfedex = require('../../components/shippingRate/dtdc/fedex');
-const dtdcdhl = require('../../components/shippingRate/dtdc/dhl');
-const dtdceco = require('../../components/shippingRate/dtdc/eco');
+const dtdc = require('../../components/pricing/dtdc/index');
+const dhl = require('../../components/pricing/dhl/getPrice');
+const dtdcfedex = require('../../components/pricing/dtdc/fedex');
+const dtdcdhl = require('../../components/pricing/dtdc/dhl');
+const dtdceco = require('../../components/pricing/dtdc/eco');
 
-const providers = {
+const shippingPartners = {
   dtdc,
   dhl,
   dtdcfedex,
@@ -14,7 +14,7 @@ const providers = {
   dtdceco,
 };
 const log = debug('pricing');
-const priceCalculator = require('../../components/shippingRate');
+const priceCalculator = require('../../components/pricing');
 
 const { WebhookClient } = require('dialogflow-fulfillment');
 const { Card, Suggestion } = require('dialogflow-fulfillment');
@@ -23,7 +23,7 @@ process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
 
 exports.index = (req, res) => {
   req.query.weight = Number(req.query.weight);
-  const prs = Object.keys(providers);
+  const prs = Object.keys(shippingPartners);
 
   const prices = priceCalculator.getPrice(Object.assign(req.query, { providers: prs }));
 
@@ -32,20 +32,20 @@ exports.index = (req, res) => {
       prices: prices
         .map((x, i) => {
           const y = x;
-          y.provider = prs[i];
+          y.shippingPartner = prs[i];
           return y;
         }),
     });
   }
 
-  const { provider } = req.query;
+  const { shippingPartner } = req.query;
 
-  if (!Object.keys(providers).includes(provider)) {
-    return res.json({ error: 'provider not available please try dtdc only' });
+  if (!Object.keys(shippingPartners).includes(shippingPartner)) {
+    return res.json({ error: 'shippingPartner not available please try dtdc only' });
   }
 
   return res.json({
-    price: providers[provider](req.query),
+    price: shippingPartners[shippingPartner](req.query),
   });
 };
 
@@ -91,4 +91,49 @@ exports.ai = (request, response) => {
 
   intentMap.set('Find', googleAssistantHandler);
   return agent.handleRequest(intentMap);
+};
+
+exports.expressive = (req, res) => {
+  const {
+    query, country, type, service, shippingPartner,
+  } = req.query;
+  let q = '';
+  let a = `with ${shippingPartner} `;
+
+  const map = {
+    price: {
+      usa: {
+        dhl: {
+          doc: 500,
+          nondoc: 300,
+        },
+      },
+    },
+    type: {
+      doc: 'Document',
+      nondoc: 'Other than document',
+    },
+  };
+
+  let equery;
+  if (query === 'price') {
+    if (['price', 'pricing', 'cost', 'rate'].includes(query)) equery = 'cost';
+    q = `how much it ${equery} to send ${service} to ${country} through ${shippingPartner}`;
+    const currentShippingPartner = map[query][country];
+    if (currentShippingPartner instanceof Object) {
+      Object.keys(currentShippingPartner).forEach((sp) => {
+        const currentTypeMap = currentShippingPartner[sp];
+        Object.keys(currentTypeMap).forEach((t) => {
+          a += `for ${map.type[t]}: Rs.${currentTypeMap[t]}\n`;
+        });
+      });
+    }
+  }
+
+  if (type && type === 'doc') q += ` for ${map.type[type]}`;
+
+  return res.json({
+    q,
+    a,
+  });
 };
