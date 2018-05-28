@@ -1,0 +1,33 @@
+[
+  {
+    "id": 41,
+    "customer_id": 646,
+    "store_id": 704,
+
+    "order_code": "PCKG-1966468517",
+    "type": "2",
+    "reference_code": "fb10",
+    "locker_code": "SHPR82-162",
+    "weight": 0.84,
+    "number_of_items": 0,
+    "price_amount": 125.0,
+    "received_at": "2017-11-20T00:00:00.000+05:30",
+    "status": "ship",
+
+    "review": "",
+    "return_send": null,
+    "is_liquid": null,
+    "is_featured_seller": null,
+    "split_pack": null,
+    "info": null,
+    "admin_read": "1",
+    "admin_info": null,
+
+    "is_item_damaged": "0",
+
+    "created_at": "2017-12-05T06:10:19.000+05:30",
+    "updated_at": "2017-12-19T04:57:53.000+05:30"
+
+
+  }
+]

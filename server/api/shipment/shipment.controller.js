@@ -1,11 +1,14 @@
+const debug = require('debug');
 const moment = require('moment');
 
+const eventEmitter = require('../../conn/event');
+
 const {
-  Country, User, Shipment, Package, Address, PackageCharge,
-  ShippingRate, Notification, ShipmentMeta,
+  Country, Shipment, Package, Address, PackageMeta, ShipmentMeta,
 } = require('../../conn/sqldb');
-const ses = require('../../conn/ses');
-const logger = require('../../components/logger');
+const { SHIPPING_RATE } = require('../../config/environment');
+
+const log = debug('s.shipment.controller');
 
 exports.index = (req, res, next) => {
   const options = {
@@ -22,7 +25,7 @@ exports.index = (req, res, next) => {
 };
 
 
-exports.shipOrder = (req, res) => res.json({});
+exports.show = (req, res) => Shipment.findById(req.params.id).then(shipment => res.json(shipment));
 
 exports.unread = async (req, res) => {
   const { id } = req.params;
@@ -54,49 +57,28 @@ exports.destroy = async (req, res) => {
   return res.json(status);
 };
 
-
 const calcShipping = async (countryId, weight, type) => {
-  const selectedType = weight <= 2 ? type : 'nondoc';
-  let rate;
-  if (weight <= 300) {
-    rate = await ShippingRate.find({
-      where: {
-        country_id: countryId,
-        item_type: selectedType,
-        min: { $lt: weight },
-        max: { $gte: weight },
-      },
-    });
-  } else {
-    rate = await ShippingRate.find({
-      where: {
-        country_id: countryId,
-        item_type: selectedType,
-        min: { $lt: weight },
-        max: 0,
-      },
-    });
-  }
-
-  if (rate) {
-    const amount = (rate.rate_type === 'fixed') ? rate.amount : rate.amount * weight;
-    return amount;
-  }
-
-  return false;
+  const key = `${countryId}-${weight}-${type}`;
+  log('calcShipping', key);
+  return JSON.parse(SHIPPING_RATE)[key];
 };
 
 
 const getEstimation = async (packageIds, countryId, userId) => {
   const packages = await Package.findAll({
-    include: [PackageCharge],
+    include: [{
+      model: PackageMeta,
+    }],
     where: {
-      user_id: userId,
+      customer_id: userId,
       id: packageIds,
     },
   });
 
-  const country = await Country.findById(countryId);
+  const country = await Country
+    .findById(countryId, {
+      attributes: ['discount_percentage'],
+    });
 
   const shipping = {
     price: 0,
@@ -112,21 +94,22 @@ const getEstimation = async (packageIds, countryId, userId) => {
     shipping.price += pack.price;
     shipping.weight += pack.weight;
 
-    let charge = pack.PackageCharge;
-    const packageLevelCharges = charge.storage + charge.address + charge.handling + charge.pickup
-      + charge.doc + charge.liquid + charge.basic_photo + charge.advance_photo
-      + charge.split + charge.scan_doc;
+    const meta = pack.PackageMeta || {};
+
+    const packageLevelCharges = meta.storage + meta.address + meta.handling + meta.pickup
+      + meta.doc + meta.liquid + meta.basic_photo + meta.advance_photo
+      + meta.split + meta.scan_doc;
 
     shipping.level += packageLevelCharges;
 
-    charge = calcShipping(countryId, pack.weight, pack.type);
+    const shippingCharge = calcShipping(countryId, pack.weight, pack.type);
 
-    if (charge) {
-      shipping.sub_total += charge;
+    if (shippingCharge) {
+      shipping.sub_total += shippingCharge;
     }
   });
 
-  shipping.discount = (country.discount / 100) * shipping.sub_total;
+  shipping.discount = (country.discount_percentage / 100) * shipping.sub_total;
   let estimated = shipping.sub_total - shipping.discount;
   estimated += shipping.level;
   shipping.estimated = estimated;
@@ -134,26 +117,8 @@ const getEstimation = async (packageIds, countryId, userId) => {
   return shipping;
 };
 
-exports.create = async (req, res, next) => {
-  const userId = req.user.id;
-  const packageIds = req.body.package_ids;
-
-  const address = await Address.findById(req.body.address_id);
-
-  const shipping = getEstimation(packageIds, address.country_id, userId);
-
-  const packages = await Package
-    .findAll({
-      where: {
-        user_id: userId,
-        status: 'ship',
-        id: packageIds,
-      },
-      raw: true,
-    });
-
-
-  if (!packages.length) return res.status(400).json({ message: 'No Packages Found.' });
+const getAddress = (address) => {
+  log('getAddress', address.toJSON());
   let toAddress = address.line1;
   if (address.line2) toAddress = `, ${address.line2}`;
 
@@ -161,9 +126,24 @@ exports.create = async (req, res, next) => {
   toAddress += `, ${address.state}`;
   toAddress += `, ${address.country}`;
   toAddress += ` - ${address.pincode}`;
+  return toAddress;
+};
 
+const getPackages = (userId, packageIds) => Package
+  .findAll({
+    where: {
+      customer_id: userId,
+      status: 'ship',
+      id: packageIds,
+    },
+    raw: true,
+  });
+
+const saveShipment = ({
+  userId, address, toAddress, shipping,
+}) => {
   const shipment = {};
-  shipment.user_id = userId;
+  shipment.customer_id = userId;
   shipment.full_name = address.first_name;
   shipment.address = toAddress;
   shipment.country = address.country_id;
@@ -184,17 +164,11 @@ exports.create = async (req, res, next) => {
   const orderId = `${moment().format('YYYYMMDDHHmmss')}-${userId}`;
 
   shipment.order_id = orderId;
-  const sR = await Shipment
-    .create(shipment)
-    .catch(next);
+  return Shipment
+    .create(shipment);
+};
 
-  const notification = {};
-  notification.user_id = userId;
-  notification.action_type = 'shipment';
-  notification.action_id = sR.id;
-  notification.action_description = `New shipment request created - Order# ${sR.order_id}`;
-  Notification.create(notification);
-
+const saveShipmentMeta = ({ req, sR, packageIds }) => {
   const meta = Object.assign({ shipment_id: sR.id }, req.body);
   meta.repack_amt = (req.repack === 1) ? 100.00 : 0;
   meta.sticker_amt = (req.sticker === 1) ? 0 : 0;
@@ -229,14 +203,17 @@ exports.create = async (req, res, next) => {
   meta.profoma_taxid = req.invoice_taxid;
   meta.profoma_personal = req.invoice_personal;
   meta.invoice_include = req.invoice_include;
+  return ShipmentMeta.create(meta);
+};
 
+const updateShipment = async ({ sR, shipmentMeta }) => {
   let packageLevelCharges = sR.package_level_charges;
 
-  packageLevelCharges += meta.repack_amt + meta.sticker_amt
-    + meta.extrapack_amt + meta.original_amt + meta.giftwrap_amt
-    + meta.giftnote_amt + meta.consolid_amt;
+  packageLevelCharges += shipmentMeta.repack_amt + shipmentMeta.sticker_amt
+    + shipmentMeta.extrapack_amt + shipmentMeta.original_amt + shipmentMeta.giftwrap_amt
+    + shipmentMeta.giftnote_amt + shipmentMeta.consolid_amt;
 
-  packageLevelCharges += meta.liquid_amt;
+  packageLevelCharges += shipmentMeta.liquid_amt;
 
   const updateShip = await Shipment.findById(sR.id);
 
@@ -246,34 +223,47 @@ exports.create = async (req, res, next) => {
 
   updateShip.packageLevelCharges = packageLevelCharges;
   updateShip.estimated = estimated;
-  updateShip.update(updateShip);
+  return sR.update(updateShip);
+};
 
-  Package.update({
-    status: 'processing',
-  }, {
-    where: { id: packageIds },
-  });
+const updatePackages = packageIds => Package.update({
+  status: 'processing',
+}, {
+  where: { id: packageIds },
+});
 
-  const user = await User.findById(userId);
 
-  ses.sendTemplatedEmail({
-    Source: 'support@shoppre.com',
-    Destination: {
-      ToAddresses: [user.email],
-    },
-    Template: 'shoppre',
-    TemplateData: JSON.stringify({
-      packages,
-      address,
-      ship_request: updateShip,
-    }),
-  }, (err, data) => {
-    if (err) {
-      logger.log('SES err', err);
-      return err;
-    }
-    return logger.log('send', data);
-  });
+exports.create = async (req, res, next) => {
+  log('shipment:create', req.body, { customerId: req.user.id });
+  try {
+    const { id: userId } = req.user;
+    const { package_ids: packageIds } = req.body;
+    const packages = await getPackages(userId, packageIds);
 
-  return res.json(sR);
+    if (!packages.length) return res.status(400).json({ message: 'No Packages Found.' });
+
+    const address = await Address.findById(req.body.address_id);
+
+    const toAddress = await getAddress(address);
+
+    const shipping = await getEstimation(packageIds, address.country_id, userId);
+
+    const sR = await saveShipment({
+      userId, address, toAddress, shipping,
+    });
+
+    const shipmentMeta = await saveShipmentMeta({ req, sR, packageIds });
+
+    const updateShip = await updateShipment({ shipmentMeta, sR });
+
+    updatePackages(packageIds);
+
+    eventEmitter.emit('shipment:create', {
+      userId, sR, packages, address, updateShip,
+    });
+
+    return res.status(201).json(sR);
+  } catch (e) {
+    return next(e);
+  }
 };

@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
+    action_type: DataTypes.STRING,
+    action_id: DataTypes.STRING,
+    action_description: DataTypes.STRING,
+    solve_status: DataTypes.STRING,
   }, {
     tableName: 'notifications',
     timestamps: false,

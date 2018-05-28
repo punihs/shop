@@ -4217,4 +4217,10 @@ module.exports = () => [
     type: 'web',
     logo: 'logo_5ad38e2e7e58e.png',
   },
+  {
+    id: 704,
+    name: 'FB Seller',
+    type: 'web',
+    logo: 'logo_5ad38e2e7e58e.png',
+  },
 ];

@@ -8,7 +8,9 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
   });
   PackageMeta.associate = (db) => {
-    PackageMeta.belongsTo(db.Package);
+    PackageMeta.belongsTo(db.Package, {
+      foreignKey: 'id',
+    });
   };
 
   return PackageMeta;

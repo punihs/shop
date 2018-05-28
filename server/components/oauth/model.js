@@ -217,12 +217,13 @@ const oAuthModel = {
         attributes: ['id', 'password'],
       })
       .then((user) => {
-        log('gotUser', user);
+        log('gotUser', user.toJSON());
         if (!user) return callback(null, false);
 
         if (config.env === 'test') return callback(null, user.toJSON());
         // Send mail for client login
         return user.verifyPassword(password, (err, verifiedUser) => {
+          log('password verified', { err, verifiedUser });
           if (err) return callback(null, false);
           return callback(null, verifiedUser);
         });

@@ -3,10 +3,11 @@ const { engine, timestamps, keys } = require('../helper.js');
 module.exports = {
   up: (queryInterface, DataTypes) => queryInterface.createTable('shipments', Object.assign({
     id: {
-      allowNull: false,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: true,
     },
     order_code: DataTypes.STRING,
     customer_name: DataTypes.STRING,
@@ -44,6 +45,7 @@ module.exports = {
     country_id: keys('stores'),
     shipping_partner_id: keys('shipping_partners'),
     payment_gateway_id: keys('payment_gateways'),
+    shipment_type_id: keys('shipment_types'),
     created_by: keys('users'),
     customer_id: keys('users'),
   }, timestamps(3, DataTypes)), engine),
