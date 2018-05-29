@@ -10,10 +10,11 @@ const keyValueMap = (arr, key, value) => arr
 // default key is `name`
 const map = {
   users: 'first_name',
-  // countries: 'iso3',
+  countries: 'iso3',
 };
 
 const constants = {};
+
 [
   { name: 'groups' },
   { name: 'users' },
@@ -23,19 +24,22 @@ const constants = {};
   { name: 'object_types', keyMap: false },
   { name: 'apps', keyMap: false },
   { name: 'countries', keyMap: false },
-  { name: 'package_item_categories', keyMap: false },
+  // { name: 'cities', keyMap: false },
+  { name: 'package_item_categories' },
   { name: 'payment_gateways', keyMap: false },
   { name: 'shipping_partners', keyMap: false },
   { name: 'stores', keyMap: false },
   { name: 'keywords', keyMap: false },
   { name: 'seo', keyMap: false },
+  { name: 'shipments', keyMap: false },
+  { name: 'shipment_issues', keyMap: false },
 ]
   .forEach(({ name: x, keyMap = true }) => {
-    const rx = r(`./seeders/data/${_.camelCase(x)}`)(constants);
+    const data = r(`./seeders/data/${_.camelCase(x)}`)(constants);
     // - used for dependency injection
-    constants[_.camelCase(x)] = rx;
+    constants[_.camelCase(x)] = data;
     // - for writing contant names instead of number like instead of 1 for group_id we write OPS
-    if (keyMap !== false) constants[x.toUpperCase()] = keyValueMap(rx, map[x] || 'name', 'id');
+    if (keyMap !== false) constants[x.toUpperCase()] = keyValueMap(data, map[x] || 'name', 'id');
   });
 
 module.exports = constants;

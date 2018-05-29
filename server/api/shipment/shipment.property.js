@@ -7,11 +7,14 @@ module.exports = DataTypes => ({
     unique: true,
   },
   order_code: DataTypes.STRING,
+  package_ids: DataTypes.STRING, // removed in 0.1
   customer_name: DataTypes.STRING,
   address: DataTypes.STRING,
   phone: DataTypes.STRING,
   packages_count: DataTypes.INTEGER,
   weight: DataTypes.DECIMAL(8, 2),
+  volumetric_weight: DataTypes.DECIMAL(8, 2),
+  final_weight: DataTypes.DECIMAL(8, 2),
   value_amount: DataTypes.DECIMAL(8, 2),
   sub_total_amount: DataTypes.DECIMAL(8, 2),
   discount_amount: DataTypes.DECIMAL(8, 2),
@@ -25,7 +28,7 @@ module.exports = DataTypes => ({
   is_axis_banned_item: DataTypes.BOOLEAN,
   courier_charge_amount: DataTypes.DECIMAL(8, 2),
   payment_status: DataTypes.STRING,
-  shipping_status: DataTypes.STRING,
+  status: DataTypes.STRING,
   admin_info: DataTypes.STRING,
   admin_read: {
     type: DataTypes.ENUM,

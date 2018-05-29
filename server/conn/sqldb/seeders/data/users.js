@@ -66,5 +66,25 @@ module.exports = (constants) => {
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
       group_id: MARKETING,
     },
+    {
+      id: 647,
+      salutation: 'Mr',
+      first_name: 'Abhinav',
+      last_name: 'Mishra',
+      email: 'abhinav@shoppre.com',
+      phone: '919060122213',
+      password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
+      group_id: CUSTOMER,
+    },
+    {
+      id: 2757,
+      salutation: 'Mrs',
+      first_name: 'Shilpa',
+      last_name: 'Kaimal',
+      email: 'shilpa.humcap@gmail.com',
+      phone: '919060122213',
+      password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
+      group_id: CUSTOMER,
+    },
   ];
 };

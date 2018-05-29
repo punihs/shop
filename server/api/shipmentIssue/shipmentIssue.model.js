@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
-    ship_request_id: DataTypes.INTEGER,
+    shipment_id: DataTypes.INTEGER,
     name: DataTypes.STRING,
     description: DataTypes.STRING,
   }, {
@@ -15,6 +15,5 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: true,
     underscored: true,
   });
-
   return ShipmentIssue;
 };

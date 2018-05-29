@@ -1,7 +1,7 @@
 const { engine, timestamps, keys } = require('../helper.js');
 
 module.exports = {
-  up: (queryInterface, DataTypes) => queryInterface.createTable('shiments_issues', Object.assign({
+  up: (queryInterface, DataTypes) => queryInterface.createTable('shipment_issues', Object.assign({
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -13,6 +13,6 @@ module.exports = {
     shipment_id: keys('shipments'),
   }, timestamps(3, DataTypes)), engine),
   down(queryInterface) {
-    return queryInterface.dropTable('shiments_issues');
+    return queryInterface.dropTable('shipment_issues');
   },
 };

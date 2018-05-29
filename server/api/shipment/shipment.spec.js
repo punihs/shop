@@ -6,7 +6,7 @@ const app = require('./../../app');
 const auth = require('../../../logs/credentials');
 const {
   Package, Address, Country, User, AccessToken, RefreshToken, Session, Shipment,
-  ShipmentMeta,
+  ShipmentMeta, ShipmentIssue,
 } = require('../../conn/sqldb');
 
 const assert = require('assert');
@@ -147,7 +147,9 @@ let customerAuth;
 
 describe('GET /api/shipments/:id', () => {
   before((done) => {
-    Shipment
+    Promise.all([
+      ShipmentIssue.destroy({ where: { shipment_id: 10 } }),
+    ]).then(() => Shipment
       .destroy({
         force: true,
         where: {
@@ -195,7 +197,7 @@ describe('GET /api/shipments/:id', () => {
           weight: 27.35,
           pick_up_charge: null,
         }))
-        .then(() => done()));
+        .then(() => done())));
   });
 
   it('return shipments', (done) => {

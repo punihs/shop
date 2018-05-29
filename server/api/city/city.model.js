@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
   });
 
+  City.associate = (db) => {
+    City.belongsTo(db.Country);
+  };
+
   return City;
 };
 
