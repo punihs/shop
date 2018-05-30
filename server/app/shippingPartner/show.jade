@@ -1,0 +1,332 @@
+extends ../layout
+block content
+  head
+    title #{seo.title}
+    meta(name='description', content= '#{seo.meta_description}')
+    meta(property='og:title', content='#{seo.meta_title}')
+  .body
+    .noscript
+      iframe(src='https://www.googletagmanager.com/ns.html?id=GTM-NRL4B6X', height='0', width='0', style='display:none;visibility:hidden')
+
+  .container
+    .row
+      .col-sm-3
+        .movie-card#oceans-11
+          img(src="/img/dhl.png", style='height:120px' itemprop="logo")
+      .col-sm-9
+        h1(itemprop="name")
+          | #{name}
+          | 2-5 Days
+          | Starts with Rs. 999/- /KG
+        h4(itemprop="description")= description
+        h4(itemprop="description")= 'International Shipping - Package Forwarding Services'
+        h4= 'Express Delivery Services & International Shipping'
+
+    .row
+      .col-sm-12
+        ul.nav.nav-tabs
+          li.active
+            a(data-toggle='tab', href='#Countries') Countries
+          //  required this block
+          //li
+          //  a(data-toggle='tab', href='#Categories') Categories
+          li
+            a(data-toggle='tab', href='#Reviews') Issues
+          //li
+          //  a(data-toggle='tab', href='#Products') Products
+          //li
+          //  a(data-toggle='tab', href='#Followers') Followers
+          //li
+          //  a(data-toggle='tab', href='#Pricing') Pricing
+          //li
+          //  a(data-toggle='tab', href='#Keywords') Keywords
+          //li
+          //  a(data-toggle='tab', href='#QuickLinks') Quick Links
+          //li
+          //  a(data-toggle='tab', href='#Services') Services
+
+        .tab-content
+          #Countries.tab-pane.fade.in.active
+            .row#org-repositories(data-pjax-container='')
+              .col-8.d-inline-block
+                .org-repos.repo-list
+                  each c in countries
+                    li.col-12.d-block.width-full.py-4.border-bottom.public.source(itemprop='owns', itemscope='', itemtype='http://schema.org/Code')
+                      .d-inline-block.mb-1
+                        h3
+                          a(href='#', itemprop='name codeRepository')
+                            | #{c.name}
+                            h4= 'iso2' + ' : '+ c.iso2
+                      div
+                        .topics-row-container.col-9.d-inline-flex.flex-wrap.flex-items-center.f6.my-1
+                          a.topic-tag.topic-tag-link.f6.my-1(href='#', data-ga-click='Topic, repository list', data-octo-click='topic_click')
+                            | Saree
+                          a.topic-tag.topic-tag-link.f6.my-1(href='#', data-ga-click='Topic, repository list', data-octo-click='topic_click')
+                            | Artificial Jewelleries
+                          a.topic-tag.topic-tag-link.f6.my-1(href='#', data-ga-click='Topic, repository list', data-octo-click='topic_click')
+                            | Handicrafts
+                          a.topic-tag.topic-tag-link.f6.my-1(href='#', data-ga-click='Topic, repository list', data-octo-click='topic_click')
+                            | Branded Food Items
+                          a.topic-tag.topic-tag-link.f6.my-1(href='#', data-ga-click='Topic, repository list', data-octo-click='topic_click')
+                            | Sports Accessories
+                          a.topic-tag.topic-tag-link.f6.my-1(href='#', data-ga-click='Topic, repository list', data-octo-click='topic_click')
+                            | easy
+
+                        .col-3.float-right.text-right
+                          span.d-inline-block.tooltipped.tooltipped-s(aria-label='Past year of activity')
+                            svg(width='155', height='30')
+                              defs
+                                lineargradient#gradient-11131631(x1='0', x2='0', y1='1', y2='0')
+                                  stop(offset='10%', stop-color='#c6e48b')
+                                  stop(offset='33%', stop-color='#7bc96f')
+                                  stop(offset='66%', stop-color='#239a3b')
+                                  stop(offset='90%', stop-color='#196127')
+                                mask#sparkline-11131631(x='0', y='0', width='155', height='28')
+                                  polyline(transform='translate(0, 28) scale(1,-1)', points='0,8.379999999999999 3,6.54 6,6.23 9,8.690000000000001 12,6.23 15,10.23 18,9.92 21,13.92 24,9.92 27,9.31 30,5.0 33,6.85 36,8.690000000000001 39,11.15 42,13.31 45,9.31 48,6.85 51,12.08 54,17.0 57,14.85 60,22.54 63,24.08 66,24.08 69,22.85 72,13.62 75,12.69 78,14.23 81,16.689999999999998 84,15.77 87,16.689999999999998 90,7.77 93,8.379999999999999 96,14.23 99,12.08 102,13.31 105,11.15 108,11.15 111,5.62 114,13.62 117,12.38 120,12.38 123,17.0 126,20.69 129,15.46 132,15.46 135,8.379999999999999 138,16.08 141,29.0 144,22.85 147,20.69 150,16.380000000000003 153,20.69 ', fill='transparent', stroke='#8cc665', stroke-width='2')
+                              g(transform='translate(0, 2.0)')
+                                rect(x='0', y='-2', width='155', height='30', style='stroke: none; fill: url(#gradient-11131631); mask: url(#sparkline-11131631)')
+
+              .col-4.float-right.pl-4
+                .Box.mb-3
+                  .Box-body
+                    h4.f4.mb-2.text-normal Top Countries shipped
+                    a.no-wrap.text-gray.d-inline-block.muted-link.mt-2(href='#')
+                      span.repo-language-color.ml-0(style='background-color:#f34b7d;')
+                      span.mr-2 United States
+                    a.no-wrap.text-gray.d-inline-block.muted-link.mt-2(href='#')
+                      span.repo-language-color.ml-0(style='background-color:#f1e05a;')
+                      span.mr-2 Canada
+                    a.no-wrap.text-gray.d-inline-block.muted-link.mt-2(href='#')
+                      span.repo-language-color.ml-0(style='background-color:#b07219;')
+                      span.mr-2 Australia
+                    a.no-wrap.text-gray.d-inline-block.muted-link.mt-2(href='#')
+                      span.repo-language-color.ml-0(style='background-color:#3572A5;')
+                      span.mr-2 United Kingdom
+                    a.no-wrap.text-gray.d-inline-block.muted-link.mt-2(href='#')
+                      span.repo-language-color.ml-0(style='background-color:#f34b7d;')
+                      span.mr-2 Germany
+                    a.no-wrap.text-gray.d-inline-block.muted-link.mt-2(href='#')
+                      span.repo-language-color.ml-0(style='background-color:#f1e05a;')
+                      span.mr-2 Sri Lanka
+                    a.no-wrap.text-gray.d-inline-block.muted-link.mt-2(href='#')
+                      span.repo-language-color.ml-0(style='background-color:#438eff;')
+                      span.mr-2 New Zealand
+                .Box.mb-3
+                  .Box-body
+                    .d-inline-flex.flex-justify-between.flex-items-baseline.width-full.mb-2
+                      h4.f4.text-normal Most used Categories
+                    .d-inline-flex.flex-wrap
+                      a.topic-tag.topic-tag-link(href='#', data-ga-click='Topic, org profile', data-octo-click='topic_click', data-octo-dimensions='topic:javascript,org:facebook')
+                        | Saree
+                      a.topic-tag.topic-tag-link(href='#', data-ga-click='Topic, org profile', data-octo-click='topic_click', data-octo-dimensions='topic:react,org:facebook')
+                        | Artificial Jewelleries
+                      a.topic-tag.topic-tag-link(href='#', data-ga-click='Topic, org profile', data-octo-click='topic_click', data-octo-dimensions='topic:facebook,org:facebook')
+                        | Handicrafts
+                      a.topic-tag.topic-tag-link(href='#', data-ga-click='Topic, org profile', data-octo-click='topic_click', data-octo-dimensions='topic:hack,org:facebook')
+                        | Branded Food Items
+                      a.topic-tag.topic-tag-link(href='#', data-ga-click='Topic, org profile', data-octo-click='topic_click', data-octo-dimensions='topic:hacklang,org:facebook')
+                        | Sports Accessories
+                .Box.mb-3
+                  .Box-body
+                    a.d-block.text-gray-dark(href='#', data-ga-click='Orgs, go to people, location:profile people module; text:People')
+                      span.float-right.f5.text-gray
+                        | 197
+                        svg.octicon.octicon-chevron-right(viewbox='0 0 8 16', version='1.1', width='8', height='16', aria-hidden='true')
+                          path(fill-rule='evenodd', d='M7.5 8l-5 5L1 11.5 4.75 8 1 4.5 2.5 3l5 5z')
+                      h4.f4.text-normal.mb-3 Recent Users
+                    .member-avatar-group.d-flex.flex-wrap
+                      a.member-avatar(href='', data-ga-click='Orgs, go to person, location:profile people module; text:username')
+                        img.avatar(src='https://avatars2.githubusercontent.com/u/7413593?s=96&v=4', width='48', height='48', alt='@a8m')
+                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
+                        img.avatar(src='https://avatars0.githubusercontent.com/u/940133?s=96&v=4', width='48', height='48', alt='@aaronabramov')
+                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
+                        img.avatar(src='https://avatars0.githubusercontent.com/u/342363?s=96&v=4', width='48', height='48', alt='@aarondraczynski')
+                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
+                        img.avatar(src='https://avatars3.githubusercontent.com/u/1156489?s=96&v=4', width='48', height='48', alt='@abhshkdz')
+                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
+                        img.avatar(src='https://avatars0.githubusercontent.com/u/3624098?s=96&v=4', width='48', height='48', alt='@acdlite')
+                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
+                        img.avatar(src='https://avatars3.githubusercontent.com/u/634414?s=96&v=4', width='48', height='48', alt='@adamgross42')
+                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
+                        img.avatar(src='https://avatars3.githubusercontent.com/u/7844509?s=96&v=4', width='48', height='48', alt='@AGS-')
+                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
+                        img.avatar(src='https://avatars1.githubusercontent.com/u/59670?s=96&v=4', width='48', height='48', alt='@AhmedSoliman')
+                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
+                        img.avatar(src='https://avatars3.githubusercontent.com/u/136692?s=96&v=4', width='48', height='48', alt='@ajma')
+                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
+                        img.avatar(src='https://avatars1.githubusercontent.com/u/4343641?s=96&v=4', width='48', height='48', alt='@ajoulin')
+                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
+                        img.avatar(src='https://avatars3.githubusercontent.com/u/71258?s=96&v=4', width='48', height='48', alt='@alanho')
+                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
+                        img.avatar(src='https://avatars0.githubusercontent.com/u/703628?s=96&v=4', width='48', height='48', alt='@alexanderGugel')
+                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
+                        img.avatar(src='https://avatars2.githubusercontent.com/u/2635915?s=96&v=4', width='48', height='48', alt='@AlexGaspar')
+                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
+                        img.avatar(src='https://avatars1.githubusercontent.com/u/1141354?s=96&v=4', width='48', height='48', alt='@alexholdenmiller')
+                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
+                        img.avatar(src='https://avatars2.githubusercontent.com/u/3639670?s=96&v=4', width='48', height='48', alt='@alexmckenley')
+                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
+                        img.avatar(src='https://avatars0.githubusercontent.com/u/10272583?s=96&v=4', width='48', height='48', alt='@amanrajdce')
+
+
+          #Categories.tab-pane.fade
+            h3 Categories
+            .row
+              .col-sm-12
+                .panel.panel-default
+                  .panel-heading
+                    h4#Items-Send-with-DHL
+                      a(href="#Items-Send-with-DHL") Items Send with DHL
+                  .panel-body
+                    .div(style="margin-left:10px")
+                      ul
+                        li: a(href='#' itemprop="sameAs") Saree
+                        li: a(href='#' itemprop="sameAs") Sports Accessories
+                        li: a(href='#' itemprop="sameAs") Utensils
+                        li: a(href='#' itemprop="sameAs") Handicrafts
+                        li: a(href='#' itemprop="sameAs") Documents (Applications)
+                        li: a(href='#' itemprop="sameAs") Book
+                        li: a(href='#' itemprop="sameAs") Playstation 4, iPhone
+                        li: a(href='#' itemprop="sameAs") Branded Food Items
+                        li: a(href='#' itemprop="sameAs") Footwears
+                        li: a(href='#' itemprop="sameAs") Artificial Jewelleries
+            .row
+              .col-sm-12
+                .panel.panel-default
+                  .panel-heading
+                    h4#Items-Cant-be-sent-with-DHL
+                      a(href="#Items-Cant-be-sent-with-DHL") Items Can't be sent with DHL
+                  .panel-body
+                    .div(style="margin-left:10px")
+                      ul
+                        li: a(href='#' itemprop="sameAs") Gold
+                        li: a(href='#' itemprop="sameAs") Silver
+                        li: a(href='#' itemprop="sameAs") Diamonds
+                        li: a(href='#' itemprop="sameAs") Gem Stones
+                        li: a(href='#' itemprop="sameAs") Drugs / Narcotics
+                        li: a(href='#' itemprop="sameAs") Live Animals
+                        li: a(href='#' itemprop="sameAs") Pornography
+                        li: a(href='#' itemprop="sameAs") Currency
+                        li: a(href='#' itemprop="sameAs") Bullion
+                        li: a(href='#' itemprop="sameAs") Counterfeit or Pirated goods or material
+
+          #Reviews.tab-pane.fade
+            h3 shipping issues
+              row
+                br
+                .col-sm-4
+                  table(border='1px' style='text-align:center')
+                    thead
+                      tr
+                        th ID
+                        th Issue Name
+                        th Description
+                          tbody
+                            each issue in shippingissue
+                              tr
+                                td
+                                  h5= issue.id
+                                td
+                                  h5= issue.name
+                                td
+                                  h5= issue.des
+
+
+          #Products.tab-pane.fade
+            h3 Products
+            .row
+              .col-sm-12
+                .panel.panel-default
+                  .panel-heading
+                    h4#dhl-Products
+                      a(href="#dhl-Products") Products
+                  .panel-body
+                    .div(style="margin-left:10px")
+                      ul
+                        li: a(href='#' itemprop="sameAs") International & Domestic Shipments
+                        li: a(href='#' itemprop="sameAs") Defined lead times
+                        li: a(href='#' itemprop="sameAs") End-to-end visibility
+                        li: a(href='#' itemprop="sameAs") Optional Extended Liability Cover
+                        li: a(href='#' itemprop="sameAs") Optional Customs Brokerage
+                        li: a(href='#' itemprop="sameAs") Dedicated vehicle, no consolidation for LTL, PTL & FTL
+                        li: a(href='#' itemprop="sameAs") Selected countries across the world
+                        li: a(href='#' itemprop="sameAs") Pick-up time from order (standard shipments)
+                        li: a(href='#' itemprop="sameAs") Flexible and cost efficient transport solutions for part & full loads ensure that you receive the quality service you expect from DHL
+                        li: a(href='#' itemprop="sameAs") Regular scheduled departures to international locations for Less-than-Truck-Loads. Offering highly reliable door-to-door connections across Asia Pacific and Africa
+                        li: a(href='#' itemprop="sameAs") Predictable lead times for all your freight consignments allowing you to timetable your business with total confidence
+                        li: a(href='#' itemprop="sameAs") GPS-equipped trucks ensure stable & safe truck monitoring and complete shipment track and trace visibility
+
+          #Followers.tab-pane.fade
+            h3 Followers
+            p
+              | Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+          #Pricing.tab-pane.fade
+            h3 Pricing
+            p
+              | Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+
+          #Keywords.tab-pane.fade
+            h3 Keywords
+            p
+              | Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+          #QuickLinks.tab-pane.fade
+            h3 Quick Links
+            .row
+              .col-sm-12
+                .panel.panel-default
+                  .panel-heading
+                    h4#social-links
+                      a(href="#social-links") Social Links
+                  .panel-body
+                    .div(style="margin-left:10px")
+                      ul
+                        li: a(href='https://www.facebook.com/dhl' itemprop="sameAs") Facebook
+                        li: a(href='https://www.youtube.com/user/dhl' itemprop="sameAs") Youtube
+                        li: a(href='https://www.linkedin.com/company/dhl/' itemprop="sameAs") LinkedIn
+              .col-sm-12
+                .panel.panel-default
+                  .panel-heading
+                    h4#Other-links
+                      a(href="#Other-links") Other Links
+                  .panel-body
+                    .div(style="margin-left:10px")
+                      ul
+                        li: a(href='https://www.logistics.dhl/in-en/home/tracking.html' itemprop="sameAs") Shipment Tracking
+                        li: a(href='http://www.dhl.co.in/en/express/shipping/shipping_advice/terms_conditions.html' itemprop="sameAs") Terms and Conditions
+                        li: a(href='http://www.dhl.co.in/en/express/shipping/shipping_advice/dangerous_goods.html' itemprop="sameAs") Dangerous Goods
+          #Services.tab-pane.fade
+            h3 Services
+            p
+              | Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+
+
+    .row
+      br
+      .col-sm-12
+        .panel.panel-primary
+          .panel-heading
+            .div
+              .col-sm-6
+                h4= 'DHL Terms and Conditions'
+              .col-sm-3
+                h4= 'Service DHL'
+              .col-sm-3
+                h4= 'Safety policies'
+            .panel-body
+              .div(style="margin-left:10px")
+                ul
+                  .col-sm-6
+                    li= 'Shipment Should not cross more than 70kg per AWB'
+                    li= '70kg Shipment: One Box should not cross 28kg'
+                    li= 'Required Airwaybill, Proforma Invoice & Supporting Documents'
+                    li= 'Shimpent Value to USA Should not cross more than INR25000/-'
+                    li= 'Medicine Shipment need Original prescriptio'
+                  .col-sm-3
+                    li= 'Door Step Pickup'
+                    li= 'International Courier'
+                    li= 'Document Courier'
+                    li= 'Medicine Courier'
+                    li= 'Food & Personal Goods Courier'
+                  .col-sm-3
+                    li= 'Insurance – 500 INR'
+                    li= 'Fragile – 5000 INR'

@@ -7,6 +7,9 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const http = require('http');
 const express = require('express');
 
+// const api = require('./conn/api');
+// api.credentials,
+
 const expressConfig = require('./config/express');
 const { env, ip, port } = require('./config/environment');
 

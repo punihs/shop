@@ -26,8 +26,10 @@ const transaction = require('./api/transaction');
 const shippingPartner = require('./api/shippingPartner');
 const health = require('./api/health');
 const seo = require('./api/seo');
+const webRoutes = require('./webRoutes');
 
 module.exports = (app) => {
+  webRoutes(app);
   app.use('/api/health', health);
   app.use('/api/seo', seo);
   app.use('/api/user', login);

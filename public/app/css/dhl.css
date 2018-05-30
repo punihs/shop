@@ -1,0 +1,394 @@
+/*Countries tab*/
+.d-inline-block {
+  display: inline-block !important;
+}
+
+.col-8 {
+  width: 66.66667%;
+}
+
+.pl-4 {
+  padding-left: 24px !important;
+}
+
+.float-right {
+  float: right !important;
+}
+
+.col-4 {
+  width: 33.33333%;
+}
+
+.repo-list {
+  position: relative;
+}
+
+.d-block {
+  display: block !important;
+}
+
+.py-4 {
+  padding-top: 24px !important;
+  padding-bottom: 24px !important;
+}
+
+.width-full {
+  width: 100% !important;
+}
+
+.border-bottom {
+  border-bottom: 1px #e1e4e8 solid !important;
+}
+
+.col-12 {
+  width: 100%;
+}
+
+.mb-3 {
+  margin-bottom: 16px !important;
+}
+
+.Box-body:last-of-type {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.Box-body {
+  padding: 16px;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+.Box {
+  background-color: #fff;
+  border: 1px solid #d1d5da;
+  border-radius: 3px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+div {
+  display: block;
+}
+
+body {
+  min-width: 1020px;
+  word-wrap: break-word;
+}
+
+.repo-language-color {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.mr-2 {
+  margin-right: 30px !important;
+}
+
+.topic-tag {
+  display: inline-block;
+  padding: 0.3em 0.9em;
+  margin: 0 0.5em 0.5em 0;
+  white-space: nowrap;
+  background-color: #f1f8ff;
+  border-radius: 3px;
+}
+
+a {
+  color: #0366d6;
+  text-decoration: none;
+}
+
+.d-block {
+  display: block !important;
+}
+
+.text-gray-dark {
+  color: #24292e !important;
+}
+
+a {
+  color: #0366d6;
+  text-decoration: none;
+}
+
+a {
+  background-color: transparent;
+}
+
+.mb-3 {
+  margin-top: 16px !important;
+}
+
+.muted-link {
+  color: #586069 !important;
+}
+
+.no-wrap {
+  white-space: nowrap !important;
+}
+
+.ml-0 {
+  margin-left: 1px !important;
+}
+
+.topics-row-container {
+  height: 30px;
+  overflow: hidden;
+}
+
+.d-inline-flex {
+  display: inline-flex !important;
+}
+
+.f6 {
+  font-size: 12px !important;
+}
+
+.my-1 {
+  margin-top: 4px !important;
+  margin-bottom: 4px !important;
+}
+
+.flex-items-center {
+  align-items: center !important;
+}
+
+.flex-wrap {
+  flex-wrap: wrap !important;
+}
+
+.col-9 {
+  width: 75%;
+}
+
+.topic-tag {
+  display: inline-block;
+  padding: 0.3em 0.9em;
+  margin: 0 0.5em 0.5em 0;
+  white-space: nowrap;
+  background-color: #f1f8ff;
+  border-radius: 3px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 14px;
+  line-height: 1.5;
+  color: #24292e;
+  background-color: #fff;
+}
+
+/*!*product page*!*/
+/*!*2st div*!*/
+/*.c-producttable .visible {*/
+  /*opacity: 1;*/
+/*}*/
+/*.c-producttablecontainer {*/
+  /*display: -webkit-box;*/
+  /*display: -webkit-flex;*/
+  /*display: -ms-flexbox;*/
+  /*display: flex;*/
+  /*opacity: 0;*/
+  /*-webkit-transition: opacity .3s ease-in-out;*/
+  /*transition: opacity .3s ease-in-out;*/
+  /*color: #666;*/
+  /*margin-bottom: 5.6rem;*/
+/*}*/
+/*@media print, screen and (min-width: 768px)*/
+/*.component-wide {*/
+  /*padding-left: 3.125%;*/
+  /*padding-right: 3.125%;*/
+/*}*/
+/*@media print, screen and (min-width: 768px)*/
+/*.l-grid--center-m {*/
+  /*-webkit-box-pack: center;*/
+  /*-webkit-justify-content: center;*/
+  /*-ms-flex-pack: center;*/
+  /*justify-content: center;*/
+  /*text-align: center;*/
+/*}*/
+/*.c-producttable {*/
+  /*-webkit-margin-before: 0;*/
+  /*-webkit-margin-after: 0;*/
+  /*-webkit-margin-start: 0;*/
+  /*-webkit-margin-end: 0;*/
+  /*-webkit-padding-start: 0;*/
+  /*-webkit-tap-highlight-color: transparent;*/
+  /*margin: 0;*/
+  /*padding: 0;*/
+  /*box-sizing: border-box;*/
+  /*outline: none;*/
+/*}*/
+/*!*2nd div*!*/
+/*.c-productcategorycontainer.small {*/
+  /*width: 19.6rem;*/
+/*}*/
+/*@media print, screen and (min-width: 768px)*/
+/*.c-productcategorycontainer {*/
+  /*display: inline-block;*/
+/*}*/
+/*.c-productcategorycontainer {*/
+  /*width: 28rem;*/
+  /*border-right: 1px solid #fff;*/
+  /*display: none;*/
+/*}*/
+/*.c-productcontainer.small {*/
+  /*max-width: calc(100% - 19.599999999999998rem);*/
+/*}*/
+/*@media print, screen and (min-width: 768px)*/
+/*.c-productcontainer {*/
+  /*max-width: calc(100% - 28rem);*/
+/*}*/
+/*.c-productcontainer {*/
+  /*display: inline-block;*/
+  /*position: relative;*/
+  /*vertical-align: top;*/
+/*}*/
+/*.c-doublescrollbar {*/
+  /*height: 24px;*/
+  /*margin-top: -24px;*/
+  /*overflow-x: auto;*/
+  /*overflow-y: hidden;*/
+/*}*/
+/*.c-productcontainer--inner {*/
+  /*overflow: auto;*/
+  /*white-space: nowrap;*/
+  /*display: -webkit-box;*/
+  /*display: -webkit-flex;*/
+  /*display: -ms-flexbox;*/
+  /*display: flex;*/
+/*}*/
+/*.c-producttable .visible {*/
+  /*opacity: 1;*/
+/*}*/
+/*.c-producttablecontainer {*/
+  /*display: -webkit-box;*/
+  /*display: -webkit-flex;*/
+  /*display: -ms-flexbox;*/
+  /*display: flex;*/
+  /*opacity: 0;*/
+  /*-webkit-transition: opacity .3s ease-in-out;*/
+  /*transition: opacity .3s ease-in-out;*/
+  /*color: #666;*/
+  /*margin-bottom: 5.6rem;*/
+/*}*/
+/*@media print, screen and (min-width: 768px)*/
+/*.component-wide {*/
+  /*padding-left: 3.125%;*/
+  /*padding-right: 3.125%;*/
+/*}*/
+/*@media print, screen and (min-width: 768px)*/
+/*.l-grid--center-m {*/
+  /*-webkit-box-pack: center;*/
+  /*-webkit-justify-content: center;*/
+  /*-ms-flex-pack: center;*/
+  /*justify-content: center;*/
+  /*text-align: center;*/
+/*}*/
+/*.l-grid--left-s {*/
+  /*-webkit-box-pack: start;*/
+  /*-webkit-justify-content: flex-start;*/
+  /*-ms-flex-pack: start;*/
+  /*justify-content: flex-start;*/
+  /*text-align: left;*/
+/*}*/
+/*.c-productcategorycontainer.small {*/
+  /*width: 19.6rem;*/
+/*}*/
+/*@media print, screen and (min-width: 768px)*/
+/*.c-productcategorycontainer {*/
+  /*display: inline-block;*/
+/*}*/
+/*.c-productcategorycontainer {*/
+  /*width: 28rem;*/
+  /*border-right: 1px solid #fff;*/
+  /*display: none;*/
+/*}*/
+/*.c-producttablerow.c-headline, .c-producttablerow.c-subheadline {*/
+  /*height: 9.8rem;*/
+  /*background-color: #e8e8e8;*/
+  /*text-align: left;*/
+/*}*/
+/*.c-producttablerow.c-headline {*/
+  /*border-bottom: 0;*/
+  /*font-size: 2rem;*/
+  /*font-weight: 800;*/
+  /*position: relative;*/
+/*}*/
+/*.c-productcategorycontainer .c-producttablerow {*/
+  /*text-align: right;*/
+/*}*/
+/*@media print, screen and (min-width: 768px)*/
+/*.c-producttablerow {*/
+  /*padding: 0 1.4rem;*/
+/*}*/
+/*.c-producttablerow {*/
+  /*min-height: 4.2rem;*/
+  /*text-align: center;*/
+  /*border-bottom: 1px solid #fff;*/
+  /*white-space: normal;*/
+  /*background-color: #e8e8e8;*/
+/*}*/
+/*.color-web-white {*/
+  /*color: #fff!important;*/
+/*}*/
+/*.div {*/
+  /*display: block;*/
+/*}*/
+/*.c-producttablerow.c-subheadline {*/
+  /*height: 9.8rem;*/
+  /*background-color: #e8e8e8;*/
+  /*text-align: left;*/
+/*}*/
+/*.c-productcategorycontainer .c-producttablerow {*/
+  /*text-align: right;*/
+/*}*/
+/*@media print, screen and (min-width: 768px)*/
+/*.c-producttablerow {*/
+  /*padding: 0 1.4rem;*/
+/*}*/
+/*.c-producttablerow {*/
+  /*min-height: 4.2rem;*/
+  /*text-align: center;*/
+  /*border-bottom: 1px solid #fff;*/
+  /*white-space: normal;*/
+  /*background-color: #e8e8e8;*/
+/*}*/
+/*c-productcontainer.small {*/
+  /*max-width: calc(100% - 19.599999999999998rem);*/
+/*}*/
+/*@media print, screen and (min-width: 768px)*/
+/*.c-productcontainer {*/
+  /*max-width: calc(100% - 28rem);*/
+/*}*/
+/*.c-productcontainer {*/
+  /*display: inline-block;*/
+  /*position: relative;*/
+  /*vertical-align: top;*/
+/*}*/
+/*.c-productcontainer--inner {*/
+  /*overflow: auto;*/
+  /*white-space: nowrap;*/
+  /*display: -webkit-box;*/
+  /*display: -webkit-flex;*/
+  /*display: -ms-flexbox;*/
+  /*display: flex;*/
+/*}*/
+/*.c-product {*/
+  /*width: 19.6rem;*/
+  /*-webkit-box-flex: 0;*/
+  /*-webkit-flex: 0 0 auto;*/
+  /*-ms-flex: 0 0 auto;*/
+  /*flex: 0 0 auto;*/
+  /*border-right: 1px solid #fff;*/
+  /*position: relative;*/
+  /*-webkit-transition: width .4s ease-in-out,opacity 101ms ease-in-out .3s;*/
+  /*transition: width .4s ease-in-out,opacity 101ms ease-in-out .3s;*/
+/*}*/
