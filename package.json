@@ -60,7 +60,6 @@
     "ngeohash": "^0.6.0",
     "node-php-password": "^0.1.2",
     "oauth2-server": "quezx/node-oauth2-server",
-    "puppeteer": "^1.4.0",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "request-promise-middleware-framework": "^2.0.0",
@@ -77,6 +76,7 @@
     "mocha": "^5.1.1",
     "nodemon": "^1.12.1",
     "precommit-hook": "^3.0.0",
+    "puppeteer": "^1.4.0",
     "sequelize-cli": "^4.0.0",
     "supertest": "^3.0.0"
   },
