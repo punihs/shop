@@ -85,6 +85,15 @@ module.exports = (constants) => {
       phone: '919060122213',
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
       group_id: CUSTOMER,
+    }, {
+      id: 129,
+      salutation: 'Mr',
+      first_name: 'Varun',
+      last_name: 'Murali',
+      email: 'varun.murali@gmail.com',
+      phone: '585410510',
+      password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
+      group_id: CUSTOMER,
     },
   ];
 };

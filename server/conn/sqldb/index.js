@@ -45,7 +45,7 @@ const db = {
   'Notification',
 
   // - Organitation
-  'ShippingPartner',
+  'ShippingPartner', 'PartnerLink',
 
   // - Product
   'Store',
