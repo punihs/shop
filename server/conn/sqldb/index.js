@@ -50,6 +50,9 @@ const db = {
   // - Product
   'Store',
 
+  // - faq
+  'FaqCategory', 'Faq',
+
   // Shoppre Digital Inspired by Marketo.com
   // - Website - Google My Business - Hardy
   // - SEO - MOZ
