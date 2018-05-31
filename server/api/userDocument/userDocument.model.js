@@ -8,17 +8,20 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
-    document_name: DataTypes.STRING,
+    object: DataTypes.STRING,
   }, {
     tableName: 'user_documents',
+    paranoid: true,
     timestamps: true,
     underscored: true,
   });
 
   UserDocument.associate = (db) => {
-    UserDocument.belongsTo(db.User);
+    UserDocument.belongsTo(db.User, {
+      foreignKey: 'customer_id',
+      as: 'Customer',
+    });
   };
-
   return UserDocument;
 };
 
