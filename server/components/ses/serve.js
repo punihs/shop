@@ -19,7 +19,7 @@ ses.updateTemplate({
   const TemplateData = JSON.stringify(require(`${root}/server/components/ses/templates/${CURRENT_EMAIL}`).TemplateData);
 
   return ses.sendTemplatedEmail({
-    Source: 'support@shoppre.com',
+    Source: '"Saneel from Shoppre.com" <support@shoppre.com>',
     Destination: {
       ToAddresses: ['manjeshpv@gmail.com'],
     },
