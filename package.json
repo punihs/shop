@@ -6,12 +6,12 @@
   "scripts": {
     "start": "nodemon --ignore node_modules/ -e js server/app",
     "full-test": "npm run clear-db; npm run migrate; npm run login; npm run test && npm run lint",
-    "web-test": "NODE_ENV=test mocha --opts .mocharc server/app/**/*.test.js --exit",
+    "web-test": "NODE_ENV=test nyc mocha --opts .mocharc server/app/**/*.test.js --exit",
     "lint": "eslint --fix --ext .js --ignore-path .gitignore .",
     "clear-db": "sequelize db:drop; sequelize db:create",
     "migrate": "sequelize db:migrate; sequelize db:seed:all",
     "login": "NODE_ENV=test mocha --opts .mocharc server/api/login/login.spec.js --exit",
-    "test": "NODE_ENV=test mocha --opts .mocharc server/**/*.spec.js --exit",
+    "test": "NODE_ENV=test nyc mocha --opts .mocharc server/**/*.spec.js --exit",
     "kill": "kill -9 $(lsof -t -i:5000);",
     "build-email": "nodemon ./server/components/ses/render",
     "dev-email": "node ./server/components/ses/serve",
@@ -76,6 +76,7 @@
     "eslint-plugin-import": "^2.8.0",
     "mocha": "^5.1.1",
     "nodemon": "^1.12.1",
+    "nyc": "^11.8.0",
     "precommit-hook": "^3.0.0",
     "puppeteer": "^1.4.0",
     "supertest": "^3.0.0"
