@@ -11,7 +11,8 @@
     "clear-db": "sequelize db:drop; sequelize db:create",
     "migrate": "sequelize db:migrate; sequelize db:seed:all",
     "login": "NODE_ENV=test mocha --opts .mocharc server/api/login/login.spec.js --exit",
-    "test": "NODE_ENV=test nyc mocha --opts .mocharc server/**/*.spec.js --exit",
+    "test": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --opts .mocharc server/**/*.spec.js --exit",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "kill": "kill -9 $(lsof -t -i:5000);",
     "build-email": "nodemon ./server/components/ses/render",
     "dev-email": "node ./server/components/ses/serve",
@@ -71,6 +72,7 @@
     "winston-raven-sentry": "^1.0.1"
   },
   "devDependencies": {
+    "coveralls": "^3.0.1",
     "eslint": "^4.11.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",

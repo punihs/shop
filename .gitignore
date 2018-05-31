@@ -10,3 +10,4 @@ logs
 /public/fonts/
 /public/js
 .nyc_output
+/coverage/

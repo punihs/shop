@@ -1,7 +1,6 @@
 # API
 
-[![Build Status](https://drone.shoppre.com/api/badges/shoppre/api/status.svg)](https://drone.shoppre.com/shoppre/api)
-
+[![Build Status](https://drone.shoppre.com/api/badges/shoppre/api/status.svg)](https://drone.shoppre.com/shoppre/api) [![Coverage Status](https://coveralls.io/repos/github/shoppre/api/badge.svg?t=3LfehZ)](https://coveralls.io/github/shoppre/api)
 # In Production
 ```sh
 git clone https://github.com/shoppre/api
