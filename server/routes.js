@@ -16,6 +16,7 @@ const search = require('./api/search');
 const packages = require('./api/package');
 const packageItem = require('./api/packageItem');
 const packageMeta = require('./api/package/meta');
+const shippingPreference = require('./api/shippingPreference');
 const packageItemCategory = require('./api/packageItemCategory');
 const shipment = require('./api/shipment');
 const shipmentPackage = require('./api/shipment/package');
@@ -38,7 +39,7 @@ module.exports = (app) => {
   app.use('/api/shippingPartners', shippingPartner);
   app.use('/api/addresses', authenticate(), address);
   app.use('/api/shipments', authenticate(), shipment, shipmentPackage);
-  // app.use('/api/shipmentMeta', authenticate(), shipment, shipmentMeta);
+  app.use('/api/shippingPreference', authenticate(), shippingPreference);
   app.use('/api/transactions', authenticate(), transaction);
   app.use('/api/orders', authenticate(), orders);
   app.use('/api/pricing', pricing);
@@ -47,6 +48,7 @@ module.exports = (app) => {
   app.use('/api/users', user);
   app.get('/secured', authenticate(), (req, res) => res.json({ name, version }));
 
+  app.get('/', (req, res) => res.json({ name, version }));
   app.use(express.static(app.get('appPath')));
   app.use(oAuth.errorHandler());
 

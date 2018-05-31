@@ -1,11 +1,12 @@
-module.exports = (sequelize, DataTypes) => {
-  const ShippingPreference = sequelize.define('ShippingPreference', {
+const { engine, timestamps, keys } = require('../helper.js');
+
+module.exports = {
+  up: (queryInterface, DataTypes) => queryInterface.createTable('shipping_preferences', Object.assign({
     id: {
-      type: DataTypes.INTEGER,
+      allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      allowNull: false,
-      unique: true,
+      type: DataTypes.INTEGER,
     },
     standard_photo: {
       type: DataTypes.ENUM,
@@ -53,18 +54,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM,
       values: ['0', '1'],
     },
-  }, {
-    tableName: 'shipping_preferences',
-    timestamps: true,
-    underscored: true,
-  });
-
-  ShippingPreference.associate = (db) => {
-    ShippingPreference.belongsTo(db.User, {
-      foreignKey: 'customer_id',
-    });
-  };
-
-  return ShippingPreference;
+    customer_id: keys('users'),
+  }, timestamps(3, DataTypes)), engine),
+  down(queryInterface) {
+    return queryInterface.dropTable('shipping_preferences');
+  },
 };
-

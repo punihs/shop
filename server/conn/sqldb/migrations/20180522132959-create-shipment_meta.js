@@ -3,66 +3,64 @@ const { engine, timestamps, keys } = require('../helper.js');
 module.exports = {
   up: (queryInterface, DataTypes) => queryInterface.createTable('shipment_meta', Object.assign({
     id: {
-      type: DataTypes.INTEGER,
+      allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      allowNull: false,
-      unique: true,
+      type: DataTypes.INTEGER,
     },
     repack: {
       type: DataTypes.ENUM,
       values: ['0', '1'],
     },
-    repack_amt: DataTypes.DOUBLE,
+    repacking_charge_amount: DataTypes.DOUBLE,
     sticker: {
       type: DataTypes.ENUM,
       values: ['0', '1'],
     },
 
-    sticker_amt: DataTypes.DOUBLE,
+    sticker_charge_amount: DataTypes.DOUBLE,
     extrapack: {
       type: DataTypes.ENUM,
       values: ['0', '1'],
     },
-    extrapack_amt: DataTypes.DOUBLE,
+    extra_packing_charge_amount: DataTypes.DOUBLE,
     original: {
       type: DataTypes.ENUM,
       values: ['0', '1'],
     },
-    original_amt: DataTypes.DOUBLE,
-    consolid: {
+    original_ship_box_charge__amount: DataTypes.DOUBLE,
+    max_weight: DataTypes.FLOAT,
+    consolidation: {
       type: DataTypes.ENUM,
       values: ['0', '1'],
     },
-
-    consolid_amt: DataTypes.DOUBLE,
+    consolidation_charge_amount: DataTypes.DOUBLE,
     gift_wrap: {
       type: DataTypes.ENUM,
       values: ['0', '1'],
     },
-    giftwrap_amt: DataTypes.DOUBLE,
+    gift_wrap_charge_amount: DataTypes.DOUBLE,
     gift_note: {
       type: DataTypes.ENUM,
       values: ['0', '1'],
     },
-    giftnote_amt: DataTypes.DOUBLE,
+    gift_note_charge_amount: DataTypes.DOUBLE,
     giftnote_txt: DataTypes.STRING,
     insurance: {
       type: DataTypes.ENUM,
       values: ['0', '1'],
     },
-    insurance_amt: DataTypes.DOUBLE,
-    liquid: {
+    insurance_amount: DataTypes.DOUBLE,
+    is_liquid: {
       type: DataTypes.ENUM,
       values: ['0', '1'],
     },
-    liquid_amt: DataTypes.DOUBLE,
+    liquid_charge_amount: DataTypes.DOUBLE,
     overweight: {
       type: DataTypes.ENUM,
       values: ['0', '1'],
     },
-    overweight_amt: DataTypes.FLOAT,
-    max_weight: DataTypes.FLOAT,
+    overweight_charge_amount: DataTypes.FLOAT,
     profoma_taxid: DataTypes.STRING,
     profoma_personal: {
       type: DataTypes.ENUM,
