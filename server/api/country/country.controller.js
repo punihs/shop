@@ -7,7 +7,7 @@ exports.index = (req, res, next) => {
       'discount_percentage', 'is_shipping_available',
     ],
     limit: Number(req.query.limit) || 20,
-    offset: Number(req.query.offet) || 0,
+    offset: Number(req.query.offset) || 0,
 
   };
   return Country
