@@ -48,17 +48,13 @@ const db = {
   'ShippingPartner', 'PartnerLink',
 
   // - Product
-  'Store',
+  'Store', 'Category',
 
   // - faq
   'FaqCategory', 'Faq',
 
-  // - estimation
-  'Estimation',
-
   // - Reviews
   'Review',
-
 
 
   // Shoppre Digital Inspired by Marketo.com

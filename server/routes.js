@@ -27,6 +27,7 @@ const transaction = require('./api/transaction');
 const userDocument = require('./api/userDocument');
 const country = require('./api/country');
 const review = require('./api/review');
+const category = require('./api/category');
 const shippingPartner = require('./api/shippingPartner');
 const health = require('./api/health');
 const seo = require('./api/seo');
@@ -50,6 +51,7 @@ module.exports = (app) => {
   app.use('/api/userDocuments', authenticate(), userDocument);
   app.use('/api/countries', country);
   app.use('/api/reviews', review);
+  app.use('/api/categories', category);
   app.use('/api/orders', authenticate(), orders);
   app.use('/api/pricing', pricing);
   app.use('/api/packageItems', authenticate(), packageItem);

@@ -37,6 +37,7 @@ const constants = {};
   { name: 'faq', keyMap: false },
   { name: 'places', keyMap: false },
   { name: 'reviews', keyMap: false },
+  { name: 'categories', keyMap: false },
   { name: 'partner_links', keyMap: false },
 ]
   .forEach(({ name: x, keyMap = true }) => {
