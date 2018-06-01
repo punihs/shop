@@ -31,6 +31,8 @@ const shippingPartner = require('./api/shippingPartner');
 const health = require('./api/health');
 const seo = require('./api/seo');
 const faqCategory = require('./api/faqCategory');
+const place = require('./api/place');
+const store = require('./api/store');
 const webRoutes = require('./webRoutes');
 
 module.exports = (app) => {
@@ -54,6 +56,8 @@ module.exports = (app) => {
   app.use('/api/packageItemCategories', authenticate(), packageItemCategory);
   app.use('/api/users', user);
   app.use('/api/faqs', faqCategory);
+  app.use('/api/places', place);
+  app.use('/api/stores', store);
   app.get('/secured', authenticate(), (req, res) => res.json({ name, version }));
 
   app.get('/', (req, res) => res.json({ name, version }));

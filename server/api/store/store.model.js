@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     logo: DataTypes.STRING,
     type: DataTypes.STRING,
+    slug: DataTypes.STRING,
   }, {
     tableName: 'stores',
     timestamps: false,

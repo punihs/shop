@@ -35,6 +35,7 @@ const constants = {};
   { name: 'shipment_issues', keyMap: false },
   { name: 'faqCategories', keyMap: false },
   { name: 'faq', keyMap: false },
+  { name: 'places', keyMap: false },
   { name: 'reviews', keyMap: false },
   { name: 'partner_links', keyMap: false },
 ]

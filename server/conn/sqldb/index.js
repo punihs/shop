@@ -22,7 +22,7 @@ const db = {
 
 [
   // - Enums
-  'Country', 'PaymentGateway',
+  'Country', 'Place', 'PaymentGateway',
 
   // - Basic
   'User', 'UserMeta', 'Group',
@@ -53,8 +53,12 @@ const db = {
   // - faq
   'FaqCategory', 'Faq',
 
+  // - estimation
+  'Estimation',
+
   // - Reviews
   'Review',
+
 
 
   // Shoppre Digital Inspired by Marketo.com
