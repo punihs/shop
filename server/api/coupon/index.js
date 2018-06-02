@@ -1,10 +1,11 @@
 
 const express = require('express');
-const controller = require('./place.controller');
+const controller = require('./coupon.controller');
 
 const router = express.Router();
 
 router.get('/', controller.index);
-router.get('/:slug', controller.show); // - slug = countries, state, district
+router.post('/', controller.create);
+router.put('/', controller.update);
 
 module.exports = router;

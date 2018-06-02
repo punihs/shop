@@ -47,10 +47,8 @@ module.exports = function AppModel(sequelize, DataTypes) {
   App.associate = (db) => {
     App.hasMany(db.AccessToken);
     App.hasMany(db.RefreshToken);
-
-    App.belongsTo(db.User, {
-      foreignKey: 'user_id',
-    });
+    App.belongsTo(db.User);
+    App.belongsTo(db.Group);
   };
 
   return App;

@@ -55,7 +55,7 @@ const oAuthModel = {
 
         return User
           .findById(token.user_id, {
-            attributes: ['id', 'email', 'first_name', 'last_name'],
+            attributes: ['id', 'email', 'first_name', 'last_name', 'group_id'],
             raw: true,
           })
           .then((user) => {
@@ -210,7 +210,7 @@ const oAuthModel = {
 
   getUser(username, password, callback) {
     log('getUser', username, password);
-    const where = { $or: { email: username } };
+    const where = { email: username };
     return User
       .find({
         where,

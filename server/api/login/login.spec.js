@@ -4,7 +4,26 @@ const fs = require('fs');
 const app = require('../../app');
 const { root } = require('../../config/environment');
 
-describe('User Login GET /api/user/login', () => {
+describe('www Login GET /api/user/login', () => {
+  it('respond with access tokens', (done) => {
+    request(app)
+      .post('/oauth/token')
+      .send({
+        grant_type: 'client_credentials',
+        client_id: 'www',
+        client_secret: 'wwwsecret',
+      })
+      .expect('Content-Type', /json/)
+      .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
+      .expect(200)
+      .then((res) => {
+        fs.writeFileSync(`${root}/logs/www-credentials.json`, JSON.stringify(res.body));
+        done();
+      });
+  });
+});
+
+describe('member Login GET /api/user/login', () => {
   it('respond with access tokens', (done) => {
     request(app)
       .post('/oauth/token')
@@ -23,7 +42,7 @@ describe('User Login GET /api/user/login', () => {
 });
 
 
-describe('User Login GET /api/user/login', () => {
+describe('ops Login GET /api/user/login', () => {
   it('respond with access tokens', (done) => {
     request(app)
       .post('/oauth/token')

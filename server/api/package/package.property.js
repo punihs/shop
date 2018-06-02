@@ -45,6 +45,7 @@ module.exports = DataTypes => ({
   return_send: DataTypes.STRING,
   is_liquid: DataTypes.BOOLEAN,
   is_featured_seller: DataTypes.BOOLEAN,
+  is_public: { type: DataTypes.BOOLEAN, defaultValue: false },
   split_pack: DataTypes.STRING,
   info: DataTypes.STRING,
   admin_read: DataTypes.BOOLEAN,

@@ -34,6 +34,9 @@ const seo = require('./api/seo');
 const faqCategory = require('./api/faqCategory');
 const place = require('./api/place');
 const store = require('./api/store');
+const estimation = require('./api/estimation');
+const coupon = require('./api/coupon');
+const source = require('./api/source');
 const webRoutes = require('./webRoutes');
 
 module.exports = (app) => {
@@ -60,6 +63,9 @@ module.exports = (app) => {
   app.use('/api/faqs', faqCategory);
   app.use('/api/places', place);
   app.use('/api/stores', store);
+  app.use('/api/estimations', estimation);
+  app.use('/api/coupons', coupon);
+  app.use('/api/sources', source);
   app.get('/secured', authenticate(), (req, res) => res.json({ name, version }));
 
   app.get('/', (req, res) => res.json({ name, version }));

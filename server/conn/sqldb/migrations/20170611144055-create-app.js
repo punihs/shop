@@ -10,7 +10,7 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      user_id: keys('users'),
+
       port: DataTypes.STRING(5),
       name: DataTypes.STRING,
       client_id: {
@@ -19,6 +19,9 @@ module.exports = {
       },
       client_secret: DataTypes.STRING(64),
       redirect_uri: DataTypes.STRING,
+    }, {
+      user_id: keys('users'),
+      group_id: keys('groups'),
     }, timestamps(3, DataTypes)), engine);
   },
   down(queryInterface) {

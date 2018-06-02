@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'created_by',
       as: 'Creator',
     });
+    Package.belongsTo(db.Store);
   };
 
   return Package;

@@ -6,29 +6,12 @@ const log = debug('package');
 const {
   Package, Order, PackageItem, PhotoRequest, Transaction, User,
 } = require('../../conn/sqldb');
+const { index } = require('./package.service');
 
-const { PACKAGE_STATES, GROUPS: { CUSTOMER } } = require('./../../config/constants');
+exports.index = (req, res, next) => index(req)
+  .then(packages => res.json(packages))
+  .catch(next);
 
-exports.index = (req, res, next) => {
-  const { status } = req.query;
-  const options = {
-    attributes: ['id', 'received_at'],
-    limit: Number(req.query.limit) || 20,
-  };
-
-  if (req.user.group_id === CUSTOMER) {
-    options.where.customer_id = req.user.id;
-  }
-
-  const states = Object.values(PACKAGE_STATES);
-
-  if (states.includes(status)) options.where.status = status;
-
-  return Package
-    .findAll(options)
-    .then(packages => res.json(packages))
-    .catch(next);
-};
 
 exports.create = async (req, res, next) => {
   const allowed = [

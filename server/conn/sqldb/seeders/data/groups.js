@@ -5,7 +5,7 @@ module.exports = () => [
   },
   {
     id: 2,
-    name: 'Members',
+    name: 'Member',
   },
   {
     id: 3,

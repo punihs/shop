@@ -25,7 +25,7 @@ const db = {
   'Country', 'Place', 'PaymentGateway',
 
   // - Basic
-  'User', 'UserMeta', 'Group',
+  'User', 'UserMeta', 'Group', 'Estimation',
 
   // - Customer Account
   // Shoppre.com - Inspired by MyUS.com
@@ -52,10 +52,14 @@ const db = {
 
   // - faq
   'FaqCategory', 'Faq',
+  // - Coupon
+  'Coupon',
 
   // - Reviews
   'Review',
 
+  // - Estomations
+  'Estimation',
 
   // Shoppre Digital Inspired by Marketo.com
   // - Website - Google My Business - Hardy
@@ -84,7 +88,7 @@ const db = {
   'Product',
 
   'Org',
-  'ObjectType', 'Keyword', 'Seo',
+  'ObjectType', 'Keyword', 'Seo', 'Source',
 
 ].forEach((model) => {
   db[model] = db.sequelize.import(`../../api/${_.camelCase(model)}/${_.camelCase(model)}.model.js`);

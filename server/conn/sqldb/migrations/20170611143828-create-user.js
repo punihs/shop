@@ -12,9 +12,15 @@ module.exports = {
       salutation: DataTypes.STRING,
       first_name: DataTypes.STRING,
       last_name: DataTypes.STRING,
-      email: DataTypes.STRING,
+      email: {
+        type: DataTypes.STRING(64),
+        unique: true,
+      },
       password: DataTypes.STRING,
-      locker_code: DataTypes.STRING,
+      locker_code: {
+        type: DataTypes.STRING(20),
+        unique: true,
+      },
       country_code: DataTypes.STRING,
       phone: DataTypes.STRING,
       wallet_balance_amount: DataTypes.DECIMAL(15, 2),

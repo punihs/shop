@@ -39,4 +39,10 @@ module.exports = {
     PENDING: '1',
     COMPLETED: '2',
   },
+  APPS: {
+    ACCOUNTS: 1,
+    OPS: 2,
+    MEMBER: 3,
+    WWW: 4,
+  },
 };

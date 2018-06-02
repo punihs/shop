@@ -1,6 +1,6 @@
 
 
-module.exports = () => [{
+module.exports = ({ GROUPS: { MEMBER, OPS } }) => [{
   id: 1,
   name: 'Accounts',
   client_id: 'accounts',
@@ -8,6 +8,7 @@ module.exports = () => [{
   port: 5001,
   redirect_uri: '',
   user_id: 1,
+  group_id: null,
 }, {
   id: 2,
   name: 'Ops',
@@ -16,6 +17,7 @@ module.exports = () => [{
   port: 5002,
   redirect_uri: 'http://ops.shoppre.test/access/oauth',
   user_id: 1,
+  group_id: OPS,
 }, {
   id: 3,
   name: 'Membership',
@@ -24,6 +26,7 @@ module.exports = () => [{
   port: 5003,
   redirect_uri: 'http://member.shoppre.test/access/oauth',
   user_id: 1,
+  group_id: MEMBER,
 }, {
   id: 4,
   name: 'WWW',
@@ -32,4 +35,5 @@ module.exports = () => [{
   port: 5004,
   redirect_uri: 'http://www.shoppre.test/access/oauth',
   user_id: 1,
+  group_id: null,
 }];

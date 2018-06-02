@@ -13,10 +13,22 @@ describe('GET /api/places', () => {
   });
 });
 
-describe('GET /api/places/1', () => {
-  it('return /api/places/1 ', (done) => {
+describe('GET /api/places?type=indian_states', () => {
+  it('return /api/places?type=indian_states', (done) => {
     request(app)
-      .get('/api/places/1')
+      .get('/api/places?type=indian_states')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+describe('GET /api/places?type=destination_cities', () => {
+  it('return /api/places?type=destination_cities', (done) => {
+    request(app)
+      .get('/api/places?type=destination_cities')
       .expect('Content-Type', /json/)
       .expect(200)
       .then(() => {

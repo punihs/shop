@@ -20,7 +20,13 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Shipment.belongsTo(db.PaymentGateway);
-    // Shipment.belongsTo(db.City);
+    Shipment.belongsTo(db.Place, {
+      foreignKey: 'destination_city_id',
+    });
+    db.Place.hasMany(Shipment, {
+      foreignKey: 'destination_city_id',
+    });
+
     Shipment.belongsTo(db.Country);
     Shipment.belongsTo(db.ShipmentType);
     db.Country.hasMany(Shipment);

@@ -2,10 +2,9 @@
 module.exports = (constants) => {
   const {
     GROUPS: {
-      OPS, MARKETING, CUSTOMER, MANAGEMENT,
+      OPS, MEMBER, MARKETING, MANAGEMENT,
     },
   } = constants;
-
   return [
     {
       id: 1,
@@ -25,7 +24,7 @@ module.exports = (constants) => {
       email: 'venkat@gmail.com',
       phone: '919844717202',
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
-      group_id: CUSTOMER,
+      group_id: MEMBER,
     },
     {
       id: 354,
@@ -54,7 +53,7 @@ module.exports = (constants) => {
       email: 'marketing@shoppre.com',
       phone: '919844717202',
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
-      group_id: CUSTOMER,
+      group_id: MEMBER,
     },
     {
       id: 2177,
@@ -74,7 +73,7 @@ module.exports = (constants) => {
       email: 'abhinav@shoppre.com',
       phone: '919060122213',
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
-      group_id: CUSTOMER,
+      group_id: MEMBER,
     },
     {
       id: 2757,
@@ -84,7 +83,7 @@ module.exports = (constants) => {
       email: 'shilpa.humcap@gmail.com',
       phone: '919060122213',
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
-      group_id: CUSTOMER,
+      group_id: MEMBER,
     }, {
       id: 129,
       salutation: 'Mr',
@@ -93,7 +92,7 @@ module.exports = (constants) => {
       email: 'varun.murali@gmail.com',
       phone: '585410510',
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
-      group_id: CUSTOMER,
+      group_id: MEMBER,
     },
   ];
 };
