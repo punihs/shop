@@ -7,11 +7,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
-    person: DataTypes.STRING,
-    source: DataTypes.STRING,
-    review: DataTypes.TEXT,
+    name: DataTypes.STRING,
+    source_id: DataTypes.INTEGER,
+    description: DataTypes.STRING(10000),
     rating: DataTypes.INTEGER,
-    approve: DataTypes.BOOLEAN,
+    is_approved: DataTypes.BOOLEAN,
+    approved_by: DataTypes.INTEGER,
   }, {
     tableName: 'reviews',
     timestamps: true,
@@ -19,8 +20,10 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Review.associate = (db) => {
-    Review.belongsTo(db.Country);
     Review.belongsTo(db.Shipment);
+    Review.belongsTo(db.User, {
+      foreignKey: 'customer_id',
+    });
   };
 
   return Review;

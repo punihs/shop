@@ -2,7 +2,7 @@ const { Review } = require('./../../conn/sqldb');
 
 exports.index = (req, res, next) => {
   const options = {
-    attributes: ['id', 'person', 'source', 'review', 'rating', 'approve'],
+    attributes: ['id', 'name', 'source_id', 'description', 'rating', 'approved_by', 'is_approved'],
     limit: Number(req.query.limit) || 20,
     offset: Number(req.query.offset) || 0,
   };

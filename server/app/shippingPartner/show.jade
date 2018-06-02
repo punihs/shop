@@ -1,9 +1,9 @@
 extends ../layout
 block content
   head
-    title #{seo.title}
-    meta(name='description', content= '#{seo.meta_description}')
-    meta(property='og:title', content='#{seo.meta_title}')
+    title '#{title}'
+      meta(name='description', content= '#{meta_description}')
+      meta(property='og:title', content='#{meta_title}')
   .body
     .noscript
       iframe(src='https://www.googletagmanager.com/ns.html?id=GTM-NRL4B6X', height='0', width='0', style='display:none;visibility:hidden')
@@ -12,7 +12,7 @@ block content
     .row
       .col-sm-3
         .movie-card#oceans-11
-          img(src="/img/dhl.png", style='height:120px' itemprop="logo")
+          img(src="/cdn/img/dhl.png", style='height:120px' itemprop="logo")
       .col-sm-9
         h1(itemprop="name")
           | #{name}
@@ -31,19 +31,19 @@ block content
           //li
           //  a(data-toggle='tab', href='#Categories') Categories
           li
-            a(data-toggle='tab', href='#Reviews') Issues
+            a(data-toggle='tab', href='#Reviews') Reviews
           //li
           //  a(data-toggle='tab', href='#Products') Products
-          //li
-          //  a(data-toggle='tab', href='#Followers') Followers
+          li
+            a(data-toggle='tab', href='#Quicklink') Quicklinks
           //li
           //  a(data-toggle='tab', href='#Pricing') Pricing
-          //li
-          //  a(data-toggle='tab', href='#Keywords') Keywords
+          li
+            a(data-toggle='tab', href='#Issues') Issues
           //li
           //  a(data-toggle='tab', href='#QuickLinks') Quick Links
-          //li
-          //  a(data-toggle='tab', href='#Services') Services
+          li
+            a(data-toggle='tab', href='#Keywords') Keywords
 
         .tab-content
           #Countries.tab-pane.fade.in.active
@@ -92,25 +92,25 @@ block content
                     h4.f4.mb-2.text-normal Top Countries shipped
                     a.no-wrap.text-gray.d-inline-block.muted-link.mt-2(href='#')
                       span.repo-language-color.ml-0(style='background-color:#f34b7d;')
-                      span.mr-2 United States
+                      span.mr-2.mr-l United States
                     a.no-wrap.text-gray.d-inline-block.muted-link.mt-2(href='#')
                       span.repo-language-color.ml-0(style='background-color:#f1e05a;')
-                      span.mr-2 Canada
+                      span.mr-2.mr-l Canada
                     a.no-wrap.text-gray.d-inline-block.muted-link.mt-2(href='#')
                       span.repo-language-color.ml-0(style='background-color:#b07219;')
-                      span.mr-2 Australia
+                      span.mr-2.mr-l Australia
                     a.no-wrap.text-gray.d-inline-block.muted-link.mt-2(href='#')
                       span.repo-language-color.ml-0(style='background-color:#3572A5;')
-                      span.mr-2 United Kingdom
+                      span.mr-2.mr-l United Kingdom
                     a.no-wrap.text-gray.d-inline-block.muted-link.mt-2(href='#')
                       span.repo-language-color.ml-0(style='background-color:#f34b7d;')
-                      span.mr-2 Germany
+                      span.mr-2.mr-l Germany
                     a.no-wrap.text-gray.d-inline-block.muted-link.mt-2(href='#')
                       span.repo-language-color.ml-0(style='background-color:#f1e05a;')
-                      span.mr-2 Sri Lanka
+                      span.mr-2.mr-l Sri Lanka
                     a.no-wrap.text-gray.d-inline-block.muted-link.mt-2(href='#')
                       span.repo-language-color.ml-0(style='background-color:#438eff;')
-                      span.mr-2 New Zealand
+                      span.mr-2.mr-l New Zealand
                 .Box.mb-3
                   .Box-body
                     .d-inline-flex.flex-justify-between.flex-items-baseline.width-full.mb-2
@@ -126,47 +126,6 @@ block content
                         | Branded Food Items
                       a.topic-tag.topic-tag-link(href='#', data-ga-click='Topic, org profile', data-octo-click='topic_click', data-octo-dimensions='topic:hacklang,org:facebook')
                         | Sports Accessories
-                .Box.mb-3
-                  .Box-body
-                    a.d-block.text-gray-dark(href='#', data-ga-click='Orgs, go to people, location:profile people module; text:People')
-                      span.float-right.f5.text-gray
-                        | 197
-                        svg.octicon.octicon-chevron-right(viewbox='0 0 8 16', version='1.1', width='8', height='16', aria-hidden='true')
-                          path(fill-rule='evenodd', d='M7.5 8l-5 5L1 11.5 4.75 8 1 4.5 2.5 3l5 5z')
-                      h4.f4.text-normal.mb-3 Recent Users
-                    .member-avatar-group.d-flex.flex-wrap
-                      a.member-avatar(href='', data-ga-click='Orgs, go to person, location:profile people module; text:username')
-                        img.avatar(src='https://avatars2.githubusercontent.com/u/7413593?s=96&v=4', width='48', height='48', alt='@a8m')
-                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
-                        img.avatar(src='https://avatars0.githubusercontent.com/u/940133?s=96&v=4', width='48', height='48', alt='@aaronabramov')
-                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
-                        img.avatar(src='https://avatars0.githubusercontent.com/u/342363?s=96&v=4', width='48', height='48', alt='@aarondraczynski')
-                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
-                        img.avatar(src='https://avatars3.githubusercontent.com/u/1156489?s=96&v=4', width='48', height='48', alt='@abhshkdz')
-                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
-                        img.avatar(src='https://avatars0.githubusercontent.com/u/3624098?s=96&v=4', width='48', height='48', alt='@acdlite')
-                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
-                        img.avatar(src='https://avatars3.githubusercontent.com/u/634414?s=96&v=4', width='48', height='48', alt='@adamgross42')
-                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
-                        img.avatar(src='https://avatars3.githubusercontent.com/u/7844509?s=96&v=4', width='48', height='48', alt='@AGS-')
-                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
-                        img.avatar(src='https://avatars1.githubusercontent.com/u/59670?s=96&v=4', width='48', height='48', alt='@AhmedSoliman')
-                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
-                        img.avatar(src='https://avatars3.githubusercontent.com/u/136692?s=96&v=4', width='48', height='48', alt='@ajma')
-                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
-                        img.avatar(src='https://avatars1.githubusercontent.com/u/4343641?s=96&v=4', width='48', height='48', alt='@ajoulin')
-                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
-                        img.avatar(src='https://avatars3.githubusercontent.com/u/71258?s=96&v=4', width='48', height='48', alt='@alanho')
-                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
-                        img.avatar(src='https://avatars0.githubusercontent.com/u/703628?s=96&v=4', width='48', height='48', alt='@alexanderGugel')
-                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
-                        img.avatar(src='https://avatars2.githubusercontent.com/u/2635915?s=96&v=4', width='48', height='48', alt='@AlexGaspar')
-                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
-                        img.avatar(src='https://avatars1.githubusercontent.com/u/1141354?s=96&v=4', width='48', height='48', alt='@alexholdenmiller')
-                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
-                        img.avatar(src='https://avatars2.githubusercontent.com/u/3639670?s=96&v=4', width='48', height='48', alt='@alexmckenley')
-                      a.member-avatar(href='#', data-ga-click='Orgs, go to person, location:profile people module; text:username')
-                        img.avatar(src='https://avatars0.githubusercontent.com/u/10272583?s=96&v=4', width='48', height='48', alt='@amanrajdce')
 
 
           #Categories.tab-pane.fade
@@ -211,29 +170,32 @@ block content
                         li: a(href='#' itemprop="sameAs") Counterfeit or Pirated goods or material
 
           #Reviews.tab-pane.fade
-            h3 shipping issues
-              row
-                br
-                .col-sm-4
-                  table(border='1px' style='text-align:center')
-                    thead
-                      tr
-                        th ID
-                        th Issue Name
-                        th Description
-                          tbody
-                            each issue in shippingissue
-                              tr
-                                td
-                                  h5= issue.id
-                                td
-                                  h5= issue.name
-                                td
-                                  h5= issue.des
-
+            row
+              br
+              br
+              br
+              .col-sm-12
+                table(border='1px' style='text-align:center')
+                  thead
+                    tr
+                      th Customer
+                      th Source
+                      th Reviews
+                      th Rating
+                        tbody
+                          each review in reviews
+                            tr
+                              td
+                                h5= review.name
+                              td
+                                h5= review.source_id
+                              td
+                                h5= review.description
+                              td
+                                h5= review.rating
 
           #Products.tab-pane.fade
-            h3 Products
+            h3#prod Products
             .row
               .col-sm-12
                 .panel.panel-default
@@ -256,19 +218,52 @@ block content
                         li: a(href='#' itemprop="sameAs") Predictable lead times for all your freight consignments allowing you to timetable your business with total confidence
                         li: a(href='#' itemprop="sameAs") GPS-equipped trucks ensure stable & safe truck monitoring and complete shipment track and trace visibility
 
-          #Followers.tab-pane.fade
-            h3 Followers
-            p
-              | Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+          #Quicklink.tab-pane.fade
+            row
+              br
+              br
+              br
+              .col-sm-12
+                table(border='1px' style='text-align:left')
+                  thead
+                    tr
+                      th Source
+                      th Quick Links
+
+                        tbody
+                          each link in links
+                            tr
+                              td
+                                h5= link.name
+                              td
+                                a(href='#{link.url}', target='_black') #{link.url}
+
           #Pricing.tab-pane.fade
             h3 Pricing
             p
               | Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
 
-          #Keywords.tab-pane.fade
-            h3 Keywords
-            p
-              | Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+          #Issues.tab-pane.fade
+            row
+              br
+              br
+              br
+              .col-sm-4
+                table(border='1px' style='text-align:center')
+                  thead
+                    tr
+                      th ID
+                      th Summary
+                      th Description
+                        tbody
+                          each issue in shipmentissues || []
+                            tr
+                              td
+                                h5= issue.id
+                              td
+                                h5= issue.name
+                              td
+                                h5= issue.des
           #QuickLinks.tab-pane.fade
             h3 Quick Links
             .row
@@ -294,10 +289,21 @@ block content
                         li: a(href='https://www.logistics.dhl/in-en/home/tracking.html' itemprop="sameAs") Shipment Tracking
                         li: a(href='http://www.dhl.co.in/en/express/shipping/shipping_advice/terms_conditions.html' itemprop="sameAs") Terms and Conditions
                         li: a(href='http://www.dhl.co.in/en/express/shipping/shipping_advice/dangerous_goods.html' itemprop="sameAs") Dangerous Goods
-          #Services.tab-pane.fade
-            h3 Services
-            p
-              | Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+          #Keywords.tab-pane.fade
+            row
+              br
+              br
+              br
+              .col-sm-12
+                table(border='1px' style='text-align:left')
+                  thead
+                    tr
+                      th Keywords
+                        tbody
+                          each keyword in keywords
+                            tr
+                              td
+                                h5= keyword.name
 
 
     .row

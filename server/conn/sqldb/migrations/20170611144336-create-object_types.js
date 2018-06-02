@@ -10,6 +10,7 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
+      org_id: keys('orgs'),
       created_by: keys('users'),
       name: DataTypes.STRING,
       name_plural: DataTypes.STRING,

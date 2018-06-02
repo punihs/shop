@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false,
     underscored: true,
   });
+  ObjectType.associate = (db) => {
+    ObjectType.belongsTo(db.Org);
+  };
 
   return ObjectType;
 };

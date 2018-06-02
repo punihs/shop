@@ -1,4 +1,4 @@
-const { engine, timestamps } = require('../helper.js');
+const { engine, timestamps, keys } = require('../helper.js');
 
 module.exports = {
   up: (queryInterface, DataTypes) => queryInterface.createTable('keywords', Object.assign({
@@ -8,8 +8,9 @@ module.exports = {
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    object_type_id: DataTypes.STRING,
     name: DataTypes.STRING,
+    object_type_id: keys('object_types'),
+    object_id: DataTypes.INTEGER,
   }, timestamps(3, DataTypes)), engine),
   down(queryInterface) {
     return queryInterface.dropTable('keywords');

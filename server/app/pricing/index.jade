@@ -1,0 +1,1018 @@
+extends ../layout
+block content
+  head
+    title '#{title}'
+    meta(name='description', content= '#{meta_description}')
+    meta(property='og:title', content='#{meta_title}')
+  .body
+
+    section.page_head
+      .pagebanner
+        img(src='https://www.shoppre.com/img/banner.jpg', width='100%')
+        .banner-cap
+          h2 PRICING
+          h2
+            | THAT
+            span.text-orange NEVER
+            |  BUSTS YOUR WALLET
+    section.white-band
+      h2 Want something from India?
+      h3 SHOP ONLINE WITH A SHOPPRE VIRTUAL ADDRESS AND PERSONAL LOCKER NUMBER!
+      p
+        | Tell us where you want to send your parcel and get
+        span.text-orange Upfront Pricing
+        | ; get your
+        |             parcel in just 2-5 Days!
+      p
+        | Save upto 60-80% on Shipping Costs, through
+        span.text-orange Shoppre’s Cost-saving Services!
+    section.shipping-calculator
+      .container
+        .head
+          h2 Get Shipping Rates
+          span
+            | The chargeable weight is always the greater of the two :
+            br
+            |             The actual or the volumetric weight.
+        .col-md-7
+          .calculator.block
+            h3.text-red INTERNATIONAL SHIPPING CALCULATOR
+            h4 (From your Shoppre Locker in Bengaluru to your doorstep Abroad)
+            span#calc_error
+              | Sorry! No delivery options available in requested country. Please contact our support team for assistance.
+            form#shipping.calc-form
+              input(type='hidden', name='_token', value='T2nOMNtS9sZFcQQVkDkJE8AsVh4b3fWG646pipqq')
+              .form-group
+                label.col-sm-12 Where do you want to send your package?
+                .col-sm-12
+                  select.form-control.select2(name='country')
+                    option(value='') Select Country
+                    option(value='1') Afghanistan
+                    option(value='2') Albania
+                    option(value='3') Algeria
+                    option(value='4') American Samoa
+                    option(value='5') Andorra
+                    option(value='6') Angola
+                    option(value='7') Anguilla
+                    option(value='9') Antigua and Barbuda
+                    option(value='10') Argentina
+                    option(value='11') Armenia
+                    option(value='12') Aruba
+                    option(value='13') Australia
+                    option(value='14') Austria
+                    option(value='15') Azerbaijan
+                    option(value='16') Bahamas
+                    option(value='17') Bahrain
+                    option(value='18') Bangladesh
+                    option(value='19') Barbados
+                    option(value='20') Belarus
+                    option(value='21') Belgium
+                    option(value='22') Belize
+                    option(value='23') Benin
+                    option(value='24') Bermuda
+                    option(value='25') Bhutan
+                    option(value='26') Bolivia
+                    option(value='27') Bosnia and Herzegovina
+                    option(value='28') Botswana
+                    option(value='30') Brazil
+                    option(value='32') Brunei
+                    option(value='33') Bulgaria
+                    option(value='34') Burkina Faso
+                    option(value='35') Burundi
+                    option(value='36') Cambodia
+                    option(value='37') Cameroon
+                    option(value='38') Canada
+                    option(value='39') Cape Verde
+                    option(value='40') Cayman Islands
+                    option(value='41') Central African Republic
+                    option(value='42') Chad
+                    option(value='43') Chile
+                    option(value='44') China
+                    option(value='47') Colombia
+                    option(value='48') Comoros
+                    option(value='49') Congo
+                    option(value='50') Congo
+                    option(value='51') Cook Islands
+                    option(value='52') Costa Rica
+                    option(value='53') Cote D'Ivoire
+                    option(value='54') Croatia
+                    option(value='55') Cuba
+                    option(value='56') Cyprus
+                    option(value='57') Czech Republic
+                    option(value='58') Denmark
+                    option(value='59') Djibouti
+                    option(value='60') Dominica
+                    option(value='61') Dominican Republic
+                    option(value='62') Ecuador
+                    option(value='63') Egypt
+                    option(value='64') El Salvador
+                    option(value='66') Eritrea
+                    option(value='67') Estonia
+                    option(value='68') Ethiopia
+                    option(value='69') Falkland Islands (Malvinas)
+                    option(value='70') Faroe Islands
+                    option(value='71') Fiji
+                    option(value='72') Finland
+                    option(value='73') France
+                    option(value='74') French Guyana
+                    option(value='77') Gabon
+                    option(value='78') Gambia
+                    option(value='79') Georgia
+                    option(value='80') Germany
+                    option(value='81') Ghana
+                    option(value='82') Gibraltar
+                    option(value='83') Greece
+                    option(value='84') Greenland
+                    option(value='85') Grenada
+                    option(value='86') Guadeloupe
+                    option(value='87') Guam
+                    option(value='88') Guatemala
+                    option(value='65') Guinea - Equatorial
+                    option(value='45') Guinea Republic
+                    option(value='90') Guinea-Bissau
+                    option(value='75') Guyana (British)
+                    option(value='92') Haiti
+                    option(value='95') Honduras
+                    option(value='96') Hong Kong
+                    option(value='97') Hungary
+                    option(value='98') Iceland
+                    option(value='99') India
+                    option(value='100') Indonesia
+                    option(value='101') Iran
+                    option(value='102') Iraq
+                    option(value='103') Ireland, Republic of
+                    option(value='104') Israel
+                    option(value='105') Italy
+                    option(value='106') Jamaica
+                    option(value='107') Japan
+                    option(value='108') Jordan
+                    option(value='109') Kazakhstan
+                    option(value='110') Kenya
+                    option(value='111') Kiribati
+                    option(value='114') Kuwait
+                    option(value='115') Kyrgyzstan
+                    option(value='116') Laos
+                    option(value='117') Latvia
+                    option(value='118') Lebanon
+                    option(value='119') Lesotho
+                    option(value='120') Liberia
+                    option(value='121') Libya
+                    option(value='122') Liechtenstein
+                    option(value='123') Lithuania
+                    option(value='124') Luxembourg
+                    option(value='125') Macao
+                    option(value='126') Macedonia
+                    option(value='127') Madagascar
+                    option(value='128') Malawi
+                    option(value='129') Malaysia
+                    option(value='130') Maldives
+                    option(value='131') Mali
+                    option(value='132') Malta
+                    option(value='133') Marshall Islands
+                    option(value='134') Martinique
+                    option(value='135') Mauritania
+                    option(value='136') Mauritius
+                    option(value='137') Mayotte
+                    option(value='138') Mexico
+                    option(value='139') Micronesia, Federated States of
+                    option(value='140') Moldova
+                    option(value='141') Monaco
+                    option(value='142') Mongolia
+                    option(value='91') Montenegro
+                    option(value='143') Montserrat
+                    option(value='144') Morocco
+                    option(value='145') Mozambique
+                    option(value='146') Myanmar
+                    option(value='147') Namibia
+                    option(value='148') Nauru
+                    option(value='149') Nepal
+                    option(value='150') Netherlands, The
+                    option(value='152') New Caledonia
+                    option(value='153') New Zealand
+                    option(value='154') Nicaragua
+                    option(value='155') Niger
+                    option(value='156') Nigeria
+                    option(value='159') Niue
+                    option(value='112') North Korea
+                    option(value='158') Norway
+                    option(value='161') Oman
+                    option(value='162') Pakistan
+                    option(value='163') Palau
+                    option(value='165') Panama
+                    option(value='166') Papua New Guinea
+                    option(value='167') Paraguay
+                    option(value='168') Peru
+                    option(value='169') Philippines,The
+                    option(value='171') Poland
+                    option(value='172') Portugal
+                    option(value='173') Puerto Rico
+                    option(value='174') Qatar
+                    option(value='175') Reunion, Island of
+                    option(value='176') Romania
+                    option(value='177') Russian Federation, The
+                    option(value='178') Rwanda
+                    option(value='179') Saint Helena
+                    option(value='180') Saipan
+                    option(value='184') Samoa
+                    option(value='185') San Marino
+                    option(value='186') Sao Tome and Principe
+                    option(value='187') Saudi Arabia
+                    option(value='188') Senegal
+                    option(value='189') Serbia
+                    option(value='190') Seychelles
+                    option(value='191') Sierra Leone
+                    option(value='192') Singapore
+                    option(value='193') Slovakia
+                    option(value='194') Slovenia
+                    option(value='195') Solomon Islands
+                    option(value='196') Somalia
+                    option(value='197') South Africa
+                    option(value='113') South Korea
+                    option(value='199') Spain
+                    option(value='200') Sri Lanka
+                    option(value='203') St. Barthelemy
+                    option(value='151') St. Eustatius
+                    option(value='170') St. Lucia
+                    option(value='181') St. Maarten
+                    option(value='182') St. Vincent
+                    option(value='201') Sudan
+                    option(value='183') Suriname
+                    option(value='204') Swaziland
+                    option(value='205') Sweden
+                    option(value='206') Switzerland
+                    option(value='207') Syria
+                    option(value='208') Taiwan
+                    option(value='209') Tajikistan
+                    option(value='210') Tanzania
+                    option(value='211') Thailand
+                    option(value='213') Togo
+                    option(value='214') Tokelau
+                    option(value='215') Tonga
+                    option(value='216') Trinidad and Tobago
+                    option(value='217') Tunisia
+                    option(value='218') Turkey
+                    option(value='219') Turkmenistan
+                    option(value='220') Turks and Caicos Islands
+                    option(value='221') Tuvalu
+                    option(value='222') Uganda
+                    option(value='223') Ukraine
+                    option(value='224') United Arab Emirates
+                    option(value='225') United Kingdom
+                    option(value='226', selected='') United States
+                    option(value='228') Uruguay
+                    option(value='229') Uzbekistan
+                    option(value='230') Vanuatu
+                    option(value='94') Vatican City State
+                    option(value='231') Venezuela
+                    option(value='232') Vietnam
+                    option(value='233') Virgin Islands (British)
+                    option(value='234') Virgin Islands (U.S.)
+                    option(value='235') Wallis and Futuna
+                    option(value='236') Western Sahara
+                    option(value='237') Yemen
+                    option(value='238') Zambia
+                    option(value='239') Zimbabwe
+                .clearfix
+              .form-group
+                label.col-sm-5.control-label(style='top: 8px;') What is your package type?
+                .col-sm-7
+                  .radio
+                    label.checkbox-inline
+                      input(type='radio', name='type', value='nondoc', checked='')
+                      | Non Document
+                  .radio
+                    label.checkbox-inline
+                      input(type='radio', name='type', value='doc')
+                      | Document
+                .clearfix
+              .form-group
+                label.col-sm-12.control-label How much does your package weigh?
+                .col-sm-6
+                  input.form-control(type='text', value='1', name='weight', placeholder='Enter Weight')
+                .col-sm-6
+                  .radio
+                    label.checkbox-inline
+                      input(type='radio', name='unit', value='kg', checked='')
+                      | Kilograms
+                  .radio
+                    label.checkbox-inline
+                      input(type='radio', name='unit', value='lbs')
+                      | Pounds
+                .clearfix
+              .form-group
+                label.col-sm-8.control-label(style='top: 8px;')
+                  | What are the dimensions of your
+                  | package?
+                .col-sm-4
+                  .radio
+                    label.checkbox-inline
+                      input(type='radio', name='scale', value='cm', checked='')
+                      | cm
+                  .radio
+                    label.checkbox-inline
+                      input(type='radio', name='scale', value='in')
+                      | in
+                .clearfix
+              .form-group.smallboxs
+                .col-sm-3
+                  input.form-control(type='text', name='length')
+                  strong Length
+                .col-sm-3
+                  input.form-control(type='text', name='width')
+                  strong Width
+                .col-sm-3
+                  input.form-control(type='text', name='height')
+                  strong Height
+                .clearfix
+              .clearfix
+              .col-sm-12
+                button.btn.btn-block.btn-shoppre(type='submit') GET UPFRONT SHIPPING RATES
+              .clearfix
+            #ship_result.calc-result
+              h4.text-red ESTIMATED SHIPPING COST*
+              p.info
+                | Best carrier will be automatically chosen according to your country and weight
+                | of shipment. We use trusted courier services like DHL, FedEx and DTDC.
+              .result.table-responsive
+                table#prices.table.table-bordered
+              ul.points
+                li
+                  span.text-red *
+                  |  The chargeable weight is always the greater of the two:
+                  |                                 Volumetric or the Actual weight.
+                li
+                  span.text-red *
+                  |  The rates displayed are INCLUSIVE of the fuel surcharge
+                  |                                 and taxes within India.
+                li
+                  span.text-red *
+                  |  You may need to pay duties or tax when your shipment
+                  |                                 arrives, as per the import law of the receiving country.
+                li
+                  span.text-red *
+                  |  Excludes oversized and palletized shipments, and special
+                  |                                 products (liquids, homemade food, etc.)
+                li
+                  span.text-red **
+                  |  After dispatch from Shoppre facility. Does not apply to
+                  |                                 ship requests made after 3pm IST on Saturdays, or on holidays. Shipments that may
+                  |                                 require additional time include those containing items under review or hazardous
+                  |                                 materials, oversized packages or where additional export documentation is required.
+                li
+                  span.text-red **
+                  |  For electronics items , INR 500 will be charged additionally.
+            #calc_load
+          .parcelsample
+            h5 Centimeter/Inch Conversion
+            p
+              | 1 in = 2.54 cm
+              span (1 cm = 0.3937 in)
+            h5 Kilogram/Pound Conversion
+            p
+              | 1 lbs = 0.4536 Kg
+              span (1 Kg = 2.2046 lbs)
+            h5 Parcel Sample :
+            img(src='https://www.shoppre.com/img/parcelsample.png')
+        .col-md-5
+          .getquote.block
+            h3 DOMESTIC SHIPMENT
+            h4 (From your Shoppre Locker in Bengaluru to any city in India)
+            form#form_quote.quote-form.calc-form(method='post')
+              input(type='hidden', name='_token', value='T2nOMNtS9sZFcQQVkDkJE8AsVh4b3fWG646pipqq')
+              .form-group
+                label.col-sm-12 Where do you want to send your package?
+                .col-sm-12
+                  select.form-control(name='state')
+                    option(value='') Select State
+                    option(value='Andhra Pradesh') Andhra Pradesh
+                    option(value='Arunachal Pradesh') Arunachal Pradesh
+                    option(value='Assam') Assam
+                    option(value='Bihar') Bihar
+                    option(value='Chhattisgarh') Chhattisgarh
+                    option(value='Goa') Goa
+                    option(value='Gujarat') Gujarat
+                    option(value='Haryana') Haryana
+                    option(value='Himachal Pradesh') Himachal Pradesh
+                    option(value='Jammu & Kashmir') Jammu & Kashmir
+                    option(value='Jharkhand') Jharkhand
+                    option(value='Karnataka') Karnataka
+                    option(value='Kerala') Kerala
+                    option(value='Madhya Pradesh') Madhya Pradesh
+                    option(value='Maharashtra') Maharashtra
+                    option(value='Manipur') Manipur
+                    option(value='Meghalaya') Meghalaya
+                    option(value='Mizoram') Mizoram
+                    option(value='Nagaland') Nagaland
+                    option(value='Odisha') Odisha
+                    option(value='Punjab') Punjab
+                    option(value='Rajasthan') Rajasthan
+                    option(value='Sikkim') Sikkim
+                    option(value='Tamil Nadu') Tamil Nadu
+                    option(value='Tripura') Tripura
+                    option(value='Uttarakhand') Uttarakhand
+                    option(value='Uttar Pradesh') Uttar Pradesh
+                    option(value='West Bengal') West Bengal
+                    option(value='Andaman & Nicobar') Andaman & Nicobar
+                    option(value='Chandigarh') Chandigarh
+                    option(value='Dadra and Nagar Haveli') Dadra and Nagar Haveli
+                    option(value='Daman & Diu') Daman & Diu
+                    option(value='Delhi') Delhi
+                    option(value='Lakshadweep') Lakshadweep
+                    option(value='Puducherry') Puducherry
+                .clearfix
+              .form-group
+                .col-sm-6
+                  label City
+                  input.form-control(type='text', name='city', placeholder='City')
+                .col-sm-6
+                  label Pin Code
+                  input.form-control(type='text', name='pin', placeholder='PIN')
+                .clearfix
+              .form-group
+                label.col-sm-4.control-label What is your package type?
+                .col-sm-8
+                  .radio
+                    label.checkbox-inline
+                      input(type='radio', name='type', value='nondoc', checked='')
+                      | Non Document
+                  .radio
+                    label.checkbox-inline
+                      input(type='radio', name='type', value='doc')
+                      | Document
+                .clearfix
+              .form-group
+                label.col-sm-12.control-label How much does your package weigh?
+                .col-sm-5
+                  input.form-control(type='text', name='weight', placeholder='Enter Weight')
+                .col-sm-7
+                  .radio
+                    label.checkbox-inline
+                      input(type='radio', name='unit', value='kg', checked='')
+                      | Kilograms
+                  .radio
+                    label.checkbox-inline
+                      input(type='radio', name='unit', value='lbs')
+                      | Pounds
+              .form-group
+                label.col-sm-8.control-label(style='top: 8px;')
+                  | What are the dimensions of your
+                  | package?
+                .col-sm-4
+                  .radio
+                    label.checkbox-inline
+                      input(type='radio', name='scale', value='cm', checked='')
+                      | cm
+                  .radio
+                    label.checkbox-inline
+                      input(type='radio', name='scale', value='in')
+                      | in
+                .clearfix
+              .form-group.smallboxs
+                .col-sm-4
+                  input.form-control(type='text', name='length')
+                  strong Length
+                .col-sm-4
+                  input.form-control(type='text', name='width')
+                  strong Width
+                .col-sm-4
+                  input.form-control(type='text', name='height')
+                  strong Height
+                .clearfix
+              .form-group(style='margin-top: 8px;')
+                label.col-sm-12.control-label Your Email Address
+                .col-sm-12
+                  input.form-control(type='text', name='email', placeholder='Email Address')
+              .form-group(style='margin-top: 8px;')
+                label.col-sm-12.control-label Your Mobile Number
+                .col-sm-12
+                  input.form-control(type='text', name='mobile', placeholder='Mobile Number')
+              .form-group
+                .col-sm-12
+                  button#quote_submit.btn.btn-block.btn-shoppre(type='submit')
+                    | Get A Quote
+                  #quote_result
+                    | Your enquiry has been submited! Our team will contact you soon.
+                  #quote_error
+                    | Sorry! We can't process your request right now. Please try again
+                    | later.
+                .clearfix
+            .clearfix
+            #quote_load.ajaxloader
+          .block.pickup
+            .text-center
+              h3 SCHEDULE A PICK-UP
+              p Where do you want to send package?
+            ul
+              h4 DOMESTIC SHIPMENT
+              li From any city in India to your Shoppre locker in Bengaluru
+              li From any city in India to any other city in India
+            ul
+              h4 INTERNATIONAL SHIPMENT
+              li From Bengaluru, directly to your doorstep abroad
+              li From any city in India, directly to your doostep abroad
+            a.btn.btn-block.btn-shoppre(href='https://www.shoppre.com/schedule-pickup')
+              | FILL THE FORM TO HEAR
+              | BACK FROM US
+        .clearfix
+    section.pricing_plans
+      .container
+        .col-sm-10.col-sm-offset-1
+          .title
+            h1
+              span.text-red No
+              |  Membership Plans
+            h2.text-orange START SAVING UP TO 60-80% ON INTERNATIONAL SHIPPING RATES TODAY!
+            p
+              | All Shoppre members receive our world-class customer service and express door-to-door delivery
+              | options.
+            strong Pay ONLY when you choose to use any of our services!
+          .table-responsive
+            table.table.table-bordered
+              tr
+                th Services
+                th.text-center Cost
+              tr
+                td
+                  | Receive your own Indian Shipping Address & Personal Locker
+                  a.tooltipkey(href='#', title='Receive your own Locker space in\
+                  Bengaluru as soon as you sign up with Shoppre! Use the Shipping Address\
+                  given to you to shop from ANY Indian Online Store.')
+                    i.fa.fa-question-circle-o
+                td.cell-2 Free
+              tr
+                td
+                  | Receive Parcels
+                  a.tooltipkey(href='#', title='All your purchases from various Indian Stores\
+                  arrive to your Shoppre Address. It is absolutely free for\
+                  Shoppre to login all your parcels into your locker and to\
+                  your account.')
+                    i.fa.fa-question-circle-o
+                td.cell-2 Free
+              tr
+                td
+                  | Shoppre Shipping Discount
+                  a.tooltipkey(href='#', title='Shoppre’s long term partnership with\
+                  trusted courier companies like DHL, FedEx, DTDC\
+                  and more, gives us amazing shipping rates thanks\
+                  to our bulk shipments every month. This means more\
+                  savings for you as our customer! (Extra Shipping Discounts\
+                  apply if you choose Shoppre as your Shipping Partner).')
+                    i.fa.fa-question-circle-o
+                td.cell-2 Free
+              tr
+                td
+                  | Service Tax in India
+                  a.tooltipkey(href='#', title='You do not have to pay any extra Sales Tax in India.\
+                  Our rates are inclusive of fuel surcharge and tax in India.\
+                  However, you might have to check the import rules of your country\
+                  to know if you have to pay any cash amount to your carrier at the\
+                  time of receving your parcel.')
+                    i.fa.fa-question-circle-o
+                td.cell-2 No Extra Service Tax
+              tr
+                td
+                  | Package Consolidation
+                  a.tooltipkey(href='#', title='Shoppre’s packing experts will\
+                  combine multiple packages into one, for maximum shipping cost\
+                  savings. This way, you have to pay for the first half kg rate\
+                  (which is the most expensive rate) only once. At times, some of\
+                  your package that arrives at our facility might contain more than\
+                  1 item. While preparing your final shipment, we charge only per\
+                  package, and not per item. ')
+                    i.fa.fa-question-circle-o
+                td.cell-2
+                  | INR 100 per extra package
+                  span (not per extra item)
+              tr
+                td
+                  | Package Repacking
+                  a.tooltipkey(href='#', title='We usually repack all the necessary\
+                  items (items which arrive at our facility in\
+                  big boxes) in order to reduce the dimensional weight\
+                  for FREE of cost (except Shoe Boxes which you will have\
+                  to choose separately to discard).')
+                    i.fa.fa-question-circle-o
+                td.cell-2 Free
+              tr
+                td
+                  | Package Storage
+                  a.tooltipkey(href='#', title='Purchases are securely housed in our facility,\
+                  allowing time for multiple package delivery and maximum\
+                  consolidation savings. ')
+                    i.fa.fa-question-circle-o
+                td.cell-2
+                  | Free upto 20 days
+                  span (INR 100 for every extra day)
+              tr
+                td
+                  | Package Photo Service
+                  a.tooltipkey(href='#', title='Basic Photos: We take upto 5 Basic photographs of all\
+                  your items. Additional Photos: You can also request upto 10\
+                  Additional Photos (incase you want some more details or if\
+                  you want to inspect if the items are not damaged).Scan\
+                  Documents: We can scan your documents (2 kgs and below)\
+                  for a cost of INR 40/page (minimum INR 100).')
+                    i.fa.fa-question-circle-o
+                td.cell-2
+                  | INR 50 (Basic Photos)
+                  br
+                  span INR 500 (Additional Photos)
+              tr
+                td
+                  | Personal Shopper Service
+                  a.tooltipkey(href='#', title='Shoppre’s Personal Shopper Team will purchase the\
+                  items on your behalf incase some Indian Websites does not\
+                  accept International Card Payment, or requires you to register\
+                  with an active Indian Mobile number. Personal Shopper orders\
+                  with more than 15 items per online seller will incur an INR\
+                  50 per item cost for every item over 15. ')
+                    i.fa.fa-question-circle-o
+                td.cell-2
+                  | 7% of the item value
+                  span (Minimum INR 200)
+              tr
+                td
+                  | Special Package Clearance Fee
+                  a.tooltipkey(href='#', title='Any Package which requires Special Handling\
+                  will be prompted via email to you. All liquids/\
+                  semi-liquids/ homemade food/ medicines/ ayurvedic\
+                  products/ dangerous goods like nail polish,  etc.\
+                  will incur a customs clearance charge.The costs might\
+                  not be limited to the given cost for all cases (for\
+                  eg, in cases of shipping heavy weight objects or\
+                  heavy volume dangerous goods such as paints, etc.) -\
+                  costs could vary, and we shall inform you via\
+                  email. ')
+                    i.fa.fa-question-circle-o
+                td.cell-2
+                  | 0.5 kg to 5 kg  = INR 1150/Shipment
+                  br
+                  |                                 5 kg to 10 kg   = INR 1650/Shipment
+                  br
+                  |                                 10 kg to 15 kg  = INR 2750/Shipment
+                  br
+                  |                                 Above 15kg 	    = INR 3150/Shipment
+              tr
+                td
+                  | Pick-up Service
+                  a.tooltipkey(href='#', title='You can request Shoppre to pick-up your items\
+                  from any city in India!')
+                    i.fa.fa-question-circle-o
+                td.cell-2
+                  span From Bangalore:
+                  |                                 INR 40/kg, Min INR 100
+                  span From any other city in India:
+                  |                                 INR 50/kg, Min INR 200
+              tr
+                td
+                  | Receive Mail (post)
+                  a.tooltipkey(href='#', title='Shoppre charges an additional amount of INR 100 for\
+                  receiving a package which is considered as a document\
+                  (2 kg and below). Shipping charges of Documents slightly vary\
+                  from that of Non-documents.As of now the same is FREE of cost. ')
+                    i.fa.fa-question-circle-o
+                td.cell-2
+                  strike INR 100
+                  |  Free
+              tr
+                td
+                  | Real-time Shipment Tracking
+                  a.tooltipkey(href='#', title='You will receive carrier tracking information\
+                  as soon as your package leaves the Shoppre facility.')
+                    i.fa.fa-question-circle-o
+                td.cell-2 Free
+              tr
+                td
+                  | Package Return Services
+                  a.tooltipkey(href='#', title='Once the item arrives at our facility, if you feel\
+                  the item is not as per your expectation or is damaged,\
+                  it can be exchanged/returned to the seller (as per the\
+                  seller exchange/return policy). You will be responsible for\
+                  all return shipping fees as well (if needed). If it has to\
+                  be couriered to sender’s destination by Shoppre, charges\
+                  as per domestic shipping rates will be considered.')
+                    i.fa.fa-question-circle-o
+                td.cell-2 INR 400
+              tr
+                td
+                  | Shipping Preferences
+                  a.tooltipkey(href='#', title='Shoppre gives you various shipping preference\
+                  options to choose from!')
+                    i.fa.fa-question-circle-o
+                td.cell-2
+                  a(href='https://myaccount.shoppre.com/shipping-preferences')
+                    | Click
+                    | here to know your options
+              tr
+                td(style='border-color: #ffffff;border-right-color: #87bc00;')
+                td(style='padding: 0 !important;border-color: #87bc00;')
+                  a.btn.btn-block(href='https://myaccount.shoppre.com/register') Sign up for free
+    section.price_cguide
+      .container
+        h2 Country Guides
+        p
+          | Each country has its own customs laws and the duties for diifferent types of goods and values are set
+          | locally.All our international courier partners must adhere to local customs legislation and will pay
+          | duties on the receiver’s behalf to clear shipments on aarival.The goods will be released to you upon the
+          | full repayment of any duties and taxes that were paid on your behalf.
+        h4 Find helpful information specific to your country, including :
+        ul
+          li Shipping costs
+          li Duties and taxes
+          li Restricted & prohibited items
+          li Current exchange rates
+          li Typical transit times
+          li Country alerts
+        a.btn.btn-shoppre(href='javascript:void(0)') Learn More
+    section.testimonails
+      .container
+        .row
+          .col-sm-4
+            .square-box
+              h3 What Our
+              h2
+                | Members
+                span.orange Say!
+          .col-sm-8
+            .testimons.owl-carousel
+              .item
+                .col-sm-3.text-center
+                  img.img-circle(src='https://www.shoppre.com/img/flags/united-arab-emirates.jpg')
+                .col-sm-9
+                  p
+                    | 5 stars I am giving because of the communication,notifications;on time support, special care packaging and the  most important thing that we all look for is the affordable pricing for the shipping charges that does not break your wallet.their team members also helped by sending me photos of the products that I got which I bought online.in this way you will know  the products are same that you shopped online in terms of colour ,size and design and also one feature is that they could do personal shopper for you as well.if you want something then you can ask them to shop for you.this is overall a great service which I highly recommend to anyone who wants shop online and get it fast with affordable budget.
+                  span.name Varun Murali
+                  span United Arab Emirates
+                .clearfix
+              .item
+                .col-sm-3.text-center
+                  img.img-circle(src='https://www.shoppre.com/img/flags/united-states.jpg')
+                .col-sm-9
+                  p User left only rating
+                  span.name Shilpa Pandey
+                  span United States
+                .clearfix
+              .item
+                .col-sm-3.text-center
+                  img.img-circle(src='https://www.shoppre.com/img/flags/canada.jpg')
+                .col-sm-9
+                  p
+                    | Very Good quality of support and shipment! Support team are always available, kindly and ready to give support by chat and by phone!
+                    | My california ship is arrived very soon and i am truly very satisfied!! Thank You!!!
+                  span.name Ivan Coinu
+                  span Canada
+                .clearfix
+              .item
+                .col-sm-3.text-center
+                  img.img-circle(src='https://www.shoppre.com/img/flags/united-states.jpg')
+                .col-sm-9
+                  p
+                    | Extremely reliable shipping/courier agents. Miss Tanuja who had continuously worked for my shipping to U.S, even after facing hiccups with Dhl, Tanuja had a secondary plan, and made the shipping happen. Shopree executive were in constant touch with the movement of package till the time it reached my consignee.
+                  span.name Anirudh Lal
+                  span United States
+                .clearfix
+              .item
+                .col-sm-3.text-center
+                  img.img-circle(src='https://www.shoppre.com/img/flags/india.png')
+                .col-sm-9
+                  p
+                    | Excellent service. My courier reached from Delhi to USA in 3 days, out of which one was a Sunday.
+                    | Everything was perfect and I was assisted by Tanuja very politely and she explained me each and every nuance of it.
+                    | Affordable price, and great service. Keep it up!
+                  span.name Varun Tandon
+                  span India
+                .clearfix
+              .item
+                .col-sm-3.text-center
+                  img.img-circle(src='https://www.shoppre.com/img/flags/india.png')
+                .col-sm-9
+                  p Excellent  & very less price  and fast delivery.....
+                  span.name Kishore Reddy
+                  span India
+                .clearfix
+              .item
+                .col-sm-3.text-center
+                  img.img-circle(src='https://www.shoppre.com/img/flags/united-states.jpg')
+                .col-sm-9
+                  p
+                    | They were super helpful! I was in a rush and had to send my parcel quickly to USA, they got everything done so quickly and were so polite and seemed like genuinely happy people. they have great service and good pricie. Received parcel before time.
+                    | I would strongly recommend SHOPPRE for sending parcel between India and other countries.
+                  span.name Manish Panchal
+                  span United States
+                .clearfix
+              .item
+                .col-sm-3.text-center
+                  img.img-circle(src='https://www.shoppre.com/img/flags/afghanistan.jpg')
+                .col-sm-9
+                  p
+                    | I had a bad start with Shoppre, but they made things right. I'm very happy with the items I was able to order. I do still think the shipping is too high, but I"m happy with how things turned out. Very kind crew, who really cared about my experience and opinions. I'm a convert! Thanks guys!
+                  span.name Still Syma
+                  span Afghanistan
+                .clearfix
+              .item
+                .col-sm-3.text-center
+                  img.img-circle(src='https://www.shoppre.com/img/flags/united-arab-emirates.jpg')
+                .col-sm-9
+                  p
+                    | The best service ever!!  Shoppre notified me of the status of each and every item that I ordered. Packed and sent all items with great care at great price!! I would recommend it to all :)
+                  span.name Aswathi Sudhir
+                  span United Arab Emirates
+                .clearfix
+              .item
+                .col-sm-3.text-center
+                  img.img-circle(src='https://www.shoppre.com/img/flags/afghanistan.jpg')
+                .col-sm-9
+                  p
+                    | Great service. The parcel was at my house within five days from the dispatch in India. No customs problem faced. They keep you updated with every development with your shipment. I was shared the pics of the products before dispatch. Overall fully satisfied service. The rates are also quite competitive even for lesser volume.
+                  span.name amit jain
+                  span Afghanistan
+                .clearfix
+            .text-center
+              a.btn.orange(href='https://www.shoppre.com/reviews') View All Shoppre Reviews
+    section.signup_free
+      .container
+        .row
+          .col-md-12
+            h3
+              | So what are you waiting for? Shopp
+              span.red re
+              | ! Open your big box of happiness
+              |                         today!
+            p All you need is a membership to get your Indian Shipping Address immediately!
+            a.btn.btn-shoppre(href='https://myaccount.shoppre.com/register')
+              | sign up for
+              | free
+
+script(src="('/cdn/js/jquery.magnific-popup.min.js')")
+script(type='text/javascript').
+  /* Magnific Popup */
+  $(document).ready(function () {
+    $(function () {
+      $('.popup-modal').magnificPopup({
+        type: 'inline',
+        preloader: false,
+        modal: true
+      });
+      $(document).on('click', '.popup-modal-dismiss', function (e) {
+        e.preventDefault();
+        $.magnificPopup.close();
+      });
+    });
+  });
+// Select2
+script(src="{{asset('js/select2.min.js')}}")
+script(type='text/javascript').
+  $(document).ready(function () {
+    $(".select2").select2();
+  });
+// Owl Carousel
+script(src="{{asset('js/owl.carousel.min.js')}}")
+script(type='text/javascript').
+  $(document).ready(function () {
+    $('.testimons').owlCarousel({
+      loop: true,
+      margin: 10,
+      responsiveClass: true,
+      navText: '',
+      autoplay: true,
+      autoplayTimeout: 2500,
+      responsive: {
+        0: {
+          items: 1,
+          nav: true
+        },
+        600: {
+          items: 1,
+          nav: true
+        },
+        1000: {
+          items: 1,
+          nav: true,
+          loop: true
+        }
+      }
+    });
+  });
+script(src="{{asset('js/validate.min.js')}}")
+script(type='text/javascript').
+  $(document).ready(function () {
+    $("#shipping").validate({
+      rules:
+        {
+          country: {required: true},
+          weight: {required: true},
+          unit: {required: true}
+        },
+      messages:
+        {
+          country: {required: "Please select country"},
+          weight: {required: "Please enter weight to calculate."},
+          unit: {required: "Please select unit of weight."}
+        },
+      submitHandler: function (form) {
+        var country = $("select[name='country']").val();
+        var weight = $("input[name='weight']").val();
+        var unit = $("input[name='unit']:checked").val();
+        var type = $("input[name='type']:checked").val();
+        var box_scale = $("input[name='scale']:checked").val();
+        var length = $("input[name='length']").val();
+        var width = $("input[name='width']").val();
+        var height = $("input[name='height']").val();
+        var token = $('input[name=_token]').val();
+        $("#calc_load").show();
+        $('#calc_error').hide();
+        $('#ship_result').hide();
+        jQuery.ajax({
+          url: '/calculate-shipping',
+          type: "POST",
+          data: {
+            _token: token,
+            country: country,
+            weight: weight,
+            unit: unit,
+            type: type,
+            length: length,
+            width: width,
+            height: height,
+            scale: box_scale
+          },
+          success: function (res) {
+            $("#calc_load").hide();
+            if (res.error == "1") {
+              $('#calc_error').css('display', 'block');
+            } else {
+              var html = "";
+              res.prices.map(function(price) {
+                html += ' <tr> ' +
+                  // '<td>' + price.partner_name+ '</td>' +
+                  ' <td class="bg-white">' +
+                  ' <span>' + price.time+ '</span> Business Days' +
+                  ' <span class="text-red">**</span>' +
+                  ' </td>' +
+                  '<td>' +
+                  '<i class="fa fa-rupee"></i> <span>' + ((100-price.discount)/100) * price.amount+ '</span>' +
+                  ' </td>' +
+                  ' <td>' +
+                  '<span class="striked">' +
+                  '<i class="fa fa-rupee"></i>' +
+                  ' <span>' +  price.amount+ '</span>' +
+                  '</span>' +
+                  ' </td>' +
+                  '<td class="discount">' +
+                  ' <span>' + price.discount + '</span>% OFF' +
+                  '</td>' +
+                  ' </tr>';
+                $('#prices').html(html);
+                $('#ship_result').slideDown();
+              });
+            }
+          }
+        });
+        return false;
+      }
+    });
+    $("#form_quote").validate({
+      rules:
+        {
+          state: {required: true},
+          city: {required: true},
+          pin: {required: true},
+          type: {required: true},
+          weight: {required: true},
+          unit: {required: true},
+          email: {required: true, email: true},
+          mobile: {required: true}
+        },
+      messages:
+        {
+          state: {required: "Please select state"},
+          city: {required: "Please enter city"},
+          pin: {required: "Please enter PIN"},
+          weight: {required: "Enter package weight."},
+          email: {required: "Enter your email address to contact."},
+          mobile: { required: "Enter your mobile number to contact."}
+        },
+      submitHandler: function (form) {
+        $("#quote_load").show();
+        jQuery.ajax({
+          url: '/qoute/submit',
+          type: "POST",
+          data: $("#form_quote").serialize(),
+          success: function (data) {
+            $('#form_quote')[0].reset();
+            $("#quote_load").hide();
+            $("#quote_submit").hide();
+            $("#quote_result").show();
+          },
+          error: function (xhr, ajaxOptions, thrownError) {
+            $('#form_quote')[0].reset();
+            $("#quote_load").hide();
+            $("#quote_error").show();
+            $("#quote_submit").hide();
+            /*console.log(xhr.responseText);*/
+          }
+        });
+        return false;
+      }
+    });
+  });

@@ -15,5 +15,9 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: true,
     underscored: true,
   });
+
+  ShipmentIssue.associate = (db) => {
+    ShipmentIssue.belongsTo(db.Shipment);
+  };
   return ShipmentIssue;
 };

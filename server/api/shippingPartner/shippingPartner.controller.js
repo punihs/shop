@@ -1,7 +1,7 @@
 const {
-  ShippingPartner, sequelize,
+  ShippingPartner, Shipment, ShipmentIssue, Keyword, Review, Link,
 } = require('../../conn/sqldb');
-const Sequelize = require('sequelize');
+
 const countries = require('./../../components/pricing/dhl/data/countries');
 
 exports.index = (req, res, next) => {
@@ -11,7 +11,7 @@ exports.index = (req, res, next) => {
 
   return ShippingPartner
     .findAll(options)
-    .then(partners => res.render('shippingPartner/index', { partners: partners.map(x => x.toJSON()) }))
+    .then(shippingPartners => res.json(shippingPartners))
     .catch(next);
 };
 
@@ -25,52 +25,39 @@ exports.show = async (req, res) => {
       raw: true,
     });
 
-  if (!shippingPartner) return res.render('404');
+  if (!shippingPartner) return res.status(404).end();
 
-  const countQuery = `SELECT count(1) as cnt FROM shipping_partners
-    join \`shipments\` on shipping_partners.id = shipments.shipping_partner_id 
-    where shipping_partners.id = ${shippingPartner.id}`;
+  const shipmentCount = await Shipment.count({
+    where: { shipping_partner_id: shippingPartner.id },
+  });
 
-  const shippingIssues = `SELECT shipment_issues.id as id,shipment_issues.name as name,shipment_issues.description as des
-    FROM shipment_issues ,shipments,shipping_partners 
-    where shipment_issues.shipment_id=shipments.id 
-    and shipments.shipping_partner_id=shipping_partners.id 
-    and shipping_partners.id=${shippingPartner.id}`;
+  const reviews = await Review.findAll({
+    include: [{ model: Shipment, where: { shipping_partner_id: shippingPartner.id } }],
+  });
 
-  const review = `SELECT reviews.person, reviews.source, reviews.review, reviews.rating FROM shipping_partners
-    JOIN shipments on  shipping_partners.id = shipments.shipping_partner_id
-    join reviews on reviews.shipment_id = shipments.id
-    where shipping_partners.id = ${shippingPartner.id}`;
+  const keywords = await Keyword.findAll({
+    where: {
+      object_type_id: 1,
+      object_id: shippingPartner.id,
+    },
+  });
 
-  const quicklinks = `Select partner_links.name,partner_links.url from partner_links ,shipping_partners
-    WHERE partner_links.shipping_partners_id=shipping_partners.id
-    and shipping_partners.id=${shippingPartner.id}`;
+  const links = await Link.findAll({
+    where: {
+      object_type_id: 1,
+    },
+  });
 
-  const keyword = `SELECT keywords.name FROM keywords, shipping_partners WHERE shipping_partners.id=${shippingPartner.id}`;
-
-  const [count] = await sequelize.query(
-    countQuery,
-    { type: Sequelize.QueryTypes.SELECT },
-  );
-
-  const shippingissue = await sequelize.query(
-    shippingIssues,
-    { type: Sequelize.QueryTypes.SELECT },
-  );
-  const reviews = await sequelize.query(
-    review,
-    { type: Sequelize.QueryTypes.SELECT },
-  );
-
-  const quicklink = await sequelize.query(
-    quicklinks,
-    { type: Sequelize.QueryTypes.SELECT },
-  );
-  const keywords = await sequelize.query(
-    keyword,
-    { type: Sequelize.QueryTypes.SELECT },
-  );
-
+  const issues = await ShippingPartner.findAll({
+    where: { id: shippingPartner.id },
+    include: [{
+      model: Shipment,
+      include: [{
+        model: ShipmentIssue,
+        attributes: ['id', 'name', 'description'],
+      }],
+    }],
+  });
   shippingPartner.description = 'DHL Express is a division of the German logistics company Deutsche Post ';
 
   const ratingMap = {
@@ -83,14 +70,14 @@ exports.show = async (req, res) => {
 
   return res.json(Object.assign(shippingPartner, {
     ratingMap,
-    shippingissue,
+    issues,
     reviews,
-    quicklink,
+    links,
     keywords,
     countries: countries.map(({ country: name, country_code: iso2 }) =>
       ({ iso2, name })), // serving countries
     rating: 5,
     ratingCount: 10,
-    count,
+    count: shipmentCount,
   }));
 };

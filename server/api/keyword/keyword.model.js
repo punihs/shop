@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
     },
     name: DataTypes.STRING,
+    object_id: DataTypes.INTEGER,
   }, {
     tableName: 'keywords',
     timestamps: true,
@@ -15,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Keyword.associate = (db) => {
-    Keyword.belongsTo(db.ShippingPartner);
+    Keyword.belongsTo(db.ObjectType);
   };
 
   return Keyword;

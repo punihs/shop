@@ -4,7 +4,7 @@ const _ = require('lodash');
 const keyValueMap = (arr, key, value) => arr
   .reduce((nxt, x) => Object
     .assign(nxt, {
-      [x[key].toUpperCase()]: x[value],
+      [x[key].replace(' ', '_').toUpperCase()]: x[value],
     }), {});
 
 // default key is `name`
@@ -21,7 +21,7 @@ const constants = {};
   { name: 'orgs' },
   { name: 'products' },
   { name: 'org_products', keyMap: false },
-  { name: 'object_types', keyMap: false },
+  { name: 'object_types' },
   { name: 'apps', keyMap: false },
   { name: 'countries', keyMap: false },
   // { name: 'cities', keyMap: false },
@@ -37,17 +37,18 @@ const constants = {};
   { name: 'faq', keyMap: false },
   { name: 'places', keyMap: false },
   { name: 'reviews', keyMap: false },
+  { name: 'links', keyMap: false },
   { name: 'estimations', keyMap: false },
   { name: 'categories', keyMap: false },
-  { name: 'partner_links', keyMap: false },
+  { name: 'links', keyMap: false },
   { name: 'sources', keyMap: false },
 ]
-  .forEach(({ name: x, keyMap = true }) => {
-    const data = r(`./seeders/data/${_.camelCase(x)}`)(constants);
+  .forEach(({ name, keyMap = true }) => {
+    const data = r(`./seeders/data/${_.camelCase(name)}`)(constants);
     // - used for dependency injection
-    constants[_.camelCase(x)] = data;
+    constants[_.camelCase(name)] = data;
     // - for writing contant names instead of number like instead of 1 for group_id we write OPS
-    if (keyMap !== false) constants[x.toUpperCase()] = keyValueMap(data, map[x] || 'name', 'id');
+    if (keyMap !== false) constants[name.toUpperCase()] = keyValueMap(data, map[name] || 'name', 'id');
   });
 
 module.exports = constants;

@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const assert = require('assert');
+const { URLS_API } = require('../../config/environment');
 
 const opts = { args: ['--no-sandbox'] };
 
@@ -17,7 +18,7 @@ describe('Website on Desktop View', async () => {
   it('Website Should Load Successfully', async () => {
     let response;
     try {
-      response = await page.goto('http://localhost:5000/shipping-partners/dhl', {
+      response = await page.goto(`${URLS_API}/about`, {
         timeout: 0,
         waitUntil: 'domcontentloaded',
       });

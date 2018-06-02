@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Shipment.belongsTo(db.Country);
     Shipment.belongsTo(db.ShipmentType);
+    Shipment.hasMany(db.ShipmentIssue);
     db.Country.hasMany(Shipment);
   };
 
