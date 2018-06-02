@@ -1,13 +1,15 @@
 
 const express = require('express');
 const controller = require('./user.controller');
+const authenticate = require('../../components/oauth/authenticate');
 
 const router = express.Router();
 
-router.get('/', controller.index);
-router.post('/', controller.create);
-router.get('/:id', controller.show);
-router.put('/:id/unread', controller.unread);
-router.delete('/:id', controller.destroy);
+router.get('/', authenticate(), controller.index);
+router.get('/me', authenticate(), controller.me);
+router.post('/', authenticate(), controller.create);
+router.get('/:id', authenticate(), controller.show);
+router.put('/:id/unread', authenticate(), controller.unread);
+router.delete('/:id', authenticate(), controller.destroy);
 
 module.exports = router;

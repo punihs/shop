@@ -11,7 +11,19 @@ exports.index = (req, res, next) => {
 
   return User
     .findAll(options)
-    .then(users => res.json(users).status(200))
+    .then(users => res.json(users))
+    .catch(next);
+};
+
+exports.me = (req, res, next) => {
+  const options = {
+    attributes: ['id', 'salutation', 'first_name', 'last_name', 'email'],
+    limit: Number(req.query.limit) || 20,
+  };
+
+  return User
+    .findById(req.user.id, options)
+    .then(user => res.json(user))
     .catch(next);
 };
 
@@ -28,7 +40,7 @@ exports.show = (req, res, next) => {
   log('show', id);
   return User
     .findById(Number(id))
-    .then(users => res.json(users).status(200))
+    .then(users => res.json(users))
     .catch(next);
 };
 
