@@ -11,13 +11,14 @@ const howItWork = require('./app/howItWork');
 const pricing = require('./app/pricing');
 const about = require('./app/about');
 const faq = require('./app/faq');
+const country = require('./app/country');
+const contactUs = require('./app/contactUs');
+
 const shippingPartner = require('./app/shippingPartner');
 // const shippingPartnerDetail = require('./app/shippingPartnerDetail');
 const paymentGateway = require('./app/paymentGateway');
 const store = require('./app/store');
-const country = require('./app/country');
-const contactUs = require('./app/contactUs');
-
+const city = require('./app/city');
 
 module.exports = (app) => {
   app.use('/', home);
@@ -33,7 +34,7 @@ module.exports = (app) => {
   app.use('/payment-gateways', paymentGateway);
   app.use('/stores', store);
   app.use('/countries', country);
-  // app.use('/cities', countryGuide);
+  app.use('/cities', city);
   // app.use('/destinations', countryGuide);
   // app.use('/packages', countryGuide);  //itemName, storeName,storeId
   // app.use('/shipments', countryGuide); // dhl,paymentGateway,deliveryTime,price
