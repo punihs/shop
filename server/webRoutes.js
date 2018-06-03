@@ -5,7 +5,7 @@
 // - Routers
 const home = require('./app/home');
 const services = require('./app/service');
-// const consolidationService = require('./app/consolidationService');
+const consolidationService = require('./app/consolidationService');
 // const browseCategories = require('./app/browseCategories');
 const howItWork = require('./app/howItWork');
 const pricing = require('./app/pricing');
@@ -22,12 +22,12 @@ const contactUs = require('./app/contactUs');
 module.exports = (app) => {
   app.use('/', home);
   app.use('/services', services);
+  app.use('/consolidation-service', consolidationService);
   app.use('/how-it-works', howItWork);
   app.use('/contactUs', contactUs);
   app.use('/about', about);
   app.use('/faqs', faq);
   app.use('/pricing', pricing);
-
   app.use('/shipping-partners', shippingPartner);
   app.use('/payment-gateways', paymentGateway);
   app.use('/stores', store);

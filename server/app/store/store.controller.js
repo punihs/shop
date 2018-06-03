@@ -3,16 +3,16 @@ const { URLS_API } = require('../../config/environment');
 
 exports.index = (req, res, next) => Promise
   .all([
-    rp(`${URLS_API}/stores`, { json: true }),
+    rp(`${URLS_API}/api/stores`, { json: true }),
   ])
   .then(([store]) =>
     res
-      .render('stores/index', store))
+      .render('store/index', store))
   .catch(next);
 
 exports.show = (req, res, next) => Promise
   .all([
-    rp(`${URLS_API}/stores/${req.params.slug}`, { json: true }),
+    rp(`${URLS_API}/api/stores/${req.params.slug}`, { json: true }),
   ])
   .then(([stores]) =>
     res

@@ -1,0 +1,86 @@
+extends ../layout
+block content
+  head
+    title '#{title}'
+    meta(name='description', content= '#{meta_description}')
+    meta(property='og:title', content='#{meta_title}')
+  .body
+    .container
+      h2.text-orange OUR SERVICES WHICH HELP YOU SAVE ON SHIPPING COSTS
+      h3 REPACKING SERVICE
+      p
+        | We repack individual shipments for free and help in reducing wasted space
+        br
+        |  which will allow you to  save over 20% on shipping charges.
+      .col-sm-6.repack_box.border
+        img(src="cdn/img/repackage.png")
+        h4 We only repack goods which :
+        ul
+          li
+            | Require added protection and security if it is inadequately  packed for  international shipping.
+          li Have high volumetric weight than the actual weight.
+          li
+            | We will repack each package to reduce the  weight, which will reduce your  shipping cost .Original package contents are not compromised by repackaging.
+          li
+            | If you don't wish for your shipments to be repacked, you can set that preference in
+            a.text-orange(href="{{env('PREFIX')}}myaccount.{{env('DOMAIN')}}/shipping-preferences") your account
+            | .
+      .col-sm-6.repack_box
+        img(src="cdn/img/repack_ex.png", style='width: 380px;')
+        h4 Repack example :
+        ul
+          li
+            | Package from a store was shipped to the warehouse in a box 25x11x11 inches, representing a volumetric weight of 10kg.
+          li
+            | After repackaging, the receipt dimensions were reduced to  ((21x10x10 inches), representing a volumetric weight of 7kg.
+          li.linone.bold Saving to the customer was 3kg. in shipping volumetric weight.
+    section.price_service
+      .container
+        h2 Shoppre's consolidation service
+        // <h3>which helps you save on international shipping rates!</h3>
+        p
+          | Combine your packages from multiple stores to one tracking number,
+          br
+          |             and save upto 60% - 80% on shipping rates!
+        p(style='font-style: italic;font-size: 15px;') For example:
+        .col-sm-6
+          .serv_sec
+            h4 Shipping Directly from most sellers
+            .example
+              img(src="cdn/img/consolid1.png")
+            p.result
+              strong
+                | Shipping each item abroad separately :
+                br
+                |                 Total Shipping Cost $60
+        .col-sm-6
+          .serv_sec
+            h4
+              | shipping through
+              a.text-orange(href="{{route('home')}}") Shoppre.com
+            .example
+              img(src="cdn/img/consolid2.png", style='max-width: 78%;')
+            p.result
+              strong
+                | Shipping all the items in ONE package:
+                br
+                |                 Total Shipping Costs : $15
+        .clearfix
+        .serv_foot
+          h3.text-orange
+            strong 67% Less
+            |  than Shipping Directly from Stores
+          .text-center
+            h4
+              | When packages are shipped individually, each package bears the rate of the first kilo rate.
+              br
+              span.text-orange But when you consolidate, you pay for the first half kilo only once!
+            p
+              | Enjoy Shoppre's special discount rates with our trusted courier partners like DHL, FedEx, DTDC, etc.
+              br
+              | thanks to our bulk shipment every month!
+    section.store-band
+      .container
+        h2 free storage upto 20 days
+        p
+          | In an effort to maximise consolidation, we will store your packages for 20 days for free. That gives you time to shop and ship your items to our warehouse,Allowing for more packages to be consolidated which saves you money on international shipping costs.
