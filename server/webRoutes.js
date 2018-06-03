@@ -6,7 +6,7 @@
 const home = require('./app/home');
 const services = require('./app/service');
 const consolidationService = require('./app/consolidationService');
-// const browseCategories = require('./app/browseCategories');
+const browseCategories = require('./app/browseCategories');
 const howItWork = require('./app/howItWork');
 const pricing = require('./app/pricing');
 const about = require('./app/about');
@@ -27,6 +27,7 @@ module.exports = (app) => {
   app.use('/contactUs', contactUs);
   app.use('/about', about);
   app.use('/faqs', faq);
+  app.use('/browse-categories', browseCategories);
   app.use('/pricing', pricing);
   app.use('/shipping-partners', shippingPartner);
   app.use('/payment-gateways', paymentGateway);
