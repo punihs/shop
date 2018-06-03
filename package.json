@@ -19,6 +19,7 @@
     "ssh-copy-id": "ssh-copy-id pulse@staging-app1.shoppre.com",
     "tunnel": "ssh -R 5557:localhost:5557 pulse@staging-app1.shoppre.com",
     "clear-bucket": "node server/conn/minio/remove-bucket",
+    "clear-bucket": "rsync",
     "validate": "npm ls"
   },
   "repository": {
