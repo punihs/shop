@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { Address } = require('./../../conn/sqldb');
+const { Address, Country } = require('./../../conn/sqldb');
 const { GROUPS: { CUSTOMER } } = require('./../../config/constants');
 
 exports.index = (req, res, next) => {
@@ -11,6 +11,10 @@ exports.index = (req, res, next) => {
         'line1', 'line2', 'state', 'city', 'pincode', 'phone_code', 'phone', 'is_default',
       ],
     where: {},
+    include: [{
+      model: Country,
+      attributes: ['iso2', 'name'],
+    }],
     limit: Number(req.query.limit) || 20,
   };
 
@@ -33,6 +37,10 @@ exports.show = (req, res, next) => {
         'line1', 'line2', 'state', 'city', 'pincode', 'phone_code', 'phone', 'is_default',
       ],
     where: { },
+    include: [{
+      model: Country,
+      attributes: ['name'],
+    }],
   };
 
   if (req.user.group_id === CUSTOMER) {
