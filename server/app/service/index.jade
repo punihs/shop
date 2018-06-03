@@ -1,0 +1,104 @@
+extends ../layout
+block content
+  head
+    title '#{title}'
+    meta(name='description', content= '#{meta_description}')
+    meta(property='og:title', content='#{meta_title}')
+  .body
+    section.page_head
+      .pagebanner
+        img(src='cdn/img/banner1.jpg', width='100%')
+        .banner-cap
+          h2
+            | Shoppre
+            span.text-orange Services
+    section.service-band
+      .container
+        h2
+          | Know NO Limits in
+          span.text-orange Shopping!
+        p
+          | Shoppre's expert team is here to Deliver Happiness to you through
+          br
+          | every box with your favorite Indian Products!
+    section.service-sec.yellow
+      .container
+        .col-md-4
+          .imgbox
+            img(src='cdn/img/services2.png')
+            h3 Shop and Ship
+            p Always wanted to get products from India?
+        .col-md-8
+          .infobox
+            h4 Shop online from india.ship worldwide
+            p
+              | Enjoy a fast and worry-free shipping experience with Shoppre’s extensive experience, industry-leading expertise and unmatched member service.
+            a.btn.btn-shoppre(href="{{route('howitworks')}}") Learn how shoppre works
+          .infobox
+            h4 GIFT YOUR LOVED ONES LIVING OUTSIDE INDIA
+            p
+              | Simply sign up and buy your favorite product from ANY Indian website, and gift your near and dear ones outside India!
+            a.btn.btn-shoppre(href="{{env('PREFIX')}}myaccount.{{env('DOMAIN')}}/register") Sign up for free
+          .infobox
+            h4 SHOPPRE’S UPFRONT SHIPPING RATES. 60-80% DISCOUNTED CARRIER RATES
+            p
+              | Our revolutionary new pricing system takes the mystery out of global shipping rates - Try out our Shipping Calculator.
+            a.btn.btn-shoppre(href="{{route('pricing')}}") Learn more about pricing
+          .infobox
+            h4 PACKAGE RETURN SERVICES
+            p
+              | Shop without worry! We are happy to help with product returns to Indian stores if your goods arrive at Shoppre damaged, are not what you expected, or the wrong size or color.
+            a.btn.btn-shoppre(href="{{route('faq')}}") Learn more about return services
+    section.service-sec
+      .container
+        .col-md-4
+          .imgbox
+            img(src='cdn/img/services1.png')
+            h3 PERSONAL SHOPPER
+            p
+              | Your International credit card or mode of payment isn't accepted by some Indian Portals?
+        .col-md-8
+          .infobox
+            h4 YOUR PERSONAL SHOPPER
+            p
+              | Simply provide us the product and Seller details, our Personal Shopper will purchase the item on your behalf, using our Indian Local Card!
+            a.btn.btn-shoppre(href="{{env('PREFIX')}}myaccount.{{env('DOMAIN')}}/personal-shopper") Learn more about Personal Shopper
+          .infobox
+            h4 GIFT YOUR LOVED ONES LIVING IN INDIA
+            p
+              | Simply sign up and use Shoppre’s Personal Shopper to buy your favorite product from ANY Indian website, and gift your loved ones in India!
+            a.btn.btn-shoppre(href="{{env('PREFIX')}}myaccount.{{env('DOMAIN')}}/register") Sign up for free
+    section.service-sec.yellow
+      .container
+        .col-md-4
+          .imgbox
+            img(src='cdn/img/services3.png')
+            h3 Shopping guide
+            p Dont’t know where to shop the product that you need from?
+        .col-md-8
+          .infobox
+            h4 BROWSE CATEGORIES AND REVIEW WEBSITES
+            p
+              | Read and submit reviews of hundreds of top Indian online stores, so you can always make the best decisions when choosing Indian retailers, brands and products.
+            a.btn.btn-shoppre(href="{{route('stores')}}") Explore Indian Shopping Websites
+          .infobox
+            h4 GET SPECIAL DEALS WITH SHOPPRE’S FEATURED STORES
+            p
+              | Simply sign up and get access to our exclusive offers when you shop from our featured stores!
+            a.btn.btn-shoppre(href="{{route('stores')}}") View our featured Stores
+    .service-band2
+      h2 For Business
+      h4
+        a.text-orange(href='https://goo.gl/forms/fEYWqUJjfguCjqif1')
+          | Become a Partner
+        |           with Shoppre, and discover amazing opportunites.
+    section.signup_free.violet-grade
+      .container
+        .row
+          .col-md-12
+            h3
+              | So what are you waiting for? Shopp
+              span.text-orange re
+              | ! Open your big box of happiness today!
+            p All you need is a membership to get your Indian Shipping Address immediately!
+            a.btn.btn-shoppre(href="{{env('PREFIX')}}myaccount.{{env('DOMAIN')}}/register") sign up for free
