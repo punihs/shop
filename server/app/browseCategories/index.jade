@@ -47,7 +47,7 @@ block content
                   | Handicrafts, Furniture & Home Decor
               hr(style='border-style: dashed;border-color: #555;')
               h3 OTHER CATEGORIES
-              each category in categories || []
+              each category in categories
                 li
                   label
                     input.option-input.radio(
@@ -57,79 +57,54 @@ block content
                       checked='#{[1, 2, 3, 4, 5, 6, 7].includes(category.id) ? "true" : "false"}'
                     )
                     | #{category.name}
-  //      .col-md-9
-  //        .seller_tab
-  //          ul.nav.nav-tabs.nav-justified(role='tablist')
-  //            li.active(role='presentation')
-  //              a(href='#web', aria-controls='web', role='tab', data-toggle='tab') Top Website Sellers
-  //            li(role='presentation')
-  //              a(href='#fb', aria-controls='fb', role='tab', data-toggle='tab') Top FB/Instagram Sellers
-  //            li(role='presentation')
-  //              a(href='#featured', aria-controls='featured', role='tab', data-toggle='tab') Shoppre Featured Sellers
-  //          .tab-content
-  //            #web.tab-pane.fade.in.active(role='tabpanel')
-  //              each stores in store
-  //                .col-sm-3
-  //                  .seller_box
-  //                    a(href='#{stores.name}', target='_blank', title='#{stores.name}')
-  //                      span.brand_logo(style="background-image: url('cdn/stores/'#{stores.logo}');")
-  //                    a.myfavstore(href='#', data-clubid='#{store.id}')
-  //                      i.bookmark-icon
-  //                    if !store.info
-  //                      span.info(style='background: none')
-  //                    else
-  //                      span.info #{store.info}
-  //                .clearfix
-  //            #fb.tab-pane.fade(role='tabpanel')
-  //              | @foreach($fbs as $fb)
-  //              .col-sm-3
-  //                .seller_box
-  //                  | @php
-  //                  | $logo = (!empty($fb->logo)) ? $fb->logo : 'brand-logo.png';
-  //                  | @endphp
-  //                  a(href='{{$fb->url}}', target='_blank', title='{{$fb->name}}')
-  //                    span.brand_logo(style="background-image: url('{{asset('uploads/stores')}}/{{$logo}}');")
-  //                  |                             @if(Auth::check())
-  //                  |                               @if(in_array($fb->id, $favs))
-  //                  a.myfavstore.active(href='#', data-clubid='{{$fb->id}}')
-  //                    i.bookmark-icon
-  //                  |                               @else
-  //                  a.myfavstore(href='#', data-clubid='{{$fb->id}}')
-  //                    i.bookmark-icon
-  //                  |                               @endif
-  //                  |                             @endif
-  //                  span.info {{$fb->info}}
-  //              |                       @endforeach
-  //              .clearfix
-  //            #featured.tab-pane.fade(role='tabpanel')
-  //              | @foreach($feats as $feat)
-  //              .col-sm-3
-  //                .seller_box
-  //                  | @php
-  //                  | $logo = (!empty($feat->logo)) ? $feat->logo : 'brand-logo.png';
-  //                  | @endphp
-  //                  a(href='{{$feat->url}}', target='_blank', title='{{$feat->name}}')
-  //                    span.brand_logo(style="background-image: url('{{asset('uploads/stores')}}/{{$logo}}');")
-  //                  |                             @if(Auth::check())
-  //                  |                               @if(in_array($feat->id, $favs))
-  //                  a.myfavstore.active(href='#', data-clubid='{{$feat->id}}')
-  //                    i.bookmark-icon
-  //                  |                               @else
-  //                  a.myfavstore(href='#', data-clubid='{{$feat->id}}')
-  //                    i.bookmark-icon
-  //                  |                               @endif
-  //                  |                             @endif
-  //                  span.info {{$feat->info}}
-  //              |                       @endforeach
-  //              .clearfix
-  //          .ajaxload
-  //section.signup_free
-  //  .container
-  //    .row
-  //      .col-md-12
-  //        h3
-  //          | So what are you waiting for? Shopp
-  //          span.red re
-  //          | ! Open your big box of happiness today!
-  //        p All you need is a membership to get your Indian Shipping Address immediately!
-  //        a.btn.btn-shoppre(href="#{URLS_MYACCOUNT}/register") sign up for free
+        .col-md-9
+          .seller_tab
+            ul.nav.nav-tabs.nav-justified(role='tablist')
+              li.active(role='presentation')
+                a(href='#web', aria-controls='web', role='tab', data-toggle='tab') Top Website Sellers
+              li(role='presentation')
+                a(href='#fb', aria-controls='fb', role='tab', data-toggle='tab') Top FB/Instagram Sellers
+              li(role='presentation')
+                a(href='#featured', aria-controls='featured', role='tab', data-toggle='tab') Shoppre Featured Sellers
+            .tab-content
+              #web.tab-pane.fade.in.active(role='tabpanel')
+                each stores in store
+                  .col-sm-3
+                    .seller_box
+                      a(href='#{stores.name}', target='_blank', title='#{stores.name}')
+                        span.brand_logo(style="background-image: url('/app/cdn/stores/'#{stores.logo}');")
+                      a.myfavstore(href='#', data-clubid='#{store.id}')
+                        i.bookmark-icon
+                      if !store.info
+                        span.info(style='background: none')
+                      else
+                        span.info #{store.info}
+              #fb.tab-pane.fade(role='tabpanel')
+                each fb in fbs
+                  .col-sm-3
+                    .seller_box
+                      a(href='#{fb.url}', target='_blank', title='#{fb.name}')
+                        span.brand_logo(style="background-image: url('/app/cdn/stores/#{fb.logo}');")
+                      a.myfavstore.active(href='#', data-clubid='{{$fb->id}}')
+                        i.bookmark-icon
+                      span.info #{fb.info}
+              #featured.tab-pane.fade(role='tabpanel')
+                each feat in feats
+                  .col-sm-3
+                    .seller_box
+                      a(href='#{feat.url}', target='_blank', title='#{feat.name}')
+                        span.brand_logo(style="background-image: url('/app/cdn/stores/#{feat.url}")
+                      a.myfavstore.active(href='#', data-clubid='#{feat.id}')
+                        i.bookmark-icon
+                      span.info #{feat.info}
+              .ajaxload
+  section.signup_free
+    .container
+      .row
+        .col-md-12
+          h3
+            | So what are you waiting for? Shopp
+            span.red re
+            | ! Open your big box of happiness today!
+          p All you need is a membership to get your Indian Shipping Address immediately!
+          a.btn.btn-shoppre(href="#{URLS_MYACCOUNT}/register") sign up for free

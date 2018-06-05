@@ -17,6 +17,23 @@ exports.index = (req, res, next) => Promise
           id: 1,
           name: 'Apparels',
         }],
+        web: [{
+          id: 1,
+          name: 'Apparels',
+          url: 'cdn/stores/',
+        }],
+        fbs: [{
+          id: 1,
+          name: 'Apparels',
+          url: 'cdn/stores/',
+          info: 'info',
+        }],
+        feats: [{
+          id: 1,
+          name: 'Apparels',
+          url: 'cdn/stores/',
+          info: 'info',
+        }],
       })))
   .catch(next);
 
