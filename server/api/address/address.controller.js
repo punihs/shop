@@ -15,6 +15,7 @@ exports.index = (req, res, next) => {
       model: Country,
       attributes: ['iso2', 'name'],
     }],
+    order: [['is_default', 'DESC'], ['created_at', 'DESC']],
     limit: Number(req.query.limit) || 20,
   };
 
