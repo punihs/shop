@@ -35,7 +35,7 @@ exports.show = (req, res, next) => {
     attributes: req.query.fl
       ? req.query.fl.split(',')
       : ['id', 'name', 'slug', 'type'],
-    where: { slug },
+    where: { type: slug },
   };
 
   return Place

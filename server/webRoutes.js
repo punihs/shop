@@ -13,12 +13,13 @@ const about = require('./app/about');
 const faq = require('./app/faq');
 const country = require('./app/country');
 const contactUs = require('./app/contactUs');
+const review = require('./app/review');
 
 const shippingPartner = require('./app/shippingPartner');
 // const shippingPartnerDetail = require('./app/shippingPartnerDetail');
 const paymentGateway = require('./app/paymentGateway');
 const store = require('./app/store');
-const city = require('./app/city');
+const state = require('./app/state');
 
 module.exports = (app) => {
   app.use('/', home);
@@ -34,12 +35,12 @@ module.exports = (app) => {
   app.use('/payment-gateways', paymentGateway);
   app.use('/stores', store);
   app.use('/countries', country);
-  app.use('/cities', city);
+  app.use('/state', state);
+  app.use('/reviews', review);
   // app.use('/destinations', countryGuide);
   // app.use('/packages', countryGuide);  //itemName, storeName,storeId
   // app.use('/shipments', countryGuide); // dhl,paymentGateway,deliveryTime,price
   // app.use('/users', countryGuide);     //name,flipkart
-  // app.use('/reviews', countryGuide);   // reviews
   // app.use('/coupons', countryGuide); //coupons
   // app.use('/sources', countryGuide); //objectType,link
   // app.use('/emails/', countryGuide);  //emails sent

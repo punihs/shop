@@ -4,12 +4,12 @@ const { URLS_API } = require('../../config/environment');
 
 exports.index = (req, res, next) => Promise
   .all([
-    rp(`${URLS_API}/api/places`, { json: true }),
+    rp(`${URLS_API}/api/places/state`, { json: true }),
   ])
-  .then(([countries]) =>
+  .then(([place]) =>
     res
-      .render('city/index', Object
-        .assign(countries, {
+      .render('state/index', Object
+        .assign(place, {
           title: 'Country title',
           meta_description: 'Country_metaDesctription',
           meta_title: 'Country_metaTitle',
@@ -22,7 +22,7 @@ exports.show = (req, res, next) => Promise
   ])
   .then(([countries]) =>
     res
-      .render('city/show', Object
+      .render('state/show', Object
         .assign(countries, {
           logo: '/cdn/img/stores.png',
           title: 'Country title',
