@@ -45,4 +45,9 @@ module.exports = {
     MEMBER: 3,
     WWW: 4,
   },
+  SALUTATIONS: {
+    MR: 'Mr',
+    MS: 'Ms',
+    MRS: 'Mrs',
+  },
 };

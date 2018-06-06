@@ -31,6 +31,31 @@ describe('GET /api/address by id', () => {
   });
 });
 
+describe('error POST /api/addresses ', () => {
+  it('should through error if no salutation', (done) => {
+    request(app)
+      .post('/api/addresses')
+      .send({
+        first_name: 'Manjesh',
+        last_name: 'V',
+        line1: 'A+202 2C Hiranandani Link Road 2C Kailash Industrial Complex  2C  Vikhroli West',
+        line2: 'Beside Telephone Exchange 2C10th block 2C Nagarbhavi 2C',
+        city: 'Mumbai',
+        state: 'Maharashtra',
+        country_id: '99',
+        pincode: '400079',
+        phone_code: '91',
+        phone: '9844717202',
+        is_default: true,
+      })
+      .set('Authorization', `Bearer ${opsAuth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(400)
+      .then(() => {
+        done();
+      });
+  });
+});
 
 describe('POST /api/addresses', () => {
   it('save address', (done) => {
@@ -46,7 +71,7 @@ describe('POST /api/addresses', () => {
         state: 'Maharashtra',
         country_id: '99',
         pincode: '400079',
-        country_code: '91',
+        phone_code: '91',
         phone: '9844717202',
         is_default: '1',
       })

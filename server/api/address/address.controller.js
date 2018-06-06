@@ -1,6 +1,11 @@
+const debug = require('debug');
 const _ = require('lodash');
 const { Address, Country } = require('./../../conn/sqldb');
 const { GROUPS: { CUSTOMER } } = require('./../../config/constants');
+
+const { ajv, transform } = require('./../../components/ajv');
+
+const log = debug('s.api.address.controller');
 
 exports.index = (req, res, next) => {
   const options = {
@@ -54,12 +59,37 @@ exports.show = (req, res, next) => {
     .catch(next);
 };
 
-exports.create = async (req, res) => {
-  const { id } = await Address.create(Object.assign({}, req.body, {
-    customer_id: req.user.id,
-  }));
+exports.create = (req, res, next) => {
+  log('create', req.body);
+  const valid = ajv.validate('createAddress', req.body);
 
-  return res.status(201).json({ id });
+  if (!valid) return res.status(400).json(transform(ajv));
+
+  const { is_default: isDefault } = req.body;
+
+  let promise = Promise.resolve();
+
+  if (isDefault) {
+    const where = {
+      is_default: true,
+      customer_id: req.user.id,
+    };
+
+    promise = Address
+      .count({ where })
+      .then((found) => {
+        if (!found) return Promise.resolve();
+        return Address.update({ is_default: false }, { where });
+      });
+  }
+
+  return promise
+    .then(() => Address
+      .create(Object.assign({}, req.body, {
+        customer_id: req.user.id,
+      }))
+      .then(({ id }) => res.status(201).json({ id })))
+    .catch(next);
 };
 
 exports.update = async (req, res) => {
