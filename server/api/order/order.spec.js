@@ -5,11 +5,11 @@ const opsAuth = require('../../../logs/ops-credentials');
 
 
 describe('Orders', () => {
-  it('save order by customer', (done) => {
+  it('order gives error if no store_id', (done) => {
     request(app)
       .post('/api/orders')
       .send({
-        store_id: 1,
+        customer_id: 2,
         tracking_code: 'DELHIVERY123',
         invoice_code: 'INV123',
         comments: 'Items recieved in good condition',
@@ -18,20 +18,21 @@ describe('Orders', () => {
           base64: 'aGVsbG8=',
         },
       })
-      .set('Authorization', `Bearer ${auth.access_token}`)
+      .set('Authorization', `Bearer ${opsAuth.access_token}`)
       .expect('Content-Type', /json/)
-      .expect(201)
+      .expect(400)
       .then(() => {
         done();
       });
   });
 
-  it('save order by ops user', (done) => {
+  it('save order by customer', (done) => {
     request(app)
       .post('/api/orders')
       .send({
         customer_id: 2,
         store_id: 1,
+        name: 'Chalo Chappals',
         tracking_code: 'DELHIVERY123',
         invoice_code: 'INV123',
         comments: 'Items recieved in good condition',
@@ -48,10 +49,11 @@ describe('Orders', () => {
       });
   });
 
-  it('save order by with out image', (done) => {
+  it('save order without image', (done) => {
     request(app)
       .post('/api/orders')
       .send({
+        name: 'Moto E',
         customer_id: 2,
         store_id: 1,
         tracking_code: 'DLV879',

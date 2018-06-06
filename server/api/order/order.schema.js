@@ -1,0 +1,15 @@
+
+exports.orderCreate = {
+  title: 'Order',
+  type: 'object',
+  properties: {
+    name: {
+      type: 'string',
+      maxLength: 100,
+    },
+    email: {
+      type: 'number',
+    },
+  },
+  required: ['store_id', 'name'],
+};
