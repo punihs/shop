@@ -6,14 +6,19 @@ exports.index = (req, res, next) => Promise
   .all([
     rp(`${URLS_API}/api/faqs`, { json: true }),
   ])
-  .then(([faqs]) =>
+  .then(([faqs]) => {
+    // return res.json(Object
+    //   .assign(faqs, {
+    //     logo: '/img/dhl.png',
+    //   }));
     res.render('faq/index', Object
       .assign(faqs, {
         title: 'Country title',
         meta_description: 'Country_metaDesctription',
         meta_title: 'Country_metaTitle',
         discription: 'Description',
-      })))
+      }));
+  })
   .catch(next);
 
 exports.show = (req, res, next) => Promise
@@ -24,6 +29,7 @@ exports.show = (req, res, next) => Promise
     res
       .render('faq/show', Object
         .assign(faqs, {
+          data: JSON.stringify(faqs),
           title: 'Country title',
           meta_description: 'Country_metaDesctription',
           meta_title: 'Country_metaTitle',

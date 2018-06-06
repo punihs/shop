@@ -13,24 +13,27 @@ block content
     .container
       .col-sm-8.col-sm-offset-2
         #accordion.panel-group(role='tablist', aria-multiselectable='true')
-          each faq in faqs || []
+          each f in faq
             .panel.panel-default
               .panel-heading(role='tab')
                 h4.panel-title
-                  a(role='button', data-toggle='collapse', data-parent='#accordion', href='#{id}', aria-expanded='true')
-                    | #{name}
-              .panel-collapse.collapse(id='#{id}')
+                  a(role='button', data-toggle='collapse', data-parent='#accordion', href='#{f.id}', aria-expanded='true')
+                    | #{f.name}
+              .panel-collapse.collapse(id='#{f.id}')
                 .panel-body.nested
-                  each faq in faqs || []
-                    .panel
-                      .panel-heading.nested(role='tab')
-                        h4.panel-title
-                          a(role='button', data-toggle='collapse', href='#{faq.id}', aria-expanded='true')
-                            | #{faq.question}
-                      .panel-collapse.collapse(id='#{faq.id}}')
-                        .panel-body
-                          if !faq.answer
-                            | #{faq.answer}
+                   // each faq in f.faqs
+                  //   .panel
+                  //     .panel-heading.nested(role='tab')
+                  //       h4.panel-title
+                  //         a(role='button', data-toggle='collapse', href='#{faq.id}', aria-expanded='true')
+                  //           | #{faq.question}
+                  //     .panel-collapse.collapse(id='#{faq.id}}')
+                  //       .panel-body
+                  //         if !faq.answer
+                  //           | #{faq.answer}
+
+
+
 
   section.faq_contact
     .container
