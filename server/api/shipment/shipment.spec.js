@@ -487,3 +487,28 @@ describe('POST /api/shipments 1', () => {
 //   });
 // });
 
+describe('DELETE /api/shipments', () => {
+  it('delete shipments', (done) => {
+    request(app)
+      .delete('/api/shipments/11')
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+describe('GET /api/shipments/326/invoice', () => {
+  it('return shipments invoice', (done) => {
+    request(app)
+      .get('/api/shipments/326/invoice')
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(201)
+      .then(() => {
+        done();
+      });
+  });
+});

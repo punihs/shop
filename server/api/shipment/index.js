@@ -11,6 +11,7 @@ router.post('/:id/unread', controller.unread);
 router.put('/:id', controller.update);
 router.put('/:id/meta', controller.metaUpdate);
 router.delete('/:id', controller.destroy);
+router.get('/:id/invoice', controller.invoice);
 
 module.exports = router;
 

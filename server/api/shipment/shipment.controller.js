@@ -4,7 +4,7 @@ const moment = require('moment');
 const eventEmitter = require('../../conn/event');
 
 const {
-  Country, Shipment, Package, Address, PackageMeta, ShipmentMeta,
+  Country, Shipment, Package, Address, PackageMeta, ShipmentMeta, ShipmentIssue,
 } = require('../../conn/sqldb');
 const { SHIPPING_RATE } = require('../../config/environment');
 
@@ -15,8 +15,12 @@ exports.index = (req, res, next) => {
     limit: Number(req.query.limit) || 20,
     attributes: ['id', 'number_of_packages'],
   };
-  if (req.query.customer_id) { options.where = { customer_id: req.query.customer_id }; }
-  if (req.query.status) { options.where = { shipping_status: req.query.status }; }
+  if (req.query.customer_id) {
+    options.where = { customer_id: req.query.customer_id };
+  }
+  if (req.query.status) {
+    options.where = { shipping_status: req.query.status };
+  }
 
   return Shipment
     .findAll(options)
@@ -53,8 +57,27 @@ exports.metaUpdate = async (req, res) => {
 
 exports.destroy = async (req, res) => {
   const { id } = req.params;
-  const status = await Shipment.destroy({ where: { id } });
-  return res.json(status);
+  const shipment = await Shipment
+    .findById(id);
+  log('shipment id', shipment.status);
+  if (shipment.status !== 'canceled' && shipment.status !== 'delivered' && shipment.status !== 'dispatched') {
+    await Package.update(
+      { status: 'ship' },
+      {
+        where: {
+          id: shipment.package_ids.split(','),
+        },
+      },
+    );
+
+    await ShipmentMeta
+      .destroy({ where: { shipment_id: id } });
+    await ShipmentIssue
+      .destroy({ where: { shipment_id: id } });
+    const status = await Shipment.destroy({ where: { id } });
+    return res.json(status);
+  }
+  return res.json({ message: 'Can not delete item as it is already'.concat(`${shipment.status}`) });
 };
 
 const calcShipping = async (countryId, weight, type) => {
@@ -266,4 +289,16 @@ exports.create = async (req, res, next) => {
   } catch (e) {
     return next(e);
   }
+};
+
+exports.invoice = async (req, res) => {
+  const { id } = req.params;
+  let packages;
+  const shipment = await Shipment
+    .find({ where: { order_code: id } });
+  if (shipment) {
+    packages = await Package
+      .findAll({ where: { id: shipment.package_ids.split(',') } });
+  }
+  return res.status(201).json({ packages, shipment });
 };
