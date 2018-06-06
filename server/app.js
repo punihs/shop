@@ -6,6 +6,9 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const http = require('http');
 const express = require('express');
+const socket = require('socket.io');
+
+const socketioConfig = require('./config/socketio');
 
 // const api = require('./conn/api');
 // api.credentials,
@@ -19,6 +22,13 @@ const db = require('./conn/sqldb');
 const log = console;
 const app = express();
 const server = http.createServer(app);
+
+const socketio = socket(server, {
+  serveClient: true,
+  path: '/socket.io-client',
+});
+
+socketioConfig(socketio);
 expressConfig(app);
 
 // Start server
