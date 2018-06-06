@@ -17,7 +17,10 @@ exports.index = (req, res, next) => {
 
 exports.me = (req, res, next) => {
   const options = {
-    attributes: ['id', 'salutation', 'first_name', 'last_name', 'email'],
+    attributes: [
+      'id', 'salutation', 'first_name', 'last_name', 'email', 'alternate_email',
+      'phone_code', 'phone', 'secondary_phone_code', 'secondary_phone',
+    ],
     limit: Number(req.query.limit) || 20,
   };
 
@@ -48,6 +51,14 @@ exports.unread = async (req, res) => {
   const { id } = req.params;
   const status = await User.update({ admin_read: 'no' }, { where: { id } });
   return res.json(status);
+};
+
+exports.update = (req, res, next) => {
+  const id = req.params.id || req.user.id;
+  return User
+    .update(req.body, { where: { id } })
+    .then(({ id: Id }) => res.json({ id: Id }))
+    .catch(next);
 };
 
 exports.destroy = async (req, res) => {
