@@ -13,15 +13,15 @@ block content
     .container
       .col-sm-8.col-sm-offset-2
         #accordion.panel-group(role='tablist', aria-multiselectable='true')
-          each f in faq
+          each dt in faq
             .panel.panel-default
               .panel-heading(role='tab')
                 h4.panel-title
-                  a(role='button', data-toggle='collapse', data-parent='#accordion', href='#{f.id}', aria-expanded='true')
-                    | #{f.name}
-              .panel-collapse.collapse(id='#{f.id}')
+                  a(role='button', data-toggle='collapse', data-parent='#accordion', href='#{dt.id}', aria-expanded='true')
+                     | #{dt.name}
+              .panel-collapse.collapse(id='#{dt.id}')
                 .panel-body.nested
-                   // each faq in f.faqs
+                  // each faq in dt.faqs
                   //   .panel
                   //     .panel-heading.nested(role='tab')
                   //       h4.panel-title
