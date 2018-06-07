@@ -5,6 +5,9 @@ const controller = require('./shipment.controller');
 const router = express.Router();
 
 router.get('/', controller.index);
+router.get('/queue', controller.shipQueue);
+router.get('/history', controller.history);
+router.put('/:id/cancel', controller.cancelRequest);
 router.post('/', controller.create);
 router.get('/:id', controller.show);
 router.post('/:id/unread', controller.unread);

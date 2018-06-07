@@ -192,7 +192,7 @@ describe('GET /api/shipments/:id', () => {
           created_at: '2017-12-11T13:46:00.000+05:30',
           loyalty: 0.0,
           shipping_status: 'delivered',
-          payment_status: 'success',
+          status: 'success',
           payment_gateway_name: 'wire',
           weight: 27.35,
           pick_up_charge: null,
@@ -486,6 +486,35 @@ describe('POST /api/shipments 1', () => {
 //       });
 //   });
 // });
+
+
+
+describe('GET /api/shipments/queue', () => {
+  it('return the shipments for ship queue', (done) => {
+    request(app)
+      .get('/api/shipments/queue')
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(201)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+
+describe('GET /api/shipments/history', () => {
+  it('return the shipments for ship history', (done) => {
+    request(app)
+      .get('/api/shipments/history')
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(201)
+      .then(() => {
+        done();
+      });
+  });
+});
 
 describe('DELETE /api/shipments', () => {
   it('delete shipments', (done) => {

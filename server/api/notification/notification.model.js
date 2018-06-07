@@ -19,7 +19,10 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Notification.associate = (db) => {
-    Notification.belongsTo(db.User);
+    Notification.belongsTo(db.User, {
+      foreignKey: 'customer_id',
+      as: 'Customer',
+    });
   };
 
 

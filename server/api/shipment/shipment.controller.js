@@ -4,7 +4,7 @@ const moment = require('moment');
 const eventEmitter = require('../../conn/event');
 
 const {
-  Country, Shipment, Package, Address, PackageMeta, ShipmentMeta, ShipmentIssue,
+  Country, Shipment, Package, Address, PackageMeta, ShipmentMeta, Notification, ShipmentIssue,
 } = require('../../conn/sqldb');
 const { SHIPPING_RATE } = require('../../config/environment');
 
@@ -288,6 +288,60 @@ exports.create = async (req, res, next) => {
     return res.status(201).json(sR);
   } catch (e) {
     return next(e);
+  }
+};
+
+
+exports.shipQueue = async (req, res) => {
+  const options = {
+    attributes: [
+      'order_code', 'package_ids', 'customer_name', 'address',
+      'phone', 'packages_count', 'weight', 'estimated_amount',
+    ],
+    where: { status: ['inqueue', 'inreview', 'received', 'confirmation'] },
+  };
+  await Shipment.find(options)
+    .then(shipment =>
+      res.status(201).json({ shipment }));
+};
+
+exports.history = async (req, res) => {
+  const options = {
+    attributes: [
+      'order_code', 'package_ids', 'customer_name', 'address',
+      'phone', 'packages_count', 'weight', 'estimated_amount',
+    ],
+    where: { status: ['dispatched', 'delivered', 'canceled', 'refunded'] },
+  };
+  await Shipment.find(options)
+    .then(shipmentHistory =>
+      res.status(201).json({ shipmentHistory }));
+};
+
+exports.cancelRequest = async (req, res) => {
+  const cutomerId = req.user.id;
+  const orderId = req.body.order_code;
+  const options = {
+    attributes: ['id', 'created_at', 'package_ids'],
+    where: { customer_id: cutomerId, status: ['inreview', 'inqueue'], order_code: orderId },
+  };
+
+  const shipment = await Shipment
+    .find(options);
+
+  if (moment(shipment.created_at).diff(moment(), 'hours') <= 1) {
+    await Shipment
+      .update({ status: 'canceled' }, { where: { id: shipment.id } });
+    await Package
+      .update({ status: 'ship' }, { where: { id: [shipment.package_ids.split((','))] } });
+
+    const notification = {};
+    notification.customer_id = cutomerId;
+    notification.action_type = 'shipment';
+    notification.action_id = shipment.id;
+    notification.action_description = `Shipment request cancelled - Order#  ${shipment.order_code}`;
+    await Notification.create(notification)
+      .then(() => res.status(201).json({ message: 'Ship request has been cancelled!', shipment }));
   }
 };
 

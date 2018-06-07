@@ -6,6 +6,9 @@ const {
     DELIVERED,
     SHIP,
     INREVIEW,
+    RETURN,
+    SPLIT,
+    ABANDON,
   },
   CONSIGNMENT_TYPES: { DOC, NONDOC },
 } = require('../../config/constants');
@@ -38,6 +41,9 @@ module.exports = DataTypes => ({
       DELIVERED,
       SHIP,
       INREVIEW,
+      RETURN,
+      SPLIT,
+      ABANDON,
     ],
   },
 

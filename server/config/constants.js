@@ -14,6 +14,9 @@ module.exports = {
     DELIVERED: 'delivered',
     SHIP: 'ship',
     INREVIEW: 'inreview',
+    RETURN: 'return',
+    SPLIT: 'split',
+    ABANDON: 'abandon',
   },
   SHIPMENT_COUPON_STATES: {
     PENDING: 'pending',

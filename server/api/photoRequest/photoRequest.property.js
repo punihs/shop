@@ -21,5 +21,6 @@ module.exports = DataTypes => ({
     values: [PENDING, COMPLETED],
   },
   description: DataTypes.STRING,
+  charge_amount: DataTypes.DOUBLE(10, 2),
 });
 

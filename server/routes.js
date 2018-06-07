@@ -16,6 +16,7 @@ const search = require('./api/search');
 const packages = require('./api/package');
 const packageItem = require('./api/packageItem');
 const packageMeta = require('./api/package/meta');
+const specialRequest = require('./api/package/specialRequest');
 const shippingPreference = require('./api/shippingPreference');
 const packageItemCategory = require('./api/packageItemCategory');
 const shipment = require('./api/shipment');
@@ -38,6 +39,7 @@ const store = require('./api/store');
 const estimation = require('./api/estimation');
 const coupon = require('./api/coupon');
 const source = require('./api/source');
+const photoRequest = require('./api/photoRequest');
 const webRoutes = require('./webRoutes');
 
 module.exports = (app) => {
@@ -46,7 +48,7 @@ module.exports = (app) => {
   app.use('/api/seo', seo);
   app.use('/api/user', login);
   app.use('/api/search', search);
-  app.use('/api/packages', authenticate(), packages, packageMeta);
+  app.use('/api/packages', authenticate(), packages, packageMeta, specialRequest);
   app.use('/api/shippingPartners', shippingPartner);
   app.use('/api/addresses', authenticate(), address);
   app.use('/api/shipments', authenticate(), shipment, shipmentPackage);
@@ -68,6 +70,7 @@ module.exports = (app) => {
   app.use('/api/estimations', estimation);
   app.use('/api/coupons', coupon);
   app.use('/api/sources', source);
+  app.use('/api/photoRequest', authenticate(), photoRequest);
   app.get('/secured', authenticate(), (req, res) => res.json({ name, version }));
 
   app.get('/', (req, res) => res.json({ name, version }));
