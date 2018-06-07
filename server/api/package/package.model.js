@@ -24,6 +24,13 @@ module.exports = (sequelize, DataTypes) => {
       as: 'Customer',
     });
 
+    Package.belongsTo(db.PackageState, {
+      defaultScope: {
+        where: { status: 1 },
+      },
+      foreignKey: 'package_state_id',
+    });
+
     Package.belongsTo(db.User, {
       foreignKey: 'created_by',
       as: 'Creator',

@@ -42,6 +42,7 @@ const constants = {};
   { name: 'categories', keyMap: false },
   { name: 'links', keyMap: false },
   { name: 'sources', keyMap: false },
+  { name: 'states', keyMap: false },
 ]
   .forEach(({ name, keyMap = true }) => {
     const data = r(`./seeders/data/${_.camelCase(name)}`)(constants);

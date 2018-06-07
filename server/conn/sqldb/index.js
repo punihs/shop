@@ -33,7 +33,7 @@ const db = {
 
   'Order',
 
-  'Package', 'PackageMeta',
+  'Package', 'PackageMeta', 'PackageState', 'State', 'ActionableState', 'GroupState',
   'PackageItem',
   'PackageItemCategory',
 
