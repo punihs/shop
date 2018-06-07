@@ -35,11 +35,13 @@ module.exports = DataTypes => ({
     values: ['yes', 'no'],
   },
   is_missed: DataTypes.BOOLEAN,
-
   // - ShippingPartner
   tracking_code: DataTypes.STRING,
   pick_up_charge_amount: DataTypes.INTEGER,
   number_of_packages: DataTypes.INTEGER,
   weight_by_shipping_partner: DataTypes.DOUBLE,
   value_by_shipping_partner: DataTypes.DOUBLE,
+  tracking_url: DataTypes.STRING,
+  shipping_carrier: DataTypes.STRING,
+  dispatch_date: DataTypes.DATE,
 });

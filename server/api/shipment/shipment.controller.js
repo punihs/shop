@@ -308,8 +308,9 @@ exports.shipQueue = async (req, res) => {
 exports.history = async (req, res) => {
   const options = {
     attributes: [
-      'order_code', 'package_ids', 'customer_name', 'address',
-      'phone', 'packages_count', 'weight', 'estimated_amount',
+      'order_code', 'package_ids', 'customer_name', 'address', 'status', 'tracking_code', 'dispatch_date',
+      'shipping_carrier', 'tracking_url',
+      'phone', 'packages_count', 'weight', 'estimated_amount', 'created_at', 'final_amount',
     ],
     where: { status: ['dispatched', 'delivered', 'canceled', 'refunded'] },
   };
@@ -320,10 +321,10 @@ exports.history = async (req, res) => {
 
 exports.cancelRequest = async (req, res) => {
   const cutomerId = req.user.id;
-  const orderId = req.body.order_code;
+  const orderCode = req.body.order_code;
   const options = {
     attributes: ['id', 'created_at', 'package_ids'],
-    where: { customer_id: cutomerId, status: ['inreview', 'inqueue'], order_code: orderId },
+    where: { customer_id: cutomerId, status: ['inreview', 'inqueue'], order_code: orderCode },
   };
 
   const shipment = await Shipment

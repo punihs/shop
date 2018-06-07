@@ -178,7 +178,7 @@ describe('GET /api/shipments/:id', () => {
           courier_charge: null,
           value: 6679.92,
           is_missed: 0,
-          order_id: '631-646-7270',
+          order_code: '631-646-7270',
           updated_at: '2018-05-18T05:58:10.000+05:30',
           address: '314 Euphoria Circle, Cary, NC, United States - 27519',
           volumetric_weight: null,
@@ -196,6 +196,10 @@ describe('GET /api/shipments/:id', () => {
           payment_gateway_name: 'wire',
           weight: 27.35,
           pick_up_charge: null,
+          tracking_code: 'ABC123',
+          dispatch_date: '2017-12-11T13:46:00.000+05:30',
+          shipping_carrier: 'dhl',
+          tracking_url: 'DHL1324',
         }))
         .then(() => done())));
   });
@@ -486,7 +490,6 @@ describe('POST /api/shipments 1', () => {
 //       });
 //   });
 // });
-
 
 
 describe('GET /api/shipments/queue', () => {
