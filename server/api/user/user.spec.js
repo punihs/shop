@@ -1,9 +1,12 @@
+const debug = require('debug');
 const request = require('supertest');
 const assert = require('assert');
 const app = require('./../../app');
 const { User } = require('./../../conn/sqldb');
 const auth = require('../../../logs/credentials');
 const opsAuth = require('../../../logs/ops-credentials');
+
+const log = debug('s.api.user.spec');
 
 describe('GET /api/users', () => {
   it('return users', (done) => {
@@ -18,6 +21,19 @@ describe('GET /api/users', () => {
   });
 });
 
+describe('GET /api/users/states', () => {
+  it('return users', (done) => {
+    request(app)
+      .get('/api/users/states')
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then((res) => {
+        log('res.body', res.body[1]);
+        done();
+      });
+  });
+});
 
 describe(' POST /api/users', () => {
   it('will create user', (done) => {

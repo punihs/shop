@@ -1,11 +1,17 @@
 const r = require;
+const debug = require('debug');
 const _ = require('lodash');
 
-const keyValueMap = (arr, key, value) => arr
-  .reduce((nxt, x) => Object
-    .assign(nxt, {
+const log = debug('s.conn.sqldb.constants');
+
+const keyValueMap = (arr, key, value) => {
+  log('keyValueMap', { key, value });
+  return arr
+    .reduce((nxt, x) => ({
+      ...nxt,
       [x[key].replace(' ', '_').toUpperCase()]: x[value],
     }), {});
+};
 
 // default key is `name`
 const map = {
@@ -16,6 +22,7 @@ const map = {
 const constants = {};
 
 [
+  { name: 'countries' },
   { name: 'groups' },
   { name: 'users' },
   { name: 'orgs' },
@@ -23,7 +30,6 @@ const constants = {};
   { name: 'org_products', keyMap: false },
   { name: 'object_types' },
   { name: 'apps', keyMap: false },
-  { name: 'countries', keyMap: false },
   // { name: 'cities', keyMap: false },
   { name: 'package_item_categories' },
   { name: 'payment_gateways', keyMap: false },
@@ -43,6 +49,7 @@ const constants = {};
   { name: 'links', keyMap: false },
   { name: 'sources', keyMap: false },
   { name: 'states', keyMap: false },
+  { name: 'actionable_states', keyMap: false },
 ]
   .forEach(({ name, keyMap = true }) => {
     const data = r(`./seeders/data/${_.camelCase(name)}`)(constants);

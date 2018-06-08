@@ -1,12 +1,37 @@
+const _ = require('lodash');
 const debug = require('debug');
-const { User } = require('../../conn/sqldb');
+
+const {
+  User, State, ActionableState, GroupState, Shipment, Country, Package, Order,
+} = require('../../conn/sqldb');
 
 const log = debug('s.user.controller');
 
 exports.index = (req, res, next) => {
   const options = {
-    attributes: ['id', 'salutation', 'first_name', 'last_name', 'email'],
+    attributes: [
+      'id', 'name', 'email', 'mobile', 'salutation', 'first_name', 'last_name', 'phone',
+      'phone_code', 'country_id', 'referred_by', 'created_at', 'locker_code',
+    ],
+    include: [{
+      model: Country,
+      attributes: ['id', 'name'],
+    }, {
+      model: User,
+      as: 'ReferredUser',
+      attributes: ['id', 'name', 'salutation', 'first_name', 'last_name'],
+    }, {
+      model: Shipment,
+      attributes: ['id'],
+    }, {
+      model: Package,
+      attributes: ['id'],
+    }, {
+      model: Order,
+      attributes: ['id'],
+    }],
     limit: Number(req.query.limit) || 20,
+    order: [['created_at', 'desc']],
   };
 
   return User
@@ -30,6 +55,51 @@ exports.me = (req, res, next) => {
     .catch(next);
 };
 
+exports.states = (req, res, next) => {
+  const groupId = Number(req.user.group_id);
+  State
+    .findAll({
+      attributes: ['id', 'name', 'parent_id', 'config'],
+      include: [
+        {
+          model: State,
+          as: 'Childs',
+          attributes: [['id', 'state_id']],
+          required: false,
+        },
+        {
+          model: ActionableState,
+          as: 'Actions',
+          where: { group_id: groupId },
+          attributes: [['child_id', 'state_id']],
+          required: false,
+        },
+        { // for Hire: 2, Partner: 5, Others: 5(internal)
+          model: GroupState,
+          where: { group_id: [2, 5, 15].includes(groupId) ? groupId : 4 },
+          attributes: ['name', 'description'],
+          required: false,
+        },
+      ],
+      order: [['id', 'ASC'], [{ model: ActionableState, as: 'Actions' }, 'id', 'ASC']],
+    })
+    .then((stateList) => {
+      const out = [];
+      stateList.forEach((stateModel) => {
+        const state = stateModel.toJSON();
+        if (state.Childs.length === 0) state.Childs.push({ state_id: state.id });
+        state.config = JSON.parse(state.config); // Need to handle Parsing Error
+        const { name = state.name, description } = state.GroupState || {};
+        state.action = name;
+        state.description = description;
+        out[state.id] = _.pick(state, ['id', 'name', 'action', 'config', 'Childs', 'Actions', 'description']);
+      });
+
+      res.json(out);
+    })
+    .catch(next);
+};
+
 exports.create = async (req, res) => {
   const user = req.body;
   const lockerCode = 'SHPR'.concat(parseInt(Math.random() * 100, 10)).concat(parseInt((Math.random() * (1000 - 100)) + 100, 10));
@@ -42,7 +112,27 @@ exports.show = (req, res, next) => {
   const { id } = req.params;
   log('show', id);
   return User
-    .findById(Number(id))
+    .findById(Number(id), {
+      include: [{
+        model: Country,
+        attributes: ['id', 'name'],
+      }, {
+        model: User,
+        as: 'ReferredUser',
+        attributes: ['id', 'name', 'salutation', 'first_name', 'last_name'],
+      }, {
+        model: Shipment,
+        attributes: ['id'],
+      }, {
+        model: Package,
+        attributes: ['id'],
+        required: false,
+      }, {
+        model: Order,
+        attributes: ['id'],
+        required: false,
+      }],
+    })
     .then(users => res.json(users))
     .catch(next);
 };

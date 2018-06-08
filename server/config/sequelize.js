@@ -11,6 +11,7 @@ const { log } = console;
 let env = {};
 if (fs.existsSync(envFile)) {
   env = dotenv.config({ path: envFile });
+  process.env.DEBUG = env.parsed.DEBUG;
   config = env.parsed || env;
 } else {
   log(`.env file not found.

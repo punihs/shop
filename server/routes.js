@@ -39,6 +39,7 @@ const store = require('./api/store');
 const estimation = require('./api/estimation');
 const coupon = require('./api/coupon');
 const source = require('./api/source');
+const userPackage = require('./api/user/package');
 const photoRequest = require('./api/photoRequest');
 const webRoutes = require('./webRoutes');
 
@@ -62,7 +63,7 @@ module.exports = (app) => {
   app.use('/api/pricing', pricing);
   app.use('/api/packageItems', authenticate(), packageItem);
   app.use('/api/packageItemCategories', authenticate(), packageItemCategory);
-  app.use('/api/users', user);
+  app.use('/api/users', authenticate(), user, userPackage);
   app.use('/api/faqs', faqCategory);
   app.use('/api/places', place);
   app.use('/api/stores', store);

@@ -14,4 +14,16 @@ module.exports = () => [{
 }, {
   id: 5,
   name: 'ship',
+}, {
+  id: 6,
+  name: 'inreview',
+}, {
+  id: 7,
+  name: 'return',
+}, {
+  id: 8,
+  name: 'split',
+}, {
+  id: 9,
+  name: 'abandon',
 }];

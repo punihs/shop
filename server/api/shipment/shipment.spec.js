@@ -6,7 +6,7 @@ const app = require('./../../app');
 const auth = require('../../../logs/credentials');
 const {
   Package, Address, Country, User, AccessToken, RefreshToken, Session, Shipment,
-  ShipmentMeta, ShipmentIssue,
+  ShipmentMeta, ShipmentIssue, PackageState,
 } = require('../../conn/sqldb');
 
 const assert = require('assert');
@@ -95,18 +95,30 @@ const deleteAddress = () => Address
   .destroy({ force: true, where: { id: 14 } });
 
 const createPackages = () => {
-  log('addressCreate');
+  log('createPackages');
+  const pack = r('./data/cid_646_sid_10_packages.json')[0];
   return Package
-    .bulkCreate(r('./data/cid_646_sid_10_packages.json'));
+    .create(pack)
+    .then(pkg => PackageState
+      .create({ ...pack.PackageState, package_id: pkg.id })
+      .then(packageState => pkg
+        .update({ package_state_id: packageState.id })));
 };
 
-const deletePackages = packageId => Package
+const deletePackages = packageId => PackageState
   .destroy({
     force: true,
     where: {
-      id: packageId,
+      package_id: packageId,
     },
-  });
+  })
+  .then(() => Package
+    .destroy({
+      force: true,
+      where: {
+        id: packageId,
+      },
+    }));
 
 const login = () => new Promise((resolve, reject) => request(app)
   .post('/oauth/token')

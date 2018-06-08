@@ -2,11 +2,20 @@ const debug = require('debug');
 const moment = require('moment');
 
 const eventEmitter = require('../../conn/event');
+const db = require('../../conn/sqldb');
 
 const {
   Country, Shipment, Package, Address, PackageMeta, ShipmentMeta, Notification, ShipmentIssue,
-} = require('../../conn/sqldb');
+  PackageState,
+} = db;
+
 const { SHIPPING_RATE } = require('../../config/environment');
+const {
+  SHIPMENT_STATE_IDS: {
+    CANCELED, DELIVERED, DISPATCHED,
+  },
+  PACKAGE_STATE_IDS: { SHIP },
+} = require('../../config/constants');
 
 const log = debug('s.shipment.controller');
 
@@ -27,7 +36,6 @@ exports.index = (req, res, next) => {
     .then(shipments => res.json(shipments))
     .catch(next);
 };
-
 
 exports.show = (req, res) => Shipment.findById(req.params.id).then(shipment => res.json(shipment));
 
@@ -57,27 +65,33 @@ exports.metaUpdate = async (req, res) => {
 
 exports.destroy = async (req, res) => {
   const { id } = req.params;
+
   const shipment = await Shipment
     .findById(id);
-  log('shipment id', shipment.status);
-  if (shipment.status !== 'canceled' && shipment.status !== 'delivered' && shipment.status !== 'dispatched') {
-    await Package.update(
-      { status: 'ship' },
-      {
-        where: {
-          id: shipment.package_ids.split(','),
-        },
-      },
-    );
 
-    await ShipmentMeta
-      .destroy({ where: { shipment_id: id } });
-    await ShipmentIssue
-      .destroy({ where: { shipment_id: id } });
-    const status = await Shipment.destroy({ where: { id } });
-    return res.json(status);
+  log('shipment id', shipment.status);
+  if (![CANCELED, DELIVERED, DISPATCHED].includes(shipment.status)) {
+    return res.json({ message: `Can not delete item as it is already ${shipment.status}` });
   }
-  return res.json({ message: 'Can not delete item as it is already'.concat(`${shipment.status}`) });
+
+  await Promise.all(shipment.package_ids.split(',')
+    .map(packageId => Package
+      .updateState({
+        db,
+        packageId,
+        nextStateId: SHIP,
+        actingUser: req.user,
+      })));
+
+  await ShipmentMeta
+    .destroy({ where: { shipment_id: id } });
+
+  await ShipmentIssue
+    .destroy({ where: { shipment_id: id } });
+
+  const status = await Shipment.destroy({ where: { id } });
+
+  return res.json(status);
 };
 
 const calcShipping = async (countryId, weight, type) => {
@@ -154,12 +168,18 @@ const getAddress = (address) => {
 
 const getPackages = (userId, packageIds) => Package
   .findAll({
+    attributes: ['id', 'package_state_id'],
     where: {
       customer_id: userId,
-      status: 'ship',
       id: packageIds,
     },
-    raw: true,
+    include: [{
+      attributes: ['id', 'package_id'],
+      model: PackageState,
+      where: {
+        state_id: SHIP,
+      },
+    }],
   });
 
 const saveShipment = ({

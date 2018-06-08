@@ -1,15 +1,4 @@
 const {
-  PACKAGE_STATES: {
-    PROCESSING,
-    VALUES,
-    REVIEW,
-    DELIVERED,
-    SHIP,
-    INREVIEW,
-    RETURN,
-    SPLIT,
-    ABANDON,
-  },
   CONSIGNMENT_TYPES: { DOC, NONDOC },
 } = require('../../config/constants');
 
@@ -27,25 +16,10 @@ module.exports = DataTypes => ({
     values: [DOC, NONDOC],
   },
   reference_code: DataTypes.STRING,
-  locker_code: DataTypes.STRING,
   weight: DataTypes.STRING,
   number_of_items: DataTypes.INTEGER,
   price_amount: DataTypes.STRING,
   received_at: DataTypes.DATE,
-  status: {
-    type: DataTypes.ENUM,
-    values: [
-      PROCESSING,
-      VALUES,
-      REVIEW,
-      DELIVERED,
-      SHIP,
-      INREVIEW,
-      RETURN,
-      SPLIT,
-      ABANDON,
-    ],
-  },
 
   review: DataTypes.STRING,
   return_send: DataTypes.STRING,

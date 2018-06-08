@@ -1,6 +1,9 @@
+const debug = require('debug');
 const {
   Package, Notification,
 } = require('../../../conn/sqldb');
+
+const log = debug('s.api.package.specialRequest');
 
 exports.return = async (req, res) => {
   const { returnPackid } = req.body;
@@ -61,7 +64,7 @@ exports.split = async (req, res) => {
 
 exports.abandon = async (req, res) => {
   const { abandonPackid } = req.body;
-  console.log(abandonPackid);
+  log('abandon', abandonPackid);
   const customerId = req.user.id;
   // sending mail is pending here
   await Package.update(

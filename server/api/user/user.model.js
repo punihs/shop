@@ -3,7 +3,28 @@ const bcrypt = require('node-php-password');
 const properties = require('./user.property');
 
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', properties(DataTypes), {
+  const User = sequelize.define('User', Object
+    .assign({
+      name: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          const salutation = this.getDataValue('salutation');
+          const firstName = this.getDataValue('first_name');
+          const lastName = this.getDataValue('last_name');
+          // 'this' allows you to access attributes of the instance
+          return `${salutation} ${firstName} ${lastName}`;
+        },
+      },
+      mobile: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          const phoneCode = this.getDataValue('phone_code');
+          const phone = this.getDataValue('phone');
+
+          return `+${phoneCode}-${phone}`;
+        },
+      },
+    }, properties(DataTypes)), {
     tableName: 'users',
     timestamps: true,
     paranoid: true,
@@ -33,7 +54,15 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(db.Package, {
       foreignKey: 'customer_id',
     });
-    User.belongsTo(db.Country);
+    User.hasMany(db.Shipment, {
+      foreignKey: 'customer_id',
+    });
+    User.hasMany(db.Order, {
+      foreignKey: 'customer_id',
+    });
+    User.belongsTo(db.Country, {
+      foreignKey: 'country_id',
+    });
     User.belongsTo(db.Group);
     User.belongsTo(db.User, {
       foreignKey: 'referred_by',

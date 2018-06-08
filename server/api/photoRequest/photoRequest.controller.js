@@ -5,22 +5,27 @@ const {
 } = require('./../../conn/sqldb');
 
 const log = debug('s.photoRequest.controller');
-const { PHOTO_REQUEST_TYPES: { STANDARD }, PHOTO_REQUEST_STATES: { COMPLETED } } = require('./../../config/constants');
+const {
+  PHOTO_REQUEST_TYPES: { STANDARD },
+  PHOTO_REQUEST_STATES: { COMPLETED },
+} = require('./../../config/constants');
 
 
 exports.photoRequest = async (req, res) => {
+  log('photoRequest', req.body);
   const customerId = req.user.id;
   const { packageId } = req.body;
   let status = '';
   const options = {
     attributes: ['id'],
     where: { id: packageId },
-  }
+  };
+
   log('pack_id', packageId);
   if (packageId) {
     const packages = await Package
       .find(options);
-    console.log(options);
+    log('options', options);
     if (packages) {
       const packageItems = await PackageItem
         .find({ attributes: ['object'] }, { where: { package_id: packages.id } });

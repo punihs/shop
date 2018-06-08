@@ -12,7 +12,6 @@
     "number_of_items": 0,
     "price_amount": 125.0,
     "received_at": "2017-11-20T00:00:00.000+05:30",
-    "status": "ship",
 
     "review": "",
     "return_send": null,
@@ -26,8 +25,10 @@
     "is_item_damaged": "0",
 
     "created_at": "2017-12-05T06:10:19.000+05:30",
-    "updated_at": "2017-12-19T04:57:53.000+05:30"
-
-
+    "updated_at": "2017-12-19T04:57:53.000+05:30",
+    "PackageState": {
+      "state_id": 5,
+      "user_id": 2
+    }
   }
 ]

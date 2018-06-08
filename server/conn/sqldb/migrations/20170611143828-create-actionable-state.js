@@ -12,6 +12,7 @@ module.exports = {
             allowNull: false,
             unique: true,
           },
+          state_id: keys('states'),
           group_id: keys('groups'),
           child_id: keys('states'),
         }, timestamps(3, DataTypes)), engine);

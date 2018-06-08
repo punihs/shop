@@ -5,7 +5,9 @@ const moment = require('moment');
 const log = debug('package');
 const {
   Package, Order, PackageItem, PhotoRequest, Transaction, User,
+  PackageState,
 } = require('../../conn/sqldb');
+
 const { index } = require('./package.service');
 
 exports.index = (req, res, next) => index(req)
@@ -39,6 +41,13 @@ exports.create = async (req, res, next) => {
     })
     .catch(next);
 };
+
+exports.state = (req, res, next) => PackageState
+  .create({
+    state_id: req.body.state_id,
+  })
+  .then()
+  .catch(next);
 
 exports.metaUpdate = async (req, res) => {
   const allowed = [

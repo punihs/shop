@@ -8,17 +8,18 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
-    group_id: DataTypes.INTEGER(11),
-    child_id: DataTypes.INTEGER(11),
   }, {
     tableName: 'actionable_states',
     timestamps: true,
     underscored: true,
   });
 
-  ActionableState.associate = (models) => {
-    ActionableState.belongsTo(models.State, {
-      foreignKey: 'state_id',
+  ActionableState.associate = (db) => {
+    ActionableState.belongsTo(db.State);
+    ActionableState.belongsTo(db.Group);
+    ActionableState.belongsTo(db.State, {
+      foreignKey: 'child_id',
+      as: 'Childs',
     });
   };
 

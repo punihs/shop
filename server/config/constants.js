@@ -18,6 +18,14 @@ module.exports = {
     SPLIT: 'split',
     ABANDON: 'abandon',
   },
+  PACKAGE_STATE_IDS: {
+    PROCESSING: 1,
+    VALUES: 2,
+    REVIEW: 3,
+    DELIVERED: 4,
+    SHIP: 5,
+    INREVIEW: 6,
+  },
   SHIPMENT_COUPON_STATES: {
     PENDING: 'pending',
     SUCCESS: 'success',
@@ -29,6 +37,14 @@ module.exports = {
     DISPATCHED: 'dispatched',
     DELIVERED: 'delivered',
     CANCELED: 'canceled',
+  },
+  SHIPMENT_STATE_IDS: {
+    REQUESTED: 1,
+    INQUEUE: 2,
+    INREVIEW: 3,
+    DISPATCHED: 4,
+    DELIVERED: 5,
+    CANCELED: 6,
   },
   PRICE_ENTERER: {
     SHOPPRE: '1',

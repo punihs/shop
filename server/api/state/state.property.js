@@ -30,4 +30,4 @@ module.exports = DataTypes => ({
     },
     defaultValue: 1,
   },
-})
+});

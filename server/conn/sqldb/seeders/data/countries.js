@@ -494,7 +494,7 @@ module.exports = () => [
   {
     id: 45,
     iso2: 'GN',
-    iso3: null,
+    iso3: 'GIN',
     name: 'Guinea Republic',
     phone_code: 224,
     discount_percentage: 50,
@@ -1538,7 +1538,7 @@ module.exports = () => [
   {
     id: 137,
     iso2: 'YT',
-    iso3: null,
+    iso3: 'MYT',
     name: 'Mayotte',
     phone_code: 269,
     discount_percentage: 50,
@@ -2126,7 +2126,7 @@ module.exports = () => [
   {
     id: 189,
     iso2: 'CS',
-    iso3: null,
+    iso3: 'SRB',
     name: 'Serbia',
     phone_code: 381,
     discount_percentage: 50,
