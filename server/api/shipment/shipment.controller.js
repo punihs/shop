@@ -6,7 +6,7 @@ const db = require('../../conn/sqldb');
 
 const {
   Country, Shipment, Package, Address, PackageMeta, ShipmentMeta, Notification, ShipmentIssue,
-  PackageState,
+  PackageState, Redemption, Coupon, LoyaltyHistory, User, LoyaltyPoint, Transaction,
 } = db;
 
 const { SHIPPING_RATE } = require('../../config/environment');
@@ -28,7 +28,7 @@ exports.index = (req, res, next) => {
     options.where = { customer_id: req.query.customer_id };
   }
   if (req.query.status) {
-    options.where = { shipping_status: req.query.status };
+    options.where = { status: req.query.status };
   }
 
   return Shipment
@@ -202,7 +202,7 @@ const saveShipment = ({
 
   shipment.payment_gateway_name = 'pending';
   shipment.payment_status = 'pending';
-  shipment.shipping_status = 'inreview';
+  shipment.status = 'inreview';
 
   const orderId = `${moment().format('YYYYMMDDHHmmss')}-${userId}`;
 
@@ -376,4 +376,294 @@ exports.invoice = async (req, res) => {
       .findAll({ where: { id: shipment.package_ids.split(',') } });
   }
   return res.status(201).json({ packages, shipment });
+};
+
+
+const updatePromoStatus = async (shipment) => {
+  const couponAppliedStatus = await Redemption
+    .find({ where: { shipment_order_code: shipment.order_code } });
+
+  if (couponAppliedStatus) {
+    const option = {
+      where: {
+        code: couponAppliedStatus.coupon_code,
+        expires_at: {
+          gt: new Date(),
+        },
+      },
+    };
+    const coupon = await Coupon
+      .find(option);
+    if (coupon) {
+      await Redemption
+        .update({ status: 'success' }, { where: { shipment_order_code: shipment.order_code } });
+    }
+  }
+};
+
+const updateCustomerWallet = async (shipment, customerId) => {
+  const couponAppliedStatus = Redemption
+    .find({ where: { shipment_order_code: shipment.order_code } });
+
+  if (couponAppliedStatus) {
+    const promo = Coupon
+      .find({
+        where: {
+          code: couponAppliedStatus.coupon_code,
+          expires_at: {
+            $gt: new Date(),
+          },
+        },
+      });
+    if (promo) {
+      if (promo.cashback_percentage) {
+        const { id } = customerId;
+        const user = await User
+          .findById(id);
+        const totalWalletAmount =
+          user.wallet_balance_amount +
+          (shipment.estimated_amount * (promo.cashback_percentage / 100));
+        await User
+          .update({ wallet_balance_amount: totalWalletAmount }, { where: { id } });
+        await Redemption
+          .update({ status: 'success' }, { where: { shipment_order_code: shipment.order_code } });
+      } else if (promo.discount_percentage) {
+        await Redemption
+          .update({ status: 'success' }, { where: { shipment_order_code: shipment.order_code } });
+      }
+    }
+  }
+};
+
+const walletTransaction = async (walletAmount, customer, shipment) => {
+  const transaction = {};
+  transaction.customer_id = customer.id;
+  // transaction.wallet_id = $customer->balance->id;
+  transaction.amount = walletAmount;
+  transaction.description = `Wallet balance offsetted against shipment cost | Shipment ID ${shipment.order_code}`;
+  Transaction.create(transaction);
+};
+
+
+exports.finalShipRequest = async (req, res) => {
+  const customerId = req.user.id;
+  const payment = {};
+  const optionCustomer = {
+    attributes: ['id', 'wallet_balance_amount'],
+    where: { id: customerId },
+  };
+  const customer = await User
+    .find(optionCustomer);
+  const shipmentSave = {};
+  const shipRequestId = req.body.ship_request_id;
+  const shipOptions = {
+    attributes: ['id', 'package_ids', 'customer_id', 'estimated_amount', 'order_code'],
+    where: { id: shipRequestId },
+  };
+  const shipment = await Shipment
+    .find(shipOptions);
+
+  if (!shipment && shipment.customer_id !== customerId) {
+    return res.status(400).json({ message: 'shipment not found' });
+  }
+  payment.coupon = 0;
+  payment.loyalty = 0;
+  payment.final_amount = shipment.estimated_amount;
+  // const options = {
+  //   attributes: ['points', 'customer_Id'],
+  //   where: { customer_Id: customerId },
+  // };
+  const options = {
+    attributes: ['points', 'customer_Id'],
+    where: { customer_Id: customerId },
+  };
+  const points = await LoyaltyPoint
+    .find(options);
+
+  let loyaltyPoints = points.points;
+
+  while (loyaltyPoints >= 1000) {
+    payment.loyalty += 100;
+    loyaltyPoints -= 1000;
+  }
+
+  payment.final_amount -= payment.loyalty;
+
+  payment.wallet = 0;
+  const isWalletUsed = req.body.wallet;
+  if (isWalletUsed === 1) {
+    payment.wallet = customer.wallet_balance_amount;
+    payment.final_amount -= payment.wallet;
+  }
+
+  const redemptionOptions = {
+    attributes: ['coupon_code'],
+    where: { shipment_order_code: shipment.order_code },
+  };
+
+  const couponAppliedStatus = await Redemption
+    .find(redemptionOptions);
+  // let promo_status = '';
+  let couponAmount = 0;
+  // let coupon_name = '';
+
+  const couponOptions = {
+    attributes: ['id', 'code'],
+    where: {
+      code: couponAppliedStatus.coupon_code,
+      expires_at: {
+        $gt: new Date(),
+      },
+    },
+  };
+
+  if (couponAppliedStatus) {
+    const promo = await Coupon
+      .find(couponOptions);
+    if (promo) {
+      if (promo.cashback_percentage) {
+        // promo_status = "cashback_success";
+        couponAmount = shipment.estimated_amount * (promo.cashback_percentage / 100);
+        payment.coupon = couponAmount;
+        // coupon_name = couponAppliedStatus.coupon_code;
+      } else if (promo.discount_percentage) {
+        const estimatedAmount = shipment.estimated_amount -
+          shipment.package_level_charges - payment.wallet;
+        payment.coupon = estimatedAmount * (promo.discount / 100);
+        // coupon_name = couponAppliedStatus.coupon_code;
+        // promo_status = 'discount_success';
+        payment.final_amount -= payment.coupon;
+      }
+    }
+  }
+
+  let paymentGatewayName = '';
+  const paymentGatewayFee = 0;
+  switch (req.body.payment_gateway_name) {
+    case 'card':
+      paymentGatewayName = 'card';
+      break;
+    case 'wire':
+      paymentGatewayName = 'wire';
+      await updatePromoStatus(shipment);
+      // Mail::to($customer->email)->send(new PaymentOptionWire($shipment));  // mail send pending
+      break;
+    case 'cash':
+      paymentGatewayName = 'cash';
+      await updatePromoStatus(shipment);
+      // Mail::to($customer->email)->send(new PaymentOptionCash($shipment));  // mail send pending
+      break;
+    case 'paypal':
+      paymentGatewayName = 'paypal';
+      break;
+    case 'paytm':
+      paymentGatewayName = 'paytm';
+      break;
+    case 'wallet':
+      paymentGatewayName = 'wallet';
+      break;
+    default: break;
+  }
+  shipmentSave.coupon_amount = payment.coupon;
+  shipmentSave.wallet_amount = payment.wallet;
+  shipmentSave.loyalty_amount = payment.loyalty;
+  shipmentSave.payment_gateway_fee_amount = paymentGatewayFee;
+  shipmentSave.final_amount = payment.final_amount;
+
+  if (paymentGatewayName === 'wire') {
+    shipmentSave.payment_gateway_id = 2;
+    shipmentSave.status = 'inqueue';
+    shipmentSave.payment_status = 'pending';
+    if (isWalletUsed === 1) {
+      await User
+        .update(
+          { wallet_balance_amount: 0 },
+          { where: { id: customerId } },
+        );
+    }
+  } else if (paymentGatewayName === 'cash') {
+    shipmentSave.payment_gateway_id = 6;
+    shipmentSave.status = 'inqueue';
+    shipmentSave.payment_status = 'pending';
+    if (isWalletUsed === 1) {
+      await User
+        .update(
+          { wallet_balance_amount: 0 },
+          { where: { id: customerId } },
+        );
+    }
+  } else if (paymentGatewayName === 'wallet') {
+    shipmentSave.payment_gateway_id = 6;
+    shipmentSave.status = 'inqueue';
+    shipmentSave.payment_status = 'success';
+    const customerTotalWalletAmount = customer.wallet_balance_amount;
+    const remainingWalletAmount = customerTotalWalletAmount - payment.final_amount;
+
+    await User
+      .update(
+        { wallet_balance_amount: remainingWalletAmount },
+        { where: { id: customerId } },
+      );
+
+    await updateCustomerWallet(shipment, customerId);
+    await walletTransaction(payment.final_amount, customer, shipment);
+  } else {
+    shipmentSave.payment_status = 'pending';
+    shipmentSave.status = 'confirmation';
+  }
+  const shipments = await Shipment
+    .update(shipmentSave, { where: { id: shipRequestId } });
+
+  if (shipmentSave.wallet !== 0) {
+    await walletTransaction(shipment.wallet, customer, shipment);
+  }
+
+  const notification = {};
+  notification.customer_id = customerId;
+  notification.action_type = 'shipment';
+  notification.action_id = shipment.id;
+  notification.action_description = `Customer submitted payment - Order#  ${shipment.order_code}`;
+  await Notification.create(notification);
+  await LoyaltyPoint
+    .update({ ship_request_id: shipment.id }, { where: { customer_id: customerId } });
+
+  if (payment.loyalty >= 100) {
+    const hisPoints = payment.loyalty * 10;
+    const loyaltyHistory = {};
+    loyaltyHistory.customer_id = customerId;
+    loyaltyHistory.points = hisPoints;
+    loyaltyHistory.redeemed = new Date();
+    await LoyaltyHistory.create(loyaltyHistory);
+
+    const loyaltyOptions = {
+      attributes: ['points'],
+      where: { customer_id: customerId },
+    };
+
+    const loyalty = await LoyaltyPoint
+      .find(loyaltyOptions);
+
+    const balance = loyalty.points - hisPoints;
+
+    await LoyaltyPoint
+      .update({ points: balance }, { where: { customer_id: customerId } });
+  }
+
+  // Mail::to($customer->email)->            // - required
+  // bcc('support@shoppre.com')->
+  // send(new ShipmentConfirmed(shipments)); // mail pending
+  log('shipment', shipments);
+
+  // const getPaymentURL = () => '/payment.axis.start';
+  // switch (paymentGatewayName) {
+  //   case 'card':
+  //     return res.redirect(getPaymentURL('payment.axis.start'));
+  //   case 'paypal':
+  //     return res.redirect(getPaymentURL('payment.paypal.start'));
+  //   case 'paytm':
+  //     return res.redirect(getPaymentURL('payment.paytm.start'));
+  //   default:
+  //     return res.redirect(getPaymentURL('shipping.request.response'));
+  // }
+  return res.json({ message: 'success' });
 };

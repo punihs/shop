@@ -44,6 +44,9 @@ const db = {
   // - Notifications
   'Notification',
 
+  // - loyalty points, coupon
+  'LoyaltyPoint', 'LoyaltyHistory', 'Redemption',
+
   // - Organitation
   'ShippingPartner', 'Link',
 
