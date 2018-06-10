@@ -87,6 +87,8 @@ const db = {
   // - customers, packages, package_items, shipments
   'Product',
 
+  'Log',
+
   'Org',
   'ObjectType', 'Keyword', 'Seo', 'Source',
 

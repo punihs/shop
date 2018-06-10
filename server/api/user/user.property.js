@@ -41,4 +41,8 @@ module.exports = DataTypes => ({
   medium: DataTypes.STRING,
   google_contacts_accessed: DataTypes.BOOLEAN,
   otp: DataTypes.STRING,
+  facebook: DataTypes.JSON,
+  twitter: DataTypes.JSON,
+  google: DataTypes.JSON,
+  github: DataTypes.JSON,
 });

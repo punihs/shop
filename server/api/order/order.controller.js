@@ -18,6 +18,7 @@ exports.index = (req, res, next) => {
       attributes: ['id', 'name'],
     }],
     where: { },
+    order: [['id', 'DESC']],
     limit: Number(req.query.limit) || 20,
   };
 
