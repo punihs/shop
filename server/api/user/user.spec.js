@@ -76,11 +76,11 @@ describe('GET /api/users/me', () => {
       .expect('Content-Type', /json/)
       .expect(200)
       .then((res) => {
-        assert.strictEqual(res.body.id, 2);
+        assert.strictEqual(res.body.id, 646);
         assert.strictEqual(res.body.salutation, 'Mr');
-        assert.strictEqual(res.body.first_name, 'Venkat');
-        assert.strictEqual(res.body.last_name, 'Customer');
-        assert.strictEqual(res.body.email, 'venkat@gmail.com');
+        assert.strictEqual(res.body.first_name, 'Abhinav');
+        assert.strictEqual(res.body.last_name, 'Mishra');
+        assert.strictEqual(res.body.email, 'tech.shoppre@gmail.com');
         done();
       });
   });
@@ -104,7 +104,7 @@ describe('delete /api/users/:id', () => {
 
   before((done) => {
     User
-      .create({ })
+      .create({ email: 'test@test.com' })
       .then((user) => {
         userId = user.id;
         done();

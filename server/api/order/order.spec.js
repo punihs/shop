@@ -9,7 +9,7 @@ describe('Orders', () => {
     request(app)
       .post('/api/orders')
       .send({
-        customer_id: 2,
+        customer_id: 646,
         tracking_code: 'DELHIVERY123',
         invoice_code: 'INV123',
         comments: 'Items recieved in good condition',
@@ -30,7 +30,7 @@ describe('Orders', () => {
     request(app)
       .post('/api/orders')
       .send({
-        customer_id: 2,
+        customer_id: 646,
         store_id: 1,
         name: 'Chalo Chappals',
         tracking_code: 'DELHIVERY123',
@@ -54,7 +54,7 @@ describe('Orders', () => {
       .post('/api/orders')
       .send({
         name: 'Moto E',
-        customer_id: 2,
+        customer_id: 646,
         store_id: 1,
         tracking_code: 'DLV879',
         invoice_code: 'DLV879',

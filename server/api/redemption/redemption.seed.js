@@ -4,5 +4,5 @@ module.exports = () => [{
   coupon_code: 'EASTER10',
   discount_amount: 100,
   status: 'success',
-  customer_id: 2,
+  customer_id: 646,
 }];

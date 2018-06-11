@@ -14,7 +14,7 @@ exports.index = (req, res, next) => {
   const options = {
     attributes: [
       'id', 'name', 'email', 'mobile', 'salutation', 'first_name', 'last_name', 'phone',
-      'phone_code', 'country_id', 'referred_by', 'created_at', 'locker_code',
+      'phone_code', 'country_id', 'referred_by', 'created_at', 'locker_code', 'profile_photo_url',
     ],
     include: [{
       model: Country,
@@ -71,7 +71,7 @@ exports.me = (req, res, next) => {
   const options = {
     attributes: [
       'id', 'salutation', 'first_name', 'last_name', 'email', 'alternate_email',
-      'phone_code', 'phone', 'secondary_phone_code', 'secondary_phone',
+      'phone_code', 'phone', 'secondary_phone_code', 'secondary_phone', 'profile_photo_url',
     ],
     limit: Number(req.query.limit) || 20,
   };

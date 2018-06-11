@@ -82,7 +82,7 @@ module.exports = () => [
     weight_by_shipping_partner: 27.35,
   }, {
     id: 116,
-    customer_id: 2,
+    customer_id: 646,
     // city_id: 1,
     country_id: 224,
     coupon_amount: 0.0,

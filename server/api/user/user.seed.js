@@ -22,15 +22,16 @@ module.exports = (constants) => {
       group_id: OPS,
     },
     {
-      id: 2,
+      id: 646,
       salutation: 'Mr',
-      first_name: 'Venkat',
-      last_name: 'Customer',
-      email: 'venkat@gmail.com',
+      first_name: 'Abhinav',
+      last_name: 'Mishra',
+      email: 'tech.shoppre@gmail.com',
       phone_code: '91',
-      phone: '9844717202',
+      phone: '9060122213',
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
       group_id: MEMBER,
+      locker_code: 'SHPR82-162',
     },
     {
       id: 354,
@@ -74,17 +75,6 @@ module.exports = (constants) => {
       phone: '9060122213',
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
       group_id: MARKETING,
-    },
-    {
-      id: 647,
-      salutation: 'Mr',
-      first_name: 'Abhinav',
-      last_name: 'Mishra',
-      email: 'abhinav@shoppre.com',
-      phone_code: '91',
-      phone: '9060122213',
-      password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
-      group_id: MEMBER,
     },
     {
       id: 2757,
@@ -285,5 +275,9 @@ module.exports = (constants) => {
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
       group_id: 2,
     },
-  ].map(x => ({ locker_code: 'SHPR-112', country_id: IND, ...x }));
+  ].map(x => ({
+    country_id: IND,
+    ...x,
+    profile_photo_url: 'https://lh3.googleusercontent.com/-UYCUQAneuQo/AAAAAAAAAAI/AAAAAAAAAAo/tGVHInxDmiY/photo.jpg?sz=50',
+  }));
 };

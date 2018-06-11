@@ -9,7 +9,7 @@ module.exports = () => [
     slug: 'usa',
   }, {
     id: 2,
-    customer_id: 2,
+    customer_id: 646,
     amount: 2454,
     consignment_type: 1,
     country_id: 226,
