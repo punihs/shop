@@ -1,10 +1,10 @@
 
 module.exports = (constants) => {
   const {
-    GROUPS: {
+    GROUP: {
       OPS, MEMBER, MARKETING, MANAGEMENT,
     },
-    COUNTRIES: {
+    COUNTRY: {
       IND,
     },
   } = constants;

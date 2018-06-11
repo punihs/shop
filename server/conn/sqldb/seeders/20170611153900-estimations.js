@@ -1,8 +1,8 @@
-const { estimations } = require('../constants');
+const { estimation } = require('../constants');
 
 module.exports = {
   up(queryInterface) {
-    return queryInterface.bulkInsert('estimations', estimations, {});
+    return queryInterface.bulkInsert('estimations', estimation, {});
   },
 
   down(queryInterface) {

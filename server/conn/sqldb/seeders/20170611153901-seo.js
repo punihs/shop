@@ -6,6 +6,6 @@ module.exports = {
   },
 
   down(queryInterface) {
-    return queryInterface.bulkDelete('seo', { id: [1] });
+    return queryInterface.bulkDelete('seo', { truncate: true, cascade: false });
   },
 };

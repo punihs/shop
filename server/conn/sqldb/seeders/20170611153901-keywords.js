@@ -1,8 +1,8 @@
-const { keywords } = require('../constants');
+const { keyword } = require('../constants');
 
 module.exports = {
   up(queryInterface) {
-    return queryInterface.bulkInsert('keywords', keywords, {});
+    return queryInterface.bulkInsert('keywords', keyword, {});
   },
 
   down(queryInterface) {

@@ -38,6 +38,13 @@ exports.index = (req, res, next) => {
     order: [['created_at', 'desc']],
   };
 
+  if (req.query.sort) {
+    const [field, order] = req.query.sort.split(' ');
+    if (field && order) {
+      options.order = [[field, order]];
+    }
+  }
+
   if (req.query.group_id) options.where.group_id = req.query.group_id;
 
   const { q, email, locker_code: lockerCode } = req.query;
@@ -135,7 +142,7 @@ exports.show = (req, res, next) => {
     .findById(Number(id), {
       include: [{
         model: Country,
-        attributes: ['id', 'name'],
+        attributes: ['id', 'name', 'iso2'],
       }, {
         model: User,
         as: 'ReferredUser',

@@ -1,4 +1,4 @@
-module.exports = ({ ORGS: { SHOPPRE }, PRODUCTS: { SEO } }) => [
+module.exports = ({ ORG: { SHOPPRE }, PRODUCT: { SEO } }) => [
   // vismaya automatically signedup to seo product
   {
     id: 1,

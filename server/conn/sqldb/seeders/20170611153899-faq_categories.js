@@ -1,8 +1,8 @@
-const { faqCategories } = require('../constants');
+const { faqCategory } = require('../constants');
 
 module.exports = {
   up(queryInterface) {
-    return queryInterface.bulkInsert('faq_categories', faqCategories, {});
+    return queryInterface.bulkInsert('faq_categories', faqCategory, {});
   },
 
   down(queryInterface) {

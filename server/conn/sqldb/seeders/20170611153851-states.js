@@ -1,13 +1,13 @@
-const { states } = require('./../constants');
+const { state } = require('./../constants');
 
 module.exports = {
   up(queryInterface) {
     return queryInterface.bulkInsert(
-      'states', states,
+      'states', state,
       {},
     );
   },
   down(queryInterface) {
-    return queryInterface.bulkDelete('states', { id: states.map(x => x.id) });
+    return queryInterface.bulkDelete('states', { id: state.map(x => x.id) });
   },
 };

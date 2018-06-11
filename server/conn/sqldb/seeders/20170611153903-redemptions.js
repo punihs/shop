@@ -1,11 +1,11 @@
-const { redemptions } = require('./../constants');
+const { redemption } = require('./../constants');
 
 module.exports = {
   up(queryInterface) {
-    return queryInterface.bulkInsert('redemptions', redemptions, {});
+    return queryInterface.bulkInsert('redemptions', redemption, {});
   },
 
   down(queryInterface) {
-    return queryInterface.bulkDelete('redemptions', { id: redemptions.map(x => x.id) });
+    return queryInterface.bulkDelete('redemptions', { truncate: true, cascade: false });
   },
 };

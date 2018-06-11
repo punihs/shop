@@ -1,5 +1,5 @@
 
-module.exports = ({ USERS: { VISMAYA } }) => [{
+module.exports = ({ USER: { VISMAYA } }) => [{
   id: 1,
   created_by: VISMAYA,
   name: 'Shipping Partner',

@@ -1,8 +1,8 @@
-const { stores } = require('../constants');
+const { store } = require('../constants');
 
 module.exports = {
   up(queryInterface) {
-    return queryInterface.bulkInsert('stores', stores, {});
+    return queryInterface.bulkInsert('stores', store, {});
   },
 
   down(queryInterface) {

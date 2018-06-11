@@ -1,11 +1,11 @@
-const { coupons } = require('./../constants');
+const { coupon } = require('./../constants');
 
 module.exports = {
   up(queryInterface) {
-    return queryInterface.bulkInsert('coupons', coupons, {});
+    return queryInterface.bulkInsert('coupons', coupon, {});
   },
 
   down(queryInterface) {
-    return queryInterface.bulkDelete('coupons', { id: coupons.map(x => x.id) });
+    return queryInterface.bulkDelete('coupons', { id: coupon.map(x => x.id) });
   },
 };

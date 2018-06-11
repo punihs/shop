@@ -1,4 +1,4 @@
-module.exports = ({ GROUPS: { MEMBER } }) => [{
+module.exports = ({ GROUP: { MEMBER } }) => [{
   id: 1,
   state_id: 1,
   group_id: MEMBER,

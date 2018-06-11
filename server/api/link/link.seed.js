@@ -1,6 +1,6 @@
 
 module.exports = (constants) => {
-  const { OBJECT_TYPES: { SHIPPING_PARTNER } } = constants;
+  const { OBJECT_TYPE: { SHIPPING_PARTNER } } = constants;
   return [{
     name: 'Shipment Tracking',
     url: 'https://www.logistics.dhl/in-en/home/tracking.html',

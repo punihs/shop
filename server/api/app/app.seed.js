@@ -1,6 +1,6 @@
 
 
-module.exports = ({ GROUPS: { MEMBER, OPS } }) => [{
+module.exports = ({ GROUP: { MEMBER, OPS } }) => [{
   id: 1,
   name: 'Accounts',
   client_id: 'accounts',

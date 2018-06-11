@@ -22,7 +22,7 @@ const db = {
 
 [
   // - Enums
-  'Country', 'Place', 'PaymentGateway',
+  'Country', 'Place', 'PaymentGateway', 'Locker',
 
   // - Basic
   'User', 'UserMeta', 'Group', 'Estimation',
