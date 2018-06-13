@@ -19,6 +19,7 @@ module.exports = {
     ABANDON: 'abandon',
   },
   PACKAGE_STATE_IDS: {
+    CREATED: 1,
     PROCESSING: 1,
     VALUES: 2,
     REVIEW: 3,

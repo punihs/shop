@@ -45,6 +45,12 @@ exports.index = ({ query, user }) => {
 
   if (states.includes(status)) options.where.status = status;
 
-  return Package
-    .findAll(options);
+  return Promise
+    .all([
+      Package
+        .findAll(options),
+      Package
+        .count({ where: options.where }),
+    ])
+    .then(([packages, total]) => ({ packages, total }));
 };

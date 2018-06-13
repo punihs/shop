@@ -1,9 +1,11 @@
 const debug = require('debug');
 
 const log = debug('s.api.package.model');
+const logger = require('../../components/logger');
 const properties = require('./package.property');
+const notification = require('./package.notification');
 const {
-  PACKAGE_STATE_IDS: { SHIP },
+  PACKAGE_STATE_IDS: { CREATED, SHIP },
 } = require('../../config/constants');
 
 module.exports = (sequelize, DataTypes) => {
@@ -51,13 +53,13 @@ module.exports = (sequelize, DataTypes) => {
   Package.updateState = ({
     db,
     nextStateId,
-    packageId,
+    pkg,
     actingUser,
   }) => {
     log('updateState', nextStateId);
     return db.PackageState
       .create({
-        package_id: packageId,
+        package_id: pkg.id,
         user_id: actingUser.id,
         state_id: nextStateId,
       })
@@ -72,11 +74,22 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
 
+        if ([CREATED].includes(nextStateId)) {
+          notification
+            .stateChange({
+              db,
+              nextStateId,
+              pkg,
+              actingUser,
+            })
+            .catch(err => logger.error('statechange notification', nextStateId, pkg, err));
+        }
+
         return db.Package
           .update({
             package_state_id: packageState.id,
           }, {
-            where: { id: packageId },
+            where: { id: pkg.id },
           });
       });
   };

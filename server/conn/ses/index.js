@@ -1,4 +1,5 @@
 const aws = require('aws-sdk');
+const Bluebird = require('bluebird');
 
 const config = require('../../config/environment');
 
@@ -10,6 +11,7 @@ const options = {
 };
 
 if (config.AWSEndPoint) options.endpoint = config.AWSEndPoint;
-
-module.exports = new aws.SES(options);
+const pulse = new aws.SES(options);
+Bluebird.promisifyAll(Object.getPrototypeOf(pulse));
+module.exports = pulse;
 

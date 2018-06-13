@@ -3,15 +3,21 @@ const debug = require('debug');
 const moment = require('moment');
 
 const log = debug('package');
+
+const db = require('../../conn/sqldb');
+
 const {
   Package, Order, PackageItem, PhotoRequest, Transaction, User,
   PackageState,
-} = require('../../conn/sqldb');
+} = db;
+
+const { PACKAGE_STATE_IDS: { CREATED } } = require('../../config/constants');
+const logger = require('../../components/logger');
 
 const { index } = require('./package.service');
 
 exports.index = (req, res, next) => index(req)
-  .then(packages => res.json(packages))
+  .then(result => res.json(result))
   .catch(next);
 
 
@@ -27,17 +33,26 @@ exports.create = async (req, res, next) => {
     'customer_id',
   ];
 
-  const pack = _.pick(req.body, allowed);
+  const pkg = _.pick(req.body, allowed);
   // internal user
-  pack.created_by = req.user.id;
-  pack.order_code = `${moment().format('YYYYMMDDhhmmss')}.${pack.customer_id}`;
+  pkg.created_by = req.user.id;
+  pkg.order_code = `${moment().format('YYYYMMDDhhmmss')}.${pkg.customer_id}`;
 
   return Package
-    .create(pack)
+    .create(pkg)
     .then(({ id }) => {
-      Order
-        .update({ package_id: id }, { where: { id: req.body.order_id } });
-      res.status(201).json({ id });
+      if (req.body.order_id) {
+        Order
+          .update({ package_id: id }, { where: { id: req.body.order_id } })
+          .catch(err => logger.error('order', req.body, err));
+      }
+
+      return Package.updateState({
+        db,
+        nextStateId: CREATED,
+        pkg: { ...pkg, id },
+        actingUser: req.user,
+      }).then(() => res.status(201).json({ id }));
     })
     .catch(next);
 };

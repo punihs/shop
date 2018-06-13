@@ -32,9 +32,7 @@ exports.index = (req, res, next) => {
       Package
         .findAll(options),
       Package.count({
-        where: {
-          customer_id: req.params.userId,
-        },
+        where: options.where,
       }),
     ])
     .then(([packages, total]) => res
