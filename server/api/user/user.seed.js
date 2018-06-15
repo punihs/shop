@@ -31,7 +31,7 @@ module.exports = (constants) => {
       phone: '9060122213',
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
       group_id: MEMBER,
-      locker_code: 'SHPR82-162',
+      virtual_address_code: 'SHPR82-162',
     },
     {
       id: 354,

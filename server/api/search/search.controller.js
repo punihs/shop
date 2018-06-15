@@ -7,8 +7,8 @@ exports.index = (req, res, next) => {
   let field = 'name';
 
   if (req.query.type === 'User') {
-    attributes = ['id', 'last_name', 'first_name', 'locker_code'];
-    field = 'locker_code';
+    attributes = ['id', 'last_name', 'first_name', 'virtual_address_code'];
+    field = 'virtual_address_code';
   }
 
   return sequelize(db[req.query.type], field, {

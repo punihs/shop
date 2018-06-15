@@ -29,7 +29,7 @@ const db = {
 
   // - Customer Account
   // Shoppre.com - Inspired by MyUS.com
-  'Address', 'UserDocument', 'ShippingPreference',
+  'Address', 'UserDocument', 'ShippingPreference', 'VirtualAddress',
 
   'Order',
 

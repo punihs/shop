@@ -4,7 +4,7 @@ const uuidv4 = require('uuid/v4');
 
 const Minio = require('../../conn/minio');
 const {
-  User, State, ActionableState, GroupState, Shipment, Country, Package, Order,
+  User, State, ActionableState, GroupState, Shipment, Country, Package, Order, Locker,
 } = require('../../conn/sqldb');
 const { MINIO_BUCKET } = require('../../config/environment');
 
@@ -14,7 +14,7 @@ exports.index = (req, res, next) => {
   const options = {
     attributes: [
       'id', 'name', 'email', 'mobile', 'salutation', 'first_name', 'last_name', 'phone',
-      'phone_code', 'country_id', 'referred_by', 'created_at', 'locker_code', 'profile_photo_url',
+      'phone_code', 'country_id', 'referred_by', 'created_at', 'virtual_address_code', 'profile_photo_url',
     ],
     include: [{
       model: Country,
@@ -32,6 +32,9 @@ exports.index = (req, res, next) => {
     }, {
       model: Order,
       attributes: ['id'],
+    }, {
+      model: Locker,
+      attributes: ['id', 'name', 'short_name'],
     }],
     where: {},
     limit: Number(req.query.limit) || 10,
@@ -47,8 +50,8 @@ exports.index = (req, res, next) => {
 
   if (req.query.group_id) options.where.group_id = req.query.group_id;
 
-  const { q, email, locker_code: lockerCode } = req.query;
-  if (lockerCode) options.where.locker_code = lockerCode.trim();
+  const { q, email, virtual_address_code: lockerCode } = req.query;
+  if (lockerCode) options.where.virtual_address_code = lockerCode.trim();
   if (email) options.where.email = email.trim();
   if (req.query.q) {
     options.where.$or = {
@@ -130,7 +133,7 @@ exports.states = (req, res, next) => {
 exports.create = async (req, res) => {
   const user = req.body;
   const lockerCode = 'SHPR'.concat(parseInt(Math.random() * 100, 10)).concat(parseInt((Math.random() * (1000 - 100)) + 100, 10));
-  user.locker_code = lockerCode;
+  user.virtual_address_code = lockerCode;
   const saved = await User.create(user);
   return res.json(saved);
 };
@@ -158,6 +161,9 @@ exports.show = (req, res, next) => {
         model: Order,
         attributes: ['id'],
         required: false,
+      }, {
+        model: Locker,
+        attributes: ['id', 'name', 'short_name'],
       }],
     })
     .then(users => res.json(users))

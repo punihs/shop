@@ -12,6 +12,8 @@ const config = {
     port: process.env.PORT || 5000,
     ip: process.env.IP || '0.0.0.0',
     root,
+    URLS_MEMBER: `${env.PREFIX}member.${env.DOMAIN}`,
+    URLS_WWW: `${env.PREFIX}www.${env.DOMAIN}`,
     auth: {
       google: {
         scope: 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.email',

@@ -50,9 +50,9 @@ describe('POST /api/packages', () => {
       .post('/api/packages')
       .send({
         type: 1,
+        customer_id: 646,
         store_id: 1,
         reference_code: 'FLIP123',
-        locker_code: 'SHPR91-685',
         weight: 1,
         number_of_items: 1,
         price_amount: 100,
@@ -74,7 +74,6 @@ describe('POST /api/packages update meta', () => {
         seller: 'Amazon.in',
         reference_code: '123',
         type: 1,
-        locker_code: 'SHPR91-685',
         number_of_items: '2',
         price_amount: '2000',
         weight: '2',

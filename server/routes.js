@@ -38,7 +38,6 @@ const place = require('./api/place');
 const store = require('./api/store');
 const estimation = require('./api/estimation');
 const coupon = require('./api/coupon');
-const source = require('./api/source');
 const userPackage = require('./api/user/package');
 const photoRequest = require('./api/photoRequest');
 const webRoutes = require('./webRoutes');
@@ -70,7 +69,6 @@ module.exports = (app) => {
   app.use('/api/paymentGateways', paymentGateway);
   app.use('/api/estimations', estimation);
   app.use('/api/coupons', coupon);
-  app.use('/api/sources', source);
   app.use('/api/photoRequest', authenticate(), photoRequest);
   app.get('/secured', authenticate(), (req, res) => res.json({ name, version }));
 

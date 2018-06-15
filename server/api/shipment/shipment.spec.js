@@ -60,7 +60,7 @@ describe('GET /api/shipments/1/packages', () => {
 //       remember_token: 'ffOK9DhHYRMRSjOiMES7aT7uIfk9vEoIfzDCplR752nc068ShZZ9wsuWcXvz',
 //       is_seller: '0',
 //       email_token: null,
-//       locker_code: 'SHPR82-162',
+//       virtual_address_code: 'SHPR82-162',
 //       phone: null,
 //       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6', // admin1234
 //       created_at: '2017-10-19T20:55:50.000+05:30',

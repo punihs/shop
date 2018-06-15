@@ -30,7 +30,7 @@ module.exports = DataTypes => ({
   },
   alternate_email: DataTypes.STRING,
   password: DataTypes.STRING,
-  locker_code: {
+  virtual_address_code: {
     type: DataTypes.STRING(10),
     unique: {
       args: true,

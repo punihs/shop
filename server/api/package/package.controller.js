@@ -8,7 +8,7 @@ const db = require('../../conn/sqldb');
 
 const {
   Package, Order, PackageItem, PhotoRequest, Transaction, User,
-  PackageState,
+  PackageState, Locker,
 } = db;
 
 const { PACKAGE_STATE_IDS: { CREATED } } = require('../../config/constants');
@@ -26,7 +26,7 @@ exports.create = async (req, res, next) => {
     'type',
     'store_id',
     'reference_code',
-    'locker_code',
+    'virtual_address_code',
     'weight',
     'number_of_items',
     'price_amount',
@@ -38,22 +38,23 @@ exports.create = async (req, res, next) => {
   pkg.created_by = req.user.id;
   pkg.order_code = `${moment().format('YYYYMMDDhhmmss')}.${pkg.customer_id}`;
 
-  return Package
-    .create(pkg)
-    .then(({ id }) => {
-      if (req.body.order_id) {
-        Order
-          .update({ package_id: id }, { where: { id: req.body.order_id } })
-          .catch(err => logger.error('order', req.body, err));
-      }
+  return Locker
+    .allocation({ customerId: pkg.customer_id })
+    .then(locker => Package.create(pkg)
+      .then(({ id }) => {
+        if (req.body.order_id) {
+          Order
+            .update({ package_id: id }, { where: { id: req.body.order_id } })
+            .catch(err => logger.error('order', req.body, err));
+        }
 
-      return Package.updateState({
-        db,
-        nextStateId: CREATED,
-        pkg: { ...pkg, id },
-        actingUser: req.user,
-      }).then(() => res.status(201).json({ id }));
-    })
+        return Package.updateState({
+          db,
+          nextStateId: CREATED,
+          pkg: { ...pkg, id },
+          actingUser: req.user,
+        }).then(() => res.status(201).json({ id, Locker: locker }));
+      }))
     .catch(next);
 };
 
@@ -69,7 +70,7 @@ exports.metaUpdate = async (req, res) => {
     'seller',
     'reference_code',
     'type',
-    'locker_code',
+    'virtual_address_code',
     'weight',
     'number_of_items',
     'price_amount',
