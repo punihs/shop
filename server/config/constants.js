@@ -1,4 +1,4 @@
-module.exports = {
+const constants = {
   GROUPS: {
     OPS: 1,
     CUSTOMER: 2,
@@ -70,4 +70,14 @@ module.exports = {
     MS: 'Ms',
     MRS: 'Mrs',
   },
+  CONTENT_TYPES: {
+    REGULAR: '1',
+    SPECIAL: '2', // 'Liquid, Cream, Oil & Home-made food items'
+  },
 };
+
+constants.PACKAGE_STATE_ID_NAMES = Object
+  .keys(constants.PACKAGE_STATE_IDS)
+  .reduce((nxt, key) => ({ ...nxt, [constants.PACKAGE_STATE_IDS[key]]: key }), {});
+
+module.exports = constants;

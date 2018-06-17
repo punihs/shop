@@ -4,6 +4,10 @@ const auth = require('../../../logs/credentials');
 const opsAuth = require('../../../logs/ops-credentials');
 const wwwAuth = require('../../../logs/www-credentials');
 
+const {
+  CONSIGNMENT_TYPES: { DOC }, CONTENT_TYPES: { REGULAR, SPECIAL },
+} = require('../../config/constants');
+
 describe('public GET /api/packages', () => {
   it('return packages', (done) => {
     request(app)
@@ -33,7 +37,7 @@ describe('member GET /api/packages', () => {
 describe('ops GET /api/packages', () => {
   it('return packages', (done) => {
     request(app)
-      .get('/api/packages')
+      .get('/api/packages?fl=id,name,state_id,state_name&limit=15&offset=0&q=&sid=&sort=-&status=VALUES')
       .set('Authorization', `Bearer ${opsAuth.access_token}`)
       .expect('Content-Type', /json/)
       .expect(200)
@@ -54,8 +58,8 @@ describe('POST /api/packages', () => {
         store_id: 1,
         reference_code: 'FLIP123',
         weight: 1,
-        number_of_items: 1,
         price_amount: 100,
+        content_type: REGULAR,
       })
       .set('Authorization', `Bearer ${opsAuth.access_token}`)
       .expect('Content-Type', /json/)
@@ -73,14 +77,10 @@ describe('POST /api/packages update meta', () => {
       .send({
         seller: 'Amazon.in',
         reference_code: '123',
-        type: 1,
-        number_of_items: '2',
-        price_amount: '2000',
-        weight: '2',
-        is_item_damaged: '1',
-        is_liquid: false,
-        is_featured_seller: '1',
-        recieved_at: '2018-05-24',
+        consignment_type: DOC,
+        price_amount: 2000,
+        weight: 2,
+        content_type: SPECIAL,
         status: 'review',
       })
       .set('Authorization', `Bearer ${opsAuth.access_token}`)

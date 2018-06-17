@@ -5,8 +5,8 @@ const { PACKAGE_STATES } = require('../../../config/constants');
 exports.index = (req, res, next) => {
   const options = {
     attributes: [
-      'id', 'received_at', 'order_code', 'reference_code', 'price_amount',
-      'number_of_items', 'weight', 'type', 'package_state_id', 'store_id',
+      'id', 'created_at', 'reference_code', 'price_amount',
+      'weight', 'consignment_type', 'package_state_id', 'store_id',
     ],
     where: {
       customer_id: req.params.userId,

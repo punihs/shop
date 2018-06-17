@@ -41,7 +41,10 @@ module.exports = (sequelize, DataTypes) => {
       .then(locker => (locker.customer_id
         ? Promise.resolve(locker)
         : locker
-          .update({ customer_id: customerId }, { where: { customer_id: null }, limit: 1 })
+          .update({
+            customer_id: customerId,
+            allocated_at: new Date(),
+          }, { where: { customer_id: null }, limit: 1 })
           .then(() => locker)));
   };
 

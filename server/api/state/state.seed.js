@@ -1,13 +1,15 @@
 
 module.exports = () => [{
   id: 1,
-  name: 'processing',
+  name: 'Processing',
 }, {
   id: 2,
-  name: 'values',
+  name: 'Customer Input',
+  // name: 'values',
 }, {
   id: 3,
-  name: 'review',
+  name: 'Internal Review',
+  // name: 'review',
 }, {
   id: 4,
   name: 'delivered',

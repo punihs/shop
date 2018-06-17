@@ -26,7 +26,7 @@ module.exports = {
       }
 
       db.Log
-        .create(log)
+        .create(log, { logging: false })
         .catch(err => logger.error('activity', err));
     };
   },

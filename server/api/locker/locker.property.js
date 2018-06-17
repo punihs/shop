@@ -7,4 +7,5 @@ module.exports = DataTypes => ({
     unique: true,
   },
   name: DataTypes.STRING,
+  allocated_at: DataTypes.DATE,
 });

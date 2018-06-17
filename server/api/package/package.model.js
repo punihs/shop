@@ -38,6 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'package_state_id',
     });
 
+    Package.hasMany(db.PackageItem);
     Package.hasMany(db.PackageState, {
       as: 'PackageStates',
       foreignKey: 'state_id',
@@ -55,14 +56,20 @@ module.exports = (sequelize, DataTypes) => {
     nextStateId,
     pkg,
     actingUser,
+    comments = null,
   }) => {
     log('updateState', nextStateId);
+    const options = {
+      package_id: pkg.id,
+      user_id: actingUser.id,
+      state_id: nextStateId,
+    };
+
+    if (comments) options.comments = comments;
+    if ([CREATED].includes(nextStateId)) options.comments = 'Package Recieved';
+
     return db.PackageState
-      .create({
-        package_id: pkg.id,
-        user_id: actingUser.id,
-        state_id: nextStateId,
-      })
+      .create(options)
       .then((packageState) => {
         switch (nextStateId) {
           case SHIP: {

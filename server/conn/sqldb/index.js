@@ -34,7 +34,7 @@ const db = {
   'Order',
 
   'Package', 'PackageMeta', 'PackageState', 'State', 'ActionableState', 'GroupState',
-  'PackageItem',
+  'PackageItem', 'PackageComment',
   'PackageItemCategory',
 
   'PhotoRequest',

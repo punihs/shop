@@ -14,7 +14,8 @@ exports.index = (req, res, next) => {
   const options = {
     attributes: [
       'id', 'name', 'email', 'mobile', 'salutation', 'first_name', 'last_name', 'phone',
-      'phone_code', 'country_id', 'referred_by', 'created_at', 'virtual_address_code', 'profile_photo_url',
+      'phone_code', 'country_id', 'referred_by', 'created_at', 'virtual_address_code',
+      'profile_photo_url',
     ],
     include: [{
       model: Country,
@@ -143,6 +144,12 @@ exports.show = (req, res, next) => {
   log('show', id);
   return User
     .findById(Number(id), {
+      attributes: req.query.fl
+        ? req.query.fl.split(',')
+        : [
+          'id', 'name', 'first_name', 'last_name', 'salutation', 'virtual_address_code',
+          'mobile', 'email', 'phone', 'phone_code',
+        ],
       include: [{
         model: Country,
         attributes: ['id', 'name', 'iso2'],
@@ -163,7 +170,7 @@ exports.show = (req, res, next) => {
         required: false,
       }, {
         model: Locker,
-        attributes: ['id', 'name', 'short_name'],
+        attributes: ['id', 'name', 'short_name', 'allocated_at'],
       }],
     })
     .then(users => res.json(users))

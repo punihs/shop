@@ -15,7 +15,7 @@ exports.index = async (req, res, next) => {
   if (req.query.type === 'popular') {
     popularStores = await Package.findAll({
       attributes: ['store_id', [sequelize.fn('count', 1), 'cnt']],
-      limit: 10,
+      limit: Number(req.query.limit) || 10,
       group: ['store_id'],
       raw: true,
     });
