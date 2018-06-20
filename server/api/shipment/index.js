@@ -11,6 +11,8 @@ router.put('/:id/cancel', controller.cancelRequest);
 router.put('/finalShip', controller.finalShipRequest);
 router.put('/payRetrySubmit', controller.payRetrySubmit);
 router.put('/retryPayment', controller.retryPayment);
+router.put('/finalShip', controller.finalShipRequest);
+router.get('/confirmShipment', controller.confirmShipment);
 router.post('/', controller.create);
 router.get('/:id', controller.show);
 router.post('/:id/unread', controller.unread);

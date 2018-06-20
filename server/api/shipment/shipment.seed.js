@@ -2,7 +2,7 @@
 module.exports = () => [
   {
     id: 11,
-    customer_id: 2757,
+    customer_id: 646,
     // city_id: 1,
     country_id: 226,
     coupon_amount: 0.0,
@@ -34,7 +34,7 @@ module.exports = () => [
     shipment_type_id: null,
     loyalty_amount: 0.0,
     status: 'delivered',
-    payment_status: 'success',
+    payment_status: 'pending',
     payment_gateway_id: 2,
     final_weight: 27.35,
     weight_by_shipping_partner: 27.35,
@@ -82,7 +82,7 @@ module.exports = () => [
     weight_by_shipping_partner: 27.35,
   }, {
     id: 116,
-    customer_id: 2757,
+    customer_id: 646,
     // city_id: 1,
     country_id: 224,
     coupon_amount: 0.0,
@@ -120,7 +120,7 @@ module.exports = () => [
     weight_by_shipping_partner: 27.35,
   }, {
     id: 300,
-    customer_id: 2757,
+    customer_id: 646,
     // city_id: 1,
     country_id: 224,
     coupon_amount: 0.0,
@@ -148,7 +148,7 @@ module.exports = () => [
     phone: '-8605147508',
     shipment_type_id: null,
     loyalty_amount: 0.0,
-    status: 'inreview',
+    status: 'pending',
     payment_status: 'pending',
     payment_gateway_id: 2,
     final_weight: 27.35,

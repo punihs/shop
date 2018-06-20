@@ -344,7 +344,7 @@ exports.history = async (req, res) => {
 };
 
 exports.cancelRequest = async (req, res) => {
-  const cutomerId = req.body.cutomer_id;
+  const cutomerId = req.user.id;
   const orderCode = req.body.order_code;
   const options = {
     attributes: ['id', 'created_at', 'package_ids'],
@@ -392,7 +392,7 @@ const updatePromoStatus = async (shipment) => {
       where: {
         code: couponAppliedStatus.coupon_code,
         expires_at: {
-          gt: new Date(),
+          $gt: new Date(),
         },
       },
     };
@@ -512,7 +512,7 @@ exports.finalShipRequest = async (req, res) => {
   // let coupon_name = '';
 
   const couponOptions = {
-    attributes: ['id', 'code'],
+    attributes: ['id', 'code', 'cashback_percentage', 'discount_percentage'],
     where: {
       code: couponAppliedStatus.coupon_code,
       expires_at: {
@@ -533,7 +533,7 @@ exports.finalShipRequest = async (req, res) => {
       } else if (promo.discount_percentage) {
         const estimatedAmount = shipment.estimated_amount -
           shipment.package_level_charges - payment.wallet;
-        payment.coupon = estimatedAmount * (promo.discount / 100);
+        payment.coupon = estimatedAmount * (promo.discount_percentage / 100);
         // coupon_name = couponAppliedStatus.coupon_code;
         // promo_status = 'discount_success';
         payment.final_amount -= payment.coupon;
@@ -573,6 +573,7 @@ exports.finalShipRequest = async (req, res) => {
   shipmentSave.loyalty_amount = payment.loyalty;
   shipmentSave.payment_gateway_fee_amount = paymentGatewayFee;
   shipmentSave.final_amount = payment.final_amount;
+
   if (paymentGatewayName === 'wire') {
     shipmentSave.payment_gateway_id = WIRE;
     shipmentSave.status = 'inqueue';
@@ -680,13 +681,21 @@ exports.payRetrySubmit = async (req, res) => {
   const shipRequestId = req.body.ship_request_id;
   log('payRetrySubmit', shipRequestId);
   const shipmentSave = {};
-  
+  const payment = {};
+
+  const customer = await User
+    .findById(customerId, {
+      attributes: ['id', 'wallet_balance_amount'],
+      raw: true,
+    });
+
   const shipment = await Shipment
     .findById(shipRequestId, {
       attributes: ['id', 'package_ids', 'estimated_amount',
         'customer_id', 'order_code', 'wallet_amount', 'loyalty_amount', 'coupon_amount',
       ],
     });
+
   if (shipment && shipment.customer_id === customerId) {
     payment.coupon = 0;
     payment.final_amount = 0;
@@ -834,13 +843,11 @@ exports.payRetrySubmit = async (req, res) => {
   // return res.redirect('shipping.request.response');
   log('response', shipRequestId);
   return res.json({ shipRequestId });
-  
-}
+};
 
 exports.retryPayment = async (req, res) => {
   const customerId = req.user.id;
   const orderCode = req.query.order_code;
-
 
   const customer = await User
     .findById(customerId, {
@@ -848,9 +855,7 @@ exports.retryPayment = async (req, res) => {
       raw: true,
     });
 
-  const payment = {};
-
-const optionShipment = {
+  const optionShipment = {
     attributes: ['id', 'estimated_amount', 'payment_gateway_fee_amount', 'package_ids'],
     where: { customer_id: customerId, order_code: orderCode, payment_status: ['failed', 'pending'] },
   };
@@ -958,6 +963,7 @@ const optionShipment = {
       payment.paymentGatewayName = 'wire';
       break;
   }
+
   return res.json({
     shipment,
     packages,
@@ -967,5 +973,165 @@ const optionShipment = {
     couponName,
     wallet_amount: customer.wallet_balance_amount,
   });
+};
 
+exports.confirmShipment = async (req, res) => {
+  const customerId = req.user.id;
+  const orderCode = req.query.order_code;
+  const customer = User
+    .findById(customerId, {
+      attributes: ['id', 'wallet_balance_amount'],
+    });
+
+  const optionsShipment = {
+    attributes: ['id', 'package_ids', 'estimated_amount', 'package_level_charges_Amount'],
+    where: {
+      customer_id: customerId,
+      order_code: orderCode,
+      status: 'confirmation',
+    },
+  };
+
+  const shipment = await Shipment
+    .find(optionsShipment);
+
+  if (!shipment) {
+    return res.status(400).json({ message: 'shipment not found' });
+  }
+
+  const optionsPackage = {
+    attributes: ['id', 'price_amount', 'weight', 'reference_code', 'order_code'],
+    where: {
+      customer_id: customerId,
+      id: shipment.package_ids.split(','),
+    },
+  };
+  const packages = await Package
+    .find(optionsPackage);
+
+  const payment = {
+    wallet: 0,
+    coupon: 0,
+    loyalty: 0,
+    amount: 0,
+    payment_gateway_name: 'wire',
+    payment_gateway_fee: 0,
+  };
+
+  payment.amount = shipment.estimated_amount;
+  if (customer.wallet_balance_amount < 0) {
+    payment.wallet = customer.wallet_balance_amount;
+    payment.amount -= payment.wallet;
+  }
+
+  const optionRedemption = {
+    attributes: ['id', 'coupon_code'],
+    where: { shipment_order_code: orderCode },
+  };
+  const couponAppliedStatus = await Redemption
+    .find(optionRedemption);
+
+  let promoStatus = '';
+  let couponAmount = 0;
+  let couponName = '';
+
+  if (couponAppliedStatus) {
+    const option = {
+      attributes: ['max_cashback_amount', 'cashback_percentage', 'discount_percentage'],
+      where: {
+        code: couponAppliedStatus.coupon_code,
+        expires_at: {
+          $gt: new Date(),
+        },
+      },
+    };
+
+    const promo = await Coupon
+      .find(option);
+
+    if (promo) {
+      if (promo.cashback_percentage) {
+        promoStatus = 'cashback_success';
+        const estimated = shipment.estimated_amount -
+          shipment.package_level_charges_amount - payment.wallet;
+        const totalCouponAmount = estimated * (promo.cashback_percentage / 100);
+        const maxCouponAmount = promo.max_cashback_amount;
+        if (totalCouponAmount <= maxCouponAmount) {
+          couponAmount = totalCouponAmount;
+        } else {
+          couponAmount = maxCouponAmount;
+        }
+        couponName = couponAppliedStatus.coupon_code;
+      } else if (promo.discount_percentage) {
+        const estimated = shipment.estimated_amount -
+          shipment.package_level_charges_amount - payment.wallet;
+        const discountAmount = estimated * (promo.discount_percentage / 100);
+        const maxCouponAmount = promo.max_cashback_amount;
+        if (discountAmount <= maxCouponAmount) {
+          payment.coupon = discountAmount;
+        } else {
+          payment.coupon = maxCouponAmount;
+        }
+        couponName = couponAppliedStatus.coupon_code;
+        promoStatus = 'discount_success';
+      }
+      payment.amount -= payment.coupon;
+    } else {
+      promoStatus = 'promo_expired';
+    }
+  }
+  const option = {
+    attributes: ['points'],
+    where: { customer_id: customerId },
+  };
+  const points = await LoyaltyPoint
+    .find(option);
+
+  let rewards = 0;
+  let loyaltyPoints = points.points;
+  while (loyaltyPoints >= 1000) {
+    rewards += 100;
+    loyaltyPoints -= 1000;
+  }
+
+  payment.loyalty = rewards;
+  payment.amount -= payment.loyalty;
+
+  switch (req.body.payment_gateway_name) {
+    case 'card':
+      payment.payment_gateway_name = 'card';
+      break;
+    case 'wire':
+      payment.payment_gateway_name = 'wire';
+      break;
+    case 'cash':
+      payment.payment_gateway_name = 'cash';
+      break;
+    case 'wallet':
+      payment.payment_gateway_name = 'wallet';
+      break;
+    case 'paypal':
+      payment.payment_gateway_name = 'paypal';
+      payment.payment_gateway_fee = (10 / 100) * payment.amount;
+      payment.amount += payment.payment_gateway_fee;
+      break;
+    case 'paytm':
+      payment.payment_gateway_name = 'paytm';
+      payment.payment_gateway_fee = (3 / 100) * payment.amount;
+      payment.amount += payment.payment_gateway_fee;
+      break;
+    default:
+      payment.payment_gateway_name = 'wire';
+      break;
+  }
+
+  return res.json({
+    shipment,
+    packages,
+    payment,
+    promoStatus,
+    couponAmount,
+    couponName,
+    walletAmount: customer.wallet_balance_amount,
+  });
 };

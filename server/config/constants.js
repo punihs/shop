@@ -38,6 +38,7 @@ const constants = {
     DISPATCHED: 'dispatched',
     DELIVERED: 'delivered',
     CANCELED: 'canceled',
+    CONFIRMATION: 'confirmation',
   },
   SHIPMENT_STATE_IDS: {
     REQUESTED: 1,

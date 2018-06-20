@@ -6,6 +6,6 @@ module.exports = {
   },
 
   down(queryInterface) {
-    return queryInterface.bulkDelete('redemptions', { truncate: true, cascade: false });
+    return queryInterface.bulkDelete('redemptions', { id: redemption.map(x => x.id) });
   },
 };

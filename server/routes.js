@@ -53,13 +53,15 @@ module.exports = (app) => {
   app.use('/api/seo', seo);
   app.use('/api/user', login);
   app.use('/api/search', search);
-  app.use('/api/packages',
+  app.use(
+    '/api/packages',
     authenticate(),
     packageItems,
     packageComment,
     packages,
     packageMeta,
-    specialRequest);
+    specialRequest,
+  );
   app.use('/api/shippingPartners', shippingPartner);
   app.use('/api/addresses', authenticate(), address);
   app.use('/api/shipments', authenticate(), shipment, shipmentPackage);

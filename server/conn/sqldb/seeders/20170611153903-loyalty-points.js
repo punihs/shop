@@ -6,6 +6,6 @@ module.exports = {
   },
 
   down(queryInterface) {
-    return queryInterface.bulkDelete('loyalty_points', { truncate: true, cascade: false });
+    return queryInterface.bulkDelete('loyalty_points', { id: loyaltyPoint.map(x => x.id) });
   },
 };

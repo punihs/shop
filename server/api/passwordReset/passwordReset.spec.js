@@ -7,7 +7,7 @@ describe('Reset POST /api/passwordReset/submitForgot', () => {
     request(app)
       .post('/api/passwordReset/submitForgot')
       .send({
-        email: 'venkat@gmail.com',
+        email: 'tech.shoppre@gmail.com',
       })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
@@ -23,9 +23,9 @@ describe('Reset PUT /api/passwordReset/resetPassword', () => {
     request(app)
       .put('/api/passwordReset/resetPassword')
       .send({
-        email: 'venkat@gmail.com',
-        password: 'Punith8970',
-        password_confirmation: 'Punith8970',
+        email: 'tech.shoppre@gmail.com',
+        password: 'admin1234',
+        password_confirmation: 'admin1234',
       })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)

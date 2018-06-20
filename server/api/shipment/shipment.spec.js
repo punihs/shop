@@ -503,7 +503,6 @@ describe('GET /api/shipments/:id', () => {
 //   });
 // });
 
-
 describe('GET /api/shipments/queue', () => {
   it('return the shipments for ship queue', (done) => {
     request(app)
@@ -516,7 +515,6 @@ describe('GET /api/shipments/queue', () => {
       });
   });
 });
-
 
 describe('GET /api/shipments/history', () => {
   it('return the shipments for ship history', (done) => {
@@ -563,7 +561,42 @@ describe('PUT /api/shipments/2/cancel', () => {
       .put('/api/shipments/2/cancel')
       .send({
         order_code: '631-646-7270',
-        cutomer_id: 2757,
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(201)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+describe('PUT /api/shipments/finalShip', () => {
+  it(' will create final ship request after payment done ', (done) => {
+    request(app)
+      .put('/api/shipments/finalShip')
+      .send({
+        ship_request_id: 116,
+        insurance: 2,
+        wallet: 1,
+        payment_gateway_name: 'wire',
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+describe('PUT /api/shipments/2/cancel', () => {
+  it('will cancel the ship request', (done) => {
+    request(app)
+      .put('/api/shipments/2/cancel')
+      .send({
+        order_code: '631-646-7270',
+        cutomer_id: 646,
       })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
@@ -622,10 +655,17 @@ describe('PUT /api/shipments/payRetrySubmit', () => {
         wallet: 1,
         payment_gateway_name: 'wallet',
       })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
   });
 });
 
 describe('PUT /api/shipments/retryPayment?order_code=620-620-7220', () => {
+  before(async () => Shipment.update({ payment_status: 'failed' }, { where: { order_code: '620-620-7220' } }));
   it(' will allow to change the payment mode ', (done) => {
     request(app)
       .put('/api/shipments/retryPayment?order_code=620-620-7220')
