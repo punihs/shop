@@ -12,47 +12,49 @@ block content
             h3 Latest Reviews
             each review in reviews
               .blox
-                h4
+                h4= review.name
                   | By
                   span #{review.name}
                   //|  on #{date('j F, Y', shortFormat(review.created_at))}
+                  //p #{moment().format('MM/DD/YYYY')}
+                  //p #{moment().format("MMM Do YY")}
                 input.rating.rated(value='#{review.rating}')
                 p #{review.description}
-                i - {{$review->country->name}}
-                i - {{$review->source}}
+                //i - #{review->country->name}}
+                i - #{review.source_id}
               .clearfix
-              |             #{reviews.links() }}
+              //| #{reviews.links() }
         .col-md-4
           .review_form
             h3 Leave your own feedback
-            form(method='post', action="{{route('reviews.submit')}}")
+            form(method='post', action="submit")
               .form-group
                 label Name *
                 input.form-control(type='text', name='person', placeholder='Enter Your Name')
-                |                 @if ($errors->has('person'))
-                span.error {{ $errors->first('person') }}
-                |                 @endif
+                //|                 @if ($errors->has('person'))
+                //span.error {{ $errors->first('person') }}
+                //|                 @endif
               .form-group
                 label Country *
                 select.form-control.select2(name='country_id')
                   option(value='') Select Country
-                  |                     @foreach($countries as $country)
-                  option(value='{{$country->id}}') {{$country->name}}
-                  |                     @endforeach
-                |                 @if ($errors->has('country_id'))
-                span.error {{ $errors->first('country_id') }}
-                |                 @endif
+                   each country in countries || []
+                    option(value='#{$country.id}') #{$country.name}
+                //
+                //|                 @if ($errors->has('country_id'))
+                //span.error {{ $errors->first('country_id') }}
+                //|                 @endif
               .form-group
                 textarea.form-control(rows='8', name='review', placeholder='Comments & Tips')
-                |                 @if ($errors->has('review'))
-                span.error {{ $errors->first('review') }}
-                |                 @endif
+                //|                 @if ($errors->has('review'))
+                //span.error {{ $errors->first('review') }}
+                //|                 @endif
               .form-group
                 label Rating *
                 .rating-star
                   input#input-rate.rating(type='text', name='rating')
-                |                 @if ($errors->has('rating'))
-                span.error {{ $errors->first('rating') }}
-                |                 @endif
+                //|                 @if ($errors->has('rating'))
+                //span.error {{ $errors->first('rating') }}
+                //|                 @endif
               .form-group
                 button.btn.btn-block.btn-shoppre(type='submit') Submit Feedback
