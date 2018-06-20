@@ -4,3 +4,55 @@ block content
     title '#{title}'
     meta(name='description', content= '#{meta_description}')
     meta(property='og:title', content='#{meta_title}')
+  .body
+    section.reviews
+      .container
+        .col-md-8
+          .list
+            h3 Latest Reviews
+            each review in reviews
+              .blox
+                h4
+                  | By
+                  span #{review.name}
+                  //|  on #{date('j F, Y', shortFormat(review.created_at))}
+                input.rating.rated(value='#{review.rating}')
+                p #{review.description}
+                i - {{$review->country->name}}
+                i - {{$review->source}}
+              .clearfix
+              |             #{reviews.links() }}
+        .col-md-4
+          .review_form
+            h3 Leave your own feedback
+            form(method='post', action="{{route('reviews.submit')}}")
+              .form-group
+                label Name *
+                input.form-control(type='text', name='person', placeholder='Enter Your Name')
+                |                 @if ($errors->has('person'))
+                span.error {{ $errors->first('person') }}
+                |                 @endif
+              .form-group
+                label Country *
+                select.form-control.select2(name='country_id')
+                  option(value='') Select Country
+                  |                     @foreach($countries as $country)
+                  option(value='{{$country->id}}') {{$country->name}}
+                  |                     @endforeach
+                |                 @if ($errors->has('country_id'))
+                span.error {{ $errors->first('country_id') }}
+                |                 @endif
+              .form-group
+                textarea.form-control(rows='8', name='review', placeholder='Comments & Tips')
+                |                 @if ($errors->has('review'))
+                span.error {{ $errors->first('review') }}
+                |                 @endif
+              .form-group
+                label Rating *
+                .rating-star
+                  input#input-rate.rating(type='text', name='rating')
+                |                 @if ($errors->has('rating'))
+                span.error {{ $errors->first('rating') }}
+                |                 @endif
+              .form-group
+                button.btn.btn-block.btn-shoppre(type='submit') Submit Feedback
