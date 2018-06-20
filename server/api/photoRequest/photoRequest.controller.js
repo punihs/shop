@@ -6,12 +6,12 @@ const {
 
 const log = debug('s.photoRequest.controller');
 const {
-  PHOTO_REQUEST_TYPES: { STANDARD },
+  PHOTO_REQUEST_TYPES: { STANDARD, ADVANCED },
   PHOTO_REQUEST_STATES: { COMPLETED },
 } = require('./../../config/constants');
 
 
-exports.photoRequest = async (req, res) => {
+exports.standardPhotoRequest = async (req, res) => {
   log('photoRequest', req.body);
   const customerId = req.user.id;
   const { packageId } = req.body;
@@ -38,7 +38,7 @@ exports.photoRequest = async (req, res) => {
       await PhotoRequest.create(photoRequest);
 
       await PackageMeta
-        .update({ basic_photo_amount: 50.00 }, { where: { package_id: packageId } });
+        .update({ standard_photo_amount: 50.00 }, { where: { package_id: packageId } });
 
       const notification = {};
       notification.customer_id = customerId;
@@ -54,6 +54,59 @@ exports.photoRequest = async (req, res) => {
       if (status === 'pending') {
         await Package
           .update({ status: 'review', review: 'Requested for Standard Photos' }, { where: { id: packageId } });
+        return res.status(201).json({ error: '1', status });
+      }
+    } else {
+      return res.json({ error: 'Package not found' }).status(201);
+    }
+  } else {
+    return res.json({ error: 2 });
+  }
+  return res.status(201);
+};
+exports.advancephotoRequest = async (req, res) => {
+  log('photoRequest', req.body);
+  const customerId = req.user.id;
+  const { packageId } = req.body;
+  let status = '';
+  const options = {
+    attributes: ['id'],
+    where: { id: packageId },
+  };
+
+  log('pack_id', packageId);
+  if (packageId) {
+    const packages = await Package
+      .find(options);
+    log('options', options);
+    if (packages) {
+      const packageItems = await PackageItem
+        .find({ attributes: ['object'] }, { where: { package_id: packages.id } });
+      status = packageItems.object === null ? 'pending' : 'completed';
+      const photoRequest = {};
+      photoRequest.package_id = packageId;
+      photoRequest.type = ADVANCED;
+      photoRequest.status = COMPLETED;
+      photoRequest.charge_amount = 300.00;
+      await PhotoRequest.create(photoRequest);
+
+      await PackageMeta
+        .update({ advance_photo_amount: 300.00 }, { where: { package_id: packageId } });
+
+      const notification = {};
+      notification.customer_id = customerId;
+      notification.action_type = 'package';
+      notification.action_id = packageId;
+      notification.action_description = 'Requested for Advance Photos  - Order#'.concat(packageId);
+      await Notification.create(notification);
+
+      if (status === 'completed') {
+        return res.status(201).json({ error: '0', status, photos: packages.object });
+      }
+
+      if (status === 'pending') {
+        await Package
+          .update({ status: 'review', review: 'Requested for Advance Photos' }, { where: { id: packageId } });
         return res.status(201).json({ error: '1', status });
       }
     } else {

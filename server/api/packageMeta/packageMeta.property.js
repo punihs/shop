@@ -11,8 +11,8 @@ module.exports = DataTypes => ({
   special_handlig_amount: DataTypes.DECIMAL(8, 2),
   charge_amount: DataTypes.DECIMAL(8, 2),
   pickup_amount: DataTypes.DECIMAL(8, 2),
-  basic_photo_amount: DataTypes.DECIMAL(8, 2),
   standard_photo_amount: DataTypes.DECIMAL(8, 2),
+  advance_photo_amount: DataTypes.DECIMAL(8, 2),
   split_charge_amount: DataTypes.DECIMAL(8, 2),
   scan_doc_amount: DataTypes.DECIMAL(8, 2),
 });
