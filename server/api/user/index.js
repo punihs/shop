@@ -15,5 +15,7 @@ router.put('/:id', authenticate(), controller.update);
 router.get('/:id', authenticate(), controller.show);
 router.put('/:id/unread', authenticate(), controller.unread);
 router.delete('/:id', authenticate(), controller.destroy);
+router.post('/verify', controller.verify);
+
 
 module.exports = router;

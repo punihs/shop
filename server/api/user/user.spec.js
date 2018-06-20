@@ -133,4 +133,21 @@ describe('delete /api/users/:id', () => {
       });
   });
 });
+describe(' POST /api/users/verify', () => {
+  it('verify user ', (done) => {
+    request(app)
+      .post('/api/users/verify')
+      .send({
+        customer_id: '646',
+        email: 'tech.shoppre@gmail.com',
+        email_verify: 'yes',
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
 

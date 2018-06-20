@@ -212,3 +212,30 @@ exports.destroy = async (req, res) => {
   });
   return res.json(status);
 };
+exports.verify = async (req, res) => {
+  const { email } = req.body;
+  if (email) {
+    const options = {
+      attributes: [
+        'email_verify', 'id',
+      ],
+      where: { email, id: req.user.id },
+    };
+    await User.find(options)
+      .then((customer) => {
+        if (customer.email_verify !== 'yes') {
+          if (req.body.token === customer.email_token) {
+            customer.update({
+              email_token: null,
+              email_verify: 'yes',
+            });
+            res.json({ message: 'Email address verified successfully. Please login to continue.' });
+          } else {
+            res.json({ error: 'Email verification failed! Resend verfication link from your profile.' });
+          }
+        } else {
+          res.json({ message: 'Your email address already been verified. Please login to continue.' });
+        }
+      });
+  }
+};
