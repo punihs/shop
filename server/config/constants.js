@@ -74,6 +74,14 @@ const constants = {
     MS: 'Ms',
     MRS: 'Mrs',
   },
+  PAYMENT_GATEWAY: {
+    PAYTM: 1,
+    WIRE: 2,
+    CREDITDEBITCARD: 3,
+    PAYPAL: 4,
+    WALLET: 5,
+    CASH: 6,
+  },
   CONTENT_TYPES: {
     REGULAR: '1',
     SPECIAL: '2', // 'Liquid, Cream, Oil & Home-made food items'

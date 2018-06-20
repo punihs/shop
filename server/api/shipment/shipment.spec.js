@@ -563,6 +563,7 @@ describe('PUT /api/shipments/2/cancel', () => {
       .put('/api/shipments/2/cancel')
       .send({
         order_code: '631-646-7270',
+        cutomer_id: 2757,
       })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
@@ -573,14 +574,33 @@ describe('PUT /api/shipments/2/cancel', () => {
   });
 });
 
-describe('PUT /api/shipments/finalShip', () => {
+describe('PUT /api/shipments/payRetrySubmit', () => {
   it(' will create final ship request after payment done ', (done) => {
     request(app)
-      .put('/api/shipments/finalShip')
+      .put('/api/shipments/payRetrySubmit')
       .send({
-        ship_request_id: 116,
+        ship_request_id: 300,
         insurance: 2,
-        wallet: 1,
+        wallet: 0,
+        payment_gateway_name: 'cash',
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+describe('PUT /api/shipments/payRetrySubmit', () => {
+  it(' will create final ship request after payment done ', (done) => {
+    request(app)
+      .put('/api/shipments/payRetrySubmit')
+      .send({
+        ship_request_id: 300,
+        insurance: 2,
+        wallet: 0,
         payment_gateway_name: 'wire',
       })
       .set('Authorization', `Bearer ${auth.access_token}`)
@@ -589,6 +609,19 @@ describe('PUT /api/shipments/finalShip', () => {
       .then(() => {
         done();
       });
+  });
+});
+
+describe('PUT /api/shipments/payRetrySubmit', () => {
+  it(' pay retry for wallet transaction  ', (done) => {
+    request(app)
+      .put('/api/shipments/payRetrySubmit')
+      .send({
+        ship_request_id: 300,
+        insurance: 0,
+        wallet: 1,
+        payment_gateway_name: 'wallet',
+      })
   });
 });
 

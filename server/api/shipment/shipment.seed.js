@@ -82,7 +82,7 @@ module.exports = () => [
     weight_by_shipping_partner: 27.35,
   }, {
     id: 116,
-    customer_id: 646,
+    customer_id: 2757,
     // city_id: 1,
     country_id: 224,
     coupon_amount: 0.0,
@@ -91,7 +91,7 @@ module.exports = () => [
     package_ids: 2,
 
     wallet_amount: 0.0,
-    customer_name: 'Varun Murali',
+    customer_name: 'Abhinav Mishra',
     shipping_partner_id: 1,
 
     discount_amount: 15680.0,
@@ -119,15 +119,16 @@ module.exports = () => [
     final_weight: 27.35,
     weight_by_shipping_partner: 27.35,
   }, {
-    id: 200,
-    customer_id: 2,
-    country_id: 226,
+    id: 300,
+    customer_id: 2757,
+    // city_id: 1,
+    country_id: 224,
     coupon_amount: 0.0,
     is_axis_banned_item: '0',
     estimated_amount: 15680.0,
     package_ids: 2,
     wallet_amount: 0.0,
-    customer_name: 'venkat',
+    customer_name: 'Abhinav Mishra',
     shipping_partner_id: 1,
     discount_amount: 15680.0,
     sub_total_amount: 31360.0,

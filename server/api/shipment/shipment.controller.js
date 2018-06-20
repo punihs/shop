@@ -15,6 +15,7 @@ const {
     CANCELED, DELIVERED, DISPATCHED,
   },
   PACKAGE_STATE_IDS: { SHIP },
+  PAYMENT_GATEWAY: { WIRE, WALLET, CASH },
 } = require('../../config/constants');
 
 const log = debug('s.shipment.controller');
@@ -340,7 +341,7 @@ exports.history = async (req, res) => {
 };
 
 exports.cancelRequest = async (req, res) => {
-  const cutomerId = req.user.id;
+  const cutomerId = req.body.cutomer_id;
   const orderCode = req.body.order_code;
   const options = {
     attributes: ['id', 'created_at', 'package_ids'],
@@ -569,9 +570,8 @@ exports.finalShipRequest = async (req, res) => {
   shipmentSave.loyalty_amount = payment.loyalty;
   shipmentSave.payment_gateway_fee_amount = paymentGatewayFee;
   shipmentSave.final_amount = payment.final_amount;
-
   if (paymentGatewayName === 'wire') {
-    shipmentSave.payment_gateway_id = 2;
+    shipmentSave.payment_gateway_id = WIRE;
     shipmentSave.status = 'inqueue';
     shipmentSave.payment_status = 'pending';
     if (isWalletUsed === 1) {
@@ -582,7 +582,7 @@ exports.finalShipRequest = async (req, res) => {
         );
     }
   } else if (paymentGatewayName === 'cash') {
-    shipmentSave.payment_gateway_id = 6;
+    shipmentSave.payment_gateway_id = CASH;
     shipmentSave.status = 'inqueue';
     shipmentSave.payment_status = 'pending';
     if (isWalletUsed === 1) {
@@ -593,11 +593,13 @@ exports.finalShipRequest = async (req, res) => {
         );
     }
   } else if (paymentGatewayName === 'wallet') {
-    shipmentSave.payment_gateway_id = 6;
+    log('remainingWalletAmount', WALLET);
+    shipmentSave.payment_gateway_id = WALLET;
     shipmentSave.status = 'inqueue';
     shipmentSave.payment_status = 'success';
     const customerTotalWalletAmount = customer.wallet_balance_amount;
     const remainingWalletAmount = customerTotalWalletAmount - payment.final_amount;
+    log('remainingWalletAmount', remainingWalletAmount);
 
     await User
       .update(
@@ -668,9 +670,173 @@ exports.finalShipRequest = async (req, res) => {
   return res.json({ message: 'success' });
 };
 
+
+exports.payRetrySubmit = async (req, res) => {
+  const customerId = req.user.id;
+  const shipRequestId = req.body.ship_request_id;
+  log('payRetrySubmit', shipRequestId);
+  const shipmentSave = {};
+  
+  const shipment = await Shipment
+    .findById(shipRequestId, {
+      attributes: ['id', 'package_ids', 'estimated_amount',
+        'customer_id', 'order_code', 'wallet_amount', 'loyalty_amount', 'coupon_amount',
+      ],
+    });
+  if (shipment && shipment.customer_id === customerId) {
+    payment.coupon = 0;
+    payment.final_amount = 0;
+
+    let customerWalletAmount = 0;
+    req.user.is_wallet_used = 0;
+    req.user.is_retry_payment = 0;
+    let shipmentWalletAmount = shipment.wallet_amount;
+    // if using wallet amount for shipment
+    if (req.body.wallet) {
+      if (req.body.payment_gateway_name === 'cash' || req.body.payment_gateway_name === 'wire') {
+        customerWalletAmount = customer.wallet_balance_amount;
+        payment.final_amount -= customerWalletAmount;
+        shipmentWalletAmount += customerWalletAmount;
+      }
+      req.user.is_wallet_used = 1;
+      req.user.is_retry_payment = 0;
+    }
+    // end
+
+    if (req.body.payment_gateway_name === 'wallet') {
+      shipmentSave.payment_gateway_id = WALLET;
+      shipmentSave.status = 'inqueue';
+      shipmentSave.payment_status = 'success';
+    }
+
+    shipmentSave.wallet = shipmentWalletAmount;
+
+    shipmentSave.final_amount = payment.final_amount -
+      shipment.wallet_amount - shipment.loyalty_amount - shipment.coupon_amount;
+
+    req.user.ship_request_id = shipment.id;
+    const savedShipment = await Shipment
+      .update(shipmentSave, { where: { id: shipRequestId } });
+
+    if (customerWalletAmount > 0) {
+      await walletTransaction(customerWalletAmount, customer, shipment);
+    }
+
+    let customerTotalWalletAmount = '';
+    let remainingWalletAmount = '';
+    let totalShipmentAmount = '';
+    let couponAppliedStatus = {};
+    let optionCoupon = {};
+    let optionRedemption = {};
+
+    const getPaymentURL = () => '/payment.axis.start';
+
+    switch (req.body.payment_gateway_name) {
+      case 'card':
+        return res.redirect(getPaymentURL('payment.axis.start'));
+
+      case 'wire':
+        optionRedemption = {
+          attributes: ['coupon_code'],
+          where: { shipment_order_code: shipment.order_code },
+        };
+        couponAppliedStatus = await Redemption
+          .find(optionRedemption);
+
+        if (couponAppliedStatus) {
+          optionCoupon = {
+            where: {
+              code: couponAppliedStatus.coupon_code,
+              expires_at: {
+                gt: new Date(),
+              },
+            },
+          };
+
+          const promo = await Coupon
+            .find(optionCoupon);
+          if (promo) {
+            await Redemption.update({
+              status: 'success',
+            }, {
+              where: { shipment_order_code: shipment.order_code },
+            });
+          } else {
+            await Redemption.update({
+              status: 'applied',
+            }, {
+              where:
+                  { shipment_order_code: shipment.order_code },
+            });
+          }
+        }
+        if (req.body.wallet) {
+          await User.update({ wallet_balance_amount: 0 }, { where: { id: customerId } });
+        }
+
+        await Shipment.update({
+          payment_gateway_id: WIRE,
+          payment_status: 'pending',
+          status: 'inqueue',
+        }, {
+          where: { id: shipRequestId },
+        });
+        log('wire', shipRequestId);
+        break;
+      case 'cash':
+        if (req.body.wallet) {
+          await User.update({ wallet_balance_amount: 0 }, { where: { id: customerId } });
+        }
+
+        await Shipment.update({
+          payment_gateway_id: CASH,
+          payment_status: 'inqueue',
+          status: 'pending',
+        }, {
+          where: { id: shipRequestId },
+        });
+        log('cash', shipRequestId);
+        break;
+
+      case 'wallet':
+        customerTotalWalletAmount = customer.wallet_balance_amount || 0;
+        log('savedShipment.wallet_amount', savedShipment.wallet_amount || 0);
+        totalShipmentAmount =
+          payment.final_amount - savedShipment.wallet_amount || 0 -
+          savedShipment.loyalty_amount || 0 - savedShipment.coupon_amount || 0;
+        remainingWalletAmount =
+          customerTotalWalletAmount - totalShipmentAmount;
+        log('remainingWalletAmount', remainingWalletAmount);
+        await User.update({
+          wallet_balance_amount: remainingWalletAmount,
+        }, {
+          where:
+              {
+                id: customerId,
+              },
+        });
+        await walletTransaction(payment.final_amount, customer, savedShipment);
+        break;
+      case 'paypal':
+        return res.redirect('payment.paypal.start');
+      case 'paytm':
+        return res.redirect('payment.paytm.start');
+      default:
+        return res.redirect('customer.locker');
+    }
+    log('response', shipRequestId);
+    return res.json({ shipRequestId });
+  }
+  // return res.redirect('shipping.request.response');
+  log('response', shipRequestId);
+  return res.json({ shipRequestId });
+  
+}
+
 exports.retryPayment = async (req, res) => {
   const customerId = req.user.id;
   const orderCode = req.query.order_code;
+
 
   const customer = await User
     .findById(customerId, {
@@ -678,7 +844,9 @@ exports.retryPayment = async (req, res) => {
       raw: true,
     });
 
-  const optionShipment = {
+  const payment = {};
+
+const optionShipment = {
     attributes: ['id', 'estimated_amount', 'payment_gateway_fee_amount', 'package_ids'],
     where: { customer_id: customerId, order_code: orderCode, payment_status: ['failed', 'pending'] },
   };
@@ -795,4 +963,5 @@ exports.retryPayment = async (req, res) => {
     couponName,
     wallet_amount: customer.wallet_balance_amount,
   });
+
 };
