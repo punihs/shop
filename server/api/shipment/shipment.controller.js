@@ -15,6 +15,9 @@ const {
     CANCELED, DELIVERED, DISPATCHED,
   },
   PACKAGE_STATE_IDS: { SHIP },
+  LOYALTY_TYPE: {
+    REDEEM,
+  },
   PAYMENT_GATEWAY: { WIRE, WALLET, CASH },
 } = require('../../config/constants');
 
@@ -635,6 +638,7 @@ exports.finalShipRequest = async (req, res) => {
     loyaltyHistory.customer_id = customerId;
     loyaltyHistory.points = hisPoints;
     loyaltyHistory.redeemed = new Date();
+    loyaltyHistory.type = REDEEM;
     await LoyaltyHistory.create(loyaltyHistory);
 
     const loyaltyOptions = {

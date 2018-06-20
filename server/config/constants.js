@@ -74,6 +74,10 @@ const constants = {
     MS: 'Ms',
     MRS: 'Mrs',
   },
+  LOYALTY_TYPE: {
+    CREDIT: '1',
+    REDEEM: '2',
+  },
   PAYMENT_GATEWAY: {
     PAYTM: 1,
     WIRE: 2,

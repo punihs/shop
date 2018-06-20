@@ -25,7 +25,7 @@ const db = {
   'Country', 'Place', 'PaymentGateway', 'Locker',
 
   // - Basic
-  'User', 'UserMeta', 'Group', 'Estimation',
+  'User', 'UserMeta', 'Group', 'Estimation', 'PasswordReset',
 
   // - Customer Account
   // Shoppre.com - Inspired by MyUS.com
@@ -45,7 +45,7 @@ const db = {
   'Notification',
 
   // - loyalty points, coupon
-  'LoyaltyPoint', 'LoyaltyHistory', 'Redemption',
+  'LoyaltyPoint', 'LoyaltyHistory', 'Redemption', 'ReferCode',
 
   // - Organitation
   'ShippingPartner', 'Link',

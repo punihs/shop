@@ -151,3 +151,52 @@ describe(' POST /api/users/verify', () => {
   });
 });
 
+describe(' POST /api/users/register', () => {
+  it('will create user', (done) => {
+    request(app)
+      .post('/api/users/register')
+      .send({
+        _token: '2yVT9voBawG19WrPu9aD8QtCDyoysCoqVUxBSJui',
+        referrer: '',
+        title: 'Mr',
+        firstname: 'punith',
+        lastname: 'HS',
+        email: 'punith@shoppre.com',
+        password: 'Punith897097',
+        password_confirmation: 'Punith897097',
+        refferal: 'AY447594',
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+
+describe(' POST /api/users/register', () => {
+  it('will create user with out reffral code', (done) => {
+    request(app)
+      .post('/api/users/register')
+      .send({
+        _token: '2yVT9voBawG19WrPu9aD8QtCDyoysCoqVUxBSJui',
+        referrer: '',
+        title: 'Mr',
+        firstname: 'punith',
+        lastname: 'HS',
+        email: 'punith@shoppre.com',
+        password: 'Punith897097',
+        password_confirmation: 'Punith897097',
+        refferal: '',
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
