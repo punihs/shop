@@ -1,4 +1,7 @@
-const { Transaction } = require('../../conn/sqldb');
+const sequelize = require('sequelize');
+
+const { Transaction, User } = require('../../conn/sqldb');
+const { TRANSACTION_TYPES: { CREDIT } } = require('../../config/constants');
 
 exports.index = (req, res, next) => {
   const options = {
@@ -15,18 +18,20 @@ exports.index = (req, res, next) => {
 
 exports.create = async (req, res, next) => {
   const transaction = req.body;
-  return Transaction
-    .create(transaction)
+  const customerId = req.body.customer_id;
+  const option = {
+    attributes: ['wallet_balance_amount'],
+    where: { id: customerId },
+  };
+  await Transaction
+    .create(transaction);
+  const { type, amount } = transaction;
+  await User
+    .update({
+      wallet_balance_amount: sequelize
+        .literal(`wallet_balance_amount ${type === CREDIT ? '+' : '-'} ${amount}`),
+    }, option)
     .then(({ id }) => res.json({ id }))
     .catch(next);
 };
 
-exports.destroy = (req, res, next) => {
-  const { id } = req.params;
-  Transaction
-    .destroy({
-      where: { id },
-    })
-    .then(deleted => res.json(deleted))
-    .catch(next);
-};

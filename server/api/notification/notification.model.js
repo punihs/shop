@@ -1,22 +1,17 @@
 
+const properties = require('./notification.property');
+
 module.exports = (sequelize, DataTypes) => {
-  const Notification = sequelize.define('Notification', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-      allowNull: false,
-      unique: true,
+  const Notification = sequelize.define(
+    'Notification',
+    properties(DataTypes),
+    {
+      tableName: 'notifications',
+      timestamps: true,
+      paranoid: true,
+      underscored: true,
     },
-    action_type: DataTypes.STRING,
-    action_id: DataTypes.STRING,
-    action_description: DataTypes.STRING,
-    solve_status: DataTypes.STRING,
-  }, {
-    tableName: 'notifications',
-    timestamps: false,
-    underscored: true,
-  });
+  );
 
   Notification.associate = (db) => {
     Notification.belongsTo(db.User, {
@@ -24,8 +19,6 @@ module.exports = (sequelize, DataTypes) => {
       as: 'Customer',
     });
   };
-
-
   return Notification;
 };
 

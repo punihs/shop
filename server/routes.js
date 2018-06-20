@@ -27,6 +27,7 @@ const address = require('./api/address');
 const user = require('./api/user');
 const pricing = require('./api/pricing');
 const transaction = require('./api/transaction');
+const notification = require('./api/notification');
 const userDocument = require('./api/userDocument');
 const country = require('./api/country');
 const review = require('./api/review');
@@ -62,6 +63,7 @@ module.exports = (app) => {
   app.use('/api/shipments', authenticate(), shipment, shipmentPackage);
   app.use('/api/shippingPreference', authenticate(), shippingPreference);
   app.use('/api/transactions', authenticate(), transaction);
+  app.use('/api/notifications', authenticate(), notification);
   app.use('/api/userDocuments', authenticate(), userDocument);
   app.use('/api/countries', country);
   app.use('/api/reviews', review);

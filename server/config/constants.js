@@ -59,6 +59,10 @@ const constants = {
     PENDING: '1',
     COMPLETED: '2',
   },
+  TRANSACTION_TYPES: {
+    CREDIT: '1',
+    DEBIT: '2',
+  },
   APPS: {
     ACCOUNTS: 1,
     OPS: 2,
