@@ -591,3 +591,16 @@ describe('PUT /api/shipments/finalShip', () => {
       });
   });
 });
+
+describe('PUT /api/shipments/retryPayment?order_code=620-620-7220', () => {
+  it(' will allow to change the payment mode ', (done) => {
+    request(app)
+      .put('/api/shipments/retryPayment?order_code=620-620-7220')
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});

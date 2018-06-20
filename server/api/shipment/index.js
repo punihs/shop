@@ -9,6 +9,7 @@ router.get('/queue', controller.shipQueue);
 router.get('/history', controller.history);
 router.put('/:id/cancel', controller.cancelRequest);
 router.put('/finalShip', controller.finalShipRequest);
+router.put('/retryPayment', controller.retryPayment);
 router.post('/', controller.create);
 router.get('/:id', controller.show);
 router.post('/:id/unread', controller.unread);
