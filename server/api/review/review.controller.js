@@ -12,3 +12,7 @@ exports.index = (req, res, next) => {
     .then(review => res.json(review))
     .catch(next);
 };
+exports.create = async (req, res, next) => Review
+  .create(req.body)
+  .then(({ id }) => res.status(201).json({ id }))
+  .catch(next);
