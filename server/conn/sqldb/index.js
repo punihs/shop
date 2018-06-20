@@ -59,7 +59,7 @@ const db = {
   'Coupon',
 
   // - Reviews
-  'Review',
+  'Review', 'Feedback',
 
   // - Estomations
   'Estimation',
