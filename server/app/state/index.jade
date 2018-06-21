@@ -1,0 +1,17 @@
+extends ../layout
+block content
+  head
+    title '#{title}'
+    meta(name='description', content= '#{meta_description}')
+    meta(property='og:title', content='#{meta_title}')
+  .body
+    .container
+      .row
+        .col-4
+          h1 State
+         ul
+          li= id
+          li= name
+          li= slug
+          li= type
+
