@@ -30,12 +30,12 @@ exports.index = (req, res, next) => {
 };
 
 exports.show = (req, res, next) => {
-  const { slug } = req.params;
+
   const options = {
     attributes: req.query.fl
       ? req.query.fl.split(',')
       : ['id', 'name', 'slug', 'type'],
-    where: { type: slug },
+    where: { type: req.query.type },
   };
 
   return Place

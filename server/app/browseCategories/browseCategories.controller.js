@@ -13,27 +13,6 @@ exports.index = (req, res, next) => Promise
         title: 'aboutpage',
         meta_disctription: 'discription',
         meta_title: 'metatital',
-        categories: [{
-          id: 1,
-          name: 'Apparels',
-        }],
-        web: [{
-          id: 1,
-          name: 'Apparels',
-          url: 'cdn/stores/',
-        }],
-        fbs: [{
-          id: 1,
-          name: 'Apparels',
-          url: 'cdn/stores/',
-          info: 'info',
-        }],
-        feats: [{
-          id: 1,
-          name: 'Apparels',
-          url: 'cdn/stores/',
-          info: 'info',
-        }],
       })))
   .catch(next);
 
