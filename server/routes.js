@@ -88,9 +88,10 @@ module.exports = (app) => {
   app.use('/api/photoRequest', authenticate(), photoRequest);
   app.get('/secured', authenticate(), (req, res) => res.json({ name, version }));
 
-  app.get('/', (req, res) => res.json({ name, version }));
+  app.get('/health', (req, res) => res.json({ name, version }));
   app.use(express.static(app.get('appPath')));
   app.use(oAuth.errorHandler());
+  app.use(logger.transports.sentry.raven.errorHandler());
 
   // All undefined asset or api routes should return a 404
   app.use((e, req, res, next) => {
