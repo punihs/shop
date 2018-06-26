@@ -29,7 +29,7 @@ describe('member Login GET /api/user/login', () => {
       .post('/oauth/token')
       .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
       .send({
-        username: 'venkat@gmail.com',
+        username: 'tech.shoppre@gmail.com',
         password: 'admin1234',
       })
       .expect('Content-Type', /json/)

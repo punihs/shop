@@ -1,9 +1,12 @@
+const debug = require('debug');
 const request = require('supertest');
 const assert = require('assert');
 const app = require('./../../app');
 const { User } = require('./../../conn/sqldb');
 const auth = require('../../../logs/credentials');
 const opsAuth = require('../../../logs/ops-credentials');
+
+const log = debug('s.api.user.spec');
 
 describe('GET /api/users', () => {
   it('return users', (done) => {
@@ -18,6 +21,19 @@ describe('GET /api/users', () => {
   });
 });
 
+describe('GET /api/users/states', () => {
+  it('return users', (done) => {
+    request(app)
+      .get('/api/users/states')
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then((res) => {
+        log('res.body', res.body[1]);
+        done();
+      });
+  });
+});
 
 describe(' POST /api/users', () => {
   it('will create user', (done) => {
@@ -60,11 +76,11 @@ describe('GET /api/users/me', () => {
       .expect('Content-Type', /json/)
       .expect(200)
       .then((res) => {
-        assert.strictEqual(res.body.id, 2);
+        assert.strictEqual(res.body.id, 646);
         assert.strictEqual(res.body.salutation, 'Mr');
-        assert.strictEqual(res.body.first_name, 'Venkat');
-        assert.strictEqual(res.body.last_name, 'Customer');
-        assert.strictEqual(res.body.email, 'venkat@gmail.com');
+        assert.strictEqual(res.body.first_name, 'Abhinav');
+        assert.strictEqual(res.body.last_name, 'Mishra');
+        assert.strictEqual(res.body.email, 'tech.shoppre@gmail.com');
         done();
       });
   });
@@ -88,7 +104,7 @@ describe('delete /api/users/:id', () => {
 
   before((done) => {
     User
-      .create({ })
+      .create({ email: 'test@test.com' })
       .then((user) => {
         userId = user.id;
         done();
@@ -98,6 +114,83 @@ describe('delete /api/users/:id', () => {
   it('will destroy the user', (done) => {
     request(app)
       .delete(`/api/users/${userId}`)
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+
+  it('will give upload url', (done) => {
+    request(app)
+      .delete('/api/users/presignedUrl')
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+describe(' POST /api/users/verify', () => {
+  it('verify user ', (done) => {
+    request(app)
+      .post('/api/users/verify')
+      .send({
+        customer_id: '646',
+        email: 'tech.shoppre@gmail.com',
+        email_verify: 'yes',
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+describe(' POST /api/users/register', () => {
+  it('will create user', (done) => {
+    request(app)
+      .post('/api/users/register')
+      .send({
+        _token: '2yVT9voBawG19WrPu9aD8QtCDyoysCoqVUxBSJui',
+        referrer: '',
+        title: 'Mr',
+        firstname: 'punith',
+        lastname: 'HS',
+        email: 'punith@shoppre.com',
+        password: 'Punith897097',
+        password_confirmation: 'Punith897097',
+        refferal: 'AY447594',
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+
+describe(' POST /api/users/register', () => {
+  it('will create user with out reffral code', (done) => {
+    request(app)
+      .post('/api/users/register')
+      .send({
+        _token: '2yVT9voBawG19WrPu9aD8QtCDyoysCoqVUxBSJui',
+        referrer: '',
+        title: 'Mr',
+        firstname: 'punith',
+        lastname: 'HS',
+        email: 'punith@shoppre.com',
+        password: 'Punith897097',
+        password_confirmation: 'Punith897097',
+        refferal: '',
+      })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
       .expect(200)

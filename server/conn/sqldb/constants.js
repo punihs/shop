@@ -1,54 +1,66 @@
 const r = require;
+const debug = require('debug');
 const _ = require('lodash');
 
-const keyValueMap = (arr, key, value) => arr
-  .reduce((nxt, x) => Object
-    .assign(nxt, {
+const log = debug('s.conn.sqldb.constants');
+
+const keyValueMap = (name, arr, key, value) => {
+  log('keyValueMap', { name, key, value });
+  return arr
+    .reduce((nxt, x) => ({
+      ...nxt,
       [x[key].replace(' ', '_').toUpperCase()]: x[value],
     }), {});
+};
 
 // default key is `name`
 const map = {
-  users: 'first_name',
-  countries: 'iso3',
+  user: 'first_name',
+  country: 'iso3',
 };
 
 const constants = {};
 
 [
-  { name: 'groups' },
-  { name: 'users' },
-  { name: 'orgs' },
-  { name: 'products' },
-  { name: 'org_products', keyMap: false },
-  { name: 'object_types' },
-  { name: 'apps', keyMap: false },
-  { name: 'countries', keyMap: false },
-  // { name: 'cities', keyMap: false },
-  { name: 'package_item_categories' },
-  { name: 'payment_gateways', keyMap: false },
-  { name: 'shipping_partners', keyMap: false },
-  { name: 'stores', keyMap: false },
-  { name: 'keywords', keyMap: false },
+  { name: 'country' },
+  { name: 'group' },
+  { name: 'user' },
+  { name: 'org' },
+  { name: 'product' },
+  { name: 'org_product', keyMap: false },
+  { name: 'object_type' },
+  { name: 'app', keyMap: false },
+  { name: 'package_item_category' },
+  { name: 'payment_gateway', keyMap: false },
+  { name: 'shipping_partner', keyMap: false },
+  { name: 'store', keyMap: false },
+  { name: 'keyword', keyMap: false },
   { name: 'seo', keyMap: false },
-  { name: 'shipments', keyMap: false },
-  { name: 'shipment_issues', keyMap: false },
-  { name: 'faqCategories', keyMap: false },
+  { name: 'shipment', keyMap: false },
+  { name: 'shipment_issue', keyMap: false },
+  { name: 'faqCategory', keyMap: false },
   { name: 'faq', keyMap: false },
-  { name: 'places', keyMap: false },
-  { name: 'reviews', keyMap: false },
-  { name: 'links', keyMap: false },
-  { name: 'estimations', keyMap: false },
-  { name: 'categories', keyMap: false },
-  { name: 'links', keyMap: false },
-  { name: 'sources', keyMap: false },
+  { name: 'place', keyMap: false },
+  { name: 'review', keyMap: false },
+  { name: 'link', keyMap: false },
+  { name: 'estimation', keyMap: false },
+  { name: 'category', keyMap: false },
+  { name: 'link', keyMap: false },
+  { name: 'source', keyMap: false },
+  { name: 'state', keyMap: false },
+  { name: 'actionable_state', keyMap: false },
+  { name: 'loyalty_point', keyMap: false },
+  { name: 'redemption', keyMap: false },
+  { name: 'coupon', keyMap: false },
+  { name: 'locker', keyMap: false },
+  { name: 'refer_code', keyMap: false },
 ]
   .forEach(({ name, keyMap = true }) => {
-    const data = r(`./seeders/data/${_.camelCase(name)}`)(constants);
+    const data = r(`./../../api/${_.camelCase(name)}/${_.camelCase(name)}.seed`)(constants);
     // - used for dependency injection
     constants[_.camelCase(name)] = data;
     // - for writing contant names instead of number like instead of 1 for group_id we write OPS
-    if (keyMap !== false) constants[name.toUpperCase()] = keyValueMap(data, map[name] || 'name', 'id');
+    if (keyMap !== false) constants[name.toUpperCase()] = keyValueMap(name, data, map[name] || 'name', 'id');
   });
 
 module.exports = constants;

@@ -1,8 +1,8 @@
-const { reviews } = require('../constants');
+const { review } = require('../constants');
 
 module.exports = {
   up(queryInterface) {
-    return queryInterface.bulkInsert('reviews', reviews, {});
+    return queryInterface.bulkInsert('reviews', review, {});
   },
 
   down(queryInterface) {

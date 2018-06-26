@@ -1,13 +1,13 @@
-const { sources } = require('./../constants');
+const { source } = require('./../constants');
 
 module.exports = {
   up(queryInterface) {
     return queryInterface.bulkInsert(
-      'sources', sources,
+      'sources', source,
       {},
     );
   },
   down(queryInterface) {
-    return queryInterface.bulkDelete('sources', { id: sources.map(x => x.id) });
+    return queryInterface.bulkDelete('sources', { id: source.map(x => x.id) });
   },
 };

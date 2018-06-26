@@ -1,13 +1,5 @@
 const {
-  PACKAGE_STATES: {
-    PROCESSING,
-    VALUES,
-    REVIEW,
-    DELIVERED,
-    SHIP,
-    INREVIEW,
-  },
-  CONSIGNMENT_TYPES: { DOC, NONDOC },
+  CONSIGNMENT_TYPES: { DOC, NONDOC }, CONTENT_TYPES: { REGULAR, SPECIAL },
 } = require('../../config/constants');
 
 module.exports = DataTypes => ({
@@ -18,38 +10,22 @@ module.exports = DataTypes => ({
     allowNull: false,
     unique: true,
   },
-  order_code: DataTypes.STRING,
-  type: {
+  consignment_type: {
     type: DataTypes.ENUM,
+    defaultValue: NONDOC,
     values: [DOC, NONDOC],
   },
   reference_code: DataTypes.STRING,
-  locker_code: DataTypes.STRING,
-  weight: DataTypes.STRING,
-  number_of_items: DataTypes.INTEGER,
+  comments: DataTypes.STRING,
+  weight: DataTypes.DECIMAL(15, 2),
   price_amount: DataTypes.STRING,
-  received_at: DataTypes.DATE,
-  status: {
-    type: DataTypes.ENUM,
-    values: [
-      PROCESSING,
-      VALUES,
-      REVIEW,
-      DELIVERED,
-      SHIP,
-      INREVIEW,
-    ],
-  },
 
-  review: DataTypes.STRING,
-  return_send: DataTypes.STRING,
-  is_liquid: DataTypes.BOOLEAN,
-  is_featured_seller: DataTypes.BOOLEAN,
+  content_type: {
+    type: DataTypes.ENUM,
+    values: [REGULAR, SPECIAL],
+    defaultValue: 1,
+  },
   is_public: { type: DataTypes.BOOLEAN, defaultValue: false },
-  split_pack: DataTypes.STRING,
-  info: DataTypes.STRING,
-  admin_read: DataTypes.BOOLEAN,
-  admin_info: DataTypes.STRING,
-  is_item_damaged: DataTypes.BOOLEAN,
+  splitting_directions: DataTypes.STRING,
 });
 

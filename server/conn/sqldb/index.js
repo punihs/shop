@@ -22,19 +22,19 @@ const db = {
 
 [
   // - Enums
-  'Country', 'Place', 'PaymentGateway',
+  'Country', 'Place', 'PaymentGateway', 'Locker',
 
   // - Basic
-  'User', 'UserMeta', 'Group', 'Estimation',
+  'User', 'UserMeta', 'Group', 'Estimation', 'PasswordReset',
 
   // - Customer Account
   // Shoppre.com - Inspired by MyUS.com
-  'Address', 'UserDocument', 'ShippingPreference',
+  'Address', 'UserDocument', 'ShippingPreference', 'VirtualAddress',
 
   'Order',
 
-  'Package', 'PackageMeta',
-  'PackageItem',
+  'Package', 'PackageMeta', 'PackageState', 'State', 'ActionableState', 'GroupState',
+  'PackageItem', 'PackageComment',
   'PackageItemCategory',
 
   'PhotoRequest',
@@ -43,6 +43,9 @@ const db = {
   'Transaction',
   // - Notifications
   'Notification',
+
+  // - loyalty points, coupon
+  'LoyaltyPoint', 'LoyaltyHistory', 'Redemption', 'ReferCode',
 
   // - Organitation
   'ShippingPartner', 'Link',
@@ -56,7 +59,7 @@ const db = {
   'Coupon',
 
   // - Reviews
-  'Review',
+  'Review', 'Feedback',
 
   // - Estomations
   'Estimation',
@@ -86,6 +89,8 @@ const db = {
   // - countries, stores, cities
   // - customers, packages, package_items, shipments
   'Product',
+
+  'Log',
 
   'Org',
   'ObjectType', 'Keyword', 'Seo', 'Source',

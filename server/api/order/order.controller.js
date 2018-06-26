@@ -1,9 +1,14 @@
-
+const debug = require('debug');
 const _ = require('lodash');
+const Ajv = require('ajv');
+
+const { orderCreate } = require('./order.schema');
 const { Order, Store } = require('./../../conn/sqldb');
 const minio = require('./../../conn/minio');
 const logger = require('./../../components/logger');
 const { GROUPS: { OPS, CUSTOMER } } = require('./../../config/constants');
+
+const log = debug('s.order.controller');
 
 exports.index = (req, res, next) => {
   const options = {
@@ -13,6 +18,7 @@ exports.index = (req, res, next) => {
       attributes: ['id', 'name'],
     }],
     where: { },
+    order: [['id', 'DESC']],
     limit: Number(req.query.limit) || 20,
   };
 
@@ -47,6 +53,15 @@ exports.show = (req, res, next) => {
 
 exports.create = async (req, res, next) => {
   const IS_OPS = req.user.group_id === OPS;
+
+  const ajv = new Ajv();
+  ajv.addSchema(orderCreate, 'OrderCreate');
+  const valid = ajv.validate('OrderCreate', req.body);
+
+  if (!valid) {
+    log('create', ajv.errorsText());
+    return res.status(400).json({ message: ajv.errorsText() });
+  }
 
   try {
     const { invoice_file: invoiceFile } = req.body;

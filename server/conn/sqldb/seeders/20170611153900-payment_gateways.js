@@ -1,8 +1,8 @@
-const { paymentGateways } = require('../constants');
+const { paymentGateway } = require('../constants');
 
 module.exports = {
   up(queryInterface) {
-    return queryInterface.bulkInsert('payment_gateways', paymentGateways, {});
+    return queryInterface.bulkInsert('payment_gateways', paymentGateway, {});
   },
 
   down(queryInterface) {

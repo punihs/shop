@@ -3,13 +3,15 @@ const authorise = require('./authorise');
 const authenticate = require('./../authenticate');
 const oAuth = require('./../');
 const directLogin = require('./directLogin');
+const { oauth, login } = require('./google');
 const db = require('./../../../conn/sqldb');
 
 module.exports = (a, routes) => {
   const app = a;
   app.oauth = oAuth;
   // OAuth Token authorization_code, password, refresh_token
-  app.all('/oauth/token', directLogin, app.oauth.grant());
+  app.all('/oauth/token', oauth, directLogin, app.oauth.grant());
+  app.all('/oauth/google', login);
 
   app.all('/oauth/revoke', (req, res, next) => {
     db.RefreshToken

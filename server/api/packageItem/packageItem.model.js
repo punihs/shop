@@ -1,24 +1,7 @@
-const { PRICE_ENTERER: { SHOPPRE, CUSTOMER } } = require('../../config/constants');
+const properties = require('./packageItem.property');
 
 module.exports = (sequelize, DataTypes) => {
-  const PackageItem = sequelize.define('PackageItem', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-      allowNull: false,
-      unique: true,
-    },
-    name: DataTypes.STRING,
-    quantity: DataTypes.INTEGER,
-    price_amount: DataTypes.DOUBLE,
-    total_amount: DataTypes.DOUBLE,
-    object: DataTypes.STRING,
-    price_entered_by: {
-      type: DataTypes.ENUM,
-      values: [SHOPPRE, CUSTOMER],
-    },
-  }, {
+  const PackageItem = sequelize.define('PackageItem', properties(DataTypes), {
     tableName: 'package_items',
     timestamps: true,
     paranoid: true,
@@ -26,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   PackageItem.associate = (db) => {
+    PackageItem.belongsTo(db.User, {
+      foreignKey: 'created_by',
+      as: 'Creator',
+    });
     PackageItem.belongsTo(db.Package);
     PackageItem.belongsTo(db.PackageItemCategory);
     db.PackageItemCategory.belongsTo(db.PackageItem);

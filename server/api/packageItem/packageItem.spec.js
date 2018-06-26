@@ -60,6 +60,35 @@ describe('POST /api/packageItem', () => {
   });
 });
 
+describe('POST /api/packageItem', () => {
+  before(async () => {
+    await Package.create({});
+  });
+
+  it('save packageItem', (done) => {
+    request(app)
+      .post('/api/packageItems')
+      .send({
+        name: 'kurtha2',
+        package_id: 2,
+        package_item_category_id: 9,
+        quantity: 1,
+        price_amount: 200,
+        confirmed_by: 1,
+        photo_file: {
+          filename: 'x.jpg',
+          base64: 'aGVsbG8=',
+        },
+      })
+      .set('Authorization', `Bearer ${opsAuth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(201)
+      .then(() => {
+        done();
+      });
+  });
+});
+
 describe('PUT /api/packageItem update meta', () => {
   it('PUT packageItem', (done) => {
     request(app)

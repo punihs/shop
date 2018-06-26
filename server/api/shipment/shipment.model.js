@@ -3,7 +3,7 @@ const properties = require('./shipment.property');
 module.exports = (sequelize, DataTypes) => {
   const Shipment = sequelize.define('Shipment', properties(DataTypes), {
     tableName: 'shipments',
-    timestamps: false,
+    timestamps: true,
     underscored: true,
     paranoid: true,
   });

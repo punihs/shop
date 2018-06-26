@@ -12,6 +12,10 @@ const {
 
 const log = debug('components/oauth');
 
+const attributes = [
+  'id', 'email', 'first_name', 'last_name', 'group_id', 'email', 'mobile', 'phone', 'phone_code',
+];
+
 const oAuthModel = {
   revokeToken(token) {
     log('revokeToken', JSON.stringify(token));
@@ -55,7 +59,7 @@ const oAuthModel = {
 
         return User
           .findById(token.user_id, {
-            attributes: ['id', 'email', 'first_name', 'last_name', 'group_id'],
+            attributes,
             raw: true,
           })
           .then((user) => {
@@ -95,7 +99,7 @@ const oAuthModel = {
       where: { client_id: clientId },
       include: [{
         model: User,
-        attributes: ['id', 'first_name', 'email', 'password'],
+        attributes,
       }],
       attributes: ['id', 'client_id', 'redirect_uri'],
     };
@@ -214,10 +218,10 @@ const oAuthModel = {
     return User
       .find({
         where,
-        attributes: ['id', 'password'],
+        attributes,
       })
       .then((user) => {
-        log('gotUser', user.toJSON());
+        log('gotUser', user && user.toJSON());
         if (!user) return callback(null, false);
 
         if (config.env === 'test') return callback(null, user.toJSON());

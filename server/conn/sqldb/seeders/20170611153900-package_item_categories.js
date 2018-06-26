@@ -1,8 +1,8 @@
-const { packageItemCategories } = require('../constants');
+const { packageItemCategory } = require('../constants');
 
 module.exports = {
   up(queryInterface) {
-    return queryInterface.bulkInsert('package_item_categories', packageItemCategories, {});
+    return queryInterface.bulkInsert('package_item_categories', packageItemCategory, {});
   },
 
   down(queryInterface) {
