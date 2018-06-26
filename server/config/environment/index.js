@@ -8,9 +8,9 @@ const IS_DEV = env.NODE_ENV === 'development';
 
 const config = {
   all: {
-    env: process.env.NODE_ENV,
-    port: process.env.PORT || 5000,
-    ip: process.env.IP || '0.0.0.0',
+    env: env.NODE_ENV,
+    port: env.PORT || 5000,
+    ip: env.IP || '0.0.0.0',
     root,
     URLS_MEMBER: `${env.PREFIX}member.${env.DOMAIN}`,
     URLS_WWW: `${env.PREFIX}www.${env.DOMAIN}`,

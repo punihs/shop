@@ -13,7 +13,8 @@ const {
 const log = debug('components/oauth');
 
 const attributes = [
-  'id', 'email', 'first_name', 'last_name', 'group_id', 'email', 'mobile', 'phone', 'phone_code',
+  'id', 'email', 'first_name', 'last_name', 'group_id', 'email', 'mobile', 'phone',
+  'phone_code', 'salutation',
 ];
 
 const oAuthModel = {
@@ -218,7 +219,7 @@ const oAuthModel = {
     return User
       .find({
         where,
-        attributes,
+        attributes: attributes.concat('password'),
       })
       .then((user) => {
         log('gotUser', user && user.toJSON());

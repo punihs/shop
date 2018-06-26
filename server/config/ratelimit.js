@@ -1,61 +1,94 @@
+const debug = require('debug');
 const RateLimit = require('express-rate-limit');
 
-const Notify = require('./../components/notify');
+const Notify = require('../components/notify');
 
-const { THROTTLE_LIMIT } = require('../config/environment');
+const log = debug('s-config-rateLimit');
 
-module.exports = (app, db) => {
-  const blacklist = [];
-  function checkNotify(req) {
-    if (!blacklist.includes(req.ip)) {
-      blacklist.push(req.ip);
-      const token = (req.query.access_token
-        || (req.get('Authorization') || '').replace(/Bearer/g, '').trim() || null);
-      if (token && token.length >= 40) {
-        db.AccessToken.find({
-          where: {
-            access_token: token.replace(/Bearer/g, '').trim(),
-          },
-          include: [{ model: db.User, attributes: ['id', 'email_id'] }],
-        }).then((t) => {
-          Notify.slack(`@punith Too many requests to api from ip:${
-            req.ip} & User: ${t.User ? t.User.get('email_id') : ''}`);
-        });
-      } else {
-        Notify.slack(`@punith Too many requests to api from ip:${
-          req.ip} & user details not found.`);
-      }
+const {
+  API_THROTTLE_LIMIT, ACCOUNT_THROTTLE_LIMIT, env,
+} = require('../config/environment');
+
+const blacklist = {
+  api: [],
+  auth: [],
+};
+const WINDOW = {
+  api: 15,
+  auth: 1,
+};
+
+const count = type => (type === 'api'
+  ? API_THROTTLE_LIMIT
+  : ACCOUNT_THROTTLE_LIMIT
+);
+
+function checkNotify(db, req, type = 'api') {
+  log('checkNotify', { type });
+  if (!blacklist[type].includes(req.ip)) {
+    blacklist[type].push(req.ip);
+    const token = (req.query.access_token
+      || (req.get('Authorization') || '').replace(/Bearer/g, '').trim() || null);
+    const debugInfo = JSON.stringify({ query: req.query, body: req.body, token });
+    const message = `${debugInfo} - @punith ${count(type)} requests to ${type} from ip:${
+      req.ip}, blocked for ${WINDOW[type]} minute & `;
+
+    if (token && token.length >= 40) {
+      db.AccessToken.find({
+        where: {
+          access_token: token.replace(/Bearer/g, '').trim(),
+        },
+        include: [{ model: db.User, attributes: ['id', 'email_id'] }],
+      }).then((t) => {
+        Notify.slack(`${message} User: ${t.User ? t.User.get('email_id') : ''}`);
+      });
+    } else {
+      Notify.slack(`${message} user details not found.`);
     }
   }
+}
 
-  const limiter = new RateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: THROTTLE_LIMIT, // limit each IP to 100 requests per windowMs
+const settings = (db, type = 'api') => {
+  log('settings', { type });
+  const message = `${count(type)} requests to ${type} from this IP, try after a ${WINDOW[type]} minute`;
+
+  const options = {
+    windowMs: WINDOW.api * 60 * 1000, // 15 minutes
+    max: API_THROTTLE_LIMIT, // limit each IP to 100 requests per windowMs
     delayMs: 0, // disable delaying - full speed until the max limit is reached
     statusCode: 429,
-    message: 'Too many accounts created from this IP, please try again after an hour',
-    blacklist: [],
+    message,
     keyGenerator(req) {
       return req.ip;
     },
     handler(req, res) {
       res.format({
         html() {
-          checkNotify(req);
-          res.status(429)
-            .end('Too many accounts created from this IP, please try again after an hour');
+          checkNotify(db, req, type);
+          res.status(429).end(message);
         },
         json() {
-          checkNotify(req);
-          res
-            .status(429)
-            .json({
-              message: 'Too many accounts created from this IP, please try again after an hour',
-            });
+          checkNotify(db, req, type);
+          res.status(429).json({ message });
         },
       });
     },
-  });
-  // Apply to all requests
-  app.use(limiter);
+  };
+
+  if (type === 'auth') {
+    return {
+      ...options,
+      windowMs: WINDOW.auth * 60 * 1000, // 1 minute
+      max: ACCOUNT_THROTTLE_LIMIT, // limit each IP to 100 requests per windowMs
+    };
+  }
+
+  return options;
+};
+
+module.exports = (type, db) => {
+  log('rateLimit', { type, env });
+  if (env !== 'production') return (req, res, next) => next();
+
+  return new RateLimit(settings(db, type));
 };

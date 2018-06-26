@@ -6,14 +6,14 @@ const directLogin = require('./directLogin');
 const { oauth, login } = require('./google');
 const db = require('./../../../conn/sqldb');
 
-module.exports = (a, routes) => {
+module.exports = (a, routes, rateLimit) => {
   const app = a;
   app.oauth = oAuth;
   // OAuth Token authorization_code, password, refresh_token
-  app.all('/oauth/token', oauth, directLogin, app.oauth.grant());
+  app.all('/oauth/token', rateLimit, oauth, directLogin, app.oauth.grant());
   app.all('/oauth/google', login);
 
-  app.all('/oauth/revoke', (req, res, next) => {
+  app.all('/oauth/revoke', rateLimit, (req, res, next) => {
     db.RefreshToken
       .find({
         attributes: ['sessionId'],
@@ -26,14 +26,14 @@ module.exports = (a, routes) => {
       .then(s => res.json(s))
       .catch(next);
   });
-  app.all('/api/oauth/token', app.oauth.grant());
+  app.all('/api/oauth/token', rateLimit, app.oauth.grant());
 
   // app.use(app.oauth.authorise('main'));
 
   // OAuth Authorise from Third party applications
-  app.get('/authorise', authorise);
+  app.get('/authorise', rateLimit, authorise);
 
-  app.post('/authorise', authenticate(), app.oauth.authCodeGrant((req, callback) => {
+  app.post('/authorise', rateLimit, authenticate(), app.oauth.authCodeGrant((req, callback) => {
     if (req.body.allow !== 'true') return callback(null, false);
     return callback(null, true, req.user);
   }));

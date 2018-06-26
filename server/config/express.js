@@ -16,20 +16,20 @@ const rateLimit = require('./ratelimit');
 
 module.exports = (app) => {
   if (config.env !== 'production') app.use(morgan('dev'));
+  app.enable('trust proxy');
   app.use(responseTime());
   app.use(apiLogger(db));
   app.use(helmet());
-  rateLimit(app, db);
+  app.use(rateLimit('api', db));
   app.use(express.static(`${config.root}/public`));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(cookieParser());
   app.use(cors());
-  app.enable('trust proxy');
   app.use(logger.transports.sentry.raven.requestHandler(true));
   app.set('view engine', 'jade');
   app.set('views', `${config.root}/server/app`);
   app.set('appPath', path.join(config.root, 'client'));
-  oauthComponent(app, routes);
+  oauthComponent(app, routes, rateLimit('auth', db));
 };
 
