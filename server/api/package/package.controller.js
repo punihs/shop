@@ -8,11 +8,14 @@ const log = debug('package');
 const db = require('../../conn/sqldb');
 
 const {
-  Package, Order, PackageItem, PhotoRequest, Transaction, User,
+  Package, Order, PackageItem, User,
   Locker, Store, PackageState,
 } = db;
 
-const { PACKAGE_STATE_ID_NAMES, PACKAGE_STATE_IDS: { CREATED } } = require('../../config/constants');
+const {
+  PACKAGE_STATE_ID_NAMES,
+  PACKAGE_STATE_IDS: { CREATED },
+} = require('../../config/constants');
 const logger = require('../../components/logger');
 
 const { index } = require('./package.service');
@@ -58,7 +61,7 @@ exports.show = async (req, res, next) => {
     .findById(req.params.id, {
       attributes: req.query.fl
         ? req.query.fl.split(',')
-        : ['id', 'customer_id', 'created_at', 'weight'],
+        : ['id', 'customer_id', 'created_at', 'weight', 'content_type'],
       include: [{
         model: PackageState,
         attributes: ['id', 'state_id'],
@@ -83,14 +86,16 @@ exports.show = async (req, res, next) => {
 };
 
 exports.create = async (req, res, next) => {
+  log('create', req.body);
   const allowed = [
-    'consignment_type',
+    'is_doc',
     'store_id',
     'reference_code',
     'virtual_address_code',
     'weight',
     'price_amount',
     'customer_id',
+    'content_type',
   ];
 
   const pkg = _.pick(req.body, allowed);
@@ -142,76 +147,27 @@ exports.facets = (req, res, next) => Package
     .then(status => res.json(status)))
   .catch(next);
 
-exports.metaUpdate = async (req, res) => {
+exports.update = (req, res, next) => {
   const allowed = [
-    'seller',
+    'store_id',
     'reference_code',
-    'type',
     'weight',
     'price_amount',
     'customer_id',
-    'status',
-    'review',
+    'is_doc',
+    'content_type',
   ];
 
   const { id } = req.params;
   const { customerId } = req.user.id;
 
   const pack = _.pick(req.body, allowed);
+  pack.updated_by = customerId;
 
-  const map = {
-    values: 'Package waiting for customer input value action',
-    invoice: 'Package under review for customer invoice upload',
-    reivew: 'Package is under shoppre review',
-    split_done: 'Package Splitted!', // email sedning is pending
-    return_done: 'Package Returned to Sender!', // email sedning is pending
-  };
-
-  pack.review = map[pack.status] || '';
-
-  switch (pack.status) {
-    case 'ship': {
-      const itemCount = await PackageItem.find({
-        attributes: ['id'],
-        where: {
-          package_id: id,
-        },
-      });
-
-      const photoRequest = await PhotoRequest.find({
-        attributes: ['id'],
-        where: {
-          package_id: id,
-        },
-      });
-
-      if (photoRequest.status === 'pending') {
-        return res.status(400).res.json({ message: 'Please check and update the Photo Request Status !' });
-      } else if (itemCount !== pack.number_of_items) {
-        return res.status(400).res.json({ message: 'please check your items !' });
-      }
-      break;
-    }
-    case 'return_done': {
-      const walletBalance = await User.find(['id', 'wallet_balance_amount'], { where: { customer_id: customerId } });
-      let walletAmount = 0;
-      walletAmount = walletBalance.amount - 400;
-      await User.Update(
-        { wallet_balance_amount: walletAmount },
-        { where: { customer_id: customerId } },
-      );
-
-      const description = 'Return service fee deducted | Order ID '.concat(id);
-      await Transaction.Create({ customer_id: customerId, amount: -400, description });
-      break;
-    }
-    default: {
-      log('default');
-    }
-  }
-
-  await Package.update(pack, { where: { id } });
-  return res.status(200).json({ id });
+  return Package
+    .update(pack, { where: { id } })
+    .then(() => res.json({ id }))
+    .catch(next);
 };
 
 exports.destroy = async (req, res) =>

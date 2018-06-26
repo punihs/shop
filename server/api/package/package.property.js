@@ -1,5 +1,5 @@
 const {
-  CONSIGNMENT_TYPES: { DOC, NONDOC }, CONTENT_TYPES: { REGULAR, SPECIAL },
+  CONTENT_TYPES: { REGULAR, SPECIAL },
 } = require('../../config/constants');
 
 module.exports = DataTypes => ({
@@ -10,15 +10,14 @@ module.exports = DataTypes => ({
     allowNull: false,
     unique: true,
   },
-  consignment_type: {
-    type: DataTypes.ENUM,
-    defaultValue: NONDOC,
-    values: [DOC, NONDOC],
+  is_doc: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
   },
   reference_code: DataTypes.STRING,
   comments: DataTypes.STRING,
   weight: DataTypes.DECIMAL(15, 2),
-  price_amount: DataTypes.STRING,
+  price_amount: DataTypes.DECIMAL(15, 2),
 
   content_type: {
     type: DataTypes.ENUM,

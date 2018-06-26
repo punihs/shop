@@ -5,7 +5,7 @@ const opsAuth = require('../../../logs/ops-credentials');
 const wwwAuth = require('../../../logs/www-credentials');
 
 const {
-  CONSIGNMENT_TYPES: { DOC }, CONTENT_TYPES: { REGULAR, SPECIAL },
+  CONTENT_TYPES: { REGULAR, SPECIAL },
 } = require('../../config/constants');
 
 describe('public GET /api/packages', () => {
@@ -77,7 +77,7 @@ describe('POST /api/packages update meta', () => {
       .send({
         seller: 'Amazon.in',
         reference_code: '123',
-        consignment_type: DOC,
+        is_doc: true,
         price_amount: 2000,
         weight: 2,
         content_type: SPECIAL,

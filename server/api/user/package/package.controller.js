@@ -6,7 +6,7 @@ exports.index = (req, res, next) => {
   const options = {
     attributes: [
       'id', 'created_at', 'reference_code', 'price_amount',
-      'weight', 'consignment_type', 'package_state_id', 'store_id',
+      'weight', 'is_doc', 'package_state_id', 'store_id',
     ],
     where: {
       customer_id: req.params.userId,
@@ -16,10 +16,6 @@ exports.index = (req, res, next) => {
       attributes: ['id', 'name'],
     }, {
       model: PackageState,
-      attributes: ['id', 'state_id'],
-    }, {
-      model: PackageState,
-      as: 'PackageStates',
       attributes: ['id', 'state_id'],
     }],
     limit: Number(req.query.limit) || 20,

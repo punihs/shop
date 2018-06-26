@@ -15,6 +15,7 @@ const constants = {
     SHIP: 'ship',
     INREVIEW: 'inreview',
     RETURN: 'return',
+    RETURN_DONE: 'return_done',
     SPLIT: 'split',
     ABANDON: 'abandon',
   },
@@ -90,6 +91,9 @@ const constants = {
   CONTENT_TYPES: {
     REGULAR: '1',
     SPECIAL: '2', // 'Liquid, Cream, Oil & Home-made food items'
+  },
+  PACKAGE_CHARGES: {
+    RETURN_CHARGE: 400,
   },
 };
 
