@@ -173,7 +173,7 @@ exports.update = (req, res, next) => {
 exports.destroy = async (req, res) =>
   // const { id } = req.params;
   // await PackageItem.destroy({ where: { package_id: id } });
-  // await PackageMeta.destroy({ where: { package_id: id } });
+  // await PackageCharge.destroy({ where: { package_id: id } });
   // await PhotoRequest.destroy({ where: { package_id: id } });
   res.status(200).json({ message: 'Deleted successfully' });
 exports.unread = async (req, res) => {

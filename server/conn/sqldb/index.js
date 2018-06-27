@@ -36,7 +36,7 @@ const db = {
 
   'Order',
 
-  'Package', 'PackageMeta', 'PackageState', 'State', 'ActionableState', 'GroupState',
+  'Package', 'PackageCharge', 'PackageState', 'State', 'ActionableState', 'GroupState',
   'PackageItem', 'PackageComment',
   'PackageItemCategory',
 

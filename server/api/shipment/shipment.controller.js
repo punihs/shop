@@ -5,7 +5,7 @@ const eventEmitter = require('../../conn/event');
 const db = require('../../conn/sqldb');
 
 const {
-  Country, Shipment, Package, Address, PackageMeta, ShipmentMeta, Notification, ShipmentIssue,
+  Country, Shipment, Package, Address, PackageCharge, ShipmentMeta, Notification, ShipmentIssue,
   PackageState, Redemption, Coupon, LoyaltyHistory, User, LoyaltyPoint, Transaction,
 } = db;
 
@@ -108,7 +108,7 @@ const calcShipping = async (countryId, weight, type) => {
 const getEstimation = async (packageIds, countryId, userId) => {
   const packages = await Package.findAll({
     include: [{
-      model: PackageMeta,
+      model: PackageCharge,
     }],
     where: {
       customer_id: userId,
@@ -135,7 +135,7 @@ const getEstimation = async (packageIds, countryId, userId) => {
     shipping.price += pack.price;
     shipping.weight += pack.weight;
 
-    const meta = pack.PackageMeta || {};
+    const meta = pack.PackageCharge || {};
 
     const packageLevelCharges = meta.storage + meta.address + meta.handling + meta.pickup
       + meta.doc + meta.liquid + meta.basic_photo + meta.advance_photo

@@ -17,7 +17,7 @@ const packages = require('./api/package');
 const packageComment = require('./api/package/comment');
 const packageItem = require('./api/packageItem');
 const packageItems = require('./api/package/item');
-const packageMeta = require('./api/package/meta');
+const packageCharge = require('./api/package/charge');
 const specialRequest = require('./api/package/specialRequest');
 const shippingPreference = require('./api/shippingPreference');
 const packageItemCategory = require('./api/packageItemCategory');
@@ -44,7 +44,7 @@ const store = require('./api/store');
 const estimation = require('./api/estimation');
 const coupon = require('./api/coupon');
 const userPackage = require('./api/user/package');
-const photoRequest = require('./api/photoRequest');
+const photoRequest = require('./api/package/photoRequest');
 const webRoutes = require('./webRoutes');
 
 module.exports = (app) => {
@@ -59,8 +59,9 @@ module.exports = (app) => {
     packageItems,
     packageComment,
     packages,
-    packageMeta,
+    packageCharge,
     specialRequest,
+    photoRequest,
   );
   app.use('/api/shippingPartners', shippingPartner);
   app.use('/api/addresses', authenticate(), address);
@@ -85,7 +86,6 @@ module.exports = (app) => {
   app.use('/api/passwordReset', passwordReset);
   app.use('/api/estimations', estimation);
   app.use('/api/coupons', coupon);
-  app.use('/api/photoRequest', authenticate(), photoRequest);
   app.get('/secured', authenticate(), (req, res) => res.json({ name, version }));
 
   app.get('/health', (req, res) => res.json({ name, version }));

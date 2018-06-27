@@ -94,6 +94,8 @@ const constants = {
   },
   PACKAGE_CHARGES: {
     RETURN_CHARGE: 400,
+    BASIC_PHOTO: 50.00,
+    ADVANCED_PHOTO: 300,
   },
 };
 

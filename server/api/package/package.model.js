@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Package.associate = (db) => {
-    Package.hasOne(db.PackageMeta, {
+    Package.hasOne(db.PackageCharge, {
       foreignKey: 'id',
     });
     Package.hasOne(db.Store);
