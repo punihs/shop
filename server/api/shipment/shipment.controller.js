@@ -136,13 +136,15 @@ const getEstimation = async (packageIds, countryId, userId) => {
     shipping.price += pack.price;
     shipping.weight += pack.weight;
 
-    const meta = pack.PackageCharge || {};
+    const packageCharge = pack.PackageCharge || {};
 
-    const packageLevelCharges = meta.storage + meta.address + meta.handling + meta.pickup
-      + meta.doc + meta.liquid + meta.basic_photo + meta.advance_photo
-      + meta.split + meta.scan_doc;
+    const keys = [
+      'storage_amount', 'wrong_address_amount', 'special_handling_amount', 'receive_mail_amount',
+      'pickup_amount', 'basic_photo_amount', 'advanced_photo_amount', 'split_package_amount',
+      'scan_document_amount',
+    ];
 
-    shipping.level += packageLevelCharges;
+    shipping.level += keys.reduce((nxt, key) => (nxt + (packageCharge[key] || 0)), 0);
 
     const shippingCharge = calcShipping(countryId, pack.weight, pack.type);
 

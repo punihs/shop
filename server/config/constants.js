@@ -54,7 +54,7 @@ const constants = {
     CUSTOMER: '2',
   },
   PHOTO_REQUEST_TYPES: {
-    STANDARD: '1',
+    BASIC: '1',
     ADVANCED: '2',
   },
   PHOTO_REQUEST_STATES: {

@@ -20,7 +20,7 @@ describe('POST /api/packages/:id/photoRequests basic_photo', () => {
       });
   });
 
-  it('POST standardPhotoRequest', (done) => {
+  it('POST basicPhotoRequest', (done) => {
     request(app)
       .put(`/api/packages/${pkg.id}/photoRequests`)
       .send({

@@ -6,7 +6,7 @@ const {
 
 const log = debug('s.photoRequest.controller');
 const {
-  PHOTO_REQUEST_TYPES: { STANDARD, ADVANCED },
+  PHOTO_REQUEST_TYPES: { BASIC, ADVANCED },
   PHOTO_REQUEST_STATES: { COMPLETED },
   PACKAGE_CHARGES: { BASIC_PHOTO, ADVANCED_PHOTO },
 } = require('../../../config/constants');
@@ -45,7 +45,7 @@ exports.create = (req, res, next) => {
 
       await PhotoRequest.create({
         package_id: packageId,
-        type: IS_BASIC_PHOTO ? STANDARD : ADVANCED,
+        type: IS_BASIC_PHOTO ? BASIC : ADVANCED,
         status: COMPLETED,
         charge_amount: CHARGE,
       });

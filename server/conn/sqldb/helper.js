@@ -4,6 +4,9 @@ const r = require;
 
 const { DataTypes } = Sequelize;
 module.exports = {
+  id: {
+
+  },
   engine: {
     engine: 'InnoDB',
     charset: 'utf8mb4',
