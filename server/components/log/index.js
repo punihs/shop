@@ -10,7 +10,7 @@ module.exports = {
       } = req;
 
       const log = {
-        response_time: res.get('X-Response-Time').replace('ms', ''),
+        response_time: res.get('X-Response-Time'),
         body_bytes_sent: 10,
         status: res.statusCode,
         request: originalUrl,

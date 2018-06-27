@@ -4,241 +4,261 @@ block content
     title '#{title}'
     meta(name='description', content= '#{meta_description}')
     meta(property='og:title', content='#{meta_title}')
-  section.slider
-    .slide
-      img(src="cdn/img/slider1.jpg", width='100%')
-      .caption-block
-        h2.text-orange
-          | INTERNATIONAL SHIPPING FROM INDIA
+    // Owl Carousel
+    link(rel='stylesheet', href="/app/css/owl.carousel.min.css")
+    // Magnific Popup
+    link(rel='stylesheet', href='/app/css/magnific-popup.css')
+
+  .body
+    section.slider
+      .slide
+        img(src="cdn/img/slider1.jpg", width='100%')
+        .caption-block
+          h2.text-orange
+            | INTERNATIONAL SHIPPING FROM INDIA
+            br
+            | STARTS AT &nbsp&nbsp
+            i.fa.fa-inr
+            | 690
+          h3(style='margin-top: -8px !important;') We Do Flipkart International Delivery
+          h3(style='margin-top: -8px !important;') Shop from India, Ship Worldwide!
+          p Door to Door Pickup and International Delivery.
+          p Receive your FREE Personal Locker and Virtual Shipping Address in India!
           br
-          | STARTS AT &nbsp&nbsp
-          i.fa.fa-inr
-          | 690
-        h3(style='margin-top: -8px !important;') We Do Flipkart International Delivery
-        h3(style='margin-top: -8px !important;') Shop from India, Ship Worldwide!
-        p Door to Door Pickup and International Delivery.
-        p Receive your FREE Personal Locker and Virtual Shipping Address in India!
-        br
-        a.btn.btn-shoppre.popup-youtube(href='https://www.youtube.com/watch?v=Zf77ljCx9Ik')
-          | Video
-          i.glyphicon.glyphicon-play-circle
-        a.btn.btn-shoppre(href="https://www.shoppre.com/schedule-pickup") Schedule a Pickup
-        br
-        br
-        a.btn.btn-shoppre(href='https://myaccount.shoppre.com/register')
-          | Get Virtual Address & Start Shopping
-      .bottom
-        p Not all Indian Online Stores offer International Shipping
-  section.all-about
-    .container
-      .row
-        .col-sm-2
-          .square-box
-            h2 All About
-            img(src="cdn/img/texture.png")
-        .col-sm-10
-          .parcel_logs
-            h3 Ship your Parcel through Shoppre’s trusted Courier Partners
-            a(href="#")
-              img(src="cdn/img/dhl.png")
-            a(href='#')
-              img(src="cdn/img/fedex.png")
-            a(href='#')
-              img(src="cdn/img/dtdc.png")
-            h4
-              | Shoppre receives and ships over INR 10,00,000 worth in eCommerce purchases monthly!
-        .clearfix
-        ul.horline
-          li
-            a(href="{{route('stores')}}")
-              h2 1000+
-              h4 Indian Shopping Websites
-          li
-            a(href="{{route('countryList')}}")
-              h2 236+
-              h4 Countries Worldwide
-          li
-            h2 2-5 Days
-            h4 Average Delivery Time
-          li
-            h2 Save 60-80%
-            h4 Storage, Consolidation & Repackaging!
-        .text-center
-          a.btn.btn-shoppre(href="{{route('about')}}") Why You Will Love Us
-  section.services
-    .container
-      .row
-        .col-md-6.col-md-offset-6
-          .service-content
+          a.btn.btn-shoppre.popup-youtube(href='https://www.youtube.com/watch?v=Zf77ljCx9Ik')
+            | Video
+            i.glyphicon.glyphicon-play-circle
+          a.btn.btn-shoppre(href="https://www.shoppre.com/schedule-pickup") Schedule a Pickup
+          br
+          br
+          a.btn.btn-shoppre(href='https://myaccount.shoppre.com/register')
+            | Get Virtual Address & Start Shopping
+        .bottom
+          p Not all Indian Online Stores offer International Shipping
+    section.all-about
+      .container
+        .row
+          .col-sm-2
             .square-box
-              h2 Our
-              h2.red Services
-            p.head-text
-              | We are passionate about delivering happiness through every box with the
-              | products you love from India!
-            ul
+              h2 All About
+              img(src="cdn/img/texture.png")
+          .col-sm-10
+            .parcel_logs
+              h3 Ship your Parcel through Shoppre’s trusted Courier Partners
+              a(href="#")
+                img(src="cdn/img/dhl.png")
+              a(href='#')
+                img(src="cdn/img/fedex.png")
+              a(href='#')
+                img(src="cdn/img/dtdc.png")
+              h4
+                | Shoppre receives and ships over INR 10,00,000 worth in eCommerce purchases monthly!
+          .clearfix
+          ul.horline
+            li
+              a(href="/browse-categories")
+                h2 1000+
+                h4 Indian Shopping Websites
+            li
+              a(href="{{route('countryList')}}")
+                h2 236+
+                h4 Countries Worldwide
+            li
+              h2 2-5 Days
+              h4 Average Delivery Time
+            li
+              h2 Save 60-80%
+              h4 Storage, Consolidation & Repackaging!
+          .text-center
+            a.btn.btn-shoppre(href="/about") Why You Will Love Us
+    section.services
+      .container
+        .row
+          .col-md-6.col-md-offset-6
+            .service-content
+              .square-box
+                h2 Our
+                h2.red Services
+              p.head-text
+                | We are passionate about delivering happiness through every box with the
+                | products you love from India!
+              ul
+                li
+                  h3 SHOP AND SHIP
+                  h4 Always wanted to get products from India?
+                  p
+                    | Sign up for free and get your own Indian shipping address. Shop
+                    | from any Indian online store. Enjoy our storage facilities,
+                    | get your purchases consolidated and delivered at your doorstep abroad.
+                li
+                  h3 PERSONAL SHOPPER
+                  h4 Your International Credit Card isn’t accepted on some portals?
+                  p
+                    | Simply provide us the product and merchant details;
+                    | our Personal Shopper will purchase the items for you and get what you love!
+                li
+                  h3 SHOPPING GUIDE
+                  h4 Don’t know where to shop the product that you need from?
+                  p
+                    | We are there to help you through our various filters
+                    | to select which portal you can shop your favorite product from.
+              .clearfix
+              .text-center
+                a.btn.btn-shoppre(href="/services") Learn More
+    section.works
+      .container
+        .row
+          .square-box
+            h2 how shoppre
+            h2.orange works
+          .col-md-12
+            ul.works_flow
               li
-                h3 SHOP AND SHIP
-                h4 Always wanted to get products from India?
-                p
-                  | Sign up for free and get your own Indian shipping address. Shop
-                  | from any Indian online store. Enjoy our storage facilities,
-                  | get your purchases consolidated and delivered at your doorstep abroad.
+                a(href="#{URLS_MYACCOUNT}/register")
+                  h3 Join
+                  p
+                    | Sign up with Shoppre and receive your FREE Personal Locker with a Virtual Indian
+                    | Shipping Address.
               li
-                h3 PERSONAL SHOPPER
-                h4 Your International Credit Card isn’t accepted on some portals?
-                p
-                  | Simply provide us the product and merchant details;
-                  | our Personal Shopper will purchase the items for you and get what you love!
+                a(href="/browse-categories")
+                  h3 Explore
+                  p
+                    | Find out from which Indian Online store you can get your favorite product.
               li
-                h3 SHOPPING GUIDE
-                h4 Don’t know where to shop the product that you need from?
-                p
-                  | We are there to help you through our various filters
-                  | to select which portal you can shop your favorite product from.
+                a(href="#{URLS_MYACCOUNT}/locker")
+                  h3 USE YOUR SHOPPRE ADDRESS
+                  p
+                    | Use your Shoppre Address to shop from ANY Indian Shopping Website.
+              li
+                a(href="#{URLS_MYACCOUNT}/personal-shopper")
+                  h3 AVAIL BENEFITS
+                  p
+                    | In case any online store doesn’t accept your International credit card, don’t worry! Our Personal
+                    | Shopper will purchase the item for you using our Indian Local Credit Card.
+              li
+                a(href="#{URLS_MYACCOUNT}/locker")
+                  h3 GET NOTIFIED
+                  p
+                    | You can view, manage and track your shipments on your ShoppRe account, 24/7. We will notify you
+                    | as soon as your package arrives at ShoppRe facility. You can ship your items at your
+                    | convenience in just a click!
+              li
+                a(href="/consolidationService")
+                  h3 RECEIVE & ENJOY
+                  p
+                    | Save up to 60-80% by our Consolidation, Repackaging and Storage services. Enjoy the special
+                    | discounted rates that we get with our trusted courier partners like DHL, FedEx and more.
+                    | Get your items in just 2-5 Days!
             .clearfix
             .text-center
-              a.btn.btn-shoppre(href="{{route('services')}}") Learn More
-  section.works
-    .container
-      .row
-        .square-box
-          h2 how shoppre
-          h2.orange works
-        .col-md-12
-          ul.works_flow
-            li
-              a(href="#{URLS_MYACCOUNT}/register")
-                h3 Join
-                p
-                  | Sign up with Shoppre and receive your FREE Personal Locker with a Virtual Indian
-                  | Shipping Address.
-            li
-              a(href="{{route('stores')}}")
-                h3 Explore
-                p
-                  | Find out from which Indian Online store you can get your favorite product.
-            li
-              a(href="{{env('PREFIX')}}myaccount.{{env('DOMAIN')}}/locker")
-                h3 USE YOUR SHOPPRE ADDRESS
-                p
-                  | Use your Shoppre Address to shop from ANY Indian Shopping Website.
-            li
-              a(href="{{env('PREFIX')}}myaccount.{{env('DOMAIN')}}/personal-shopper")
-                h3 AVAIL BENEFITS
-                p
-                  | In case any online store doesn’t accept your International credit card, don’t worry! Our Personal
-                  | Shopper will purchase the item for you using our Indian Local Credit Card.
-            li
-              a(href="{{env('PREFIX')}}myaccount.{{env('DOMAIN')}}/locker")
-                h3 GET NOTIFIED
-                p
-                  | You can view, manage and track your shipments on your ShoppRe account, 24/7. We will notify you
-                  | as soon as your package arrives at ShoppRe facility. You can ship your items at your
-                  | convenience in just a click!
-            li
-              a(href="{{route('consolidationService')}}")
-                h3 RECEIVE & ENJOY
-                p
-                  | Save up to 60-80% by our Consolidation, Repackaging and Storage services. Enjoy the special
-                  | discounted rates that we get with our trusted courier partners like DHL, FedEx and more.
-                  | Get your items in just 2-5 Days!
-          .clearfix
-          .text-center
-            a.btn.btn-shoppre(href="how-it-works") Learn More
-  section.brandslove
-    .container
-      .row
-        .square-box
-          h3 Brands
-          h2
-            | You
-            span.red Love!
-        .col-md-12
-          h2.brands-head Not sure where to shop from?
-          .brands.owl-carousel
-            .item
-              a(href='https://www.amazon.in/', target='_blank')
-                img(src="cdn/img/brands/amazon.png")
-            .item
-              a(href='https://www.flipkart.com/', target='_blank')
-                img(src="cdn/img/brands/flipkart.png")
-            .item
-              a(href='https://www.abof.com/')
-                img(src="cdn/img/brands/abof.png")
-            .item
-              a(href='https://www.chumbak.com/', target='_blank')
-                img(src="cdn/img/brands/chumbak.png")
-            .item
-              a(href='https://www.jabong.com/', target='_blank')
-                img(src="cdn/img/brands/jabong.png")
-            .item
-              a(href='https://www.myntra.com/', target='_blank')
-                img(src="cdn/img/brands/myntra.png")
-            .item
-              a(href='https://www.pepperfry.com/', target='_blank')
-                img(src="cdn/img/brands/pepperfry.png")
-            .item
-              a(href='https://www.snapdeal.com/', target='_blank')
-                img(src="cdn/img/brands/snapdeal.png")
-          .text-center
-            a.btn.btn-shoppre(href="{{route('stores") Browse Categories
-  section.pricing
-    .container
-      .row
-        h2.shipping-head Shipping From India - Pricing
-        .col-md-12
-          p.head-text-content
-            | We have heavily optimised our operations to give you the best deal.
-            | Our pricing makes us a favourite platform for Indian shoppers worldwide.
-          .pricing-terms
-            .col-sm-4
-              .desc_box
-                .ico_box
-                h3
-                  | NO MEMBERSHIP
-                  span.orange PLANS
-                p Pay only as and when you use our services!
-            .col-sm-4
-              .desc_box
-                .ico_box(style='background-position: 1px -73px;')
-                h3
-                  | SHIPPING RATE
-                  span.orange CALCULATOR
-                p
-                  | Find out how much it would cost you for shipping your favorite product to your home abroad.
-            .col-sm-4
-              .desc_box
-                .ico_box(style='background-position: 1px -146px;')
-                h3
-                  | COUNTRY
-                  span.orange GUIDE
-                p
-                  | Find out helpful information with regards to your country, such as Shipping Costs, Duties
-                  | and Taxes, Restricted Items, Current Exchange rates, Country Alerts, etc.
-            .clearfix
-          .text-center
-            a.btn.btn-shoppre(href="{{route('pricing") Learn More
-  section.signup_free
-    .container
-      .row
-        .col-sm-12
-          h3
-            | So what are you waiting for? Shopp
-            span.red re
-            | ! Open your big box of happiness today!
-          a.btn.btn-shoppre(href='https://myaccount.shoppre.com/register') sign up for free
-    hr
-    .container
-      .mdl-grid.mdl-grid--no-spacing
-        h4.mdl-cell.mdl-cell--12-col.footer__popularDestiHeading
-          | Schedule Your Pickup From
-          | Various Places In India
-        .mdl-cell.mdl-cell--12-col
-          a.footer__destiLinks.text_font(href="https://www.shoppre.com/schedule-pickup") Schedule pickup from Bangalore /
-          a.footer__destiLinks.text_font(href="https://www.shoppre.com/schedule-pickup") Schedule pickup from Delhi /
-          a.footer__destiLinks.text_font(href="https://www.shoppre.com/schedule-pickup") Schedule pickup from Jaipur /
-          a.footer__destiLinks.text_font(href="https://www.shoppre.com/schedule-pickup") Schedule pickup from Mumbai /
-          a.footer__destiLinks.text_font(href="https://www.shoppre.com/schedule-pickup") Schedule pickup from Hyderabad /
-          a.footer__destiLinks.text_font(href="https://www.shoppre.com/schedule-pickup") Schedule pickup from Chennai /
-          a.footer__destiLinks.text_font(href="https://www.shoppre.com/schedule-pickup") Schedule pickup from Kochi
+              a.btn.btn-shoppre(href="how-it-works") Learn More
+    section.brandslove
+      .container
+        .row
+          .square-box
+            h3 Brands
+            h2
+              | You
+              span.red Love!
+          .col-md-12
+            h2.brands-head Not sure where to shop from?
+            .brands.owl-carousel
+              .item
+                a(href='https://www.amazon.in/', target='_blank')
+                  img(src="/cdn/img/amazon.png")
+              .item
+                a(href='https://www.flipkart.com/', target='_blank')
+                  img(src="/cdn/img/flipkart.png")
+              .item
+                a(href='https://www.abof.com/')
+                  img(src="/cdn/img/abof.png")
+              .item
+                a(href='https://www.chumbak.com/', target='_blank')
+                  img(src="/cdn/img/chumbak.png")
+              .item
+                a(href='https://www.jabong.com/', target='_blank')
+                  img(src="/cdn/img/jabong.png")
+              .item
+                a(href='https://www.myntra.com/', target='_blank')
+                  img(src="/cdn/img/myntra.png")
+              .item
+                a(href='https://www.pepperfry.com/', target='_blank')
+                  img(src="/cdn/img/pepperfry.png")
+              .item
+                a(href='https://www.snapdeal.com/', target='_blank')
+                  img(src="/cdn/img/snapdeal.png")
+            .text-center
+              a.btn.btn-shoppre(href="{{route('stores") Browse Categories
+    section.pricing
+      .container
+        .row
+          h2.shipping-head Shipping From India - Pricing
+          .col-md-12
+            p.head-text-content
+              | We have heavily optimised our operations to give you the best deal.
+              | Our pricing makes us a favourite platform for Indian shoppers worldwide.
+            .pricing-terms
+              .col-sm-4
+                .desc_box
+                  .ico_box
+                  h3
+                    | NO MEMBERSHIP
+                    span.orange PLANS
+                  p Pay only as and when you use our services!
+              .col-sm-4
+                .desc_box
+                  .ico_box(style='background-position: 1px -73px;')
+                  h3
+                    | SHIPPING RATE
+                    span.orange CALCULATOR
+                  p
+                    | Find out how much it would cost you for shipping your favorite product to your home abroad.
+              .col-sm-4
+                .desc_box
+                  .ico_box(style='background-position: 1px -146px;')
+                  h3
+                    | COUNTRY
+                    span.orange GUIDE
+                  p
+                    | Find out helpful information with regards to your country, such as Shipping Costs, Duties
+                    | and Taxes, Restricted Items, Current Exchange rates, Country Alerts, etc.
+              .clearfix
+            .text-center
+              a.btn.btn-shoppre(href="{{route('pricing") Learn More
+    section.signup_free
+      .container
+        .row
+          .col-sm-12
+            h3
+              | So what are you waiting for? Shopp
+              span.red re
+              | ! Open your big box of happiness today!
+            a.btn.btn-shoppre(href='https://myaccount.shoppre.com/register') sign up for free
+      hr
+      .container
+        .mdl-grid.mdl-grid--no-spacing
+          h4.mdl-cell.mdl-cell--12-col.footer__popularDestiHeading
+            | Schedule Your Pickup From
+            | Various Places In India
+          .mdl-cell.mdl-cell--12-col
+            a.footer__destiLinks.text_font(href="https://www.shoppre.com/schedule-pickup") Schedule pickup from Bangalore /
+            a.footer__destiLinks.text_font(href="https://www.shoppre.com/schedule-pickup") Schedule pickup from Delhi /
+            a.footer__destiLinks.text_font(href="https://www.shoppre.com/schedule-pickup") Schedule pickup from Jaipur /
+            a.footer__destiLinks.text_font(href="https://www.shoppre.com/schedule-pickup") Schedule pickup from Mumbai /
+            a.footer__destiLinks.text_font(href="https://www.shoppre.com/schedule-pickup") Schedule pickup from Hyderabad /
+            a.footer__destiLinks.text_font(href="https://www.shoppre.com/schedule-pickup") Schedule pickup from Chennai /
+            a.footer__destiLinks.text_font(href="https://www.shoppre.com/schedule-pickup") Schedule pickup from Kochi
+
+
+    block js_script
+    script(type='text/javascript').
+      $(document).ready(function () {
+        $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
+          disableOn: 700,
+          type: 'iframe',
+          mainClass: 'mfp-fade',
+          removalDelay: 160,
+          preloader: false,
+          fixedContentPos: false
+        });
+      });

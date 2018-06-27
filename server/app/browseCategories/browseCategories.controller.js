@@ -7,12 +7,12 @@ exports.index = (req, res, next) => Promise
     rp(`${URLS_API}/api/stores`, { json: true }),
   ])
   .then(([stores]) =>
-    res.render('browseCategories/index', Object
-      .assign(stores, {
-        URLS_MYACCOUNT,
-        title: 'aboutpage',
-        meta_disctription: 'discription',
-        meta_title: 'metatital',
-      })))
+    res.render('browseCategories/index', {
+      URLS_MYACCOUNT,
+      title: 'aboutpage',
+      meta_disctription: 'discription',
+      meta_title: 'metatital',
+      stores,
+    }))
   .catch(next);
 

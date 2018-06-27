@@ -12,9 +12,13 @@ html(lang='en')
     link(rel='shortcut icon', href="/favicon.png')}}")
     link(rel='icon', type='image/png', href="/favicon.png'", sizes='60x60')
     // Bootstrap
-    link(href="/bower_components/bootstrap/dist/css/bootstrap.css", rel='stylesheet')
-    // Font Awesome
-    link(href="/bower_components/components-font-awesome/css/fontawesome-all.css", rel='stylesheet')
+    //link(href="/bower_components/bootstrap/dist/css/bootstrap.css", rel='stylesheet')
+    link(href="/app/css/bootstrap.min.css", rel='stylesheet')
+    //// Font Awesome
+    link(href="/app/css/font-awesome.min.css", rel='stylesheet')
+    //link(href="/bower_components/components-font-awesome/css/fontawesome-all.css", rel='stylesheet')
+
+
     block css_style
     link(href="/app/css/style.css", rel='stylesheet')
     link(href="/app/css/dhl.css", rel='stylesheet')
@@ -50,10 +54,14 @@ html(lang='en')
     include ./partials/_header
     block content
     include ./partials/_footer
-    script(src="/bower_components/jquery/jquery.js")
+    script(src="/cdn/js/jquery.min.js")
     script(src="/bower_components/bootstrap/dist/js/bootstrap.min.js")
     script(src="/cdn/js/txtProgress.min.js")
     script(src="/cdn/js/validate.min.js")
+    // Home
+    script(src="/cdn/js/owl.carousel.min.js")
+    script(src="/cdn/js/home.js")
+    script(src="/cdn/js/jquery.magnific-popup.min.js")
     script.
       $(document).ready(function () {
         $("#btnClosePopup").click(function () {

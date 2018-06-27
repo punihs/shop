@@ -9,7 +9,7 @@ exports.index = (req, res, next) => {
 
   return Review
     .findAll(options)
-    .then(review => res.json({ reviews: review }))
+    .then(review => res.json(review))
     .catch(next);
 };
 exports.create = async (req, res, next) => Review

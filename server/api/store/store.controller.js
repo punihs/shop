@@ -27,7 +27,7 @@ exports.index = async (req, res, next) => {
 
   return Store
     .findAll(options)
-    .then(stores => res.json({ stores }))
+    .then(stores => res.json(stores))
     .catch(next);
 };
 

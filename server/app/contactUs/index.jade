@@ -4,6 +4,25 @@ block content
     title '#{title}'
     meta(name='description', content= '#{meta_description}')
     meta(property='og:title', content='#{meta_title}')
+    style.
+      #map1, #map2 {
+        height: 180px;
+        width: 100%;
+      }
+
+      .infobox {
+      }
+
+      .infobox h5 {
+        margin: 0;
+      }
+
+      .infobox p {
+        margin: 0;
+        font-size: 12px;
+        margin-top: 5px !important;
+      }
+
   .body
     .noscript
       iframe(src='https://www.googletagmanager.com/ns.html?id=GTM-NRL4B6X', height='0', width='0', style='display:none;visibility:hidden')
@@ -69,7 +88,8 @@ block content
                       img(src='/cdn/img/country.png')
                     select.form-control.select2(name='country')
                       option(value='') Select Country
-                      option(value='Afghanistan') Afghanistan
+                       // each country in countries
+                       //   option(value= #{country.id}) #{country.name}
                       option(value='Albania') Albania
                       option(value='Algeria') Algeria
                       option(value='American Samoa') American Samoa
@@ -396,30 +416,32 @@ block content
                 span Watch our videos
 
 
-script(type='text/javascript').
-  var map1, map2;
-  function initialize() {
-    var LatLng1 = {lat: 12.9257893, lng: 77.6343453};
-    map1= new google.maps.Map(document.getElementById("map1"), {
-      zoom: 14,
-      center: LatLng1,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    });
-    var marker1 = new google.maps.Marker({
-      position: LatLng1,
-      map: map1,
-    });
-    var LatLng2 = {lat: 25.2534363, lng: 55.3282428};
-    map2 = new google.maps.Map(document.getElementById("map2"), {
-      zoom: 14,
-      center: LatLng2,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    });
-    var marker2 = new google.maps.Marker({
-      position: LatLng2,
-      map: map2,
-    });
-  }
-script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDQzl11fjwwyiw_KRIV61HN7U-5HPPwmLQ&callback=initialize')
+    //script(type='text/javascript').
+  script.
+    var map1, map2;
+    function initialize() {
+      var LatLng1 = {lat: 12.9257893, lng: 77.6343453};
+      map1= new google.maps.Map(document.getElementById("map1"), {
+        zoom: 14,
+        center: LatLng1,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+      var marker1 = new google.maps.Marker({
+        position: LatLng1,
+        map: map1,
+      });
+      var LatLng2 = {lat: 25.2534363, lng: 55.3282428};
+      map2 = new google.maps.Map(document.getElementById("map2"), {
+        zoom: 14,
+        center: LatLng2,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+      var marker2 = new google.maps.Marker({
+        position: LatLng2,
+        map: map2,
+      });
+    }
+  script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDQzl11fjwwyiw_KRIV61HN7U-5HPPwmLQ&callback=initialize')
+  noscript.img(height='1', width='1', style='display:none', src='https://www.facebook.com/tr?id=437389746641326&ev=PageView&noscript=1')
 
 
