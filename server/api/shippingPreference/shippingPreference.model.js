@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM,
       values: ['0', '1'],
     },
-    pack_extra: {
+    extra_packing: {
       type: DataTypes.ENUM,
       values: ['0', '1'],
     },
@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
       values: ['0', '1'],
     },
     tax_id: DataTypes.STRING,
-    personal: {
+    mark_personal_use: {
       type: DataTypes.ENUM,
       values: ['0', '1'],
     },

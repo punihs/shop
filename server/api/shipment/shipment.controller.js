@@ -1,5 +1,6 @@
 const debug = require('debug');
 const moment = require('moment');
+const _ = require('lodash');
 
 const eventEmitter = require('../../conn/event');
 const db = require('../../conn/sqldb');
@@ -217,38 +218,38 @@ const saveShipment = ({
 
 const saveShipmentMeta = ({ req, sR, packageIds }) => {
   const meta = Object.assign({ shipment_id: sR.id }, req.body);
-  meta.repack_amt = (req.repack === 1) ? 100.00 : 0;
-  meta.sticker_amt = (req.sticker === 1) ? 0 : 0;
-  meta.original_amt = 0;
+  meta.repacking_charge_amount = (req.repack === 1) ? 100.00 : 0;
+  meta.sticker_charge_amount = (req.sticker === 1) ? 0 : 0;
+  meta.sticker_charge_amount = 0;
 
   if (packageIds.length) {
     meta.consolid = '1';
-    meta.consolid_amt = (packageIds.length - 1) * 100.00;
+    meta.consolidation_charge_amount = (packageIds.length - 1) * 100.00;
   }
 
-  meta.giftwrap_amt = (req.gift_wrap === 1) ? 100.00 : 0;
-  meta.giftnote_amt = (req.gift_note === 1) ? 50.00 : 0;
+  meta.gift_wrap_charge_amount = (req.gift_wrap === 1) ? 100.00 : 0;
+  meta.gift_note_charge_amount = (req.gift_note === 1) ? 50.00 : 0;
 
-  meta.extrapack_amt = (req.extrapack === 1) ? 500.00 : 0;
+  meta.extra_packing_charge_amount = (req.extra_packing === 1) ? 500.00 : 0;
 
   if (req.liquid === '1') {
     if (req.weight < 5) {
-      meta.liquid_amt = 1150.00;
+      meta.liquid_charge_amount = 1150.00;
     }
     if (req.weight >= 5 && req.weight < 10
     ) {
-      meta.liquid_amt = 1650.00;
+      meta.liquid_charge_amount = 1650.00;
     }
     if (req.weight >= 10 && req.weight < 15
     ) {
-      meta.liquid_amt = 2750.00;
+      meta.liquid_charge_amount = 2750.00;
     }
     if (req.weight >= 15) {
-      meta.liquid_amt = 3150.00;
+      meta.liquid_charge_amount = 3150.00;
     }
   }
-  meta.profoma_taxid = req.invoice_taxid;
-  meta.profoma_personal = req.invoice_personal;
+  meta.proforma_taxid = req.invoice_taxid;
+  meta.proforma_personal = req.invoice_personal;
   meta.invoice_include = req.invoice_include;
   return ShipmentMeta.create(meta);
 };
@@ -256,11 +257,12 @@ const saveShipmentMeta = ({ req, sR, packageIds }) => {
 const updateShipment = async ({ sR, shipmentMeta }) => {
   let packageLevelCharges = sR.package_level_charges;
 
-  packageLevelCharges += shipmentMeta.repack_amt + shipmentMeta.sticker_amt
-    + shipmentMeta.extrapack_amt + shipmentMeta.original_amt + shipmentMeta.giftwrap_amt
-    + shipmentMeta.giftnote_amt + shipmentMeta.consolid_amt;
+  packageLevelCharges += shipmentMeta.repacking_charge_amount + shipmentMeta.sticker_charge_amount
+    + shipmentMeta.extra_packing_charge_amount +
+    shipmentMeta.original_ship_box_charge__amount + shipmentMeta.gift_wrap_charge_amount
+    + shipmentMeta.gift_note_charge_amount + shipmentMeta.consolidation_charge_amount;
 
-  packageLevelCharges += shipmentMeta.liquid_amt;
+  packageLevelCharges += shipmentMeta.liquid_charge_amount;
 
   const updateShip = await Shipment.findById(sR.id);
 
@@ -459,7 +461,7 @@ exports.finalShipRequest = async (req, res) => {
   const customer = await User
     .find(optionCustomer);
   const shipmentSave = {};
-  const shipRequestId = req.body.ship_request_id;
+  const shipRequestId = req.body.shipment_id;
   const shipOptions = {
     attributes: ['id', 'package_ids', 'customer_id', 'estimated_amount', 'order_code'],
     where: { id: shipRequestId },
@@ -473,10 +475,7 @@ exports.finalShipRequest = async (req, res) => {
   payment.coupon = 0;
   payment.loyalty = 0;
   payment.final_amount = shipment.estimated_amount;
-  // const options = {
-  //   attributes: ['points', 'customer_Id'],
-  //   where: { customer_Id: customerId },
-  // };
+
   const options = {
     attributes: ['points', 'customer_Id'],
     where: { customer_Id: customerId },
@@ -675,10 +674,9 @@ exports.finalShipRequest = async (req, res) => {
   return res.json({ message: 'success' });
 };
 
-
 exports.payRetrySubmit = async (req, res) => {
   const customerId = req.user.id;
-  const shipRequestId = req.body.ship_request_id;
+  const shipRequestId = req.body.shipment_id;
   log('payRetrySubmit', shipRequestId);
   const shipmentSave = {};
   const payment = {};
@@ -1134,4 +1132,230 @@ exports.confirmShipment = async (req, res) => {
     couponName,
     walletAmount: customer.wallet_balance_amount,
   });
+};
+
+exports.createShipment = async (req, res) => {
+  const customerId = req.user.id;
+  log('createShipment.customerId', customerId);
+
+  if (!req.user.package_ids) {
+    log('createshipments-package-ids', req.user.package_ids);
+    res.status(400).json({ message: 'package is not found' });
+  }
+
+  log('createshipments-package-ids', req.user.package_ids);
+  const packageIds = req.user.package_ids;
+  const { options } = req.user;
+  const optionPackage = {
+    attributes: ['id'],
+    where: { customer_id: customerId, id: packageIds },
+    include: [{
+      model: PackageCharge,
+      attributes: ['storage_amount', 'wrong_address_amount', 'special_handling_amount',
+        'receive_mail_amount', 'pickup_amount', 'basic_photo_amount',
+        'advanced_photo_amount', 'split_package_amount', 'scan_document_amount'],
+    }],
+  };
+
+  const packages = await Package
+    .findAll(optionPackage);
+
+  let consolidationChargesAmount = 0;
+  if (!packages) {
+    res.redirect('customer.locker').status(400).json({ message: 'package not found' });
+  }
+  log('packageIds.split ', packageIds.length);
+  if (packageIds.length > 1) {
+    consolidationChargesAmount = (packageIds.length - 1) * 100.00;
+  }
+  const charges = {
+    storage_amount: 0,
+    photo_amount: 0,
+    pickup_amount: 0,
+    special_handling_amount: 0,
+    receive_mail_amount: 0,
+    split_package_amount: 0,
+    wrong_address_amount: 0,
+    consolidation_charge_amount: consolidationChargesAmount,
+    optsAmount: 0,
+    scan_document_amount: 0,
+  };
+
+  let pack = '';
+  // eslint-disable-next-line no-restricted-syntax
+  for (pack of packages) {
+    charges.storage_amount += pack.storage_amount || 0;
+    charges.photo_amount += pack.basic_photo_amount || 0 + pack.advanced_photo_amount || 0;
+    charges.pickup_amount += pack.pickup_amount || 0;
+    charges.special_handling_amount += pack.special_handling_amount || 0;
+    charges.doc += pack.doc || 0;
+    charges.split_package_amount += pack.split_package_amount || 0;
+    charges.wrong_address_amount += pack.wrong_address_amount || 0;
+    charges.scan_document_amount += pack.scan_document_amount || 0;
+    log('adding package charges', charges);
+  }
+  log('charges', charges);
+
+  let extrapackAmount = 0;
+  if (options.extra_packing === 1) {
+    extrapackAmount = 500.00;
+  }
+  const repackAmount = (options.repack === 1) ? 100.00 : 0;
+  const stickerAmount = (options.sticker === 1) ? 0.00 : 0;
+  const originalAmount = 0;
+  const giftwrapAmount = (options.gift_wrap === 1) ? 100.00 : 0;
+  const giftnoteAmount = (options.gift_note === 1) ? 50.00 : 0;
+
+  charges.optsAmount = repackAmount + stickerAmount +
+    extrapackAmount + originalAmount + giftwrapAmount + giftnoteAmount;
+
+  const addresses = Address
+    .find(
+      { attributes: ['salutation', 'first_name', 'last_name', 'line1', 'line2', 'state'] },
+      { where: { customer_id: customerId } },
+    );
+
+  const customer = User
+    .find(
+      { attributes: ['salutation', 'first_name', 'last_name', 'email', 'virtual_address_code', 'phone_code'] },
+      { where: { id: customerId } },
+    );
+
+  const optionCountrty = {
+    attributes: req.query.fl
+      ? req.query.fl.split(',')
+      : ['id', 'name', 'slug', 'phone_code'],
+    limit: Number(req.query.limit) || 20,
+    offset: Number(req.query.offset) || 0,
+  };
+
+  const countries = Country
+    .find(optionCountrty);
+
+  res.json(packages, addresses, options, charges, customer, countries);
+};
+
+exports.redirectShipment = async (req, res) => {
+  const customerId = req.user.id;
+  const packageIds = req.body.package_ids;
+  log('redirectShipment.packageIds', packageIds);
+  const option = {
+    attributes: ['id', 'content_type', 'created_at'],
+    where: {
+      id: packageIds,
+      customer_id: customerId,
+    },
+    include: [{
+      model: PackageState,
+      attributes: [],
+      where: {
+        state_id: SHIP,
+      },
+    }],
+  };
+  log('redirectShipment.packageIds', packageIds);
+  const checkLiquid = [];
+
+  const packages = await Package
+    .findAll(option);
+
+  log('redirectShipment.packages length', Package.length);
+
+  if (!packages.length) {
+    return res.status(200).json({ message: 'package not found' });
+  }
+
+  let pack = '';
+  // eslint-disable-next-line no-restricted-syntax
+  for (pack of packages) {
+    checkLiquid[pack.id] = (pack.content_type === '2') ? '1' : '0';
+    const expireDate = moment(pack.created_at, 'DD-MM-YYYY').add(20, 'days');
+    log('redirectShipment.checkLiquid[pack.id]', checkLiquid[pack.id]);
+
+    if (moment() > expireDate) {
+      const todayDate = moment();
+      const interval = todayDate.diff(pack.created_at, 'days');
+      log('redirectShipment.interval', interval);
+      log('redirectShipment.today date', moment());
+      log('redirectShipment.expireDate date', expireDate);
+      log('redirectShipment.created_at date', pack.created_at);
+      const storageCharge = (interval - 20) * 100;
+
+      PackageCharge
+        .update(
+          { storage_amount: storageCharge },
+          { where: { id: pack.id } },
+        );
+
+      log('redirectShipment.PackageCharge', checkLiquid[pack.id]);
+    }
+  }
+
+  log('redirectShipment.checkLiquid-test', checkLiquid);
+
+  const arrayIntersect = _.intersection(checkLiquid, ['1', '0']);
+  log('redirectShipment.arrayIntersect', arrayIntersect);
+  let liquid = '';
+
+  if (arrayIntersect.length === 2) {
+    log('redirectShipment.Packages containing special items must be chosen and shipped separately');
+    return res.json({ error: 'Packages containing special items must be chosen and shipped separately' });
+  }
+
+  liquid = checkLiquid.includes('1') ? '1' : '0';
+  log('redirectShipment.liquid', liquid);
+
+  const options = {
+    repack: req.body.repack,
+    sticker: req.body.sticker,
+    extra_packing: req.body.extra_packing,
+    orginal_box: req.body.orginal_box,
+    gift_wrap: req.body.gift_wrap,
+    gift_note: req.body.gift_note,
+    giftnote_txt: req.body.giftnote_txt,
+    liquid,
+    max_weight: req.body.max_weight,
+    invoice_taxid: req.body.tax_id,
+    mark_personal_use: req.body.mark_personal_use,
+    invoice_include: req.body.invoice_include,
+  };
+
+  let address = '';
+  if (req.body.addressId) {
+    address = await Address
+      .findById(req.body.addressId);
+    if (address) {
+      const optionAddress = {
+        attributes: ['id'],
+        where: { customer_id: customerId, is_default: 1 },
+      };
+      address = await Address
+        .find(optionAddress);
+      if (address) {
+        log('redirectShipment.Ship request required address to proceed!');
+        return res.redirect('customer.address').json({ error: 'Ship request required address to proceed!' });
+      }
+    }
+  } else {
+    const optionAddress = {
+      attributes: ['id'],
+      where: { customer_id: customerId, is_default: 1 },
+    };
+    log('redirectShipment.testing break point address');
+    address = await Address
+      .find(optionAddress);
+    if (!address) {
+      log('redirectShipment.Ship request required address to proceed!');
+      return res.json({ error: 'Ship request required address to proceed!' });
+    }
+  }
+  log('redirectShipment.testing break point');
+
+  req.user.package_ids = packageIds;
+  req.user.options = options;
+  req.user.address = address;
+
+  const result = await this.createShipment(req, res);
+
+  return result;
 };

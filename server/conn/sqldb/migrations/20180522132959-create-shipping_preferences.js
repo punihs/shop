@@ -28,7 +28,7 @@ module.exports = {
       type: DataTypes.ENUM,
       values: ['0', '1'],
     },
-    pack_extra: {
+    extra_packing: {
       type: DataTypes.ENUM,
       values: ['0', '1'],
     },

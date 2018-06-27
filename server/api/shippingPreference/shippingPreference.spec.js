@@ -22,7 +22,7 @@ describe('put /api/shippingPreference update meta', () => {
       .send({
         standard_photo: 1,
         scan_doc: 1,
-        pack_extra: 1,
+        extra_packing: 1,
         max_weight: 1,
         tax_id: 321321,
       })

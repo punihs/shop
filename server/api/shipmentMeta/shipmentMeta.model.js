@@ -60,8 +60,8 @@ module.exports = (sequelize, DataTypes) => {
       values: ['0', '1'],
     },
     overweight_charge_amount: DataTypes.FLOAT,
-    profoma_taxid: DataTypes.STRING,
-    profoma_personal: {
+    proforma_taxid: DataTypes.STRING,
+    proforma_personal: {
       type: DataTypes.ENUM,
       values: ['0', '1'],
     },

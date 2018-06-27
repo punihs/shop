@@ -237,24 +237,26 @@ exports.submitRegister = async (req, res) => {
         where: { customer_id: customerId },
       };
       loyalPoints = 200;
-      const loyaltyPoint = {};
+      const loyaltyUpdate = {};
 
       await LoyaltyPoint
         .find(optionLoyalty)
-        .then((friendId) => {
-          loyaltyPoint.points = loyalPoints;
-          loyaltyPoint.total_points = friendId.total_points + loyalPoints;
+        .then((loyaltyPoint) => {
+          loyaltyUpdate.points = loyaltyPoint.points + loyalPoints;
+          loyaltyUpdate.total_points = loyaltyPoint.total_points + loyalPoints;
 
-          if (friendId.total_points < 1000) {
-            loyaltyPoint.level = 1;
-          } else if (friendId.total_points >= 1000 && friendId.total_points < 6000) {
-            loyaltyPoint.level = 2;
-          } else if (friendId.total_points >= 6000 && friendId.total_points < 26000) {
-            loyaltyPoint.level = 3;
-          } else if (friendId.total_points >= 26000) {
-            loyaltyPoint.level = 4;
+          if (loyaltyPoint.total_points < 1000) {
+            loyaltyUpdate.level = 1;
+          } else if (loyaltyPoint.total_points >= 1000 &&
+            loyaltyPoint.total_points < 6000) {
+            loyaltyUpdate.level = 2;
+          } else if (loyaltyPoint.total_points >= 6000 &&
+            loyaltyPoint.total_points < 26000) {
+            loyaltyUpdate.level = 3;
+          } else if (loyaltyPoint.total_points >= 26000) {
+            loyaltyUpdate.level = 4;
           }
-          friendId.update(loyaltyPoint);
+          loyaltyPoint.update(loyaltyUpdate);
         });
 
       // const friend = LoyaltyPoint

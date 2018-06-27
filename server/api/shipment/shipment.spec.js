@@ -2,15 +2,24 @@
 
 // const r = require;
 const request = require('supertest');
+const moment = require('moment');
 const app = require('./../../app');
 const auth = require('../../../logs/credentials');
 const {
   // Package, Address, Country, User, AccessToken, RefreshToken, Session,
   // ShipmentMeta, PackageState,
-  ShipmentIssue, Shipment,
+  ShipmentIssue, Shipment, Address, PackageState, Package, PackageCharge,
 } = require('../../conn/sqldb');
 
 const assert = require('assert');
+
+
+const {
+  SALUTATIONS: {
+    MR,
+  },
+} = require('../../config/constants');
+
 
 // const log = debug('s.shipment.spec');
 
@@ -576,7 +585,7 @@ describe('PUT /api/shipments/finalShip', () => {
     request(app)
       .put('/api/shipments/finalShip')
       .send({
-        ship_request_id: 116,
+        shipment_id: 116,
         insurance: 2,
         wallet: 1,
         payment_gateway_name: 'wire',
@@ -612,7 +621,7 @@ describe('PUT /api/shipments/payRetrySubmit', () => {
     request(app)
       .put('/api/shipments/payRetrySubmit')
       .send({
-        ship_request_id: 300,
+        shipment_id: 300,
         insurance: 2,
         wallet: 0,
         payment_gateway_name: 'cash',
@@ -631,7 +640,7 @@ describe('PUT /api/shipments/payRetrySubmit', () => {
     request(app)
       .put('/api/shipments/payRetrySubmit')
       .send({
-        ship_request_id: 300,
+        shipment_id: 300,
         insurance: 2,
         wallet: 0,
         payment_gateway_name: 'wire',
@@ -650,7 +659,7 @@ describe('PUT /api/shipments/payRetrySubmit', () => {
     request(app)
       .put('/api/shipments/payRetrySubmit')
       .send({
-        ship_request_id: 300,
+        shipment_id: 300,
         insurance: 0,
         wallet: 1,
         payment_gateway_name: 'wallet',
@@ -676,4 +685,220 @@ describe('PUT /api/shipments/retryPayment?order_code=620-620-7220', () => {
         done();
       });
   });
+});
+
+describe('GET /api/shipments/redirectShipment', () => {
+  before(() => Promise.all([Address
+    .create({
+      salutation: MR,
+      first_name: 'Abhinav',
+      last_name: 'Mishra',
+      line1: 'C/O Deepak Tiwari, 1013 Folsom Ranch Drive,',
+      line2: 'Apt 102',
+      state: 'Mumbai',
+      city: 'Mumbai',
+      customer_id: 646,
+      is_default: true,
+    })
+    .then(() => PackageState
+      .create({
+        id: 100,
+        package_id: 2,
+        state_id: 5,
+        user_id: 646,
+        comments: 'testing',
+        status: true,
+      }))
+    .then(() => Package.update({ package_state_id: 100, customer_id: 646 }, { where: { id: 2 } })),
+  ]));
+  it('will redirect to shipment creation ( test case selected packages for shipment )', (done) => {
+    request(app)
+      .get('/api/shipments/redirectShipment')
+      .send({
+        package_ids: [3, 2],
+        repack: 0,
+        sticker: 0,
+        extra_packing: 0,
+        orginal_box: 0,
+        gift_wrap: 0,
+        gift_note: 0,
+        mark_personal_use: 0,
+        invoice_include: 0,
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+
+  after(() => Address
+    .destroy({ force: true, where: { customer_id: 646 } })
+    .then(() => PackageCharge
+      .destroy({ force: true, where: { id: 100 } }))
+    .then(() => Package
+      .update({ package_state_id: 1 }, { where: { id: 2 } }))
+    .then(() => PackageState
+      .destroy({ force: true, where: { package_id: 2 } })));
+});
+
+describe('GET /api/shipments/redirectShipment', () => {
+  it('will redirect to shipment creation ( test case for package not found )', (done) => {
+    request(app)
+      .get('/api/shipments/redirectShipment')
+      .send({
+        package_ids: [365214],
+        repack: 0,
+        sticker: 0,
+        extra_packing: 0,
+        orginal_box: 0,
+        gift_wrap: 0,
+        gift_note: 0,
+        mark_personal_use: 0,
+        invoice_include: 0,
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+
+describe('GET /api/shipments/redirectShipment', () => {
+  before(() => Promise.all([Address
+    .create({
+      salutation: MR,
+      first_name: 'Abhinav',
+      last_name: 'Mishra',
+      line1: 'C/O Deepak Tiwari, 1013 Folsom Ranch Drive,',
+      line2: 'Apt 102',
+      state: 'Mumbai',
+      city: 'Mumbai',
+      customer_id: 646,
+      is_default: true,
+    })
+    .then(() => PackageState
+      .create({
+        id: 100,
+        package_id: 2,
+        state_id: 5,
+        user_id: 646,
+        comments: 'testing',
+        status: true,
+      }))
+    .then(() => Package.update({
+      package_state_id: 100,
+      customer_id: 646,
+      created_at: moment().add(-25, 'days'),
+    }, { where: { id: 2 } })),
+  ]));
+  it('will redirect to shipment creation  ( test case locker number of days expiry ) ', (done) => {
+    request(app)
+      .get('/api/shipments/redirectShipment')
+      .send({
+        package_ids: [2],
+        repack: 0,
+        sticker: 0,
+        extra_packing: 0,
+        orginal_box: 0,
+        gift_wrap: 0,
+        gift_note: 0,
+        mark_personal_use: 0,
+        invoice_include: 0,
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+
+  after(() => Address
+    .destroy({ force: true, where: { customer_id: 646 } })
+    .then(() => PackageCharge
+      .destroy({ force: true, where: { id: 100 } }))
+    .then(() => Package
+      .update({
+        package_state_id: 1,
+        created_at: moment().add(25, 'days'),
+      }, { where: { id: 2 } }))
+    .then(() => PackageState
+      .destroy({ force: true, where: { package_id: 2 } })));
+});
+
+
+describe('GET /api/shipments/redirectShipment', () => {
+  before(() => Promise.all([Address
+    .create({
+      salutation: MR,
+      first_name: 'Abhinav',
+      last_name: 'Mishra',
+      line1: 'C/O Deepak Tiwari, 1013 Folsom Ranch Drive,',
+      line2: 'Apt 102',
+      state: 'Mumbai',
+      city: 'Mumbai',
+      customer_id: 646,
+      is_default: true,
+    })
+    .then(() => PackageState
+      .create({
+        id: 100,
+        package_id: 2,
+        state_id: 5,
+        user_id: 646,
+        comments: 'testing',
+        status: true,
+      }))
+    .then(() => Package.update({
+      package_state_id: 100,
+      customer_id: 646,
+      content_type: 2,
+      created_at: moment().add(-19, 'days'),
+    }, { where: { id: 2 } }))
+    .then(() => PackageState.update({
+      state_id: 5,
+    }, { where: { id: 1 } })),
+  ]));
+  it('will redirect to shipment creation ( test case for special items ) ', (done) => {
+    request(app)
+      .get('/api/shipments/redirectShipment')
+      .send({
+        package_ids: [3, 2],
+        repack: 0,
+        sticker: 0,
+        extra_packing: 0,
+        orginal_box: 0,
+        gift_wrap: 0,
+        gift_note: 0,
+        mark_personal_use: 0,
+        invoice_include: 0,
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+
+  after(() => Address
+    .destroy({ force: true, where: { customer_id: 646 } })
+    .then(() => PackageCharge
+      .destroy({ force: true, where: { id: 100 } }))
+    .then(() => Package
+      .update({
+        package_state_id: 1,
+        created_at: moment().add(25, 'days'),
+        content_type: 1,
+      }, { where: { id: 2 } }))
+    .then(() => PackageState
+      .destroy({ force: true, where: { package_id: 2 } }))
+    .then(() => PackageState.update({
+      state_id: 1,
+    }, { where: { id: 1 } })));
 });
