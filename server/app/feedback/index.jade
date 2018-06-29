@@ -1,0 +1,168 @@
+extends ../layout
+block content
+  head
+    title '#{title}'
+    meta(name='description', content= '#{meta_disctription}')
+    meta(property='og:title', content= '#{meta_title}')
+    link(href="/app/css/select2.min.css", rel='stylesheet')
+    link(href="/app/css/star-rating.min.css", rel='stylesheet')
+  .body
+    section.timeline
+      br
+      br
+      br
+      br
+      .col-md-4.col-sm-offset-5
+        br
+        font(color='#663399')
+          h1 Feedback Form
+      br
+      .container(style='background-color: whitesmoke')
+        form.form-horizontal(method='post', action="{{route('feedback.submit')}}")
+          .feedback-container
+            .row
+              .col-md-8.col-sm-offset-2
+                .form-group
+                  label Name *
+                  input.form-control(type='text', name='person', placeholder='Enter Your Name', required='')
+                  span.error #{person}
+                  .clearfix
+            .row
+              .col-md-8.col-sm-offset-2
+                .form-group
+                  label Email ID *
+                  input.form-control(type='text', name='email', placeholder='Enter Your Email', required='')
+                  span.error #{email}
+                  .clearfix
+            .row
+              .col-md-8.col-sm-offset-2
+                .form-group
+                  label Customer service team was very helpful *
+                  .rating-star
+                    input#input-rate.rating(type='text', name='customer_service', required='')
+                  span.error #{customreService}
+                  .clearfix
+            .row
+              .col-md-8.col-sm-offset-2
+                .form-group
+                  label The amount of time it took my shipment to arrive met my expectations *
+                  .rating-star
+                    input#input-r.rating(type='text', name='arrive_expectation', required='')
+                  .clearfix
+                  span.error #{arrive_expectation}
+            .row
+              .col-md-8.col-sm-offset-2
+                .form-group
+                  label
+                    | The packing and shipping materials adequately protected my items during shipment *
+                  .rating-star
+                    input#input-ra.rating(type='text', name='protected_shipment', required='')
+                  span.error #{protected_shipment}
+                  .clearfix
+            .row
+              .col-md-8.col-sm-offset-2
+                .form-group
+                  label I was satisfied with the appearance and condition of the package *
+                  .rating-star
+                    input#input-rat.rating(type='text', name='package_condition', required='')
+                  span.error #{package_condition}
+
+                  .clearfix
+            .row
+              .col-md-8.col-sm-offset-2
+                .form-group
+                  label It was easy to use Shoppre.com services *
+                  .rating-star
+                    input#input-re.rating(type='text', name='easy_service', required='')
+                  span.error #{easy_service}
+
+                  .clearfix
+            .row
+              .col-md-8.col-sm-offset-2
+                .form-group
+                  label How would you rate your overall level of satisfaction with us? *
+                  .rating-star
+                    input#input-ret.rating(type='text', name='overall_level_of_satisfaction', required='')
+                  span.error #{overall_level_of_satisfaction}
+                  .clearfix
+            .row
+              .col-md-8.col-sm-offset-2
+                .form-group
+                  label Do you have any suggestions for improvement?
+                  input.form-control(type='text', name='suggestions', placeholder='Enter Your Name')
+                  span.error #{suggestions}
+                  .clearfix
+            br
+            .row
+              .col-md-4.col-sm-offset-4
+                button.btn.btn-block.btn-shoppre(type='submit') Submit Your Feedback
+            br
+            br
+            .clearfix
+    block js_script
+    script(src="/cdn/js/jquery.min.js")
+    script(src="/cdn/js/star-rating.min.js", type='text/javascript')
+    script(src="/cdn/js/select2.min.js")
+    script.
+      $(".rated").rating({
+        'size': 'xs',
+        'min': 0,
+        'max': 5,
+        'step': 1,
+        'displayOnly': true,
+        'showClear': false,
+        'showCaption': false
+      });
+      $("#input-rate").rating({
+        'size': 'sm',
+        'min': 0,
+        'max': 5,
+        'step': 1,
+        'showClear': false,
+        'showCaption': false
+      });
+      $("#input-r").rating({
+        'size': 'sm',
+        'min': 0,
+        'max': 5,
+        'step': 1,
+        'showClear': false,
+        'showCaption': false
+      });
+      $("#input-ra").rating({
+        'size': 'sm',
+        'min': 0,
+        'max': 5,
+        'step': 1,
+        'showClear': false,
+        'showCaption': false
+      });
+      $("#input-rat").rating({
+        'size': 'sm',
+        'min': 0,
+        'max': 5,
+        'step': 1,
+        'showClear': false,
+        'showCaption': false
+      });
+      $("#input-re").rating({
+        'size': 'sm',
+        'min': 0,
+        'max': 5,
+        'step': 1,
+        'showClear': false,
+        'showCaption': false
+      });
+      $("#input-ret").rating({
+        'size': 'sm',
+        'min': 0,
+        'max': 5,
+        'step': 1,
+        'showClear': false,
+        'showCaption': false
+      });
+    script(src="/cdn/js/select2.min.js")
+    script(type='text/javascript').
+      $(document).ready(function () {
+        $(".select2").select2();
+      });

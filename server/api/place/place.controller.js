@@ -30,7 +30,6 @@ exports.index = (req, res, next) => {
 };
 
 exports.show = (req, res, next) => {
-
   const options = {
     attributes: req.query.fl
       ? req.query.fl.split(',')
