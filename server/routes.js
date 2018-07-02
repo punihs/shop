@@ -55,10 +55,10 @@ module.exports = (app) => {
   app.use('/api/search', search);
   app.use(
     '/api/packages',
+    packages, // auth did in router ie., api/package/index.js
     authenticate(),
     packageItems,
     packageComment,
-    packages,
     packageCharge,
     specialRequest,
     photoRequest,

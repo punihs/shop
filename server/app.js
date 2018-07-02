@@ -2,7 +2,6 @@
  * Main application file
  */
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const http = require('http');
 const express = require('express');

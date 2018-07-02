@@ -15,7 +15,7 @@ module.exports = (constants) => {
       salutation: 'Mr',
       first_name: 'Saneel',
       last_name: 'E S',
-      email: 'saneel@gmail.com',
+      email: 'support@shoppre.com',
       phone_code: '91',
       phone: '7891378913',
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',

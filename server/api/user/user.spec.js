@@ -151,7 +151,7 @@ describe(' POST /api/users/verify', () => {
   });
 });
 
-describe(' POST /api/users/register', () => {
+describe('member POST /api/users/register', () => {
   it('will create user', (done) => {
     request(app)
       .post('/api/users/register')

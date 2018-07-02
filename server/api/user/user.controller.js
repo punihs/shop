@@ -161,21 +161,6 @@ exports.show = (req, res, next) => {
         model: Country,
         attributes: ['id', 'name', 'iso2'],
       }, {
-        model: User,
-        as: 'ReferredUser',
-        attributes: ['id', 'name', 'salutation', 'first_name', 'last_name'],
-      }, {
-        model: Shipment,
-        attributes: ['id'],
-      }, {
-        model: Package,
-        attributes: ['id'],
-        required: false,
-      }, {
-        model: Order,
-        attributes: ['id'],
-        required: false,
-      }, {
         model: Locker,
         attributes: ['id', 'name', 'short_name', 'allocated_at'],
       }],

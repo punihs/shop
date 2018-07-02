@@ -30,18 +30,6 @@ exports.index = ({ query, user: actingUser }) => {
   };
 
   switch (true) {
-    case (actingUser.app_id === APPS.WWW): {
-      options.attributes = ['id', 'price_amount', 'weight', 'store_id'];
-      options.where = {
-        is_public: true,
-      };
-      options.include = [{
-        model: Store,
-        attributes: ['id', 'name'],
-      }];
-
-      break;
-    }
     case (actingUser.app_id === APPS.OPS && actingUser.group_id === OPS): {
       options.attributes = ['id', 'created_at'];
       options.where.customer_id = actingUser.id;
@@ -68,8 +56,19 @@ exports.index = ({ query, user: actingUser }) => {
       }];
       break;
     }
-    default:
-      return Promise.reject();
+    default: {
+      options.attributes = ['id', 'price_amount', 'weight', 'store_id'];
+      options.where = {
+        is_public: true,
+      };
+
+      options.include = [{
+        model: Store,
+        attributes: ['id', 'name'],
+      }];
+
+      break;
+    }
   }
 
   const states = Object.keys(buckets);

@@ -9,7 +9,7 @@ const db = require('../../conn/sqldb');
 
 const {
   Package, Order, PackageItem, User,
-  Locker, Store, PackageState,
+  Locker, Store, PackageState, Country,
 } = db;
 
 const {
@@ -19,6 +19,24 @@ const {
 const logger = require('../../components/logger');
 
 const { index } = require('./package.service');
+
+exports.indexPublic = (req, res, next) => {
+  if (req.query.public !== 'true') return next();
+  const limit = Number(req.query.limit);
+
+  const options = {
+    where: {},
+    offset: Number(req.query.offset) || 0,
+    limit: limit && limit > 20 ? 20 : limit,
+    raw: true,
+  };
+
+  return Package
+    .findAll(options)
+    .then(packages => res
+      .json({ items: packages }))
+    .catch(next);
+};
 
 exports.index = (req, res, next) => index(req)
   .then((result) => {
@@ -74,10 +92,16 @@ exports.show = async (req, res, next) => {
       }, {
         model: User,
         as: 'Customer',
-        attributes: ['id', 'name', 'virtual_address_code', 'first_name', 'last_name', 'salutation'],
+        attributes: [
+          'id', 'name', 'first_name', 'last_name', 'salutation', 'virtual_address_code',
+          'mobile', 'email', 'phone', 'phone_code',
+        ],
         include: [{
+          model: Country,
+          attributes: ['id', 'name', 'iso2'],
+        }, {
           model: Locker,
-          attributes: ['id', 'short_name', 'name'],
+          attributes: ['id', 'name', 'short_name', 'allocated_at'],
         }],
       }],
     })

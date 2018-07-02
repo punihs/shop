@@ -5,7 +5,10 @@
   "main": "server/index.js",
   "scripts": {
     "start": "nodemon --ignore node_modules/ -e js server/app",
-    "full-test": "npm run clear-db; npm run migrate; npm run login; npm run test && npm run lint",
+    "cluster": "NODE_ENV=production APP_MAIN=server/app.js WORKER_COUNT=4 node server/boot",
+    "full-test": "npm run clear-db; npm run migrate; npm run login; npm run test; npm run bench; npm run lint;",
+    "stress-api": "artillery run ./server/api/**/*.artillery.yml",
+    "bench-api": "node  ./scripts/githubStatusCheck/after.js",
     "web-test": "NODE_ENV=test nyc mocha --opts .mocharc server/app/**/*.test.js --exit",
     "lint": "eslint --fix --ext .js --ignore-path .gitignore .",
     "clear-db": "sequelize db:drop; sequelize db:create",
@@ -44,7 +47,7 @@
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
-    "boot.js": "quezx/boot.js",
+    "boot.js": "github:quezx/boot.js",
     "bowser": "^1.8.1",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
@@ -80,6 +83,7 @@
     "winston-raven-sentry": "^1.0.1"
   },
   "devDependencies": {
+    "artillery": "^1.6.0-21",
     "coveralls": "^3.0.1",
     "eslint": "^4.11.0",
     "eslint-config-airbnb": "^16.1.0",

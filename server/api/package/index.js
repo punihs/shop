@@ -5,7 +5,8 @@ const autheticate = require('../../components/oauth/authenticate');
 
 const router = express.Router();
 
-router.get('/', controller.index);
+router.get('/', controller.indexPublic);
+router.get('/', autheticate(), controller.index);
 router.get('/', autheticate(), controller.index);
 router.get('/:id', autheticate(), controller.show);
 router.post('/', autheticate(), controller.create);

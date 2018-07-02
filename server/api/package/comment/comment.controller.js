@@ -15,14 +15,14 @@ exports.index = (req, res, next) => {
   const { packageId } = req.params;
   const include = [{
     model: User,
-    attributes: ['id', 'name', 'salutation', 'first_name', 'last_name', 'profile_photo_url'],
+    attributes: ['id', 'name', 'salutation', 'first_name', 'last_name', 'profile_photo_url', 'group_id'],
   }];
 
   return Promise
     .all([
       PackageComment
         .findAll({
-          attributes: ['id', 'user_id', 'comments'],
+          attributes: ['id', 'user_id', 'created_at', 'comments'],
           where: {
             package_id: packageId,
           },
@@ -30,7 +30,7 @@ exports.index = (req, res, next) => {
         }),
       PackageState.findAll({
         attributes: [
-          'id', 'state_id', 'user_id', 'created_at', 'comments',
+          'id', 'user_id', 'created_at', 'comments', 'state_id',
         ],
         order: [['id', 'DESC']],
         where: {
@@ -49,6 +49,7 @@ exports.create = (req, res, next) => {
     .create({
       ...req.body,
       user_id: req.user.id,
+      package_id: req.params.packageId,
     })
     .then(packageComments => res.status(201).json(packageComments))
     .catch(next);

@@ -54,7 +54,7 @@ exports.show = (req, res, next) => {
       attributes: ['id', 'quantity', 'price_amount', 'total_amount'],
       where: { id: req.param.id },
     })
-    .then(packageitems => res.json(packageitems))
+    .then(packageitem => res.json(packageitem))
     .catch(next);
 };
 

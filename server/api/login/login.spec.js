@@ -47,7 +47,7 @@ describe('ops Login GET /api/user/login', () => {
     request(app)
       .post('/oauth/token')
       .send({
-        username: 'saneel@gmail.com',
+        username: 'support@shoppre.com',
         password: 'admin1234',
       })
       .expect('Content-Type', /json/)
