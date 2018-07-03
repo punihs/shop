@@ -13,6 +13,8 @@ exports.index = (req, res, next) => Promise
       meta_disctription: 'discription',
       meta_title: 'metatital',
       stores,
+      categories: 'apperals',
+      fbs: 'Fbs',
     }))
   .catch(next);
 

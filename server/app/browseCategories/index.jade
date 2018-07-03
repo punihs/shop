@@ -47,14 +47,14 @@ block content
                   | Handicrafts, Furniture & Home Decor
               hr(style='border-style: dashed;border-color: #555;')
               h3 OTHER CATEGORIES
-              each category in categories
+              each category in category||[]
                 li
                   label
                     input.option-input.radio(
-                      type='radio',
-                      name='cat',
-                      value='#{categories.id}',
-                      checked='#{[1, 2, 3, 4, 5, 6, 7].includes(category.id) ? "true" : "false"}'
+                    type='radio',
+                    name='cat',
+                    value='#{category.id}',
+                    checked='#{[1, 2, 3, 4, 5, 6, 7].includes(category.id) ? "true" : "false"}'
                     )
                     | #{category.name}
         .col-md-9
@@ -68,11 +68,12 @@ block content
                 a(href='#featured', aria-controls='featured', role='tab', data-toggle='tab') Shoppre Featured Sellers
             .tab-content
               #web.tab-pane.fade.in.active(role='tabpanel')
-                each stores in store
+                each store in stores
                   .col-sm-3
                     .seller_box
                       a(href='#{stores.name}', target='_blank', title='#{stores.name}')
-                        span.brand_logo(style="background-image: url('/app/cdn/stores/'#{stores.logo}');")
+                        //span.brand_logo(style="background-image: url('/app/img/'#{stores.logo}');")
+                        span.brand_logo(style="background-image: url('/cdn/stores/#{stores.logo}');")
                       a.myfavstore(href='#', data-clubid='#{store.id}')
                         i.bookmark-icon
                       if !store.info
@@ -80,7 +81,7 @@ block content
                       else
                         span.info #{store.info}
               #fb.tab-pane.fade(role='tabpanel')
-                each fb in fbs
+                each fb in fbs||[]
                   .col-sm-3
                     .seller_box
                       a(href='#{fb.url}', target='_blank', title='#{fb.name}')
@@ -89,7 +90,7 @@ block content
                         i.bookmark-icon
                       span.info #{fb.info}
               #featured.tab-pane.fade(role='tabpanel')
-                each feat in feats
+                each feat in feats||[]
                   .col-sm-3
                     .seller_box
                       a(href='#{feat.url}', target='_blank', title='#{feat.name}')
