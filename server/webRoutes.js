@@ -21,6 +21,8 @@ const paymentGateway = require('./app/paymentGateway');
 const store = require('./app/store');
 const state = require('./app/state');
 const feedback = require('./app/feedback');
+const privacyPolicy = require('./app/privacyPolicy');
+const refundAndCancellation = require('./app/refundAndCancellation');
 
 module.exports = (app) => {
   app.use('/', home);
@@ -39,6 +41,8 @@ module.exports = (app) => {
   app.use('/state', state);
   app.use('/reviews', review);
   app.use('/feedback', feedback);
+  app.use('/privacy-Policy', privacyPolicy);
+  app.use('/refund-and-cancellation-policy', refundAndCancellation);
   // app.use('/destinations', countryGuide);
   // app.use('/packages', countryGuide);  //itemName, storeName,storeId
   // app.use('/shipments', countryGuide); // dhl,paymentGateway,deliveryTime,price

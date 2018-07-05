@@ -4,41 +4,45 @@ block content
     title '#{title}'
     meta(name='description', content= '#{meta_description}')
     meta(property='og:title', content='#{meta_title}')
-  section.page_head
-    .pagebanner
-      img(src='cdn/img/banner1.jpg', width='100%')
-      .banner-cap
-        h2 Frequently Asked Questions - Shoppre
-  section.faq_content
-    .container
-      .col-sm-8.col-sm-offset-2
-        #accordion.panel-group(role='tablist', aria-multiselectable='true')
-          each dt in faq
-            .panel.panel-default
-              .panel-heading(role='tab')
-                h4.panel-title
-                  a(role='button', data-toggle='collapse', data-parent='#accordion', href='#{dt.id}', aria-expanded='true')
-                     | #{dt.name}
-              .panel-collapse.collapse(id='#{dt.id}')
-                .panel-body.nested
-                  // each faq in dt.faqs
-                  //   .panel
-                  //     .panel-heading.nested(role='tab')
-                  //       h4.panel-title
-                  //         a(role='button', data-toggle='collapse', href='#{faq.id}', aria-expanded='true')
-                  //           | #{faq.question}
-                  //     .panel-collapse.collapse(id='#{faq.id}}')
-                  //       .panel-body
-                  //         if !faq.answer
-                  //           | #{faq.answer}
+  .body
+    section.page_head
+      .pagebanner
+        img(src='cdn/img/banner1.jpg', width='100%')
+        .banner-cap
+          h2 Frequently Asked Questions - Shoppre
+    section.faq_content
+      .container
+        .col-sm-8.col-sm-offset-2
+          #accordion.panel-group(role='tablist', aria-multiselectable='true')
+            // each dt in faq
+           - for item in faq
+              .panel.panel-default
+                .panel-heading(role='tab')
+                  h4.panel-title
+                    a(role='button', data-toggle='collapse', data-parent='#accordion', href='#{item.id}', aria-expanded='true')
+                       | #{item.name}
+                .panel-collapse.collapse(id='#{item.id}')
+                  .panel-body.nested
+                    // each faq in dt.faqs
+                    - for subitem in item.Faqs
+                       .panel
+                         .panel-heading.nested(role='tab')
+                           h4.panel-title
+                             a(role='button', data-toggle='collapse', href='#{subitem.id}', aria-expanded='true')
+                               | #{subitem.question}
+                         .panel-collapse.collapse(id='#{subitem.id}}')
+                           .panel-body
+                             if !subitem.answer
+                               | #{subitem.answer}
 
 
 
-
-  section.faq_contact
-    .container
-      .col-sm-6.col-sm-offset-3
-        h3 Please note, this FAQ is subject to updates
-        p Please check back from time to time for the latest information.
-        h3 Still Have Questions?
-        a.btn.btn-shoppre(href="/contactUs") Contact Us
+    section.faq_contact
+      .container
+        .col-sm-6.col-sm-offset-3
+          h3 Please note, this FAQ is subject to updates
+          p Please check back from time to time for the latest information.
+          h3 Still Have Questions?
+          a.btn.btn-shoppre(href="/contactUs") Contact Us
+    block script
+      script(src="/cdn/js/jquery.min.js")

@@ -6,7 +6,12 @@ exports.index = (req, res, next) => Promise
   .all([
     rp(`${URLS_API}/api/stores`, { json: true }),
   ])
-  .then(([stores]) =>
+  .then(([stores]) => {
+    // return res.json(Object
+    //   .assign(stores, {
+    //     stores,
+    //     logo: '/img/dhl.png',
+    //   }));
     res.render('browseCategories/index', {
       URLS_MYACCOUNT,
       title: 'aboutpage',
@@ -15,6 +20,7 @@ exports.index = (req, res, next) => Promise
       stores,
       categories: 'apperals',
       fbs: 'Fbs',
-    }))
+    });
+  })
   .catch(next);
 
