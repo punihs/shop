@@ -6,7 +6,7 @@ module.exports = {
     const options = {
       method: 'POST',
       uri,
-      form: JSON.stringify({ text: text || 'Someone sending blank notification noble...' }),
+      form: JSON.stringify({ text: text || 'Someone sending blank notification nik...' }),
     };
 
     return rp(options);

@@ -44,6 +44,8 @@ const store = require('./api/store');
 const estimation = require('./api/estimation');
 const coupon = require('./api/coupon');
 const userPackage = require('./api/user/package');
+const emailPreference = require('./api/emailPreference');
+const emailTemplate = require('./api/emailTemplate');
 const photoRequest = require('./api/package/photoRequest');
 const webRoutes = require('./webRoutes');
 
@@ -86,6 +88,8 @@ module.exports = (app) => {
   app.use('/api/passwordReset', passwordReset);
   app.use('/api/estimations', estimation);
   app.use('/api/coupons', coupon);
+  app.use('/api/emailPreferences', authenticate(), emailPreference);
+  app.use('/api/emailTemplates', authenticate(), emailTemplate);
   app.get('/secured', authenticate(), (req, res) => res.json({ name, version }));
 
   app.get('/health', (req, res) => res.json({ name, version }));

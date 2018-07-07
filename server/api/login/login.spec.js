@@ -41,6 +41,24 @@ describe('member Login GET /api/user/login', () => {
   });
 });
 
+describe('member - vikas for email preference Login GET /api/user/login', () => {
+  it('respond with access tokens', (done) => {
+    request(app)
+      .post('/oauth/token')
+      .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
+      .send({
+        username: 'vikasjson@gmail.com',
+        password: 'admin1234',
+      })
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then((res) => {
+        fs.writeFileSync(`${root}/logs/vikas-credentials.json`, JSON.stringify(res.body));
+        done();
+      });
+  });
+});
+
 
 describe('ops Login GET /api/user/login', () => {
   it('respond with access tokens', (done) => {

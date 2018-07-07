@@ -274,8 +274,19 @@ module.exports = (constants) => {
       phone: '9844717202',
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
       group_id: 2,
+    }, {
+      id: 738,
+      salutation: 'Mr',
+      first_name: 'Vikas',
+      last_name: 'Kumar',
+      email: 'vikasjson@gmail.com',
+      phone_code: '91',
+      phone: '9634679754',
+      password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
+      group_id: 2,
     },
   ].map(x => ({
+
     country_id: IND,
     ...x,
     profile_photo_url: 'https://lh3.googleusercontent.com/-UYCUQAneuQo/AAAAAAAAAAI/AAAAAAAAAAo/tGVHInxDmiY/photo.jpg?sz=50',

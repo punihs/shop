@@ -18,8 +18,8 @@ const stateIdcommentMap = {
   [VALUES]: 'Package waiting for customer input value action',
   [INVOICE]: 'Package under review for customer invoice upload',
   [REVIEW]: 'Package is under shoppre review',
-  [SPLIT_DONE]: 'Package Splitted!', // email sedning is pending
-  [RETURN_DONE]: 'Package Returned to Sender!', // email sedning is pending
+  [SPLIT_DONE]: 'Package Splitted!', // email sending is pending
+  [RETURN_DONE]: 'Package Returned to Sender!', // email sending is pending
 };
 
 module.exports = (sequelize, DataTypes) => {
@@ -110,6 +110,19 @@ module.exports = (sequelize, DataTypes) => {
             // else if (itemCount !== pack.number_of_items) {
             //   return res.status(400).res.json({ message: 'please check your items !' });
             // }
+            break;
+          }
+          case VALUES: {
+            pkg.getPackageItems()
+              .then(packageItems => notification
+                .stateChange({
+                  db,
+                  nextStateId,
+                  pkg,
+                  actingUser,
+                  packageItems,
+                }))
+              .catch(err => logger.error('statechange notification', nextStateId, pkg, err));
             break;
           }
           case RETURN_DONE: {

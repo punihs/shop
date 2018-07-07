@@ -328,9 +328,10 @@ exports.shipQueue = async (req, res) => {
     ],
     where: { status: ['inqueue', 'inreview', 'received', 'confirmation'] },
   };
-  await Shipment.find(options)
+  await Shipment
+    .find(options)
     .then(shipment =>
-      res.status(201).json({ shipment }));
+      res.json({ shipment }));
 };
 
 exports.history = async (req, res) => {
@@ -342,9 +343,10 @@ exports.history = async (req, res) => {
     ],
     where: { status: ['dispatched', 'delivered', 'canceled', 'refunded'] },
   };
-  await Shipment.find(options)
-    .then(shipmentHistory =>
-      res.status(201).json({ shipmentHistory }));
+  await Shipment
+    .findAll(options)
+    .then(shipments =>
+      res.json(shipments));
 };
 
 exports.cancelRequest = async (req, res) => {
@@ -370,7 +372,7 @@ exports.cancelRequest = async (req, res) => {
     notification.action_id = shipment.id;
     notification.action_description = `Shipment request cancelled - Order#  ${shipment.order_code}`;
     await Notification.create(notification)
-      .then(() => res.status(201).json({ message: 'Ship request has been cancelled!', shipment }));
+      .then(() => res.json({ message: 'Ship request has been cancelled!', shipment }));
   }
 };
 
@@ -383,7 +385,7 @@ exports.invoice = async (req, res) => {
     packages = await Package
       .findAll({ where: { id: shipment.package_ids.split(',') } });
   }
-  return res.status(201).json({ packages, shipment });
+  return res.json({ packages, shipment });
 };
 
 

@@ -15,7 +15,7 @@ exports.index = (req, res, next) => {
   return PackageItem
     .findAll({
       where: { package_id: req.params.packageId },
-      attributes: ['id', 'name', 'quantity', 'price_amount', 'total_amount'],
+      attributes: ['id', 'name', 'quantity', 'price_amount', 'total_amount', 'object'],
       limit: Number(req.query.limit) || 20,
       include: [{
         model: PackageItemCategory,

@@ -518,7 +518,7 @@ describe('GET /api/shipments/queue', () => {
       .get('/api/shipments/queue')
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
-      .expect(201)
+      .expect(200)
       .then(() => {
         done();
       });
@@ -531,7 +531,7 @@ describe('GET /api/shipments/history', () => {
       .get('/api/shipments/history')
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
-      .expect(201)
+      .expect(200)
       .then(() => {
         done();
       });
@@ -557,7 +557,7 @@ describe('GET /api/shipments/326/invoice', () => {
       .get('/api/shipments/326/invoice')
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
-      .expect(201)
+      .expect(200)
       .then(() => {
         done();
       });
@@ -573,7 +573,7 @@ describe('PUT /api/shipments/2/cancel', () => {
       })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
-      .expect(201)
+      .expect(200)
       .then(() => {
         done();
       });
@@ -609,7 +609,7 @@ describe('PUT /api/shipments/2/cancel', () => {
       })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
-      .expect(201)
+      .expect(200)
       .then(() => {
         done();
       });

@@ -21,6 +21,7 @@ function onConnect(socket) {
 
   // Insert sockets below
   r('../api/address/address.socket').register(socket);
+  r('../api/packageComment/packageComment.socket').register(socket);
 }
 
 module.exports = (socketio) => {
@@ -54,7 +55,7 @@ module.exports = (socketio) => {
 
     // Call onDisconnect.
     socket.on('disconnect', () => {
-      log('---------------disconnect');
+      log('disconnect');
       onDisconnect(socket);
       socket.log('DISCONNECTED');
     });

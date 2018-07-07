@@ -21,13 +21,15 @@ const logger = require('../../components/logger');
 const { index } = require('./package.service');
 
 exports.indexPublic = (req, res, next) => {
+  log('indexPublic', req.query);
   if (req.query.public !== 'true') return next();
-  const limit = Number(req.query.limit);
+  const limit = Number(req.query.limit) || 20;
 
   const options = {
     where: {},
+    attributes: ['id', 'price_amount', 'weight', 'store_id'],
     offset: Number(req.query.offset) || 0,
-    limit: limit && limit > 20 ? 20 : limit,
+    limit: (limit && limit > 20) ? 20 : limit,
     raw: true,
   };
 

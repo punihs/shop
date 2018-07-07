@@ -17,4 +17,5 @@ module.exports = DataTypes => ({
     type: DataTypes.ENUM,
     values: [SHOPPRE, CUSTOMER],
   },
+  is_image_resized: DataTypes.BOOLEAN,
 });

@@ -81,7 +81,7 @@ exports.index = (req, res, next) => {
 exports.me = (req, res, next) => {
   const options = {
     attributes: [
-      'id', 'salutation', 'first_name', 'last_name', 'email', 'alternate_email',
+      'id', 'salutation', 'first_name', 'last_name', 'email', 'alternate_email', 'group_id',
       'phone_code', 'phone', 'secondary_phone_code', 'secondary_phone', 'profile_photo_url',
     ],
     limit: Number(req.query.limit) || 20,

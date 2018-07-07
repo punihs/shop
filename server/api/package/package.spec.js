@@ -8,7 +8,19 @@ const {
   CONTENT_TYPES: { REGULAR, SPECIAL },
 } = require('../../config/constants');
 
-describe('public GET /api/packages', () => {
+describe('public: GET /api/packages', () => {
+  it('return packages', (done) => {
+    request(app)
+      .get('/api/packages?public=true')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+describe('www: GET /api/packages ', () => {
   it('return packages', (done) => {
     request(app)
       .get('/api/packages')

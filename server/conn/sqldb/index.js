@@ -27,6 +27,8 @@ const db = {
   // - Enums
   'Country', 'Place', 'PaymentGateway', 'Locker',
 
+  'EmailTemplate', 'EmailLog', 'EmailTemplateAd', 'EmailPreference', 'Ad',
+
   // - Basic
   'User', 'UserMeta', 'Group', 'Estimation', 'PasswordReset',
 

@@ -5,7 +5,11 @@ const r = require;
 const { DataTypes } = Sequelize;
 module.exports = {
   id: {
-
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    allowNull: false,
+    unique: true,
   },
   engine: {
     engine: 'InnoDB',

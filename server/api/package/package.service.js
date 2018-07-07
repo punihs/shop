@@ -30,14 +30,21 @@ exports.index = ({ query, user: actingUser }) => {
   };
 
   switch (true) {
-    case (actingUser.app_id === APPS.OPS && actingUser.group_id === OPS): {
-      options.attributes = ['id', 'created_at'];
+    case (actingUser.app_id === APPS.MEMBER && actingUser.group_id === CUSTOMER): {
+      options.attributes = ['id', 'created_at', 'weight', 'price_amount'];
       options.where.customer_id = actingUser.id;
+      options.include = [{
+        where: {},
+        model: PackageState,
+        attributes: ['id', 'state_id'],
+      }, {
+        model: Store,
+        attributes: ['id', 'name'],
+      }];
       break;
     }
-    case (actingUser.app_id === APPS.MEMBER && actingUser.group_id === CUSTOMER): {
-      options.attributes = ['id', 'customer_id', 'created_at'];
-      options.where.customer_id = actingUser.id;
+    case (actingUser.app_id === APPS.OPS && actingUser.group_id === OPS): {
+      options.attributes = ['id', 'customer_id', 'created_at', 'weight', 'price_amount'];
       options.include = [{
         where: {},
         model: PackageState,
@@ -56,19 +63,8 @@ exports.index = ({ query, user: actingUser }) => {
       }];
       break;
     }
-    default: {
-      options.attributes = ['id', 'price_amount', 'weight', 'store_id'];
-      options.where = {
-        is_public: true,
-      };
-
-      options.include = [{
-        model: Store,
-        attributes: ['id', 'name'],
-      }];
-
-      break;
-    }
+    default:
+      options.attributes = ['id', 'customer_id', 'created_at', 'weight', 'price_amount'];
   }
 
   const states = Object.keys(buckets);
@@ -83,21 +79,24 @@ exports.index = ({ query, user: actingUser }) => {
         .findAll(options),
       Package
         .count({ where: options.where, include: options.include }),
-      PackageState
-        .findAll({
-          attributes: [[sequelize.fn('count', 1), 'cnt'], 'state_id'],
-          where: { state_id: buckets[status] },
-          include: [{
-            where: options.where,
-            model: Package,
-            attributes: [],
-          }],
-          group: ['state_id'],
-          raw: true,
-        }),
+      !options.include
+        ? Promise.resolve([])
+        : PackageState
+          .findAll({
+            attributes: [[sequelize.fn('count', 1), 'cnt'], 'state_id'],
+            where: { state_id: buckets[status] },
+            include: [{
+              where: options.where,
+              model: Package,
+              attributes: [],
+            }],
+            group: ['state_id'],
+            raw: true,
+          }),
     ])
     .then(([packages, total, facets]) => ({
-      packages: packages.map(x => ({ ...x.toJSON(), state_id: x.PackageState.state_id })),
+      packages: packages
+        .map(x => (x.PackageState ? ({ ...x.toJSON(), state_id: x.PackageState.state_id }) : x)),
       total,
       facets: {
         state_id: kvmap(facets, 'state_id', 'cnt'),

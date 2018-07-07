@@ -3,7 +3,7 @@ const { ShippingPreference } = require('./../../conn/sqldb');
 exports.show = (req, res) => {
   const { id } = req.params;
   const options = {
-    attributes: ['id', 'basic_photo', 'advanced_photo', 'scan_document', 'repacking'],
+    attributes: ['id', 'is_basic_photo', 'is_advanced_photo', 'is_scan_document', 'is_repacking'],
   };
   const preference = ShippingPreference
     .findById(id, options);
