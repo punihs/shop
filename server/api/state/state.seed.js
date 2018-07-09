@@ -1,31 +1,62 @@
 
 module.exports = () => [{
   id: 1,
-  name: 'Processing',
+  name: 'Package Items Upload Pending',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
 }, {
   id: 2,
-  name: 'Customer Input',
-  // name: 'values',
+  name: 'Awaiting Verification',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
 }, {
   id: 3,
-  name: 'Internal Review',
-  // name: 'review',
+  name: 'Customer Input',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
 }, {
   id: 4,
-  name: 'delivered',
+  name: 'In Reveiw',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
 }, {
   id: 5,
-  name: 'ship',
+  name: 'Ready to Ship',
+  config: '{"color":"success","state_id":"Status","comments":"Instructions and Comments"}',
 }, {
   id: 6,
-  name: 'inreview',
+  name: 'Damaged',
+  config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
 }, {
   id: 7,
-  name: 'return',
+  name: 'Return Request from Customer',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
 }, {
   id: 8,
-  name: 'split',
+  name: 'Return Pickup Done',
+  config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
 }, {
   id: 9,
-  name: 'abandon',
+  name: 'PS Return Requested',
+  config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 10,
+  name: 'PS Refund Recieved',
+  config: '{"color":"success","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 11,
+  name: 'Split Package',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 12,
+  name: 'Split Package Processed',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 13,
+  name: 'Discarded',
+  config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 14,
+  name: 'Added to Shipment',
+  config: '{"color":"success","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 15,
+  name: 'Discard Requested',
+  config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
 }];

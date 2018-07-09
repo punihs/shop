@@ -12,7 +12,6 @@ router.get('/me', authenticate(), controller.me);
 router.get('/states', authenticate(), controller.states);
 router.post('/', authenticate(), controller.create);
 router.put('/me', authenticate(), controller.update);
-router.get('/presignedUrl', authenticate(), controller.presignedUrl);
 router.put('/:id', authenticate(), controller.update);
 router.get('/:id', authenticate(), controller.show);
 router.put('/:id/unread', authenticate(), controller.unread);

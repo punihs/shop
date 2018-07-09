@@ -121,17 +121,6 @@ describe('delete /api/users/:id', () => {
         done();
       });
   });
-
-  it('will give upload url', (done) => {
-    request(app)
-      .delete('/api/users/presignedUrl')
-      .set('Authorization', `Bearer ${auth.access_token}`)
-      .expect('Content-Type', /json/)
-      .expect(200)
-      .then(() => {
-        done();
-      });
-  });
 });
 describe(' POST /api/users/verify', () => {
   it('verify user ', (done) => {

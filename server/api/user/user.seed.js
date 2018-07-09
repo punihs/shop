@@ -2,7 +2,7 @@
 module.exports = (constants) => {
   const {
     GROUP: {
-      OPS, MEMBER, MARKETING, MANAGEMENT,
+      OPS, MEMBER, MARKETING, MANAGEMENT, FINANCE,
     },
     COUNTRY: {
       IND,
@@ -253,7 +253,7 @@ module.exports = (constants) => {
       phone_code: '91',
       phone: '7891378913',
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6', // admin1234
-      group_id: 1,
+      group_id: OPS,
     }, { // Payment Approval
       id: 115,
       salutation: 'Mr',
@@ -263,7 +263,7 @@ module.exports = (constants) => {
       phone_code: '91',
       phone: '7891378913',
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6', // admin1234
-      group_id: 1,
+      group_id: FINANCE,
     }, { // -SALES
       id: 116,
       salutation: 'Mrs',

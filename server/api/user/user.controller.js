@@ -1,14 +1,12 @@
 const _ = require('lodash');
 const debug = require('debug');
-const uuidv4 = require('uuid/v4');
+
 const crypto = require('crypto');
 
-const Minio = require('../../conn/minio');
 const {
   User, State, ActionableState, GroupState, Shipment, Country, Package, Order, ShippingPreference,
   ReferCode, LoyaltyPoint, LoyaltyHistory, Locker,
 } = require('../../conn/sqldb');
-const { MINIO_BUCKET } = require('../../config/environment');
 
 const log = debug('s.user.controller');
 const {
@@ -180,19 +178,6 @@ exports.update = (req, res, next) => {
   return User
     .update(req.body, { where: { id } })
     .then(({ id: Id }) => res.json({ id: Id }))
-    .catch(next);
-};
-
-exports.presignedUrl = (req, res, next) => {
-  const { filename } = req.query;
-  const now = new Date();
-  const object = `${now.getFullYear()}/${now.getMonth()}/${uuidv4()}.${filename.split('.').pop()}`;
-  return Minio
-    .uploadLink({
-      object,
-      bucket: MINIO_BUCKET,
-    })
-    .then(url => res.json({ object, url }))
     .catch(next);
 };
 

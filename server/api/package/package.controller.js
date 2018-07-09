@@ -8,7 +8,7 @@ const log = debug('package');
 const db = require('../../conn/sqldb');
 
 const {
-  Package, Order, PackageItem, User,
+  Package, Order, PackageItem, User, Follower,
   Locker, Store, PackageState, Country,
 } = db;
 
@@ -107,7 +107,10 @@ exports.show = async (req, res, next) => {
         }],
       }],
     })
-    .then(pkg => res.json({ ...pkg.toJSON(), state_id: pkg.PackageState.state_id }))
+    .then((pkg) => {
+      if (!pkg) return res.status(404).end();
+      return res.json({ ...pkg.toJSON(), state_id: pkg.PackageState.state_id });
+    })
     .catch(next);
 };
 
@@ -132,6 +135,13 @@ exports.create = async (req, res, next) => {
     .allocation({ customerId: pkg.customer_id })
     .then(locker => Package.create(pkg)
       .then(({ id }) => {
+        const fs = [req.user.id, req.body.customer_id]
+          .map(followerId => ({ user_id: followerId, object_id: id }));
+
+        Follower
+          .bulkCreate(fs)
+          .catch(err => logger.error('follower creation', req.user, req.body, err));
+
         if (req.body.order_id) {
           Order
             .update({ package_id: id }, { where: { id: req.body.order_id } })

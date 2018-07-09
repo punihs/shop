@@ -55,6 +55,7 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(db.AccessToken);
     User.hasMany(db.RefreshToken);
     User.hasMany(db.Session);
+    User.hasMany(db.SocketSession);
     User.hasMany(db.Package, {
       foreignKey: 'customer_id',
     });

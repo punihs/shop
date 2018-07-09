@@ -1,16 +1,95 @@
-module.exports = ({ GROUP: { MEMBER, OPS } }) => [{
+module.exports = ({
+  GROUP: {
+    OPS, MEMBER, FINANCE, BOT,
+  },
+}) => [{
   id: 1,
-  state_id: 1, // processing
+  state_id: 1,
   group_id: OPS,
-  child_id: 2, // after uploading package items customer input
+  child_id: 2,
 }, {
   id: 2,
-  state_id: 2, // customer input
-  group_id: MEMBER,
-  child_id: 3, // internal review
+  state_id: 1,
+  group_id: OPS,
+  child_id: 3,
 }, {
   id: 3,
-  state_id: 3, // internal review
+  state_id: 1,
   group_id: OPS,
-  child_id: 4, // apporved for shipping
+  child_id: 6,
+}, {
+  id: 4,
+  state_id: 4,
+  group_id: OPS,
+  child_id: 5,
+}, {
+  id: 5,
+  state_id: 5,
+  group_id: BOT,
+  child_id: 14,
+}, {
+  id: 6,
+  state_id: 5,
+  group_id: MEMBER,
+  child_id: 15,
+}, {
+  id: 7,
+  state_id: 5,
+  group_id: MEMBER,
+  child_id: 11,
+}, {
+  id: 8,
+  state_id: 11,
+  group_id: OPS,
+  child_id: 12,
+}, {
+  id: 9,
+  state_id: 6,
+  group_id: MEMBER,
+  child_id: 7,
+}, {
+  id: 10,
+  state_id: 7,
+  group_id: OPS,
+  child_id: 8,
+}, {
+  id: 11,
+  state_id: 7,
+  group_id: OPS,
+  child_id: 9,
+}, {
+  id: 12,
+  state_id: 8,
+  group_id: FINANCE,
+  child_id: 10,
+}, {
+  id: 13,
+  state_id: 5,
+  group_id: MEMBER,
+  child_id: 7,
+}, {
+  id: 14,
+  state_id: 2,
+  group_id: OPS,
+  child_id: 5,
+}, {
+  id: 15,
+  state_id: 3,
+  group_id: MEMBER,
+  child_id: 4,
+}, {
+  id: 16,
+  state_id: 9,
+  group_id: OPS,
+  child_id: 8,
+}, {
+  id: 17,
+  state_id: 15,
+  group_id: OPS,
+  child_id: 13,
+}, {
+  id: 18,
+  state_id: 12,
+  group_id: OPS,
+  child_id: 5,
 }];

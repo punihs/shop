@@ -30,7 +30,7 @@ const db = {
   'EmailTemplate', 'EmailLog', 'EmailTemplateAd', 'EmailPreference', 'Ad',
 
   // - Basic
-  'User', 'UserMeta', 'Group', 'Estimation', 'PasswordReset',
+  'User', 'UserMeta', 'Group', 'Estimation', 'PasswordReset', 'Follower', 'SocketSession',
 
   // - Customer Account
   // Shoppre.com - Inspired by MyUS.com

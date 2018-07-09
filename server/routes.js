@@ -47,11 +47,14 @@ const userPackage = require('./api/user/package');
 const emailPreference = require('./api/emailPreference');
 const emailTemplate = require('./api/emailTemplate');
 const photoRequest = require('./api/package/photoRequest');
+const follower = require('./api/package/follower');
 const webRoutes = require('./webRoutes');
+const minio = require('./conn/minio/minio.route');
 
 module.exports = (app) => {
   webRoutes(app);
   app.use('/api/health', health);
+  app.use('/api/minio', authenticate(), minio);
   app.use('/api/seo', seo);
   app.use('/api/user', login);
   app.use('/api/search', search);
@@ -64,6 +67,7 @@ module.exports = (app) => {
     packageCharge,
     specialRequest,
     photoRequest,
+    follower,
   );
   app.use('/api/shippingPartners', shippingPartner);
   app.use('/api/addresses', authenticate(), address);

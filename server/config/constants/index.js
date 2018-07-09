@@ -2,6 +2,7 @@ const constants = {
   GROUPS: {
     OPS: 1,
     CUSTOMER: 2,
+    FINANCE: 3,
   },
   CONSIGNMENT_TYPES: {
     DOC: '1',
@@ -96,6 +97,11 @@ const constants = {
     RETURN_CHARGE: 400,
     BASIC_PHOTO: 50.00,
     ADVANCED_PHOTO: 300,
+  },
+  FOLLOWER_TYPES: {
+    PACKAGE: 1,
+    SHIPMENT: 2,
+    ORDER: 3,
   },
 };
 

@@ -5,23 +5,17 @@ const {
   Package, Store, User, Locker, PackageState,
 } = require('../../conn/sqldb');
 
-const { PACKAGE_STATE_IDS, APPS, GROUPS: { CUSTOMER, OPS } } = require('./../../config/constants');
+const { APPS, GROUPS: { CUSTOMER, OPS } } = require('./../../config/constants');
+const BUCKETS = require('./../../config/constants/buckets');
 
 const log = debug('s-api-package-service');
 
-const buckets = {
-  PROCESSING: [1, 2],
-  VALUES: [2],
-  REVIEW: [3],
-  INREVIEW: [5],
-  DELIVERED: [4],
-  ALL: Object.values(PACKAGE_STATE_IDS),
-};
-
 const kvmap = (arr, key, value) => arr.reduce((nxt, x) => ({ ...nxt, [x[key]]: x[value] }), {});
 
-exports.index = ({ query, user: actingUser }) => {
+exports.index = ({ query, params, user: actingUser }) => {
   log('index', { groupId: actingUser.group_id, app_id: actingUser.app_id });
+  const IS_CUSTOMER_PAGE = !!params.customerId;
+  const bucket = BUCKETS[actingUser.group_id];
   const { status } = query;
   const options = {
     where: {},
@@ -44,6 +38,7 @@ exports.index = ({ query, user: actingUser }) => {
       break;
     }
     case (actingUser.app_id === APPS.OPS && actingUser.group_id === OPS): {
+      if (IS_CUSTOMER_PAGE) options.where.customer_id = params.customerId;
       options.attributes = ['id', 'customer_id', 'created_at', 'weight', 'price_amount'];
       options.include = [{
         where: {},
@@ -52,25 +47,52 @@ exports.index = ({ query, user: actingUser }) => {
       }, {
         model: Store,
         attributes: ['id', 'name'],
-      }, {
-        model: User,
-        as: 'Customer',
-        attributes: ['id', 'name', 'virtual_address_code', 'first_name', 'last_name', 'salutation'],
-        include: [{
-          model: Locker,
-          attributes: ['id', 'short_name', 'name'],
-        }],
       }];
+
+      if (!IS_CUSTOMER_PAGE) {
+        options.include.push({
+          model: User,
+          as: 'Customer',
+          attributes: ['id', 'name', 'virtual_address_code', 'first_name', 'last_name', 'salutation'],
+          include: [{
+            model: Locker,
+            attributes: ['id', 'short_name', 'name'],
+          }],
+        });
+      }
       break;
     }
     default:
       options.attributes = ['id', 'customer_id', 'created_at', 'weight', 'price_amount'];
   }
 
-  const states = Object.keys(buckets);
+  const states = Object.keys(bucket);
   if (query.sid) options.include[0].where.state_id = query.sid.split(',');
   else if (states.includes(status) && options.include && options.include.length) {
-    options.include[0].where.state_id = buckets[status];
+    const AWAITING_VERIFICATION = 2;
+    if (query.status === 'TASKS') {
+      options.include[0].where = {
+        $or: {
+          state_id: bucket[status].filter(x => (x !== AWAITING_VERIFICATION)),
+          $and: {
+            state_id: AWAITING_VERIFICATION,
+            $not: { user_id: actingUser.id },
+          },
+        },
+      };
+    } else if (query.status === 'FEEDBACK') {
+      options.include[0].where = {
+        $or: {
+          state_id: bucket[status].filter(x => (x !== AWAITING_VERIFICATION)),
+          $and: {
+            state_id: AWAITING_VERIFICATION,
+            user_id: actingUser.id,
+          },
+        },
+      };
+    } else {
+      options.include[0].where.state_id = bucket[status];
+    }
   }
 
   return Promise
@@ -84,7 +106,7 @@ exports.index = ({ query, user: actingUser }) => {
         : PackageState
           .findAll({
             attributes: [[sequelize.fn('count', 1), 'cnt'], 'state_id'],
-            where: { state_id: buckets[status] },
+            where: { state_id: bucket[status] },
             include: [{
               where: options.where,
               model: Package,

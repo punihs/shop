@@ -3,12 +3,13 @@ const debug = require('debug');
 
 const log = debug('package');
 
+const logger = require('../../../components/logger');
 const db = require('../../../conn/sqldb');
+const { FOLLOWER_TYPES: { PACKAGE } } = require('../../../config/constants');
 
 const {
-  PackageComment, User, PackageState,
+  PackageComment, User, PackageState, Follower,
 } = db;
-
 
 exports.index = (req, res, next) => {
   log('index', req.query);
@@ -45,6 +46,18 @@ exports.index = (req, res, next) => {
 
 exports.create = (req, res, next) => {
   log('index', req.query);
+  Follower
+    .findOrCreate({
+      where: {
+        user_id: req.user.id,
+        object_type_id: PACKAGE,
+        object_id: req.params.packageId,
+      },
+      attributes: ['id'],
+      raw: true,
+    })
+    .catch(err => logger.error('comment follower creation error', err));
+
   return PackageComment
     .create({
       ...req.body,
