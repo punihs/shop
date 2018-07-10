@@ -23,6 +23,7 @@ const state = require('./app/state');
 const feedback = require('./app/feedback');
 const privacyPolicy = require('./app/privacyPolicy');
 const refundAndCancellation = require('./app/refundAndCancellation');
+const countryGuide = require('./app/countryGuide');
 
 module.exports = (app) => {
   app.use('/', home);
@@ -43,6 +44,7 @@ module.exports = (app) => {
   app.use('/feedback', feedback);
   app.use('/privacy-Policy', privacyPolicy);
   app.use('/refund-and-cancellation-policy', refundAndCancellation);
+  app.use('/country-guide', countryGuide);
   // app.use('/destinations', countryGuide);
   // app.use('/packages', countryGuide);  //itemName, storeName,storeId
   // app.use('/shipments', countryGuide); // dhl,paymentGateway,deliveryTime,price
