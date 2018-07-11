@@ -18,3 +18,4 @@ pipeline:
       - node ./scripts/githubStatusCheck/after.js "$DRONE_COMMIT"
       - COVERALLS_REPO_TOKEN=WDamv9hmwlD9xelfrA9TBSZkwVglMXQ3n
       - npm run coverage
+      - npx semantic-release

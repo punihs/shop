@@ -103,6 +103,7 @@
     "nyc": "^11.8.0",
     "precommit-hook": "^3.0.0",
     "puppeteer": "^1.4.0",
+    "semantic-release": "^15.7.0",
     "supertest": "^3.0.0"
   },
   "engines": {
