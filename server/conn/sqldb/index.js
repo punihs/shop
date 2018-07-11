@@ -69,6 +69,9 @@ const db = {
   // - Estomations
   'Estimation',
 
+  // - payment gateway
+  'DirectPayment',
+
   // Shoppre Digital Inspired by Marketo.com
   // - Website - Google My Business - Hardy
   // - SEO - MOZ
