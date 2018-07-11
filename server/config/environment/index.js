@@ -22,6 +22,10 @@ const config = {
         client_secret: 'EX9E5-vBMf5z6mJwAywlCSMe',
       },
     },
+    paytm: {
+      MID: 'INDLLP22228431438570',
+      KEY: 'r&Xd973ZIk43rWzq',
+    },
   },
   development: {
 

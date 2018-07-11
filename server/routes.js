@@ -38,6 +38,7 @@ const shippingPartner = require('./api/shippingPartner');
 const health = require('./api/health');
 const seo = require('./api/seo');
 const paymentGateway = require('./api/paymentGateway');
+const paytm = require('./api/paymentGateway/paytm');
 const axis = require('./api/paymentGateway/axis');
 const passwordReset = require('./api/passwordReset');
 const faqCategory = require('./api/faqCategory');
@@ -92,6 +93,7 @@ module.exports = (app) => {
   app.use('/api/places', place);
   app.use('/api/stores', store);
   app.use('/api/paymentGateways', paymentGateway);
+  app.use('/api/paytm', authenticate(), paytm);
   app.use('/api/axis', authenticate(), axis);
   app.use('/api/passwordReset', passwordReset);
   app.use('/api/estimations', estimation);
