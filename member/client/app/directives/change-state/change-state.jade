@@ -1,6 +1,6 @@
 .modal-header
   .modal-title
-    .h4.text-info Change Status of {{$ctrl.applicant.name}}
+    .h4.text-info Change Status of {{$ctrl.package.name}}
       .close(ng-click='$ctrl.$uibModalInstance.dismiss("close")') ×
 form.form-validation(name="form" ng-submit='$ctrl.ok()')
   .modal-body
@@ -10,14 +10,14 @@ form.form-validation(name="form" ng-submit='$ctrl.ok()')
       select.form.form-control(ng-model='$ctrl.data.state_id' ng-disabled='$ctrl.states[$ctrl.stateId].Childs.length===1' ng-if='$ctrl.stateId !== 12')
         option(ng-repeat='state in $ctrl.states[$ctrl.stateId].Childs' ng-value='state.state_id' ng-selected='$first') {{$ctrl.states[state.state_id].action}}
       //- Customized Selction of states for Interview Confirm
-      div: .btn-group.text-center(ng-init="$ctrl.data.state_id = $ctrl.applicant._root_.is_drive ? 8 : 5" ng-if='$ctrl.stateId === 12')
-        label.w-xs.btn.btn-sm.btn-success(ng-model='$ctrl.data.state_id', uib-btn-radio="5" ng-disabled='$ctrl.applicant._root_.is_drive')
+      div: .btn-group.text-center(ng-init="$ctrl.data.state_id = $ctrl.package._root_.is_drive ? 8 : 5" ng-if='$ctrl.stateId === 12')
+        label.w-xs.btn.btn-sm.btn-success(ng-model='$ctrl.data.state_id', uib-btn-radio="5" ng-disabled='$ctrl.package._root_.is_drive')
           i.fa.fa-check.text-active
           | Telephonic
         label.w-xs.btn.btn-sm.btn-primary(ng-model='$ctrl.data.state_id', uib-btn-radio="8")
           i.fa.fa-check.text-active
           | Personal
-        label.w-xs.btn.btn-sm.btn-info(ng-model='$ctrl.data.state_id', uib-btn-radio="17" ng-disabled='$ctrl.applicant._root_.is_drive')
+        label.w-xs.btn.btn-sm.btn-info(ng-model='$ctrl.data.state_id', uib-btn-radio="17" ng-disabled='$ctrl.package._root_.is_drive')
           i.fa.fa-check.text-active
           | Video
     label.input-group(ng-if='$ctrl.states[$ctrl.stateId].config.scheduled_on')
@@ -88,7 +88,7 @@ form.form-validation(name="form" ng-submit='$ctrl.ok()')
         a.text-primary.text-u-l(
           ng-if='$ctrl.user.client_id === $ctrl.interviewee.client_id'
           ng-bind='$ctrl.interviewee.name'
-          ui-sref='applicant.view({applicantId: $ctrl.interviewee.id})'
+          ui-sref='package.view({packageId: $ctrl.interviewee.id})'
           target='_blank'
         )
         span &nbsp;on&nbsp;

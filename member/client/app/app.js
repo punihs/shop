@@ -1,4 +1,3 @@
-
 angular.module('qui.components', []);
 
 angular
@@ -7,7 +6,7 @@ angular
     'http-auth-interceptor',
   ])
   .constant('MODULE_VERSION', '0.0.1');
-  // this configs to initiated using provider
+// this configs to initiated using provider
 
 angular.module('uiGenApp', [
   'qui.core',
@@ -16,7 +15,6 @@ angular.module('uiGenApp', [
   'ui.bootstrap',
   'mwl.calendar',
   'chart.js',
-  'restangular',
   'ngFileUpload',
   'angular-loading-bar',
   'easypiechart',
@@ -28,40 +26,16 @@ angular.module('uiGenApp', [
   'isteven-multi-select',
   'dndLists',
   'ngSanitize',
-  'ngCookies'
+  'ngCookies',
+  'btford.socket-io',
 ])
 
-  .config(($urlRouterProvider, $locationProvider, RestangularProvider) => {
-    let API;
-    switch (window.location.host) {
-      case 'partner.quezx.com':
-        API = 'https://qapi.quezx.com/api';
-        break;
-      case 'staging-partner.quezx.com':
-        API = 'https://staging-qapi.quezx.com/api';
-        break;
-      case 'gabbar-partner.quezx.com':
-        API = 'https://staging-qapi.quezx.com/api';
-        break;
-      default:
-        API = 'http://api.quezx.test/api';
-    }
-    RestangularProvider.setBaseUrl(API);
-    $urlRouterProvider.when('/', '/dashboard');
+  .config(($urlRouterProvider, $locationProvider) => {
+    $urlRouterProvider.when('/', '/locker');
     $urlRouterProvider.otherwise(($injector) => $injector.get('$state').go('access.404'));
 
     $locationProvider.html5Mode(true);
+  })
+  .constant('RENAMED_STATES', {
+  });
 
-  }).run(($sce) => {
-
-  String.prototype.titleCase = function() {
-    var firstLetterRx = /(^|\s)[a-z]/g;
-    return this.replace(firstLetterRx, (str)=>{return str.toUpperCase();});
-  };
-
-  String.prototype.replaceAll = function(search, replacement) {
-    var target = this;
-    return target.replace(new RegExp(search, 'g'), replacement);
-  };
-
-});

@@ -1,16 +1,16 @@
-'use strict';
+
 class CalendarCtrl {
- constructor($http, $scope, moment, $state, Session, Page) {
-   this.$state = $state;
-   this.$scope = $scope;
-   this.$http = $http;
-   this.moment = moment;
-   this.Session = Session;
-   this.Page = Page;
-   this.$onInit();
+  constructor($http, $scope, moment, $state, Session, Page) {
+    this.$state = $state;
+    this.$scope = $scope;
+    this.$http = $http;
+    this.moment = moment;
+    this.Session = Session;
+    this.Page = Page;
+    this.$onInit();
   }
 
-  $onInit(){
+  $onInit() {
     this.clientId = this.Session.read('userinfo').client_id;
     this.states = this.Session.read('states');
     this.Page.setTitle('Scheduled Interview Calendar');
@@ -26,21 +26,21 @@ class CalendarCtrl {
 
     this.calendarView = 'month';
     this.calendarDay = moment().toDate();
-    this.$scope.$watch(() => {
-      // watch for change of start of month
-      return moment(this.calendarDay).startOf('month').toISOString();
-    }, () => {
-      // Reset controller variables to default
-      this.applicants = [];
-      this.ui = { lazyLoad: true, loading: false };
-      this.params.offset = 0; // Reset result offset
-      this.loadApplicants();
-    }, true);
+    // watch for change of start of month
+    this.$scope
+      .$watch(() => moment(this.calendarDay).startOf('month').toISOString(), () => {
+        // Reset controller variables to default
+        this.applicants = [];
+        this.ui = { lazyLoad: true, loading: false };
+        this.params.offset = 0; // Reset result offset
+        this.loadApplicants();
+      }, true);
 
     this.isCellOpen = true;
   }
 
   loadApplicants() {
+    const root = '_root_';
     if (!this.ui.lazyLoad) return; // if no more applicants to get
     this.ui = { lazyLoad: false, loading: true };
 
@@ -57,19 +57,24 @@ class CalendarCtrl {
         this.$http
           .get('/applicants', { params: this.params })
           .then(({ data: { applicants: result = [] } }) => {
-            result.forEach(applicant => {
-            applicant.owner_name = hash[applicant.owner_id];
+            result.forEach(a => {
+              const applicant = a;
+              applicant.owner_name = hash[applicant.owner_id];
               this.applicants.push({
                 title: [
-                  `<a href=${this.$state.href('job.view', { jobId: applicant._root_.id })} target="_blank">`,
+                  `<a href=${this.$state.href('job.view', { jobId: applicant[root].id })}
+ target="_blank">`,
                   `<span class="text-${this.colors[applicant.interview_type]}-lter">`,
-                    `${applicant._root_.role}</span></a> –`,
-                  `<a href="${this.$state.href('applicant.view', { applicantId: applicant.id })}" target="_blank">`,
-                    `<span class="text-${this.colors[applicant.interview_type]}-lter">`,
-                      `${applicant.name}</span></a> &nbsp;`,
-                  `<span style="padding: 0 3px;white-space: nowrap;">- [${applicant.owner_name}]</span>`,
-                  '<span style="padding: 0 3px;white-space: nowrap;" class="h6 b-a b-${this.colors[applicant.interview_type]}">',
-                    `${this.states[applicant.state_id].action} &nbsp;</span> &nbsp;`,
+                  `${applicant[root].role}</span></a> –`,
+                  `<a href="${this.$state.href('applicant.view', { applicantId: applicant.id })}"
+ target="_blank">`,
+                  `<span class="text-${this.colors[applicant.interview_type]}-lter">`,
+                  `${applicant.name}</span></a> &nbsp;`,
+                  `<span
+ style="padding: 0 3px;white-space: nowrap;">- [${applicant.owner_name}]</span>`,
+                  '<span style="padding: 0 3px;white-space: nowrap;" ' +
+                  'class="h6 b-a b-${this.colors[applicant.interview_type]}">',
+                  `${this.states[applicant.state_id].action} &nbsp;</span> &nbsp;`,
                 ].join(''),
                 type: this.colors[applicant.interview_type],
                 startsAt: this.moment(applicant.interview_time).toDate(),
@@ -81,7 +86,7 @@ class CalendarCtrl {
             this.ui.loading = false;
 
             // check for returned results count and set lazy loadLoad false if less
-            this.ui.lazyLoad = angular.equals(result.length, this.params.limit) ? true : false;
+            this.ui.lazyLoad = angular.equals(result.length, this.params.limit);
 
             // increment offset for next loading of results
             this.params.offset = this.params.offset + this.params.limit;
@@ -89,7 +94,7 @@ class CalendarCtrl {
           });
       });
   }
-};
+}
 
 angular.module('uiGenApp')
-  .controller('CalendarCtrl', CalendarCtrl)
+  .controller('CalendarCtrl', CalendarCtrl);

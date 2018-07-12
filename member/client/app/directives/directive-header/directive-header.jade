@@ -1,99 +1,43 @@
 // Changing this directive will impact: job.applicants job.applicants.new job.references.list
 div.directive-header
-  .bg-light.b-b.padder.w-full.bg-white-only.m-t-xl(style='position:fixed;z-index: 6;height: 42px;' ng-if='page.jobApplicants || page.jobView')
-    ul.nav.nav-pills.nav-sm.m-t-xs(ng-show='viewdata.job.consultantResponse === 1 || JobSuggest.enabled' ng-if='page.jobApplicants')
-      li: label.i-checks.i-checks-sm.m-t-xs.m-b-none.m-l-md(ng-show="buttons.buckets")
-        input(type='checkbox' ng-click='viewdata.setChecked(viewdata.checkAll)' ng-model='viewdata.checkAll')
-        i.m-r-none(ng-if='viewdata.applicants.length > 0')
-      li(ng-repeat='status in viewdata.buckets' ui-sref-active="active" ng-show="buttons.buckets")
-        a(ui-sref='job.applicants.list({jobId:viewdata.job.id,status: status})' ng-bind="status" ng-hide="status == 'Bookmarked' && viewdata.isAdmin")
-    ul.nav.nav-pills.nav-sm.m-l-xs(ng-if='page.jobView') {{ui}}{{ui.prevNextSampleCV}}
-      li.m-r-xs.pull-left.m-t-xs
-        a.text-black-lt.pull-left(ng-show="buttons.downloadJD" ng-href="{{viewdata.jdSrc}}" title='Download')
-          i.fa.fa-sm.fa-download
-          .m-l-xs.pull-right Download
-      li.m-r-xs.pull-left.m-t-xs
-        a.text-black-lt.pull-left(ng-show="buttons.downloadJD" ng-click='viewdata.JobModal.clickToCopy(viewdata.job)' title='Click to copy')
-          i.fa.fa-sm.fa-files-o
-          .m-l-xs.pull-right Click to Copy
-      li.m-r-xs.pull-left.m-t-xs
-        a.text-black-lt.pull-left(title='Create New')
-          i.fa.fa-share-alt
-          .m-l-xs.pull-right Create New Order
+  //.bg-light.b-b.padder.w-full.bg-white-only.m-t-xl(style='position:fixed;z-index: 6;height: 42px;')
 
-
-  uib-progressbar.w-full.bg-light.dker.progress-striped.active.m-t-xl(
-    ng-if='viewdata.job.cvrequired && !viewdata.job.is_drive'
-    max='viewdata.job.cvmax'
-    type='success'
-    value='viewdata.job.cvmax - viewdata.job.cvrequired'
-    style='position: fixed; height: 5px; z-index: 100;'
-    uib-tooltip='CV Meter'
-    tooltip-placement='bottom'
-    tooltip-append-to-body='true'
-  )
   div(style='position: fixed;right: 5px;z-index: 9;margin-top: 7px;')
-    ul.nav.nav-pills.nav-sm(ng-if='viewdata.job.allocationStatus || JobSuggest.enabled')
-      li.m-r-xs.pull-right: a.h5.font-bold.b-a.btn-success.b-success(
-        ng-if='!JobSuggest.enabled'
-        ng-hide='viewdata.job.consultantResponse == 1 || viewdata.job.data.consultantResponse === 1'
-        ng-click="updateResponse(viewdata.job, 1)") Accept
-      li.m-r-xs.pull-right: a.h5.font-bold.b-a.b-info.text-info(
-        ng-if='!JobSuggest.enabled'
-        ng-hide='viewdata.job.consultantResponse == 2 || viewdata.job.consultantResponse === 1 || viewdata.job.data.consultantResponse === 1 || viewdata.job.open_platform'
-        ng-click="updateResponse(viewdata.job, 2)") Hide
-      li.m-r-xs.pull-right: a.h5.font-bold.b-a.b-info.text-info(
-        ng-if='!JobSuggest.enabled'
-        ng-hide='viewdata.job.consultantResponse == 3 || viewdata.job.consultantResponse === 1 || viewdata.job.data.consultantResponse === 1'
-        ng-click="updateResponse(viewdata.job, 3)") Reject
-      li.m-r-xs.pull-right
+    ul.nav.nav-pills.nav-sm
+      li.m-r-xs.pull-right: a.h5.font-bold.b-a(
+        ng-class="buttons.highlight == 'view-applicants'?'btn-success b-success':'b-info text-info' "
+        ng-show="buttons.viewPackages"
+        ui-sref='customer.packages.index({ id: options.customer.id, status: "ALL" })'
+        uib-popover="for {{options.customer.virtual_address_code}} - {{options.customer.name}}"
+      )
+        i.fa.fa-list
+
+      li.m-r-xs.pull-right: a.h5.font-bold.b-a(
+        ng-class="buttons.highlight == 'view'?'btn-info':'b-info text-info ' "
+        ng-show="buttons.view"
+        ui-sref='package.show({ id: options.pkg.id })'
+      )
+        i.fa.fa-eye
+
+
+      li.m-r-xs.pull-right(ng-if='buttons.packageCreate')
         a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
-          ng-show="!App.app.settings.isAdmin && buttons.upload && viewdata.job.consultantResponse === 1 && (viewdata.job.job_status === 'Open' || viewdata.job.job_status === 'High Priority') && (viewdata.job.allocationStatus || JobSuggest.enabled)"
-          ui-sref='job.applicants.new({jobId:viewdata.job.id})'
-          uib-popover="Indicative no. of CV's required at this time"
+        ui-sref='package.items({ id: options.$stateParams.id })'
+        popover-trigger="'mouseenter'"
+        popover-placement='bottom'
+        popover-append-to-body='true'
+        )
+          span  Add Package Items
+      li.m-r-xs.pull-right(ng-if='buttons.create')
+        a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
+          ui-sref='customer.packages.create({ customer_id: options.customer.id })'
+          uib-popover="for {{options.customer.virtual_address_code}} - {{options.customer.name}}"
           popover-trigger="'mouseenter'"
           popover-placement='bottom'
           popover-append-to-body='true'
         )
-          span Upload CV
-          i.pull-right(ng-bind='viewdata.job.cvrequired' style='line-height:29px;width:30px;height:30px;font-style:normal')
-        li.m-r-xs.pull-right(ng-if="viewdata.job.is_drive")
-          a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
-            ng-show="!App.app.settings.isAdmin && buttons.upload && viewdata.job.consultantResponse === 1 && (viewdata.job.job_status === 'Open' || viewdata.job.job_status === 'High Priority') && (viewdata.job.allocationStatus || JobSuggest.enabled)"
-            ng-click="UploadExcel.open(viewdata.job)"
-            uib-popover="Upload an Excel containing all the candidate detail for this JD since it is a volume hiring JD"
-            popover-trigger="'mouseenter'"
-            popover-placement='bottom'
-            popover-append-to-body='true'
-          )
-            span Upload Excel
-      li.m-r-xs.pull-left(title='Download Cv')
-        // Todo: Directive isolation App
-        button.btn.btn-success.btn-sm(ng-if='viewdata.getApplicants({checked: true}, "id").length>0' ng-click='App.downloadApplicant(viewdata.getApplicants({checked: true}, "id"))') Download CV(s)
-      li.m-r-xs.pull-right: a.h5.font-bold.b-a(
-        ng-class="buttons.highlight == 'view'?'btn-info':'b-info text-info ' "
-        ng-show="buttons.view"
-        ui-sref='job.view({jobId:viewdata.job.id || viewdata.job.data.id})') View JD
-
-      li.m-r-xs.pull-right: a.h5.font-bold.b-a(
-        ng-class="buttons.highlight == 'view-applicants'?'btn-success b-success':'b-info text-info' "
-        ng-show="buttons.viewApplicants && (viewdata.job.consultantResponse === 1 || viewdata.job.data.consultantResponse === 1 || JobSuggest.enabled)"
-        ui-sref='job.applicants.list({jobId:viewdata.job.id || viewdata.job.data.id, status:"All"})'
-      ) View Applicants
+          span Add Package
 
 
-      li.m-r-xs.pull-right: a.h5.font-bold.b-a.btn-success.b-success(
-        ng-show="JobSuggest.enabled && (viewdata.job.is_hidden || viewdata.job.data.is_hidden)"
-        ng-click='UnhideJD(viewdata.job.id || viewdata.job.data.id)'
-      ) Unhide JD
-
-      li.m-r-xs.pull-right.m-t-xs(ng-if='viewdata.sampleCvNav && viewdata.sampleCvNav.next !== -1')
-        a.fa.h5.font-bold.b-a.btn.text-info.b-info(style='padding:0 6px;' ui-sref='job.sample-cv({jobId: {{viewdata.data.id}}, sampleCvId: {{viewdata.sampleCvNav.next}}})')
-          i.fa.fa-sm.fa-chevron-right(title='Next Sample CV')
-      li.m-r-xs.pull-right.m-t-xs(ng-if='viewdata.sampleCvNav')
-        .h4 {{viewdata.sampleCvNav.index + 1}}
-      li.m-r-xs.pull-right.m-t-xs(ng-if='viewdata.sampleCvNav && viewdata.sampleCvNav.prev !== -1')
-        a.fa.h5.font-bold.b-a.btn.text-info.b-info(style='padding:0 6px;' ui-sref='job.sample-cv({jobId: {{viewdata.data.id}}, sampleCvId: {{viewdata.sampleCvNav.prev}}})')
-          i.fa.fa-sm.fa-chevron-left(title='Previous Sample CV')
 
   .h5.btn-info.b-a.b-info.font-bold

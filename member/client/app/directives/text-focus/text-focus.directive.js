@@ -4,8 +4,8 @@ angular.module('uiGenApp')
     scope: {
       ui: '=',
     },
-    link: (scope, element, attrs) => {
-      if (scope.ui) scope.ui.setfocus = () => $timeout(() => element[0].focus());
+    link: (scope, element) => {
+      if (scope.ui) Object.assign(scope.ui, { setfocus: () => $timeout(() => element[0].focus()) });
     },
   }));
 

@@ -1,17 +1,13 @@
-angular.module('uiGenApp')
-  .controller('AppController', function(
-    QuarcService, $window, $uibModal, $state, $rootScope, Restangular, URLS,
-    $http, $stateParams, JobSuggest, Session
-  ) {
-    const Page = QuarcService.Page;
-    const User = QuarcService.User;
-
+class AppController {
+  constructor($window, $uibModal, $state, $rootScope, URLS,
+              $http, $stateParams, Session, Page) {
     const vm = this;
+    this.Page = Page;
     vm.$stateParams = $stateParams;
-    vm.userinfo = User.userinfo;
-    vm.states = User.states;
-    vm.JobSuggest = JobSuggest;
     vm.Session = Session;
+
+    vm.userinfo = this.Session.read('userinfo');
+    vm.states = this.Session.read('states');
 
     vm.Math = Math;
     vm.URLS = URLS;
@@ -34,6 +30,7 @@ angular.module('uiGenApp')
         isAdmin: vm.Session.read('ROLE_ADMIN'),
       },
     };
+
     vm.updateNavigationBar = (currentState, stateParams) => {
       let navbarHeaderColor = 'bg-primary';
       let navbarCollapseColor = 'bg-info';
@@ -50,35 +47,36 @@ angular.module('uiGenApp')
 
     // keeps track of state change and hides sidebar view for mobile
     /* eslint angular/on-watch: 0 */
-    $rootScope.$on('$stateChangeStart', (ev, to, toParams, from, fromParams) => {
-      $rootScope.previousState = from.name;
-      $rootScope.currentState = to.name;
+    $rootScope.$on('$stateChangeStart', (ev, to, toParams, from) => {
+      Object.assign($rootScope, {
+        previousState: from.name,
+        currentState: to.name,
+      });
       vm.app.settings.offScreen = false;
       vm.app.settings.mobileHeader = false;
       vm.updateNavigationBar($rootScope.currentState, toParams);
     });
-
-    $rootScope
-      .$on('AdminView', () => vm.app.settings.isAdmin = vm.Session.read('ROLE_ADMIN'));
 
     vm.Page = Page; // Set Page title
     vm.$state = $state;
 
     // Applicant search related Functions
     vm.Applicants = {
-      select: function gotoApplicant($item) {
+      select: ($item) => {
         vm.Applicants.searchText = '';
         $state.go('applicant.view', { applicantId: $item.id });
       },
 
-      get: function searchApplicants(searchText) {
-        return Restangular
-          .all('search')
-          .getList({ type: 'applicants', q: searchText, offset: 0, limit: 15, fl: 'id,name' })
-          .then((response) => {
-            return response;
-          });
-      },
+      get: (searchText) => $http
+        .get('/search', {
+          params: {
+            type: 'applicants',
+            q: searchText,
+            offset: 0,
+            limit: 15,
+            fl: 'id,name',
+          },
+        }),
 
       noResults: false,
       loadingRegions: false,
@@ -99,17 +97,21 @@ angular.module('uiGenApp')
       },
     };
 
-    vm.showNavJobs = function showNavJobs() {
+    vm.showCustomerSideBar = function showNavJobs() {
       return [
-        'references.list', 'applicants.list', 'job.view', 'job.applicants.list',
-        'job.references.list', 'job.interviews.list', 'job.applicants.new',
-        'job.sample-cv', 'jobs.suggestions',
+        'packages.index',
+        'customer.view',
+        'customer.packages.index',
+        'customer.packages.create',
+        'customer.package.update',
+        'shipment.view',
+        'shipment.packages.index',
       ].includes($state.current.name);
     };
 
     vm.downloadOrder = (ids) => {
       // ApplicantIds is array contatining applicant id to download cvs
-      const modalInstance = $uibModal.open({
+      $uibModal.open({
         templateUrl: 'app/directives/download-resume/download-resume.html',
         controller: 'DownloadResumeController',
         controllerAs: 'DownloadResume',
@@ -124,7 +126,7 @@ angular.module('uiGenApp')
 
     vm.downloadPackage = function downloadApplicant(ids) {
       // ApplicantIds is array contatining applicant id to download cvs
-      const modalInstance = $uibModal.open({
+      $uibModal.open({
         templateUrl: 'app/directives/download-resume/download-resume.html',
         controller: 'DownloadResumeController',
         controllerAs: 'DownloadResume',
@@ -137,26 +139,22 @@ angular.module('uiGenApp')
       });
     };
 
-    vm.ApplyToQuezx = function(candidateName, candidateID) {
+    vm.ApplyToQuezx = (candidateName, candidateID) => {
       // ApplicantIds is array contatining applicant id to download cvs
-      const modalInstance = $uibModal.open({
+      $uibModal.open({
         templateUrl: 'app/directives/apply-to-quezx/apply-to-quezx.html',
-        controller: 'ApplyToQuezXController',
+        controller: 'ApplyToShoppReController',
         controllerAs: '$ctrl',
         resolve: {
-          candidateName: ()=> candidateName,
-          candidateId: ()=> candidateID,
+          candidateName: () => candidateName,
+          candidateId: () => candidateID,
         },
-      });
-
-      modalInstance.result.then(data => {
-
       });
     };
 
     vm.addFollower = function addFollower(follower, applicantId) {
       // ApplicantIds is array contatining applicant id to download cvs
-      const modalInstance = $uibModal.open({
+      $uibModal.open({
         templateUrl: 'app/directives/download-resume/download-resume.html',
         controller: 'AddFollowerController',
         controllerAs: 'AddFollower',
@@ -176,7 +174,7 @@ angular.module('uiGenApp')
     vm.hideExt = () => $window.parent.postMessage({ type: 'RESET' }, '*');
     vm.initiateChat = function initiateChat(user) {
       const url = `${this.URLS.CHAT_SERVER}/initiate?to=${user.mobile || user.number
-      }&email=${user.email}&name=${user.name}&loginSource=quezx`;
+        }&email=${user.email}&name=${user.name}&loginSource=quezx`;
       $window.open(url);
     };
 
@@ -194,16 +192,15 @@ angular.module('uiGenApp')
       event.currentTarget.blur();
     };
 
-    vm.downloadCandidateResume = function downloadCandidateResume(candidate_id) {
+    vm.downloadCandidateResume = (candidateId) => {
       $http
-        .get(`/candidates/${candidate_id}/download`, { params: this.$stateParams.source })
-        .then(({data: resume_link}) => {
+        .get(`/candidates/${candidateId}/download`, { params: this.$stateParams.source })
+        .then(({ data: resume_link }) => {
           $window.open(resume_link, '_blank');
-        })
-        .catch(err=>{console.log(err)});
+        });
     };
 
-    vm.openEmailCandidate = function openEmailCandidate(candidateId, candidateName, candidateEmail) {
+    vm.openEmailCandidate = (candidateId, candidateName, candidateEmail) => {
       $uibModal.open({
         templateUrl: 'app/directives/email-candidate/email-candidate.html',
         controller: 'EmailCandidateController',
@@ -211,27 +208,13 @@ angular.module('uiGenApp')
         windowClass: 'email-view',
         size: 'lg',
         resolve: {
-          candidateId: ()=> candidateId,
-          candidateName: ()=> candidateName,
-          candidateEmail: ()=> candidateEmail,
+          candidateId: () => candidateId,
+          candidateName: () => candidateName,
+          candidateEmail: () => candidateEmail,
         },
       });
     };
 
-    vm.openCandidateFilter = () => {
-      const modalInstance = $uibModal.open({
-        templateUrl: 'app/directives/candidate-filter/candidate-filter.html',
-        controller: 'CandidateController',
-        controllerAs: '$ctrl',
-        windowClass: 'candidate-filter-view',
-        size: 'lg',
-        resolve: {},
-      });
-
-      modalInstance.result.then(() => {
-        // console.log(type);
-      });
-    };
     vm.isBDTeam = () => {
       if (vm.userinfo) {
         const userList = [2621, 1346, 173];
@@ -255,5 +238,9 @@ angular.module('uiGenApp')
         return userList.indexOf(vm.userinfo.id) !== -1;
       }
       return false;
-    }
-  });
+    };
+  }
+}
+
+angular.module('uiGenApp')
+  .controller('AppController', AppController);

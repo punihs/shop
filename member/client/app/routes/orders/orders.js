@@ -18,46 +18,33 @@ angular.module('uiGenApp')
         templateUrl: 'app/routes/orders/new/new.html',
         controller: 'OrderNewController',
         controllerAs: '$ctrl',
-        resolve: {
-          tatdisable: ($q, $state, $location, AllocationDisable) => AllocationDisable
-            .check()
-            .then(disabled => {
-              if (!disabled) return false;
-              AllocationDisable
-                .open()
-                .catch(() => $state.current.name || $state
-                  .go('orders.list', { jobId: $location.path().split('/')[2] }));
-              return $q.reject(true);
-            }),
-          prescreen: ($http) => $http
-            .get('/users/prescreen')
-            .then(({ data: { prescreen } }) => prescreen),
-          currentJob: ($http, $stateParams, JobSuggest) => $http
-            .get(`/jobs/${$stateParams.jobId}`, { params: { auto: JobSuggest.enabled } })
-            .then(({ data }) => {
-              const status = data.job_status;
-              if (status === 'Closed' || status === 'Hold') {
-                alert(`This position is ${status} You cannot upload CV(s) to this position`);
-              }
-              return data;
-            })
-            .catch(() => alert('Job Not Found')),
-        },
       })
       .state('order', {
         abstract: true,
-        url: '/orders/:orderId',
+        url: '/orders/:id',
         template: '<div ui-view></div>',
       })
+      .state('order.show', {
+        url: '',
+        templateUrl: 'app/routes/orders/show/show.html',
+        controller: 'OrderShowController',
+        controllerAs: '$ctrl',
+        resolve: {
+          currentOrder: ($http, $stateParams) => $http
+            .get(`/orders/${$stateParams.id}`)
+            .then(({ data: order }) => order),
+        },
+      })
+
       .state('order.edit', {
         url: '/edit',
-        templateUrl: 'app/routes/jobs/orders/edit/edit.html',
-        controller: 'JobOrderEditController',
-        controllerAs: 'JobOrderEdit',
+        templateUrl: 'app/routes/orders/new/new.html',
+        controller: 'OrderNewController',
+        controllerAs: '$ctrl',
         resolve: {
-          currentJob: (QResolve, $stateParams) => QResolve.currentJob($stateParams.jobId),
-          currentOrderToEdit: (QResolve, $stateParams) =>
-            QResolve.currentOrderToEdit($stateParams.jobId, $stateParams.orderId),
+          currentOrder: ($http, $stateParams) => $http
+            .get(`/orders/${$stateParams.id}`)
+            .then(({ data: order }) => order),
         },
       });
   });

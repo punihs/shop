@@ -41,7 +41,7 @@ class HHLeadController {
   reset(form) {
     this.data = null;
     this.ui.other = null;
-    this.services.map((x) => (x.checked = null));
+    this.services.map((x) => Object.assign(x, { checked: null }));
     form.$setPristine();
   }
 

@@ -6,8 +6,8 @@
     button.pull-right.visible-xs.dk(ng-click='App.hideExt()' ng-if='App.$state.current.name === "extension"')
       i.fa.fa-times
     //- brand
-    a.navbar-brand.text-lt(style='line-height: 44px;width: 258px;background: #4173A9;' ng-class="{'company-logo' : App.app.settings.isAdmin, 'consultant-logo': !App.app.settings.isAdmin}" ui-sref='{{App.$state.current.name !== "extension" ? "dashboard" : ""}}')
-      img.pull-left(style='    width: 30px;margin-top: 5px;' src='assets/images/logo.png', alt='{{App.app.name}}')
+    a.navbar-brand.text-lt(style='line-height: 44px;width: 258px;background: #4173A9;' ng-class="{'company-logo' : App.app.settings.isAdmin, 'consultant-logo': !App.app.settings.isAdmin}" ui-sref='{{App.$state.current.name !== "extension" ? "dash.packages" : ""}}')
+      img.pull-left(style='width: 30px;margin-top: 5px;' src='assets/images/logo.png', alt='{{App.app.name}}')
       span(style='margin-left: -122px;font-weight: 400;font-size: 18px;' title='{{App.app.name}}') {{App.app.name}}
   //- navbar collapse
   .collapse.pos-rlt.navbar-collapse.box-shadow(
@@ -25,32 +25,15 @@
 
     aside
     .col-sm-5.col-md-2: form.w-full.navbar-form.no-padder(role='search' ng-if="!App.userinfo.isBlocked")
-      .form-group.w-full: .input-group.w-full(ng-hide="App.fullPage==true")
-        span.input-group-btn.b-white(style='width: 1%', ng-class='{"b-b": $ctrl.isSearchOpen}', ng-click='$ctrl.isSearchOpen=!$ctrl.isSearchOpen;$ctrl.ui.setfocus();')
-          a.btn.btn-xs
-            i.fa.fa-search
-        input.search.input-sm.no-border.bg-info.text-white.text-md.b-b.b-white(
-          ng-class="{'search-animate': $ctrl.isSearchOpen, 'company-header': App.app.settings.isAdmin}"
-          type='text'
-          ng-model='App.Applicants.searchText'
-          uib-typeahead='applicant.name for applicant in App.Applicants.get($viewValue)'
-          typeahead-on-select='App.Applicants.select($item)'
-          placeholder='Search candidate'
-          style='font-size: 14px;'
-          search-focus
-          ui="$ctrl.ui"
-        )
+
 
     ul.nav.navbar-nav.navbar-right
-      li.nav-menu-item.m-r-sm(ng-if='$ctrl.user.admin_flag')
-        a.no-padder.n-hv(href='')
-          admin-switch(settings='App.app.settings')
       li
         a.n-hv(
           uib-popover-template='"components/navbar/popover.html"'
           popover-trigger='"outsideClick"'
           popover-placement='bottom-right'
-          popover-is-open='$ctrl.isOpen')
+          popover-is-open='NavBar.isOpen')
           i.fa.fa-lg.fa-th.text-white.th-scale-y
       li.nav-menu-item
         a.n-hv(ui-sref='notifications', title='Notifications', href='/notifications')
@@ -60,8 +43,16 @@
           uib-popover-template='"components/navbar/profile-popover.html"'
           popover-trigger='"outsideClick"'
           popover-placement='bottom-right'
-          popover-is-open='$ctrl.isProfPopOpen'
+          popover-is-open='NavBar.isProfPopOpen'
           style='padding: 0 10px;'
         ): div.bg-light.b-info.b-a.text-center(style='height: 30px;width: 30px;border-radius: 50%;')
-            span.text-md.text-u-c(style='color: #4675b6;line-height: 1.7em;' ng-bind='$ctrl.userInitial')
-  admin-view(ng-if='App.app.settings.isAdmin' settings='App.app.settings')
+            span.text-md.text-u-c(
+              ng-if='!NavBar.user.profile_photo_url'
+              style='color: #4675b6;line-height: 1.7em;'
+              ng-bind='NavBar.userInitial'
+            )
+            img(
+              ng-if='NavBar.user.profile_photo_url'
+              ng-src='{{NavBar.user.profile_photo_url}}'
+              style='height: 30px;width: 30px;border-radius: 50%;'
+            )

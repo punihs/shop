@@ -1,7 +1,6 @@
-'use strict';
 
 angular.module('uiGenApp')
-  .config(function ($stateProvider) {
+  .config(($stateProvider) => {
     $stateProvider
       .state('notifications', {
         url: '/notifications',

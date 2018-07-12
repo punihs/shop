@@ -8,7 +8,12 @@
     ]}]
   },
   "globals": {
-    "angular": true
+    "angular": true,
+    "$": true,
+    "moment": true,
+    "io": true,
+    "_": true,
+    "String": true
   }
 
 }

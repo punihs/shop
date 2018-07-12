@@ -1,4 +1,19 @@
 .accounts {
+  .hover-wrap {
+    .display-on-hover {
+      display: none;
+    }
+  }
+
+  .hover-wrap:hover {
+    .display-on-hover {
+      display: block !important;
+    }
+  }
+
+  .no-margin-bottom {
+    margin-bottom: 0px !important;
+  }
   .nav {
       > li {
         &.active {

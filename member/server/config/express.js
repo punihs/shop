@@ -16,7 +16,7 @@ import path from 'path';
 import config from './environment';
 
 
-export default function(app) {
+export default function (app) {
   var env = app.get('env');
 
   app.use(compression());
@@ -25,11 +25,11 @@ export default function(app) {
   app.use(methodOverride());
   app.use(cookieParser());
 
-  app.use(function(req, res, next){
+  app.use(function (req, res, next) {
     req.user = {
-      id : 112,
-      client_id : 173,
-      group_id : 2
+      id: 112,
+      client_id: 173,
+      group_id: 2,
     };
     return next();
   });
@@ -43,7 +43,7 @@ export default function(app) {
   }
 
   if ('development' === env) {
-    app.use(require('connect-livereload')({port : 12345}));
+    app.use(require('connect-livereload')({ port: 12345 }));
   }
 
   if ('development' === env || 'test' === env) {

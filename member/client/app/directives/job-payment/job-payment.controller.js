@@ -17,26 +17,22 @@ class JobPaymentController {
     };
     this.$http.get(`/jobs/${this.job.id}/clientPayments`)
       .then(({ data: response }) => {
-        const paymentDetailsData = _.without(response[0].concat(response[1]), null, undefined);
-        this.paymentDetails = paymentDetailsData;
-        const groupsPaymentDetails = _.uniq(_.pluck(paymentDetailsData,
+        const paymentDetails = _.without(response[0].concat(response[1]), null, undefined);
+        this.paymentDetails = paymentDetails;
+        const groupsPaymentDetails = _.uniq(_.pluck(paymentDetails,
           'start_time')).sort().reverse();
         this.groupsPaymentDetails = groupsPaymentDetails;
-        const paymentDetailsCommentsData = _.uniq(paymentDetailsData, function (item, index, a) {
-          return item.consultant_comment;
-        });
-        const internalCommentData = _.uniq(paymentDetailsData, function (item, index, a) {
-          return item.internal_comment;
-        });
+        const comments = _.uniq(paymentDetails, (item) => item.consultant_comment);
+        const internalComments = _.uniq(paymentDetails, (item) => item.internal_comment);
 
-        this.paymentDetailsComments = _.without(_.pluck(paymentDetailsCommentsData,
+        this.paymentDetailsComments = _.without(_.pluck(comments,
           'consultant_comment'), null);
-        this.additionalComments = _.without(_.pluck(internalCommentData,
+        this.additionalComments = _.without(_.pluck(internalComments,
           'internal_comment'), null);
         this.$http.get(`/jobs/${this.job.id}/clientPaymentsDesigId`)
-        .then(({ data: desigantionData }) => {
-          this.jobDesignationId = desigantionData;
-          this.clientPaymentDesigId = desigantionData;
+        .then(({ data: desigantions }) => {
+          this.jobDesignationId = desigantions;
+          this.clientPaymentDesigId = desigantions;
         })
         .catch(err => this.$log.error('Error while getting client payments designation id', err));
       })

@@ -1,5 +1,5 @@
 {
-  "name": "ops",
+  "name": "ui-gen",
   "version": "0.0.0",
   "main": "server/app.js",
   "dependencies": {
@@ -11,6 +11,7 @@
     "errorhandler": "^1.4.2",
     "express": "^4.13.3",
     "grunt-cli": "^1.2.0",
+    "jade-bootstrap": "^1.0.14",
     "lodash": "^4.4.0",
     "method-override": "^2.3.5",
     "morgan": "~1.6.1",
@@ -81,6 +82,7 @@
     "karma-spec-reporter": "~0.0.20",
     "mocha": "^2.2.5",
     "open": "~0.0.4",
+    "precommit-hook": "^3.0.0",
     "proxyquire": "^1.0.1",
     "requirejs": "~2.1.11",
     "sinon": "^1.16.1",
@@ -93,12 +95,17 @@
     "npm": "^3.8.6"
   },
   "scripts": {
-    "start": "grunt serve",
+    "start": "node server",
+    "lint": "eslint --fix --ext .js --ignore-path .gitignore ./client/",
     "test": "grunt test",
     "build": "bower install && grunt build",
-    "staging-deploy": "grunt build && rsync -avh dist/ pulse@staging-app1.shoppre.com:~/shoppre/ops.dist",
-    "live-deploy": "rsync -avh dist/ pulse@35.192.38.127:~/shoppre/ops.dist",
-    "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
+    "staging-deploy": "rsync -avh dist/ pulse@staging-app1.shoppre.com:~/shoppre/member.dist",
+    "live-deploy": "rsync -avh dist/ pulse@35.192.38.127:~/shoppre/member.dist",
+    "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update",
+    "validate": "npm ls"
   },
-  "private": true
+  "private": true,
+  "pre-commit": [
+    "lint"
+  ]
 }

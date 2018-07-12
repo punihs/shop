@@ -1,22 +1,22 @@
 class CareerController {
-  constructor($state, $timeout, $sce, $http, Session, URLS, QuarcService, CareerModal, toaster) {
+  constructor($state, $timeout, $sce, $http, Session, URLS, CareerModal, toaster, Page) {
     this.$state = $state;
     this.$timeout = $timeout;
     this.$sce = $sce;
     this.$http = $http;
     this.Session = Session;
     this.URLS = URLS;
-    this.QuarcService = QuarcService;
     this.CareerModal = CareerModal;
+    this.Page = Page;
     this.toaster = toaster;
     this.user = this.Session.read('userinfo');
     if (!this.user.franchise) return this.$state.go('dashboard');
-    this.$onInit();
+    return this.$onInit();
   }
 
   $onInit() {
     this.ui = { site: '' };
-    const Page = this.QuarcService.Page;
+    const Page = this.Page;
     Page.setTitle('Career Page');
     this.getClient();
   }
@@ -43,7 +43,7 @@ class CareerController {
       .post('/clients/company', this.data)
       .then(() => {
         this.ui.site = '';
-        this.toaster.pop(this.QuarcService.toast('success', 'Update Successfully', ''));
+        this.toaster.pop('success', 'Update Successfully', '');
         this.$timeout(() => {
           this.ui.site = this.$sce.trustAsResourceUrl(`${this.URLS.MICROSITE}/${this.data.slug}`);
         }, 1000);

@@ -4,24 +4,24 @@
       li.n-hv(style='padding-bottom: 5px;')
         a.no-hover.b-b.b-light.lter.auto(href='')
           span.pull-right
-          span.font-bold(translate='aside.nav.DASHBOARD') My Account
+          span.font-bold(translate='aside.nav.DASHBOARD') My Address
         ul.nav.dk
           li(ui-sref-active='active')
             a(ui-sref='accounts.profile')
-              span Profile Details
-          li(ui-sref-active='active' ng-if='App.userinfo.admin_flag')
-            a(ui-sref='accounts.company')
-              span Company Details
+              span Contact Information
+          li(ui-sref-active='active')
+            a(ui-sref='accounts.address-list')
+              span Address Book
           li(ui-sref-active='active')
             a(ui-sref='accounts.preferences')
-              span Preferences
-          li(ui-sref-active='active' ng-if='App.userinfo.admin_flag')
+              span Shipping Preferences
+          li(ui-sref-active='active')
             a(ui-sref='accounts.billing')
-              span Billing Details
+              span Account Documents
           li(ui-sref-active='active' ng-if='App.userinfo.admin_flag')
             a(ui-sref='accounts.transaction')
               span Transaction PIN
-          li(ui-sref-active='active')
+          li(ui-sref-active='active' ng-if='App.userinfo.admin_flag')
             a(ui-sref='accounts.badge')
               span Badge
               b.badge.badge-sm.bg-danger.rounded.text-u-c.m-l-sm New

@@ -1,80 +1,99 @@
-'use strict';
-
-angular.module('uiGenApp')
-  .controller('ProfileController', function (Restangular, QuarcService, Auth, toaster, $http, $state, $log) {
-    const vm = this;
-    this.toaster = toaster;
+class ProfileController {
+  constructor(
+    Page, $state, $stateParams, $http, toaster, URLS
+  ) {
+    this.Page = Page;
     this.$http = $http;
     this.$state = $state;
-    this.$log = $log;
-    this.QuarcService = QuarcService;
-    const Page = this.QuarcService.Page;
-    Page.setTitle('Profile Details - My Account');
-    const clients = Restangular.all('clients');
-    const users = Restangular.all('users');
+    this.$stateParams = $stateParams;
+    this.toaster = toaster;
+    this.URLS = URLS;
 
-    clients.customGET('profile').then(res => {
-      vm.data= res.plain();
-    }).catch(err => {
-      this.$log.error(err);
-    });
-    vm.create = () => {
-      Restangular
-        .all('clients/profile')
-        .post(vm.data).then(res => {
-        Auth.setSessionData().then(() => location.reload(true));
-      }).catch(err => {
-        vm.error = "Error occurred while updating the record";
-        this.$log.error(err);
-      })
+    this.Number = Number;
+    this.submitting = false;
+    this.data = {};
+    this.$onInit();
+  }
+
+  $onInit() {
+    this.Page.setTitle('Membership Profile');
+
+    this.Country = {
+      select: ($item) => {
+        this.data.country_id = $item.id;
+        this.Country.model = $item.name;
+      },
+
+      get: (search) => this.$http
+        .get('/search', {
+          params: {
+            type: 'Country',
+            q: search,
+          },
+        })
+        .then(({ data: { items } }) => items),
+
+      noResults: false,
+      loadingCountry: false,
     };
 
-    vm.sendMail = function(user_id, email) {
-      alert('Mail will sent to '+ email+'.');
+    this.getMe();
+  }
 
-      let data = { user_id, email };
-      Restangular
-        .all('users/verifyMail')
-        .post(data).then(res => {
-        Auth.setSessionData().then(() => location.reload(true));
+  getMe() {
+    this
+      .$http
+      .get('/users/me')
+      .then(({ data: me }) => {
+        this.data = me;
+      });
+  }
 
-      }).catch(err => {
-        vm.error = "Error occurred while sending verification mail";
-        console.log("err")
-      })
-    }
-
-    vm.sendOtp = function(user_id, number) {
-      alert('Sms will be sent to '+ number+' containing otp.');
-
-      const data = { user_id, number };
-      Restangular
-        .all('users/verifyNumber')
-        .post(data).then(res => {
-        Auth.setSessionData().then(function () {
-          return location.reload(true);
-        });
-
-      }).catch(err => {
-        vm.error = "Error occurred while sending otp";
-        console.log("err")
-      })
-    }
-
-    vm.verifyNumber = function (otpCode) {
-      if(!otpCode) {
-        this.toaster.pop(this.QuarcService.toast('error', 'Please provide the otp code received on registered mobile number.'));
-        return;
+  validateForm(form) {
+    this.$stateParams.autofocus = '';
+    Object.keys(form).filter(x => !x.startsWith('$')).forEach((f) => {
+      if (form[f] && form[f].$invalid) {
+        if (!this.$stateParams.autofocus) this.$stateParams.autofocus = f;
+        form[f].$setDirty();
       }
-      this
-        .$http.post(`/userNumbers/${otpCode}/verify`)
-        .then(({data}) => {
-          if(data.message === 'error') return this.toaster.pop(this.QuarcService.toast('error', 'Invalid Otp provided.'));
-          this.toaster.pop(this.QuarcService.toast('success', 'Otp verified successfully'));
-          this.$state.go("applicants.list",{status: 'All'});
-        })
-        .catch((err) => this.toaster.pop(this.QuarcService.toast('error', 'Error occurred while verifying contact number')));
-    }
+    });
+    return form.$valid;
+  }
 
+  create(profileForm) {
+    if (this.submitting) return null;
+    this.submitting = true;
+    this.clickUpload = true;
 
-  });
+    const form = this.validateForm(profileForm);
+
+    const data = Object.assign({ }, this.data);
+    if (!form) return (this.submitting = false);
+
+    return this.$http
+      .put('/users/me', data)
+      .then(() => {
+        this.submitting = false;
+        this
+          .toaster
+          .pop('success', 'Profile Updated Successfully.', '');
+      })
+      .catch((err) => {
+        this.submitting = false;
+
+        const { field } = err.data;
+        profileForm[err.data.field].$setValidity('required', false);
+        $(`input[name="${field}"]`)[0].focus();
+
+        this
+          .toaster
+          .pop('error', 'There was problem creating address. Please contact Shoppre team.');
+
+        this.error = err.data;
+      });
+  }
+}
+
+angular.module('uiGenApp')
+  .controller('ProfileController', ProfileController);
+

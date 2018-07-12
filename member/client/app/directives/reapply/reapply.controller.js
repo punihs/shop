@@ -26,11 +26,8 @@
           }
         },
 
-        get: (search) => {
-          return this.$http
-            .get('/search', { params: { q: search, type: 'partner_clients' } })
-            .then(({ data }) => data);
-        },
+        get: (search) => this.$http
+            .get('/search', { params: { q: search, type: 'partner_clients' } }),
         noResults: false,
         loadingClients: false,
       };

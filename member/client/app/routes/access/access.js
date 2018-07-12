@@ -1,7 +1,7 @@
 
 
 angular.module('uiGenApp')
-  .config(function ($stateProvider) {
+  .config(($stateProvider) => {
     $stateProvider
       .state('access', {
         abstract: true,

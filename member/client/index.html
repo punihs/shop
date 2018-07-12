@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="bower_components/angularjs-slider/dist/rzslider.css" />
   <link rel="stylesheet" href="bower_components/AngularJS-Toaster/toaster.css" />
   <link rel="stylesheet" href="bower_components/isteven-angular-multiselect/isteven-multi-select.css" />
+  <link rel="stylesheet" href="bower_components/flag-icon-css/css/flag-icon.min.css" />
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:css({.tmp,client}) app/app.css -->
@@ -31,6 +32,8 @@
   <link rel="stylesheet" href="app/css/source-sans-pro.css">
   <!-- endinjector -->
   <!-- endbuild -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.5.1/socket.io.min.js"></script>
 
 </head>
 <body>
@@ -54,14 +57,14 @@
       <div ui-butterbar=""></div>
       <a href="" ui-toggle-class="off-screen" data-target=".app-aside" class="off-screen-toggle hide"></a>
       <div>
+        <toaster-container  toaster-options="{'position-class': 'toast-bottom-right'}"></toaster-container>
         <announcement></announcement>
         <div class="hbox">
-          <div ng-if="App.showNavJobs()" class="col w-md">
+          <div ng-if="App.showCustomerSideBar()" class="col w-md">
             <!--<div class="wrapper b-b bg">-->
             <!--<a ui-sref="app.mail.compose" class="btn btn-sm btn-danger w-xs font-bold" href="#/app/mail/compose">Manage JD</a>-->
             <!--</div>-->
-            <navigation-jobs ng-if='!App.JobSuggest.enabled'></navigation-jobs>
-            <job-nav ng-if='App.JobSuggest.enabled'></job-nav>
+            <customer-nav></customer-nav>
           </div>
           <div ui-view class="col"></div>
         </div>
@@ -123,142 +126,119 @@
 <script src="bower_components/isteven-angular-multiselect/isteven-multi-select.js"></script>
 <script src="bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js"></script>
 <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-socket-io/socket.js"></script>
+<script src="bower_components/angular-base64-upload/src/angular-base64-upload.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 <!-- build:js(.tmp) app/app.js -->
 <script src="app/app.js"></script>
 <!-- injector:js -->
-<script src="components/util/util.module.js"></script>
-<script src="app/routes/accounts/profile/profile.controller.js"></script>
-<script src="app/core/qui.components/contenteditable.js"></script>
-<script src="app/core/qui.components/form.js"></script>
-<script src="app/core/qui.components/keypress.js"></script>
-<script src="app/core/qui.components/scroll.to.bottom.js"></script>
-<script src="app/core/qui.core/constants/auth-events.js"></script>
-<script src="app/core/qui.core/constants/currency.js"></script>
-<script src="app/core/qui.core/services/auth.interceptor.js"></script>
-<script src="app/core/qui.core/services/auth.js"></script>
-<script src="app/core/qui.core/services/moment.js"></script>
-<script src="app/core/qui.core/services/page.js"></script>
-<script src="app/core/qui.core/services/session.js"></script>
-<script src="app/core/qui.core/services/user.js"></script>
+<script src="app/routes/accounts/transaction/transaction.controller.js"></script>
+<script src="app/app.controller.js"></script>
 <script src="app/directives/add-follower/add-follower.controller.js"></script>
-<script src="app/directives/allocate-to/allocate-to.controller.js"></script>
 <script src="app/directives/announcement-modal/announcement-modal.controller.js"></script>
-<script src="app/directives/apply-to-quezx/apply-to-quezx.controller.js"></script>
-<script src="app/directives/candidate-filter/candidate-filter.js"></script>
 <script src="app/directives/change-state/change-state.service.js"></script>
 <script src="app/directives/click-tocopy/click-tocopy.controller.js"></script>
+<script src="app/directives/common.directive.js"></script>
 <script src="app/directives/confirm-dialog/confirm-dialog.service.js"></script>
-<script src="app/directives/cvpipeline-warn/cvpipeline-warn.directive.js"></script>
 <script src="app/directives/directive-header/directive-header.directive.js"></script>
 <script src="app/directives/directive-header/directive-header.service.js"></script>
 <script src="app/directives/download-resume/download-resume.controller.js"></script>
-<script src="app/directives/drive/drive.controller.js"></script>
 <script src="app/directives/email-candidate/email-candidate.controller.js"></script>
 <script src="app/directives/full-screen-content/full-screen-content.directive.js"></script>
 <script src="app/directives/job-comment/job-comment.directive.js"></script>
 <script src="app/directives/job-detail/job-detail.directive.js"></script>
 <script src="app/directives/job-payment/job-payment.controller.js"></script>
-<script src="app/directives/job-qna/job-qna.controller.js"></script>
-<script src="app/directives/job-qna/job-qna.directive.js"></script>
-<script src="app/directives/job-qna/post-answer-question/post-answer-question.controller.js"></script>
-<script src="app/directives/job-qna/post-job-question/post-job-question.controller.js"></script>
 <script src="app/directives/logout/logout.controller.js"></script>
 <script src="app/directives/notify-count/notify-count.directive.js"></script>
-<script src="app/directives/promote-jd/promote-jd.service.js"></script>
+<script src="app/directives/package-filter/package-filter.js"></script>
 <script src="app/directives/reapply/reapply.controller.js"></script>
 <script src="app/directives/reapply/reapply.service.js"></script>
 <script src="app/directives/reauth/reauth.directive.js"></script>
 <script src="app/directives/social-share/social-share.controller.js"></script>
-<script src="app/directives/tawk/tawk.directive.js"></script>
 <script src="app/directives/text-focus/text-focus.directive.js"></script>
-<script src="app/directives/text-inputs/text-inputs.directive.js"></script>
 <script src="app/directives/upload-excel/upload-excel.service.js"></script>
+<script src="app/directives/upload-photos/upload-photos.controller.js"></script>
 <script src="app/event.js"></script>
-<script src="app/factories/AllocationDisable/AllocationDisable.service.js"></script>
 <script src="app/factories/ExcelDownload/ExcelDownload.service.js"></script>
 <script src="app/factories/QCONFIG/QCONFIG.service.js"></script>
-<script src="app/factories/QResolve/QResolve.service.js"></script>
-<script src="app/factories/QuarcService/QuarcService.service.js"></script>
 <script src="app/factories/URLS/URLS.service.js"></script>
-<script src="app/factories/angular-base64-upload.js"></script>
-<script src="app/factories/applicantsFactory/applicantsFactory.service.js"></script>
 <script src="app/factories/prototype/prototype.js"></script>
-<script src="app/filters/common/common.fitler.js"></script>
-<script src="app/javascript.js"></script>
-<script src="app/routes/access/access.controller.js"></script>
+<script src="app/factories/qui.components/before.bottom.js"></script>
+<script src="app/factories/qui.components/contenteditable.js"></script>
+<script src="app/factories/qui.components/form.js"></script>
+<script src="app/factories/qui.components/keypress.js"></script>
+<script src="app/factories/qui.components/scroll.to.bottom.js"></script>
+<script src="app/factories/qui.core/constants/auth-events.js"></script>
+<script src="app/factories/qui.core/constants/currency.js"></script>
+<script src="app/factories/qui.core/services/auth.interceptor.js"></script>
+<script src="app/factories/qui.core/services/auth.js"></script>
+<script src="app/factories/qui.core/services/moment.js"></script>
+<script src="app/factories/qui.core/services/page.js"></script>
+<script src="app/factories/qui.core/services/session.js"></script>
+<script src="app/factories/qui.core/services/user.js"></script>
 <script src="app/routes/access/access.js"></script>
 <script src="app/routes/access/oauth/oauth.controller.js"></script>
-<script src="app/routes/accounts/accounts.controller.js"></script>
 <script src="app/routes/accounts/accounts.js"></script>
+<script src="app/routes/accounts/address/address-list.controller.js"></script>
+<script src="app/routes/accounts/address/address-new.controller.js"></script>
 <script src="app/routes/accounts/badge/badge.controller.js"></script>
 <script src="app/routes/accounts/billing/billing.controller.js"></script>
 <script src="app/routes/accounts/client-tnc/client-tnc.controller.js"></script>
-<script src="app/routes/accounts/company/company.controller.js"></script>
 <script src="app/routes/accounts/download-extension/download-extension.controller.js"></script>
 <script src="app/routes/accounts/empanelment/empanelment.controller.js"></script>
+<script src="app/routes/accounts/preferences/preferencesController.js"></script>
 <script src="app/routes/accounts/profile-detail/profile-detail.controller.js"></script>
-<script src="app/core/qui.components/before.bottom.js"></script>
+<script src="app/routes/accounts/profile/profile.controller.js"></script>
 <script src="app/routes/accounts/terminated-message/terminated-message.controller.js"></script>
-<script src="app/routes/accounts/transaction/transaction.controller.js"></script>
-<script src="app/routes/applicants/applicants.js"></script>
-<script src="app/routes/applicants/list/list.controller.js"></script>
-<script src="app/routes/applicants/view/view.controller.js"></script>
+<script src="app/directives/add-comments/add-comments.controller.js"></script>
 <script src="app/routes/calendar/calendar.controller.js"></script>
 <script src="app/routes/calendar/calendar.js"></script>
 <script src="app/routes/career/career.controller.js"></script>
 <script src="app/routes/career/career.js"></script>
-<script src="app/routes/dashboard/dashboard.controller.js"></script>
-<script src="app/routes/dashboard/dashboard.js"></script>
+<script src="app/routes/customers/customer-header/customer-header.directive.js"></script>
+<script src="app/routes/customers/customers.js"></script>
+<script src="app/routes/customers/list/list.controller.js"></script>
+<script src="app/routes/customers/packages/create/create.controller.js"></script>
+<script src="app/routes/customers/packages/index/index.controller.js"></script>
+<script src="app/routes/customers/packages/packages.js"></script>
+<script src="app/routes/customers/view/view.controller.js"></script>
+<script src="app/routes/dash/createShipmentRequest/shipment-request.controller.js"></script>
+<script src="app/routes/dash/createShipmentRequest/shipment-request.js"></script>
+<script src="app/routes/dash/dash.js"></script>
+<script src="app/routes/dash/packages/packages.controller.js"></script>
 <script src="app/routes/extension/extension.js"></script>
 <script src="app/routes/hhlead/hhlead-new/hhlead-new.controller.js"></script>
 <script src="app/routes/hhlead/hhlead.js"></script>
-<script src="app/routes/jobs/applicants/applicants.js"></script>
-<script src="app/routes/jobs/applicants/edit/edit.controller.js"></script>
-<script src="app/routes/jobs/applicants/list/list.controller.js"></script>
-<script src="app/routes/jobs/applicants/new/new.controller.js"></script>
-<script src="app/routes/jobs/force-allocation/force-allocation.controller.js"></script>
-<script src="app/routes/jobs/jobs.controller.js"></script>
-<script src="app/routes/jobs/jobs.js"></script>
-<script src="app/routes/jobs/list/list.controller.js"></script>
-<script src="app/routes/jobs/manage-list/manage-list.controller.js"></script>
-<script src="app/routes/jobs/my-client/my-client.controller.js"></script>
-<script src="app/routes/jobs/new/new.controller.js"></script>
-<script src="app/routes/jobs/qlist/qlist.controller.js"></script>
-<script src="app/routes/jobs/suggestions/suggest.service.js"></script>
-<script src="app/routes/jobs/suggestions/suggestions.controller.js"></script>
-<script src="app/routes/jobs/view/view.controller.js"></script>
+<script src="app/routes/loyaltypoints/loyaltyController.js"></script>
+<script src="app/routes/loyaltypoints/loyaltypoint.js"></script>
+<script src="app/routes/membership/membership-controller.js"></script>
+<script src="app/routes/membership/membership.js"></script>
 <script src="app/routes/notifications/notifications.controller.js"></script>
 <script src="app/routes/notifications/notifications.js"></script>
-<script src="app/routes/orders/edit/edit.controller.js"></script>
 <script src="app/routes/orders/list/list.controller.js"></script>
 <script src="app/routes/orders/new/new.controller.js"></script>
 <script src="app/routes/orders/orders.js"></script>
+<script src="app/routes/orders/show/show.controller.js"></script>
+<script src="app/routes/packages/charges/charges.controller.js"></script>
+<script src="app/routes/packages/index/index.controller.js"></script>
+<script src="app/routes/packages/items/items.controller.js"></script>
+<script src="app/routes/packages/packages.js"></script>
+<script src="app/routes/packages/show/show.controller.js"></script>
 <script src="app/routes/report/report-list/report-list.controller.js"></script>
 <script src="app/routes/report/report-overview/report-overview.controller.js"></script>
 <script src="app/routes/report/report.js"></script>
-<script src="components/admin-switch/admin-switch.directive.js"></script>
-<script src="components/admin-view/admin-view.directive.js"></script>
-<script src="components/aside/aside.controller.js"></script>
+<script src="app/routes/shipments/list.controller.js"></script>
+<script src="app/routes/shipments/shipments.js"></script>
 <script src="components/aside/aside.directive.js"></script>
 <script src="components/career-modal/career-modal.service.js"></script>
-<script src="components/comet-chat/comet-chat.controller.js"></script>
-<script src="components/comet-chat/comet-chat.directive.js"></script>
 <script src="components/comment/comment.directive.js"></script>
-<script src="components/drive-applicant/drive-applicant.directive.js"></script>
-<script src="components/extension-jobs-nav/ext-jobs-nav.controller.js"></script>
-<script src="components/extension-jobs-nav/ext-jobs-nav.directive.js"></script>
+<script src="components/customer-nav/customer-nav.directive.js"></script>
 <script src="components/footer/footer.directive.js"></script>
-<script src="components/job-nav/job-nav.directive.js"></script>
 <script src="components/light-box/light-box.directive.js"></script>
 <script src="components/list-modal/list-modal.service.js"></script>
-<script src="components/modal/modal.service.js"></script>
 <script src="components/navbar/navbar.controller.js"></script>
 <script src="components/navbar/navbar.directive.js"></script>
-<script src="components/navigation-jobs/navigation-jobs.controller.js"></script>
-<script src="components/navigation-jobs/navigation-jobs.directive.js"></script>
-<script src="components/navigation/navigation.controller.js"></script>
 <script src="components/navigation/navigation.directive.js"></script>
 <script src="components/payment-tracker/payment-tracker.service.js"></script>
 <script src="components/preferences/preferences.controller.js"></script>
@@ -266,10 +246,8 @@
 <script src="components/quick-state-change/quick-state-change.directive.js"></script>
 <script src="components/region-suggest/region-suggest.controller.js"></script>
 <script src="components/region-suggest/region-suggest.directive.js"></script>
-<script src="components/reject-job/reject-job.service.js"></script>
 <script src="components/show-applicant/show-applicant.service.js"></script>
-<script src="app/app.controller.js"></script>
-<script src="components/util/util.service.js"></script>
+<script src="components/socket/socket.service.js"></script>
 <script src="components/web-notify/web-notify.config.js"></script>
 <!-- endinjector -->
 <!-- endbuild -->

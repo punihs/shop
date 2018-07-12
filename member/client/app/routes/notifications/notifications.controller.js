@@ -40,7 +40,7 @@ class NotificationsController {
       111: 'HIDDEN JD',
     };
 
-    const tagReducer = x => x.reduce((z, x) => Object.assign(z, { [x]: { count: 0 } }), {});
+    const tagReducer = x => x.reduce((z, y) => Object.assign(z, { [y]: { count: 0 } }), {});
     this.categories = [
       {
         title: 'Urgent',
@@ -84,9 +84,10 @@ class NotificationsController {
 
   readOne(note) {
     const notification = note;
+    const id = '_id';
     return this
       .$http
-      .post(`${this.QNOTIFY_API}/notifications/${notification._id}/read`, this.IGNORE_AUTH)
+      .post(`${this.QNOTIFY_API}/notifications/${notification[id]}/read`, this.IGNORE_AUTH)
       .then(() => (notification.read = true))
       .then(() => this.counts.count--);
   }
@@ -101,15 +102,16 @@ class NotificationsController {
 
   unreadOne(note) {
     const notification = note;
+    const id = '_id';
     return this
       .$http
-      .post(`${this.QNOTIFY_API}/notifications/${notification._id}/unread`, this.IGNORE_AUTH)
+      .post(`${this.QNOTIFY_API}/notifications/${notification[id]}/unread`, this.IGNORE_AUTH)
       .then(() => (notification.read = false))
       .then(() => this.counts.count++);
   }
 
   getList() {
-    if (!this.ui.lazyLoad) return;
+    if (!this.ui.lazyLoad) return null;
     this.ui = { lazyLoad: false, loading: true };
 
     return this

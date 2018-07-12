@@ -10,7 +10,7 @@ class NotifyCountController {
 
   $onInit() {
     if (this.Session.isAuthenticated()) {
-      this.fetchNotificationCount();
+      // this.fetchNotificationCount();
       this // listen for notify count updates
         .$scope
         .$on('UpdateNotify', (ev, data) => (this.counts = data));

@@ -1,11 +1,10 @@
 (() => {
   class TransactionController {
-    /*@ngInject*/
-    constructor($http, toaster, QuarcService, Auth) {
+    /* @ngInject*/
+    constructor($http, toaster, Page) {
       this.$http = $http;
       this.toaster = toaster;
-      this.QuarcService = QuarcService;
-      this.Page = this.QuarcService.Page;
+      this.Page = Page;
       this.$onInit();
     }
 
@@ -14,17 +13,20 @@
       this
         .$http
         .get('/clients/transactionPin')
-        .then(({data}) => this.data = data);
+        .then(({ data }) => {
+          this.data = data;
+        });
     }
 
     create() {
-        this
+      this
           .$http
-          .post('/clients/transactionPin',this.data).then(() => {
-              this.toaster.pop(this.QuarcService.toast('success', 'PIN updated Successfully.'));
-          }).catch(() => {
-              this.toaster.pop(this.QuarcService.toast('error', 'Error occurred while updating your pin.'));
-          });
+          .post('/clients/transactionPin', this.data).then(() => {
+            this.toaster.pop('success', 'PIN updated Successfully.');
+          })
+          .catch(() => this
+            .toaster
+            .pop('error', 'Error occurred while updating your pin.'));
     }
   }
 

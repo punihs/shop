@@ -19,7 +19,7 @@ var config = {
 
   // list of files / patterns to load in the browser
   specs: [
-    'e2e/**/*.spec.js'
+    'e2e/**/*.spec.js',
   ],
 
   // Patterns to exclude.
@@ -35,7 +35,7 @@ var config = {
     'browserName': 'chrome',
     'name': 'Fullstack E2E',
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-    'build': process.env.TRAVIS_BUILD_NUMBER
+    'build': process.env.TRAVIS_BUILD_NUMBER,
   },
 
   // ----- The test framework -----
@@ -49,15 +49,15 @@ var config = {
   mochaOpts: {
     reporter: 'spec',
     timeout: 30000,
-    defaultTimeoutInterval: 30000
+    defaultTimeoutInterval: 30000,
   },
 
   // Prepare environment for tests
   params: {
-    serverConfig: require('./server/config/environment')
+    serverConfig: require('./server/config/environment'),
   },
 
-  onPrepare: function() {
+  onPrepare() {
     require('babel-core/register');
     // Load Mocha and Chai + plugins
     require('./mocha.conf');
@@ -70,7 +70,7 @@ var config = {
     );
 
     var serverConfig = config.params.serverConfig;
-  }
+  },
 };
 
 config.params.baseUrl = config.baseUrl;

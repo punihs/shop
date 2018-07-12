@@ -1,37 +1,42 @@
 
-angular.module('uiGenApp')
-  .controller('oAuthCtrl', function (Auth, $location, $cookies, $window, $state, URLS, $rootScope, Session) {
-    const vm = this;
+class OAuthCtrl {
+    /* @ngInject */
+  constructor(
+      Auth, $location, $cookies, $window, $state, URLS, $rootScope, Session, toaster
+    ) {
     const query = $location.search();
     if (query.error) {
-      vm.authErr = {
+      this.authErr = {
         error: query.error,
         error_description: query.error_description,
         code: query.code,
       };
-      return;
+      return null;
     }
 
-    if (query.code) {
-      return Auth
-        .login({ code: query.code })
-        .then(() => Auth
-          .setSessionData()
-          .then(() => {
-            vm.user = Session.read('userinfo');
-            $cookies.put('cc_data', vm.user.id, {
-              expires: 'Thu, 01 Jan 2099 00:00:01 GMT',
-            });
+    if (!query.code) toaster.pop('error', 'Authorization code missing');
+    return Auth
+      .login({ code: query.code })
+      .then(() => Auth
+        .setSessionData()
+        .then(() => {
+          this.user = Session.read('userinfo');
+          $cookies.put('cc_data', this.user.id, {
+            expires: 'Thu, 01 Jan 2099 00:00:01 GMT',
+          });
 
-            const location = $window.location;
-            // Used for updating session
-            location.href = query.state
-              ? `${location.origin}${query.state}`
-              : $state.href('dashboard', { absolute: true });
-          }))
+          const location = $window.location;
+          // Used for updating session
+          location.href = query.state
+            ? `${location.origin}${query.state}`
+            : $state.href('dash.packages', { absolute: true });
+        }))
         .catch(() => {
           const location = $window.location;
           location.href = URLS.OAUTH;
         });
-    }
-  });
+  }
+}
+
+angular.module('uiGenApp')
+  .controller('oAuthCtrl', OAuthCtrl);

@@ -13,25 +13,21 @@ div
             ul.dropdown-menu.pull-right(uib-dropdown-menu='')
               li(ng-repeat="sort in $ctrl.sorts")
                 a(href='#' ng-bind='sort.name' ng-click='$ctrl.sort(sort.key)')
-    job-detail.bg-white-only.w-full.b-b(job="$ctrl.job" style='position: fixed;z-index: 6;height: 40px;')
     .bg-light(style='min-height: 200px;')
       //- Job top cover container
       directive-header(
         viewdata="$ctrl"
         page="{jobOrders:true}"
-        buttons="{buckets:true,interviews:false,references:true,share:true,upload:true,view:true,paymentDetails:true,highlight:'upload'}"
+        buttons="{upload:true}"
         App="App"
       )
       .m-t-xxl.m-b-md(style='height: 1px;')
       .wrapper-md
-        cvpipeline-warn(ng-if='$ctrl.job.job_status === "Open"' data='$ctrl.job')
         .wrapper-md(ng-if='!$ctrl.orders.length')
           .hbox
             .col: h1.m-t-lg.text-center.text-muted(ng-if='!$ctrl.ui.loading') No Orders
 
-        drive-order(ng-if='$ctrl.currentJob.is_drive' orders='$ctrl.orders' states='App.states' job='$ctrl.currentJob')
-
-        .m-t-sm.hbox(ng-repeat='order in $ctrl.orders' ng-if='!$ctrl.currentJob.is_drive')
+        .m-t-sm.hbox(ng-repeat='order in $ctrl.orders')
           .col.bg-white.b-a
             .col-xs-12.col-md-10.no-padder
               .tl-content.m-none.padder.w-full.w-auto-xs
@@ -39,7 +35,7 @@ div
                   label.i-checks.i-checks-sm.m-b-none
                     input(type='checkbox' ng-model='order.checked')
                     i
-                  a(ui-sref='order.view({orderId: order.id})' target="_blank")
+                  a(ui-sref='order.show({id: order.id})')
                     strong.text-primary-lt  {{order.name}}
 
                   .btn-group.pull-right.m-t-n-xs(uib-dropdown='' uib-keyboard-nav='' dropdown-append-to-body)
@@ -61,32 +57,18 @@ div
                   .col-xs-4.text-ellipsis
                     i.fa.fa-graduation-cap
                     | {{order.Store.name}}
-                  .col-xs-4.text-ellipsis
-                    i.fa.fa-inr
-                    |  {{order.exp_salary}}&nbsp;Lakhs
-                  .col-xs-4.text-ellipsis
-                    i.fa.fa-briefcase
-                    |  {{order.exp_employer}}
-                  .col-xs-4.text-ellipsis
-                    i.fa.fa-line-chart
-                    |  {{order.total_exp}}&nbsp;Years
-                  .col-xs-4.text-ellipsis
-                    i.fa.fa-map-marker
-                    |  {{order.exp_location}}
             .col-xs-12.col-md-2.no-padder
               .m-none.wrapper-sm.w-full.w-auto-xs
                 .clearfix
-                  span.pull-right.padder.m-t-xxs  {{order.created_on | date: 'h:mm a'}} &nbsp;
+                  span.pull-right.padder.m-t-xxs  {{order.created_at | date: 'h:mm a'}} &nbsp;
                   span.pull-right.m-b.m-t
-                  span.b-a.m-r-xs.pointer.pull-right.text-xs.text-center.btn-circle.m-b-xs(
-                    ng-if='App.app.settings.isAdmin'
-                    style='border: 1px solid #aaa;'
-                    ng-bind='order.owner_name'
-                    title="{{order.owner_name_full}}"
-                    )
                 .panel-body.pull-in.m-r-n-sm.wrapper-xs.b-t
                   .clearfix
-                    i.btn.pull-right.text-success-dker.m-t-xs.fa.fa-lg.fa-download(ng-href='{{$ctrl.URLS.API}}/orders/{{order.id}}/download?access_token={{token}}`')
+                    a(
+                    target='_blank'
+                    ng-href='{{$ctrl.URLS.API}}/orders/{{order.id}}/download?access_token={{$ctrl.token}}'
+                    )
+                      i.btn.pull-right.text-success-dker.m-t-xs.fa.fa-lg.fa-download
 
       .col-xs-2.col-xs-offset-5
         button.pull-left.btn.active.m-t-md(ng-if="$ctrl.ui.loading")

@@ -1,6 +1,6 @@
 class EmpanelmentController {
   constructor($http, $stateParams, URLS, $sce, $state, Page, $timeout,
-              Session, Auth, toaster, $uibModal, QuarcService) {
+              Session, Auth, toaster, $uibModal) {
     this.URLS = URLS;
     this.$sce = $sce;
     this.$http = $http;
@@ -11,7 +11,6 @@ class EmpanelmentController {
     this.$stateParams = $stateParams;
     this.toaster = toaster;
     this.Auth = Auth;
-    this.QuarcService = QuarcService;
     this.$timeout = $timeout;
     this.onInit();
   }
@@ -93,7 +92,7 @@ class EmpanelmentController {
           return;
         }
 
-        this.industries.list.forEach((value, key) => {
+        this.industries.list.forEach((value) => {
           if (value.id === industryId) {
             this
               .select(type, 'industries_id', 'industries', value);
@@ -115,7 +114,7 @@ class EmpanelmentController {
           return;
         }
 
-        this.functions.list.forEach((value, key) => {
+        this.functions.list.forEach((value) => {
           if (value.id === functionId) {
             this
               .select(type, 'function_id', 'functions', value);
@@ -137,11 +136,11 @@ class EmpanelmentController {
     return this
       .$http.get('/clients/empanelment')
       .then(({ data }) => {
-        this.data = data || {} ;
+        this.data = data || {};
         this.data.uploadedFiles = [];
       })
       .catch(() => this
-        .toaster.pop(this.QuarcService.banner('info', 'Please fill out empanelment form')));
+        .toaster.pop('info', 'Please fill out empanelment form'));
   }
 
   select(model, field, endpoint, $item, extend = {}) {
@@ -195,18 +194,16 @@ class EmpanelmentController {
         .Auth
         .setSessionData()
         .then(() => {
-          this.toaster.pop(this.QuarcService.toast('success', 'Thank you for providing details.'));
+          this.toaster.pop('success', 'Thank you for providing details.');
           this.reload = true;
           if (!document.getElementById('qx-installed')) {
             return this.$state.go('accounts.download-extension');
           }
-          return this.$state.go('jobs.list', { status: 'New' });
+          return this.$state.go('customers.list', { status: 'New' });
         })
       )
       .catch(() => this
-        .toaster.pop(this
-          .QuarcService
-          .toast('error', 'Error occurred while updating record, please contact QuezX.com.')));
+        .toaster.pop('error', 'Error occurred while updating record, please contact ShoppRe.com.'));
   }
 
   stepNext(currentStep) {
@@ -230,7 +227,7 @@ class EmpanelmentController {
       },
     });
     driveModal.result.then(file => this.data.uploadedFiles.push(file));
-  };
+  }
 }
 
 angular.module('uiGenApp')

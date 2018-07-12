@@ -10,7 +10,6 @@
 
     $onInit() {
       this.user = this.Session.read('userinfo');
-
     }
 
   }

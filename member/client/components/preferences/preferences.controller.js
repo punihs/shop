@@ -49,7 +49,7 @@ class PreferencesController {
       .post('/clients/updatePreferences', this.data)
       .then(() => this.Auth.setSessionData().then(() => {
         this.reload = true;
-        if (this.ui.redirect) this.$state.go('jobs.list');
+        if (this.ui.redirect) this.$state.go('customers.list');
       }));
   }
 }

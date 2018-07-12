@@ -1,4 +1,3 @@
-'use strict';
 
 angular.module('uiGenApp')
   .directive('preferences', () => ({

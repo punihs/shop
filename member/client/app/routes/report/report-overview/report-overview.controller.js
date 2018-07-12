@@ -146,7 +146,7 @@ class ReportOverviewController {
 
     this.donuts = {
       2: 'CVs Uploaded',
-      3: 'Screened By QuezX',
+      3: 'Screened By ShoppRe',
       5: 'Shortlisted',
       7: 'Interviews',
       9: 'Offers',

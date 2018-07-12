@@ -14,32 +14,32 @@ class NavbarController {
   $onInit() {
     this.user = this.Session.read('userinfo');
     if (!this.user) return;
-    this.userInitial = this.user.name.substr(0, 1);
+    this.userInitial = this.user.first_name.substr(0, 1);
     this.ui = { count: 0 };
 
-    this
-      .$http
-      .get(`/users/${this.user.id}/features/2`)
-      .then(({ data } = {}) => {
-        if (data) this.ui.qdeskDownload = true;
-      });
+    // this
+    //   .$http
+    //   .get(`/users/${this.user.id}/features/2`)
+    //   .then(({ data } = {}) => {
+    //     if (data) this.ui.qdeskDownload = true;
+    //   });
 
-    this
-      .$http
-      .get('/jobSuggestions/myClients', {
-        params: { fl: 'count' },
-      })
-      .then(({ data: [count] }) => (this.ui.count = count || 0))
-      .catch(() => (this.ui.count = 0));
+    // this
+    //   .$http
+    //   .get('/jobSuggestions/myClients', {
+    //     params: { fl: 'count' },
+    //   })
+    //   .then(({ data: [count] }) => (this.ui.count = count || 0))
+    //   .catch(() => (this.ui.count = 0));
 
-    if (this.user.flag_database === 1) return (this.ui.displaySearch = true);
+    // if (this.user.flag_database === 1) return (this.ui.displaySearch = true);
 
-    return this
-      .$http
-      .put('/clients/databaseFlag')
-      .then(({ data }) => (data
-        ? this.Auth.setSessionData().then(() => (this.ui.displaySearch = true))
-        : ''));
+    // return this
+    //   .$http
+    //   .put('/clients/databaseFlag')
+    //   .then(({ data }) => (data
+    //     ? this.Auth.setSessionData().then(() => (this.ui.displaySearch = true))
+    //     : ''));
   }
 
   getPositionState() {

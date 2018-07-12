@@ -1,7 +1,7 @@
 // Karma configuration
 // http://karma-runner.github.io/0.10/config/configuration-file.html
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     // base path, that will be used to resolve files and exclude
     basePath: '',
@@ -11,8 +11,8 @@ module.exports = function(config) {
 
     client: {
       mocha: {
-        timeout: 5000 // set default mocha spec timeout
-      }
+        timeout: 5000, // set default mocha spec timeout
+      },
     },
 
     // list of files / patterns to load in the browser
@@ -27,7 +27,7 @@ module.exports = function(config) {
       'client/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'client/bower_components/moment/moment.js',
       'client/bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.js',
-      'client/bower_components/Chart.js/Chart.js',
+      'client/bower_components/chart.js/dist/Chart.js',
       'client/bower_components/angular-chart.js/dist/angular-chart.js',
       'client/bower_components/lodash/lodash.js',
       'client/bower_components/restangular/dist/restangular.js',
@@ -43,41 +43,43 @@ module.exports = function(config) {
       'client/bower_components/isteven-angular-multiselect/isteven-multi-select.js',
       'client/bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js',
       'client/bower_components/angular-cookies/angular-cookies.js',
+      'client/bower_components/angular-socket-io/socket.js',
+      'client/bower_components/angular-base64-upload/src/angular-base64-upload.js',
       'client/bower_components/ui-select/dist/select.js',
       // endbower
       'client/app/app.js',
       'client/{app,components}/**/*.module.js',
       'client/{app,components}/**/*.js',
-      'client/{app,components}/**/*.{jade,html}'
+      'client/{app,components}/**/*.{jade,html}',
     ],
 
     preprocessors: {
       '**/*.html': 'ng-html2js',
       '**/*.jade': 'ng-jade2js',
-      'client/{app,components}/**/*.js': 'babel'
+      'client/{app,components}/**/*.js': 'babel',
     },
 
     ngHtml2JsPreprocessor: {
-      stripPrefix: 'client/'
+      stripPrefix: 'client/',
     },
 
     ngJade2JsPreprocessor: {
-      stripPrefix: 'client/'
+      stripPrefix: 'client/',
     },
 
     babelPreprocessor: {
       options: {
         sourceMap: 'inline',
         optional: [
-          'es7.classProperties'
-        ]
+          'es7.classProperties',
+        ],
       },
-      filename: function (file) {
+      filename(file) {
         return file.originalPath.replace(/\.js$/, '.es5.js');
       },
-      sourceFileName: function (file) {
+      sourceFileName(file) {
         return file.originalPath;
-      }
+      },
     },
 
     // list of files / patterns to exclude
@@ -114,6 +116,6 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: false
+    singleRun: false,
   });
 };

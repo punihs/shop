@@ -11,6 +11,3 @@ dist
 npm-debug.log
 coverage
 client/app/ng-modules
-/.jscsrc
-/client/.jshintrc
-/server/.jshintrc

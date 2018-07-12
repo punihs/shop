@@ -1,58 +1,61 @@
-.list-group.list-group-sp(style='position: relative; height: 83%; width: 100%; top: 0; bottom: 50px; overflow-x: hidden;overflow-wrap: break-word;' scroll-to-bottom='$ctrl.ui.scrollToBottom')
-  .list-group-item.m-n.clearfix.padder-v.m-b-sm(ng-repeat='comment in $ctrl.applicant.comments | orderBy: ["created_at", "id"]' ng-class='{"b-b": !$ctrl.applicant._root_.is_drive, "no-bg ": $ctrl.applicant._root_.is_drive}')
-    a.pull-left.thumb.m-r-sm(href='' ng-class='{"v-top": $ctrl.applicant._root_.is_drive, "pull-left m-l-n-sm m-r-sm": (!$ctrl.applicant._root_.is_drive || $ctrl.applicant.has_resume)}')
-      .fa-stack.fa-2x.text-info
-        i.fa.fa-circle.fa-stack-2x(style='font-size: 1.7em;')
-        span.fa.fa-stack-1x.h3(style='color: #fff;line-height: 2em;') {{comment.user.name[0]}}
-    div(ng-class='{"clear": (!$ctrl.applicant._root_.is_drive || $ctrl.applicant.has_resume),  "inline m-t-xs": ($ctrl.applicant._root_.is_drive && !$ctrl.applicant.has_resume)}' style='max-width: 90%')
-      .text-sm.text-info-dker {{comment.user.name}}
-        .wrapper-sm.bg-white-only.text-danger-dker.text-md(ng-if='$ctrl.states[comment.state_id].action' ng-bind='$ctrl.states[comment.state_id].action')
-      .bg-white-only(style='{{$ctrl.applicant._root_.is_drive && "min-width: 240px;padding: 0px 10px 10px 10px;"}}' ng-class='{"padder-md text-md": $ctrl.applicant._root_.is_drive, "": (!$ctrl.applicant._root_.is_drive || $ctrl.applicant.has_resume)}')
-        ul(ng-if='comment.ApplicantStateReasons.length>0', ng-repeat="reason in comment.ApplicantStateReasons")
-          li.text-danger.text-lg(ng-bind='reason.Reason.reason')
-        p.m-n(ng-if='comment.body' ng-bind='comment.body')
-        div(ng-class='{"text-sm": ($ctrl.applicant._root_.is_drive && $ctrl.applicant.has_resume)}')
-          .text-success.dk(ng-if="comment.scheduled_on && comment.state_id === 30") Joining Date - {{comment.scheduled_on | date: 'MMM d, yyyy h:mm a'}}
-          .text-success.dk(ng-if="comment.scheduled_on && comment.state_id === 30") Final CTC - {{comment.currency}} {{comment.final_ctc}} Lacs
-          .text-success.dk(ng-if="comment.scheduled_on && ![10, 19, 29, 30, 31].includes(comment.state_id)") scheduled at - {{comment.scheduled_on| date: 'MMM d, yyyy h:mm a'}}
-          .text-success.dk(ng-if="comment.scheduled_on && comment.state_id === 10") Offer Date - {{comment.scheduled_on | date: 'd MMM, h:mm a'}}
-          .text-success.dk(ng-if="comment.suggested_join_date && comment.state_id === 10") Suggested Joining Date - {{comment.suggested_join_date| date: 'd MMM, h:mm a'}}
-          .text-success.dk(ng-if="comment.offered_ctc && comment.state_id === 10") Offered CTC  - {{comment.currency}} {{comment.offered_ctc}} Lacs
-          .text-success.dk(ng-if="comment.scheduled_on && comment.state_id === 29") Pre-Joining Backout Date - {{comment.scheduled_on | date: 'd MMM, h:mm a'}}
-          .text-success.dk(ng-if="comment.scheduled_on && comment.state_id === 29") Post-Joining Backout Date - {{comment.scheduled_on | date: 'd MMM, h:mm a'}}
-          .text-muted.text-right(title='{{comment.created_on | date: "medium"}}' style='color: #333')
-            em.m-r-xs-md.text-xs {{comment.created_at | date: 'd MMM yyyy, h:mm a'}}
-        div
-          span(ng-class="'{{comment.InterviewFollowUps[comment.InterviewFollowUps.length-1].FollowUpOption.class}}'"
-            ng-if="comment.State.FollowUpOptions.length" ) {{comment.InterviewFollowUps[comment.InterviewFollowUps.length-1].FollowUpOption.name}}
-          div(ng-if="comment.State.FollowUpOptions.length" )
-            div(ng-if="comment.InterviewFollowUps.length")
 
-            .radio(
-              ng-if='$ctrl.isToday(comment.scheduled_on)'
-              ng-repeat="followUpOption in comment.State.FollowUpOptions"
-            ): label.i-checks
-              input(
-                type="radio"
-                ng-model='comment.followUpOptionId'
-                ng-disabled="followUpLast"
-                name="radio_{{comment.id}}",
-                ng-change="$ctrl.updateFollowup($ctrl.data.id,comment)"
-                ng-value="followUpOption.id"
-              )
-              i
-              | {{followUpOption.name}}
-            span.clearfix
+.list-group.list-group-sp(style='border-left:1px solid #ddd;padding-top: 48px; position: relative; height: 83%; width: 100%; top: 0; bottom: 50px; overflow-x: hidden;overflow-wrap: break-word;' scroll-to-bottom='$ctrl.ui.scrollToBottom')
+  .padder-md
+    // streamline
+    .m-b.text-md Recent Activity
+    .streamline.b-l.m-b
+      .sl-item(
+        ng-repeat='comment in $ctrl.pkg.comments | orderBy: ["created_at", "id"]'
+        ng-class="comment.User.id !== $ctrl.user.id  ? 'b-success.b-l' : ''"
+      )
+        .m-l
+          .text-muted(
+            ng-bind='" " + $ctrl.moment(comment.created_at).fromNow()'
+            uib-tooltip="{{comment.created_at | date:'MMM d, y'}} IST {{comment.created_at | date:'h:mm a'}}"
+            tooltip-placement='left'
+            tooltip-append-to-body='true'
+          )
+          p
+            a.text-info(ui-sref='customer.view({ id: comment.User.id })' ng-bind='comment.User.name')
+            span(ng-if='comment.comments') &nbsp;commented {{comment.comments}}
+
+      .hide.bg-info.wrapper-sm.m-l-n.m-r-n.m-b.r.r-2x
+        | Create tasks for the team
+
+    // / streamline
+
+
+    div.clear(style='max-width: 90%')
+      .text-sm(ng-if="$ctrl.pkg.comments[$index-1].User.id !== comment.User.id")
+        a.text-info-dker()
+        span &nbsp;updated to &nbsp;
+        span.text-danger-dker.text-md(
+          ng-if='$ctrl.states[comment.state_id].action'
+          ng-bind='$ctrl.states[comment.state_id].action'
+        )
+        span(
+          style='color: #333'
+
+
+        )
+      .bg-white-only
+        p.m-n(ng-if='comment.comments')
+          i.fa.fa-discourse
+          span(ng-bind='comment.comments')
+
+
+
+
   .m-b-lg(style='height: 80px;')
-form.b-a.form.form-validation.wrapper-xs.bg-white(
-  style='position: fixed;bottom: 37px;border-width: 2px !important;' name='commentForm'
+form.b-a.form.form-validation.wrapper-xs.bg-white.col-xs-4(
+  style='position: fixed;border-width: 2px !important;' name='commentForm'
   ng-submit='$ctrl.insert()'
-  ng-class='{"col-xs-3": (!$ctrl.applicant._root_.is_drive || $ctrl.applicant.has_resume), "col-xs-9": ($ctrl.applicant._root_.is_drive && !$ctrl.applicant.has_resume)}'
+
 )
   textarea(
     elastic
-    name='comment'
-    ng-model='$ctrl.post.comment'
+    name='comments'
+    ng-model='$ctrl.post.comments'
     autocomplete="off"
     tabindex="-1"
     placeholder="Enter your comment.."
@@ -62,7 +65,7 @@ form.b-a.form.form-validation.wrapper-xs.bg-white(
     ng-focus='$ctrl.showCommentBtn = true'
     ng-blur='$ctrl.hideCommentButton()'
   )
-  quick-state-change(applicant='$ctrl.applicant' ng-show='!$ctrl.showCommentBtn')
+  quick-state-change(pkg='$ctrl.pkg' ng-show='!$ctrl.showCommentBtn')
   div(ng-show='$ctrl.showCommentBtn')
     hr.m-n
     button.btn-info.m-t-xs.btn.btn-sm.b-r.pull-right(type='submit' ng-disabled='commentForm.$invalid')

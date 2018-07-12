@@ -1,5 +1,5 @@
 class ProfileDetailController {
-  constructor($http, $stateParams, URLS, $sce, $state, Page, Session, Auth, toaster, QuarcService) {
+  constructor($http, $stateParams, URLS, $sce, $state, Page, Session, Auth, toaster) {
     this.URLS = URLS;
     this.$sce = $sce;
     this.$http = $http;
@@ -12,7 +12,6 @@ class ProfileDetailController {
     this.showConfirm = false;
     this.Auth = Auth;
     this.data = {};
-    this.QuarcService = QuarcService;
     this.onInit();
   }
 
@@ -24,40 +23,42 @@ class ProfileDetailController {
         .setSessionData()
         .then(() => {
           this.showConfirm = true;
-          this.toaster.pop(this.QuarcService.toast('success', 'Email for verification is sent to your work email id.'));
+          this.toaster.pop('success', 'Email for verification is sent to your work email id.');
         })
       )
-      .catch((err) => this.toaster.pop(this.QuarcService.toast('error', 'Error occurred while updating record')));
+      .catch(() => this.toaster.pop('error', 'Error occurred while updating record'));
   }
 
   verifyNumber(otpCode) {
-    if(!otpCode) {
-      this.toaster.pop(this.QuarcService.toast('error', 'Please provide the OTP code received on registered mobile number.'));
-      return;
+    if (!otpCode) {
+      return this
+        .toaster
+        .pop('error', 'Please provide the OTP code received on registered mobile number.');
     }
-    this
+    return this
       .$http
       .get(`/userNumbers/${otpCode}/verify`)
       .then(() => {
-        this.toaster.pop(this.QuarcService.toast('success', 'OTP verified successfully'));
-        this.$state.go("jobs.list",{status: 'New'});
+        this.toaster.pop('success', 'OTP verified successfully');
+        this.$state.go('customers.list', { status: 'New' });
       })
-      .catch((err) => this.toaster.pop(this.QuarcService.toast('error', 'Invalid OTP provided')));
+      .catch(() => this.toaster.pop('error', 'Invalid OTP provided'));
   }
 
   resentOtp(number) {
-
     this
       .$http.post('/users/verifyNumber', { number })
        .then(() => (this.message = `Sms will be sent to ${number} containing OTP.`))
-       .catch((err) => this.toaster.pop(this.QuarcService.toast('error', 'Error occurred while sending OTP.')));
-    }
+       .catch(() => this.toaster.pop('error', 'Error occurred while sending OTP.'));
+  }
 
   onInit() {
-   return this
+    return this
       .$http.get('/clients/profile')
-      .then(({ data }) => this.data = data)
-      .catch((err) => this.toaster.pop(this.QuarcService.toast('error', 'Error occurred while fetching record')));
+      .then(({ data }) => {
+        this.data = data;
+      })
+      .catch(() => this.toaster.pop('error', 'Error occurred while fetching record'));
   }
 }
 

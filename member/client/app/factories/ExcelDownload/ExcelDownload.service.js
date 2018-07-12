@@ -7,19 +7,18 @@
       this.URLS = URLS;
     }
 
-    download(params, jobId = '') {
+    download(params, shipmentId = '') {
       const paramCopy = Object.assign({}, params, {
         xlsx: true,
         offset: 0,
-        limit: 1000000000,
-        admin: this.Session.read('ROLE_ADMIN'),
+        limit: 10000,
       });
 
       const { access_token: accessToken } = this.Session.read('oauth');
-      const xlsx = `${this.URLS.API}${jobId
-        ? `/jobs/${jobId}`
+      const xlsx = `${this.URLS.API}${shipmentId
+        ? `/shipments/${shipmentId}`
         : ''
-      }/applicants?${Object.keys(paramCopy)
+      }/packages?${Object.keys(paramCopy)
         .map((key) => `${key}=${encodeURIComponent(paramCopy[key])}`)
         .join('&')
       }&access_token=${accessToken}`;

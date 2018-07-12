@@ -10,7 +10,9 @@ class DownloadExtensionController {
   }
 
   $onInit() {
-    if (document.getElementById('qx-installed')) this.$state.go('jobs.list', { status: 'New' });
+    if (document.getElementById('qx-installed')) {
+      this.$state.go('customers.list', { status: 'New' });
+    }
   }
 }
 

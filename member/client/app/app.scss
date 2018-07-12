@@ -2,6 +2,7 @@ $icon-font-path: "../bower_components/bootstrap-sass/assets/fonts/bootstrap/";
 //@import '../bower_components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
 $fa-font-path: "../bower_components/font-awesome/fonts";
 @import '../bower_components/font-awesome/scss/font-awesome';
+@import '../../../angulr/main';
 
 /**
  * App-wide Styles
@@ -16,45 +17,29 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 
 // Component styles are injected through grunt
 // injector
-@import 'directives/allocate-to/allocate-to.scss';
 @import 'directives/announcement-modal/announcement-modal.scss';
-@import 'directives/apply-to-quezx/apply-to-quezx.scss';
-@import 'directives/candidate-filter/candidate-filter.scss';
 @import 'directives/directive-header/directive-header.scss';
 @import 'directives/email-candidate/email-candidate.scss';
-@import 'directives/job-qna/job-qna.scss';
-@import 'directives/job-qna/post-answer-question/post-answer-question.scss';
-@import 'directives/job-qna/post-job-question/post-job-question.scss';
+@import 'directives/package-filter/package-filter.scss';
 @import 'directives/reapply/reapply.scss';
-@import 'directives/reauth/reauth.scss';
-@import 'directives/tawk/tawk.scss';
 @import 'naivgation.scss';
-@import 'ng-theme/_custom.scss';
-@import 'ng-theme/main.scss';
 @import 'routes/access/access.scss';
 @import 'routes/accounts/accounts.scss';
 @import 'routes/accounts/empanelment/empanelment.scss';
 @import 'routes/accounts/profile-detail/profile-detail.scss';
-@import 'routes/applicants/applicants.scss';
 @import 'routes/calendar/calendar.scss';
-@import 'routes/dashboard/dashboard.scss';
-@import 'routes/jobs/applicants/new/new.scss';
-@import 'routes/jobs/cv-uploading/cv-uploading.scss';
-@import 'routes/jobs/jobs.scss';
-@import 'routes/jobs/list/list.scss';
-@import 'routes/jobs/manage-list/manage-list.scss';
-@import 'routes/jobs/suggestions/suggestions.scss';
-@import 'routes/jobs/view/view.scss';
+@import 'routes/customers/customers.scss';
+@import 'routes/customers/list/list.scss';
+@import 'routes/customers/packages/create/create.scss';
+@import 'routes/customers/view/view.scss';
 @import 'routes/notifications/notifications.scss';
 @import 'routes/orders/new/new.scss';
+@import 'routes/packages/packages.scss';
 @import 'routes/report/report.scss';
-@import '../components/admin-switch/admin-switch.scss';
 @import '../components/career-modal/career-modal.scss';
 @import '../components/footer/footer.scss';
 @import '../components/light-box/light-box.scss';
-@import '../components/modal/modal.scss';
 @import '../components/navbar/navbar.scss';
-@import '../components/navigation-jobs/navigation-jobs.scss';
 @import '../components/payment-tracker/payment-tracker.scss';
 // endinjector
 
@@ -62,13 +47,42 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 .btn-success:hover {
   color: $brand-light;
 }
+.invisible{visibility: hidden}
+.height-21{height:21.5em;}
 
 .btn.icon {
   padding: 5px 10px;
   margin-left: 3px;
   margin-right: 3px;
 }
+.loyalty-image{max-width:45%}
+.user-category span,.howto-earn h3,.pointsto-cash h3,.howto-earn a{
+  color:#fe9611
+}
 
+.loyalty-points{
+  height: 180px;
+  border: solid 10px #e6e6e6;
+  border-radius: 120px;
+  display: table;
+}
+.loyalty-points h2{
+  font-weight: bold;
+  display: table-cell;
+  vertical-align: middle;
+}
+.loyalty-types{
+  height: 180px;
+  border: solid 10px #f9d6d6;
+  border-radius: 120px;
+  padding-top: 15px;
+  background: rgb(248, 115, 115);
+  color:#fff
+}
+.loyalty-types h4{
+  font-weight: bold;
+
+}
 .streach-text {
   -webkit-transform: scale(2, 1.2); /* Safari and Chrome */
   -moz-transform: scale(2, 1.2); /* Firefox */
@@ -82,15 +96,47 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
   padding-left: 7px;
   padding-right: 7px;
 }
-
+.full-width{width:100%;float:left}
+.left-margin-15{margin-left:15px}
+.lockerUl{background-color:#faf1d582}
+.font-15{font-size:15px}
+.lockerUl li.active {background-color:#f0ce6c!important}
+.lockerUl li.active > a{border-bottom-color:#f0ce6c!important}
+.nav-tabs-alt .nav-tabs.lockerUl > li> a{border-bottom-color:transparent!important}
+.nav-tabs-alt .nav-tabs.lockerUl > li.active > a{border-bottom-color:#f0ce6c!important}
 .flex {
   display: flex;
 }
-
+.text-left{text-align:left}
+.position-relative{position:relative}
+.big-cam{font-size:10em}
+.locker-up{
+  position: absolute;
+  right: -10px;
+  top: -10px;
+}
+.text-left{text-align:left}
+.position-relative{position:relative}
+.big-cam{font-size:10em}
+.locker-up{
+  position: absolute;
+  right: -10px;
+  top: -10px;
+}
 .centerFlex {
   align-items: center;
   display: flex;
   justify-content: center;
+}
+.sidebarSpecial{
+  padding-top:10px;
+  padding-bottom:10px;
+  background:#f2d88d;
+  border-radius: 10px;
+}
+.white-border
+{
+  border-right: solid 3px #fff;
 }
 
 .flex-box {
@@ -578,4 +624,32 @@ li.dndPlaceholder {
 
 .anchor-selected {
   color: #00B387;
+}
+
+.dash-sidecost {
+  position: relative;
+  background: #fff;
+  padding: 15px;
+  border: 2px solid #eee;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.div-list {
+  margin-left: 20px;
+}
+.btn-add-address {
+  margin-top: -55px;
+}
+.summary-order {
+  font-size: 16px;
+  color: #ff6c00;
+  font-weight: 600;
+}
+.table-footer {
+  background: #f5eeee;
+}
+.div-border-create {
+  border: 2px solid #faebcc;
+  margin-bottom: 20px;
 }

@@ -1,19 +1,19 @@
 (() => {
   class BadgeController {
-    constructor($state, $sce, $http, Session, URLS, QuarcService) {
+    constructor($state, $sce, $http, Session, URLS, Page) {
       this.$state = $state;
       this.$sce = $sce;
       this.$http = $http;
       this.Session = Session;
       this.URLS = URLS;
-      this.QuarcService = QuarcService;
+      this.Page = Page;
       this.$onInit();
     }
 
     $onInit() {
       this.user = this.Session.read('userinfo');
 
-      this.QuarcService.Page.setTitle('QuezX Badge');
+      this.Page.setTitle('ShoppRe Badge');
       this.ui = {
         type: 0,
         size: '100',

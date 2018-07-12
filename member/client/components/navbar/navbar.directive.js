@@ -4,5 +4,5 @@ angular.module('uiGenApp')
     replace: false,
     restrict: 'E',
     controller: 'NavbarController',
-    controllerAs: '$ctrl',
+    controllerAs: 'NavBar',
   }));

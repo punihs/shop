@@ -1,6 +1,6 @@
 class EmailCandidateController {
   constructor($http, $state, $uibModalInstance, $stateParams, toaster, URLS,
-              candidateName, candidateEmail, candidateId, QuarcService) {
+              candidateName, candidateEmail, candidateId) {
     this.$http = $http;
     this.$state = $state;
     this.$stateParams = $stateParams;
@@ -9,7 +9,6 @@ class EmailCandidateController {
     this.candidateId = candidateId;
     this.candidateName = candidateName;
     this.candidateEmail = candidateEmail;
-    this.QuarcService = QuarcService;
     this.URLS = URLS;
     this.$onInit();
   }
@@ -21,24 +20,27 @@ class EmailCandidateController {
     this.email.replyTo = JSON.parse(localStorage.getItem('userinfo')).email_id;
   }
 
-  cancel = function cancel() {
+  cancel() {
     this.$uibModalInstance.dismiss('cancel');
-  };
+  }
 
-  emailCandidate = () => {
+  emailCandidate() {
     return this.$http({
       url: `${this.URLS.CRUX_API}/candidates/${this.candidateId
         }/email?source=${this.$stateParams.source}`,
-      method: "POST",
-      data: this.email
+      method: 'POST',
+      data: this.email,
     })
-      .then(data => {
-        this.toaster.pop(this.QuarcService.toast('success', 'Email Sent.'));
+      .then(() => {
+        this.toaster.pop('success', 'Email Sent.');
         this.$uibModalInstance.close(true);
       }).catch(error => {
-        this.toaster.pop(this.QuarcService.toast('error', 'Something went wrong. Contact QuezX.'));
-        this.errorMessage = ([409, 400].indexOf(error.status)) ? error.data.message : error.statusText;
-        return 0
+        this.toaster.pop('error', 'Something went wrong. Contact ShoppRe.');
+        this.errorMessage = ([409, 400].indexOf(error.status))
+          ? error.data.message
+          : error.statusText;
+
+        return null;
       });
   }
 }

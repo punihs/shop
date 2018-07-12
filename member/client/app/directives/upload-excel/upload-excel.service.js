@@ -25,7 +25,6 @@
         .set('hour', 10)
         .set('minute', 0)
         .set('second', 0);
-
     }
 
     upload() {

@@ -1,11 +1,11 @@
 class OrdersListController {
   /* @ngInject */
   constructor(
-    QCONFIG, QuarcService, $stateParams, $filter, moment, $window,
+    Page, QCONFIG, $stateParams, $filter, moment, $window,
     $http, $state, Session, Prototype, ExcelDownload, ChangeState, URLS
   ) {
+    this.Page = Page;
     this.QCONFIG = QCONFIG;
-    this.QuarcService = QuarcService;
     this.$stateParams = $stateParams;
     this.$http = $http;
     this.$state = $state;
@@ -23,18 +23,10 @@ class OrdersListController {
       { id: 3, name: 'CTC', key: 'expected_ctc DESC' },
       { id: 4, name: 'Notice Period', key: 'notice_period ASC' },
     ];
-    this.ExcelDownload = ExcelDownload;
-    this.ChangeState = ChangeState;
     this.$onInit();
   }
 
   $onInit() {
-
-    this.isAdmin = this.Session.read('ROLE_ADMIN');
-    this.clientId = this.Session.read('userinfo').client_id;
-    this.Page = this.QuarcService.Page;
-    this.buckets = this.QCONFIG.ORDER_STATES;
-
     this.Page.setTitle('Orders'); // set page title
 
     this.orders = []; // collection of orders
@@ -67,7 +59,7 @@ class OrdersListController {
 
     this.$http
       .get('/orders')
-      .then(({ data: { items, total }}) => {
+      .then(({ data: { items, total } }) => {
         items.forEach(order => this.orders.push(order));
 
         this.total = total;
@@ -80,7 +72,6 @@ class OrdersListController {
         // increment offset for next loading of results
         this.params.offset = this.params.offset + this.params.limit;
       });
-
   }
 
   // returns array containing resultkey of search result

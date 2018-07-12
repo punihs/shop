@@ -7,7 +7,7 @@
 import errors from './components/errors';
 import path from 'path';
 
-export default function(app) {
+export default function (app) {
   // Insert routes below
 
   // All undefined asset or api routes should return a 404

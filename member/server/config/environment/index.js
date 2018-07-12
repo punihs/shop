@@ -19,7 +19,7 @@ var all = {
   root: path.normalize(__dirname + '/../../..'),
 
   // Server port
-  port: process.env.PORT || 5002,
+  port: process.env.PORT || 5003,
 
   // Server IP
   ip: process.env.IP || '0.0.0.0',
@@ -29,17 +29,17 @@ var all = {
 
   // Secret for session, you will want to change this and make it an environment variable
   secrets: {
-    session: 'quarc-ui-partner-secret'
+    session: 'quarc-ui-partner-secret',
   },
 
   // MongoDB connection options
   mongo: {
     options: {
       db: {
-        safe: true
-      }
-    }
-  }
+        safe: true,
+      },
+    },
+  },
 };
 
 // Export the config object based on the NODE_ENV

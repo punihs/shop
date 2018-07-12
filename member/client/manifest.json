@@ -1,6 +1,6 @@
 {
-  "name": "Quezx Partner",
-  "short_name": "partner_quezx",
+  "name": "Shoppre Membership",
+  "short_name": "member_shoppre",
   "icons": [{
     "src": "assets/images/quezx-logo.cbe564e6.svg",
     "sizes": "192x192",
@@ -8,6 +8,6 @@
   }],
   "start_url": "/",
   "display": "standalone",
-  "gcm_sender_id": "689513674253",
+  "gcm_sender_id": "569763436942",
   "gcm_user_visible_only": true
 }

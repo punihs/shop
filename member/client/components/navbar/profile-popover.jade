@@ -3,26 +3,24 @@
     .col.thumb-lg
       div.b-a.bg-light.text-center.m-l-md.m-t.b-primary(style='border-radius: 50%;width:40px;height: 40px;')
         a.m-t-lg.font-lg.text-u-c(
+          ng-if='!NavBar.user.profile_photo_url'
           style='color: #5585B9;font-size: 26px;'
           ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen'
           ng-bind='$ctrl.userInitial'
         )
+        img(
+          ng-if='NavBar.user.profile_photo_url'
+          ng-src='{{NavBar.user.profile_photo_url}}'
+          style='border-radius: 50%;'
+        )
     .col
       .w-full.m-t-xs.text-md.text-black.text-ellipsis(ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen' ng-bind='App.userinfo.name' title='{{App.userinfo.name}}')
-      .w-full.m-t-xs.text-black.text-ellipsis(ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen' ng-bind='App.userinfo.email_id' title='{{App.userinfo.email_id}}')
+      .w-full.m-t-xs.text-black.text-ellipsis(ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen' ng-bind='App.userinfo.email' title='{{App.userinfo.email}}')
       .w-full.m-t-xs: a.text-xs(ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen' href='' style='color: #5585B9;' ng-href='{{App.URLS.ACCOUNTS}}/password_change') Change Password
   .hbox
     .col.w-full.m-t-xs
-      .w-full.ng-hide: a.text-sm.m-l-sm(style='color: #888;' ui-sref='report.overview' ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen') Reports Overview
       .w-full: a.text-sm.m-l-sm(style='color: #888;' ui-sref='accounts.profile' ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen;App.fullPage = false;') My Account
       .w-full: a.text-sm.m-l-sm(href='{{App.URLS.ACCOUNTS}}/support' style='color: #888;' ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen') Support
-      .w-full(ng-if='$ctrl.ui.qdeskDownload')
-        a.m-l-sm.text-sm(
-          ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen'
-          style='color: #222;'
-          ng-href='{{$ctrl.URLS.CRUX_API}}/qdesk/download?access_token={{$ctrl.Session.getAccessToken()}}'
-          target='_blank'
-        ) Download QDesk
       .w-full(ng-controller='LogoutController as logout')
         span.pull-right.btn.btn-sm.bg-gray.b-a.b-gray(
           style='color: #333'

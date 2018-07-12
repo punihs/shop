@@ -3,19 +3,6 @@ function webNotify($http, $log, Session, URLS) {
   const user = Session.read('userinfo');
   if (!Session.isAuthenticated() || !user) return;
 
-  if ('serviceWorker' in navigator) {
-    const notify = Session.read('notify') || {};
-    $log.info('Service Worker is supported');
-
-    navigator.serviceWorker
-      .register('sw.js')
-      .then(() => navigator.serviceWorker.ready)
-      .then(reg => {
-        if (!notify.isSubscribed) subscribe(reg, user.id);
-      })
-      .catch(err => $log.error(':^(', err));
-  }
-
   function subscribe(reg, userId) {
     reg.pushManager.subscribe({ userVisibleOnly: true })
     .then(sub => {
@@ -34,6 +21,19 @@ function webNotify($http, $log, Session, URLS) {
         Session.create('notify', { subscription: err.responseText, isSubscribed: true });
       }
     });
+  }
+
+  if ('serviceWorker' in navigator) {
+    const notify = Session.read('notify') || {};
+    $log.info('Service Worker is supported');
+
+    navigator.serviceWorker
+      .register('sw.js')
+      .then(() => navigator.serviceWorker.ready)
+      .then(reg => {
+        if (!notify.isSubscribed) subscribe(reg, user.id);
+      })
+      .catch(err => $log.error(':^(', err));
   }
 }
 

@@ -13,10 +13,22 @@ angular.module('uiGenApp')
         controller: 'ProfileController',
         controllerAs: '$ctrl',
       })
-      .state('accounts.company', {
-        url: '/company',
-        templateUrl: 'app/routes/accounts/company/company.html',
-        controller: 'CompanyController',
+      .state('accounts.address-list', {
+        url: '/address',
+        templateUrl: 'app/routes/accounts/address/address-list.html',
+        controller: 'AddressListController',
+        controllerAs: '$ctrl',
+      })
+      .state('accounts.address-new', {
+        url: '/address-new',
+        templateUrl: 'app/routes/accounts/address/address-new.html',
+        controller: 'AddressNewController',
+        controllerAs: '$ctrl',
+      })
+      .state('accounts.address-edit', {
+        url: '/address/:id/edit',
+        templateUrl: 'app/routes/accounts/address/address-new.html',
+        controller: 'AddressNewController',
         controllerAs: '$ctrl',
       })
       .state('billing', {
@@ -37,42 +49,23 @@ angular.module('uiGenApp')
         controller: 'TransactionController',
         controllerAs: '$ctrl',
       })
-      .state('accounts.preferences', {
-        url: '/preferences',
-        template: '<preferences></preferences>',
-        resolve: {
-          title: QuarcService => QuarcService.Page.setTitle('Preferences'),
-        },
-      })
+
       .state('accounts.badge', {
         url: '/badge',
         templateUrl: 'app/routes/accounts/badge/badge.html',
         controller: 'BadgeController',
         controllerAs: '$ctrl',
       })
-      .state('accounts.set-preferences', {
-        url: '/set-preferences',
-        templateUrl: 'app/routes/accounts/preferences/set-preferences.html',
+      .state('accounts.preferences', {
+        url: '/preferences',
+        templateUrl: 'app/routes/accounts/preferences/preferences.html',
+        controller: 'preferencesController',
+        controllerAs: '$ctrl',
       })
       .state('accounts.terminated-message', {
         url: '/terminated-message',
         templateUrl: 'app/routes/accounts/terminated-message/terminated-message.html',
         controller: 'TerminatedMessageCtrl',
-      })
-      .state('accounts.client-tnc', {
-        url: '/terms-and-conditions',
-        templateUrl: 'app/routes/accounts/client-tnc/client-tnc.html',
-        controller: 'ClientTncController',
-        controllerAs: 'TermsAndConditions',
-        resolve: {
-          currentClient($http) {
-            return $http.get('/clients/company')
-              .then(({ data }) => data)
-              .catch(err => {
-                console.log('Error while getting company details', err);
-              });
-          },
-        },
       })
       .state('accounts.profile-detail', {
         url: '/profile-detail',

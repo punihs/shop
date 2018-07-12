@@ -45,7 +45,7 @@ class ClientTncController {
       .then(() => {
         this.Auth.setSessionData().then(() => {
           this.ui.loading = false;
-          this.$state.go('jobs.list', { status: 'New' });
+          this.$state.go('customers.list', { status: 'New' });
         });
       })
       .catch(() => (this.ui.loading = false));

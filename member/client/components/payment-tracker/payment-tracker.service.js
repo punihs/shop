@@ -31,7 +31,6 @@
         });
         this.selectedIndex = (this.paymentTrack.filter((x) => (x.flag)).length - 1 || 0);
         this.selectTrack(this.selectedIndex);
-
       });
     }
 
