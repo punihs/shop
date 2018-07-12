@@ -1,0 +1,258 @@
+.hbox.h-full(style='position: fixed;')
+  .col.bg-white-only.b-r.w-md
+    ul.nav(style='overflow-y: scroll;height: 88%;overflow-x: hidden;width: 251px')
+      li.wrapper-xs
+        input.w.form-control.rounded.m-l-xs.text-no-glow(
+          ng-model='$ctrl.params.q'
+          placeholder="Search Position/Location"
+          ng-change="$ctrl.getProxy(true)"
+          ng-model-options="{ debounce: 600 }"
+        )
+      //aside collapse
+      li.wrapper-xs.no-padder.m-t-xs-md.m-l-sm.w(ng-if='App.app.settings.isAdmin')
+        .top-padding-5.h5.font-bold.text-gray.pointer.b-b.b-light(ng-click='$ctrl.ui.close.users = !$ctrl.ui.close.users', style='height: 25px;')
+          i.fa.pull-right.fa-chevron-up.m-r-sm(ng-class='{ "fa-chevron-down": $ctrl.ui.close.users, "fa-chevron-up": !$ctrl.ui.close.users }', style='font-size: 12px; margin-top: 2px;')
+          span.pull-right.m-r-xs.font-thin.text-black.reset-hover(style='font-size: 12px; padding: 2px;border-radius: 5px;' ng-click='$ctrl.filterReset($ctrl.facet.users, "uid");$event.stopPropagation();') Reset
+          .m-l-xs.m-b-xs.pull-left.font-thin.text-black Users
+        .m-t-xs-md(style='margin-right:5px;overflow:hidden;width:220px')
+          ul.nav.nav-sm.l-padding-15.p-xs.h6.collapse(uib-collapse='$ctrl.ui.close.users', aria-expanded='false', aria-hidden='true')
+            ul.nav.nav-sm.m-t-xs
+              li.col-xs-12.p-l-md.p-b-xs.m-l-n-md
+                input.col-xs-12.m-l-sm.wrapper-xs(ng-model='userSearch' placeholder='User' style='width: 205px;')
+            li(style='overflow-y: auto; max-height: 150px; width: 223px;')
+              .col-xs-12.pointer(style='padding: 4px 0', ng-repeat='user in $ctrl.facet.users | filter:userSearch track by $index')
+                .col-xs-1.no-padder(ng-click='$ctrl.facetFilter(user, "users","uid")')
+                  label.i-checks.i-checks-sm
+                    input(
+                      type='checkbox'
+                      value='{{user.id}}'
+                      ng-model='user.checked')
+                    i.m-r-none
+                .col-xs-11.no-padder
+                  .left-padding-5
+                    .border-facet.truncate.m-l-xs(
+                      ng-bind='user.name'
+                      ng-click='$ctrl.facetFilter(user, "users","uid")'
+                    )
+      li.wrapper-xs.no-padder.m-t-xs-md.m-l-sm.w
+        .top-padding-5.h5.font-bold.text-gray.pointer.b-b.b-light(ng-click='$ctrl.ui.close.salary = !$ctrl.ui.close.salary', style='height: 25px;')
+          i.fa.pull-right.fa-chevron-up.m-r-sm(ng-class='{ "fa-chevron-down": $ctrl.ui.close.salary, "fa-chevron-up": !$ctrl.ui.close.salary }', style='font-size: 12px; margin-top: 2px;')
+          span.pull-right.m-r-xs.font-thin.text-black.reset-hover(style='font-size: 12px; margin-top: 2px;' ng-click='$event.stopPropagation(); $ctrl.filterReset()') Reset
+          .m-l-xs.m-b-xs.pull-left.font-thin.text-black Salary
+        .m-t-xs-md(style='margin-right:5px;overflow:hidden;width:220px')
+          ul.nav.nav-sm.l-padding-15.p-xs.h6.collapse(uib-collapse='$ctrl.ui.close.salary', aria-expanded='false', aria-hidden='true')
+            form
+              input.wrapper-xs(ng-model='$ctrl.$stateParams.min'
+                placeholder='Min'
+                only-digits='only-digits'
+                ng-change='$ctrl.setParams();$ctrl.getProxy(true);'
+                style='width: 65px;display: inline-block;'
+                ng-model-options='{debounce: 600}')
+              span.wrapper-xs.m-l-xs.m-r-xs -
+              input.wrapper-xs(
+                ng-model='$ctrl.$stateParams.max'
+                placeholder='Max'
+                only-digits='only-digits'
+                ng-change='$ctrl.setParams();$ctrl.getProxy(true);'
+                style='width: 65px;display: inline-block;'
+              ng-model-options='{debounce: 600}')
+
+              span.wrapper-xs.m-l-xs.m-r-xs Lakhs
+              button.ng-hide.btn.btn-info(type='submit', ng-click='$ctrl.setParams();$ctrl.getProxy(true);') Search
+
+      li.wrapper-xs.no-padder.m-t-xs-md.m-l-sm.w
+        .top-padding-5.h5.font-bold.text-gray.pointer.b-b.b-light(ng-click='$ctrl.ui.close.priority = !$ctrl.ui.close.priority', style='height: 25px;')
+          i.fa.pull-right.fa-chevron-up.m-r-sm(ng-class='{ "fa-chevron-down": $ctrl.ui.close.priority, "fa-chevron-up": !$ctrl.ui.close.priority }', style='font-size: 12px; margin-top: 2px;')
+          span.pull-right.m-r-xs.font-thin.text-black.reset-hover(style='font-size: 12px; margin-top: 2px;' ng-click='$ctrl.filterReset($ctrl.facet.priorities, "js");$event.stopPropagation();') Reset
+          .m-l-xs.m-b-xs.pull-left.font-thin.text-black Priority
+        .m-t-xs-md(style='margin-right:5px;overflow:hidden;width:220px')
+          ul.nav.nav-sm.l-padding-15.p-xs.h6.collapse(uib-collapse='$ctrl.ui.close.priority', aria-expanded='false', aria-hidden='true')
+            ul.nav.nav-sm.m-t-xs
+              li.col-xs-12.p-l-md.p-b-xs.m-l-n-md
+                input.col-xs-12.m-l-sm.wrapper-xs(ng-model='prioritySearch' placeholder='Priority' style='width: 205px;')
+            li(style='overflow-y: auto; max-height: 150px; width: 223px;')
+              .col-xs-12.pointer(style='padding: 4px 0px', ng-repeat='priority in $ctrl.facet.priorities | filter:prioritySearch track by $index')
+                .col-xs-1.no-padder(ng-click='$ctrl.facetFilter(priority, "priorities", "js")')
+                  label.i-checks.i-checks-sm
+                    input(
+                      type='checkbox'
+                      value='{{priority.id}}'
+                      ng-model='priority.checked')
+                    i.m-r-none
+                .col-xs-11.no-padder
+                  .left-padding-5
+                    .border-facet.truncate.m-l-xs(
+                      ng-bind='priority.name'
+                      ng-click='$ctrl.facetFilter(priority, "priorities", "js")'
+                    )
+      li.wrapper-xs.no-padder.m-t-xs-md.m-l-sm.w(ng-if='App.app.settings.isAdmin')
+        .top-padding-5.h5.font-bold.text-gray.pointer.b-b.b-light(ng-click='$ctrl.ui.close.payment = !$ctrl.ui.close.payment', style='height: 25px;')
+          i.fa.pull-right.fa-chevron-up.m-r-sm(ng-class='{ "fa-chevron-down": $ctrl.ui.close.payment, "fa-chevron-up": !$ctrl.ui.close.payment }', style='font-size: 12px; margin-top: 2px;')
+          span.pull-right.m-r-xs.font-thin.text-black.reset-hover(style='font-size: 12px; margin-top: 2px;' ng-click='$ctrl.filterReset($ctrl.facet.payments, "pid");$event.stopPropagation();') Reset
+          .m-l-xs.m-b-xs.pull-left.font-thin.text-black Payment Model
+        .m-t-xs-md(style='margin-right:5px;overflow:hidden;width:220px')
+          ul.nav.nav-sm.l-padding-15.p-xs.h6.collapse(uib-collapse='$ctrl.ui.close.payment' aria-expanded='false', aria-hidden='true')
+            ul.nav.nav-sm.m-t-xs.b-b
+              li.col-xs-12.p-l-md.p-b-xs.m-l-n-md
+                input.wrapper-xs.col-xs-12.m-l-sm(ng-model='paymentSearch' placeholder='Payments' style='width: 205px;')
+            li(style='overflow-y: auto; max-height: 150px; width: 223px;')
+              .col-xs-12.pointer(style='padding: 4px 0px', ng-repeat='payment in $ctrl.facet.payments | filter:paymentSearch track by $index')
+                .col-xs-1.no-padder(ng-click='$ctrl.facetFilter(payment, "payments", "pid")')
+                  label.i-checks.i-checks-sm
+                    input(
+                      type='checkbox'
+                      value='{{payment.id}}'
+                      ng-model='payment.checked')
+                    i.m-r-none
+                .col-xs-11.no-padder
+                  .left-padding-5
+                    .border-facet.truncate.m-l-xs(
+                      ng-bind='payment.name'
+                      ng-click='$ctrl.facetFilter(payment, "payments", "pid")'
+                    )
+  .col.bg-light.h-full
+    .wrapper(
+      style='padding-right: 32px !important;padding-bottom: 0 !important;'
+      ng-if='!$ctrl.user.admin_flag && $ctrl.AllocationDisable.data.qdirect_remaining_jds'
+    )
+      .wrapper-xs.bg-white-only.b-a.m-a
+        .hbox
+          .col.padder-xs.v-top(style='width: 40px;padding: 2px 12px;')
+            i.fa.fa-info-circle.text-primary.fa-lg.m-r-xs
+          .col
+            span.text-lg QDirect JDs
+            .inline.pull-right
+              a.btn.btn-sm.btn-success.m-t-sm.text-u-c.m-r.font-bold(ui-sref='jobs.forceAllocation({pending: $ctrl.remaining})' style='margin-top: 12px;') Take Action
+            div(style='font-size: 15px')
+              strong.text-primary There are Pending Actions in your admin accounts(s).
+              div Kindly Inform your admins to accept or reject the QDirect JDs allocated to your company.
+              div If you have the transaction pin of your company, you can view and take actions on these JDs.
+    .padder.m-t-sm(style='z-index: 100;padding-right: 32px !important;')
+      .bg-white-only(ng-if='!App.app.settings.isAdmin' style='height: 36px;')
+        ul.nav.nav-pills.nav-sm
+          li.m-r-sm.pull-right.nav-menu-item.dropdown(uib-dropdown='')
+            span.n-hv.dropdown-toggle.clear.m-t-xs(href='', uib-dropdown-toggle='')
+              i.pointer.b-a.fa.fa-sort-amount-asc.text-xs
+            //- dropdown
+            ul.dropdown-menu.w-sm
+              li(ng-click='$ctrl.orderBy("max_sal")')
+                a Sort by CTC
+              li(ng-click='$ctrl.orderBy("job_status_id")')
+                a Sort by Priority
+              li(ng-click='$ctrl.orderBy("consultant_score")')
+                a Sort by Score
+          li.m-r-xs(ng-repeat="state in $ctrl.ALL_STATUS" ui-sref-active='active' ng-if='state !== "Hidden"')
+            a(ui-sref="jobs.list({status:state})")
+              span(ng-bind="state")
+              span &nbsp;&nbsp;({{$ctrl.counts[$index] || "0"}})
+      .bg-white-only.padder(ng-if='App.app.settings.isAdmin' style='height: 36px;')
+        .pull-left.m-t-xs
+          label.i-checks.i-checks-md.col-xs-12.h6(style='margin: 6px 0;')
+            input(type='checkbox' ng-model="$ctrl.checked" ng-click='$ctrl.selectAll($ctrl.checked)')
+            i.m-r-xs-md
+        .pull-right.col.pointer(uib-dropdown='')
+          span.n-hv.dropdown-toggle.m-r-sm(href='', uib-dropdown-toggle='')
+            i.pointer.b-a.fa.fa-sort-amount-asc.text-xs
+          //- dropdown
+          ul.dropdown-menu.w-sm
+            li(ng-click='$ctrl.orderBy("max_sal")')
+              a Sort by CTC
+            li(ng-click='$ctrl.orderBy("job_status_id")')
+              a Sort by Priority
+            li(ng-click='$ctrl.orderBy("consultant_score")')
+              a Sort by Score
+          a.btn.btn-sm.btn-success(ng-if='$ctrl.showAllocate()' ng-click='$ctrl.allocate()' style='margin-top: 3px;') Allocate
+    .col-md-12.col-sm-12.col-xs-12(style='overflow-y: scroll;height: 85%;')
+      .col-md-12.b-a.m-t-sm.bg-white-only(ng-if='!$ctrl.list.length && !$ctrl.ui.loading')
+        h1.text-center No JD Found
+      .col-md-12.col-sm-12.col-xs-12.b-a.m-t-sm.job-item.bg-white-only(ng-if='$ctrl.list.length' ng-repeat='job in $ctrl.list | orderBy:$ctrl.order |  filter:query track by $index')
+        span(style='position: absolute;left:0;z-index: 10;top: 0;' ng-show='job.open_platform && !App.app.settings.isAdmin')
+          img(style='height: 50px;width: 50px;' src='/assets/images/ribbon.svg')
+        .col-md-12.col-sm-12.col-xs-12.b-b.no-padder
+          label.i-checks.i-checks-sm.m-b-none.pull-left.m-t-sm(ng-if='App.app.settings.isAdmin')
+            input(type='checkbox', ng-model='job.checked')
+            i
+          span.badge.pull-left.m-t-sm(style='background-color: #FF8017' ng-if='job.open_platform && App.app.settings.isAdmin') Direct
+          a.m-b-xs.m-t-xs.pull-left.wrapper-xs.font-bold.text-info(
+            ng-bind="job.client_name || job.owner_company"
+            ui-sref='job.view({jobId: job.id})'
+            target="_blank"
+            ng-class='{"m-l m-t-sm": job.open_platform && !App.app.settings.isAdmin}')
+          span.text-sm.wrapper-xs.m-t-xs.pull-right(ng-if='App.app.settings.isAdmin')
+            span.b-a.pointer.pull-right.text-sm.text-info.b-info.text-center.btn-circle(
+              style='font-size: 14px;font-family: san-serif;line-height: 1.7em;'
+              ng-click='$ctrl.allocate(job.id)') +
+            span.m-r-xs.pull-right.text-md.text-center(
+              ng-if='job.JobAllocation.length > 2'
+              title='{{"+ "+ (job.JobAllocation.length - 2) + " more user"}}'
+            )  {{"+ "+ (job.JobAllocation.length - 2)}}
+            span.b-a.m-r-xs.pointer.pull-right.text-xs.text-center.btn-circle(
+              style='border: 1px solid #aaa;'
+              ng-repeat='user in job.JobAllocation'
+              ng-bind='$ctrl.Prototype.initials(user.user_name)'
+              ng-if='$index < 2 && user.user_name'
+              )
+          span.m-b-xs.m-t-xs.pull-right.wrapper-xs.m-r-sm.text-sm(
+            ng-if='!App.app.settings.isAdmin && ($ctrl.PAGE_STATUS === "New" || ![1, 2, 3].includes(job.response_id))'
+          )
+            span.pointer.padder(
+              ng-click="$ctrl.PAGE_STATUS !== 'Accepted' && $ctrl.acceptJD(job, job.response_id, 1);$event.stopPropagation();")
+              | &nbsp;ACCEPT
+            span.pointer.padder.b-l(
+              ng-click='$ctrl.PAGE_STATUS !== "Rejected" && $ctrl.rejectJD(job, job.response_id, 3);$event.stopPropagation();')
+              | &nbsp;REJECT
+          span.m-b-xs.m-t-xs.pull-right.wrapper-xs.m-r-lg.text-sm(ng-if='!App.app.settings.isAdmin && $ctrl.PAGE_STATUS !== "New"')
+            .btn-group(uib-dropdown='', dropdown-append-to-body='')
+              button#btn-append-to-body.btn.b-info.text-info.bg-white-only.text-u-c(
+                type='button', uib-dropdown-toggle='' style='padding: 2px 8px;'
+                ng-if='[1, 2, 3].includes(job.response_id)'
+              )
+                span.m-r-xs(ng-bind='["accepted", "hidden", "rejected"][job.response_id - 1]')
+                span.caret
+              ul.dropdown-menu(uib-dropdown-menu='', role='menu', aria-labelledby='btn-append-to-body')
+                li(
+                  role='menuitem'
+                  ng-repeat="value in ($ctrl.PAGE_STATUS === 'Accepted'? [3] : ($ctrl.PAGE_STATUS === 'Rejected' && [1]) || [1,3])"
+                  ng-hide='job.response_id === value || (job.open_platform && value === 2)'
+                )
+                  a.text-u-c(
+                    ng-click="(value === 1 && $ctrl.acceptJD(job, job.response_id, value))\
+                    || (value  === 3 && $ctrl.rejectJD(job, job.response_id, value))\
+                    || (value  === 2 && $ctrl.update(job, job.response_id, value))"
+                    ng-bind='value === 1 ? "accept" : "reject"'
+                  )
+        .col-sm-12.m-t-sm.text-gray.no-padder(style='font-size: 10px;')
+          .no-padder.col-sm-3.col-xs-3
+            | Position
+          .no-padder.col-sm-2.col-xs-2
+            | Location
+          .no-padder.col-sm-2.col-xs-2
+            | CTC
+          .no-padder.col-sm-2.col-xs-2
+            | Priority
+          .no-padder.col-sm-1.col-xs-1
+            | Rating
+          .no-padder.col-sm-2(ng-if='App.app.settings.isAdmin')
+            | Payment Model
+        .col-sm-12.m-b-sm.no-padder(style='font-weight: 500')
+          .no-padder.col-sm-3.col-xs-3.text-ellipsis
+            span(ui-sref='job.view({jobId: job.id})' target="_blank" ng-bind="job.role")
+          .no-padder.col-sm-2.col-xs-2
+            span(ui-sref='job.view({jobId: job.id})' target="_blank" ng-bind="job.job_location || job.region")
+          .no-padder.col-sm-2.col-xs-2
+            span(ui-sref='job.view({jobId: job.id})' target="_blank" ng-bind="job.min_sal + ' - ' + job.max_sal + ' Lakhs'")
+          .no-padder.col-sm-2.col-xs-2
+            span(ng-bind='job.priority || job.job_status')
+          .no-padder.col-sm-1.col-xs-1
+            span(ng-bind="job.consultant_score || job.score || '0'" style='font-weight: 600;')
+          .no-padder.col-sm-2.col-xs-2(ng-if='App.app.settings.isAdmin')
+            span(ng-if='App.userinfo.admin_flag', ng-bind="job.payment || '-'")
+
+      .text-center.m-t-xs
+        button.btn.active.m-t-xs(title='Loading ...' ng-if="$ctrl.ui.loading")
+          i.fa.fa-circle-o-notch.fa-spin
+          strong &nbsp;Loading
+        button.btn.btn-primary.m-t-xs(title='Load more' ng-if="$ctrl.ui.lazyLoad" ng-click="$ctrl.getProxy()")
+          i.fa.fa-plus-circle
+          strong &nbsp;Load More
+      .col-md-12.col-sm-12.col-xs-12.m-t-xxl

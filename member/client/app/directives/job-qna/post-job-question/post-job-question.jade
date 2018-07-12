@@ -1,0 +1,21 @@
+.hbox.hbox-auto-xs.hbox-auto-sm.bg-white-only
+  form.form-horizontal.wrapper-md( name="searchCandidateForm")
+    .row
+      // Form Block
+      .col-md-7.col-lg-10.col-lg-10(style="margin:auto;float:inherit")
+        // Form Items
+        .col-xs-12.no-padder: a.pull-right.fa-2x.text-muted(ng-click='$ctrl.$uibModalInstance.dismiss("cancel")') ×
+        .m-t-xs.b-b
+          .qna-background.m-t-xs.m-b-xs.h3 FAQs
+        .row
+          .col-md-12.col-xs-12
+            .qna-content
+              table.qna-input
+                tr
+                  td.pull-left(style="margin-top:5px") Q
+                  td
+                    textarea.qna-query.b-t.b-b.b-l.b-r(rows="3" placeholder="type your query" ng-model="$ctrl.question.posted_text")
+                tr
+                  td
+                  td
+                    .btn-info.btn-sm.w-xs.pointer.padder(ng-click="$ctrl.createQuestion()") Post Query

@@ -1,0 +1,17 @@
+.company-switch-holder.r-2x.m-t-sm
+  .pull-left.text-center(style='width: 50%;padding-top: 5px;' ng-click='$ctrl.setCompanyView(true)' title='Switch to Admin View')
+    a.text-xs.switch-placeholder COMPANY
+    a.text-center.switch-place-icon-holder.m-t-n-sm
+      i.fa.fa-building
+  .pull-left.text-center(style='width: 50%;padding-top: 5px;' ng-click='$ctrl.setCompanyView(false)' title='Switch to User View')
+    a.text-xs.switch-placeholder USER
+    a.text-center.switch-place-icon-holder.m-t-n-sm
+      i.fa.fa-user
+  .inline.r-2x.company-switch.text-info.text-center.text-xs(
+    ng-class='{ "in": !$ctrl.settings.isAdmin }'
+    ng-click='$ctrl.setCompanyView(!$ctrl.settings.isAdmin)'
+    title='{{$ctrl.settings.isAdmin ? "Switch to User View" : "Switch to Admin View"}}'
+  )
+    a.text(ng-bind='$ctrl.settings.isAdmin ? "COMPANY" : "USER"')
+    a.logo
+      i.fa(ng-class='{ "fa-building": $ctrl.settings.isAdmin, "fa-user" : !$ctrl.settings.isAdmin }')

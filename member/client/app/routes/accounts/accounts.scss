@@ -1,0 +1,23 @@
+.accounts {
+  .nav {
+      > li {
+        &.active {
+          background-color: #efefef;
+          color: $brand-info;
+        }
+    }
+  }
+
+  .nav {
+    > li {
+      > a.no-hover
+      &:hover,
+      &:focus {
+        position: relative;
+        color: #222;
+        text-decoration: none;
+        background: transparent !important;
+      }
+    }
+  }
+}

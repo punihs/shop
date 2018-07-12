@@ -1,0 +1,127 @@
+.wrapper.text-center(ng-if='$ctrl.ui.loading')
+  button.btn.btn-default(style='margin: 100px auto;' disabled="")
+    i.fa.fa-circle-o-notch.fa-spin.m-r-xs
+    span Loading
+.wrapper(ng-if='!$ctrl.showList && !$ctrl.ui.loading' style='margin: 50px auto;width: 500px;')
+  .text-center(ng-if='$ctrl.error')
+    .w-full.m-n.inline.wrapper-sm.alert.alert-danger
+      i.fa.fa-ban
+      span.m-l-xs(ng-bind='$ctrl.error')
+  .hbox
+    .col.v-middle(style='width: 20px;')
+      img.img-responsive(src='./assets/images/action-req-arrow.svg')
+    .col.w-xxl
+      .h3.wrapper-sm Action Required
+  .b-b.m-t-n-xs
+  .wrapper-xs.col-xs-12
+    .hbox.wrapper-xs.r(style='background: #e8e7e7')
+      .col.w-xs.v-middle.text-center
+        i.fa-2x.fa.fa-info-circle
+      .col.v-center.text-light-dk.text-md
+        .text-sm Please contact your admin user to Accept/Reject these JDs.
+        .text-sm If admin is not available, they can provide you with a 4-digit transaction pin to take a decision.
+        .text-sm(style='font-weight: 600') Transaction Pin location: My Account -> Transaction Pin
+  .h4
+    span There are
+    span(ng-bind='" " + $ctrl.AllocationDisable.data.qdirect_remaining_jds + " "')
+    span JD(s) required by your Company
+  .hbox
+    form(name='form' ng-submit='$ctrl.proceed()')
+      .w-full
+        .radio
+          label.i-checks.i-checks-sm
+            input(
+              ng-model='$ctrl.choice'
+              type='radio'
+              name='choice'
+              ng-value='0'
+            )
+            i
+            .inline Enter transactional password to view your JD
+      .w-full
+        input.form-control(
+          ng-model='$ctrl.pin'
+          name='pin'
+          type='pin'
+          placeholder='Enter 4-digit pin'
+          autocomplete='off'
+          ng-disabled='$ctrl.choice'
+          ng-required='!$ctrl.choice'
+          ng-pattern='/^[0-9]{4}$/'
+        )
+      .w-full
+        .radio
+          label.i-checks.i-checks-sm
+            input(
+              ng-model='$ctrl.choice'
+              type='radio'
+              name='choice'
+              ng-value='1'
+            )
+            i
+            | Reject all actionable JD(s)
+      .w-full
+        button.btn.btn-success(
+          ng-disabled='form.$invalid'
+        ) Proceed
+
+.wrapper(ng-if='$ctrl.showList && !$ctrl.ui.loading')
+  .col-xs-12
+    .h4.text-primary Actionable JD(s)
+      .inline.bg-primary.text-sm.m-l-xs.font-bold.text-center(ng-bind='$ctrl.list.length' style='padding: 5px;border-radius: 50%;width: 24px;')
+  .col-xs-12(style='height: 100%;')
+    .col-md-12.b-a.m-t-sm.bg-white-only(ng-if='!$ctrl.list.length && !$ctrl.ui.loading')
+      h1.text-center No JD Found
+    .col-md-12.col-sm-12.col-xs-12.b-a.m-t-sm.job-item.bg-white-only(ng-if='$ctrl.list.length' ng-repeat='job in $ctrl.list | orderBy:$ctrl.order |  filter:query track by $index')
+      span(style='position: absolute;left:0;z-index: 10;top: 0;' ng-show='job.open_platform && !App.app.settings.isAdmin')
+      .col-md-12.col-sm-12.col-xs-12.b-b.no-padder
+        a.m-b-xs.m-t-xs.pull-left.wrapper-xs.font-bold.text-info(
+          ng-bind="job.client_name || job.owner_company"
+          ui-sref='job.view({jobId: job.id})'
+          target="_blank"
+        )
+        span.m-t-sm.badge.m-l-sm.bg-warning(ng-if='job.users[0].blocked' style='padding: 3px 11px;') Urgent
+        .pull-right.m-t-xs
+          a.btn.btn-primary.btn-sm.m-r-xs(
+            ng-click="$ctrl.acceptJD(job);"
+          )
+            | &nbsp;ACCEPT
+          a.btn.btn-default.btn-sm.m-r-xs(
+            ng-click='$ctrl.rejectJD(job);'
+          )
+            | &nbsp;REJECT
+          a.btn.btn-default.btn-sm(
+            ng-click='$ctrl.hideJD($index);'
+          )
+            | &nbsp;HIDE
+      .col-sm-12.m-t-sm.text-gray.no-padder(style='font-size: 10px;')
+        .no-padder.col-xs-4
+          | Position
+        .no-padder.col-xs-3
+          | Location
+        .no-padder.col-xs-2
+          | CTC
+        .no-padder.col-xs-1
+          | Rating
+        .no-padder.col-sm-2(ng-if='App.app.settings.isAdmin')
+          | Commission
+      .col-sm-12.m-b-sm.no-padder(style='font-weight: 500')
+        .no-padder.col-xs-4.text-ellipsis
+          span(ui-sref='job.view({jobId: job.id})' target="_blank" ng-bind="job.role")
+        .no-padder.col-xs-3.text-ellipsis
+          span(ui-sref='job.view({jobId: job.id})' target="_blank" ng-bind="job.job_location || job.region")
+        .no-padder.col-sm-2
+          span(ui-sref='job.view({jobId: job.id})' target="_blank" ng-bind="job.min_sal + ' - ' + job.max_sal + ' Lakhs'")
+        .no-padder.col-xs-1
+          span(ng-bind="job.consultant_score || job.score || '0'" style='font-weight: 600;')
+        .no-padder.col-sm-2.col-xs-2(ng-if='App.app.settings.isAdmin')
+          span(ng-if='App.userinfo.admin_flag', ng-bind="job.payment || '-'")
+
+    .text-center.m-t-xs
+      button.btn.active.m-t-xs(title='Loading ...' ng-if="$ctrl.ui.loading")
+        i.fa.fa-circle-o-notch.fa-spin
+        strong &nbsp;Loading
+      button.btn.btn-primary.m-t-xs(title='Load more' ng-if="$ctrl.ui.lazyLoad" ng-click="$ctrl.getProxy()")
+        i.fa.fa-plus-circle
+        strong &nbsp;Load More
+    .col-md-12.col-sm-12.col-xs-12.m-t-xxl

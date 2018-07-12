@@ -1,0 +1,195 @@
+div.m-t-xl.no-margin
+  .hbox
+      .wrapper-md.bg-white-only
+          h1.m-l-md.font-thin.h3 Profile Details
+          hr
+          form.form.form-validation.form-horizontal.wrapper-md( name="updateUserProfileForm")
+              .row
+                  // Form Block
+                  .col-md-7.col-sm-12.col-xs-12
+                      // Form Items
+                      .row
+                          .col-md-6.col-sm-6.col-xs-12
+                              label.col-xs-12.input-group
+                                  | First Name
+                                  input.form.form-control(type='text' placeholder='eg. First Name' ng-model='$ctrl.data.firstname' q-text-maxlength="60"  autofocus  )
+                          .col-md-6.col-sm-6.col-xs-12
+                              label.col-xs-12.input-group
+                                  | Last Name
+                                  input.form.form-control(type='text' placeholder='eg. Last Name' ng-model='$ctrl.data.lastname' q-text-maxlength="60"  autofocus  )
+                      .line.line-dashed.b-b.line-lg.pull-in
+                      .row
+                          .col-md-12.col-sm-12.col-xs-12
+                              label.col-xs-12.input-group
+                                  | Display Name
+                                  input.form.form-control(type='text' placeholder='eg. Display Name' ng-model='$ctrl.data.name' q-text-maxlength="60"  autofocus  )
+
+                      .line.line-dashed.b-b.line-lg.pull-in
+                      .row
+                          .col-md-12.col-sm-12.col-xs-12
+                              label.input-group
+                                  | Mobile Number
+                              div.input-group.col-sm-12
+                                  input.form-control(type='text' name="number" placeholder='eg. 10 Digit Mobile Number' ng-model='$ctrl.data.number'
+                                  ng-pattern='/^[1-9]\\d{9}$/')
+                                  span(ng-if='$ctrl.data.primaryNumber.verified === 1').input-group-btn
+                                    button.btn.btn-default(type='button' title='Verified')
+                                      i.fa.fa-check-circle.text-success &nbsp; Verified
+                                  span(ng-if='$ctrl.data.primaryNumber.verified === 0').input-group-btn
+                                    button.btn.btn-default(type='button' title='Unverified')
+                                      i.fa.fa-exclamation.text-info &nbsp; Unverified
+                                  span(ng-if='$ctrl.data.primaryNumber.verified === 0 && $ctrl.data.primaryNumber.otp == null').input-group-btn
+                                    button.btn.btn-default(type='button' title='Send OTP', ng-click='$ctrl.sendOtp($ctrl.data.id, $ctrl.data.number)')
+                                      i.fa.fa-exclamation.text-warning &nbsp; Send OTP
+                                  span(ng-if='$ctrl.data.primaryNumber.verified === 0 && $ctrl.data.primaryNumber.otp != null').input-group-btn
+                                    button.btn.btn-default(type='button' title='OTP sent')
+                                      | &nbsp; OTP sent
+                                    button.btn.btn-default(type='button' title='Resend mail', ng-click='$ctrl.sendOtp($ctrl.data.id, $ctrl.data.number)')
+                                      i.fa.fa-exclamation.text-warning &nbsp; Resend OTP
+                                  span(ng-if='!$ctrl.data.primaryNumber').input-group-btn
+                                    button.btn.btn-default(type='button' title='OTP sent')
+                                      i.fa.fa-exclamation.text-info &nbsp; Unverified
+                                    button.btn.btn-default(type='button' title='Resend OTP', ng-click='$ctrl.sendOtp($ctrl.data.id, $ctrl.data.number)')
+                                      i.fa.fa-exclamation.text-warning &nbsp; Send OTP
+                      .line.line-dashed.b-b.line-lg.pull-in
+                      .div.row(ng-if='$ctrl.data.primaryNumber.verified === 0 && $ctrl.data.primaryNumber.otp != null')
+                          .col-md-6.col-sm-6.col-xs-6
+                              label.input-group
+                                  | Confirm OTP
+                              div.col-sm-12.input-group
+                                  input.form-control(type='text' name="otp" placeholder='eg. 10 Digit Mobile Number' ng-model="$ctrl.data.otpCode")
+                          .col-md-6.col-sm-6.col-xs-6
+                              label.input-group.col-sm-6
+                                  | &nbsp;
+                              button.btn-info.btn.btn-md(type='button' ng-click="$ctrl.verifyNumber($ctrl.data.otpCode)") Verify
+
+                      .line.line-dashed.b-b.line-lg.pull-in
+                      .row
+                          .col-md-12.col-sm-12.col-xs-12
+                              label.col-xs-12.input-group
+                                  | Alternate Mobile Number
+                              div.input-group.col-sm-12
+                                  input.form-control(type='text' name="additional_number" placeholder='eg. 10 Digit Mobile Number' ng-model='$ctrl.data.additional_number'
+                                  ng-pattern='/^[1-9]\\d{9}$/' )
+                                  span(ng-if='$ctrl.data.additionalNumber.verified === 1').input-group-btn
+                                    button.btn.btn-default(type='button' title='Verified')
+                                      i.fa.fa-check-circle.text-success &nbsp; Verified
+                                  span(ng-if='$ctrl.data.additionalNumber.verified === 0').input-group-btn
+                                    button.btn.btn-default(type='button' title='Unverified')
+                                      i.fa.fa-exclamation.text-info &nbsp; Unverified
+                                  span(ng-if='$ctrl.data.additionalNumber.verified === 0 && $ctrl.data.additionalNumber.otp == null').input-group-btn
+                                    button.btn.btn-default(type='button' title='OTP sent', ng-click='$ctrl.sendOtp($ctrl.data.id, $ctrl.data.additional_number)')
+                                      i.fa.fa-exclamation.text-warning &nbsp; OTP sent
+                                  span(ng-if='$ctrl.data.additionalNumber.verified === 0 && $ctrl.data.additionalNumber.otp != null').input-group-btn
+                                    button.btn.btn-default(type='button' title='OTP sent')
+                                      | &nbsp; OTP sent
+                                    button.btn.btn-default(type='button' title='Resend OTP', ng-click='$ctrl.sendOtp($ctrl.data.id, $ctrl.data.additional_number)')
+                                      i.fa.fa-exclamation.text-warning &nbsp; Resend OTP
+                                  span(ng-if='!$ctrl.data.additionalNumber').input-group-btn
+                                    button.btn.btn-default(type='button' title='OTP sent')
+                                      i.fa.fa-exclamation.text-info &nbsp; Unverified
+                                    button.btn.btn-default(type='button' title='Resend OTP', ng-click='$ctrl.sendOtp($ctrl.data.id, $ctrl.data.additional_number)')
+                                      i.fa.fa-exclamation.text-warning &nbsp; Send OTP
+
+                      .line.line-dashed.b-b.line-lg.pull-in
+                      .div.row(ng-if='$ctrl.data.additionalNumber.verified === 0 && $ctrl.data.additionalNumber.otp !== null')
+                          .col-md-6.col-sm-6.col-xs-6
+                              label.input-group
+                                  | Confirm OTP
+                              div.col-sm-12.input-group
+                                  input.form-control(type='text' name="otp" placeholder='eg. 10 Digit Mobile Number' ng-model="$ctrl.data.additionalotpCode")
+                          .col-md-6.col-sm-6.col-xs-6
+                              label.input-group.col-sm-6
+                                  | &nbsp;
+                              button.btn-info.btn.btn-md(type='button' ng-click="$ctrl.verifyNumber($ctrl.data.additionalotpCode)") Verify
+
+                      .line.line-dashed.b-b.line-lg.pull-in
+                      .row
+                          .col-md-12.col-sm-12.col-xs-12
+                              label.col-xs-12.input-group
+                                | Email Address
+                              div.input-group.col-sm-12
+                                  input.form.form-control(type='email' name="email" placeholder='eg. Email' ng-model='$ctrl.data.email_id'
+                                  q-text-maxlength="60"  ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" ucf-lowercase )
+                                  span(ng-if='$ctrl.data.primaryEmail.verified === 1').input-group-btn
+                                    button.btn.btn-default(type='button' title='Verified')
+                                      i.fa.fa-check-circle.text-success &nbsp; Verified
+                                  span(ng-if='$ctrl.data.primaryEmail.verified === 0').input-group-btn
+                                    button.btn.btn-default(type='button' title='Unverified')
+                                      i.fa.fa-exclamation.text-info &nbsp; Unverified
+                                  span(ng-if='$ctrl.data.primaryEmail.verified === 0 && $ctrl.data.primaryEmail.verification_token == null').input-group-btn
+                                    button.btn.btn-default(type='button' title='Send mail', ng-click='$ctrl.sendMail($ctrl.data.id, $ctrl.data.email_id)')
+                                      i.fa.fa-exclamation.text-warning &nbsp; Send mail
+                                  span(ng-if='$ctrl.data.primaryEmail.verified === 0 && $ctrl.data.primaryEmail.verification_token != null').input-group-btn
+                                    button.btn.btn-default(type='button' title='Email sent')
+                                      | &nbsp; Email Sent
+                                    button.btn.btn-default(type='button' title='Resend mail', ng-click='$ctrl.sendMail($ctrl.data.id, $ctrl.data.email_id)')
+                                      i.fa.fa-exclamation.text-warning &nbsp; Resend mail
+                                  span(ng-if='!$ctrl.data.primaryEmail').input-group-btn
+                                    button.btn.btn-default(type='button' title='Email Sent')
+                                      i.fa.fa-exclamation.text-info &nbsp; Unverified
+                                    button.btn.btn-default(type='button' title='Send Mail', ng-click='$ctrl.sendMail($ctrl.data.id, $ctrl.data.email_id)')
+                                      i.fa.fa-exclamation.text-warning &nbsp; Send Mail
+
+                      .line.line-dashed.b-b.line-lg.pull-in
+                      .row
+                          .col-md-12.col-sm-12.col-xs-12
+                              label.col-xs-12.input-group
+                                | Alternate Email Address
+                              div.input-group.col-sm-12
+                                  input.form.form-control(type='email' name="additional_email" placeholder='eg. Alternate Email' ng-model='$ctrl.data.additional_email_id'
+                                  q-text-maxlength="60"  ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" ucf-lowercase )
+                                  span(ng-if='$ctrl.data.additionalEmail.verified === 1').input-group-btn
+                                    button.btn.btn-default(type='button' title='Verified')
+                                      i.fa.fa-check-circle.text-success &nbsp; Verified
+                                  span(ng-if='$ctrl.data.additionalEmail.verified === 0').input-group-btn
+                                    button.btn.btn-default(type='button' title='Unverified')
+                                      i.fa.fa-exclamation.text-info &nbsp; Unverified
+                                  span(ng-if='$ctrl.data.additionalEmail.verified === 0 && $ctrl.data.additionalEmail.verification_token == null').input-group-btn
+                                    button.btn.btn-default(type='button' title='Send mail', ng-click='$ctrl.sendMail($ctrl.data.id, $ctrl.data.additional_email_id)')
+                                      i.fa.fa-exclamation.text-warning &nbsp; Send mail
+                                  span(ng-if='$ctrl.data.additionalEmail.verified === 0 && $ctrl.data.additionalEmail.verification_token != null').input-group-btn
+                                    button.btn.btn-default(type='button' title='Email sent')
+                                      | &nbsp; Email Sent
+                                    button.btn.btn-default(type='button' title='Resend mail', ng-click='$ctrl.sendMail($ctrl.data.id, $ctrl.data.additional_email_id)')
+                                      i.fa.fa-exclamation.text-warning &nbsp; Resend mail
+                                  span(ng-if='!$ctrl.data.additionalEmail').input-group-btn
+                                    button.btn.btn-default(type='button' title='Email Sent')
+                                      i.fa.fa-exclamation.text-info &nbsp; Unverified
+                                    button.btn.btn-default(type='button' title='Send Mail', ng-click='$ctrl.sendMail($ctrl.data.id, $ctrl.data.additionalEmail)')
+                                      i.fa.fa-exclamation.text-warning &nbsp; Send Mail
+
+                      .line.line-dashed.b-b.line-lg.pull-in
+                      .row
+                          .col-md-12.col-sm-12.col-xs-12
+                              label.col-xs-12.input-group
+                                  | Username
+                                  input.form-control(type='text' name='username' ng-model='$ctrl.data.username' q-text-maxlength="60" autocomplete="off"  readonly)
+                                  i.fa.fa-refresh.fa-spin(ng-show='$ctrl.username')
+
+                      .line.line-dashed.b-b.line-lg.pull-in
+                      .row
+                          .col-md-4.col-sm-4.col-xs-12
+                              label.col-xs-12.input-group
+                                  | Password
+                                  input.form-control(type='password' ng-model='$ctrl.data.username' q-text-maxlength="60" readonly)
+                                  //i.fa.fa-refresh.fa-spin(ng-show='$ctrl.data.username')
+                          .col-md-8.col-sm-8.col-xs-12
+                              div.m-t-lg
+                                  a.text-primary(ng-href="{{App.URLS.ACCOUNTS}}/password_change" target="_blank") Change Password
+
+                      .line.line-dashed.b-b.line-lg.pull-in
+                      .row
+                          .col-md-4.col-xs-12
+                              // ng-disabled='uploadCVForm.$invalid'
+                              button.btn.btn-primary.pull-left(type='submit' ng-click='$ctrl.create()')
+                                  i.fa.fa-upload
+                                  | &nbsp;&nbsp;Submit
+                          .col-md-4
+                            div.text-success.font-bold(ng-if='$ctrl.success')
+                              | {{$ctrl.success}}
+                            div.text-success.font-bold(ng-if='$ctrl.error')
+                              | {{$ctrl.error}}
+          .col-md-8.text-danger.font-bold(ng-bind="$ctrl.errorMessage.data.message")
+          .clearfix
+

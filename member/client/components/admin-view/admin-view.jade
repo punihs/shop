@@ -1,0 +1,31 @@
+.col-xs-12.b-b.bg-white-only.text-center(style='border-bottom:2px solid #e0e0e0;')
+    span.text-white.rounded.text-center(style='font-weight: 600;font-size: 16px;background: #8CC64B;padding: 4px 25px;margin-top: 5px;position: absolute;') COMPANY VIEW
+    .pull-right.col.pointer.wrapper-xs
+      uib-dropdown.dropdown
+        button.btn.btn-sm.btn-default.dropdown-toggle(type='button', uib-dropdown-toggle='', aria-haspopup='true', aria-expanded='false')
+          span.m-r-sm {{$ctrl.displayName}}
+          span.fa.fa-caret-down
+        ul.dropdown-menu.pull-right.m-t-sm(uib-dropdown-menu='' role='menu' aria-labelledby="dropdownMenu" style='overflow-y:auto;max-height:300px;')
+          li
+            input.form-control(
+              type='text' name='users_id'
+              placeholder='Enter user name'
+              ng-model-options='{debounce: 600}'
+              ng-model='$ctrl.selected'
+              ng-click='$event.stopPropagation();'
+            )
+          li(role='menuitem')
+            a.b-b(
+              style='display:flex;padding:5px 10px 3px 10px'
+              ng-click='$ctrl.selectAll = !$ctrl.selectAll;$ctrl.selectAllUsers();$event.stopPropagation();'
+            )
+              label.i-checks.i-checks-sm.no-padder.m-r-sm(ng-click='$event.stopPropagation();' style='width:16px;')
+                input(type='checkbox' ng-model='$ctrl.selectAll' ng-change='$ctrl.selectAllUsers()')
+                i.m-l-none.m-r-none
+              .col-xs-12() Select All
+          li(role='menuitem' ng-repeat='user in $ctrl.settings.users | filter:$ctrl.selected')
+            a.b-b(style='display:flex;padding:5px 10px 3px 10px' ng-click='user.selected = !user.selected;$ctrl.onSelect(user);$event.stopPropagation();')
+              label.i-checks.i-checks-sm.no-padder.m-r-sm(ng-click='$event.stopPropagation();' style='width:16px;')
+                input(type='checkbox' ng-model='user.selected' ng-change='$ctrl.onSelect(user)' ng-click='$event.stopPropagation();')
+                i.m-l-none.m-r-none
+              .col-xs-12(ng-click='user.selected = !user.selected;$ctrl.onSelect(user);$event.stopPropagation();') {{user.name}}

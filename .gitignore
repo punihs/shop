@@ -11,3 +11,4 @@ logs
 /public/js
 .nyc_output
 /coverage/
+/ops/.jscsrc

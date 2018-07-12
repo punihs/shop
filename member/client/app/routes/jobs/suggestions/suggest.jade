@@ -1,0 +1,31 @@
+.wrapper-md(style='overflow-x:hidden')
+  .hbox.m-b-sm
+    .col.v-middle
+      .text-center(ng-if='$ctrl.error')
+        .m-n.inline.wrapper-sm.alert.alert-danger
+          i.fa.fa-ban
+          span.m-l-xs(ng-bind='$ctrl.error')
+      div(ng-if='!$ctrl.error'): .wrapper-sm.alert-info
+        .m-l-xs Allocate JD to Recommended recruiters for best performance.
+        .m-l-xs You can allocate to multiple recruiters.
+
+    .col.v-middle.thumb-xs
+      .pointer.pull-right.fa-2x.font-thin(ng-click="$ctrl.$uibModalInstance.dismiss('cancel')") ×
+
+  .m-t-md(ng-repeat='(index, type) in ["allocate", "allocated to"]' ng-if='($ctrl.list | filter:{"active": !!index}).length')
+    div(ng-hide='type=="allocated to" && $ctrl.allo.hideAllocated')
+      span.h4.text-u-c(style='color:#0D71C3;' ng-bind='type')
+      .b-b.b-2x
+
+      .w-full(style='overflow-x: hidden')
+        .m-l-sm.text-md(style='max-height: 240px;overflow-y:scroll;width:100.2%')
+          .hbox.b-b(ng-repeat='user in $ctrl.list | filter:{"active": !!index} | orderBy:"-recommend"')
+            .col.v-middle.w-md.wrapper-xs
+              span(ng-bind='user.name')
+              em.m-l-xs(ng-if='user.recommend && !index')
+                small (Recommended)
+            .col.v-middle.wrapper-xs
+              a.btn.btn-sm.btn-default(ng-click='$ctrl.accept(user)')
+                span(ng-if='!user.active') Allocate
+                span(ng-if='user.active') Deallocate
+

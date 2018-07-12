@@ -1,0 +1,115 @@
+.bg-sea-green {
+
+  a.dropdown-toggle.title.clear:focus {
+    background-color: #069974 !important;
+  }
+  .nav-menu-item {
+    a {
+      color: white;
+      -webkit-transition: initial !important;
+      transition: initial !important;
+    }
+    a:hover {
+      background-color: #069974 !important;
+      color: white;
+    }
+  }
+
+  .dropdown-menu {
+    background-color: #069974;
+  }
+
+  .open.nav-menu-item a span.title {
+    color: white !important;
+  }
+
+  .open.nav-menu-item a {
+    color: #00B387;
+    span {
+      color: #00B387;
+    }
+    -webkit-transition: initial !important;
+    transition: initial !important;
+  }
+
+  .open.nav-menu-item, .open.nav-menu-item:hover {
+    a {
+      background-color: #069974 !important;
+      color: white;
+    }
+  }
+
+  .nav-menu-item:hover .title {
+    color: white;
+    background-color: #069974;
+  }
+
+  .nav-menu-item {
+    span {
+      color: white;
+    }
+    span:hover {
+      background-color: #069974;
+      color: white !important;
+    }
+  }
+
+  .nav-menu-item.active {
+    a {
+      background-color: #F6F8F8 !important;
+      color: #00B387 !important;
+    }
+    span {
+      color: #00B387;
+    }
+    background-color: #F6F8F8;
+  }
+
+  input {
+    background-color: #00B387;
+  }
+
+  .new-menu_item {
+    background-color: #ef6c4e !important;
+  }
+}
+
+.new-menu_item {
+  display: flex !important;
+  line-height: initial !important;
+  top: 0 !important;
+  right: 4px !important;
+  font-size: 9px !important;
+  font-weight: 600 !important;
+  font-style: initial !important;
+}
+
+#main_searchbar {
+  width: 100%;
+}
+
+#main_searchbar::-webkit-input-placeholder {
+  color: white;
+  opacity: 0.5;
+}
+
+#main_searchbar:-moz-placeholder { /* Firefox 18- */
+  color: white;
+  opacity: 0.5;
+}
+
+#main_searchbar::-moz-placeholder { /* Firefox 19+ */
+  color: white;
+  opacity: 0.5;
+}
+
+#main_searchbar:-ms-input-placeholder {
+  color: white;
+  opacity: 0.5;
+}
+
+.bg-black {
+  #main_searchbar {
+    background-color: #3a3a3a;
+  }
+}

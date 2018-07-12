@@ -1,0 +1,275 @@
+div.bg-white-only#JobView
+  job-detail.bg-white-only.w-full.b-b(job="JobView.data" style='position: fixed;z-index: 6;height: 40px;')
+  directive-header(
+  viewdata="JobView"
+  page="{jobView:true}"
+  buttons="{\
+      paymentDetails: true,\
+      downloadJD: true,\
+      interviews: false,\
+      references: true,\
+      buckets: true,\
+      share: true,\
+      list: true,\
+      upload: !JobView.$stateParams.key,\
+      viewApplicants: !JobView.$stateParams.key,\
+      highlight: 'upload'\
+    }"
+  App="App")
+
+  .hbox.hbox-auto-xs.hbox-auto-sm
+    .col.clearfix.wrapper-md
+
+      //- Job top cover container
+      .m-t-xxl.m-b-md(style='height: 5px;')
+      .wrapper-xs.text-center(ng-if='!JobView.data.is_drive')
+        .hbox.q-jd-alert.text-left
+          .col.v-middle.w-xs.text-center
+            i.fa.fa-warning.fa-2x.text-warning-dker
+          .col
+            span
+              li
+                | QuezX JDs are
+                strong &nbsp;NOT
+                | &nbsp;to be posted on Job Portals/ Social Media
+              li
+                strong NO COMPANY NAME
+                | &nbsp;and
+                strong &nbsp;NO CTC
+                | &nbsp;should be sent to candidates via emails/ mass emails
+              li
+                | Any violation will result in
+                strong &nbsp;BLACKLISTING
+      .wrapper-xs.text-center(ng-if='JobView.data.is_drive')
+        .hbox.text-left(style='background: #ffedd7;-webkit-border-radius: 2px;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);color: #222;padding: 10px 5px !important;font-family: arial,sans-serif;')
+          .col.v-middle.w-xs.text-center
+            i.fa.fa-info-circle.fa-2x.text-warning-dker
+          .col.wrapper-xs
+            ul(style='margin-bottom: 0;padding-left: 10px;')
+              li Volume hiring JD, CV upload not required. Upload excel to schedule
+              li Mention all details in excel; in case of error, download error report and follow actions for failed entries
+              li Duplicate check applicable only for same day interviews; candidate can be uploaded on different dates by different vendors
+      .wrapper-xs(ng-if='JobView.data.job_status === "Open"'): cvpipeline-warn.m-t-xs(data='JobView.data')
+      .wrapper-xs
+        .wrapper-md.clear.b-a.bg-white-only
+          .QRibbon-badge(ng-if="JobView.data._root_.QRex")
+            |      QReX
+          .span(style="position:absolute;margin-left: -22px;margin-top: -21px;" ng-if="JobView.data.open_platform")
+            img(src='/assets/images/ribbon.svg' style='width: 90px;')
+          .JobTopWrapper(ng-class="{'QRex-margin': JobView.data._root_.QRex || JobView.data.open_platform}")
+            strong.text-info-lt.wrapper-xs.h3(
+            ng-if="(JobView.data._root_.QRex || JobView.data.open_platform) && JobView.data.qrex_client_name"
+            ng-bind='JobView.data.qrex_client_name + "  -"'
+            )
+            strong.text-info-lt.wrapper-xs.h3(ng-bind='JobView.data.end_client_name || JobView.data.client_name')
+            //- Job status label
+            .pull-right
+              a.padder.h4(ui-sref='app.jobs.edit({jobId: JobView.data.id})' title='Edit JD' ng-if='JobView.data.owner')
+                i.fa.fa-pencil
+                | &nbsp;Edit
+
+            .wrapper-xs
+              strong.h3
+                span(title='{{JobView.data.role}}' ng-bind='JobView.data.role')
+                span &nbsp;–
+                span.text-muted(title='{{JobView.data.job_location}}' ng-bind='JobView.data.job_location')
+                span.m-l-sm.text-sm.badge.badge-sm.bg-info.text-capitalize(ng-if='JobView.data.is_drive') Drive
+
+            .wrapper-xs.h4(title='Salary range')
+              i.fa.fa-lg.fa-inr
+              span  &nbsp; {{JobView.data.min_sal}} – {{JobView.data.max_sal}} Lakhs
+            .wrapper-xs.h4(title='Functional area')
+              i.fa.fa-md.fa-briefcase
+              span  &nbsp;{{JobView.data.functional_area}}
+
+            .m-t-sm(title='Job status')
+              span.b-a.rounded.text-danger.b-danger.lt(ng-if='(JobView.data.job_status === "Closed")')
+                span.padder.h5 Closed
+              span.b-a.rounded.text-success.b-success(ng-if='!(JobView.data.job_status === "Closed")')
+                span.padder.h5 Open
+
+        .wrapper-xs
+          .hbox.wrapper-xs(ng-if='JobView.data.briefSoundPath !== "0" || JobView.data.briefVideoPath !== "0"')
+            .w-full: .h4.text-muted JD Brief
+            .col-xs-12.no-padder.m-t-sm
+              .col-xs-6.b-r.no-padder-left(ng-if='JobView.data.briefVideoPath !== "0"')
+                .h5.m-b-xs Video
+                light-box(data='JobView.videoSrc')
+              .col-xs-6(ng-if='JobView.data.briefSoundPath !== "0"')
+                .h5.m-b-xs Audio
+                audio.m-t-sm( controls='' preload='none')
+                  source(ng-src='{{JobView.soundSrc}}', type='audio/mpeg')
+                  | Your browser does not support this audio format.
+          .wrapper-xs.b-b
+        .wrapper-xs
+          .hbox.wrapper-xs
+            .col.thumb-lg: .h4.text-muted Experience
+            .col.v-middle {{JobView.data.min_exp}} – {{JobView.data.max_exp}} Years
+          .hbox.wrapper-xs(ng-if='JobView.data.vacancy')
+            .col.thumb-lg: .h4.text-muted Vacancy
+            .col.v-middle {{JobView.data.vacancy}}
+
+          .wrapper-xs.b-b
+
+        .wrapper-xs(ng-if='JobView.data.comments')
+          .wrapper-xs.h4.text-muted Sourcing and Screening Guidelines
+          .wrapper-xs(ng-bind-html="JobView.trustAsHtml(JobView.data.comments)")
+
+          .wrapper-xs.b-b
+
+        .wrapper-xs(ng-if='JobView.sampleCvs.length')
+          .wrapper-xs.h4.text-muted Sample CV(s)
+          .wrapper-xs.flex
+            .pointer.bg-light.m-r-xs.wrapper-sm(ng-repeat="sampleCv in JobView.sampleCvs"
+            ng-if='JobView.showmore || $index < 8' style='border-radius:5px;')
+              .col: a.fa.fa-file-pdf-o.fa-2x( ng-href='{{sampleCv.downloadPath}}' download )
+              .col: a.m-t-xs.m-l-xs( ng-href='{{sampleCv.downloadPath}}' download ) Sample Cv {{ $index+1 }}
+          a.wrapper-xs.h5(ng-if='JobView.showmore' ng-click='JobView.showmore = false'): span.color-sea-green - show less
+          a.wrapper-xs.h5(ng-if='!JobView.showmore && JobView.sampleCvs.length >= 8' ng-click='JobView.showmore = true'): span.color-sea-green + show more
+          .wrapper-xs.b-b
+
+        //- Job Perks
+        .wrapper-xs(ng-if='JobView.data.perks')
+          .wrapper-xs.h4.text-muted Perks, Incentives, ESOPs &amp; Compensation details
+          .wrapper-xs(ng-bind-html="JobView.trustAsHtml(JobView.data.perks)" style='word-break: break-all;')
+
+          .wrapper-xs.b-b
+
+        //- Job Responsibility
+        .wrapper-xs(ng-if='JobView.data.responsibility')
+          .wrapper-xs.h4.text-muted Duties and Responsibility
+          .wrapper-xs(ng-bind-html="JobView.trustAsHtml(JobView.data.responsibility)" style='word-break: break-all;')
+
+          .wrapper-xs.b-b
+
+        //- Job Details
+        .wrapper-xs
+          .wrapper-xs.h4.text-muted About Us
+          .wrapper-xs
+            .h4.text-light-dker(ng-if="JobView.data._root_.QRex===1")
+              | {{JobView.data.qrex_client_name}}
+
+            .h4.text-light-dker(ng-if="JobView.data._root_.QRex!==1")
+              | {{JobView.data.client_name}}
+              i.text-muted(ng-if='JobView.data._root_.min_emp && JobView.data._root_.max_emp')
+                | &nbsp; ({{JobView.data._root_.min_emp}} - {{JobView.data._root_.max_emp}} Employees)
+            .m-t-xs
+            p {{JobView.data._root_.description}}
+            p.text-muted(ng-if='JobView.data._root_.website') Website: {{JobView.data._root_.website}}
+            p.text-muted
+              a(ng-href='{{JobView.data._root_.apple_store_link}}' ng-if='JobView.data._root_.apple_store_link'): i.fa-lg.fa.fa-apple.wrapper-xs
+              a(ng-href='{{JobView.data._root_.playstore_link}}' ng-if='JobView.data._root_.playstore_link'): i.fa-lg.fa.fa-android.wrapper-xs
+              a(ng-href='{{JobView.data._root_.windows_store_link}}' ng-if='JobView.data._root_.windows_store_link'): i.fa-lg.fa.fa-windows.wrapper-xs
+
+          .wrapper-xs.b-b
+
+        div(ng-if='JobView.data.required_skills || JobView.data.optional_skills || JobView.data.degrees')
+          .wrapper-xs.clear(ng-if='JobView.data.required_skills || JobView.data.optional_skills')
+            .wrapper-xs.h4.text-muted Skills
+            .wrapper-xs
+              .h5.clear(ng-if='JobView.data.required_skills')
+                div.m-t-sm: strong.text-muted Must have
+                .wrapper-xs.pull-left.text-info-dker.b-a.b-info.r.m-t-xs.m-r-xs(ng-repeat='value in JobView.data.required_skills') &nbsp;{{value}}&nbsp;
+              .h5.clear(ng-if='JobView.data.optional_skills')
+                div.m-t-sm: strong.text-muted Optional
+                .wrapper-xs.pull-left.text-info-dker.b-a.b-info.r.m-t-xs.m-r-xs(ng-repeat='value in JobView.data.optional_skills') &nbsp;{{value}}&nbsp;
+
+          .wrapper-xs.clear(ng-if='JobView.data.degrees')
+            .wrapper-xs.h4.text-muted Qualifications
+            .m-l-xs.m-r-xs
+              .wrapper-xs.pull-left.text-light-dk.b-a.r.m-t-xs.m-r-xs(ng-repeat='value in JobView.data.degrees') &nbsp;{{value}}&nbsp;
+
+          .wrapper-xs: .wrapper-xs.b-b
+
+        div(ng-if='JobView.data.institutes || JobView.data.industries || JobView.data.employers')
+          .wrapper-xs.clear(ng-if='JobView.data.institutes')
+            .wrapper-xs.h4.text-muted Target Educational Institutes
+            .m-l-xs.m-r-xs
+              .wrapper-xs.pull-left.text-light-dk.b-a.r.m-t-xs.m-r-xs(ng-repeat='value in JobView.data.institutes') &nbsp;{{value}}&nbsp;
+          .wrapper-xs.clear(ng-if='JobView.data.industries')
+            .wrapper-xs.h4.text-muted Target Industries
+            .m-l-xs.m-r-xs
+              .wrapper-xs.pull-left.text-light-dk.b-a.r.m-t-xs.m-r-xs(ng-repeat='value in JobView.data.industries') &nbsp;{{value}}&nbsp;
+          .wrapper-xs.clear(ng-if='JobView.data.employers')
+            .wrapper-xs.h4.text-muted Target Companies
+            .m-l-xs.m-r-xs
+              .wrapper-xs.pull-left.text-light-dk.b-a.r.m-t-xs.m-r-xs(ng-repeat='value in JobView.data.employers') &nbsp;{{value}}&nbsp;
+
+          .wrapper-xs: .wrapper-xs.b-b
+
+
+        .h4.wrapper-xs(ng-if='JobView.data.days_per_week || JobView.data.start_work_time || JobView.data.end_work_time')
+          .wrapper-xs.h4.text-muted Working Days
+          .wrapper-xs.h5 {{JobView.data.days_per_week}} Days a Week ({{JobView.data.start_work_time}} to {{JobView.data.end_work_time}})
+
+        .h4.wrapper-xs(ng-if='JobView.data.job_nature')
+          .wrapper-xs.h4.text-muted Job Nature
+          .wrapper-xs.h5 {{JobView.data.job_nature}}
+
+        .h4.wrapper-xs(ng-if='JobView.data.preferred_genders')
+          .wrapper-xs.h4.text-muted Gender
+          .wrapper-xs.h5 {{JobView.data.preferred_genders}}
+
+          .wrapper-xs.b-b
+
+        //- Job Interview Information
+        .wrapper-xs(ng-if='JobView.data.applicant_instructions')
+          .wrapper-xs.h4.text-muted Instructions for Candidates
+          .wrapper-xs.h5(ng-bind-html="JobView.trustAsHtml(JobView.data.applicant_instructions)")
+
+        .wrapper-xs(ng-if='JobView.data.interview_addr')
+          .wrapper-xs.h4.text-muted Interview Address
+          .wrapper-xs.h5(ng-bind-html="JobView.trustAsHtml(JobView.data.interview_addr)")
+
+        .wrapper-xs(ng-if='JobView.data.interview_place_direction')
+          .wrapper-xs.h4.text-muted Interview Place Direction
+          .wrapper-xs.h5(ng-bind-html="JobView.trustAsHtml(JobView.data.interview_place_direction)")
+
+    .col.w-lg
+      .vbox
+        .m-t-xxl.m-b-xxl(style='height: 1px;')
+        .wrapper-xs.no-padder(ng-hide='(JobView.data.open_platform && JobView.data.job_status === "Open") || (JobView.data.is_omni && JobView.data.isMyVendor)')
+          .h5.text-light-dker.pointer.wrapper-xs.m-b-xs(ng-click='$ctrl.collapse.payment = !$ctrl.collapse.payment', style='height: 25px;' ng-if="JobView.user.admin_flag")
+            i.fa.pull-right.fa-chevron-up(ng-class='{ "fa-chevron-down": $ctrl.collapse.payment, "fa-chevron-up": !$ctrl.collapse.payment }', style='font-size: 12px;')
+            .pull-left.m-l-xs(ng-if='$ctrl.collapse.payment', style='color:#58666e;') PAYMENT MODULE
+              i.fa.fa-inr.pull-left
+            .pull-left.m-l-xs(ng-if='!$ctrl.collapse.payment', style='color:#5585B9;') PAYMENT MODULE
+              i.fa.fa-inr.pull-left
+          .wrapper-xs.b-a.clearfix.m-b-xs(uib-collapse='$ctrl.collapse.payment', aria-expanded='false', aria-hidden='true'
+          ng-if="JobView.user.admin_flag" style="z-index: 10;")
+            span.wrapper-xs.col-xs-6 Payment Module
+            span.wrapper-xs.col-xs-6(
+            ng-if='JobView.data.clientPaymentDesignation.isFixed !== 5 && JobView.data.open_platform && !JobView.data._root_.is_closed_commercial'
+            ng-bind='JobView.data.clientPaymentDesignation.percent + " %"'
+            )
+            span.wrapper-xs.col-xs-6(
+            ng-if='JobView.data.clientPaymentDesignation.isFixed === 5 && JobView.data.open_platform && !JobView.data._root_.is_closed_commercial'
+            ng-bind='" INR " + JobView.data.clientPaymentDesignation.percent'
+            )
+            span.wrapper-xs.col-xs-6.text-ellipsis(
+            ng-if='JobView.data.payment.model && (!JobView.data.open_platform || JobView.data._root_.is_closed_commercial)'
+            ng-bind='JobView.data.payment.model'
+            title='{{JobView.data.payment.model}}'
+            )
+            span.wrapper-xs.col-xs-6 Replacement Days
+            span.wrapper-xs.col-xs-6(
+            ng-bind='(JobView.data.clientPaymentDesignation.replacement_days || JobView.data.payment.replacement_days) + " Days"'
+            )
+            span.wrapper-xs.col-xs-6 Consultant Share {{JobView.data.showShare}}
+            span.wrapper-xs.col-xs-6(ng-bind='JobView.data.open_platform ? "80%" : (JobView.data.qrp ? "60%" : JobView.data.perc_revenue_share || 0) + "%"')
+        job-comment(job-id='{{JobView.$stateParams.jobId}}')
+        .wrapper.b-a.clearfix.m-b-xs(style="z-index: 10;")
+          .col.pull-right.m-t-n-sm
+            img(src="/assets/images/qsearch.svg" style="width: 18px;")
+          .hbox.m-t-sm
+            .col.wrapper-xs(style='width: 42px;')
+              img(src='/assets/images/search-on-jd.svg')
+            .col.wrapper-xs(style='width: 160px')
+              div
+                span.h3(ng-bind="(JobView.data.candidateCount > 1000) ? '1000+' : JobView.data.candidateCount || 0")
+                a.btn.btn-xs.btn-success.pull-right(ng-if="JobView.showSearchCount" ng-href='{{JobView.data.viewUrl}}' target='_blank') View all
+                a.btn.btn-xs.btn-success.pull-right(ng-if="!JobView.showSearchCount" ng-click='JobView.PromoteJdDialog.open();') View all
+              .wrapper-xs
+                .text-xs Matching CV(s) in our database.
+        .row-row
+          job-qna

@@ -1,0 +1,13 @@
+{
+  "name": "Quezx Partner",
+  "short_name": "partner_quezx",
+  "icons": [{
+    "src": "assets/images/quezx-logo.cbe564e6.svg",
+    "sizes": "192x192",
+    "type": "image/svg+xml"
+  }],
+  "start_url": "/",
+  "display": "standalone",
+  "gcm_sender_id": "689513674253",
+  "gcm_user_visible_only": true
+}

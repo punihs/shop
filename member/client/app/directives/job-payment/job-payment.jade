@@ -1,0 +1,74 @@
+.modal-header
+  .modal-title
+    //.h4.text-info Payment Details - {{JobPayment.job._root_.payment}}
+    .h4.text-info Payment Details
+      //.h4.text-info Fixed Module - Standard
+      .close.text-dark(ng-click='JobPayment.$uibModalInstance.dismiss("cancel");') ×
+.modal-body
+  div(
+    ng-show='JobPayment.paymentDetails'
+    ng-repeat='group2 in JobPayment.groupsPaymentDetails'
+    ng-init='count1 = JobPayment.groupsPaymentDetails.length-$index'
+  )
+    .clearfix()
+    div.breadcrumb(
+      ng-repeat='titlep in JobPayment._.uniq(JobPayment.paymentDetails) | filter: {start_time: group2}'
+      ng-if='$index===0'
+      style='{{JobPayment.isActiveAgreement(titlep) ? "border: 3px solid #7EC55F;" : ""}}'
+    )
+      h4(ng-if='(!JobPayment.job.open_platform || JobPayment.is_closed_commercial)' style='{{JobPayment.isActiveAgreement(titlep) ? "color: #7EC55F;" : ""}}')
+        i.fa.fa-check-circle-o.m-r-sm(ng-if='JobPayment.isActiveAgreement(titlep)')
+        span Agreement  {{count1}} - {{JobPayment.JOB_TYPE[titlep.isFixed]}}
+      h4(ng-if='JobPayment.job.open_platform && !JobPayment.is_closed_commercial' style='{{JobPayment.isActiveAgreement(titlep) ? "color: #7EC55F;" : ""}}')
+        i.fa.fa-check-circle-o.m-r-sm(ng-if='JobPayment.isActiveAgreement(titlep)')
+        span Agreement  {{count1}} -  Commission
+      table.table.table-bordered.table-condensed.table-bordered.table-hover.table-striped.table-condensed.table-striped-column.text-center
+        thead
+          tr(style='background-color: #7EC55F;color: white;')
+            th.text-center
+              | Start Date
+            th.text-center
+              | End Date
+            th.text-center(ng-show='[0, 1].includes(titlep.isFixed)')
+              | CTC Range
+            th.text-center(ng-show='[2, 3].includes(titlep.isFixed)')
+              | CTC Range
+            th.text-center(ng-if='!JobPayment.job.open_platform || JobPayment.is_closed_commercial' ng-show='[4, 5].includes(titlep.isFixed)')
+              | Designation
+            th.text-center(ng-if='(JobPayment.job.open_platform && titlep.isFixed === 5 && !JobPayment.is_closed_commercial) ')
+              | Amount (INR)
+            th.text-center(ng-if='(!JobPayment.job.open_platform || JobPayment.is_closed_commercial) || (JobPayment.job.open_platform && titlep.isFixed === 4)')
+              | Percent (%)
+            th.text-center
+              | Payment Days
+            th.text-center
+              | Replacement Days
+        tbody
+          tr(ng-repeat='item in JobPayment.paymentDetails | filter: {start_time: group2}' ng-if='[0, 1, 2, 3].includes(titlep.isFixed)')
+            td {{ item.start_time | date:'longDate' }}
+            td {{ item.end_time | date:'longDate' }}
+            td {{item.currency}} {{item.start_range}}-{{item.end_range}} LPA
+            td(ng-if='(!JobPayment.job.open_platform || JobPayment.is_closed_commercial) || (JobPayment.job.open_platform && titlep.isFixed === 4)' ng-bind='item.percent')
+            td {{item.payment_days}}
+            td {{ item.replacement_days}}
+          tr(
+              ng-repeat='item in JobPayment.paymentDetails | filter: {start_time: group2}'
+              ng-if='([4, 5].includes(titlep.isFixed)) && ((JobPayment.job.open_platform && !JobPayment.is_closed_commercial) || (JobPayment.jobDesignationId === item.id))'
+          )
+            td {{ item.start_time | date:'longDate' }}
+            td(ng-if="(item.end_time | date:'longDate') === 'January 1, 2099'") -
+            td(ng-if="!((item.end_time | date:'longDate') === 'January 1, 2099')") {{ item.end_time | date:'longDate' }}
+            td(ng-if='!JobPayment.job.open_platform || JobPayment.is_closed_commercial') {{item.start_range}}
+            td {{ item.percent}}
+            td {{item.payment_days}}
+            td {{ item.replacement_days}}
+    div(ng-repeat='item in JobPayment._.uniq(JobPayment.paymentDetails) | filter: {start_time: group2}' ng-if='$index === 0')
+      .col-sm-6(ng-if='item.consultant_comment')
+        h4 Payment Comments
+        p {{item.consultant_comment}}
+      .clearfix
+      br
+      br
+    .clearfix
+.modal-footer
+  a.btn.btn-danger(ng-click='JobPayment.$uibModalInstance.dismiss("cancel");') Close

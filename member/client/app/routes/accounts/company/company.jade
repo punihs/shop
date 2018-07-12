@@ -1,0 +1,104 @@
+div.m-t-xl.no-margin
+  .hbox
+      .wrapper-md.bg-white-only
+          h1.m-l-md.font-thin.h3 Company Details
+          hr
+          form.form.form-validation.form-horizontal.wrapper-md( name="companyDataForm")
+              .row
+                  // Form Block
+                  .col-md-7.col-sm-7.col-xs-7
+                      // Form Items
+                      .row
+                          .col-md-12.col-sm-12.col-xs-12
+                              label.col-xs-12.input-group
+                                  | Company Name
+                                  input.form.form-control(type='text' placeholder='eg. Company Name'
+                                  ng-model='$ctrl.data.name' q-text-maxlength='60'
+                                  maxlength='255')
+                      .line.line-dashed.b-b.line-lg.pull-in
+                      .row
+                          .col-md-12.col-sm-12.col-xs-12
+                              label.col-xs-12.input-group
+                                  | Company Correspondence Address
+                                  textarea.form.form-control(placeholder='eg. Company Correspondence Address' rows=5
+                                  ng-model='$ctrl.data.corp_address' q-text-maxlength="600"
+                                  maxlength='2000')
+                      .line.line-dashed.b-b.line-lg.pull-in
+                      .row
+                        .col-md-12.col-sm-12.col-xs-12
+                            label.col-xs-12.input-group City
+                              span.text-danger *
+                              region-suggest(
+                                field='companyDataForm.region_id'
+                                region-id='$ctrl.data.region_id'
+                                region-name='$ctrl.data.regionName'
+                                is-required='true'
+                              )
+                      .line.line-dashed.b-b.line-lg.pull-in
+                      .row
+                          .col-md-12.col-sm-12.col-xs-12
+                              label.col-xs-12.input-group
+                                  | Type of Entity
+                                  select.form-control(ng-options="item.id as item.name for item in $ctrl.entityTypes"
+                                    ng-model="$ctrl.data.entity_type_id" )
+                                    option(value="") Please select - Type of Entity
+                      .line.line-dashed.b-b.line-lg.pull-in
+                      .row(ng-if = '$ctrl.data.entity_type_id == "3" || $ctrl.data.entity_type_id == "4"')
+                          .col-md-12.col-sm-12.col-xs-12
+                              label.col-xs-12.input-group
+                                  | CIN Id
+                                  input.form.form-control(type='text' maxlength="50" placeholder='eg. CIN Id' ng-model='$ctrl.data.cin_id' q-text-maxlength="50")
+                      .line.line-dashed.b-b.line-lg.pull-in(ng-if = '$ctrl.data.entity_type_id == "3" || $ctrl.data.entity_type_id == "4"')
+                      .row(ng-if = '$ctrl.data.entity_type_id == "6"')
+                          .col-md-12.col-sm-12.col-xs-12
+                              label.col-xs-12.input-group
+                                  | LLP Id
+                                  input.form.form-control(type='text' maxlength="50" placeholder='eg. LLP Id' ng-model='$ctrl.data.llp_id' q-text-maxlength="50")
+                      .line.line-dashed.b-b.line-lg.pull-in(ng-if = '$ctrl.data.entity_type_id == "6"')
+                      .row
+                          .col-md-12.col-sm-12.col-xs-12
+                              label.col-xs-12.input-group
+                                  | About Company
+                                  textarea.form.form-control(placeholder='eg. About Company' rows=5 ng-model='$ctrl.data.description' q-text-maxlength="600")
+                      .line.line-dashed.b-b.line-lg.pull-in
+                      .row
+                        .col-md-12.col-sm-12.col-xs-12
+                          label.col-xs-12.input-group
+                            | Size of Organisation
+                            select.form-control(ng-options="item for item in $ctrl.emp_range" ng-model="$ctrl.data.emp_range" )
+                              option(value="") Please select - Size of Organisation
+                      .line.line-dashed.b-b.line-lg.pull-in
+                      .row
+                          .col-md-12.col-sm-12.col-xs-12
+                              label.col-xs-12.input-group
+                                  | Website
+                                  input.form.form-control(type='text' placeholder='eg. website URL' ng-model='$ctrl.data.website' q-text-maxlength="60" )
+                      .line.line-dashed.b-b.line-lg.pull-in
+                      .row
+                          .col-md-12.col-sm-12.col-xs-12
+                              label.col-xs-12.input-group
+                                  | Company Logo
+                                  input.form-control(type="file" ng-model='$ctrl.data.logo' base-sixty-four-input name='file')
+                      .line.line-dashed.b-b.line-lg.pull-in
+                      .row
+                          .col-md-4.col-xs-12
+                              //ng-disabled='companyDataForm.$invalid'
+                              button.btn.btn-primary.pull-left(ng-disabled='companyDataForm.$invalid', type='submit', ng-click='$ctrl.create()' )
+                                  i.fa.fa-upload
+                                  | &nbsp;&nbsp;Submit
+                          .col-md-4
+                            div.text-success.font-bold(ng-if='$ctrl.success')
+                              | {{$ctrl.success}}
+                            div.text-success.font-bold(ng-if='$ctrl.error')
+                            div.text-success.font-bold(ng-if='$ctrl.error')
+                              | {{$ctrl.error}}
+                      .line.line-dashed.b-b.line-lg.pull-in
+                  .col-md-5.col-sm-5.col-xs-5
+                      .row
+                              img.thumbnail(ng-src='data:{{$ctrl.data.logo.filetype}};base64,{{$ctrl.data.logo.base64}}' width='400px')
+                      .line.line-dashed.b-b.line-lg.pull-in
+
+
+          .col-md-8.text-danger.font-bold(ng-bind="$ctrl.errorMessage.data.message")
+          .clearfix
+

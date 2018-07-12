@@ -1,0 +1,64 @@
+.m-t-sm.hbox(ng-repeat='applicant in $ctrl.applicants')
+  .col.bg-white.b-a
+    .col-xs-12.no-padder
+      .tl-content.m-none.padder.w-full.w-auto-xs
+        .m-b-sm(style='height: 20px;')
+          .col-xs-9
+            label.i-checks.i-checks-sm.m-b-none
+              input(type='checkbox' ng-model='applicant.checked')
+              i
+            a(ui-sref='applicant.view({applicantId: applicant.id})')
+              strong.text-primary-lt(ng-bind='applicant.name')
+          .col-xs-3
+             .btn-group.m-t-n-xs(uib-dropdown='' uib-keyboard-nav='' dropdown-append-to-body)
+                button.w-full.btn.btn-sm(
+                class='b-{{$ctrl.states[applicant.state_id].config.color || "gray"}} text-{{$ctrl.states[applicant.state_id].config.color}} bg-white-only'
+                uib-dropdown-toggle=''
+                ng-disabled='!$ctrl.states[applicant.state_id].Actions.length || (applicant.state_id === 43 && !!$ctrl.prescreen) '
+                style='padding: 4px 8px;'
+                )
+                  span.m-r-xs(ng-bind='$ctrl.states[applicant.state_id].action')
+                  span(ng-if='$ctrl.states[applicant.state_id].Actions.length>0').caret
+                ul.dropdown-menu(uib-dropdown-menu='', role='menu', aria-labelledby='btn-append-to-body')
+                  li(role='menuitem' ng-repeat='state in $ctrl.states[applicant.state_id].Actions')
+                    a(href='' ng-click='$ctrl.changeStateOpen(applicant, state)' ng-bind='::$ctrl.states[state.state_id].action')
+        .wrapper-xs.b-t
+          .col-xs-3.text-ellipsis
+            .wrapper-xs
+              i.fa.fa-envelope.m-r-sm
+              span(ng-bind='applicant.email')
+            .wrapper-xs
+              i.fa.fa-phone.m-r-sm
+              span(ng-bind='applicant.mobile')
+          .col-xs-2.text-ellipsis(style='padding-top: 20px;')
+            .col-xs-12.text-xs.text-gray CTC
+            .col-xs-12
+              i.fa.fa-inr.m-r-sm
+              span(ng-bind='applicant.exp_salary + " Lakhs"')
+          .col-xs-2.text-ellipsis(style='padding-top: 20px;')
+            .col-xs-12.text-xs.text-gray Experience
+            .col-xs-12
+              i.fa.fa.fa-line-chart.m-r-sm
+              span(ng-bind='applicant.total_exp + " Years"')
+          .col-xs-2.text-ellipsis(style='padding-top: 20px;')
+            .col-xs-12.text-xs.text-gray Notice Period
+            .col-xs-12
+              i.fa.fa-clock-o.m-r-sm
+              span(ng-bind='applicant.notice_period + " Days"')
+
+          .col-xs-3(style='padding-top: 20px;' ng-if='applicant.interview_time')
+            .input-group.w-sm
+              input.b-a.form-control.bg-light.pointer(
+                type='text' uib-datepicker-popup='dd-MMMM-yyyy'
+                ng-model='applicant.interview_time'
+                ng-value='applicant.interview_time | date: "dd-MMMM-yyyy"'
+                ng-change='$ctrl.changeInterviewTime(applicant);'
+                is-open='applicant.scheduledOn'
+                close-text='Close'
+                datepicker-options="$ctrl.dateOptions"
+                readonly
+                ng-click='applicant.scheduledOn = true'
+                ng-model-options='{debounce: 300}'
+              )
+              span.input-group-addon.pointer(ng-click='applicant.scheduledOn = true')
+                i.fa.fa-chevron-down

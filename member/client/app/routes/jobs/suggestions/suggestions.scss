@@ -1,0 +1,10 @@
+.suggestions {
+  table tr.ng-enter {
+    transition: background 0.25s;
+    background: lighten($brand-primary, 45%);
+  }
+
+  .no-select {
+    user-select: none;
+  }
+}

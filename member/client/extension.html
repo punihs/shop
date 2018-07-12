@@ -1,0 +1,15 @@
+<html>
+<head>
+<script>
+  function onMessage(e) {
+    var key = e.data.key;
+    if (key === 'userinfo') {
+      window.parent.postMessage(localStorage.getItem('userinfo'), '*');
+    }
+  }
+  window.addEventListener('message', onMessage);
+</script>
+</head>
+<body>
+</body>
+</html>

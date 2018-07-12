@@ -1,0 +1,173 @@
+.suggestions.bg-light
+  .text-center(ng-if='$ctrl.error')
+    .m-n.inline.wrapper-sm.alert.alert-danger
+      i.fa.fa-ban
+      span.m-l-xs(ng-bind='$ctrl.error')
+
+  .wrapper-xs
+    .wrapper-xs.bg-white-only.b-a.m-a(ng-if='!$ctrl.user.admin_flag && $ctrl.AllocationDisable.data.qdirect_remaining_jds')
+      .hbox
+        .col.padder-xs.v-top(style='width: 40px;padding: 2px 12px;')
+          i.fa.fa-info-circle.text-primary.fa-lg.m-r-xs
+        .col
+          span.text-lg QDirect JDs
+          .inline.pull-right
+            a.btn.btn-sm.btn-success.m-t-sm.text-u-c.m-r.font-bold(ui-sref='jobs.forceAllocation({pending: $ctrl.remaining})' style='margin-top: 12px;') Take Action
+          div(style='font-size: 15px')
+            strong.text-primary There are Pending Actions in your admin accounts(s).
+            div Kindly Inform your admins to accept or reject the QDirect JDs allocated to your company.
+            div If you have the transaction pin of your company, you can view and take actions on these JDs.
+  .wrapper-xs(ng-repeat='type in ["qdirect", "auto", "pref"]'): .panel.panel-default
+    .panel-heading
+      span.text-md(ng-if='type === "qdirect"') QDirect JDs
+        uib-dropdown.pull-right
+          a.btn.btn-sm.btn-info.m-t-n-xs(
+          uib-dropdown-toggle=''
+          style='width: 116px;'
+          ng-disabled='!$ctrl[type].funclist.length'
+          )
+            span.m-r-xs Functions
+            span.caret
+          ul(
+            uib-dropdown-menu='', style='max-height: 285px; overflow-y: scroll;')
+            li(ng-repeat='func in $ctrl[type].funclist track by $index')
+              a(ng-click='$ctrl[type].q = func; $ctrl[type].reset(); $ctrl[type].getList(false, $ctrl[type].q)')
+                span.font-normal(ng-bind='func')
+      span(ng-if='type === "auto"')
+        span.text-md Your Expertise JD
+        uib-dropdown.pull-right
+          a.btn.btn-sm.btn-info.m-t-n-xs(
+            uib-dropdown-toggle=''
+            style='width: 116px;'
+            ng-disabled='!$ctrl[type].funclist.length'
+          )
+            span.m-r-xs Functions
+            span.caret
+          ul(uib-dropdown-menu='')
+            li(ng-repeat='func in $ctrl[type].funclist track by $index')
+              a(ng-click='$ctrl[type].q = func;$ctrl[type].reset(); $ctrl[type].getList(false, $ctrl[type].q)')
+                span.font-normal(ng-bind='func')
+
+      span.text-md(ng-if='type === "pref"')
+        | Your Choice JDs
+        a.pull-right.btn.btn-sm.btn-info.m-t-n-xs(
+          ng-class='{active: $ctrl.showPrefs}'
+          ng-click='$ctrl.showPrefs = !$ctrl.showPrefs'
+          ng-if='!$ctrl.hidePrefs'
+        )
+          i.fa.fa-wrench
+          span.m-l-xs Set Preferences
+      span.form-inline.text-primary-dker(style='position: absolute;margin-top: -4px; right: 150px')
+        span(ng-if='type !== "qdirect"' )
+          strong.text-xs CTC &nbsp;
+          .btn-group
+            label.btn.btn-xs.btn-default(
+                uib-btn-checkbox
+                ng-model='filter.checked'
+                ng-change='$ctrl[type].reset(); $ctrl[type].getList(false, $ctrl[type].q)'
+                ng-bind='filter.name'
+                ng-repeat='filter in $ctrl[type].filters.max_sal')
+        input.rounded.form-control.input-sm.m-l-sm(
+          type='text'
+          style='width:250px'
+          placeholder='Search for company, role, location'
+          ng-model='$ctrl[type].q'
+          ng-model-options='{debounce: 400}'
+          ng-change='$ctrl[type].reset(); $ctrl[type].getList(false, $ctrl[type].q)'
+        )
+        i.fa.fa-remove(
+          style='position: absolute;top: 8px;right: 8px;z-index: 10;cursor: pointer;'
+          ng-click='$ctrl[type].q = "";$ctrl[type].reset(); $ctrl[type].getList(false)'
+        )
+
+    .clear(ng-if='type === "pref"')
+      preferences.clear.bg-white-only.r.m-t-sm(
+        ng-if='$ctrl.showPrefs'
+        ui-conf="$ctrl.prefConf"
+        reload='$ctrl.reload')
+
+    .w-full.text-center(ng-show='$ctrl[type].ui.loading && $ctrl[type].ui.lazyLoad && !$ctrl[type].list.length')
+      button.btn.active.m-t-md.m-b-md
+        i.fa.fa-circle-o-notch.fa-spin
+        strong &nbsp;Loading
+    table.table.m-b-none(ng-if='$ctrl[type].list.length')
+      thead
+        tr
+          th(style='width: 10px;')
+          th Name
+          th(style='width: 10px;')
+          th Position
+          th Location
+          th CTC
+          th Rating
+          th(ng-if='::$ctrl.user.admin_flag') Payments
+          th.text-center Action
+      tbody
+        tr.animate.bg-white-only.b-t.b-b(ng-repeat='job in $ctrl[type].list' ng-click='$ctrl.open(job.id)')
+          td.text-center(style='padding-right: 0;')
+            .badge.r(ng-if='job.is_drive' style='color: #fff;background: #4173A9;') D
+            i.fa.fa-filter.fa-lg(
+              ng-if='job.direct_line_up'
+              style='color: #4173A9;'
+              uib-tooltip='Direct Lineup'
+              tooltip-placement='right')
+          td.w(title='{{::job.client_name}}')
+            a.hbox(ui-sref='job.view({jobId: job.id, key: job.key, key: job.key})' target='_blank')
+              .col: span.block.w-full
+                .text-ellipsis(ng-bind='::job.client_name')
+          td.text-center(style='padding-right: 0;')
+            .badge.r(ng-if='job.is_new' style='color: #fff;background: #42B852;') New
+          td.w(title='{{::job.role}}'): a.hbox(ui-sref='job.view({jobId: job.id, key: job.key})' target='_blank')
+            span.block.w-full: .text-ellipsis(ng-bind='::job.role')
+          td.w-sm(ng-bind='::job.job_location')
+          td.w-xs(ng-bind='::job.min_sal + " - " + job.max_sal' style='white-space:nowrap')
+          td.w-xs(ng-bind='::job.consultant_score.toFixed(2)')
+          td.w-sm(title='{{::job.payment}}' ng-if='::$ctrl.user.admin_flag'): .text-ellipsis.w-sm(ng-bind='::job.payment')
+          td.text-center.v-middle.w-xs.no-padder.w-md
+            a.btn.btn-xs.b-success.text-success.inline.text-xs.m-r-sm(ng-click='$ctrl[type].acceptJD($index, job); $event.stopPropagation();')
+              i.fa.fa-check.text-success.text-sm.m-r-xs
+              span.padder-xs.text-sm Accept
+
+            a.inline.font-thin.text-lg(
+              ng-if='type === "qdirect"'
+              ng-click='$ctrl[type].rejectJD(job, $index, $ctrl.settings.isAdmin); $event.stopPropagation();')
+              span.padder-xs.text-sm Reject
+
+            a.inline.font-thin.text-lg.m-l-sm(
+              uib-popover="Hide this JD from my list"
+              popover-trigger="'mouseenter'"
+              popover-placement='left'
+              popover-append-to-body='true'
+              ng-if='!$ctrl.settings.isAdmin'
+              ng-click='$ctrl[type].hideJD($index); $event.stopPropagation();')
+              i.fa.fa-eye-slash.text-sm.m-r-xs
+              span.padder-xs.text-sm Hide
+
+        tr: td.text-center.no-select(style='position:relative;z-index:33;' colspan='10')
+          .col-xs-12.text-center.no-padder(ng-show='!$ctrl[type].ui.loading && $ctrl[type].list.length')
+            a.btn.btn-default(
+              ng-if='$ctrl[type].list.length'
+              ng-click='$ctrl[type].head && $ctrl[type].getList(true)'
+              ng-disabled='!$ctrl[type].head'
+              style='border-radius: 50%;'): i.fa.fa-chevron-left.text-dark
+            span.m-l-xs.m-r-xs |
+            a.btn.btn-default(
+              ng-if='$ctrl[type].list.length'
+              ng-click='$ctrl[type].next && $ctrl[type].getList()'
+              ng-disabled='!$ctrl[type].next'
+              style='border-radius: 50%;')
+              i.fa.fa-chevron-right.text-dark
+            a.m-t-xs.pull-right.text-primary(style='position: absolute;right: 5px;' ng-if='$ctrl[type].head' ng-click='$ctrl[type].head = 0') Go to top
+          .w-full.text-center(ng-show='$ctrl[type].ui.loading && $ctrl[type].ui.lazyLoad && $ctrl[type].list.length')
+            button.btn.active.m-t-xs.m-b-xs
+              i.fa.fa-circle-o-notch.fa-spin
+              strong &nbsp;Loading
+
+
+    .text-center.text-muted.text-md.wrapper-md(ng-if='!$ctrl[type].ui.loading && !$ctrl[type].list.length && !$ctrl[type].ui.lazyLoad')
+      i.fa.fa-info-circle
+      span.m-l-xs(ng-if='type === "auto"')
+        | Currently there are no Your Expertise JD for you. Set Parameters in below table and work on JDs to get system preferences here.
+      span.m-l-xs(ng-if='type === "pref"') Select parameters from 'Set Preferences' to view JDs here.
+      span.m-l-xs(ng-if='type === "qdirect"')
+        | Try being more specific, using position name/client name, or choose the JD by selecting the "Function".

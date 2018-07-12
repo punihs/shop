@@ -1,0 +1,164 @@
+body {
+  height: auto !important;
+}
+
+   .nav-pills {
+    > li.active, >li {
+      > a {
+        &:hover,
+        &:active,
+        &:focus {
+          background-color: transparent !important;
+        }
+      }
+    }
+  }
+
+  .hv-white, .badge.bg-info {
+    &.active,
+    &:hover,
+    &:focus {
+      color: #f1f1f1 !important;
+    }
+  }
+
+  .text-no-glow:focus {
+    border: 1px solid #999 !important;
+  }
+
+  .b-info {
+    &:hover,
+    &:focus,
+    &:active {
+      color: #5585B9 !important;
+    }
+  }
+
+  .b-danger {
+    &:hover,
+    &:focus,
+    &:active {
+      color: #ED2424 !important;
+    }
+  }
+
+  .b-success {
+    &:hover,
+    &:focus,
+    &:active {
+      color: #27c24c !important;
+    }
+  }
+
+  .b-warning {
+    &:hover,
+    &:focus,
+    &:active {
+      color: #ff7905 !important;
+    }
+  }
+
+  input[type='text']::-webkit-input-placeholder, input[type='text']::-moz-placeholder {
+    color: #ddd;
+  }
+
+  a.bg-success {
+    &:hover,
+    &:focus,
+    &:active {
+      color: #fff !important;
+    }
+  }
+
+  .nav.nav-sm {
+    > li.active {
+      > a {
+        border-bottom: 3px solid #999;
+        font-weight: 700;
+        color: #555 !important;
+        background: transparent;
+      }
+    }
+  }
+
+  a.text-info {
+    &:hover,
+    &:focus {
+      color: #5585B9;
+      font-weight: 700 !important
+    }
+  }
+
+  .hv-border-info {
+    &:hover {
+      outline: 1px solid #ddd;
+    }
+  }
+    .cal-slide-content {
+      background-color: #fff !important;
+      box-shadow: inset 0 0 0 0 rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .cal-slide-content a {
+      color: #5585B9 !important;
+    }
+
+    .btn-circle {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      line-height: 2.0em;
+    }
+
+    .margin-240 {
+      margin-left: 240px !important;
+    }
+
+    .nav {
+      > li {
+        > a {
+          &:hover,
+          &:focus {
+            background: transparent !important;
+          }
+        }
+      }
+    }
+
+   .nav {
+      > li {
+        > a.direct-bg {
+          &:hover {
+            background:#F9EDBE !important;
+          },
+          &:focus {
+            background:#F9EDBE !important;
+          }
+        }
+      }
+   }
+
+    .direct-bg {
+      background:#F9EDBE !important;
+    }
+
+.company-logo{
+  background-color: #546E7A !important;
+}
+
+.company-header{
+  background-color: #607D8B !important;
+  .bg-info {
+    .nav {
+      .open {
+        &>a {
+          background: transparent;
+        }
+      }
+    }
+  }
+}
+
+.consultant-logo{
+  background: #4173A9;
+}

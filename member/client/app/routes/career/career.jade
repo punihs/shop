@@ -1,0 +1,63 @@
+.wrapper.text-center
+  .text-lg Your QuezX&nbsp;
+    span.text-success Page&nbsp;
+    span is now&nbsp;
+    span.text-success Live
+.container
+  .row
+    .col-xs-12.bg-white-only(style='padding-bottom: 30px;')
+      .col-xs-6.m-t
+        span.text-md Share your Partner page and jobs now with social networks or email to reach more candidates.
+        .no-padder.m-t-xs.m-b
+        label.w-full
+          .wrapper.b-a
+            textarea.m-b-xs.jobLink.form-control(type="text" ng-model="::$ctrl.ui.site" style='resize: none;')
+            a.btn.btn-sm(
+              ng-href='{{$ctrl.links.facebook}}'
+              style='background: #3b5998;width: 38px;'
+              target='_blank'
+              title='Share on Facebook'
+            )
+              i.fa.fa-facebook.fa-lg.text-white
+            a.btn.btn-sm.m-l-xs(
+              ng-href='{{$ctrl.links.twitter}}'
+              style='background: #1da1f2;width: 38px;'
+              target='_blank'
+              title='Share on Twitter'
+            )
+              i.fa.fa-twitter.fa-lg.text-white
+            a.btn.btn-sm.m-l-xs(
+              ng-href='{{$ctrl.links.linkedIn}}'
+              style='background: #0077b5;width: 38px;'
+              target='_blank'
+              title='Share on Linked In'
+            )
+              i.fa.fa-linkedin.text-white
+            a.btn.btn-sm.m-l-xs(
+              ng-href='{{$ctrl.links.google}}'
+              style='background: #d34836;width: 38px;'
+              target='_blank'
+              title='Share on Google Plus'
+            )
+              i.fa.fa-google-plus.fa-lg.text-white
+            a.pull-right.btn.btn-sm.bg-success.text-white(
+              ngclipboard
+              data-clipboard-target='.jobLink'
+            ) Copy Link
+        .h4.m-t-sm.m-b-sm.text-u-c.text-black.dker EDIT YOUR PARTNER PAGE
+        .m-t-xs.m-b-xs Company logo
+          span.m-l-xs.text-muted.text-xs (optional)
+        .b-a.wrapper.text-center
+          img.img-reponsive.thumb-lg(ng-src='data:{{$ctrl.data.logo.filetype}};base64,{{$ctrl.data.logo.base64}}')
+        input.m-t-xs.clearfix.form-control(type="file" ng-model='$ctrl.data.logo' base-sixty-four-input name='file' accept='.png,.jpg,.jpeg')
+        div.m-t-lg About Us
+          span.m-l-xs.text-muted.text-xs (optional)
+        textarea.m-b-sm.m-t-xs.form-control(ng-model='$ctrl.data.description' style='resize:none;height: 120px;')
+        .wrapper-xs.text-center
+          a.btn.btn-success.m-t-xs(ng-click='$ctrl.save()') Save
+      .col-xs-6
+        .wrapper-xs.text-gray.text-md.text-center
+          a.btn.btn-default.rounded.text-primary(ng-click='$ctrl.CareerModal.open($ctrl.ui.site)') Show Desktop View
+        div(style="background-image: url('../assets/images/mobile-career.svg');height: 615px;width: 340px;margin: 0 auto;")
+          iframe(src='{{$ctrl.ui.site}}' border='0' style='margin: 47px 11px;width: 320px;height: 500px')
+          .m-t-md.text-gray.text-md.text-center Mobile View

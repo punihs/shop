@@ -1,0 +1,16 @@
+.modal-header
+  .modal-title
+    .h4.text-info Upload
+      .close(ng-click='$ctrl.cancel()') ×
+form.form-validation(name="uploadToDriveForm" ng-submit="$ctrl.upload()")
+  .modal-body
+      .input-group
+        label
+          strong Upload
+          p Max file size {{$ctrl.limit}}MB
+          input.form.form-control(type='file' accept='.pdf, .doc, .jpg, .png'
+          name='file' maxsize='5000' base-sixty-four-input ng-model='$ctrl.data.file')
+        .text-danger.font-bold(ng-if="uploadToDriveForm.file.$error.maxsize") File must not exceed {{$ctrl.limit}}MB
+
+  .modal-footer
+    button.btn.btn-primary(type='submit' ng-disabled='uploadToDriveForm.$invalid') Upload

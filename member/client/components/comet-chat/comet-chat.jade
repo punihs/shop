@@ -1,0 +1,11 @@
+.inline.bg-primary.r-r.r-l.r-2x.pointer(
+  ng-click='$ctrl.open()'
+  style='position: fixed;bottom: 0;right: 270px;width:35px;height: 30px;padding: 5px;border-top-left-radius: 5px;border-top-right-radius: 5px;z-index: 1000;'
+  uib-tooltip='Chat with Your Engagement Manager'
+  tooltip-placement='top'
+  tooltip-append-to-body='true'
+  ng-if='$ctrl.EM_ID && $ctrl.CHAT_AVAILABLE'
+)
+  .fa.fa-comments(style='font-size: 1.5em;')
+
+

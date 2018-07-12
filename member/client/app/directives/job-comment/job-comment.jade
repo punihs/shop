@@ -1,0 +1,22 @@
+.wrapper-xs.no-padder
+  .h5.pointer.wrapper-xs.m-b-xs(ng-click='$ctrl.collapse.broadcast = !$ctrl.collapse.broadcast', style='height: 25px;')
+    i.fa.pull-right.fa-chevron-up(ng-class='{ "fa-chevron-down": $ctrl.collapse.broadcast, "fa-chevron-up": !$ctrl.collapse.broadcast }', style='font-size: 12px;')
+    .pull-left.m-l-xs(ng-style='{color: $ctrl.collapse.broadcast ? "#58666e" : "#5585B9" }') JD BROADCAST MESSAGE
+      i.fa.fa-comments.pull-left
+
+  .wrapper-xs.clearfix.m-b-xs(uib-collapse='$ctrl.collapse.broadcast', aria-expanded='false', aria-hidden='true')
+    .span.m-b-xs(ng-if='!$ctrl.data.length') No New JD Broadcast Messages
+    .list-group.list-group-sp(
+      ng-if='$ctrl.data.length'
+      style='position: relative; height: 90%; width: 100%; top: 0; bottom: 50px; overflow-x: hidden;overflow-wrap: break-word;'
+      scroll-to-bottom='$ctrl.ui.scrollToBottom')
+      .list-group-item.m-n.clearfix.padder-v.m-b-sm.b-b(ng-repeat='comment in $ctrl.data | orderBy: ["created_at", "id"] track by $index')
+        a.pull-left.thumb.m-r-sm.pull-left.m-l-n-sm.m-r-sm
+          .fa-stack.fa-2x.text-info
+            i.fa.fa-circle.fa-stack-2x(style='font-size: 1.7em;')
+            span.fa.fa-stack-1x.h3(style='color: #fff;line-height: 2em;') {{comment.user.name[0]}}
+        div(ng-class='{"clear": !$ctrl.job._root_.is_drive,  "inline m-t-xs": $ctrl.job._root_.is_drive }' style='max-width: 90%')
+          .text-sm.text-info-dker {{comment.user.name}}
+            .text-danger-dker {{$ctrl.states[comment.state_id].action}}
+            p.m-n.text-muted-q(ng-if='comment.body' ng-bind='comment.body')
+            em.text-xs.text-muted.pull-right {{comment.created_at | date: 'd MMM yyyy, h:mm a'}}

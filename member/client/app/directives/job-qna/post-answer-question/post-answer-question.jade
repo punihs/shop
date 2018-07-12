@@ -1,0 +1,28 @@
+.hbox.hbox-auto-xs.hbox-auto-sm.bg-white-only
+  form.form-horizontal.wrapper-md( name="searchCandidateForm")
+    .row
+      // Form Block
+      .col-md-7.col-lg-10.col-lg-10(style="margin:auto;float:inherit")
+        // Form Items
+        .col-xs-12.no-padder: a.pull-right.fa-2x.text-muted(ng-click='$ctrl.$uibModalInstance.dismiss("cancel")') ×
+        .m-t-xs.b-b
+          .qna-background.m-t-xs.m-b-xs.h3 FAQs
+        .row
+          .col-md-12.col-xs-12
+            .qna-content
+              table.qna-input
+                tr
+                  td.question.h4 Q. {{$ctrl.Question.corrected_text}}
+              table.qna-input
+                tr.answer(ng-repeat='answer in $ctrl.Question.JobAnswers| orderBy:"-created" track by $index' ng-show="$ctrl.Question.JobAnswers.length > 0")
+                  td.pull-left R.
+                  td {{answer.corrected_text}}
+              //table.qna-input
+                tr.write-answer
+                  td.pull-left(style="padding-top:16px") R
+                  td
+                    textarea.qna-answer.b-t.b-b.b-l.b-r(rows="3" placeholder="type your answer" ng-model="$ctrl.answer.posted_text" )
+                tr
+                  td
+                  td
+                    .btn-post-reply(ng-click="$ctrl.createAnswer($ctrl.Question)") Reply
