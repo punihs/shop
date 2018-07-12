@@ -1,0 +1,36 @@
+.modal-header.bg-primary
+  span.font-bold.text-md(ng-bind='$ctrl.data.title')
+  span.fa.fa-times-circle.pull-right.pointer(style='font-size: 1.5em;' ng-click='$ctrl.$uibModalInstance.dismiss(false)')
+
+.modal-body.bg-white-only
+  .wrapper-xs.text-center(ng-if='$ctrl.type === "payment"')
+    .hbox.text-left(style='background: #c7ebfb;border-radius: 2px;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);color: #222;padding: 10px 5px !important;font-family: arial,sans-serif')
+      .col.v-middle.thumb-md.text-center
+        i.fa.fa-info-circle.fa-2x.text-primary-dker
+      .col.wrapper-xs.text-xs
+        ul(style='margin-bottom: 0;padding-left: 10px')
+          li Please check latest commercials & replacement period before working on JD
+          li You will directly service Client for all activities on that JD including feedback till joining
+          li No ShoppRe CV screening or relationship manager
+  div.wrapper-xs
+    .wrapper-sm.text-lg.m-b-xs(ng-bind='$ctrl.data.description' class='{{$ctrl.type === "popup" ? "text-black" : "text-primary-dker"}}')
+    table.table.table-striped(style='margin-bottom: 0;')
+      tr(ng-repeat='item in $ctrl.items')
+        td(ng-bind='item.name' style='padding: 8px;')
+        td(ng-bind='item.val' style='padding: 8px;')
+
+  .wrapper-xs(ng-if='$ctrl.data.notes')
+    .font-bold Note:
+    .padder-xs.text-sm(ng-repeat='note in $ctrl.data.notes' ng-bind='note')
+
+  .clear
+    .pull-right.wrapper-xs(ng-if='!$ctrl.data.modalButtons')
+      button.btn.btn-success.btn-sm.m-r-xs(ng-click='$ctrl.$uibModalInstance.close(true)') ACCEPT
+      a.btn.btn-default.btn-sm(ng-click='$ctrl.$uibModalInstance.dismiss(false)') CANCEL
+    .pull-right.wrapper-xs(ng-if='$ctrl.data.modalButtons')
+      button.btn.m-r-xs(
+        ng-repeat='button in $ctrl.data.modalButtons'
+        ng-bind='button.name'
+        class='btn-{{button.type}}'
+        ng-click='$ctrl.$uibModalInstance.close(button.bool)'
+      )

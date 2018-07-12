@@ -1,0 +1,12 @@
+.pos-abt.bg-white-only(style='left: 0;top: 0;height: 100%;width:100%;z-index: -1;')
+div.text-center(style='margin: 150px auto' ng-init="App.fullPage=true;")
+  .h3.font-bold(style='font-family: Source Sans Pro;color: #333;') Upload a CV in less than 10 seconds using our
+  .h3.font-thin.wrapper-xs(style='font-family: san-serifcolor: #444;') Google Chrome Extension
+  .m-t.text-center
+    img(src='/assets/images/download-extension.svg' style='width: 100px;')
+  .m-t
+    a.btn.btn-success.btn-lg.w(target='_blank' ng-href='{{$ctrl.link}}')
+      i.fa.fa-download
+      span.m-l-sm Download
+  .m-t
+    a.text-muted.text-md(ui-sref='customers.list({ status: "New" })') Skip

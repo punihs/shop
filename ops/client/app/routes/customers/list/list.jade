@@ -1,0 +1,119 @@
+.hbox.h-full(style='position: fixed;')
+  .col.bg-white-only.b-r.w-md
+    ul.nav(style='overflow-y: scroll;height: 88%;overflow-x: hidden;width: 251px')
+      li.wrapper-xs
+        a.no-padder.btn.btn-danger.form-control.font-bold.hover-red(
+          uib-tooltip='Create Customer'
+          tooltip-placement='right'
+          tooltip-append-to-body='true'
+          ng-href='{{$ctrl.URLS.ACCOUNTS}}/signup'
+        )
+          .m-t-xs.m-r-sm
+            span Create Customer
+      li.wrapper-xs
+        input.w.form-control.rounded.m-l-xs.text-no-glow(
+          ng-model='$ctrl.params.q'
+          placeholder="Search User"
+          ng-change="$ctrl.getCustomers(true)"
+          ng-model-options="{ debounce: 600 }"
+        )
+      li.wrapper-xs
+        input.w.form-control.rounded.m-l-xs.text-no-glow(
+        ng-model='$ctrl.params.email'
+        placeholder="Search by Email"
+        ng-change="$ctrl.getCustomers(true)"
+        ng-model-options="{ debounce: 600 }"
+        )
+
+  .col.bg-light.h-full
+
+    .padder.m-t-sm(style='z-index: 100;padding-right: 32px !important;')
+      .bg-white-only(style='height: 36px;')
+        ul.nav.nav-pills.nav-sm
+          li.pull-right.col.pointer.m-r-xs
+            uib-dropdown
+              button.btn.btn-sm.bg-white-only.b-gray(type='button', uib-dropdown-toggle='', aria-haspopup='true', aria-expanded='false')
+                | {{ ($ctrl.sorts | filter:{ key: $ctrl.params.sort }: true)[0].name !== 'Default' ? ($ctrl.sorts | filter:{ key: $ctrl.params.sort }: true)[0].name+'&nbsp;&nbsp;' : '' }}
+                span.fa.fa-sort-alpha-asc
+              ul.dropdown-menu.pull-right(uib-dropdown-menu='')
+                li(ng-repeat="sort in $ctrl.sorts")
+                  a(href='#' ng-bind='sort.name' ng-click='$ctrl.sort(sort.key)')
+          li.m-r-xs(ng-repeat="group in $ctrl.GROUPS" ui-sref-active='active')
+            a(ui-sref="customers.list({ groupId: group.id })")
+              span(ng-bind="group.name")
+    .col-md-12.col-sm-12.col-xs-12(style='overflow-y: scroll;height: 85%;')
+      .col-md-12.b-a.m-t-sm.bg-white-only(ng-if='!$ctrl.list.length && !$ctrl.ui.loading')
+        h1.text-center No Customers Found
+      .col-md-12.col-sm-12.col-xs-12.b-a.m-t-sm.customer-item.bg-white-only(
+        ng-if='$ctrl.list.length'
+        ng-repeat='customer in $ctrl.list | orderBy:$ctrl.order |  filter:query track by $index'
+      )
+        .col-md-12.col-sm-12.col-xs-12.b-b.no-padder
+          img.pull-left(
+            ng-if='customer.profile_photo_url'
+            ng-src='{{customer.profile_photo_url}}'
+            style='height: 30px;width: 30px;border-radius: 50%;position: absolute; left:-30px;bottom:3px'
+          )
+          a.m-b-xs.m-t-xs.pull-left.wrapper-xs.font-bold.text-info(
+            ng-bind="customer.name"
+            ui-sref='customer.view({id: customer.id})'
+            target="_blank"
+          )
+          span.m-b-xs.m-t-xs.pull-right.wrapper-xs.m-r-sm.text-sm
+            span.pointer.padder(
+              ng-if='customer.Shipments.length'
+              ui-sref="customer.shipments({ id: customer.id })")
+              | &nbsp;SHIPMENTS
+            span.pointer.padder.b-l(
+              ng-if='customer.Packages.length'
+              ui-sref="customer.packages.index({ id: customer.id })")
+              | &nbsp;PACKAGES
+        .col-sm-12.m-t-sm.text-gray.no-padder(style='font-size: 10px;')
+          .no-padder.col-sm-1.col-xs-3.text-ellipsis
+          .no-padder.col-sm-3.col-xs-2
+            | Email
+          .no-padder.col-sm-2.col-xs-2
+            | Locker Code
+          .no-padder.col-sm-2.col-xs-2
+            | Phone/Mobile
+          .no-padder.col-sm-2.col-xs-2
+            | Referred User
+          .no-padder.col-sm-1.col-xs-1
+            | Source
+
+        .col-sm-12.m-b-sm.no-padder(style='font-weight: 500')
+          .no-padder.col-sm-1.col-xs-3.text-ellipsis
+            span.flag-icon.m-l-xs(title='{{customer.Country.name}}'
+            ng-class='"flag-icon-"+ customer.Country.iso2.toLowerCase()'
+            )
+          .no-padder.col-sm-3.col-xs-2
+            span(ui-sref='customer.view({id: customer.id})' target="_blank" ng-bind="customer.email")
+          .no-padder.col-sm-2.col-xs-2
+            span(
+              ui-sref='customer.view({id: customer.id})'
+              target="_blank"
+              title="Virtual Locker"
+              ng-bind="customer.virtual_address_code"
+            )
+            span.badge(
+              style='background-color: #FF8017'
+              ng-if='customer.Locker'
+              title="Original Locker"
+              ng-bind='customer.Locker.short_name'
+            )
+          .no-padder.col-sm-2.col-xs-2
+            span(ui-sref='customer.view({id: customer.id})' target="_blank" ng-bind="customer.mobile")
+          .no-padder.col-sm-2.col-xs-2
+            span(ng-bind='customer.ReferredUser.first_name || "Nakul Chandra"')
+          .no-padder.col-sm-1.col-xs-1
+            span(ng-bind="customer.Source.name || 'Quora'" style='font-weight: 600;')
+
+
+      .text-center.m-t-xs
+        button.btn.active.m-t-xs(title='Loading ...' ng-if="$ctrl.ui.loading")
+          i.fa.fa-circle-o-notch.fa-spin
+          strong &nbsp;Loading
+        button.btn.btn-primary.m-t-xs(title='Load more' ng-if="$ctrl.ui.lazyLoad" ng-click="$ctrl.getCustomers()")
+          i.fa.fa-plus-circle
+          strong &nbsp;Load More
+      .col-md-12.col-sm-12.col-xs-12.m-t-xxl

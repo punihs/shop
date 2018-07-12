@@ -1,0 +1,209 @@
+navbar {
+  background-image: url('https://www.shoppre.com/img/top-bar.jpg');
+  .navbar-collapse {
+    margin-left: 240px !important;
+  }
+
+  .hv, .n-hv{
+    font-weight:400 !important;
+    font-size: 13px !important;
+    letter-spacing: 0.06em;
+  }
+
+  .nav {
+      >li {
+        >a.hv, a.n-hv {
+          &:hover {
+            position: relative;
+            color: #fff;
+            text-decoration: none;
+            background: transparent !important;
+          }
+        }
+    }
+  }
+
+  span.career-icon {
+    display: none !important;
+  }
+
+  @media (min-width: 992px) and (max-width: 1040px) {
+    .career {
+      > a.hv {
+        &:hover:before {
+          background: transparent !important;
+        }
+      }
+      > a.hv:before {
+          background: transparent !important;
+      }
+    }
+    span.career-icon {
+      display: block !important;
+      font-size: 12px !important;
+      padding: 0 10px 0 5px !important;
+    }
+    span.career-name {
+      display: none !important;
+    }
+  }
+  @media screen and (min-width: 992px) {
+
+    .utf8-caret {
+      position: absolute;
+      top: 14.6px;
+      right: 4px;
+      font-size: 10px;
+    }
+
+    .navbar-header {
+      width: 240px;
+    }
+
+    .nav {
+      > li {
+        > a.hv:before {
+          content: "";
+          position: absolute;
+          width: 70%;
+          height: 1px;
+          bottom: 12px;
+          left: 16px;
+          background-color: #fff;
+          visibility: hidden;
+          transform: scaleX(0);
+          transition: all 0.3s ease-in-out 0s;
+        }
+      }
+    }
+
+    .nav {
+      > li {
+        > a.hv {
+          &:hover:before {
+            visibility: visible;
+            transform: scaleX(1);
+          }
+        }
+      }
+    }
+
+    .nav {
+      > li.active {
+        > a:before {
+          visibility: visible;
+          transform: scaleX(1);
+          font-weight: 700;
+        }
+      }
+    }
+
+    .nav {
+      >li {
+        >a.hv, a.n-hv {
+          span {
+            padding: 0 18px 0 18px !important;
+          }
+        }
+      }
+    }
+  } //media query
+
+    .nav, .aside-wrap {
+    > li {
+      > a.hv, a.n-hv {
+        &.active,
+        &:focus {
+          background: transparent;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .navbar-brand img {
+    margin: 10px 0 0 10px;
+    width: 84px;
+  }
+
+  .search::-webkit-input-placeholder {
+    color: rgba(255,255,255,0.7);
+  }
+
+  .bg-info .nav {
+      >li.active {
+        >a {
+          background: transparent !important;
+        }
+    }
+  }
+
+  .nav {
+      >li .btn{
+        &:hover,
+        &:focus {
+          color: #fff;
+        }
+    }
+  }
+
+  .navi {
+      >ul {
+        >li {
+          >a span {
+            font-size: 13px !important;
+          }
+        }
+    }
+  }
+
+  .search {
+    width: 0;
+    border-bottom: 0;
+  }
+
+  .search-animate {
+    width: 150px !important;
+    border-bottom: 1px solid #fff !important;
+    transition: width 0.3s, border-bottom 0.3s !important;
+  }
+
+  .popover {
+    width: 275px;
+    top: 40px !important;
+    right: 100px;
+  }
+
+  .popover {
+    > .arrow {
+      right: 11px !important;
+    }
+  }
+
+  .popover-content {
+    padding: 0 2px 0 4px;
+  }
+  @media screen and (max-width: 1200px) {
+
+    .utf8-caret {
+      position: absolute;
+      top: 14.6px;
+      right: 0;
+      font-size: 8px;
+    }
+
+    .nav {
+      >li {
+        >a.hv, a.n-hv {
+          span {
+            font-size: 10px !important;
+            padding: 0 10px 0 15px !important
+          }
+        }
+      }
+    }
+    .company-btn {
+      padding: 3px 6px;
+    }
+  }
+}

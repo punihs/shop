@@ -1,0 +1,40 @@
+div.m-t-xl.no-margin
+  .wrapper-md.bg-white-only
+    div
+      .h1.m-l-md.font-thin.h3.m-b-md
+        | Shipment History
+      .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+      .col-sm-6.m-t-lg
+        .list-group(ng-repeat='shipment in $ctrl.shipments')
+          p.list-group-item
+            i.fa.fa-user.fa-fw.m-r-xs
+            |  Customer Name
+            span.pull-right(ng-bind='shipment.customer_name')
+          p.list-group-item
+            i.fa.fa-map-marker.fa-fw.m-r-xs
+            | Address
+            span.pull-right(ng-bind='shipment.address')
+          p.list-group-item
+            i.fa.fa-phone.fa-fw.m-r-xs
+            | Phone
+            span.pull-right(ng-bind='shipment.phone')
+          p.list-group-item
+            i.fa.fa-truck.fa-fw.m-r-xs
+            |  Shipping Carrier
+            span.pull-right(ng-bind='shipment.shipping_carrier')
+          p.list-group-item
+            span.badge.bg-warning(ng-binding='shipment.packages_count') {{shipment.packages_count}}
+            i.fa.fa-bar-chart-o.fa-fw.m-r-xs
+            |  Packages Count
+          p.list-group-item
+            span.badge.bg-info(ng-binding='shipment.created_at') {{shipment.created_at}}
+            i.fa.fa-clock-o.fa-fw.m-r-xs
+            |  Created at
+          p.list-group-item
+            span.badge.bg-success(ng-binding='shipment.final_amount') {{shipment.final_amount}}
+            i.fa.fa-money.fa-fw.m-r-xs
+            |  Final Amount
+
+    .clearfix
+
+

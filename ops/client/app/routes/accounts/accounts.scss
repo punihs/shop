@@ -1,0 +1,38 @@
+.accounts {
+  .hover-wrap {
+    .display-on-hover {
+      display: none;
+    }
+  }
+
+  .hover-wrap:hover {
+    .display-on-hover {
+      display: block !important;
+    }
+  }
+
+  .no-margin-bottom {
+    margin-bottom: 0px !important;
+  }
+  .nav {
+      > li {
+        &.active {
+          background-color: #efefef;
+          color: $brand-info;
+        }
+    }
+  }
+
+  .nav {
+    > li {
+      > a.no-hover
+      &:hover,
+      &:focus {
+        position: relative;
+        color: #222;
+        text-decoration: none;
+        background: transparent !important;
+      }
+    }
+  }
+}

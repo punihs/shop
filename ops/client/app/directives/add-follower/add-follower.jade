@@ -1,0 +1,30 @@
+.modal-header
+  .modal-title
+    .h4.text-info Add Follower
+      .close(ng-click='AddFollower.cancel()') ×
+.modal-body
+  label.w-full.input-group
+    .col-xs-12.no-padder
+      | Follower
+    .col-xs-12.no-padder
+      .pull-left.b-a.b-info.text-info-dker.m-r-xs.m-b-xs.r(ng-repeat='follower in AddFollower.FollowerData' style='padding: 2px;' ng-if='follower.showAllFollower || $index < 6') {{follower.name}}
+      a.pull-left(ng-click='follower.showAllFollower = !follower.showAllFollower')
+        span.font-bold.text-info-dker(ng-if='follower.showAllFollower') – Less
+        span.font-bold.text-info-dker(ng-if='!follower.showAllFollower') + More
+    .col-xs-12.no-padder
+      | To Be Added
+    .col-xs-12.no-padder
+      .pull-left.b-a.b-info.text-info-dker.m-r-xs.m-b-xs.r(ng-repeat='follower in AddFollower.newEmails' style='padding: 2px;' ng-if='follower.showNewAllFollower || $index < 6') {{follower}}
+      a.pull-left(ng-click='follower.showNewAllFollower = !follower.showNewAllFollower')
+        span.font-bold.text-info-dker(ng-if='follower.showNewAllFollower') – Less
+        span.font-bold.text-info-dker(ng-if='!follower.showNewAllFollower') + More
+
+    .col-xs-12.no-padder
+      .col-xs-6.no-padder.input-group
+        input.form-control(type='text' ng-model="AddFollower.emailTobeAdded" placeholder='Enter email ids of user')
+        span.input-group-btn
+          button.btn.btn-default(type='button' ng-click="AddFollower.addNewFollower()"): i.fa.fa-plus
+
+
+.modal-footer
+  a.btn.btn-primary(ng-click='AddFollower.ok()' ng-href='' target='_blank') Add

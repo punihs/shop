@@ -1,0 +1,15 @@
+.modal-header
+  .modal-title
+    .h4.text-info Download CV
+      .close(ng-click='DownloadResume.cancel()') ×
+.modal-body
+  .radio.m-b-md: label.i-checks.i-checks-sm
+    input(type='radio' ng-model='DownloadResume.concat' value='true')
+    i
+    |  Download CV with CTC
+  .radio: label.i-checks.i-checks-sm
+    input(type='radio' ng-model='DownloadResume.concat' value='false')
+    i
+    |  Download CV without CTC
+.modal-footer
+  a.btn.btn-primary(ng-click='DownloadResume.ok()' ng-href='{{DownloadResume.downloadUrl}}&concat={{DownloadResume.concat}}' target='_blank') Download

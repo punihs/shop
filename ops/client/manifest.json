@@ -1,0 +1,13 @@
+{
+  "name": "Shoppre Ops",
+  "short_name": "ops_shoppre",
+  "icons": [{
+    "src": "assets/images/quezx-logo.cbe564e6.svg",
+    "sizes": "192x192",
+    "type": "image/svg+xml"
+  }],
+  "start_url": "/",
+  "display": "standalone",
+  "gcm_sender_id": "569763436942",
+  "gcm_user_visible_only": true
+}
