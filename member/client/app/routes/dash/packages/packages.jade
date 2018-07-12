@@ -1,0 +1,385 @@
+div.m-t-xl.no-margin
+  .wrapper-md.bg-white-only
+    div
+      .h1.m-l-md.font-thin.h3.m-b-md.text-u-c
+        | Packages in locker shpr-76-322
+      .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+      .row
+        .col-md-8.m-t-xs
+          .col-md-7.alert.alert-info.m-b-xs
+            h4.text-thin.no-margin.font-15 Alert Shoppre about my incoming packages (Optional)
+          .col-md-2.pull-right.alert.alert-info.m-b-xs
+            h4.text-thin.text-center.no-margin.font-15 View Queue
+            span.badge.badge-lg.locker-up.bg-danger.pull-right-xs 2
+          .clearfix
+          .col-md-8.pull-right.text-right.no-padder-right
+            h4.text-u-c We are preparing currently one shipment for you
+          .clearfix
+          .hbox.accounts.panel.panel-warning.m-t-xs
+            .bg-white-only
+              .nav-tabs-alt
+                .bg-white-only.b-b(style='width: 100%; height: 44px;')
+                  ul.nav.nav-tabs.nav-justified
+                    li(ng-repeat='status in $ctrl.buckets' ui-sref-active="active")
+                      a(ui-sref='dash.packages({ status: status })')
+                        span(ng-bind="$ctrl.CONFIG.PACKAGE_STATES[$index]")
+                        span.badge.bg-warning.pull-right.no-margin.m-t-xs 16
+
+
+                //ul.nav.nav-tabs.nav-justified.lockerUl
+                //  li.active(ng-class="{'active': tabs[0]}")
+                //    a(ui-sref='packagelocker.readytosend')
+                //      | Ready to send
+                //      span.badge.bg-warning.left-margin-15.m-b-xs 16
+
+            .full-width
+              .wrapper-md.ng-scope
+                .panel.panel-default
+                  .panel-heading
+                    | Select Package to Ship
+                  div
+                    table.table.table-bordered.m-b-none.default.footable-loaded.footable(
+                    ui-jq='footable', data-filter='#filter', data-page-size='5')
+                      thead
+                        tr
+                          th.footable-visible.footable-first-column.footable-sortable(ng-click='$ctrl.MoreOption=!$ctrl.MoreOption')
+                            i.fa.fa-sort-desc
+                          th.footable-visible.footable-sortable
+                            | From
+                            span.footable-sort-indicator
+                          th.footable-visible.footable-sortable(data-hide='phone,tablet')
+                            | Package ID
+                            span.footable-sort-indicator
+                          th.footable-visible.footable-sortable(data-hide='phone,tablet', data-name='Date Of Birth')
+                            | Date Recieved
+                            span.footable-sort-indicator
+                          th.footable-visible.footable-last-column.footable-sortable.bg-warning.text-u-c(ng-if="$ctrl.$stateParams.status==='ACTIONS_REQUIRED'")
+                            | ACTION REQUIRED
+                            span.footable-sort-indicator
+                          th.footable-visible.footable-last-column.footable-sortable(ng-hide="$ctrl.$stateParams.status==='ACTIONS_REQUIRED'")
+                            | Iten Values
+                            span.footable-sort-indicator
+                          th.footable-visible.footable-last-column.footable-sortable(ng-hide="$ctrl.$stateParams.status==='ACTIONS_REQUIRED'")
+                            | Weight
+                            span.footable-sort-indicator
+                          th.footable-visible.footable-last-column.footable-sortable(ng-hide="$ctrl.$stateParams.status==='ACTIONS_REQUIRED' || $ctrl.$stateParams.status==='IN_REVIEW'")
+                            | Photos
+                            span.footable-sort-indicator
+                          th.footable-visible.footable-last-column.footable-sortable(ng-hide="$ctrl.$stateParams.status==='ACTIONS_REQUIRED' || $ctrl.$stateParams.status==='IN_REVIEW'")
+                            .checkbox.no-margin
+                              label.i-checks
+                                input(type='checkbox', checked='', value='')
+                                i
+                      tbody
+                        tr.footable-even(style='display: table-row;' ng-repeat="package in $ctrl.packages")
+                          td.footable-visible.footable-first-column(ng-click='$ctrl.MoreOption=!$ctrl.MoreOption')
+                            i.fa.fa-sort-desc
+                          td.footable-visible
+                            a(ui-sref='package.show({ id: package.id })' ng-bind='package.Store.name')
+                          td.footable-visible(ng-bind='package.id')
+                          td.footable-visible(
+                          ng-bind='$ctrl.moment(package.created_at).fromNow()'
+                          uib-tooltip="{{package.created_at | date:'MMM d, y'}} IST {{package.created_at | date:'h:mm a'}}"
+                          tooltip-placement='right'
+                          tooltip-append-to-body='true'
+                          )
+                          td.footable-visible(
+                          ng-bind='package.price_amount'
+                          ng-hide="$ctrl.$stateParams.status==='ACTIONS_REQUIRED'"
+                          )
+                          td.footable-visible.text-center(ng-if="$ctrl.$stateParams.status==='ACTIONS_REQUIRED'")
+                            p.no-margin Provide Item Values
+                            p.no-margin As required by Customs
+                          td.footable-visible(ng-hide="$ctrl.$stateParams.status==='ACTIONS_REQUIRED'" ng-bind='package.weight')
+                          td.footable-visible(ng-hide="$ctrl.$stateParams.status==='ACTIONS_REQUIRED' || $ctrl.$stateParams.status==='IN_REVIEW'") Photos
+                          td.footable-visible(ng-hide="$ctrl.$stateParams.status==='ACTIONS_REQUIRED' || $ctrl.$stateParams.status==='IN_REVIEW'")
+                            .checkbox.no-margin
+                              label.i-checks
+                                input(type='checkbox', checked='', value='')
+                                i
+            .clearfix
+            .more-options.col-md-12
+              .ReadytoSendMore(ng-if='$ctrl.$stateParams.status==="READY_TO_SEND" && $ctrl.MoreOption')
+                table#DataTables_Table_2.table.table-bordered.m-b-none
+                  thead
+                    tr(role='row')
+                      th.sorting_asc.text-u-c(style='width: 186px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Package Details
+                      th.sorting.text-u-c(style='width: 242px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') QTY
+                      th.sorting.text-u-c(style='width: 241px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Value per Unit
+                      th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending') Value
+                  tbody
+                    tr.odd(role='row')
+                      td.sorting_1 Mobile
+                      td 1
+                      td
+                        .input-group
+                          span.input-group-addon
+                            i.fa.fa-money
+                          input.form-control(type='text', value='100')
+                      td 100
+              .InReview(ng-if='$ctrl.$stateParams.status==="IN_REVIEW" && $ctrl.MoreOption')
+                button.btn.btn-md.btn-info.m-t-xs.m-b-xs(ng-click='$ctrl.uploadPhotos()') Photos
+                table#DataTables_Table_2.table.table-bordered.m-b-none
+                  thead
+                    tr(role='row')
+                      th.sorting_asc.text-u-c(style='width: 186px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Package Details
+                      th.sorting.text-u-c(style='width: 242px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') QTY
+                      th.sorting.text-u-c(style='width: 241px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Value per Unit
+                      th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending') Value
+                  tbody
+                    tr.odd(role='row')
+                      td.sorting_1 Mobile
+                      td 1
+                      td 100
+                      td 100
+              .conditions(ng-if='$ctrl.MoreOption' ng-hide='$ctrl.$stateParams.status==="ACTIONS_REQUIRED"')
+                p.m-t-md
+                  | **Values shown are obtained from the merchant invoices, when available. Researched values based on current market prices have been provided above for any items that arrived without invoices. The values should be updated to reflect the actual price paid for each item, and must be confirmed.
+                p.m-t-xs
+                  button.no-padder.btn-link.text-warning.m-r-xs(ng-click='$ctrl.AddCommnet()') Add your notes
+                  | to the package, this is for your use only, Shoppre will not review this area.
+              .ActionRequired(ng-if='$ctrl.$stateParams.status==="ACTIONS_REQUIRED" && $ctrl.MoreOption')
+                button.btn.btn-md.btn-info.m-t-xs.m-b-xs(ng-click='$ctrl.uploadPhotos()') Photos
+                h5.font-bold How to provide item values:
+                p
+                  strong Option 1:
+                  |Enter the values of each item. If the values are accepted, you will be able to ship right away.
+                  | If the values are declined, a merchant invoice will be required.
+                p
+                  strong Option 1:
+                  | Upload merchant invoice. Your package will be placed "In Review" untill the values are verified by Shoppre.
+
+                table#DataTables_Table_2.table.table-bordered.m-b-none
+                  thead
+                    tr(role='row')
+                      th.sorting_asc.text-u-c(style='width: 186px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Package Details
+                      th.sorting.text-u-c(style='width: 242px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') QTY
+                      th.sorting.text-u-c(style='width: 241px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Value per Unit
+                      th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending') Value
+                  tbody
+                    tr.odd(role='row')
+                      td.sorting_1 Mobile
+                      td 1
+                      td
+                        .input-group
+                          span.input-group-addon
+                            i.fa.fa-money
+                          input.form-control(type='text', value='100')
+                      td 100
+                    tr(role='row')
+                      td(colspan="2") Total Weight : 3.00 Kg
+                      td Total Values Of This Package :  0.00
+                      td
+                        button.btn.btn-sm.btn-warning.m-b-xs.text-u-c.pull-right(type='submit') Confirm Package
+
+              .specialOffers.m-t-xs(ng-if='$ctrl.MoreOption' ng-hide='$ctrl.$stateParams.status==="ACTIONS_REQUIRED"')
+                h4.font-thin.m-t-md OPTIONAL SERVICES
+                .input-group-btn.dropdown.open(uib-dropdown='', style='')
+                  button.btn.btn-default.full-width.dropdown-toggle.text-left.m-b-md(type='button', uib-dropdown-toggle='', aria-haspopup='true', aria-expanded='true')
+                    span.text-u-c.m-r-xs Special Offers
+                    span.caret
+                  ul.list-group.list-group-lg.no-bg.auto.dropdown-menu.full-width.position-relative
+                    li.list-group-item.pointer(
+                    ng-click='$ctrl.openOffer(specialRequest)'
+                    ng-repeat='specialRequest in $ctrl.specialRequests'
+                    )
+                      span.clear
+                        span.font-bold(ng-bind="specialRequest.name")
+                        i.fa.fa-info-circle.m-l-xs(
+                        uib-popover='{{specialRequest.infoContent}}'
+                        popover-trigger="'mouseenter'"
+                        popover-placement='top'
+                        popover-append-to-body='true'
+                        )
+                        span.m-l-xs(ng-bind="specialRequest.price")
+                        small.text-muted.clear.text-ellipsis(ng-bind="specialRequest.description")
+              .ReadytoSend(ng-if='$ctrl.$stateParams.status==="READY_TO_SEND"')
+                button.btn.btn-sm.btn-warning.m-b-xs.text-u-c.pull-right(type='submit') Create Ship Request
+                .clearfix
+                p *
+                  | Customs regulations require the purchase price for every item.
+                  | Proof of value maybe requested by customs officials.
+                  a(href="#" ,_target='blank') Click here to know more.
+
+                p **
+                  | ** Shoppre charges a small fee of INR 100 per package that you add to the final shipment
+                  | (when you have two or more packages to consolidate).
+                  | This helps you in reducing shipping charges upto 60-80%.
+                  a(href="#" _target='blank') Click here to know more.
+
+        .col-md-4.m-t-xs
+          .alert.alert-warning
+            h4 John Smith
+            p
+              | 2nd Floor
+              br
+              |             St John Street, Aberdeenshire 2541
+              br
+              |             United Kingdom
+              br
+              |             Phone: 031-432-678
+              br
+              |             Email: youemail@gmail.com
+              br
+          .list-group-item.text-danger.text-u-c
+            span.badge.pull-right.bg-success 00
+            |     Shoppre Wallet
+          .panel.panel-info.m-t-md(ng-if='$ctrl.$stateParams.status==="READY_TO_SEND"')
+            .panel-heading.font-bold.text-u-c Shipping Options
+            .panel-body
+              form.ng-pristine.ng-valid(role='form')
+                ul.list-group.list-group-lg.m-b-none.list-unstyled
+                  span.text-u-c.h4 Packing Options
+                  li
+                    .checkbox
+                      label.i-checks
+                        input(type='checkbox', value='')
+                        i
+                        | Discard Shoe boxes
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover=''
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+                  li
+                    .checkbox
+                      label.i-checks
+                        input(type='checkbox', value='')
+                        i
+                        | Add extra packing material
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover=''
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+                  li
+                    .checkbox
+                      label.i-checks
+                        input(type='checkbox', value='')
+                        i
+                        | Ship in original boxes(do not repack)
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover=''
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+                  li
+                    .checkbox
+                      label.i-checks
+                        input(type='checkbox', value='')
+                        i
+                        | Gift Wrap
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover=''
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+                  li
+                    .checkbox
+                      label.i-checks
+                        input(type='checkbox', value='')
+                        i
+                        | Gift Note
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover=''
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+                  li
+                    .form-group
+                      .col-lg-2.no-padder
+                        input.form-control.no-padder.text-center(type='text', placeholder='in KG')
+                      label.col-lg-9.control-label.m-t-xs Max weight per package (in KG)
+                        i.fa.fa-info-circle.m-l-xs(
+                        uib-popover=''
+                        popover-trigger="'mouseenter'"
+                        popover-placement='top'
+                        popover-append-to-body='true'
+                        )
+                  .clearfix
+                  span.text-u-c.h4.m-t-md.m-b-md.full-width  Performa Invoice  Options
+                  li
+                    .form-group
+                      label.col-lg-2.control-label.m-t-xs.no-padder Tax ID
+                      .col-lg-5.no-padder-left
+                        input.form-control(type='text')
+                  li
+                    .checkbox
+                      label.i-checks
+                        input(type='checkbox', value='')
+                        i
+                        | Maek items for personal use only
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover=''
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+                  li
+                    .checkbox
+                      label.i-checks
+                        input(type='checkbox', value='')
+                        i
+                        | Please include printed performa invoice with in my shipment
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover=''
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+
+                  .clearfix
+                button.btn.btn-sm.btn-warning.full-width.m-t-xs(type='submit') Submit
+          .sidebarImage.m-t-md(ng-if='$ctrl.$stateParams.status!="READY_TO_SEND"')
+            .col-md-6.sidebarSpecial.white-border
+              .col-md-2.no-padder
+                img(src='/assets/images/dashico1.png')
+              .col-md-6
+                .h4.text-u-c Country Guides
+            .col-md-6.sidebarSpecial
+              .col-md-2.no-padder
+                img(src='/assets/images/dashico2.png')
+              .col-md-9
+                .h4.text-u-c Brands you love
+            .col-md-6.sidebarSpecial.m-t-xs.white-border
+              .col-md-2.no-padder
+                img(src='/assets/images/dashico3.png')
+              .col-md-9
+                .h4.text-u-c Shipping Calculator
+            .col-md-6.sidebarSpecial.m-t-xs
+              .col-md-2.no-padder
+                img(src='/assets/images/dashico4.png')
+              .col-md-9
+                .h4.text-u-c Personal Shopper
+            .col-md-6.sidebarSpecial.m-t-xs.white-border
+              .col-md-2.no-padder
+                img(src='/assets/images/dashico5.png')
+              .col-md-9
+                .h4.text-u-c Exchange Rates
+            .col-md-6.sidebarSpecial.m-t-xs
+              .col-md-2.no-padder
+                img(src='/assets/images/dashico6.png')
+              .col-md-9
+                .h4.text-u-c Our Services
+            .col-md-6.sidebarSpecial.m-t-xs.white-border
+              .col-md-2.no-padder
+                img(src='/assets/images/dashico7.png')
+              .col-md-9
+                .h4.text-u-c Address Book
+            .col-md-6.sidebarSpecial.m-t-xs
+              .col-md-2.no-padder
+                img(src='/assets/images/dashico8.png')
+              .col-md-9
+                .h4.text-u-c Blog
+
+
+
+
+
+
+

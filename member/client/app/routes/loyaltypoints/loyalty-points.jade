@@ -1,0 +1,21 @@
+.hbox.accounts
+  .col.bg-white-only.w-md.b-r(ng-hide="App.fullPage === true")
+    ul.nav
+      li.n-hv(style='padding-bottom: 5px;')
+        a.no-hover.b-b.b-light.lter.auto(href='')
+          span.pull-right
+          span.font-bold(translate='aside.nav.DASHBOARD') My Loyalty Points
+        ul.nav.dk
+          li(ui-sref-active='active')
+            a(ui-sref='loyaltypoints.rewards')
+              span Rewards
+          li(ui-sref-active='active')
+            a(ui-sref='loyaltypoints.history')
+              span Points History
+          li(ui-sref-active='active')
+            a(ui-sref='loyaltypoints.redeem')
+              span Redeem History
+
+  .col(ui-view="")
+
+

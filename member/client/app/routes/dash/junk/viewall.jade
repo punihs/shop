@@ -1,0 +1,48 @@
+.wrapper-md.ng-scope
+  .panel.panel-default
+    .panel-heading
+      | View All
+    div
+      table.table.table-bordered.m-b-none.default.footable-loaded.footable(ui-jq='footable', data-filter='#filter', data-page-size='5')
+        thead
+          tr
+            th.footable-visible.footable-first-column.footable-sortable(data-toggle='true')
+            th.footable-visible.footable-sortable
+              | From
+              span.footable-sort-indicator
+            th.footable-visible.footable-sortable(data-hide='phone,tablet')
+              | Package ID
+              span.footable-sort-indicator
+            th.footable-visible.footable-sortable(data-hide='phone,tablet', data-name='Date Of Birth')
+              | Date Recieved
+              span.footable-sort-indicator
+            th.footable-visible.footable-last-column.footable-sortable(data-hide='phone')
+              | Iten Values
+              span.footable-sort-indicator
+            th.footable-visible.footable-last-column.footable-sortable(data-hide='phone')
+              | Weight
+              span.footable-sort-indicator
+            th.footable-visible.footable-last-column.footable-sortable(data-hide='phone')
+              | Photos
+              span.footable-sort-indicator
+            th.footable-visible.footable-last-column.footable-sortable(data-hide='phone')
+              .checkbox.no-margin
+                label.i-checks
+                  input(type='checkbox', checked='', value='')
+                  i
+        tbody
+          tr.footable-even(style='display: table-row;')
+            td.footable-visible.footable-first-column
+            td.footable-visible
+              a(href='') Boudreaux
+            td.footable-visible Traffic Court Referee
+            td.footable-visible(data-value='78025368997') 22 Jun 1972
+            td.footable-visible(data-value='78025368997') 22 Jun 1972
+            td.footable-visible(data-value='78025368997') 100Kg
+            td.footable-visible(data-value='78025368997') Photos
+            td.footable-visible
+              .checkbox.no-margin
+                label.i-checks
+                  input(type='checkbox', checked='', value='')
+                  i
+    button.btn.btn-sm.btn-warning.m-t-xs.text-u-c.pull-right.m-t-md.m-b-md(type='submit') Create Ship Request

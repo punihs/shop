@@ -1,0 +1,42 @@
+div.m-t-xl.no-margin
+  .wrapper-md.col.bg-light.h-full
+    div
+      .h1.m-l-md.font-thin.h3.m-b-md
+        | Shipment History
+      .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+      .col-md-12.col-sm-12.col-xs-12.b-a.m-t-sm.shipment-item.bg-white-only(ng-repeat='shipment in $ctrl.shipments')
+        .col-md-12.col-sm-12.col-xs-12.b-b.no-padder
+          span.pull-left.m-t-sm.m-b-xs.m-t-xs.pull-left.wrapper-xs.font-bold.text-info(title="Member" ng-bind="shipment.customer_name")
+        .col-sm-12.m-t-sm.text-gray.no-padder(style='font-size: 13px;font-weight:bold')
+          .no-padder.col-sm-4.col-xs-4
+            i.fa.fa-map-marker.fa-fw
+            | Address
+          .no-padder.col-sm-2.col-xs-2
+            i.fa.fa-phone.fa-fw
+            | Phone
+          .no-padder.col-sm-2.col-xs-2
+            i.fa.fa-truck.fa-fw
+            |  Shipping Carrier
+          .no-padder.col-sm-2.col-xs-1
+            i.fa.fa-clock-o.fa-fw
+            |  Created at
+          .no-padder.col-sm-2.col-xs-1
+            i.fa.fa-money.fa-fw
+            |  Final Amount
+        .col-sm-12.m-b-sm.no-padder(style='font-weight: 500')
+          .no-padder.col-sm-4.col-xs-4.text-ellipsis
+            span(ng-bind="shipment.address")
+          .no-padder.col-sm-2.col-xs-2
+            span(ng-bind="shipment.phone")
+          .no-padder.col-sm-2.col-xs-2
+            span(ng-bind="shipment.shipping_carrier")
+          .no-padder.col-sm-2.col-xs-2
+            span(ng-bind="shipment.created_at")
+          .no-padder.col-sm-2.col-xs-2
+            span(ng-bind="shipment.final_amount")
+
+
+
+    .clearfix
+
+
