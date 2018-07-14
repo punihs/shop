@@ -11,7 +11,7 @@ const {
 const log = debug('s.user.controller');
 const {
   LOYALTY_TYPE: {
-    CREDIT,
+    REWARD,
   },
   STATE_TYPES,
 } = require('../../config/constants');
@@ -255,7 +255,7 @@ exports.submitRegister = async (req, res) => {
       loyaltyHistory.customer_id = refer.customer_id;
       loyaltyHistory.points = loyalPoints;
       loyaltyHistory.redeemed = new Date();
-      loyaltyHistory.type = CREDIT;
+      loyaltyHistory.type = REWARD;
       loyaltyHistory.description = 'Your friend signed up with the referral code that you sent';
       await LoyaltyHistory.create(loyaltyHistory);
 
@@ -339,7 +339,7 @@ exports.submitRegister = async (req, res) => {
   loyaltyHistory.customer_id = newCustomer.id;
   loyaltyHistory.points = loyalPoints;
   loyaltyHistory.redeemed = new Date();
-  loyaltyHistory.type = CREDIT;
+  loyaltyHistory.type = REWARD;
   loyaltyHistory.description = 'Signed up with the referral code that your friend sent';
   await LoyaltyHistory.create(loyaltyHistory);
 

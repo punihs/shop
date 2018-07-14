@@ -29,6 +29,7 @@ const pricing = require('./api/pricing');
 const transaction = require('./api/transaction');
 const campaign = require('./api/campaign');
 const notification = require('./api/notification');
+const loyaltyHistory = require('./api/loyaltyHistory');
 const userDocument = require('./api/userDocument');
 const country = require('./api/country');
 const review = require('./api/review');
@@ -80,6 +81,7 @@ module.exports = (app) => {
   app.use('/api/transactions', authenticate(), transaction);
   app.use('/api/campaigns', authenticate(), campaign);
   app.use('/api/notifications', authenticate(), notification);
+  app.use('/api/loyaltyHistories', authenticate(), loyaltyHistory);
   app.use('/api/userDocuments', authenticate(), userDocument);
   app.use('/api/countries', country);
   app.use('/api/reviews', review);
