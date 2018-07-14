@@ -13,7 +13,7 @@
     "stress-api": "artillery run ./server/api/**/*.artillery.yml",
     "bench-api": "node  ./scripts/githubStatusCheck/after.js",
     "web-test": "NODE_ENV=test nyc mocha --opts .mocharc server/app/**/*.test.js --exit",
-    "lint": "eslint --fix --ext .js --ignore-path .gitignore .",
+    "lint": "eslint --fix --ext .js --ignore-path .gitignore ./server",
     "clear-db": "sequelize db:drop; sequelize db:create",
     "migrate": "DEBUG=s.*  sequelize db:migrate; DEBUG=s.*  sequelize db:seed:all",
     "socket-monitor": "socket.io-monitor",

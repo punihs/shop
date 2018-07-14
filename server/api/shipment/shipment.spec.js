@@ -11,9 +11,6 @@ const {
   ShipmentIssue, Shipment, Address, PackageState, Package, PackageCharge,
 } = require('../../conn/sqldb');
 
-const assert = require('assert');
-
-
 const {
   SALUTATIONS: {
     MR,
@@ -178,7 +175,7 @@ describe('GET /api/shipments/:id', () => {
         },
       })
       .then(() => Shipment
-        .create(assert({
+        .create({
           id: 10,
           coupon: 0.0,
           is_axis_banned_item: '0',
@@ -221,7 +218,7 @@ describe('GET /api/shipments/:id', () => {
           dispatch_date: '2017-12-11T13:46:00.000+05:30',
           shipping_carrier: 'dhl',
           tracking_url: 'DHL1324',
-        }))
+        })
         .then(() => done())));
   });
 
@@ -583,30 +580,13 @@ describe('PUT /api/shipments/finalShip', () => {
   });
 });
 
-describe('PUT /api/shipments/2/cancel', () => {
+describe('PUT /api/shipments/2/cancel 1', () => {
   it('will cancel the ship request', (done) => {
     request(app)
       .put('/api/shipments/2/cancel')
       .send({
         order_code: '631-646-7270',
-        cutomer_id: 646,
-      })
-      .set('Authorization', `Bearer ${auth.access_token}`)
-      .expect('Content-Type', /json/)
-      .expect(200)
-      .then(() => {
-        done();
-      });
-  });
-});
-
-
-describe('PUT /api/shipments/2/cancel', () => {
-  it('will cancel the ship request', (done) => {
-    request(app)
-      .put('/api/shipments/2/cancel')
-      .send({
-        order_code: '631-646-7270',
+        customer_id: 646,
       })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)

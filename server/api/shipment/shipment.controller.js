@@ -74,6 +74,7 @@ exports.show = async (req, res, next) => {
       include: [{
         model: ShipmentState,
         attributes: ['id', 'state_id'],
+        required: false,
       }, {
         model: User,
         as: 'Customer',
@@ -90,9 +91,13 @@ exports.show = async (req, res, next) => {
         }],
       }],
     })
-    .then((pkg) => {
-      if (!pkg) return res.status(404).end();
-      return res.json({ ...pkg.toJSON(), state_id: pkg.ShipmentState.state_id });
+    .then((shipment) => {
+      if (!shipment) return res.status(404).end();
+
+      return res.json({
+        ...shipment.toJSON(),
+        state_id: shipment.ShipmentState && shipment.ShipmentState.state_id,
+      });
     })
     .catch(next);
 };
@@ -388,48 +393,78 @@ exports.shipQueue = async (req, res) => {
       res.json({ shipment }));
 };
 
-exports.history = async (req, res) => {
+exports.history = (req, res, next) => {
   const options = {
     attributes: [
-      'order_code', 'package_ids', 'customer_name', 'address', 'status', 'tracking_code', 'dispatch_date',
-      'shipping_carrier', 'tracking_url',
-      'phone', 'packages_count', 'weight', 'estimated_amount', 'created_at', 'final_amount',
+      'order_code', 'package_ids', 'customer_name', 'address', 'status', 'tracking_code',
+      'dispatch_date', 'shipping_carrier', 'tracking_url', 'phone', 'packages_count', 'weight',
+      'estimated_amount', 'created_at', 'final_amount',
     ],
-    where: { status: ['dispatched', 'delivered', 'canceled', 'refunded'] },
+    where: {
+      status: ['dispatched', 'delivered', 'canceled', 'refunded'],
+    },
   };
-  await Shipment
+
+  return Shipment
     .findAll(options)
-    .then(shipments =>
-      res.json(shipments));
+    .then(shipments => res.json(shipments))
+    .catch(next);
 };
 
-exports.cancelRequest = async (req, res) => {
-  const cutomerId = req.user.id;
-  const orderCode = req.body.order_code;
-  const options = {
-    attributes: ['id', 'created_at', 'package_ids'],
-    where: { customer_id: cutomerId, status: ['inreview', 'inqueue'], order_code: orderCode },
-  };
+exports.cancelRequest = async (req, res, next) => {
+  const { id: customerId } = req.user;
+  const { order_code: orderCode } = req.body;
 
-  const shipment = await Shipment
-    .find(options);
+  return Shipment
+    .find({
+      attributes: ['id', 'created_at', 'package_ids'],
+      where: {
+        customer_id: customerId,
+        status: ['inreview', 'inqueue'],
+        order_code: orderCode,
+      },
+    })
+    .then((shipment) => {
+      if (!shipment) return res.status(400).json({ message: 'requested shipment not exist' });
 
-  if (shipment) {
-    if (moment(shipment.created_at).diff(moment(), 'hours') <= 1) {
-      await Shipment
-        .update({ status: 'canceled' }, { where: { id: shipment.id } });
-      await Package
-        .update({ status: 'ship' }, { where: { id: [shipment.package_ids.split((','))] } });
+      const creationTimeGap = moment(shipment.created_at).diff(moment(), 'hours');
 
-      const notification = {};
-      notification.customer_id = cutomerId;
-      notification.action_type = 'shipment';
-      notification.action_id = shipment.id;
-      notification.action_description = `Shipment request cancelled - Order#  ${shipment.order_code}`;
-      await Notification.create(notification)
+      if (creationTimeGap > 1) {
+        const message = 'You can cancel shipment 1 hour from shipment creation. ' +
+                      `creationTimeGap: ${creationTimeGap}`;
+        return res
+          .status(400)
+          .json({ message });
+      }
+
+      return Promise
+        .all([
+          Shipment
+            .update({
+              status: 'canceled',
+            }, {
+              where: {
+                id: shipment.id,
+              },
+            }),
+          Package
+            .update({
+              status: 'ship',
+            }, {
+              where: {
+                id: [shipment.package_ids.split((','))],
+              },
+            }),
+          Notification.create({
+            customer_id: customerId,
+            action_type: 'shipment',
+            action_id: shipment.id,
+            action_description: `Shipment request cancelled - Order#  ${shipment.order_code}`,
+          }),
+        ])
         .then(() => res.json({ message: 'Ship request has been cancelled!', shipment }));
-    }
-  }
+    })
+    .catch(next);
 };
 
 exports.invoice = async (req, res) => {
