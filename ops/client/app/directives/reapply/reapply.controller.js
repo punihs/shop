@@ -27,7 +27,7 @@
         },
 
         get: (search) => this.$http
-            .get('/search', { params: { q: search, type: 'partner_clients' } }),
+          .get('/search', { params: { q: search, type: 'partner_clients' } }),
         noResults: false,
         loadingClients: false,
       };

@@ -1,13 +1,17 @@
 class AppController {
-  constructor($window, $uibModal, $state, $rootScope, URLS,
-              $http, $stateParams, Session, Page, socket, $log) {
+  constructor(
+    $window, $uibModal, $state, $rootScope, URLS,
+    $http, $stateParams, Session, Page, socket
+  ) {
     const vm = this;
     this.Page = Page;
+    this.socket = socket;
     vm.$stateParams = $stateParams;
     vm.Session = Session;
 
     vm.userinfo = this.Session.read('userinfo');
     vm.states = this.Session.read('states');
+    vm.shipmentStates = this.Session.read('shipment-states');
 
     vm.Math = Math;
     vm.URLS = URLS;
@@ -104,142 +108,14 @@ class AppController {
         'customer.packages.index',
         'customer.packages.create',
         'customer.package.update',
-        'shipment.view',
+        'shipments.index',
         'shipment.packages.index',
+        'customer.shipment.update',
+        'customer.shipments.index',
       ].includes($state.current.name);
     };
 
-    vm.downloadOrder = (ids) => {
-      $log(socket);
-      // ApplicantIds is array contatining applicant id to download cvs
-      $uibModal.open({
-        templateUrl: 'app/directives/download-resume/download-resume.html',
-        controller: 'DownloadResumeController',
-        controllerAs: 'DownloadResume',
-        size: 'sm',
-        resolve: {
-          ApplicantIds: function ApplicantIds() {
-            return ids;
-          },
-        },
-      });
-    };
-
-    vm.downloadPackage = function downloadApplicant(ids) {
-      // ApplicantIds is array contatining applicant id to download cvs
-      $uibModal.open({
-        templateUrl: 'app/directives/download-resume/download-resume.html',
-        controller: 'DownloadResumeController',
-        controllerAs: 'DownloadResume',
-        size: 'sm',
-        resolve: {
-          ApplicantIds: function ApplicantIds() {
-            return ids;
-          },
-        },
-      });
-    };
-
-    vm.ApplyToQuezx = (candidateName, candidateID) => {
-      // ApplicantIds is array contatining applicant id to download cvs
-      $uibModal.open({
-        templateUrl: 'app/directives/apply-to-quezx/apply-to-quezx.html',
-        controller: 'ApplyToShoppReController',
-        controllerAs: '$ctrl',
-        resolve: {
-          candidateName: () => candidateName,
-          candidateId: () => candidateID,
-        },
-      });
-    };
-
-    vm.addFollower = function addFollower(follower, applicantId) {
-      // ApplicantIds is array contatining applicant id to download cvs
-      $uibModal.open({
-        templateUrl: 'app/directives/download-resume/download-resume.html',
-        controller: 'AddFollowerController',
-        controllerAs: 'AddFollower',
-        size: 'md',
-        resolve: {
-          FollowerData: function FollowerData() {
-            return follower[0];
-          },
-
-          ApplicantId: function ApplicantId() {
-            return applicantId;
-          },
-        },
-      });
-    };
-
     vm.hideExt = () => $window.parent.postMessage({ type: 'RESET' }, '*');
-    vm.initiateChat = function initiateChat(user) {
-      const url = `${this.URLS.CHAT_SERVER}/initiate?to=${user.mobile || user.number
-        }&email=${user.email}&name=${user.name}&loginSource=quezx`;
-      $window.open(url);
-    };
-
-    vm.openSearchCandidate = function openSearchCandidate(event, update) {
-      $uibModal.open({
-        templateUrl: 'app/directives/search-candidate/search-candidate.html',
-        controller: 'SearchCandidateController',
-        controllerAs: '$ctrl',
-        windowClass: 'search-view',
-        size: 'lg',
-        resolve: {
-          modifyQuery: () => (update || false),
-        },
-      });
-      event.currentTarget.blur();
-    };
-
-    vm.downloadCandidateResume = (candidateId) => {
-      $http
-        .get(`/candidates/${candidateId}/download`, { params: this.$stateParams.source })
-        .then(({ data: resume_link }) => {
-          $window.open(resume_link, '_blank');
-        });
-    };
-
-    vm.openEmailCandidate = (candidateId, candidateName, candidateEmail) => {
-      $uibModal.open({
-        templateUrl: 'app/directives/email-candidate/email-candidate.html',
-        controller: 'EmailCandidateController',
-        controllerAs: '$ctrl',
-        windowClass: 'email-view',
-        size: 'lg',
-        resolve: {
-          candidateId: () => candidateId,
-          candidateName: () => candidateName,
-          candidateEmail: () => candidateEmail,
-        },
-      });
-    };
-
-    vm.isBDTeam = () => {
-      if (vm.userinfo) {
-        const userList = [2621, 1346, 173];
-        return userList.indexOf(vm.userinfo.client_id) !== -1;
-      }
-      return false;
-    };
-
-    vm.isTestingUser = () => {
-      if (vm.userinfo) {
-        const userList = [2621, 1346, 173];
-        return userList.indexOf(vm.userinfo.client_id) !== -1;
-      }
-      return false;
-    };
-
-    vm.isQNATesting = () => {
-      if (vm.userinfo) {
-        const userList = [2552, 807, 2800, 2677, 1446, 1737, 2844, 2516, 3121, 2632, 3216,
-          3189, 3356, 479, 3719, 3717, 3812, 112];
-        return userList.indexOf(vm.userinfo.id) !== -1;
-      }
-      return false;
-    };
   }
 }
 

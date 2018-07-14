@@ -153,6 +153,7 @@ class CustomerNavController {
 
   getLink(customerId) {
     const states = [
+      'customer.shipments.index',
       'customer.packages.index',
       'customer.package.update',
       'customer.view',

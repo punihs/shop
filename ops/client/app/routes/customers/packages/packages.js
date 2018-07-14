@@ -42,9 +42,9 @@ angular.module('uiGenApp')
         controllerAs: '$ctrl',
         resolve: {
           customer: ($http, $stateParams, toaster) => $http
-              .get(`/users/${$stateParams.id}`)
-              .then(({ data }) => data)
-              .catch(() => toaster.pop('error', 'Error loading customer')),
+            .get(`/users/${$stateParams.id}`)
+            .then(({ data }) => data)
+            .catch(() => toaster.pop('error', 'Error loading customer')),
           pkg: ($http, $stateParams, toaster) => {
             const fl = [
               'id', 'customer_id', 'reference_code', 'created_at',

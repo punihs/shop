@@ -10,14 +10,14 @@ angular.module('uiGenApp')
           currentJob: ($http, $stateParams, $q) => {
             if (!$stateParams.jobId) return $q.resolve({});
             return $http
-            .get(`/jobs/${$stateParams.jobId}`, {
-              params: {
-                fl: 'id,role,client_name,job_location,min_sal,max_sal,min_exp,max_exp,vacancy,' +
+              .get(`/jobs/${$stateParams.jobId}`, {
+                params: {
+                  fl: 'id,role,client_name,job_location,min_sal,max_sal,min_exp,max_exp,vacancy,' +
                 'is_drive',
-              },
-              skipAdminView: true,
-            })
-            .then(res => res.data['0']);
+                },
+                skipAdminView: true,
+              })
+              .then(res => res.data['0']);
           },
         },
       });

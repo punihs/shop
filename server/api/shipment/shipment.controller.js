@@ -538,7 +538,7 @@ exports.finalShipRequest = async (req, res) => {
 
   const options = {
     attributes: ['points', 'customer_Id'],
-    where: { customer_Id: cusstomerId },
+    where: { customer_Id: customerId },
   };
   const points = await LoyaltyPoint
     .find(options);

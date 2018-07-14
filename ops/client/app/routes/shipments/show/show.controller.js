@@ -1,11 +1,10 @@
-class PackageShowController {
+class shipmentsShowController {
   /* @ngInject */
   constructor(
-    $http, $stateParams, URLS, $sce, $state, $window, Page, Session, $q, ChangeState,
-    pkg, JobModal, ListModal, toaster, $scope
+    $http, $stateParams, URLS, $sce, $state, $window, Page, Session, $q, ChangeShipmentState,
+    pkg, JobModal, ListModal, toaster
   ) {
     this.Number = Number;
-    this.$scope = $scope;
     this.URLS = URLS;
     this.$sce = $sce;
     this.$http = $http;
@@ -15,12 +14,12 @@ class PackageShowController {
     this.$q = $q;
     this.$stateParams = $stateParams;
     this.toaster = toaster;
-    this.ChangeState = ChangeState;
+    this.ChangeShipmentState = ChangeShipmentState;
     this.data = pkg;
     this.ListModal = ListModal;
     this.moment = moment;
     this.customer = pkg.Customer;
-    this.editAllowedStates = [1, 2, 3];
+    this.editAllowedStates = [16, 17];
     this.location = $window.location;
     this.user = Session.read('userinfo');
     this.$onInit();
@@ -29,20 +28,15 @@ class PackageShowController {
   $onInit() {
     this.root = '_root_';
     this.modal = {};
-    this.packageItemsAdditionAllowedStateIds = [1];
     this.states = this.Session.read('states');
     this.user = this.Session.read('userinfo');
-    this.Page.setTitle(this.data.Store.name);
-    this.packageItems = [];
-    this.charges = null;
-
-    const { activeTab } = this.$stateParams;
-    if (activeTab) this.$scope.activeTab = activeTab;
-
-    this
-      .$http
-      .get(`/packages/${this.$stateParams.id}/items`)
-      .then(({ data: packageItems }) => (this.packageItems.push(...packageItems)));
+    // this.Page.setTitle(this.data.Store.name);
+    // this.packageItems = [];
+    //
+    // this
+    //   .$http
+    //   .get(`/shipments/${this.$stateParams.id}/items`)
+    //   .then(({ data: packageItems }) => (this.packageItems.push(...packageItems)));
   }
 
   setMessage(description) {
@@ -58,10 +52,15 @@ class PackageShowController {
     return `Initiate chat with ${this.data.name}`;
   }
 
+  awfTime() {
+    const [time] = this.data.comments.filter(c => c.state_id === 1);
+    return time;
+  }
+
   toggleBookmark(status) {
     this
       .$http
-      .post(`/packages/${this.$stateParams.id}/bookmarks`, { status })
+      .post(`/shipments/${this.$stateParams.id}/bookmarks`, { status })
       .then(() => {
         this.data.is_bookmarked = status;
         this.toaster
@@ -77,34 +76,12 @@ class PackageShowController {
       });
   }
 
-
-  getCharges() {
-    if (this.charges) return;
-    this.chargesIcon = {
-      storage_amount: 'fa-dropbox',
-    };
-
-    this
-      .$http
-      .get(`/packages/${this.$stateParams.id}/charges`)
-      .then(({ data: charges }) => {
-        this.charges = Object
-          .keys(charges)
-          .map(key => ({
-            key,
-            label: _.startCase(key.replace('_', ' ').toLowerCase()),
-            chargeAmount: charges[key],
-          }));
-      });
-  }
-
-
   uploadFiles(files) {
     this.$q
       .all(files
         .map((file) => this
           .$http
-          .post(`/package/${this.$stateParams.id}/items`, {
+          .post(`/shipment/${this.$stateParams.id}/items`, {
             documentFile: file,
           })))
       .then((docs) => {
@@ -120,10 +97,10 @@ class PackageShowController {
   deleteDocument(id, key) {
     this
       .$http
-      .delete(`/package/${id}/items`)
+      .delete(`/shipment/${id}/items`)
       .then(() => this.document.splice(key, 1));
   }
 }
 
 angular.module('uiGenApp')
-  .controller('PackageShowController', PackageShowController);
+  .controller('shipmentsShowController', shipmentsShowController);

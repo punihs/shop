@@ -20,13 +20,13 @@
 
     create() {
       this
-          .$http
-          .post('/clients/transactionPin', this.data).then(() => {
-            this.toaster.pop('success', 'PIN updated Successfully.');
-          })
-          .catch(() => this
-            .toaster
-            .pop('error', 'Error occurred while updating your pin.'));
+        .$http
+        .post('/clients/transactionPin', this.data).then(() => {
+          this.toaster.pop('success', 'PIN updated Successfully.');
+        })
+        .catch(() => this
+          .toaster
+          .pop('error', 'Error occurred while updating your pin.'));
     }
   }
 

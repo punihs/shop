@@ -48,8 +48,8 @@ class ProfileDetailController {
   resentOtp(number) {
     this
       .$http.post('/users/verifyNumber', { number })
-       .then(() => (this.message = `Sms will be sent to ${number} containing OTP.`))
-       .catch(() => this.toaster.pop('error', 'Error occurred while sending OTP.'));
+      .then(() => (this.message = `Sms will be sent to ${number} containing OTP.`))
+      .catch(() => this.toaster.pop('error', 'Error occurred while sending OTP.'));
   }
 
   onInit() {

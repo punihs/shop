@@ -287,5 +287,5 @@ exports.responsePayment = async (req, res) => {
   // todo email sending is pending
   // Mail::to($customer->email)->bcc('support@shoppre.com')->send(new PaymentFailed($shipment));
 
-  res.status(200).json({ error: resMsg });
+  return res.status(200).json({ error: resMsg });
 };

@@ -77,7 +77,7 @@ class OrdersListController {
   // returns array containing resultkey of search result
   getOrder(criteria = {}, returnkey = 'id') {
     return this.$filter('filter')(this.orders, criteria)
-    .map((order) => order[returnkey]);
+      .map((order) => order[returnkey]);
   }
 
   // sets value
@@ -87,4 +87,4 @@ class OrdersListController {
 }
 
 angular.module('uiGenApp')
-.controller('OrdersListController', OrdersListController);
+  .controller('OrdersListController', OrdersListController);

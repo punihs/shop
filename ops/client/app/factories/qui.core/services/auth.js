@@ -63,8 +63,11 @@ angular.module('qui.core')
           .get(`${URLS.API}/users/me`)
           .then(response => Session.create('userinfo', response.data)),
         $http
-          .get(`${URLS.API}/users/states`)
+          .get(`${URLS.API}/users/states?type=PACKAGE`)
           .then(response => Session.create('states', response.data)),
+        $http
+          .get(`${URLS.API}/users/states?type=SHIPMENT`)
+          .then(response => Session.create('shipment-states', response.data)),
       ]);
 
       return authService;

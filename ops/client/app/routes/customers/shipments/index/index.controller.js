@@ -1,4 +1,4 @@
-class CustomersPackagesIndexController {
+class CustomersShipmentsIndexController {
   /* @ngInject */
   constructor(
     QCONFIG, $stateParams, $filter, moment, $window, Page,
@@ -28,18 +28,18 @@ class CustomersPackagesIndexController {
   }
 
   $onInit() {
-    this.buckets = this.QCONFIG.PACKAGE_STATES;
+    this.buckets = this.QCONFIG.SHIPMENT_STATES;
 
     this.customer = this.customer || {};
     this.Page.setTitle(`${this.customer.name ? `${this.customer.name} - ` : ''} ${
-      this.$stateParams.status ? this.$stateParams.status : ''} Packages`); // set page title
+      this.$stateParams.status ? this.$stateParams.status : ''} Shipments`); // set page title
 
     // Set default status to ALL
     if (!this.buckets.includes(this.$stateParams.status)) {
-      this.$state.go('customer.packages.index', { status: 'TASKS' });
+      this.$state.go('customer.shipments.index', { status: 'TASKS' });
       return;
     }
-    this.packages = []; // collection of packages
+    this.shipments = []; // collection of shipments
     this.ui = { lazyLoad: true, loading: false }; // ui states
     this.params = {
       sort: '-',
@@ -49,19 +49,19 @@ class CustomersPackagesIndexController {
       sid: this.$stateParams.sid || '',
     }; // GET query params
 
-    this.loadPackages(true); // get packages
+    this.loadShipments(true); // get shipments
   }
 
   sort(sortBy) {
     this.params.sort = sortBy;
-    this.loadPackages(true);
+    this.loadShipments(true);
   }
 
-  loadPackages(refresh) {
+  loadShipments(refresh) {
     if (refresh) {
       this.params.offset = 0;
       this.ui.lazyLoad = true;
-      this.packages = [];
+      this.shipments = [];
 
       // Move to top if fresh request required
       this.$window.scrollTo(0, 0);
@@ -71,9 +71,9 @@ class CustomersPackagesIndexController {
     this.ui = { lazyLoad: false, loading: true };
 
     this.$http
-      .get(`/users/${this.$stateParams.id}/packages`, { params: this.params })
-      .then(({ data: { packages: result, total } }) => {
-        this.packages.push(...result);
+      .get(`/users/${this.$stateParams.id}/shipments`, { params: this.params })
+      .then(({ data: { shipments: result, total } }) => {
+        this.shipments.push(...result);
 
         this.total = total;
         // data has been loaded
@@ -88,16 +88,16 @@ class CustomersPackagesIndexController {
   }
 
   // returns array containing resultkey of search result
-  getPackage(criteria = {}, returnkey = 'id') {
-    return this.$filter('filter')(this.packages, criteria)
-      .map((pkg) => pkg[returnkey]);
+  getShipment(criteria = {}, returnkey = 'id') {
+    return this.$filter('filter')(this.shipments, criteria)
+      .map((shipment) => shipment[returnkey]);
   }
 
   // sets value
   setChecked(state) {
-    angular.forEach(this.packages, (value, key) => (this.packages[key].checked = state));
+    angular.forEach(this.shipments, (value, key) => (this.shipments[key].checked = state));
   }
 }
 
 angular.module('uiGenApp')
-  .controller('CustomersPackagesIndexController', CustomersPackagesIndexController);
+  .controller('CustomersShipmentsIndexController', CustomersShipmentsIndexController);

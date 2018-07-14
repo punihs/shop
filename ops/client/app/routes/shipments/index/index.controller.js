@@ -1,9 +1,9 @@
-class PackagesIndexController {
+class ShipmentsIndexController {
   /* @ngInject */
   constructor(
     QCONFIG, $scope, $stateParams, $location, $state, Prototype,
     $rootScope, $timeout, $window, $http, moment, $uibModal, Session, ExcelDownload,
-    ChangeState, Page, PackageFilter
+    ChangeShipmentState, Page, ShipmentFilter
   ) {
     this.Page = Page;
     this.QCONFIG = QCONFIG;
@@ -18,7 +18,7 @@ class PackagesIndexController {
     this.$http = $http;
     this.moment = moment;
     this.$uibModal = $uibModal;
-    this.PackageFilter = PackageFilter;
+    this.ShipmentFilter = ShipmentFilter;
     this.Session = Session;
     this.sorts = [
       { id: 1, name: 'Default', key: '-' },
@@ -28,8 +28,8 @@ class PackagesIndexController {
       { id: 4, name: 'Notice Period', key: 'notice_period ASC' },
     ];
     this.ExcelDownload = ExcelDownload;
-    this.states = this.Session.read('states');
-    this.ChangeState = ChangeState;
+    this.states = this.Session.read('shipment-states');
+    this.ChangeShipmentState = ChangeShipmentState;
     this.$onInit();
   }
 
@@ -38,18 +38,18 @@ class PackagesIndexController {
     this.initializing = true;
     this.timeout = this.$timeout(() => {});
 
-    this.buckets = this.QCONFIG.PACKAGE_STATES;
+    this.buckets = this.QCONFIG.SHIPMENT_STATES;
 
     this.$stateParams.status = this.$stateParams.status || this.$location.search().status;
 
     // Set default status to ALL
     if (!this.buckets.includes(this.$stateParams.status)) {
-      this.$state.go('packages.index', { status: 'TASKS' });
+      this.$state.go('shipments.index', { status: 'ALL' });
       return;
     }
-    this.Page.setTitle(`${this.$stateParams.status} Packages`);
+    this.Page.setTitle(`${this.$stateParams.status} Shipments`);
 
-    this.packages = []; // collection of packages
+    this.shipments = []; // collection of shipments
     this.ui = { lazyLoad: true, loading: false }; // ui states
     this.xquery = '';
     this.params = { sort: '-', offset: 0, limit: 15, q: this.xquery || '',
@@ -68,24 +68,24 @@ class PackagesIndexController {
           // to avoid calling loadMore() on loading of page
 
           this.timeout = this.$timeout(() => {
-            this.loadPackages(true);
+            this.loadShipments(true);
           }, 800);
         }
       }
       , true);
 
     // $emit coming from directive
-    this.$scope.$on('loadMore', () => this.loadPackages());
+    this.$scope.$on('loadMore', () => this.loadShipments());
 
-    this.loadPackages();
+    this.loadShipments();
   }
 
   sort(sortBy) {
     this.params.sort = sortBy;
-    this.loadPackages(true);
+    this.loadShipments(true);
   }
 
-  openPackageFilter() {
+  openShipmentFilter() {
     const selected = {
       states: (this.$stateParams.sid || '').split(',').map(Number),
     };
@@ -101,7 +101,7 @@ class PackagesIndexController {
     };
 
     this
-      .PackageFilter
+      .ShipmentFilter
       .open(filtered)
       .then(applied => {
         this.$state.transitionTo(this.$state.current.name,
@@ -114,17 +114,17 @@ class PackagesIndexController {
   }
 
 
-  loadPackages(refresh) {
+  loadShipments(refresh) {
     if (refresh) {
       this.params.offset = 0;
       this.ui.lazyLoad = true;
-      this.packages = [];
+      this.shipments = [];
 
       // Move to top if fresh request required
       this.$window.scrollTo(0, 0);
     }
 
-    if (!this.ui.lazyLoad) return; // if no more packages to get
+    if (!this.ui.lazyLoad) return; // if no more shipments to get
     this.ui = { lazyLoad: false, loading: true };
     this.params.q = this.xquery || '';
 
@@ -140,27 +140,27 @@ class PackagesIndexController {
     }
 
     this.$http
-      .get('/packages', { params: this.params })
-      .then(({ data: { packages, total, facets } }) => {
+      .get('/shipments', { params: this.params })
+      .then(({ data: { shipments, total, facets } }) => {
         // Handle error for php error
-        if (typeof packages === 'undefined') {
-          if (!!refresh) this.packages = [];
+        if (typeof shipments === 'undefined') {
+          if (!!refresh) this.shipments = [];
           this.ui.lazyLoad = false;
           return;
         }
 
-        if (!packages.length && this.$rootScope.previousState === 'access.oauth') {
-          this.$state.go('packages.index', { status: 'ALL' });
+        if (!shipments.length && this.$rootScope.previousState === 'access.oauth') {
+          this.$state.go('shipments.index', { status: 'ALL' });
           return;
         }
-        this.packages.push(...packages);
+        this.shipments.push(...shipments);
 
         this.total = total;
         // data has been loaded
         this.ui.loading = false;
 
         // check for returned results count and set lazy loadLoad false if less
-        this.ui.lazyLoad = angular.equals(packages.length, this.params.limit); //  =true/false
+        this.ui.lazyLoad = angular.equals(shipments.length, this.params.limit); //  =true/false
 
         // increment offset for next loading of results
         this.params.offset = this.params.offset + this.params.limit;
@@ -171,11 +171,11 @@ class PackagesIndexController {
         }
       })
       .catch(() => {
-        if (!!refresh) this.packages = [];
+        if (!!refresh) this.shipments = [];
         this.ui.lazyLoad = false;
       });
   }
 }
 
 angular.module('uiGenApp')
-  .controller('PackagesIndexController', PackagesIndexController);
+  .controller('ShipmentsIndexController', ShipmentsIndexController);

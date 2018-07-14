@@ -8,7 +8,7 @@
 angular.module('uiGenApp').directive('ngImageCompress', ($q, toaster) => {
   const URL = window.URL || window.webkitURL;
 
-    /**
+  /**
      * Receives an Image Object (can be JPG OR PNG) and returns a new Image Object compressed
      * @param {Image} sourceImgObj The source Image Object
      * @param {Integer} quality The output quality of Image Object
@@ -30,7 +30,7 @@ angular.module('uiGenApp').directive('ngImageCompress', ($q, toaster) => {
     let height = sourceImgObj.height;
     let width = sourceImgObj.width;
 
-      // calculate the width and height, constraining the proportions
+    // calculate the width and height, constraining the proportions
     if (width > height) {
       if (width > maxWidth) {
         height = Math.round(height *= maxWidth / width);
@@ -86,9 +86,9 @@ angular.module('uiGenApp').directive('ngImageCompress', ($q, toaster) => {
       const urltoFile = (url, filename, mime) => {
         const mimeType = mime || (url.match(/^data:([^;]+);/) || '')[1];
         return (fetch(url)
-              .then(res => res.arrayBuffer())
-              .then(buf => new File([buf], filename, { type: mimeType }))
-          );
+          .then(res => res.arrayBuffer())
+          .then(buf => new File([buf], filename, { type: mimeType }))
+        );
       };
 
       const doResizing = (imageResult, callback) => {
@@ -108,13 +108,13 @@ angular.module('uiGenApp').directive('ngImageCompress', ($q, toaster) => {
       const applyScope = (imageResult) => {
         const { type, dataURL } = imageResult.compressed;
         urltoFile(dataURL, imageResult.file.name, type)
-            .then((file) => {
-              scope.uploadFn(scope.ctrl, file);
-            })
-            .catch(() => toaster.pop('Error while optimising photo'));
+          .then((file) => {
+            scope.uploadFn(scope.ctrl, file);
+          })
+          .catch(() => toaster.pop('Error while optimising photo'));
 
         scope.$apply(() => {
-            // console.log(imageResult);
+          // console.log(imageResult);
           if (attrs.multiple) {
             scope.image.push(imageResult);
           } else {
@@ -124,14 +124,14 @@ angular.module('uiGenApp').directive('ngImageCompress', ($q, toaster) => {
       };
 
       element.bind('change', (evt) => {
-          // when multiple always return an array of images
+        // when multiple always return an array of images
         if (attrs.multiple) {
           Object.assign(scope, { image: [] });
         }
 
         const files = evt.target.files;
         for (let i = 0; i < files.length; i++) {
-            // create a result object for each file in files
+          // create a result object for each file in files
           const imageResult = {
             file: files[i],
             url: URL.createObjectURL(files[i]),

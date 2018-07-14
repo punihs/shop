@@ -132,9 +132,10 @@
 <!-- build:js(.tmp) app/app.js -->
 <script src="app/app.js"></script>
 <!-- injector:js -->
-<script src="app/routes/accounts/profile/profile.controller.js"></script>
+<script src="app/routes/accounts/terminated-message/terminated-message.controller.js"></script>
 <script src="app/app.controller.js"></script>
 <script src="app/directives/announcement-modal/announcement-modal.controller.js"></script>
+<script src="app/directives/change-shipment-state/change-shipment-state.service.js"></script>
 <script src="app/directives/change-state/change-state.service.js"></script>
 <script src="app/directives/click-tocopy/click-tocopy.controller.js"></script>
 <script src="app/directives/common.directive.js"></script>
@@ -153,6 +154,7 @@
 <script src="app/directives/reapply/reapply.controller.js"></script>
 <script src="app/directives/reapply/reapply.service.js"></script>
 <script src="app/directives/reauth/reauth.directive.js"></script>
+<script src="app/directives/shipment-filter/shipment-filter.js"></script>
 <script src="app/directives/social-share/social-share.controller.js"></script>
 <script src="app/directives/text-focus/text-focus.directive.js"></script>
 <script src="app/directives/upload-excel/upload-excel.service.js"></script>
@@ -187,8 +189,8 @@
 <script src="app/routes/accounts/download-extension/download-extension.controller.js"></script>
 <script src="app/routes/accounts/empanelment/empanelment.controller.js"></script>
 <script src="app/routes/accounts/profile-detail/profile-detail.controller.js"></script>
+<script src="app/routes/accounts/profile/profile.controller.js"></script>
 <script src="app/directives/add-follower/add-follower.controller.js"></script>
-<script src="app/routes/accounts/terminated-message/terminated-message.controller.js"></script>
 <script src="app/routes/accounts/transaction/transaction.controller.js"></script>
 <script src="app/routes/calendar/calendar.controller.js"></script>
 <script src="app/routes/calendar/calendar.js"></script>
@@ -200,6 +202,9 @@
 <script src="app/routes/customers/packages/create/create.controller.js"></script>
 <script src="app/routes/customers/packages/index/index.controller.js"></script>
 <script src="app/routes/customers/packages/packages.js"></script>
+<script src="app/routes/customers/shipments/create/create.controller.js"></script>
+<script src="app/routes/customers/shipments/index/index.controller.js"></script>
+<script src="app/routes/customers/shipments/shipments.js"></script>
 <script src="app/routes/customers/view/view.controller.js"></script>
 <script src="app/routes/dashboard/dashboard.controller.js"></script>
 <script src="app/routes/dashboard/dashboard.js"></script>
@@ -222,8 +227,9 @@
 <script src="app/routes/report/report-list/report-list.controller.js"></script>
 <script src="app/routes/report/report-overview/report-overview.controller.js"></script>
 <script src="app/routes/report/report.js"></script>
-<script src="app/routes/shipments/list.controller.js"></script>
+<script src="app/routes/shipments/index/index.controller.js"></script>
 <script src="app/routes/shipments/shipments.js"></script>
+<script src="app/routes/shipments/show/show.controller.js"></script>
 <script src="components/aside/aside.directive.js"></script>
 <script src="components/career-modal/career-modal.service.js"></script>
 <script src="components/comment/comment.directive.js"></script>

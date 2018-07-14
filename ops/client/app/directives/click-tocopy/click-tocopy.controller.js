@@ -1,5 +1,4 @@
 class ClickToCopyController {
-
   constructor($sce, $uibModalInstance, job) {
     this.job = job;
     this.trustAsHtml = $sce.trustAsHtml;
