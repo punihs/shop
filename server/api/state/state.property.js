@@ -17,6 +17,7 @@ module.exports = DataTypes => ({
       },
     },
   },
+  type: DataTypes.TINYINT,
   status: {
     type: DataTypes.INTEGER(1),
     validate: {

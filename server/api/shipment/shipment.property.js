@@ -44,4 +44,6 @@ module.exports = DataTypes => ({
   tracking_url: DataTypes.STRING,
   shipping_carrier: DataTypes.STRING,
   dispatch_date: DataTypes.DATE,
+  corton_box_type: DataTypes.STRING,
+  comments: DataTypes.STRING,
 });

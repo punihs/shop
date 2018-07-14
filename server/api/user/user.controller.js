@@ -13,6 +13,7 @@ const {
   LOYALTY_TYPE: {
     CREDIT,
   },
+  STATE_TYPES,
 } = require('../../config/constants');
 
 exports.index = (req, res, next) => {
@@ -96,28 +97,38 @@ exports.states = (req, res, next) => {
   State
     .findAll({
       attributes: ['id', 'name', 'parent_id', 'config'],
+      where: { type: STATE_TYPES[req.query.type] },
       include: [
         {
           model: State,
           as: 'Childs',
           attributes: [['id', 'state_id']],
+          where: {
+            type: STATE_TYPES[req.query.type],
+          },
           required: false,
         },
         {
           model: ActionableState,
           as: 'Actions',
-          where: { group_id: groupId },
+          where: {
+            group_id: groupId,
+            type: STATE_TYPES[req.query.type],
+          },
           attributes: [['child_id', 'state_id']],
           required: false,
         },
         { // for Hire: 2, Partner: 5, Others: 5(internal)
           model: GroupState,
-          where: { group_id: [2, 5, 15].includes(groupId) ? groupId : 4 },
+          // where: { group_id: [2, 5, 15].includes(groupId) ? groupId : 4 },
           attributes: ['name', 'description'],
           required: false,
         },
       ],
-      order: [['id', 'ASC'], [{ model: ActionableState, as: 'Actions' }, 'id', 'ASC']],
+      order: [
+        ['id', 'ASC'],
+        [{ model: ActionableState, as: 'Actions' }, 'id', 'ASC'],
+      ],
     })
     .then((stateList) => {
       const out = [];
@@ -132,6 +143,7 @@ exports.states = (req, res, next) => {
       });
 
       res.json(out);
+      // res.json([null, ...out.filter(x => x)]);
     })
     .catch(next);
 };

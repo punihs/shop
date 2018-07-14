@@ -47,6 +47,7 @@ const store = require('./api/store');
 const estimation = require('./api/estimation');
 const coupon = require('./api/coupon');
 const userPackage = require('./api/user/package');
+const userShipment = require('./api/user/shipment');
 const emailPreference = require('./api/emailPreference');
 const emailTemplate = require('./api/emailTemplate');
 const photoRequest = require('./api/package/photoRequest');
@@ -88,7 +89,13 @@ module.exports = (app) => {
   app.use('/api/pricing', pricing);
   app.use('/api/packageItems', authenticate(), packageItem);
   app.use('/api/packageItemCategories', authenticate(), packageItemCategory);
-  app.use('/api/users', authenticate(), user, userPackage);
+  app.use(
+    '/api/users',
+    authenticate(),
+    user,
+    userPackage,
+    userShipment,
+  );
   app.use('/api/faqs', faqCategory);
   app.use('/api/places', place);
   app.use('/api/stores', store);

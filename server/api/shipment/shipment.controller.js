@@ -1,17 +1,20 @@
 const debug = require('debug');
 const moment = require('moment');
 const _ = require('lodash');
+const xlsx = require('node-xlsx');
 
 const eventEmitter = require('../../conn/event');
 const db = require('../../conn/sqldb');
 
 const {
   Country, Shipment, Package, Address, PackageCharge, ShipmentMeta, Notification, ShipmentIssue,
-  PackageState, Redemption, Coupon, LoyaltyHistory, User, LoyaltyPoint, Transaction,
+  PackageState, Redemption, Coupon, LoyaltyHistory, User, LoyaltyPoint, Transaction, Locker,
+  ShipmentState,
 } = db;
 
 const { SHIPPING_RATE } = require('../../config/environment');
 const {
+  SHIPMENT_STATE_ID_NAMES,
   SHIPMENT_STATE_IDS: {
     CANCELED, DELIVERED, DISPATCHED,
   },
@@ -23,26 +26,77 @@ const {
 } = require('../../config/constants');
 
 const log = debug('s.shipment.controller');
+const { index } = require('./shipment.service');
 
-exports.index = (req, res, next) => {
-  const options = {
-    limit: Number(req.query.limit) || 20,
-    attributes: ['id', 'number_of_packages'],
-  };
-  if (req.query.customer_id) {
-    options.where = { customer_id: req.query.customer_id };
-  }
-  if (req.query.status) {
-    options.where = { status: req.query.status };
-  }
+exports.index = (req, res, next) => index(req)
+  .then((result) => {
+    if (req.query.xlsx) {
+      const header = [
+        'id', 'Store Name', 'Virtual Address Code', 'Status',
+      ];
+      const excel = xlsx.build([{
+        name: 'Shipments',
+        data: [header]
+          .concat(result
+            .Shipments
+            .map(({
+              id,
+              Store: store,
+              Customer,
+              ShipmentState: shipmentState,
+            }) => [
+              id, store.name, Customer.virtual_address_code,
+              SHIPMENT_STATE_ID_NAMES[shipmentState.state_id],
+            ])),
+      }]);
 
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+      res.setHeader(
+        'Content-disposition',
+        `attachment; filename=Packages_${moment()
+          .format('DD-MM-YYYY')}.xlsx`,
+      );
+
+      return res.end(excel, 'binary');
+    }
+    log({ result });
+    return res.json(result);
+  })
+  .catch(next);
+
+exports.show = async (req, res, next) => {
+  log('show', req.query);
   return Shipment
-    .findAll(options)
-    .then(shipments => res.json(shipments))
+    .findById(req.params.id, {
+      attributes: req.query.fl
+        ? req.query.fl.split(',')
+        : ['id', 'customer_id', 'created_at', 'weight', 'packages_count'],
+      include: [{
+        model: ShipmentState,
+        attributes: ['id', 'state_id'],
+      }, {
+        model: User,
+        as: 'Customer',
+        attributes: [
+          'id', 'name', 'first_name', 'last_name', 'salutation', 'virtual_address_code',
+          'mobile', 'email', 'phone', 'phone_code',
+        ],
+        include: [{
+          model: Country,
+          attributes: ['id', 'name', 'iso2'],
+        }, {
+          model: Locker,
+          attributes: ['id', 'name', 'short_name', 'allocated_at'],
+        }],
+      }],
+    })
+    .then((pkg) => {
+      if (!pkg) return res.status(404).end();
+      return res.json({ ...pkg.toJSON(), state_id: pkg.ShipmentState.state_id });
+    })
     .catch(next);
 };
 
-exports.show = (req, res) => Shipment.findById(req.params.id).then(shipment => res.json(shipment));
 
 exports.unread = async (req, res) => {
   const { id } = req.params;
@@ -360,19 +414,21 @@ exports.cancelRequest = async (req, res) => {
   const shipment = await Shipment
     .find(options);
 
-  if (moment(shipment.created_at).diff(moment(), 'hours') <= 1) {
-    await Shipment
-      .update({ status: 'canceled' }, { where: { id: shipment.id } });
-    await Package
-      .update({ status: 'ship' }, { where: { id: [shipment.package_ids.split((','))] } });
+  if (shipment) {
+    if (moment(shipment.created_at).diff(moment(), 'hours') <= 1) {
+      await Shipment
+        .update({ status: 'canceled' }, { where: { id: shipment.id } });
+      await Package
+        .update({ status: 'ship' }, { where: { id: [shipment.package_ids.split((','))] } });
 
-    const notification = {};
-    notification.customer_id = cutomerId;
-    notification.action_type = 'shipment';
-    notification.action_id = shipment.id;
-    notification.action_description = `Shipment request cancelled - Order#  ${shipment.order_code}`;
-    await Notification.create(notification)
-      .then(() => res.json({ message: 'Ship request has been cancelled!', shipment }));
+      const notification = {};
+      notification.customer_id = cutomerId;
+      notification.action_type = 'shipment';
+      notification.action_id = shipment.id;
+      notification.action_description = `Shipment request cancelled - Order#  ${shipment.order_code}`;
+      await Notification.create(notification)
+        .then(() => res.json({ message: 'Ship request has been cancelled!', shipment }));
+    }
   }
 };
 
@@ -482,7 +538,7 @@ exports.finalShipRequest = async (req, res) => {
 
   const options = {
     attributes: ['points', 'customer_Id'],
-    where: { customer_Id: customerId },
+    where: { customer_Id: cusstomerId },
   };
   const points = await LoyaltyPoint
     .find(options);
@@ -1002,7 +1058,7 @@ exports.confirmShipment = async (req, res) => {
   }
 
   const optionsPackage = {
-    attributes: ['id', 'price_amount', 'weight', 'reference_code', 'order_code'],
+    attributes: ['id', 'price_amount', 'weight', 'order_code'],
     where: {
       customer_id: customerId,
       id: shipment.package_ids.split(','),
@@ -1362,4 +1418,19 @@ exports.redirectShipment = async (req, res) => {
   const result = await this.createShipment(req, res);
 
   return result;
+};
+
+exports.state = async (req, res, next) => {
+  await Shipment
+    .findById(req.params.id)
+    .then(shpmnt => Shipment
+      .updateShipmentState({
+        db,
+        shpmnt,
+        actingUser: req.user,
+        nextStateId: req.body.state_id,
+        comments: req.body.comments,
+      })
+      .then(status => res.json(status)))
+    .catch(next);
 };

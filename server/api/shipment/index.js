@@ -20,6 +20,7 @@ router.put('/:id', controller.update);
 router.put('/:id/meta', controller.metaUpdate);
 router.delete('/:id', controller.destroy);
 router.get('/:id/invoice', controller.invoice);
+router.put('/:id/state', controller.state);
 
 module.exports = router;
 

@@ -3,6 +3,8 @@ const constants = {
     OPS: 1,
     CUSTOMER: 2,
     FINANCE: 3,
+    BOT: 4,
+    SHIPPING: 5,
   },
   CONSIGNMENT_TYPES: {
     DOC: '1',
@@ -34,21 +36,30 @@ const constants = {
     SUCCESS: 'success',
   },
   SHIPMENT_STATES: {
-    REQUESTED: 'requested',
-    INQUEUE: 'inqueue',
     INREVIEW: 'inreview',
-    DISPATCHED: 'dispatched',
-    DELIVERED: 'delivered',
-    CANCELED: 'canceled',
+    INQUEUE: 'inqueue',
+    CANCELED: 'cancelled',
     CONFIRMATION: 'confirmation',
+    DISPATCHED: 'dispatched',
+    INTRANSIT: 'intransit',
+    CUSTOM_HOLD: 'custom_hold',
+    LOST: 'lost',
+    DELIVERED: 'delivered',
+    DAMAGED: 'damaged',
+    WRONG_DELIVERY: 'wrong_delivery',
   },
   SHIPMENT_STATE_IDS: {
-    REQUESTED: 1,
+    INREVIEW: 16,
     INQUEUE: 2,
-    INREVIEW: 3,
-    DISPATCHED: 4,
-    DELIVERED: 5,
-    CANCELED: 6,
+    CANCELED: 3,
+    CONFIRMATION: 4,
+    DISPATCHED: 5,
+    INTRANSIT: 6,
+    CUSTOM_HOLD: 7,
+    LOST: 8,
+    DELIVERED: 9,
+    DAMAGED: 10,
+    WRONG_DELIVERY: 11,
   },
   PRICE_ENTERER: {
     SHOPPRE: '1',
@@ -103,10 +114,19 @@ const constants = {
     SHIPMENT: 2,
     ORDER: 3,
   },
+  STATE_TYPES: {
+    PACKAGE: 1,
+    SHIPMENT: 2,
+    ORDERS: 3,
+  },
 };
 
 constants.PACKAGE_STATE_ID_NAMES = Object
   .keys(constants.PACKAGE_STATE_IDS)
-  .reduce((nxt, key) => ({ ...nxt, [constants.PACKAGE_STATE_IDS[key]]: key }), {});
+  .reduce((nxt, key) => ({ ...nxt, [constants.SHIPMENT_STATE_IDS[key]]: key }), {});
+
+constants.SHIPMENT_STATE_ID_NAMES = Object
+  .keys(constants.SHIPMENT_STATE_IDS)
+  .reduce((nxt, key) => ({ ...nxt, [constants.SHIPMENT_STATE_IDS[key]]: key }), {});
 
 module.exports = constants;

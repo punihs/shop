@@ -13,22 +13,26 @@ module.exports = () => [
   },
   {
     id: 4,
-    name: 'BOT',
+    name: 'Bot',
   },
   {
     id: 5,
-    name: 'Marketing',
+    name: 'Shipping',
   },
   {
     id: 6,
-    name: 'Sales',
+    name: 'Marketing',
   },
   {
     id: 7,
-    name: 'Tech',
+    name: 'Sales',
   },
   {
     id: 8,
+    name: 'Tech',
+  },
+  {
+    id: 9,
     name: 'Management',
   },
 ];

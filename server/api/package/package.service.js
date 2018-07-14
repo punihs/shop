@@ -14,8 +14,11 @@ const kvmap = (arr, key, value) => arr.reduce((nxt, x) => ({ ...nxt, [x[key]]: x
 
 exports.index = ({ query, params, user: actingUser }) => {
   log('index', { groupId: actingUser.group_id, app_id: actingUser.app_id });
+  log({ BUCKETS });
   const IS_CUSTOMER_PAGE = !!params.customerId;
-  const bucket = BUCKETS[actingUser.group_id];
+  const bucket = BUCKETS.PACKAGE[actingUser.group_id];
+  log({ bucket });
+  log({ actingUser });
   const { status } = query;
   const options = {
     where: {},

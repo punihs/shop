@@ -12,6 +12,7 @@ module.exports = {
       customer_id: keys('users'),
       country_id: keys('stores'),
       destination_city_id: keys('places'),
+      shipment_state_id: keys('shipment_states'),
     }, timestamps(3, DataTypes)), engine),
   down(queryInterface) {
     return queryInterface.dropTable('shipments');
