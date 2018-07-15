@@ -1,13 +1,13 @@
 const request = require('supertest');
 const app = require('../../../app');
-const { Package, Comment } = require('../../../conn/sqldb');
+const { Shipment, Comment } = require('../../../conn/sqldb');
 const auth = require('../../../../logs/credentials');
 const opsAuth = require('../../../../logs/ops-credentials');
 
-describe('ops GET /api/packages/1/comments', () => {
-  it('return packages/1/comments', (done) => {
+describe('ops GET /api/shipments/1/comments', () => {
+  it('return shipments/1/comments', (done) => {
     request(app)
-      .get('/api/packages/1/comments')
+      .get('/api/shipments/1/comments')
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
       .expect(200)
@@ -17,10 +17,10 @@ describe('ops GET /api/packages/1/comments', () => {
   });
 });
 
-describe('member GET /api/packages/1/comments', () => {
-  it('return packages/1/comments', (done) => {
+describe('member GET /api/shipments/1/comments', () => {
+  it('return shipments/1/comments', (done) => {
     request(app)
-      .get('/api/packages/1/comments')
+      .get('/api/shipments/1/comments')
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
       .expect(200)
@@ -30,18 +30,18 @@ describe('member GET /api/packages/1/comments', () => {
   });
 });
 
-describe('ops POST /api/packages/1/comments', () => {
+describe('ops POST /api/shipments/1/comments', () => {
   let pkg;
   before((done) => {
-    Package.create({}).then((pack) => {
+    Shipment.create({}).then((pack) => {
       pkg = pack;
       done();
     });
   });
 
-  it('save packages/:id/comments', (done) => {
+  it('save shipments/:id/comments', (done) => {
     request(app)
-      .post(`/api/packages/${pkg.id}/comments`)
+      .post(`/api/shipments/${pkg.id}/comments`)
       .send({
         comments: 'Ping',
       })
@@ -62,18 +62,18 @@ describe('ops POST /api/packages/1/comments', () => {
 });
 
 
-describe('member POST /api/packages/1/comments', () => {
+describe('member POST /api/shipments/1/comments', () => {
   let pkg;
   before((done) => {
-    Package.create({}).then((pack) => {
+    Shipment.create({}).then((pack) => {
       pkg = pack;
       done();
     });
   });
 
-  it('save packages/:id/comments', (done) => {
+  it('save shipments/:id/comments', (done) => {
     request(app)
-      .post(`/api/packages/${pkg.id}/comments`)
+      .post(`/api/shipments/${pkg.id}/comments`)
       .send({
         comments: 'Pong',
       })

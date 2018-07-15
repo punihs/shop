@@ -7,7 +7,6 @@ module.exports = DataTypes => ({
     unique: true,
   },
   order_code: DataTypes.STRING,
-  package_ids: DataTypes.STRING, // removed in 0.1
   customer_name: DataTypes.STRING,
   address: DataTypes.STRING,
   phone: DataTypes.STRING,
@@ -44,6 +43,6 @@ module.exports = DataTypes => ({
   tracking_url: DataTypes.STRING,
   shipping_carrier: DataTypes.STRING,
   dispatch_date: DataTypes.DATE,
-  corton_box_type: DataTypes.STRING,
+  carton_box_type: DataTypes.STRING,
   comments: DataTypes.STRING,
 });

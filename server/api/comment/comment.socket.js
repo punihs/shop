@@ -2,15 +2,18 @@
  * Broadcast updates to client when the model changes
  */
 const debug = require('debug');
-const PackageCommentEvents = require('./packageComment.events');
+const PackageCommentEvents = require('./comment.events');
 
 const log = debug('s.api.packageComment.socket');
-
+const map = {
+  1: 'packages',
+  2: 'shipments',
+};
 
 exports.register = (socket) => {
   log('register');
   const listener = (doc) => {
-    const route = `/packages/${doc.package_id}/comments`;
+    const route = `/${map[doc.type]}/${doc.object_id}/comments`;
     socket.emit(route, doc);
   };
 

@@ -109,7 +109,7 @@ const constants = {
     BASIC_PHOTO: 50.00,
     ADVANCED_PHOTO: 300,
   },
-  FOLLOWER_TYPES: {
+  OBJECT_TYPES: {
     PACKAGE: 1,
     SHIPMENT: 2,
     ORDER: 3,

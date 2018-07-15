@@ -32,7 +32,8 @@ exports.index = ({ query, user: actingUser }) => {
       }, {
         model: User,
         as: 'Customer',
-        attributes: ['id', 'name', 'virtual_address_code', 'first_name', 'last_name', 'salutation'],
+        attributes: ['id', 'name', 'virtual_address_code', 'first_name',
+          'last_name', 'salutation', 'profile_photo_url'],
         include: [{
           model: Locker,
           attributes: ['id', 'short_name', 'name'],

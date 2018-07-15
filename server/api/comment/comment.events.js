@@ -1,18 +1,18 @@
 /**
- * PackageComment model events
+ * Comment model events
  */
 const debug = require('debug');
 const { EventEmitter } = require('events');
 
-const { PackageComment, User } = require('../../conn/sqldb');
+const { Comment, User } = require('../../conn/sqldb');
 const logger = require('../../components/logger');
 
-const PackageCommentEvents = new EventEmitter();
+const CommentEvents = new EventEmitter();
 
-const log = debug('s.api.packageComment.events');
+const log = debug('s.api.comment.events');
 
 // Set max event listeners (0 == unlimited)
-PackageCommentEvents.setMaxListeners(0);
+CommentEvents.setMaxListeners(0);
 
 // Model events
 const events = {
@@ -24,19 +24,19 @@ const events = {
 function emitEvent(event) {
   log('event', event);
   return (doc) => {
-    const packageComment = doc.toJSON();
-    log('doc', { packageComment });
+    const comment = doc.toJSON();
+    log('doc', { comment });
     User
-      .findById(packageComment.user_id, {
+      .findById(comment.user_id, {
         attributes: [
           'id', 'email', 'first_name', 'last_name', 'group_id', 'salutation', 'name',
         ],
       })
       .then((user) => {
         log('event', event);
-        PackageCommentEvents.emit(event, { ...packageComment, User: user.toJSON() });
+        CommentEvents.emit(event, { ...comment, User: user.toJSON() });
       })
-      .catch(err => logger.error('PackageCommentEvents', err));
+      .catch(err => logger.error('CommentEvents', err));
   };
 }
 
@@ -44,7 +44,7 @@ function emitEvent(event) {
 [...Object.keys(events)]
   .forEach((e) => {
     const event = events[e];
-    PackageComment.hook(e, emitEvent(event));
+    Comment.hook(e, emitEvent(event));
   });
 
-module.exports = PackageCommentEvents;
+module.exports = CommentEvents;

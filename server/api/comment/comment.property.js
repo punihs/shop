@@ -18,4 +18,6 @@ module.exports = DataTypes => ({
     },
     allowNull: false,
   },
+  type: DataTypes.INTEGER,
+  object_id: DataTypes.INTEGER,
 });

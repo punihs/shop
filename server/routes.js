@@ -22,6 +22,7 @@ const specialRequest = require('./api/package/specialRequest');
 const shippingPreference = require('./api/shippingPreference');
 const packageItemCategory = require('./api/packageItemCategory');
 const shipment = require('./api/shipment');
+const shipmentComment = require('./api/shipment/comment');
 const shipmentPackage = require('./api/shipment/package');
 const address = require('./api/address');
 const user = require('./api/user');
@@ -53,6 +54,8 @@ const emailPreference = require('./api/emailPreference');
 const emailTemplate = require('./api/emailTemplate');
 const photoRequest = require('./api/package/photoRequest');
 const follower = require('./api/package/follower');
+const shipmentFollower = require('./api/shipment/follower');
+const shipmentTypes = require('./api/shipmentType');
 const webRoutes = require('./webRoutes');
 const minio = require('./conn/minio/minio.route');
 
@@ -76,7 +79,14 @@ module.exports = (app) => {
   );
   app.use('/api/shippingPartners', shippingPartner);
   app.use('/api/addresses', authenticate(), address);
-  app.use('/api/shipments', authenticate(), shipment, shipmentPackage);
+  app.use(
+    '/api/shipments',
+    authenticate(),
+    shipment,
+    shipmentPackage,
+    shipmentComment,
+    shipmentFollower,
+  );
   app.use('/api/shippingPreference', authenticate(), shippingPreference);
   app.use('/api/transactions', authenticate(), transaction);
   app.use('/api/campaigns', authenticate(), campaign);
@@ -106,6 +116,7 @@ module.exports = (app) => {
   app.use('/api/axis', authenticate(), axis);
   app.use('/api/passwordReset', passwordReset);
   app.use('/api/estimations', estimation);
+  app.use('/api/shipmentTypes', shipmentTypes);
   app.use('/api/coupons', coupon);
   app.use('/api/emailPreferences', authenticate(), emailPreference);
   app.use('/api/emailTemplates', authenticate(), emailTemplate);

@@ -8,11 +8,11 @@ router.get('/', controller.index);
 router.get('/queue', controller.shipQueue);
 router.get('/history', controller.history);
 router.put('/:id/cancel', controller.cancelRequest);
-router.put('/finalShip', controller.finalShipRequest);
+router.put('/finalShip', controller.finalShipRequest); // - final payment submission:php
 router.put('/payRetrySubmit', controller.payRetrySubmit);
 router.put('/retryPayment', controller.retryPayment);
-router.get('/confirmShipment', controller.confirmShipment);
-router.get('/redirectShipment', controller.redirectShipment);
+router.get('/confirmShipment', controller.confirmShipment); // - submit payment:php
+router.get('/redirectShipment', controller.redirectShipment); // - create shiprequest:php
 router.post('/', controller.create);
 router.get('/:id', controller.show);
 router.post('/:id/unread', controller.unread);

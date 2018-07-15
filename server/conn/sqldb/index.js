@@ -39,7 +39,7 @@ const db = {
   'Order',
 
   'Package', 'PackageCharge', 'PackageState', 'State', 'ActionableState', 'GroupState',
-  'PackageItem', 'PackageComment',
+  'PackageItem',
   'PackageItemCategory',
 
   'PhotoRequest',
@@ -47,7 +47,7 @@ const db = {
   'Shipment', 'ShipmentMeta', 'ShipmentType', 'ShipmentIssue', 'ShippingPartner', 'ShipmentState',
   'Transaction',
   // - Notifications
-  'Notification',
+  'Notification', 'Comment',
 
   // - loyalty points, coupon
   'LoyaltyPoint', 'LoyaltyHistory', 'Redemption', 'ReferCode',

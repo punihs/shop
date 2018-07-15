@@ -3,9 +3,8 @@ const debug = require('debug');
 
 const log = debug('package');
 
-const { OBJECT_TYPES: { PACKAGE } } = require('../../../config/constants');
-
 const db = require('../../../conn/sqldb');
+const { OBJECT_TYPES: { SHIPMENT } } = require('../../../config/constants');
 
 const { Follower, User, SocketSession } = db;
 const attributes = [
@@ -25,7 +24,7 @@ exports.index = (req, res, next) => {
             id: followers
               .map(x => x.user_id)
               .filter(x => (x !== req.user.id)),
-            object_type_id: PACKAGE,
+            object_type_id: SHIPMENT,
           },
           include: [{
             model: SocketSession,

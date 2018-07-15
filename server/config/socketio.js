@@ -5,7 +5,8 @@ const debug = require('debug');
 
 const logger = require('../components/logger');
 
-const r = require;
+const address = require('../api/address/address.socket');
+const comment = require('../api/comment/comment.socket');
 
 const log = debug('s.config.socketio');
 
@@ -54,8 +55,10 @@ function onConnect(socket, db) {
   });
 
   // Insert sockets below
-  r('../api/address/address.socket').register(socket);
-  r('../api/packageComment/packageComment.socket').register(socket);
+  address.register(socket);
+  comment.register(socket);
+  // shipmentComment.register(socket);
+
   /**
    * get the user's Chat list
    */

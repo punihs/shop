@@ -4,13 +4,13 @@ const {
 
 module.exports = {
   up: (queryInterface, DataTypes) => queryInterface
-    .createTable('package_comments', {
-      ...properties('packageComment', DataTypes),
+    .createTable('comments', {
+      ...properties('comment', DataTypes),
       user_id: keys('users'),
-      package_id: keys('packages'),
+      // package_id: keys('packages'),
       ...timestamps(3, DataTypes),
     }, engine),
   down(queryInterface) {
-    return queryInterface.dropTable('package_comments');
+    return queryInterface.dropTable('comments');
   },
 };

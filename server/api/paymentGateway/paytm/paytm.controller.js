@@ -30,7 +30,7 @@ exports.create = async (req, res) => {
 
   const shipment = await Shipment
     .findById(shipRequestId, {
-      attributes: ['id', 'package_ids', 'estimated_amount',
+      attributes: ['id', 'estimated_amount',
         'order_code', 'final_amount', 'payment_gateway_fee_amount',
         'customer_id', 'order_code', 'wallet_amount', 'loyalty_amount', 'coupon_amount', 'phone'],
     });

@@ -9,7 +9,7 @@ const db = require('../../conn/sqldb');
 const {
   Country, Shipment, Package, Address, PackageCharge, ShipmentMeta, Notification, ShipmentIssue,
   PackageState, Redemption, Coupon, LoyaltyHistory, User, LoyaltyPoint, Transaction, Locker,
-  ShipmentState,
+  ShipmentState, Store, ShipmentType,
 } = db;
 
 const { SHIPPING_RATE } = require('../../config/environment');
@@ -24,6 +24,8 @@ const {
   },
   PAYMENT_GATEWAY: { WIRE, WALLET, CASH },
 } = require('../../config/constants');
+
+const { ADDED_TO_SHIPMENT } = require('../../config/constants/packageStates');
 
 const log = debug('s.shipment.controller');
 const { index } = require('./shipment.service');
@@ -75,6 +77,16 @@ exports.show = async (req, res, next) => {
         model: ShipmentState,
         attributes: ['id', 'state_id'],
         required: false,
+      }, {
+        model: ShipmentType,
+        attributes: ['id', 'name'],
+      }, {
+        attributes: ['id', 'weight', 'package_state_id', 'price_amount'],
+        model: Package,
+        include: [{
+          model: Store,
+          attributes: ['name'],
+        }],
       }, {
         model: User,
         as: 'Customer',
@@ -131,15 +143,21 @@ exports.destroy = async (req, res) => {
   const { id } = req.params;
 
   const shipment = await Shipment
-    .findById(id);
+    .find({
+      where: { id },
+      include: [{
+        model: Package,
+        attributes: ['id'],
+      }],
+    });
 
   log('shipment id', shipment.status);
   if (![CANCELED, DELIVERED, DISPATCHED].includes(shipment.status)) {
     return res.json({ message: `Can not delete item as it is already ${shipment.status}` });
   }
 
-  await Promise.all(shipment.package_ids.split(',')
-    .map(packageId => Package
+  await Promise.all(shipment.Packages
+    .map(({ id: packageId }) => Package
       .updateState({
         db,
         packageId,
@@ -336,11 +354,19 @@ const updateShipment = async ({ sR, shipmentMeta }) => {
   return sR.update(updateShip);
 };
 
-const updatePackages = packageIds => Package.update({
-  status: 'processing',
-}, {
-  where: { id: packageIds },
-});
+const updatePackages = (shipmentId, packageIds, actingUser) => {
+  packageIds.map(id => Package.updateState({
+    db,
+    nextStateId: ADDED_TO_SHIPMENT,
+    pkg: { id },
+    actingUser,
+  }));
+  return Package.update({
+    shipment_id: shipmentId,
+  }, {
+    where: { id: packageIds },
+  });
+};
 
 
 exports.create = async (req, res, next) => {
@@ -366,7 +392,7 @@ exports.create = async (req, res, next) => {
 
     const updateShip = await updateShipment({ shipmentMeta, sR });
 
-    updatePackages(packageIds);
+    updatePackages(sR.id, packageIds);
 
     eventEmitter.emit('shipment:create', {
       userId, sR, packages, address, updateShip,
@@ -382,7 +408,7 @@ exports.create = async (req, res, next) => {
 exports.shipQueue = async (req, res) => {
   const options = {
     attributes: [
-      'order_code', 'package_ids', 'customer_name', 'address',
+      'order_code', 'customer_name', 'address',
       'phone', 'packages_count', 'weight', 'estimated_amount',
     ],
     where: { status: ['inqueue', 'inreview', 'received', 'confirmation'] },
@@ -396,7 +422,7 @@ exports.shipQueue = async (req, res) => {
 exports.history = (req, res, next) => {
   const options = {
     attributes: [
-      'order_code', 'package_ids', 'customer_name', 'address', 'status', 'tracking_code',
+      'order_code', 'customer_name', 'address', 'status', 'tracking_code',
       'dispatch_date', 'shipping_carrier', 'tracking_url', 'phone', 'packages_count', 'weight',
       'estimated_amount', 'created_at', 'final_amount',
     ],
@@ -417,7 +443,7 @@ exports.cancelRequest = async (req, res, next) => {
 
   return Shipment
     .find({
-      attributes: ['id', 'created_at', 'package_ids'],
+      attributes: ['id', 'created_at'],
       where: {
         customer_id: customerId,
         status: ['inreview', 'inqueue'],
@@ -452,7 +478,7 @@ exports.cancelRequest = async (req, res, next) => {
               status: 'ship',
             }, {
               where: {
-                id: [shipment.package_ids.split((','))],
+                shipment_id: shipment.id,
               },
             }),
           Notification.create({
@@ -474,7 +500,7 @@ exports.invoice = async (req, res) => {
     .find({ where: { order_code: id } });
   if (shipment) {
     packages = await Package
-      .findAll({ where: { id: shipment.package_ids.split(',') } });
+      .findAll({ where: { shipment_id: shipment.id } });
   }
   return res.json({ packages, shipment });
 };
@@ -558,7 +584,7 @@ exports.finalShipRequest = async (req, res) => {
   const shipmentSave = {};
   const shipRequestId = req.body.shipment_id;
   const shipOptions = {
-    attributes: ['id', 'package_ids', 'customer_id', 'estimated_amount', 'order_code'],
+    attributes: ['id', 'customer_id', 'estimated_amount', 'order_code'],
     where: { id: shipRequestId },
   };
   const shipment = await Shipment
@@ -784,7 +810,7 @@ exports.payRetrySubmit = async (req, res) => {
 
   const shipment = await Shipment
     .findById(shipRequestId, {
-      attributes: ['id', 'package_ids', 'estimated_amount',
+      attributes: ['id', 'estimated_amount',
         'customer_id', 'order_code', 'wallet_amount', 'loyalty_amount', 'coupon_amount',
       ],
     });
@@ -949,7 +975,7 @@ exports.retryPayment = async (req, res) => {
     });
 
   const optionShipment = {
-    attributes: ['id', 'estimated_amount', 'payment_gateway_fee_amount', 'package_ids'],
+    attributes: ['id', 'estimated_amount', 'payment_gateway_fee_amount'],
     where: { customer_id: customerId, order_code: orderCode, payment_status: ['failed', 'pending'] },
   };
 
@@ -962,7 +988,7 @@ exports.retryPayment = async (req, res) => {
 
   const optionPackage = {
     attributes: ['id'],
-    where: { customer_id: customerId, id: shipment.package_ids.split(',') },
+    where: { customer_id: customerId, shipment_id: shipment.id },
   };
   const packages = await Package
     .find(optionPackage);
@@ -1077,7 +1103,7 @@ exports.confirmShipment = async (req, res) => {
     });
 
   const optionsShipment = {
-    attributes: ['id', 'package_ids', 'estimated_amount', 'package_level_charges_Amount'],
+    attributes: ['id', 'estimated_amount', 'package_level_charges_Amount'],
     where: {
       customer_id: customerId,
       order_code: orderCode,
@@ -1096,7 +1122,7 @@ exports.confirmShipment = async (req, res) => {
     attributes: ['id', 'price_amount', 'weight', 'order_code'],
     where: {
       customer_id: customerId,
-      id: shipment.package_ids.split(','),
+      shipment_id: shipment.id,
     },
   };
   const packages = await Package
