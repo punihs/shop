@@ -39,7 +39,6 @@ module.exports = () => [
     tracking_code: 'ABC123',
     dispatch_date: '2018-06-11',
     shipping_carrier: 'dhl',
-    tracking_url: 'DHL1324',
   }, {
     id: 115,
     customer_id: 129,

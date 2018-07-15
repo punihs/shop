@@ -1,0 +1,245 @@
+{
+  "req:TrackingResponse": {
+    "$": {
+      "xmlns:req": "http://www.dhl.com",
+      "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+      "xsi:schemaLocation": "http://www.dhl.com TrackingResponse.xsd"
+    },
+    "Response": {
+      "ServiceHeader": {
+        "MessageTime": "2018-07-15T09:16:33+01:00",
+        "MessageReference": "1234567890123456789012345678",
+        "SiteID": "DServiceVal"
+      }
+    },
+    "AWBInfo": [
+      {
+        "AWBNumber": "6422614100",
+        "Status": {
+          "ActionStatus": "success"
+        },
+        "ShipmentInfo": {
+          "OriginServiceArea": "",
+          "DestinationServiceArea": "",
+          "ShipperName": "",
+          "ConsigneeName": "",
+          "ShipmentDate": "",
+          "Pieces": "0",
+          "DlvyNotificationFlag": "Y"
+        }
+      },
+      {
+        "AWBNumber": "6422614100",
+        "Status": {
+          "ActionStatus": "success"
+        },
+        "ShipmentInfo": {
+          "OriginServiceArea": {
+            "ServiceAreaCode": "BLR",
+            "Description": "BANGALORE-IND"
+          },
+          "DestinationServiceArea": {
+            "ServiceAreaCode": "DXB",
+            "Description": "DUBAI-ARE"
+          },
+          "ShipperName": "INDIAN SHOPPRE LLP",
+          "ShipperAccountNumber": "531115932",
+          "ConsigneeName": "NA",
+          "ShipmentDate": "2018-07-12T21:57:26",
+          "Pieces": "1",
+          "Weight": "0.47",
+          "WeightUnit": "K",
+          "GlobalProductCode": "P",
+          "ShipmentDesc": "BOOK TOY",
+          "DlvyNotificationFlag": "N",
+          "Shipper": {
+            "City": "BANGALORE",
+            "DivisionCode": "KT",
+            "PostalCode": "560034",
+            "CountryCode": "IN"
+          },
+          "Consignee": {
+            "City": "DUBAI AIRPORT FREEZONE",
+            "CountryCode": "AE"
+          },
+          "ShipperReference": {
+            "ReferenceID": "INDIAN SHOPPRE LLP"
+          },
+          "ShipmentEvent": [
+            {
+              "Date": "2018-07-12",
+              "Time": "21:57:23",
+              "ServiceEvent": {
+                "EventCode": "PU",
+                "Description": "Shipment picked up"
+              },
+              "Signatory": "",
+              "ServiceArea": {
+                "ServiceAreaCode": "BLR",
+                "Description": "BANGALORE-IND"
+              }
+            },
+            {
+              "Date": "2018-07-13",
+              "Time": "05:13:32",
+              "ServiceEvent": {
+                "EventCode": "AF",
+                "Description": "Arrived at Sort Facility BANGALORE-IND"
+              },
+              "Signatory": "",
+              "ServiceArea": {
+                "ServiceAreaCode": "BLR",
+                "Description": "BANGALORE-IND"
+              }
+            },
+            {
+              "Date": "2018-07-13",
+              "Time": "06:30:55",
+              "ServiceEvent": {
+                "EventCode": "PL",
+                "Description": "Processed at BANGALORE-IND"
+              },
+              "Signatory": "",
+              "ServiceArea": {
+                "ServiceAreaCode": "BLR",
+                "Description": "BANGALORE-IND"
+              }
+            },
+            {
+              "Date": "2018-07-13",
+              "Time": "06:31:58",
+              "ServiceEvent": {
+                "EventCode": "DF",
+                "Description": "Departed Facility in BANGALORE-IND"
+              },
+              "Signatory": "",
+              "ServiceArea": {
+                "ServiceAreaCode": "BLR",
+                "Description": "BANGALORE-IND"
+              }
+            },
+            {
+              "Date": "2018-07-13",
+              "Time": "12:13:00",
+              "ServiceEvent": {
+                "EventCode": "RR",
+                "Description": "Customs status updated"
+              },
+              "Signatory": "",
+              "ServiceArea": {
+                "ServiceAreaCode": "DXB",
+                "Description": "DUBAI-ARE"
+              }
+            },
+            {
+              "Date": "2018-07-13",
+              "Time": "16:35:31",
+              "ServiceEvent": {
+                "EventCode": "AF",
+                "Description": "Arrived at Sort Facility AE - HUB & GATEWAYS-ARE"
+              },
+              "Signatory": "",
+              "ServiceArea": {
+                "ServiceAreaCode": "DXH",
+                "Description": "AE - HUB & GATEWAYS-ARE"
+              }
+            },
+            {
+              "Date": "2018-07-13",
+              "Time": "16:53:49",
+              "ServiceEvent": {
+                "EventCode": "CR",
+                "Description": "Clearance processing complete at DUBAI-ARE"
+              },
+              "Signatory": "",
+              "ServiceArea": {
+                "ServiceAreaCode": "DXB",
+                "Description": "DUBAI-ARE"
+              }
+            },
+            {
+              "Date": "2018-07-13",
+              "Time": "18:50:09",
+              "ServiceEvent": {
+                "EventCode": "PL",
+                "Description": "Processed at AE - HUB & GATEWAYS-ARE"
+              },
+              "Signatory": "",
+              "ServiceArea": {
+                "ServiceAreaCode": "DXH",
+                "Description": "AE - HUB & GATEWAYS-ARE"
+              }
+            },
+            {
+              "Date": "2018-07-13",
+              "Time": "18:50:58",
+              "ServiceEvent": {
+                "EventCode": "DF",
+                "Description": "Departed Facility in AE - HUB & GATEWAYS-ARE"
+              },
+              "Signatory": "",
+              "ServiceArea": {
+                "ServiceAreaCode": "DXH",
+                "Description": "AE - HUB & GATEWAYS-ARE"
+              }
+            },
+            {
+              "Date": "2018-07-13",
+              "Time": "19:20:59",
+              "ServiceEvent": {
+                "EventCode": "AR",
+                "Description": "Arrived at Delivery Facility in DUBAI-ARE"
+              },
+              "Signatory": "",
+              "ServiceArea": {
+                "ServiceAreaCode": "DXB",
+                "Description": "DUBAI-ARE"
+              }
+            },
+            {
+              "Date": "2018-07-14",
+              "Time": "08:24:57",
+              "ServiceEvent": {
+                "EventCode": "WC",
+                "Description": "With delivery courier"
+              },
+              "Signatory": "",
+              "ServiceArea": {
+                "ServiceAreaCode": "DXB",
+                "Description": "DUBAI-ARE"
+              }
+            },
+            {
+              "Date": "2018-07-14",
+              "Time": "09:29:48",
+              "ServiceEvent": {
+                "EventCode": "CC",
+                "Description": "Awaiting collection by recipient as requested"
+              },
+              "Signatory": "",
+              "ServiceArea": {
+                "ServiceAreaCode": "DXB",
+                "Description": "DUBAI-ARE"
+              }
+            },
+            {
+              "Date": "2018-07-14",
+              "Time": "11:26:28",
+              "ServiceEvent": {
+                "EventCode": "OK",
+                "Description": "Delivered - Signed for by"
+              },
+              "Signatory": "AHMAD AJAYAKUMAR 0505740959",
+              "ServiceArea": {
+                "ServiceAreaCode": "DXB",
+                "Description": "DUBAI-ARE"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "LanguageCode": "en"
+  }
+}
+

@@ -18,7 +18,7 @@
     "migrate": "DEBUG=s.*  sequelize db:migrate; DEBUG=s.*  sequelize db:seed:all",
     "socket-monitor": "socket.io-monitor",
     "login": "NODE_ENV=test mocha --opts .mocharc server/api/login/login.spec.js --exit",
-    "test": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --opts .mocharc server/**/*.spec.js --exit",
+    "test": "NODE_ENV=test nyc --reporter=text mocha --opts .mocharc server/**/*.spec.js --exit | grep -v '100'",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "kill": "kill -9 $(lsof -t -i:5000);",
     "maildev": "maildev --outgoing-host cp.shoppre.com --outgoing-user 'notifications@cp.shoppre.com' --outgoing-pass 'Easy@2020' --outgoing-port 587",
@@ -90,10 +90,12 @@
     "uuid": "^3.2.1",
     "winston": "^2.4.0",
     "winston-daily-rotate-file": "^1.7.2",
-    "winston-raven-sentry": "^1.0.1"
+    "winston-raven-sentry": "^1.0.1",
+    "xml2js": "^0.4.19"
   },
   "devDependencies": {
     "artillery": "^1.6.0-21",
+    "ava": "^0.25.0",
     "coveralls": "^3.0.1",
     "eslint": "^4.11.0",
     "eslint-config-airbnb": "^16.1.0",
@@ -104,6 +106,7 @@
     "precommit-hook": "^3.0.0",
     "puppeteer": "^1.4.0",
     "semantic-release": "^15.7.0",
+    "sinon": "^6.1.3",
     "supertest": "^3.0.0"
   },
   "engines": {

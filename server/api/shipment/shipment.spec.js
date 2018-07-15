@@ -3,6 +3,9 @@
 // const r = require;
 const request = require('supertest');
 const moment = require('moment');
+const assert = require('assert');
+const sinon = require('sinon');
+
 const app = require('./../../app');
 const auth = require('../../../logs/credentials');
 const {
@@ -16,8 +19,9 @@ const {
     MR,
   },
 } = require('../../config/constants');
-
-
+const { SHIPPING_PARTNERS: { DHL } } = require('../../config/constants/objects');
+const fakeResponse = require('../../conn/shipper/dhl/sample');
+const shipper = require('../../conn/shipper');
 // const log = debug('s.shipment.spec');
 
 describe('GET /api/shipments', () => {
@@ -165,6 +169,9 @@ describe('GET /api/shipments/1/packages', () => {
 
 describe('GET /api/shipments/:id', () => {
   before((done) => {
+    sinon
+      .stub(shipper[DHL], 'status').callsFake(() => Promise.resolve(fakeResponse));
+
     Promise.all([
       ShipmentIssue.destroy({ where: { shipment_id: 10 } }),
     ]).then(() => Shipment
@@ -214,13 +221,18 @@ describe('GET /api/shipments/:id', () => {
           payment_gateway_name: 'wire',
           weight: 27.35,
           pick_up_charge: null,
-          tracking_code: 'ABC123',
           dispatch_date: '2017-12-11T13:46:00.000+05:30',
-          shipping_carrier: 'dhl',
-          tracking_url: 'DHL1324',
+
+          shipping_partner_id: DHL, // replace with valid test data
+          tracking_code: '6422614100', // replace with valid test data
         })
         .then(() => done())));
   });
+
+  after(() => {
+    shipper[DHL].status.restore();
+  });
+
 
   it('return shipments', (done) => {
     request(app)
@@ -228,7 +240,21 @@ describe('GET /api/shipments/:id', () => {
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
       .expect(200)
-      .then(() => {
+      .then(() => done());
+  });
+
+  it('will tracking shipment delivery status', (done) => {
+    request(app)
+      .get('/api/shipments/10/status')
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then((res) => {
+        const response = JSON.parse(res.text);
+        const events = response.result['req:TrackingResponse'].AWBInfo[1].ShipmentInfo.ShipmentEvent;
+        const lastEvent = events[events.length - 1];
+        const lastStatus = lastEvent.ServiceEvent.Description;
+        assert(lastStatus === 'Delivered - Signed for by', 'should be delivered');
         done();
       });
   });
@@ -439,7 +465,6 @@ describe('GET /api/shipments/:id', () => {
 //         package_weight: '2.00',
 //         package_value: '300.00',
 //         tracking_id: '56567678',
-//         tracking_url: 'www.dhl.com',
 //         trackingid: '386',
 //       })
 //       .set('Authorization', `Bearer ${auth.access_token}`)

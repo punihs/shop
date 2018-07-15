@@ -5,8 +5,6 @@ const rp = require('request-promise');
 const { log } = console;
 const DRONE_COMMIT = process.argv[2];
 
-log('DRONE_COMMIT', DRONE_COMMIT);
-
 const fgRed = '\x1b[31m';
 const fgGreen = '\x1b[32m';
 const fgDim = '\x1b[2m';
@@ -23,7 +21,6 @@ const connection = mysql.createConnection({
 });
 
 const getList = (cb) => {
-  log('getList:started\n');
   const list = 'select response_time, request from logs';
   connection.query(list, (error, result) => {
     log(Object.keys(result[0]).join('\t\t'));
@@ -45,7 +42,7 @@ const getList = (cb) => {
         s += 1;
       }
 
-      log(color, Object.values(x).join('\t\t'), fgReset);
+      if (x.response_time > NORMAL) log(color, Object.values(x).join('\t\t'), fgReset);
     });
 
     cb({ s, m, n });
@@ -53,19 +50,8 @@ const getList = (cb) => {
 };
 
 const print = ({ s, m, n }) => {
-  log(fgReset, '\n');
-  log(fgReset, '##########################################');
-  log(fgReset, '## API Benchmark');
-  log(fgReset, '## ');
-  log(fgReset, '## NORMAL\t\t: less than', NORMAL, ' seconds');
-  log(fgReset, '## MODERATE\t: from', NORMAL, 'to', SLOW, ' seconds');
-  log(fgReset, '## SLOW\t\t: more than', SLOW, ' seconds');
-  log(fgReset, '## ');
-  log(fgReset, '##', fgGreen, 'NORMAL\t:', n, fgReset);
-  log(fgReset, '##  MODERATE\t:', m);
-  log(fgReset, '##', fgRed, 'SLOW\t:', s, fgReset);
-  log(fgReset, '##');
-  log(fgReset, '##########################################');
+  log(fgReset, '## API Benchmark - NORMAL: < ', NORMAL, 'MODERATE: <', SLOW, 'SLOW: >', SLOW, ' seconds');
+  log(fgReset, '##', fgGreen, 'NORMAL:', n, fgReset, ' MODERATE:', m, fgRed, ' SLOW:', s, fgReset);
 };
 
 function production() {

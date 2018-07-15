@@ -5,6 +5,7 @@ const xlsx = require('node-xlsx');
 
 const eventEmitter = require('../../conn/event');
 const db = require('../../conn/sqldb');
+const shipper = require('../../conn/shipper');
 
 const {
   Country, Shipment, Package, Address, PackageCharge, ShipmentMeta, Notification, ShipmentIssue,
@@ -114,6 +115,25 @@ exports.show = async (req, res, next) => {
     .catch(next);
 };
 
+exports.status = async (req, res, next) => Shipment
+  .findById(req.params.id, {
+    attributes: ['shipping_partner_id', 'tracking_code'],
+    raw: true,
+  })
+  .then((shipment) => {
+    log('status:shipment', shipment);
+    return shipper[shipment.shipping_partner_id]
+      .status(shipment.tracking_code)
+      .then((result) => {
+        log('result', result);
+        return res
+          .json({
+            shipper: shipment.shipping_partner_id,
+            result,
+          });
+      });
+  })
+  .catch(next);
 
 exports.unread = async (req, res) => {
   const { id } = req.params;

@@ -17,7 +17,6 @@ module.exports = {
     package_weight: '10',
     phone: '7675919744',
     tracking_id: '68994577',
-    tracking_url: 'http://www.dhl.co.in/en/express/tracking.html',
     address: 'Bangalore, Karnataka, India, 560034, koramangala,jakkasandra',
   },
   Template: {

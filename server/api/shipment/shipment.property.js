@@ -40,7 +40,7 @@ module.exports = DataTypes => ({
   number_of_packages: DataTypes.INTEGER,
   weight_by_shipping_partner: DataTypes.DOUBLE,
   value_by_shipping_partner: DataTypes.DOUBLE,
-  tracking_url: DataTypes.STRING,
+
   shipping_carrier: DataTypes.STRING,
   dispatch_date: DataTypes.DATE,
   carton_box_type: DataTypes.STRING,
