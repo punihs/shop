@@ -1,5 +1,5 @@
 (() => {
-  class PackageCommentsController {
+  class CommentsController {
     /*  @ngInject  */
     constructor($http, $timeout, Session, socket) {
       this.moment = moment;
@@ -12,7 +12,7 @@
 
     $onInit() {
       this.user = this.Session.read('userinfo');
-      this.states = this.Session.read('states');
+      this.states = this.Session.read(`${this.type === 'shipment' ? 'shipment-' : ''}states`);
       this.post = { comments: '' };
       this.followers = [];
       this.getList();
@@ -24,23 +24,23 @@
 
     getList() {
       this.ui = { loading: true, scrollToBottom: false };
-      const route = `/packages/${this.packageId}/comments`;
+      const route = `/${this.type}s/${this.id}/comments`;
       this
         .$http
         .get(route)
         .then(({ data }) => {
-          this.pkg.comments = data;
-          this.socket.syncUpdates(route, this.pkg.comments, true);
-
+          this.data.comments = data;
+          this.socket.syncUpdates(route, this.data.comments, true);
           this.ui = { loading: false, scrollToBottom: true };
         });
       this.loadFollowers();
     }
 
     loadFollowers() {
+      const route = `/${this.type}s/${this.id}/followers`;
       this
         .$http
-        .get(`/packages/${this.packageId}/followers`)
+        .get(route)
         .then(({ data }) => {
           this.followers = data;
         });
@@ -51,18 +51,13 @@
       const comments = this.post.comments;
       if (!comments) return;
       this.ui = { loading: true, scrollToBottom: false };
+      const route = `/${this.type}s/${this.id}/comments`;
 
-      const route = `/packages/${this.packageId}/comments`;
       this
         .$http
         .post(route, { comments })
         .then(() => {
           this.post.comments = '';
-          // this.pkg.comments.push({
-          //   User: this.user,
-          //   comments,
-          //   created_at: new Date().toISOString(),
-          // });
           this.ui = { loading: false, scrollToBottom: true };
         });
     }
@@ -76,12 +71,13 @@
     .directive('comments', () => ({
       templateUrl: 'components/comment/comment.html',
       restrict: 'E',
-      controller: PackageCommentsController,
+      controller: CommentsController,
       controllerAs: '$ctrl',
       bindToController: true,
       scope: {
-        packageId: '@',
-        pkg: '=',
+        id: '@',
+        data: '=',
+        type: '=',
       },
     }));
 })();

@@ -28,15 +28,8 @@ class shipmentsShowController {
   $onInit() {
     this.root = '_root_';
     this.modal = {};
-    this.states = this.Session.read('states');
+    this.states = this.Session.read('shipment-states');
     this.user = this.Session.read('userinfo');
-    // this.Page.setTitle(this.data.Store.name);
-    // this.packageItems = [];
-    //
-    // this
-    //   .$http
-    //   .get(`/shipments/${this.$stateParams.id}/items`)
-    //   .then(({ data: packageItems }) => (this.packageItems.push(...packageItems)));
   }
 
   setMessage(description) {
@@ -80,7 +73,7 @@ class shipmentsShowController {
     this.$q
       .all(files
         .map((file) => this
-          .$http
+        .$http
           .post(`/shipment/${this.$stateParams.id}/items`, {
             documentFile: file,
           })))

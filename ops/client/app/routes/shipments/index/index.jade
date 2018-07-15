@@ -4,7 +4,7 @@ div
       .bg-white-only.b-b(style='position: fixed;width: 100%; height: 44px;')
         ul.nav.nav-pills.nav-sm.m-t-xs
           li(ng-repeat='status in $ctrl.buckets' ui-sref-active="active")
-            a(ui-sref='shipments.index({jobId:$ctrl.job.id,status: status})' ng-bind="status" ng-hide="status == 'Bookmarked' && App.app.settings.isAdmin")
+            a(ui-sref='shipments.index({jobId:$ctrl.job.id,status: status})' ng-bind="status")
       .wrapper-xs.bg-light(style='position: fixed; right: 0;background: #fff; z-index: 3;width:30%;')
         .pull-right.col.m-r-xs.m-t-xs(ng-if='$ctrl.shipments.length') {{$ctrl.shipments.length}} of {{$ctrl.total}} Shipments(s)
         .pull-right.col.pointer.m-r-xs(ng-click='$ctrl.ExcelDownload.download($ctrl.params)')
@@ -35,27 +35,47 @@ div
           td(colspan="5"): h1.text-center.text-muted No Shipments
         .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='shipment in $ctrl.shipments')
           .col-xs-3.wrapper-sm.m-t-xs
-            a(ui-sref='shipment.show({ id: shipment.id })'  target="_blank") {{shipment.Customer.name}}
-          .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="shipment.final_amount" title="{{shipment.final_amount}}")
-          .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(title="{{shipment.Customer.virtual_address_code + ' ('+shipment.Customer.Locker.short_name+ ')'}}")
+            img.pull-left(
+              ng-if='shipment.Customer.profile_photo_url'
+              ng-src='{{shipment.Customer.profile_photo_url}}'
+              style='height: 30px;width: 30px;border-radius: 50%;'
+            )
+            a.m-l(ui-sref='shipment.show({ id: shipment.id })'  target="_blank") {{shipment.Customer.name}}
+          .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(
+            ng-bind="'₹'+shipment.final_amount"
+            title="{{shipment.final_amount}}"
+          )
+          .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(
+            title="{{shipment.Customer.virtual_address_code + ' ('+shipment.Customer.Locker.short_name+ ')'}}"
+          )
             span(ng-bind="shipment.Customer.virtual_address_code")
             span.text-small.text-muted(ng-bind="' ('+shipment.Customer.Locker.short_name+ ')'")
-          .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-class='{"col-xs-3": !$ctrl.isAdmin}'): .w-full(uib-dropdown='' uib-keyboard-nav='' dropdown-append-to-body)
-            button.text-ellipsis.btn.bg-white-only(class='b-{{App.shipmentStates[shipment.state_id].config.color || "gray"}} text-{{App.shipmentStates[shipment.state_id].config.color || "gray"}}' uib-dropdown-toggle=''
-            style='text-align:left;padding: 2px 8px;width:auto'
-            ng-disabled='App.shipmentStates[shipment.state_id].Actions.length===0 || (shipment.state_id === 43 && !!$ctrl.prescreen)'
-            title='{{shipment.state_name}}')
+          .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs: .w-full(
+            uib-dropdown=''
+            uib-keyboard-nav=''
+            dropdown-append-to-body
+          )
+            button.text-ellipsis.btn.bg-white-only(
+              class='b-{{App.shipmentStates[shipment.state_id].config.color || "gray"}} text-{{App.shipmentStates[shipment.state_id].config.color || "gray"}}'
+              uib-dropdown-toggle=''
+              style='text-align:left;padding: 2px 8px;width:auto'
+              ng-disabled='App.shipmentStates[shipment.state_id].Actions.length===0'
+              title='{{shipment.state_name}}'
+            )
               span.m-r-xs(ng-bind='App.shipmentStates[shipment.state_id].action')
               span.caret(ng-if='App.shipmentStates[shipment.state_id].Actions.length > 0')
             ul.dropdown-menu(uib-dropdown-menu='', role='menu', aria-labelledby='simple-btn-keyboard-nav')
-              li(role='menuitem' ng-repeat='state in App.shipmentStates[shipment.state_id].Actions' ng-if="App.shipmentStates[state.state_id].action")
-                a(href='' ng-click='$ctrl.ChangeShipmentState.open(shipment, (shipment._root_.is_drive && shipment.state_id === 44) ? 12 : state.state_id, shipment._root_.id)' ng-bind='::App.shipmentStates[state.state_id].action')
-          .col-xs-1.wrapper-sm.m-t-xs(ng-if="$ctrl.isAdmin"): .w-full
-            span.b-a.m-r-xs.pointer.pull-left.text-xs.text-center.btn-circle.m-b-xs.m-l-sm(
-              style='border: 1px solid #aaa;'
-              ng-bind="shipment.owner_name"
-              title="{{shipment.owner_name_full}}"
-            )
+              li(
+                role='menuitem'
+                ng-repeat='state in App.shipmentStates[shipment.state_id].Actions'
+                ng-if="App.shipmentStates[state.state_id].action"
+              )
+                a(
+                  href=''
+                  ng-click='$ctrl.ChangeShipmentState.open(shipment, state.state_id, shipment._root_.id)'
+                  ng-bind='::App.shipmentStates[state.state_id].action'
+                )
+
         .col-xs-12.text-center
           a.btn.active.m-t-xs(ng-if="$ctrl.ui.loading")
             i.fa.fa-circle-o-notch.fa-spin

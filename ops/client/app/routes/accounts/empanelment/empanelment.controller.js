@@ -1,6 +1,6 @@
 class EmpanelmentController {
   constructor($http, $stateParams, URLS, $sce, $state, Page, $timeout,
-    Session, Auth, toaster, $uibModal) {
+              Session, Auth, toaster, $uibModal) {
     this.URLS = URLS;
     this.$sce = $sce;
     this.$http = $http;
@@ -155,11 +155,11 @@ class EmpanelmentController {
   update() {
     this.reload = false;
     const [minEmp, maxEmp] = this.employee_strength.split('-');
-    const { company_name: companyName, number } = this.user;
+    const { company_name, number } = this.user;
     Object.assign(this.data, {
       min_emp: minEmp,
       max_emp: maxEmp,
-      company_reg_name: companyName,
+      company_reg_name: company_name,
       contact_number: number,
     });
     if (this.data.entity_type === 'Freelancer') {

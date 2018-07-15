@@ -76,13 +76,13 @@ class CustomersShipmentsIndexController {
         this.shipments.push(...result);
 
         this.total = total;
-        // data has been loaded
+      // data has been loaded
         this.ui.loading = false;
 
-        // check for returned results count and set lazy loadLoad false if less
+      // check for returned results count and set lazy loadLoad false if less
         this.ui.lazyLoad = angular.equals(result.length, this.params.limit);
 
-        // increment offset for next loading of results
+      // increment offset for next loading of results
         this.params.offset = this.params.offset + this.params.limit;
       });
   }
@@ -90,7 +90,7 @@ class CustomersShipmentsIndexController {
   // returns array containing resultkey of search result
   getShipment(criteria = {}, returnkey = 'id') {
     return this.$filter('filter')(this.shipments, criteria)
-      .map((shipment) => shipment[returnkey]);
+    .map((shipment) => shipment[returnkey]);
   }
 
   // sets value
@@ -100,4 +100,4 @@ class CustomersShipmentsIndexController {
 }
 
 angular.module('uiGenApp')
-  .controller('CustomersShipmentsIndexController', CustomersShipmentsIndexController);
+.controller('CustomersShipmentsIndexController', CustomersShipmentsIndexController);

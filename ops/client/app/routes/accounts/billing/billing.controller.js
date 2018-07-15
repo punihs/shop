@@ -27,10 +27,10 @@ class BillingController {
         });
       })
       .catch(() => this
-        .toaster
-        .pop('error', 'Error occurred while updating the record.'));
+      .toaster
+      .pop('error', 'Error occurred while updating the record.'));
   }
 }
 
 angular.module('uiGenApp')
-  .controller('BillingController', BillingController);
+      .controller('BillingController', BillingController);

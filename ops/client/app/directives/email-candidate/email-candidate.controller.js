@@ -1,6 +1,6 @@
 class EmailCandidateController {
   constructor($http, $state, $uibModalInstance, $stateParams, toaster, URLS,
-    candidateName, candidateEmail, candidateId) {
+              candidateName, candidateEmail, candidateId) {
     this.$http = $http;
     this.$state = $state;
     this.$stateParams = $stateParams;
@@ -27,7 +27,7 @@ class EmailCandidateController {
   emailCandidate() {
     return this.$http({
       url: `${this.URLS.CRUX_API}/candidates/${this.candidateId
-      }/email?source=${this.$stateParams.source}`,
+        }/email?source=${this.$stateParams.source}`,
       method: 'POST',
       data: this.email,
     })

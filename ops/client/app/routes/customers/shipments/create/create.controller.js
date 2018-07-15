@@ -21,7 +21,9 @@ class ShipmentCreateController {
     this.quickMode = this.EDIT ? false : (this.Session.read('quickMode') || false);
     this.TITLE = `${this.EDIT ? 'Edit' : 'Add New'} Shipment`;
     this.Page.setTitle(this.TITLE);
-    this.getPopularStores();
+    this.shipmentTypes = this.Session.read('shipment-types');
+    this.data.shipment_type_id =
+      (this.EDIT && this.data.ShipmentType) ? this.data.ShipmentType.id : this.shipmentTypes[0].id;
   }
 
   reset(newShipmentForm) {
@@ -33,15 +35,6 @@ class ShipmentCreateController {
 
   focus(field) {
     $(`input[name="${field}"]`)[0].focus();
-  }
-
-  getPopularStores() {
-    this
-      .$http
-      .get('/stores', { params: { type: 'popular', fl: 'id,name', limit: 5 } })
-      .then(({ data: { stores } }) => {
-        this.popularStores = stores;
-      });
   }
 
   changeMode() {
@@ -77,11 +70,9 @@ class ShipmentCreateController {
       'weight', 'volumetric_weight', 'value_amount', 'sub_total_amount', 'discount_amount',
       'package_level_charges_amount', 'pick_up_charge_amount',
       'estimated_amount', 'coupon_amount', 'loyalty_amount',
-      'payment_gateway_fee_amount', 'wallet_amount', 'final_amount',
+      'payment_gateway_fee_amount', 'wallet_amount', 'final_amount', 'shipment_type_id',
 
     ];
-
-    // const method = shipmentId ? 'put' : 'post';
     const method = 'put';
 
     return this

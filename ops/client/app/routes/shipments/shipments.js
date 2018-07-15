@@ -1,5 +1,10 @@
+/**
+ * LIST    /shipments             ->  PackagesCtrl
+ * VIEW    /shipments/:id         ->  PackageViewController
+ */
+
 angular.module('uiGenApp')
-  .config(($stateProvider) => {
+  .config($stateProvider => {
     $stateProvider
       .state('shipments', {
         abstract: true,
@@ -25,16 +30,17 @@ angular.module('uiGenApp')
         resolve: {
           pkg($http, $stateParams, $state) {
             const fl = [
-              'id', 'customer_id', 'created_at', 'weight', 'final_amount', 'packages_count',
+              'id', 'customer_id', 'created_at', 'weight', 'final_amount',
+              'packages_count',
             ];
             const params = {
               fl: fl.join(','),
             };
 
             return $http
-              .get(`/shipments/${$stateParams.id}`, { params })
-              .then(({ data: pkg }) => pkg)
-              .catch(() => $state.go('access.404'));
+            .get(`/shipments/${$stateParams.id}`, { params })
+            .then(({ data: pkg }) => pkg)
+            .catch(() => $state.go('access.404'));
           },
         },
       });

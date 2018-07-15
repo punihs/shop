@@ -22,7 +22,7 @@ class LogoutController {
     const { location } = this.$window;
     return Promise.resolve(this.notify
       ? this.$http
-        .delete(`${QNOTIFY_SERVER}/subscriptions/${this.notify.subscription.subscription_id}`)
+      .delete(`${QNOTIFY_SERVER}/subscriptions/${this.notify.subscription.subscription_id}`)
       : true)
       .then(() => (location.href = `${ACCOUNTS}/logout`))
       .catch(() => (location.href = `${ACCOUNTS}/logout`));

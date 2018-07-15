@@ -260,4 +260,4 @@
             .nav-comment.col-md-4.bg-white-only.no-padder
               span.bg-info(style="padding: 10px;z-index:1; position:absolute; right:0" title="{{$ctrl.chatHoverText()}}" ng-click="App.initiateChat($ctrl.data)")
                 img(src="assets/images/chat.png" height="20px" width="20px")
-              comments(package-id='{{$ctrl.$stateParams.id}}' pkg='$ctrl.data')
+              comments(id='{{$ctrl.$stateParams.id}}' data='$ctrl.data' type='"package"')

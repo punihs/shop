@@ -264,6 +264,18 @@ div.m-t-xl.no-margin
                       ng-model='$ctrl.data.final_amount'
                       required
                       )
+
+              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
+              .row(ng-if='$ctrl.EDIT')
+                .col-md-12
+                  .col-md-6.col-sm-5.col-xs-12.no-padder
+                    label.col-xs-12.input-group
+                      | Shipment Type
+                      select.form.form-control(
+                      ng-model='$ctrl.data.shipment_type_id'
+                      name='shipment_type_id'
+                      ng-options='shipmentType.id as shipmentType.name for shipmentType in $ctrl.shipmentTypes'
+                      )
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
               .row
                   h4(ng-bind="$ctrl.error.message" style="color:red;")

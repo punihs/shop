@@ -103,45 +103,45 @@ class ReportOverviewController {
         },
       },
     } },
-    { title: 'CV Uploaded', state_id: '1', cvs: {
-      labels: [],
-      data: [],
-      datasets: [{
-        borderWidth: 0,
-      }],
-      colors: [{
-        backgroundColor: 'rgba(99,183,72,1)',
-        borderColor: 'rgba(99,183,72,1)',
-      }],
-      options: {
-        scales: {
-          xAxes: [{
-            barThickness: 35,
-            gridLines: { display: false },
-          }],
-          yAxes: [{
-            barThickness: 35,
-            gridLines: { display: false },
-            ticks: { beginAtZero: true },
-          }],
+      { title: 'CV Uploaded', state_id: '1', cvs: {
+        labels: [],
+        data: [],
+        datasets: [{
+          borderWidth: 0,
+        }],
+        colors: [{
+          backgroundColor: 'rgba(99,183,72,1)',
+          borderColor: 'rgba(99,183,72,1)',
+        }],
+        options: {
+          scales: {
+            xAxes: [{
+              barThickness: 35,
+              gridLines: { display: false },
+            }],
+            yAxes: [{
+              barThickness: 35,
+              gridLines: { display: false },
+              ticks: { beginAtZero: true },
+            }],
+          },
         },
-      },
-    } },
-    { title: 'Uploaded', state_id: '27', tabs: 1, tabIdx: 0 },
-    { title: 'Selected', state_id: '1', tabs: 2, tabIdx: 0 },
-    { title: 'Rejected', state_id: '13', tabIdx: 1 },
-    { title: 'Shortlisted', state_id: '19', tabs: 2, tabIdx: 0, exclude_state_ids: '2,3,11' },
-    { title: 'Rejected', state_id: '2', tabIdx: 1 },
-    { title: 'Done', state_id: '5,8,17', tabs: 2, tabIdx: 0,
-      exclude_state_ids: '2,3,11' },
-    { title: 'Backout', state_id: '11', tabIdx: 1 },
-    { title: 'Offers', state_id: '10', tabs: 3, tabIdx: 0,
-      exclude_state_ids: '2,38,18,11,3,13,28,31,29' },
-    { title: 'Accepted', state_id: '20', tabIdx: 1 },
-    { title: 'Rejected', state_id: '28', tabIdx: 2 },
-    { title: 'Joined', state_id: '30', tabs: 2, tabIdx: 0,
-      exclude_state_ids: '2,38,18,11,3,13,28,31,29' },
-    { title: 'Backout', state_id: '29', tabIdx: 1 },
+      } },
+      { title: 'Uploaded', state_id: '27', tabs: 1, tabIdx: 0 },
+      { title: 'Selected', state_id: '1', tabs: 2, tabIdx: 0 },
+      { title: 'Rejected', state_id: '13', tabIdx: 1 },
+      { title: 'Shortlisted', state_id: '19', tabs: 2, tabIdx: 0, exclude_state_ids: '2,3,11' },
+      { title: 'Rejected', state_id: '2', tabIdx: 1 },
+      { title: 'Done', state_id: '5,8,17', tabs: 2, tabIdx: 0,
+        exclude_state_ids: '2,3,11' },
+      { title: 'Backout', state_id: '11', tabIdx: 1 },
+      { title: 'Offers', state_id: '10', tabs: 3, tabIdx: 0,
+        exclude_state_ids: '2,38,18,11,3,13,28,31,29' },
+      { title: 'Accepted', state_id: '20', tabIdx: 1 },
+      { title: 'Rejected', state_id: '28', tabIdx: 2 },
+      { title: 'Joined', state_id: '30', tabs: 2, tabIdx: 0,
+        exclude_state_ids: '2,38,18,11,3,13,28,31,29' },
+      { title: 'Backout', state_id: '29', tabIdx: 1 },
     ];
 
     this.donuts = {
@@ -211,7 +211,7 @@ class ReportOverviewController {
 
   getReport(queryId, tileId) {
     const { DETAIL_QUERY, COUNT_QUERY, CV_GRAPH_QUERY, JD_GRAPH_QUERY } = this.QUERY_IDS;
-    const { state_id: si, date_filter_field: dff, exclude_state_ids: esi } = this.tiles[tileId];
+    const { state_id, date_filter_field, exclude_state_ids } = this.tiles[tileId];
     this.setStateGroups(tileId);
     const dateGroup = this.getDateGroup();
     this.ui.loading = queryId === DETAIL_QUERY;
@@ -221,9 +221,9 @@ class ReportOverviewController {
 
     const params = {
       id: queryId,
-      state_id: si,
-      date_filter_field: dff,
-      exclude_state_ids: esi,
+      state_id,
+      date_filter_field,
+      exclude_state_ids,
       user_id: this.isAdmin && this.Session.read('VIEW_AS_IDS') || `${this.user.id}`,
       start_date: `${this.moment(this.params.start_date || 0).format('YYYY-MM-DD')} 00:00:00`,
       end_date: this.moment(this.params.end_date).endOf('day').format('YYYY-MM-DD hh:mm:ss'),

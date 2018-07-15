@@ -132,7 +132,7 @@ class ShipmentsIndexController {
       this.params.interview_time = [
         this.moment().startOf('day').toISOString(),
         this.moment().startOf('day').add(1, 'months')
-          .toISOString(),
+        .toISOString(),
       ].join(',');
       this.params.fl += ',interview_time,interview_type';
     } else {
@@ -178,4 +178,4 @@ class ShipmentsIndexController {
 }
 
 angular.module('uiGenApp')
-  .controller('ShipmentsIndexController', ShipmentsIndexController);
+.controller('ShipmentsIndexController', ShipmentsIndexController);

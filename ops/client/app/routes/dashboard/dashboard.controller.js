@@ -162,17 +162,17 @@ class DashboardController {
 
     this.stageTiles = this.stageTiles
       .map(tile => Object
-        .assign(tile, { count:
+      .assign(tile, { count:
         tile.id
           .reduce((prev, nxt) => prev + (data[nxt] || 0), 0) })
-      );
+    );
 
     this.stateTiles = this.stateTiles
       .map(value => Object
-        .assign(value, { count:
+      .assign(value, { count:
         value.id
           .reduce((prev, nxt) => prev + (data[nxt] || 0), 0) })
-      );
+    );
 
     this.getTilesData(this.stageTiles[0].id, 0);
   }

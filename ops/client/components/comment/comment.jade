@@ -15,7 +15,7 @@
     .m-b.text-md.clearfix Recent Activity
     .streamline.b-l.m-b
       .sl-item(
-        ng-repeat='comment in $ctrl.pkg.comments | orderBy: ["created_at", "id"]'
+        ng-repeat='comment in $ctrl.data.comments | orderBy: ["created_at", "id"]'
         ng-class="comment.User.id !== $ctrl.user.id  ? 'b-success.b-l' : ''"
       )
         .m-l
@@ -36,7 +36,7 @@
 
 
     div.clear(style='max-width: 90%')
-      .text-sm(ng-if="$ctrl.pkg.comments[$index-1].User.id !== comment.User.id")
+      .text-sm(ng-if="$ctrl.data.comments[$index-1].User.id !== comment.User.id")
         a.text-info-dker()
         span &nbsp;updated to &nbsp;
         span.text-danger-dker.text-md(
@@ -75,7 +75,7 @@ form.b-a.form.form-validation.wrapper-xs.bg-white.col-xs-4(
     ng-focus='$ctrl.showCommentBtn = true'
     ng-blur='$ctrl.hideCommentButton()'
   )
-  quick-state-change(pkg='$ctrl.pkg' ng-show='!$ctrl.showCommentBtn')
+  quick-state-change(data='$ctrl.data' type='$ctrl.type' ng-show='!$ctrl.showCommentBtn')
   div(ng-show='$ctrl.showCommentBtn')
     hr.m-n
     button.btn-info.m-t-xs.btn.btn-sm.b-r.pull-right(type='submit' ng-disabled='commentForm.$invalid')

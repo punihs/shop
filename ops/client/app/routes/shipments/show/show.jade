@@ -35,18 +35,18 @@
       .m-l-sm
         .hbox(uib-dropdown='' uib-keyboard-nav='' dropdown-append-to-body)
           button.btn.btn-sm.padder.rounded(
-          class='btn-{{App.states[$ctrl.data.state_id].config.color}}'
+          class='btn-{{App.shipmentStates[$ctrl.data.state_id].config.color}}'
           uib-dropdown-toggle=''
-          ng-disabled='App.states[$ctrl.data.state_id].Actions.length===0'
+          ng-disabled='App.shipmentStates[$ctrl.data.state_id].Actions.length===0'
           )
-            span.m-r-xs(ng-bind='App.states[$ctrl.data.state_id].action')
-            span(ng-if='App.states[$ctrl.data.state_id].Actions.length>0').caret
+            span.m-r-xs(ng-bind='App.shipmentStates[$ctrl.data.state_id].action')
+            span(ng-if='App.shipmentStates[$ctrl.data.state_id].Actions.length>0').caret
 
           ul.dropdown-menu(uib-dropdown-menu role="menu" aria-labelledby="simple-btn-keyboard-nav")
-            li(role='menuitem' ng-repeat='state in App.states[$ctrl.data.state_id].Actions' ng-if="App.states[state.state_id].action")
+            li(role='menuitem' ng-repeat='state in App.shipmentStates[$ctrl.data.state_id].Actions' ng-if="App.shipmentStates[state.state_id].action")
               a(
               href=''
-              ng-click='$ctrl.ChangeShipmentState.open($ctrl.data, state.state_id, $ctrl.data.Customer.id)' ng-bind='::App.states[state.state_id].action')
+              ng-click='$ctrl.ChangeShipmentState.open($ctrl.data, state.state_id, $ctrl.data.Customer.id)' ng-bind='::App.shipmentStates[state.state_id].action')
       .m-l-sm.m-t-xs(title='Interview Time' ng-if='$ctrl.data._root_.is_drive && $ctrl.data.interview_time')
         i.fa.fa-calendar.m-r-sm
         span.text-md.text-primary(ng-bind="$ctrl.data.created_at | date : 'MMM d, yyyy'")
@@ -193,38 +193,18 @@
                 thead
                   tr
                     th.col-xs-3 Name
-                    th.col-xs-3 Category
-                    th.col-xs-2 Quantity
-                    th.col-xs-2 Price
-                    th.col-xs-2 Total Amount
-
+                    th.col-xs-3 Package Id
+                    th.col-xs-3 Total Value
+                    th.col-xs-3 Weight
               .col-xs-12(style='padding: 10px;')
-                .col-xs-12(ng-show='$ctrl.shipmentItems.length === 0 && !$ctrl.ui.loading')
+                .col-xs-12(ng-show='$ctrl.data.Packages.length === 0 && !$ctrl.ui.loading')
                   td(colspan="5")
                     h1.text-center.text-muted No Items in Shipment
-                    .text-center: ul.nav.nav-pills.nav-sm.center-pills
-                      li.m-r-xs
-                        a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
-                        ui-sref='shipment.items({ id: $ctrl.$stateParams.id })'
-                        popover-trigger="'mouseenter'"
-                        popover-placement='bottom'
-                        popover-append-to-body='true'
-                        )
-                          span  Start Adding Items
-
-
-                .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='shipmentItem in $ctrl.shipmentItems')
-                  .col-xs-3.wrapper-sm.m-t-xs
-                    img.pull-left.m-r(
-
-                    ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + shipmentItem.object.replace(".", "-thumb.")}}'
-                    style='height: 30px;width: 30px;border-radius: 50%;'
-                    )
-                    a(ui-sref='shipment.item.edit({ id: shipmentItem.id })' target="_blank") {{shipmentItem.name}}
-                  .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='shipmentItem.ShipmentItemCategory.name')
-                  .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(title="{{shipmentItem.quantity}}" ng-bind="shipmentItem.quantity + 'pc'")
-                  .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="'₹' + shipmentItem.price_amount" title="{{shipmentItem.price_amount}}")
-                  .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="'₹' + shipmentItem.total_amount" title="{{shipmentItem.total_amount}}")
+                .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='packageItems in $ctrl.data.Packages')
+                  .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='packageItems.Store.name')
+                  .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(title="{{packageItems.id}}" ng-bind="packageItems.id + 'pc'")
+                  .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="'₹' + packageItems.price_amount" title="{{packageItems.price_amount}}")
+                  .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="packageItems.weight" title="{{packageItems.weight}}")
 
 
                 .col-xs-12.text-center
@@ -238,4 +218,4 @@
             .nav-comment.col-md-4.bg-white-only.no-padder
               span.bg-info(style="padding: 10px;z-index:1; position:absolute; right:0" title="{{$ctrl.chatHoverText()}}" ng-click="App.initiateChat($ctrl.data)")
                 img(src="assets/images/chat.png" height="20px" width="20px")
-              comments(shipment-id='{{$ctrl.$stateParams.id}}' pkg='$ctrl.data')
+              comments(id='{{$ctrl.$stateParams.id}}' data='$ctrl.data' type='"shipment"')

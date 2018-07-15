@@ -89,4 +89,8 @@ class ChangeStateService {
 }
 
 angular.module('uiGenApp')
-  .service('ChangeState', ChangeStateService);
+  .service('ChangeState', ChangeStateService)
+  .factory('StateChange', (ChangeState, ChangeShipmentState) => ({
+    package: ChangeState,
+    shipment: ChangeShipmentState,
+  }));

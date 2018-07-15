@@ -1,15 +1,15 @@
 
 class QuickStateChangeController {
   /* @ngInject */
-  constructor($http, ChangeState, Session) {
+  constructor($http, StateChange, Session) {
     this.$http = $http;
-    this.ChangeState = ChangeState;
+    this.StateChange = StateChange;
     this.Session = Session;
     this.$onInit();
   }
 
   $onInit() {
-    this.states = this.Session.read('states');
+    this.states = this.Session.read(`${this.type === 'shipment' ? 'shipment-' : ''}states`);
   }
 }
 
@@ -22,6 +22,7 @@ angular
     controllerAs: '$ctrl',
     bindToController: true,
     scope: {
-      pkg: '=',
+      data: '=',
+      type: '=',
     },
   }));

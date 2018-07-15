@@ -103,7 +103,7 @@ class PackageShowController {
     this.$q
       .all(files
         .map((file) => this
-          .$http
+        .$http
           .post(`/package/${this.$stateParams.id}/items`, {
             documentFile: file,
           })))

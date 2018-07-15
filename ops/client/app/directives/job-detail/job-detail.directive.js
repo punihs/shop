@@ -11,6 +11,7 @@
     $onInit() {
       this.user = this.Session.read('userinfo');
     }
+
   }
 
   angular.module('uiGenApp')
