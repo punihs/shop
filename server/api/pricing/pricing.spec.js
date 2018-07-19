@@ -35,3 +35,47 @@ describe('GET /api/pricing/expressive', () => {
       });
   });
 });
+
+describe('GET /api/pricing/customerPricing', () => {
+  it('respond with list of prices', (done) => {
+    request(app)
+      .get('/api/pricing/customerPricing')
+      .send({
+        country: 226,
+        weight: 1,
+        unit: 'kg',
+        type: 'nondoc',
+        length: '',
+        width: '',
+        height: '',
+        scale: 'cm',
+      })
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+describe('GET /api/pricing/shipCalculate', () => {
+  it('respond with list of prices', (done) => {
+    request(app)
+      .get('/api/pricing/shipCalculate')
+      .send({
+        country: 1,
+        weight: 1,
+        unit: 'kg',
+        type: 'nondoc',
+        length: '',
+        width: '',
+        height: '',
+        scale: 'cm',
+      })
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});

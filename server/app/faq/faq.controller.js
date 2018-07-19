@@ -7,10 +7,6 @@ exports.index = (req, res, next) => Promise
     rp(`${URLS_API}/api/faqs`, { json: true }),
   ])
   .then(([faqs]) => {
-    // return res.json(Object
-    //   .assign(faqs, {
-    //     logo: '/img/dhl.png',
-    //   }));
     res.render('faq/index', Object
       .assign(faqs, {
         title: 'Country title',
@@ -25,11 +21,10 @@ exports.show = (req, res, next) => Promise
   .all([
     rp(`${URLS_API}/api/faqs/${req.params.slug}`, { json: true }),
   ])
-  .then(([faqs]) =>
+  .then(([faq]) =>
     res
       .render('faq/show', Object
-        .assign(faqs, {
-          data: JSON.stringify(faqs),
+        .assign(faq, {
           title: 'Country title',
           meta_description: 'Country_metaDesctription',
           meta_title: 'Country_metaTitle',

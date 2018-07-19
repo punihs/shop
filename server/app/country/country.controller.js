@@ -28,6 +28,7 @@ exports.show = (req, res, next) => Promise
           meta_description: 'Country_metaDesctription',
           meta_title: 'Country_metaTitle',
           discription: 'Description',
+          countries,
         })))
   .catch(next);
 

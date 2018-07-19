@@ -36,7 +36,7 @@ block content
             select#select_iso.form-control.select2(name='country')
               option(value='') Select Country
                 each country in countries
-                  option(value='#{country.iso2}}') #{country.name}
+                  option(value='#{country.slug}') #{country.name}
     section.signup_free.violet-grade
       .container
         .row
@@ -47,3 +47,16 @@ block content
               | ! Open your big box of happiness today!
             p Simply login to get your Personal Indian Shipping Address immediately!
             a.btn.btn-shoppre(href="{{route('customer.register')}}") sign up for free
+
+    //script(src="cdn/js/select2.min.js")
+    block script
+    script(src="/cdn/js/jquery.min.js")
+    script(type='text/javascript').
+      $(document).ready(function () {
+        $(".select2").select2();
+      });
+      $("#select_iso").change(function () {
+        if ($(this).val().length != 0) {
+          window.location = "/country-guide/" + $(this).val();
+        }
+      });

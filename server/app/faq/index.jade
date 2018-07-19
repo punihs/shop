@@ -14,26 +14,22 @@ block content
       .container
         .col-sm-8.col-sm-offset-2
           #accordion.panel-group(role='tablist', aria-multiselectable='true')
-            // each dt in faq
-           - for item in faq
+            -for item in faq
               .panel.panel-default
                 .panel-heading(role='tab')
                   h4.panel-title
-                    a(role='button', data-toggle='collapse', data-parent='#accordion', href='#{item.id}', aria-expanded='true')
+                    a(role='button', data-toggle='collapse', data-parent='#accordion', href='#cat_#{item.id}', aria-expanded='false')
                        | #{item.name}
-                .panel-collapse.collapse(id='#{item.id}')
+                .panel-collapse.collapse(id="cat_#{item.id}")
                   .panel-body.nested
-                    // each faq in dt.faqs
-                    - for subitem in item.Faqs
-                       .panel
-                         .panel-heading.nested(role='tab')
-                           h4.panel-title
-                             a(role='button', data-toggle='collapse', href='#{subitem.id}', aria-expanded='true')
+                    -for subitem in item.Faqs
+                      .panel
+                        .panel-heading.nested(role='tab')
+                          h4.panel-title
+                            a(role='button', data-toggle='collapse', href='#faq_#{subitem.id}', aria-expanded='false', class="collapsed")
                                | #{subitem.question}
-                         .panel-collapse.collapse(id='#{subitem.id}}')
-                           .panel-body
-                             if !subitem.answer
-                               | #{subitem.answer}
+                        .panel-collapse.collapse(id="faq_#{subitem.id}")
+                           .panel-body !{subitem.answer}
 
 
 

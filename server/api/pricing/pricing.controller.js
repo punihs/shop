@@ -1,5 +1,4 @@
 const debug = require('debug');
-
 const dtdc = require('../../components/pricing/dtdc/index');
 const dhl = require('../../components/pricing/dhl/getPrice');
 const dtdcfedex = require('../../components/pricing/dtdc/fedex');
@@ -13,8 +12,13 @@ const shippingPartners = {
   dtdcdhl,
   dtdceco,
 };
-const log = debug('pricing');
+const {
+  CONSIGNMENT_TYPES: { DOC, NONDOC },
+} = require('../../config/constants');
+
+const log = debug('s.pricing.controller');
 const priceCalculator = require('../../components/pricing');
+const { Country, ShippingRate, Review } = require('../../conn/sqldb');
 
 const { WebhookClient } = require('dialogflow-fulfillment');
 const { Card, Suggestion } = require('dialogflow-fulfillment');
@@ -137,3 +141,161 @@ exports.expressive = (req, res) => {
     a,
   });
 };
+
+exports.shipCalculate = async (req, res) => {
+  let { weight } = req.body;
+  const option = {
+    attributes: ['id', 'discount_percentage'],
+    where: { id: req.body.country },
+  };
+  const country = await Country
+    .find(option);
+
+  const discountPercent = country.discount_percentage;
+
+  if (req.body.length && req.body.width && req.body.height) {
+    const volume = req.body.length * req.body.width * req.body.height;
+    let dWeight = '';
+    if (req.body.scale === 'in') {
+      dWeight = volume / 305;
+    } else {
+      dWeight = volume / 5000;
+    }
+    if (dWeight > weight) {
+      weight = dWeight;
+    }
+  }
+  const { unit } = req.body;
+  const IS_BELOW_300 = weight <= 300;
+  let type = req.body.weight <= 2 ? req.body.type : 'nondoc';
+  if (unit === 'lbs') {
+    weight *= 0.45;
+  }
+  type = type === 'nondoc' ? NONDOC : DOC;
+
+  const optionShippingRate = {
+    attributes: ['rate_type', 'amount', 'timerange'],
+    where: {
+      country_id: country.id,
+      consignment_type: type,
+      minimum: {
+        $lt: weight,
+      },
+      maximum: { [IS_BELOW_300 ? '$gte' : '$eq']: IS_BELOW_300 ? weight : 0 },
+    },
+  };
+
+
+  const rates = await ShippingRate
+    .findAll(optionShippingRate);
+  let amount = 0;
+  let rate = 0;
+
+  if (rates.length) {
+    const prices = {};
+    // eslint-disable-next-line no-restricted-syntax
+    for (rate of rates) {
+      log('dfgdfgdsfgdsfg', rates.length);
+      amount = rate.rate_type === 'fixed' ? rate.amount : rate.amount * weight;
+      log('amount', amount);
+      amount = amount.toFixed(2);
+      prices.time = rate.timerange;
+      prices.amount = amount;
+      prices.discountPercent = discountPercent;
+      log('amount', discountPercent);
+      log('prices', prices);
+    }
+    log({ prices });
+    return res.json({ error: '0', prices });
+  }
+  return res.json({ error: '1' });
+};
+
+exports.customerPricing = async (req, res) => {
+  const { weight } = req.body;
+  const itemType = req.body.type;
+  const countryId = req.body.country;
+  // const { unit } = req.body;
+
+
+  const option = {
+    attributes: ['id', 'discount_percentage'],
+    where: { id: countryId },
+  };
+  const country = await Country
+    .find(option);
+  const discountPercent = country.discount_percentage;
+  const type = weight <= 2 ? itemType : 'nondoc';
+
+  const optionShip = {
+    attributes: ['id', 'amount'],
+    where: {
+      country_id: country.id,
+      consignment_type: type,
+      minimum: {
+        $lt: weight,
+      },
+    },
+  };
+
+  if (weight <= 300) {
+    optionShip.where = {
+      maximum: {
+        $gte: weight,
+      },
+    };
+  } else {
+    optionShip.where = {
+      maximum: 0,
+    };
+  }
+  // log({ optionShip });
+  const rate = await ShippingRate
+    .find(optionShip);
+  // log({ rate });
+  const optionReview = {
+    where: {
+      approved_by: '1',
+    },
+    limit: Number(req.query.limit) || 20,
+    offset: Number(req.query.offset) || 0,
+    order: ['updated_at'],
+  };
+  const reviews = await Review
+    .findAll(optionReview);
+  const optionCountries = {
+    attributes: ['id', 'name'],
+    where: {
+      is_shipping_available: 1,
+    },
+    order: ['name'],
+  };
+  const countries = await Country
+    .findAll(optionCountries);
+  let time = '';
+  let amount = '';
+  let discountAmount = '';
+  let finalAmount = '';
+  if (rate) {
+    amount = rate.rate_type === 'fixed' ? rate.amount : rate.amount * weight;
+    time = rate.timerange;
+    log({ discountPercent });
+    log({ amount });
+    discountAmount = (discountPercent / 100) * amount;
+    log(discountAmount);
+    finalAmount = Math.round((amount - discountAmount), 2);
+    log({ finalAmount });
+  }
+  return res.json({
+    reviews,
+    countries,
+    time,
+    amount,
+    discountPercent,
+    finalAmount,
+    weight,
+    itemType,
+    countryId,
+  });
+};
+

@@ -22,7 +22,7 @@ const db = {
 
 [
   // - Enums
-  'Country', 'Place', 'PaymentGateway', 'Locker',
+  'Country', 'Place', 'PaymentGateway', 'Locker', 'CountryGuide',
 
   // - Basic
   'User', 'UserMeta', 'Group', 'Estimation', 'PasswordReset',
@@ -48,7 +48,7 @@ const db = {
   'LoyaltyPoint', 'LoyaltyHistory', 'Redemption', 'ReferCode',
 
   // - Organitation
-  'ShippingPartner', 'Link',
+  'ShippingPartner', 'Link', 'ShippingRate',
 
   // - Product
   'Store', 'Category',

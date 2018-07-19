@@ -91,6 +91,10 @@ const constants = {
     REGULAR: '1',
     SPECIAL: '2', // 'Liquid, Cream, Oil & Home-made food items'
   },
+  RATE_TYPES: {
+    FIXED: '1',
+    MULTIPLE: '2', // 'Liquid, Cream, Oil & Home-made food items'
+  },
 };
 
 constants.PACKAGE_STATE_ID_NAMES = Object

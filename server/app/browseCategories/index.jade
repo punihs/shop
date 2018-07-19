@@ -86,7 +86,7 @@ block content
                       .seller_box
                         a(href='#{fb.url}', target='_blank', title='#{fb.name}')
                           span.brand_logo(style="background-image: url('/cdn/img/stores/#{fb.logo}');")
-                        a.myfavstore.active(href='#', data-clubid='{{$fb->id}}')
+                        a.myfavstore.active(href='#', data-clubid='#{fb.id}')
                           i.bookmark-icon
                         span.info #{fb.info}
                 #featured.tab-pane.fade(role='tabpanel')

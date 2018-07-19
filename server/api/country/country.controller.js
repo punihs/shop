@@ -5,7 +5,7 @@ exports.index = (req, res, next) => {
   const options = {
     attributes: [
       'id', 'name', 'slug', 'iso2', 'iso3', 'phone_code', 'currency_code', 'capital_city',
-      'discount_percentage', 'is_shipping_available',
+      'discount_percentage', 'is_shipping_available', 'flag',
     ],
     limit: Number(req.query.limit) || 20,
     offset: Number(req.query.offset) || 0,
@@ -39,6 +39,7 @@ exports.show = async (req, res) => {
       'discount_percentage', 'is_shipping_available',
     ],
   };
+  let xchangeRate = '';
 
   country = await Country.find(options);
   if (country) {
@@ -58,25 +59,17 @@ exports.show = async (req, res) => {
 
     reviews = await Review
       .findAll(optionReview);
+    let infoJSON = '';
     const fromTo = `INR_${country.currency_code}`;
-    const currency = await await rp(`http://free.currencyconverterapi.com/api/v3/convert?q=${fromTo}&compact=ultra`);
+    const currency = await rp(`http://free.currencyconverterapi.com/api/v3/convert?q=${fromTo}&compact=ultra`);
     const usdInr = JSON.parse(currency);
-
-    console.log('fromTo: ', currency);
-    console.log('d: ', fromTo);
-    console.log('data: ', usdInr[0]);
-
+    // eslint-disable-next-line no-restricted-syntax
     for (const key in usdInr) {
-      const infoJSON = usdInr[key];
+      infoJSON = usdInr[key];
     }
+    xchangeRate = infoJSON;
   }
-
-  return res.json(Object.assign(country, {
-    countries,
-    countryGuide,
-    reviews,
-  }));
-  // return res.json({
-  //   country, countries, countryGuide, reviews,
-  // });
+  return res.json({
+    countries, country, countryGuide, reviews, xchangeRate,
+  });
 };
