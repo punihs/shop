@@ -1,0 +1,42 @@
+extends ../layout
+block content
+  head
+    title '#{title}'
+      meta(name='description', content= '#{meta_description}')
+      meta(property='og:title', content='#{meta_title}')
+  .body
+    .container
+      center
+        img(src='/cdn/img/dhl.png', alt='')
+      h2  Shipments we sent across the Globe
+      each shipment in shipments
+        var dispatched = ''
+        var delivered = ''
+        each date in shipment.shipmentMails
+          if  date.condition == 'ship_dispatched'
+             dispatched = date.created_at;
+          else if  date.condition == 'ship_dispatched'
+             dispatched = date.created_at;
+          dispatched = strtotime(dispatched);
+
+
+
+        //.shipment_card
+        //  .row
+        //    .col-md-12(style='padding-left: 35px')
+        //      each countries in shipment.Country
+        //        a(href="{{route('dhl.view',['id' => $shipment->id])}}")
+        //          h4
+        //            b  To #{countries.name}
+        //        .row
+        //          .col-md-2
+        //            h5 Weight :&nbsp#{shipment.weight} kg.
+        //          .col-md-3
+        //            h5 Total Charge : INR &nbsp#{shipment.final_amount}
+        //          |                             @if( $delivery_days > 0 )
+        //          .col-md-3
+        //            h5 Delivered In : &nbsp{{$delivery_days}} Days
+        //          |                             @endif
+        //  |         @endforeach
+        //center
+        //  | {{ $shipments->appends(Request::except('page'))->links() }} {{-- For Pagination--}}

@@ -70,7 +70,7 @@ module.exports = () => [
     volumetric_weight: null,
     admin_read: 'yes',
     package_level_charges_amount: 0.0,
-
+    shipping_carrier: 'dhl',
     weight: 0.0,
     phone: '-8605147508',
     shipment_type_id: null,
@@ -108,7 +108,7 @@ module.exports = () => [
     volumetric_weight: null,
     admin_read: 'yes',
     package_level_charges_amount: 0.0,
-
+    shipping_carrier: 'fedex',
     weight: 0.0,
     phone: '-8605147508',
     shipment_type_id: null,
@@ -152,6 +152,7 @@ module.exports = () => [
     payment_status: 'pending',
     payment_gateway_id: 2,
     final_weight: 27.35,
+    shipping_carrier: 'dtdc',
     weight_by_shipping_partner: 27.35,
   },
 ];

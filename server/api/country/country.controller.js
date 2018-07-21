@@ -1,3 +1,4 @@
+/* eslint-disable guard-for-in */
 const rp = require('request-promise');
 const { Country, CountryGuide, Review } = require('../../conn/sqldb');
 

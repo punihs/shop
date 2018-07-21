@@ -42,7 +42,7 @@ const db = {
   'Shipment', 'ShipmentMeta', 'ShipmentType', 'ShipmentIssue', 'ShippingPartner',
   'Transaction',
   // - Notifications
-  'Notification',
+  'Notification', 'ShipmentMail',
 
   // - loyalty points, coupon
   'LoyaltyPoint', 'LoyaltyHistory', 'Redemption', 'ReferCode',

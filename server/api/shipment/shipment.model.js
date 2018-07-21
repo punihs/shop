@@ -26,8 +26,8 @@ module.exports = (sequelize, DataTypes) => {
     db.Place.hasMany(Shipment, {
       foreignKey: 'destination_city_id',
     });
-
     Shipment.belongsTo(db.Country);
+    Shipment.belongsTo(db.ShippingPartner);
     Shipment.belongsTo(db.ShipmentType);
     Shipment.hasMany(db.ShipmentIssue);
     db.Country.hasMany(Shipment);
