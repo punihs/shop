@@ -1,6 +1,48 @@
 const { STATE_TYPES: { PACKAGE, SHIPMENT } } = require('../../config/constants');
 
 const packageStates = [{
+  id: 42,
+  name: 'Order Created',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 43,
+  name: 'Order Cancelled',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 44,
+  name: 'Payment Initiated',
+  // name: 'dispatched',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 45,
+  name: 'Payment failed',
+  // name: 'dispatched',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 46,
+  name: 'Payment Success',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 47,
+  name: 'Awaiting Package',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 48,
+  name: 'Order Placed',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 49,
+  name: 'Out of Stock',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 50,
+  name: 'Refunded to wallet',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 51,
+  name: 'Refunded to Bank Account',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
   id: 1,
   name: 'Package Items Upload Pending',
   config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',

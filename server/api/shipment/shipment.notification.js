@@ -20,10 +20,10 @@ exports.stateChange = async ({
     Destination: {
       ToAddresses: [customer.email],
     },
-    Template: 'package_state-change',
+    Template: 'shipment_state-change',
     TemplateData: JSON.stringify({
       nextStateId,
-      pkg: { ...shpmnt },
+      pkg: { ...shpmnt.toJSON() },
       customer: customer.toJSON(),
       actingUser,
     }),

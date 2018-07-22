@@ -39,7 +39,7 @@ exports.WalletTransaction = async (walletAmount, customerId, shipment, transacti
   const transaction = {};
   transaction.customer_id = customerId;
   transaction.amount = walletAmount;
-  transaction.amount = transactionType;
+  transaction.type = transactionType;
   transaction.description = `Wallet balance offsetted against shipment cost | Shipment ID  ${shipment.order_code}`;
 
   await Transaction

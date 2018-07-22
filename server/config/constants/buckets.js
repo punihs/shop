@@ -89,4 +89,45 @@ module.exports = {
       ],
     },
   },
+  ORDER: {
+    [OPS]: {
+      TASKS: [
+        41, 42, 43, 44, 45, 46, 47, 48,
+      ],
+      RECEIVED: [
+        52,
+      ],
+      COMPLETED: [
+        49, 50, 51,
+      ],
+      ALL: [
+        42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52,
+      ],
+    },
+    [CUSTOMER]: {
+      TASKS: [
+        3, 5, 6,
+      ],
+      VIEW_ALL: [
+        1, 2, 3, 4, 5, 6,
+      ],
+      IN_REVIEW: [
+        1, 2,
+      ],
+      ACTION_REQUIRED: [
+        3,
+      ],
+      READY_TO_SEND: [
+        3,
+      ],
+    },
+    [FINANCE]: {
+      TASKS: [
+        4, 9,
+      ],
+      COMPLETED: [
+        10,
+      ],
+    },
+  },
 };

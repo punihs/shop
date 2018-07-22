@@ -4,4 +4,5 @@ angular.module('qui.core')
     get states() { return Session.read('states'); },
     get shipmentStates() { return Session.read('shipment-states'); },
     get shipmentTypes() { return Session.read('shipment-types'); },
+    get orderStates() { return Session.read('order-types'); },
   }));

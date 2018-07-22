@@ -4,7 +4,7 @@ const debug = require('debug');
 const crypto = require('crypto');
 
 const {
-  User, State, ActionableState, GroupState, Shipment, Country, Package, Order, ShippingPreference,
+  User, State, ActionableState, GroupState, Shipment, Country, Package, ShippingPreference,
   ReferCode, LoyaltyPoint, LoyaltyHistory, Locker,
 } = require('../../conn/sqldb');
 
@@ -35,9 +35,6 @@ exports.index = (req, res, next) => {
       attributes: ['id'],
     }, {
       model: Package,
-      attributes: ['id'],
-    }, {
-      model: Order,
       attributes: ['id'],
     }, {
       model: Locker,

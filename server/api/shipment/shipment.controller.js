@@ -443,7 +443,7 @@ exports.history = (req, res, next) => {
   const options = {
     attributes: [
       'order_code', 'customer_name', 'address', 'status', 'tracking_code',
-      'dispatch_date', 'shipping_carrier', 'tracking_url', 'phone', 'packages_count', 'weight',
+      'dispatch_date', 'shipping_carrier', 'phone', 'packages_count', 'weight',
       'estimated_amount', 'created_at', 'final_amount',
     ],
     where: {
@@ -1497,21 +1497,32 @@ exports.redirectShipment = async (req, res) => {
   req.user.address = address;
 
   const result = await this.createShipment(req, res);
-
   return result;
 };
 
 exports.state = async (req, res, next) => {
-  await Shipment
+  return Shipment
     .findById(req.params.id)
-    .then(shpmnt => Shipment
-      .updateShipmentState({
-        db,
-        shpmnt,
-        actingUser: req.user,
-        nextStateId: req.body.state_id,
-        comments: req.body.comments,
-      })
-      .then(status => res.json(status)))
-    .catch(next);
+    .then((shpmnt) => {
+      console.log({ shpmnt });
+      if (!shpmnt.dispatch_date || !shpmnt.shipping_carrier || !shpmnt.number_of_packages ||
+        !shpmnt.weight_by_shipping_partner ||
+        !shpmnt.value_by_shipping_partner || !shpmnt.tracking_code) {
+        console.log('You must update Shipment Tracking Information to send dispatch notification!');
+        return res.json({
+          error: 'You must update Shipment Tracking Information to send dispatch notification!',
+        });
+      }
+
+      return Shipment
+        .updateShipmentState({
+          db,
+          shpmnt,
+          actingUser: req.user,
+          nextStateId: req.body.state_id,
+          comments: req.body.comments,
+        })
+        .then(status => res.json(status));
+    })
+.catch(next);
 };

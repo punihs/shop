@@ -8,6 +8,78 @@ const packageStates = ({
     OPS, MEMBER, BOT,
   },
 }) => [{
+  state_id: 42,
+  group_id: MEMBER,
+  child_id: 42,
+}, {
+  state_id: 42,
+  group_id: MEMBER,
+  child_id: 43,
+}, {
+  state_id: 42,
+  group_id: MEMBER,
+  child_id: 44,
+}, {
+  state_id: 44,
+  group_id: MEMBER,
+  child_id: 43,
+}, {
+  state_id: 44,
+  group_id: MEMBER,
+  child_id: 45,
+}, {
+  state_id: 45,
+  group_id: MEMBER,
+  child_id: 44,
+}, {
+  state_id: 44,
+  group_id: MEMBER,
+  child_id: 46,
+}, {
+  state_id: 46,
+  group_id: OPS,
+  child_id: 47,
+}, {
+  state_id: 46,
+  group_id: OPS,
+  child_id: 48,
+}, {
+  state_id: 48,
+  group_id: OPS,
+  child_id: 47,
+}, {
+  state_id: 48,
+  group_id: OPS,
+  child_id: 49,
+}, {
+  state_id: 46,
+  group_id: OPS,
+  child_id: 49,
+}, {
+  state_id: 49,
+  group_id: OPS,
+  child_id: 50,
+}, {
+  state_id: 49,
+  group_id: OPS,
+  child_id: 51,
+}, {
+  state_id: 47,
+  group_id: OPS,
+  child_id: 1,
+}, {
+  state_id: 47,
+  group_id: OPS,
+  child_id: 49,
+}, {
+  state_id: 48,
+  group_id: OPS,
+  child_id: 1,
+}, {
+  state_id: 42,
+  group_id: OPS,
+  child_id: 1,
+}, {
   state_id: 1,
   group_id: OPS,
   child_id: 2,
@@ -211,4 +283,5 @@ const shipmentStates = ({
   child_id: 41,
 }].map(x => ({ ...x, type: SHIPMENT }));
 
-module.exports = constants => packageStates(constants).concat(shipmentStates(constants));
+module.exports = constants => packageStates(constants)
+  .concat(shipmentStates(constants));

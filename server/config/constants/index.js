@@ -11,6 +11,10 @@ const constants = {
     NONDOC: '2',
   },
   PACKAGE_STATES: {
+    ORDER_CREATED: 'order_created',
+    ORDER_CANCELLED: 'order_cancelled',
+    PAYMENT_INITIATED: 'payment_initiated',
+    PAYMENT_FAILED: 'payment_failed',
     PROCESSING: 'processing',
     VALUES: 'values',
     REVIEW: 'review',
@@ -30,6 +34,7 @@ const constants = {
     DELIVERED: 4,
     SHIP: 5,
     INREVIEW: 6,
+    PAYMENT_CONFIRMED: 22,
   },
   SHIPMENT_COUPON_STATES: {
     PENDING: 'pending',
@@ -47,6 +52,10 @@ const constants = {
     DELIVERED: 'delivered',
     DAMAGED: 'damaged',
     WRONG_DELIVERY: 'wrong_delivery',
+    PAYMENT_CONFIRMED: 'payment_confirmed',
+    SHIPMENT_DELIVERED: 'Shipment_delivered',
+    SHIPMENT_CANCELLED: 'shipment_cancelled',
+    SHIPMENT_HANDED: 'shipment handed',
   },
   SHIPMENT_STATE_IDS: {
     INREVIEW: 16,
@@ -60,6 +69,10 @@ const constants = {
     DELIVERED: 9,
     DAMAGED: 10,
     WRONG_DELIVERY: 11,
+    PAYMENT_CONFIRMED: 22,
+    SHIPMENT_DELIVERED: 40,
+    SHIPMENT_CANCELLED: 41,
+    SHIPMENT_HANDED: 24,
   },
   PRICE_ENTERER: {
     SHOPPRE: '1',
@@ -112,12 +125,10 @@ const constants = {
   OBJECT_TYPES: {
     PACKAGE: 1,
     SHIPMENT: 2,
-    ORDER: 3,
   },
   STATE_TYPES: {
     PACKAGE: 1,
     SHIPMENT: 2,
-    ORDERS: 3,
   },
 };
 

@@ -62,10 +62,6 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(db.Shipment, {
       foreignKey: 'customer_id',
     });
-    User.hasMany(db.Order, {
-      foreignKey: 'customer_id',
-    });
-    User.belongsTo(db.VirtualAddress);
     User.belongsTo(db.VirtualAddress);
     User.belongsTo(db.Country, {
       foreignKey: 'country_id',

@@ -11,7 +11,7 @@ const auth = require('../../../logs/credentials');
 const {
   // Package, Address, Country, User, AccessToken, RefreshToken, Session,
   // ShipmentMeta, PackageState,
-  ShipmentIssue, Shipment, Address, PackageState, Package, PackageCharge,
+  ShipmentIssue, Shipment, Address, PackageState, Package, PackageCharge, LoyaltyPoint,
 } = require('../../conn/sqldb');
 
 const {
@@ -907,4 +907,26 @@ describe('GET /api/shipments/redirectShipment', () => {
     .then(() => PackageState.update({
       state_id: 1,
     }, { where: { id: 1 } })));
+});
+
+describe('PUT /api/shipments/115/state', () => {
+  before(async () => LoyaltyPoint.create({
+    total_points: '100', points: '100', customer_id: 129, level: 1,
+  }));
+  it(' will create final ship request after payment done ', (done) => {
+    request(app)
+      .put('/api/shipments//115/state')
+      .send({
+        state_id: 22,
+        comments: 'shipment state change',
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+  // after(() => LoyaltyPoint
+  //   .destroy({ force: true, where: { customer_id: 129 } }));
 });
