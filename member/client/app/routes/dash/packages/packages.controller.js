@@ -1,5 +1,5 @@
 class PackageLockerController {
-  constructor($http, Page, $uibModal, $stateParams, CONFIG, $location, $state) {
+  constructor($http, Page, $uibModal, $stateParams, CONFIG, $location, $state, Session, toaster) {
     this.$http = $http;
     this.Page = Page;
     this.$uibModal = $uibModal;
@@ -8,6 +8,8 @@ class PackageLockerController {
     this.CONFIG = CONFIG;
     this.$location = $location;
     this.moment = moment;
+    this.toaster = toaster;
+    this.user = Session.read('userinfo');
     this.MoreOption = false;
     this.$onInit();
   }
@@ -16,7 +18,7 @@ class PackageLockerController {
     this.buckets = this.CONFIG.PACKAGE_STATES.map(x => x.replace(/ /g, '_').toUpperCase());
 
     this.$stateParams.status = this.$stateParams.status || this.$location.search().status;
-
+    this.store = 'Amazon';
     // Set default status to ALL
     if (!this.buckets.includes(this.$stateParams.status)) {
       this.$state.go('dash.packages', { status: this.buckets[0] });
@@ -68,6 +70,20 @@ class PackageLockerController {
     }];
 
     this.getList();
+    this.getQueueCount();
+  }
+
+  getQueueCount() {
+    this
+      .$http
+      .get('/shipments/count?status=IN_QUEUE')
+      .then(({ data: count }) => {
+        this.queueCount = count;
+      });
+  }
+
+  copied() {
+    this.toaster.pop('info', 'Copied');
   }
 
   getList() {

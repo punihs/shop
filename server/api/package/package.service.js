@@ -16,10 +16,10 @@ exports.index = ({ query, params, user: actingUser }) => {
   log('index', { groupId: actingUser.group_id, app_id: actingUser.app_id });
   log({ BUCKETS });
   const IS_CUSTOMER_PAGE = !!params.customerId;
-  const bucket = BUCKETS.PACKAGE[actingUser.group_id];
-  log({ bucket });
+  const BUCKET = BUCKETS.PACKAGE[actingUser.group_id];
+  log({ BUCKET });
   log({ actingUser });
-  const { status } = query;
+  const { bucket } = query;
   const options = {
     where: {},
     offset: Number(query.offset) || 0,
@@ -69,14 +69,14 @@ exports.index = ({ query, params, user: actingUser }) => {
       options.attributes = ['id', 'customer_id', 'created_at', 'weight', 'price_amount'];
   }
 
-  const states = Object.keys(bucket);
+  const states = Object.keys(BUCKET);
   if (query.sid) options.include[0].where.state_id = query.sid.split(',');
-  else if (states.includes(status) && options.include && options.include.length) {
+  else if (states.includes(bucket) && options.include && options.include.length) {
     const AWAITING_VERIFICATION = 2;
     if (query.status === 'TASKS') {
       options.include[0].where = {
         $or: {
-          state_id: bucket[status].filter(x => (x !== AWAITING_VERIFICATION)),
+          state_id: BUCKET[bucket].filter(x => (x !== AWAITING_VERIFICATION)),
           $and: {
             state_id: AWAITING_VERIFICATION,
             $not: { user_id: actingUser.id },
@@ -86,7 +86,7 @@ exports.index = ({ query, params, user: actingUser }) => {
     } else if (query.status === 'FEEDBACK') {
       options.include[0].where = {
         $or: {
-          state_id: bucket[status].filter(x => (x !== AWAITING_VERIFICATION)),
+          state_id: BUCKET[bucket].filter(x => (x !== AWAITING_VERIFICATION)),
           $and: {
             state_id: AWAITING_VERIFICATION,
             user_id: actingUser.id,
@@ -94,10 +94,14 @@ exports.index = ({ query, params, user: actingUser }) => {
         },
       };
     } else {
-      options.include[0].where.state_id = bucket[status];
+      options.include[0].where.state_id = BUCKET[bucket];
     }
   }
 
+  // console.log('status in query: ', options.include[0].where.state_id)
+  // const shipmentStateModel = { ...options.include[0] };
+  // shipmentStateModel.where.state_id = BUCKET.VIEW_ALL;
+  log('bucket in query: ', options.include[0].where.state_id);
   return Promise
     .all([
       Package
@@ -109,7 +113,7 @@ exports.index = ({ query, params, user: actingUser }) => {
         : PackageState
           .findAll({
             attributes: [[sequelize.fn('count', 1), 'cnt'], 'state_id'],
-            where: { state_id: bucket[status] },
+            where: { state_id: BUCKET[bucket] },
             include: [{
               where: options.where,
               model: Package,
@@ -118,13 +122,16 @@ exports.index = ({ query, params, user: actingUser }) => {
             group: ['state_id'],
             raw: true,
           }),
+      // Package
+      //   .count({ where: options.where, include: [shipmentStateModel] }),
     ])
-    .then(([packages, total, facets]) => ({
+    .then(([packages, total, facets, viewAllCount]) => ({
       packages: packages
         .map(x => (x.PackageState ? ({ ...x.toJSON(), state_id: x.PackageState.state_id }) : x)),
       total,
       facets: {
         state_id: kvmap(facets, 'state_id', 'cnt'),
       },
+      viewAllCount,
     }));
 };

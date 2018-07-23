@@ -13,17 +13,18 @@ div
             ul.dropdown-menu.pull-right(uib-dropdown-menu='')
               li(ng-repeat="sort in $ctrl.sorts")
                 a(href='#' ng-bind='sort.name' ng-click='$ctrl.sort(sort.key)')
+    shipment-header.bg-white-only.w-full.b-b(shipment="$ctrl.shipment" style='position: fixed;z-index: 6;height: 40px;')
     .bg-light(style='min-height: 200px;')
       //- Customer top cover container
       directive-header(
         options="$ctrl"
-        page="{packages:true}"
+        page="{shipmentPackages:true}"
         buttons="{buckets:true,create:true,highlight:'upload'}"
         App="App"
       )
       .m-t-xxl.m-b-md(style='height: 1px;')
       .wrapper-md
-        storage-limit(data='$ctrl.customer')
+        storage-limit(data='$ctrl.user')
         .wrapper-md(ng-if='!$ctrl.packages.length')
           .hbox
             .col: h1.m-t-lg.text-center.text-muted(ng-if='!$ctrl.ui.loading') No Packages
@@ -48,10 +49,10 @@ div
                         a(href='' ng-click='$ctrl.ChangeState.open(package, state.state_id, $ctrl.$stateParams.id)' ng-bind='::App.states[state.state_id].action')
 
                   span.pull-right.padder(
-                  ng-if='package.created_at'
-                  uib-tooltip = "{{package.created_at | date:'MMM d, y'}} IST {{package.created_at | date:'h:mm a'}}"
-                  tooltip-placement='right'
-                  tooltip-append-to-body='true'
+                    ng-if='package.created_at'
+                    uib-tooltip = "{{package.created_at | date:'MMM d, y'}} IST {{package.created_at | date:'h:mm a'}}"
+                    tooltip-placement='right'
+                    tooltip-append-to-body='true'
                   )
                     i.fa(class='text-{{App.interviewUI[package.consignment_type].color}}-dker fa-{{App.interviewUI[package.interview_type].icon}}')
                     span(ng-bind='$ctrl.moment(package.created_at).fromNow()')

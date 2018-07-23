@@ -1,7 +1,24 @@
 // Changing this directive will impact: job.applicants job.applicants.new job.references.list
 div.directive-header
-  //.bg-light.b-b.padder.w-full.bg-white-only.m-t-xl(style='position:fixed;z-index: 6;height: 42px;')
-
+  .bg-light.b-b.padder.w-full.bg-white-only.m-t-xl(
+    style='position:fixed;z-index: 6;height: 42px;'
+    ng-if='page.shipmentPackages || page.packages'
+  )
+    ul.nav.nav-pills.nav-sm.m-t-xs(
+    ng-if='page.shipmentPackages || page.packages'
+    )
+      li: label.i-checks.i-checks-sm.m-t-xs.m-b-none.m-l-md(ng-show="buttons.buckets")
+        input(
+        type='checkbox'
+        ng-click='options.setChecked(options.checkAll)'
+        ng-model='options.checkAll'
+        )
+        i.m-r-none(ng-if='options.packages.length > 0')
+      li(ng-repeat='bucket in options.buckets' ui-sref-active="active" ng-show="buttons.buckets")
+        a(
+        ui-sref='{{options.$state.current.name}}({ id: options.shipment.id, bucket: bucket })'
+        ng-bind="bucket"
+        )
   div(style='position: fixed;right: 5px;z-index: 9;margin-top: 7px;')
     ul.nav.nav-pills.nav-sm
       li.m-r-xs.pull-right: a.h5.font-bold.b-a(
@@ -20,14 +37,14 @@ div.directive-header
         i.fa.fa-eye
 
 
-      li.m-r-xs.pull-right(ng-if='buttons.packageCreate')
+      li.m-r-xs.pull-right(ng-if='buttons.shipmentCreate')
         a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
         ui-sref='package.items({ id: options.$stateParams.id })'
         popover-trigger="'mouseenter'"
         popover-placement='bottom'
         popover-append-to-body='true'
         )
-          span  Add Package Items
+          span  Create Ship Request
       li.m-r-xs.pull-right(ng-if='buttons.create')
         a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
           ui-sref='customer.packages.create({ customer_id: options.customer.id })'
@@ -36,7 +53,7 @@ div.directive-header
           popover-placement='bottom'
           popover-append-to-body='true'
         )
-          span Add Package
+          span Create Ship Request
 
 
 

@@ -37,6 +37,22 @@ describe('GET /api/shipments', () => {
   });
 });
 
+describe('GET /api/shipments/count?bucket=IN_QUEUE', () => {
+  it('return count of shipments in queue', (done) => {
+    request(app)
+      .get('/api/shipments/count')
+      .query({
+        bucket: 'IN_QUEUE',
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
 describe('GET /api/shipments/1/packages', () => {
   it('return packages', (done) => {
     request(app)

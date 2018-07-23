@@ -7,8 +7,9 @@ angular
   ])
   .constant('MODULE_VERSION', '0.0.1');
 // this configs to initiated using provider
-
+const MEMBER = 2;
 angular.module('uiGenApp', [
+  'uiGenApp.constants',
   'qui.core',
   'ngAnimate',
   'ui.router',
@@ -37,5 +38,6 @@ angular.module('uiGenApp', [
     $locationProvider.html5Mode(true);
   })
   .constant('RENAMED_STATES', {
-  });
+  })
+  .factory('CONFIG', (appConfig) => appConfig[MEMBER]);
 

@@ -21,5 +21,6 @@ module.exports = DataTypes => ({
   pincode: DataTypes.STRING,
   phone_code: DataTypes.STRING,
   phone: DataTypes.STRING,
+  email: DataTypes.STRING,
   is_default: DataTypes.BOOLEAN,
 });

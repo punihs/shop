@@ -22,20 +22,18 @@ module.exports = {
       ],
     },
     [CUSTOMER]: {
-      TASKS: [
-        3, 5, 6,
-      ],
-      VIEW_ALL: [
-        1, 2, 3, 4, 5, 6,
+      READY_TO_SEND: [
+        5,
       ],
       IN_REVIEW: [
         1, 2,
       ],
-      ACTION_REQUIRED: [
-        3,
+      ACTION_REQUIRED: [ // - === TASKS
+        3, 6,
       ],
-      READY_TO_SEND: [
-        3,
+      ALL: [
+        42, 43, 44, 45, 46, 47, 48, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+        10, 11, 12, 13, 14,
       ],
     },
     [FINANCE]: {
@@ -49,10 +47,10 @@ module.exports = {
   },
   SHIPMENT: {
     [OPS]: {
-      INREVIEW: [
+      IN_REVIEW: [
         16,
       ],
-      INQUEUE: [
+      IN_QUEUE: [
         17,
       ],
       SENT: [
@@ -64,6 +62,9 @@ module.exports = {
       ],
     },
     [CUSTOMER]: {
+      IN_QUEUE: [
+        1, 2,
+      ],
       TASKS: [
         3, 5, 6,
       ],

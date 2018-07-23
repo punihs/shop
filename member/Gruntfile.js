@@ -1,6 +1,8 @@
 // Generated on 2016-02-12 using generator-angular-fullstack 3.3.0
 'use strict';
-
+const path = require('path');
+const root = path.normalize(`${__dirname}/..`);
+console.log({ root })
 module.exports = function (grunt) {
   var localConfig;
   try {
@@ -34,6 +36,7 @@ module.exports = function (grunt) {
       client: require('./bower.json').appPath || 'client',
       server: 'server',
       dist: 'dist',
+      root,
     },
     express: {
       options: {
@@ -62,7 +65,7 @@ module.exports = function (grunt) {
         tasks: ['newer:babel:client'],
       },
       ngconstant: {
-        files: ['<%= yeoman.server %>/config/environment/shared.js'],
+        files: ['<%= yeoman.root %>/config/environment/shared.js'],
         tasks: ['ngconstant:app', 'ngconstant:serve'],
       },
       injectJS: {
@@ -82,7 +85,7 @@ module.exports = function (grunt) {
       },
       jsTest: {
         files: ['<%= yeoman.client %>/{app,components}/**/*.{spec,mock}.js'],
-        tasks: ['newer:jshint:all', 'wiredep:test', 'karma'],
+        tasks: ['wiredep:test', 'karma'],
       },
       injectSass: {
         files: ['<%= yeoman.client %>/{app,components}/**/*.{scss,sass}'],
@@ -120,44 +123,6 @@ module.exports = function (grunt) {
       bower: {
         files: ['bower.json'],
         tasks: ['wiredep'],
-      },
-    },
-
-    // Make sure code styles are up to par and there are no obvious mistakes
-    jshint: {
-      options: {
-        jshintrc: '<%= yeoman.client %>/.jshintrc',
-        reporter: require('jshint-stylish'),
-      },
-      server: {
-        options: {
-          jshintrc: '<%= yeoman.server %>/.jshintrc',
-        },
-        src: ['<%= yeoman.server %>/**/!(*.spec|*.integration).js'],
-      },
-      serverTest: {
-        options: {
-          jshintrc: '<%= yeoman.server %>/.jshintrc-spec',
-        },
-        src: ['<%= yeoman.server %>/**/*.{spec,integration}.js'],
-      },
-      all: ['<%= yeoman.client %>/{app,components}/**/!(*.spec|*.mock|app.constant).js'],
-      test: {
-        src: ['<%= yeoman.client %>/{app,components}/**/*.{spec,mock}.js'],
-      },
-    },
-
-    jscs: {
-      options: {
-        config: '.jscsrc',
-      },
-      main: {
-        files: {
-          src: [
-            '<%= yeoman.client %>/app/**/*.js',
-            '<%= yeoman.server %>/**/*.js',
-          ],
-        },
       },
     },
 
@@ -318,46 +283,19 @@ module.exports = function (grunt) {
     // `server/config/environment/shared.js`
     ngconstant: {
       options: {
+        name: 'uiGenApp.constants',
+        dest: '<%= yeoman.client %>/app/app.constant.js',
         deps: [],
         wrap: true,
-        configPath: '<%= yeoman.server %>/config/environment/',
+        configPath: '<%= yeoman.root %>/server/config/environment/shared',
       },
       app: {
-        options: {
-          name: 'uiGenApp.constants',
-          dest: '<%= yeoman.client %>/app/app.constant.js',
-        },
-        //constants: function() {
-        //  return {
-        //    QCONFIG: require('./' + grunt.config.get('ngconstant.options.configPath') + 'shared')
-        //  };
-        //}
-      },
-      serve: {
-        options: {
-          name: 'uiGenApp.config',
-          dest: '<%= yeoman.client %>/app/urls.constant.js',
-        },
-        //constants: function() {
-        //  return {
-        //    URLS: require('./' + grunt.config.get('ngconstant.options.configPath') + 'angular/development'),
-        //    ENV: 'development'
-        //  };
-        //}
-      },
-      dist: {
-        options: {
-          name: 'uiGenApp.config',
-          dest: '<%= yeoman.client %>/app/urls.constant.js',
-        },
-        //constants: function() {
-        //  return {
-        //    URLS: require('./' + grunt.config.get('ngconstant.options.configPath') + 'angular/production'),
-        //    ENV: 'production'
-        //  };
-        //}
-
-      },
+        constants() {
+          return {
+            appConfig: require(grunt.config.get('ngconstant.options.configPath')),
+          };
+        }
+      }
     },
 
     // Package all the html partials into a single javascript payload
@@ -464,6 +402,7 @@ module.exports = function (grunt) {
     concurrent: {
       pre: [
         'injector:sass',
+        'ngconstant',
       ],
       server: [
         'newer:babel:client',
@@ -874,7 +813,6 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('default', [
-    'newer:jshint',
     'test',
     'build',
   ]);

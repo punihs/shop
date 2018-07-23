@@ -2,17 +2,17 @@ const debug = require('debug');
 const sequelize = require('sequelize');
 
 const {
-  Shipment, User, Locker, ShipmentState,
+  Shipment, User, Locker, ShipmentState, Address, Package, Country,
 } = require('../../conn/sqldb');
 
-const { APPS, GROUPS: { OPS } } = require('./../../config/constants');
+const { APPS, GROUPS: { OPS, CUSTOMER } } = require('./../../config/constants');
 
 const log = debug('s-api-shipment-service');
 const BUCKETS = require('./../../config/constants/buckets');
 
 const kvmap = (arr, key, value) => arr.reduce((nxt, x) => ({ ...nxt, [x[key]]: x[value] }), {});
 
-exports.index = ({ query, user: actingUser }) => {
+exports.index = ({ params, query, user: actingUser }) => {
   log('index', { groupId: actingUser.group_id, app_id: actingUser.app_id });
   const { status } = query;
   const bucket = BUCKETS.SHIPMENT[actingUser.group_id];
@@ -29,6 +29,34 @@ exports.index = ({ query, user: actingUser }) => {
         where: {},
         model: ShipmentState,
         attributes: ['id', 'state_id'],
+      }, {
+        model: User,
+        as: 'Customer',
+        attributes: ['id', 'name', 'virtual_address_code', 'first_name',
+          'last_name', 'salutation', 'profile_photo_url'],
+        include: [{
+          model: Locker,
+          attributes: ['id', 'short_name', 'name'],
+        }],
+      }];
+      break;
+    }
+    case (actingUser.app_id === APPS.MEMBER && actingUser.group_id === CUSTOMER): {
+      if (params.shipmentId) options.where.shipment_id = params.shipmentId;
+      options.attributes = ['id', 'customer_id', 'created_at', 'final_amount', 'address_id', 'country_id'];
+      options.include = [{
+        where: {},
+        model: ShipmentState,
+        attributes: ['id', 'state_id'],
+      }, {
+        model: Package,
+        attributes: ['id'],
+      }, {
+        model: Address,
+        attibutes: ['id', 'city'],
+      }, {
+        model: Country,
+        attributes: ['id', 'name', 'iso2', 'iso3'],
       }, {
         model: User,
         as: 'Customer',

@@ -25,6 +25,7 @@ const {
   },
   PAYMENT_GATEWAY: { WIRE, WALLET, CASH },
 } = require('../../config/constants');
+const BUCKETS = require('../../config/constants/buckets');
 
 const { ADDED_TO_SHIPMENT } = require('../../config/constants/packageStates');
 
@@ -102,6 +103,15 @@ exports.show = async (req, res, next) => {
           model: Locker,
           attributes: ['id', 'name', 'short_name', 'allocated_at'],
         }],
+      }, {
+        model: Country,
+        attributes: ['id', 'name', 'iso2', 'iso3'],
+      }, {
+        model: Address,
+        attributes: [
+          'id', 'city', 'name', 'salutation', 'first_name', 'last_name', 'mobile', 'phone_code',
+          'phone', 'email',
+        ],
       }],
     })
     .then((shipment) => {
@@ -157,7 +167,6 @@ exports.metaUpdate = async (req, res) => {
   const status = await ShipmentMeta.update(req.body, { where: { id } });
   return res.json(status);
 };
-
 
 exports.destroy = async (req, res) => {
   const { id } = req.params;
@@ -437,6 +446,23 @@ exports.shipQueue = async (req, res) => {
     .find(options)
     .then(shipment =>
       res.json({ shipment }));
+};
+
+exports.count = async (req, res) => {
+  const buckets = BUCKETS.SHIPMENT;
+  return Shipment
+    .count({
+      where: {
+        customer_id: req.user.id,
+      },
+      include: [{
+        model: ShipmentState,
+        where: {
+          state_id: buckets[req.user.group_id][req.query.bucket || 'IN_QUEUE'],
+        },
+      }],
+    })
+    .then(count => res.json(count));
 };
 
 exports.history = (req, res, next) => {
@@ -1500,29 +1526,27 @@ exports.redirectShipment = async (req, res) => {
   return result;
 };
 
-exports.state = async (req, res, next) => {
-  return Shipment
-    .findById(req.params.id)
-    .then((shpmnt) => {
-      console.log({ shpmnt });
-      if (!shpmnt.dispatch_date || !shpmnt.shipping_carrier || !shpmnt.number_of_packages ||
-        !shpmnt.weight_by_shipping_partner ||
-        !shpmnt.value_by_shipping_partner || !shpmnt.tracking_code) {
-        console.log('You must update Shipment Tracking Information to send dispatch notification!');
-        return res.json({
-          error: 'You must update Shipment Tracking Information to send dispatch notification!',
-        });
-      }
+exports.state = async (req, res, next) => Shipment
+  .findById(req.params.id)
+  .then((shipment) => {
+    log({ shipment });
+    if (!shipment.dispatch_date || !shipment.shipping_carrier || !shipment.number_of_packages ||
+        !shipment.weight_by_shipping_partner ||
+        !shipment.value_by_shipping_partner || !shipment.tracking_code) {
+      log('You must update Shipment Tracking Information to send dispatch notification!');
+      return res.json({
+        error: 'You must update Shipment Tracking Information to send dispatch notification!',
+      });
+    }
 
-      return Shipment
-        .updateShipmentState({
-          db,
-          shpmnt,
-          actingUser: req.user,
-          nextStateId: req.body.state_id,
-          comments: req.body.comments,
-        })
-        .then(status => res.json(status));
-    })
-.catch(next);
-};
+    return Shipment
+      .updateShipmentState({
+        db,
+        shipment,
+        actingUser: req.user,
+        nextStateId: req.body.state_id,
+        comments: req.body.comments,
+      })
+      .then(status => res.json(status));
+  })
+  .catch(next);

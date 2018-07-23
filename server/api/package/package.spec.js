@@ -33,11 +33,13 @@ describe('www: GET /api/packages ', () => {
   });
 });
 
+const abhinavAuth = auth;
+
 describe('member GET /api/packages', () => {
   it('return packages', (done) => {
     request(app)
       .get('/api/packages')
-      .set('Authorization', `Bearer ${auth.access_token}`)
+      .set('Authorization', `Bearer ${abhinavAuth.access_token}`)
       .expect('Content-Type', /json/)
       .expect(200)
       .then(() => {

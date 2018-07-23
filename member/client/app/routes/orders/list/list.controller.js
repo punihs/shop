@@ -1,11 +1,11 @@
 class OrdersListController {
   /* @ngInject */
   constructor(
-    Page, QCONFIG, $stateParams, $filter, moment, $window,
+    Page, CONFIG, $stateParams, $filter, moment, $window,
     $http, $state, Session, Prototype, ExcelDownload, ChangeState, URLS
   ) {
     this.Page = Page;
-    this.QCONFIG = QCONFIG;
+    this.CONFIG = CONFIG;
     this.$stateParams = $stateParams;
     this.$http = $http;
     this.$state = $state;

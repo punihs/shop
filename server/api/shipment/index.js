@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get('/', controller.index);
 router.get('/queue', controller.shipQueue);
+router.get('/count', controller.count);
 router.get('/history', controller.history);
 router.put('/:id/cancel', controller.cancelRequest);
 router.put('/finalShip', controller.finalShipRequest); // - final payment submission:php

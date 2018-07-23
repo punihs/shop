@@ -1,0 +1,23 @@
+.copy-wrap {
+  display: block;
+}
+.copy-button {
+  display: none;
+}
+
+.copy-wrap:hover {
+  .copy-button {
+    display: inline-block;
+  }
+}
+
+.copy-button-out {
+  display: none;
+}
+
+.copy-wrap-out:hover {
+  .copy-button-out {
+    display: inline-block;
+  }
+}
+

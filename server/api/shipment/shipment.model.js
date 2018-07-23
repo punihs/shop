@@ -55,6 +55,9 @@ module.exports = (sequelize, DataTypes) => {
     Shipment.belongsTo(db.Place, {
       foreignKey: 'destination_city_id',
     });
+    Shipment.belongsTo(db.Address, {
+      foreignKey: 'address_id',
+    });
     Shipment.hasMany(db.Package);
     db.Place.hasMany(Shipment, {
       foreignKey: 'destination_city_id',

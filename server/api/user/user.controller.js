@@ -79,6 +79,7 @@ exports.me = (req, res, next) => {
     attributes: [
       'id', 'salutation', 'first_name', 'last_name', 'email', 'alternate_email', 'group_id',
       'phone_code', 'phone', 'secondary_phone_code', 'secondary_phone', 'profile_photo_url',
+      'virtual_address_code', 'wallet_balance_amount',
     ],
     limit: Number(req.query.limit) || 20,
   };

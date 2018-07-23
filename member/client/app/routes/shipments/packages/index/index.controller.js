@@ -1,8 +1,8 @@
-class CustomersPackagesIndexController {
+class ShipmentsPackagesIndexController {
   /* @ngInject */
   constructor(
     CONFIG, $stateParams, $filter, moment, $window, Page,
-    customer, $http, $state, Session, Prototype, ExcelDownload, ChangeState
+    shipment, $http, $state, Session, Prototype, ExcelDownload, ChangeState
   ) {
     this.CONFIG = CONFIG;
     this.$stateParams = $stateParams;
@@ -10,7 +10,7 @@ class CustomersPackagesIndexController {
     this.$state = $state;
     this.$filter = $filter;
     this.$window = $window;
-    this.customer = customer;
+    this.shipment = shipment;
     this.moment = moment;
     this.Session = Session;
     this.Prototype = Prototype;
@@ -30,13 +30,13 @@ class CustomersPackagesIndexController {
   $onInit() {
     this.buckets = this.CONFIG.PACKAGE_STATES;
 
-    this.customer = this.customer || {};
-    this.Page.setTitle(`${this.customer.name ? `${this.customer.name} - ` : ''} ${
+    this.shipment = this.shipment || {};
+    this.Page.setTitle(`${this.shipment.Country.iso3 ? `${this.shipment.Country.iso3} - ` : ''} ${
       this.$stateParams.status ? this.$stateParams.status : ''} Packages`); // set page title
 
     // Set default status to ALL
     if (!this.buckets.includes(this.$stateParams.status)) {
-      this.$state.go('customer.packages.index', { status: 'ALL' });
+      this.$state.go('shipment.packages.index', { status: 'ALL' });
       return;
     }
     this.packages = []; // collection of packages
@@ -67,11 +67,11 @@ class CustomersPackagesIndexController {
       this.$window.scrollTo(0, 0);
     }
 
-    if (!this.ui.lazyLoad) return; // if no more customers to get
+    if (!this.ui.lazyLoad) return; // if no more shipments to get
     this.ui = { lazyLoad: false, loading: true };
 
     this.$http
-      .get(`/users/${this.$stateParams.id}/packages`, { params: this.params })
+      .get(`/shipments/${this.$stateParams.id}/packages`, { params: this.params })
       .then(({ data: { packages: result, total } }) => {
         this.packages.push(...result);
 
@@ -100,4 +100,4 @@ class CustomersPackagesIndexController {
 }
 
 angular.module('uiGenApp')
-.controller('CustomersPackagesIndexController', CustomersPackagesIndexController);
+.controller('ShipmentsPackagesIndexController', ShipmentsPackagesIndexController);
