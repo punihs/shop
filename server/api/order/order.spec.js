@@ -5,22 +5,20 @@ const opsAuth = require('../../../logs/ops-credentials');
 
 
 describe('Orders', () => {
-  it('order gives error if no store_id', (done) => {
+  it(' stores order in pakcage table', (done) => {
     request(app)
-      .post('/api/orders')
+      .post('/api/orders?type=INCOMING')
       .send({
+        store_id: 1,
         customer_id: 646,
-        tracking_code: 'DELHIVERY123',
+        tracking_number: 'DELHIVERY123',
         invoice_code: 'INV123',
         comments: 'Items recieved in good condition',
-        invoice_file: {
-          filename: 'x.txt',
-          base64: 'aGVsbG8=',
-        },
+        invoice: 'meena.jpg',
       })
-      .set('Authorization', `Bearer ${opsAuth.access_token}`)
+      .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
-      .expect(400)
+      .expect(201)
       .then(() => {
         done();
       });
@@ -33,7 +31,7 @@ describe('Orders', () => {
         customer_id: 646,
         store_id: 1,
         name: 'Chalo Chappals',
-        tracking_code: 'DELHIVERY123',
+        tracking_number: 'DELHIVERY123',
         invoice_code: 'INV123',
         comments: 'Items recieved in good condition',
         invoice_file: {
@@ -56,7 +54,7 @@ describe('Orders', () => {
         name: 'Moto E',
         customer_id: 646,
         store_id: 1,
-        tracking_code: 'DLV879',
+        tracking_number: 'DLV879',
         invoice_code: 'DLV879',
         comments: 'Saved with out photo',
       })

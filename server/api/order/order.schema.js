@@ -1,6 +1,6 @@
 
 exports.orderCreate = {
-  title: 'Order',
+  title: 'Package',
   type: 'object',
   properties: {
     name: {
@@ -11,5 +11,5 @@ exports.orderCreate = {
       type: 'number',
     },
   },
-  required: ['store_id', 'name'],
+  required: ['store_id'],
 };

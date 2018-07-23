@@ -130,6 +130,13 @@ const constants = {
     PACKAGE: 1,
     SHIPMENT: 2,
   },
+
+  PACKAGE_TYPES: {
+    NORMAL: '1',
+    INCOMING: '2',
+    PERSONAL_SHOPPER: '3',
+    COD: '4',
+  },
 };
 
 constants.PACKAGE_STATE_ID_NAMES = Object

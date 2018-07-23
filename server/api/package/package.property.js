@@ -1,5 +1,10 @@
 const {
-  CONTENT_TYPES: { REGULAR, SPECIAL },
+  CONTENT_TYPES: { REGULAR, SPECIAL }, PACKAGE_TYPES: {
+    NORMAL,
+    INCOMING,
+    PERSONAL_SHOPPER,
+    COD,
+  },
 } = require('../../config/constants');
 
 module.exports = DataTypes => ({
@@ -26,5 +31,13 @@ module.exports = DataTypes => ({
   },
   is_public: { type: DataTypes.BOOLEAN, defaultValue: false },
   splitting_directions: DataTypes.STRING,
+  package_type: {
+    type: DataTypes.ENUM,
+    values: [NORMAL, INCOMING, PERSONAL_SHOPPER, COD],
+  },
+  invoice: DataTypes.STRING,
+  invoice_code: DataTypes.STRING,
+  notes: DataTypes.STRING,
+  tracking_number: DataTypes.STRING,
 });
 
