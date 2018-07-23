@@ -130,12 +130,10 @@ const constants = {
     PACKAGE: 1,
     SHIPMENT: 2,
   },
-
   PACKAGE_TYPES: {
-    NORMAL: '1',
-    INCOMING: '2',
-    PERSONAL_SHOPPER: '3',
-    COD: '4',
+    INCOMING: '1',
+    PERSONAL_SHOPPER: '2',
+    COD: '3',
   },
 };
 

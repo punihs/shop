@@ -24,6 +24,7 @@ const packageItemCategory = require('./api/packageItemCategory');
 const shipment = require('./api/shipment');
 const shipmentComment = require('./api/shipment/comment');
 const shipmentPackage = require('./api/shipment/package');
+const personalShopperPackage = require('./api/personalShopperPackage');
 const address = require('./api/address');
 const user = require('./api/user');
 const pricing = require('./api/pricing');
@@ -92,6 +93,7 @@ module.exports = (app) => {
   app.use('/api/campaigns', authenticate(), campaign);
   app.use('/api/notifications', authenticate(), notification);
   app.use('/api/loyaltyHistories', authenticate(), loyaltyHistory);
+  app.use('/api/personalShopperPackages', authenticate(), personalShopperPackage);
   app.use('/api/userDocuments', authenticate(), userDocument);
   app.use('/api/countries', country);
   app.use('/api/reviews', review);
