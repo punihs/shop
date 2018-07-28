@@ -24,3 +24,11 @@ api 5000
 accounts 5001
 ops 5002
 member 5003
+
+To start ui for chrome onesignal notifications
+
+```sh
+http-server  -S -o
+npm run event:fire
+```
+

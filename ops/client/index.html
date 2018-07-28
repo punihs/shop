@@ -32,6 +32,20 @@
   <link rel="stylesheet" href="app/css/source-sans-pro.css">
   <!-- endinjector -->
   <!-- endbuild -->
+  <link rel="manifest" href="/manifest.json" />
+  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+  <script>
+    var OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+      OneSignal.init({
+        appId: "b7792635-0674-4e60-bef9-66d31b818a92",
+        autoRegister: false,
+        notifyButton: {
+          enable: true,
+        },
+      });
+    });
+  </script>
 
   <script src="http://localhost:5000/socket.io/socket.io.js"></script>
 </head>

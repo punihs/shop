@@ -9,24 +9,30 @@ const log = debug('s-emails-lib-build');
 const required = require;
 
 exports.cmd = (e) => {
-  const templateFullName = e || CURRENT_EMAIL || 'package_state-change';
+  log('e', e);
+  const templateFullName = e || CURRENT_EMAIL;
+  if (!templateFullName) throw Error('update CURRENT_EMAIL in .env');
   const [layout, template] = templateFullName.split('_');
   const emailBaseDir = `${root}/server/api/${layout}/emails`;
 
-  const { Meta, Template } = required(`${emailBaseDir}/${template}/${template}`);
+  const { Meta, instances } = required(`${emailBaseDir}/${template}/${template}`);
+  return Promise.all(instances.map((x) => {
+    const { Template } = x;
 
-  // make entry if doesnt exists in qurac email_templates
-  EmailTemplate
-    .findOrCreate({
-      where: { name: templateFullName },
-      defaults: {
-        group_id: Meta.group_id,
-        description: Meta.description,
-      },
-    })
-    .catch(err => logger.error('buildTemplate EmailTemplate error', err, templateFullName));
+    // make entry if doesnt exists in qurac email_templates
+    EmailTemplate
+      .findOrCreate({
+        where: { name: templateFullName },
+        defaults: {
+          // Todo: create table: email_template_groups
+          group_id: Template.group_id,
+          description: Meta.description,
+        },
+      })
+      .catch(err => logger.error('buildTemplate EmailTemplate error', err, templateFullName));
 
-  log('createTemplateAsync:Template', Template);
-  return ses.quarc
-    .createTemplateAsync({ Template });
+    log('createTemplateAsync:Template', Template);
+    return ses.quarc
+      .createTemplateAsync({ Template });
+  }));
 };

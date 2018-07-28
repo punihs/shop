@@ -6,11 +6,11 @@ const { root } = require('../../../config/environment');
 module.exports = ({
   TemplateName, afterContent = [], extras = [],
 }) => {
-  const [layout, template] = TemplateName.split('_');
+  const [layout, template, groupId] = TemplateName.split('_');
   const layoutBase = `${root}/server/api/${layout}/emails`;
   const layoutHTML = fs.readFileSync(`${layoutBase}/${layout}.hbs`).toString();
   const params = {
-    template: fs.readFileSync(`${layoutBase}/${template}/${template}.hbs`).toString(),
+    template: fs.readFileSync(`${layoutBase}/${template}/${template}_${groupId}.hbs`).toString(),
   };
 
   extras.forEach((part) => {
