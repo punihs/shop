@@ -63,7 +63,7 @@ describe('GET /api/pricing/shipCalculate', () => {
     request(app)
       .get('/api/pricing/shipCalculate')
       .send({
-        country: 1,
+        country: 'US',
         weight: 1,
         unit: 'kg',
         type: 'nondoc',

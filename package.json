@@ -22,7 +22,7 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "kill": "kill -9 $(lsof -t -i:5000);",
     "maildev": "maildev --outgoing-host cp.shoppre.com --outgoing-user 'notifications@cp.shoppre.com' --outgoing-pass 'Easy@2020' --outgoing-port 587",
-    "event:fire": "node server/emails/events",
+    "event:fire": "node server/emails events",
     "email-build": "node server/emails build",
     "email-update-send": "nodemon  server/emails update-send",
     "email-deploy": "DEBUG=q-* node server/emails deploy",

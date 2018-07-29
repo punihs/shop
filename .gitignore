@@ -17,3 +17,5 @@ accounts/.git
 bower_components
 /public/app/js/
 /public/app/
+/.jshintignore
+/.jshintrc

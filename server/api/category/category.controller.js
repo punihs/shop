@@ -11,6 +11,6 @@ exports.index = (req, res, next) => {
 
   return Category
     .findAll(options)
-    .then(category => res.json({ category }))
+    .then(categories => res.json(categories))
     .catch(next);
 };

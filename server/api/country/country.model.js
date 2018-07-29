@@ -24,6 +24,11 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
   });
 
+  Country.associate = (db) => {
+    Country.hasMany(db.CountryGuide);
+    Country.hasMany(db.Review);
+  };
+
   return Country;
 };
 

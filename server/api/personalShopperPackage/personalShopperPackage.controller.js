@@ -230,10 +230,13 @@ exports.updateOrder = async (req, res) => {
         const shopPackage = await Package
           .findAll(options);
 
+        // - Todo: @meena111 Please Check
         newQty = (checkPersonalShopperPackages.total_quantity -
-          checkPersonalShopperItems.PackageItems[0].quantity) + req.body.quantity;
+          (checkPersonalShopperItems.PackageItems[0] || { quantity: 0 }).quantity) +
+          req.body.quantity;
+
         newPrice = checkPersonalShopperPackages.total_amount -
-          checkPersonalShopperItems.PackageItems[0].total_amount;
+          (checkPersonalShopperItems.PackageItems[0] || { total_amount: 0 }).total_amount;
         newPrice += req.body.quantity * price;
 
 
@@ -377,7 +380,11 @@ exports.updateOrder = async (req, res) => {
     personalShopperItem.status = 'pending';
 
     await PackageItem
-      .update(personalShopperItem, { where: { id: checkPersonalShopperItems.PackageItems[0].id } });
+      .update(personalShopperItem, {
+        where: {
+          id: (checkPersonalShopperItems.PackageItems[0] || { quantity: 0 }).id,
+        },
+      });
 
     return res.json(personalShopperItem);
   }
@@ -419,17 +426,18 @@ exports.destroyReq = async (req, res) => {
       limit: Number(req.query.limit) || 1,
     });
 
+  // - Todo: @meena111 Please check
   newQty = personalShopperPackage.total_quantity -
-    checkPersonalShopperItems.PackageItems[0].quantity;
+    (checkPersonalShopperItems.PackageItems[0] || { quantity: 0 }).quantity;
   newPrice = personalShopperPackage.total_amount -
-    checkPersonalShopperItems.PackageItems[0].total_amount;
+    (checkPersonalShopperItems.PackageItems[0] || { total_amount: 0 }).total_amount;
 
   if (newQty <= 0) {
     await Package
       .destroy({ where: { id: personalShopperPackage.id } });
 
     await PackageItem
-      .destroy({ where: { id: checkPersonalShopperItems.PackageItems[0].id } });
+      .destroy({ where: { id: (checkPersonalShopperItems.PackageItems[0] || { id: 0 }).id } });
   } else {
     const orderId = personalShopperPackage.id;
 
@@ -462,7 +470,7 @@ exports.destroyReq = async (req, res) => {
       .update(personalShopPackage, { where: { id: orderId } });
 
     await PackageItem
-      .destroy({ where: { id: checkPersonalShopperItems.PackageItems[0].id } });
+      .destroy({ where: { id: (checkPersonalShopperItems.PackageItems[0] || { id: 0 }).id } });
   }
   return res.json(PackageItem);
 };

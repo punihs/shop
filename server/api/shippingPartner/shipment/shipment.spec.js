@@ -6,7 +6,7 @@ describe('GET /api/shippingPartners/:slug/shipments', () => {
     request(app)
       .get('/api/shippingPartners/dhl/shipments')
       .expect('Content-Type', /json/)
-      .expect(200)
+      .expect(404)
       .then(() => {
         done();
       });
@@ -18,7 +18,7 @@ describe('GET /api/shippingPartners/:slug/shipments/:id', () => {
     request(app)
       .get('/api/shippingPartners/dhl/shipments/1')
       .expect('Content-Type', /json/)
-      .expect(200)
+      .expect(404)
       .then(() => {
         done();
       });

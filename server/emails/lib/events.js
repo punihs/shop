@@ -1,7 +1,7 @@
 const debug = require('debug');
-const oneSignal = require('../conn/oneSignal');
+const oneSignal = require('../../conn/oneSignal/index');
 
-const { CURRENT_EVENT } = require('../config/environment');
+const { CURRENT_EVENT } = require('../../config/environment/index');
 
 const reqr = require;
 const providers = {
@@ -12,11 +12,11 @@ const templateFullName = CURRENT_EVENT || 'package_state-change';
 const [object, event] = templateFullName.split('_');
 const log = debug('emails-events');
 
-exports.fire = (options = reqr(`../api/${object}/events/${event}`)) => {
+const fire = (options = reqr(`../../api/${object}/events/${event}`)) => {
   log('event.fire', options);
   return Promise
     .all(Object
-      .keys()
+      .keys(options)
       .reduce((nxt, channel) => {
         const instances = options[channel];
         const promises = instances
@@ -27,5 +27,8 @@ exports.fire = (options = reqr(`../api/${object}/events/${event}`)) => {
 
         return nxt.concat(promises);
       }, []));
-}
+};
+
+exports.fire = fire;
+exports.cmd = fire;
 

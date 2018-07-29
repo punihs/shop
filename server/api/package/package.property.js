@@ -1,5 +1,5 @@
 const {
-  CONTENT_TYPES: { REGULAR, SPECIAL }, 
+  CONTENT_TYPES: { REGULAR, SPECIAL },
   PACKAGE_TYPES: {
     INCOMING,
     PERSONAL_SHOPPER,
@@ -23,6 +23,7 @@ module.exports = DataTypes => ({
   comments: DataTypes.STRING,
   weight: DataTypes.DECIMAL(15, 2),
   total_amount: DataTypes.DECIMAL(15, 2),
+  price_amount: DataTypes.DECIMAL(15, 2),
 
   content_type: {
     type: DataTypes.ENUM,

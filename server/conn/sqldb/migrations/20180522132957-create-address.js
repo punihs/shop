@@ -19,6 +19,7 @@ module.exports = {
     country_id: keys('countries'),
     phone_code: DataTypes.STRING,
     phone: DataTypes.STRING,
+    email: DataTypes.STRING,
     is_default: DataTypes.BOOLEAN,
     customer_id: keys('users'),
   }, timestamps(3, DataTypes)), engine),
