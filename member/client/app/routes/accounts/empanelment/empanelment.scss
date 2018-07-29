@@ -1,0 +1,39 @@
+.page-empanelment {
+  .fixed {
+    position: fixed;
+  }
+  hr {
+    height: 1px;
+    color: #aaa;
+    background-color: #aaa;
+    border: 0;
+    margin: .2em 0;
+    width: 700px;
+    margin-bottom: 10px;
+  }
+
+  h1  {
+    font-size: 32px;
+  }
+
+  h2 {
+    font-size: 26px;
+  }
+
+  h4 {
+    padding-bottom: 1px;
+    font-size: 20px;
+  }
+
+  label {
+    font-size: 18px;
+    color: black;
+  }
+
+  label .newLabel {
+    font-size: 20px;
+    color: black;
+  }
+
+}
+

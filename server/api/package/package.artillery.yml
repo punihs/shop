@@ -1,0 +1,15 @@
+config:
+  target: 'http://localhost:5000'
+  phases:
+    - duration: 10
+      arrivalRate: 5
+  defaults:
+    headers:
+      authorization: 'Bearer 987401838271002188298567'
+scenarios:
+  - name: "Public Packages API"
+    flow:
+      - get:
+          url: "/api/packages?public=true"
+
+

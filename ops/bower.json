@@ -1,0 +1,54 @@
+{
+  "name": "ui-gen",
+  "version": "0.0.0",
+  "devDependencies": {
+    "angular": "~1.4.8",
+    "angular-animate": "~1.4.8",
+    "moment": "~2.10.6",
+    "ui-select": "angular-ui-select#~0.13.2"
+  },
+  "dependencies": {
+    "font-awesome": "fontawesome#~4.5.0",
+    "angular-sanitize": "~1.4.8",
+    "animate.css": "animate-css#~3.4.0",
+    "source-sans-pro": "git://github.com/adobe-fonts/source-sans-pro.git#release",
+    "angular-http-auth": "~1.2.3",
+    "angular-animate": "~1.4.8",
+    "angular-ui-router": "~0.2.15",
+    "angular-bootstrap": "2.5.0",
+    "angular-bootstrap-calendar": "~0.17.6",
+    "angular-chart.js": "^1.1.1",
+    "lodash": "3.10.1",
+    "restangular": "~1.5.1",
+    "bootstrap-sass": "3.3.6",
+    "ng-file-upload": "^12.0.1",
+    "angular-loading-bar": "^0.8.0",
+    "bootstrap-ui-datetime-picker": "^2.2.3",
+    "jquery.easy-pie-chart": "^2.1.6",
+    "angular-scrollable-table": "*",
+    "angularjs-slider": "^5.4.1",
+    "AngularJS-Toaster": "angularjs-toaster#2.0.0",
+    "ngclipboard": "^1.1.1",
+    "isteven-angular-multiselect": "^4.0.0",
+    "angular-drag-and-drop-lists": "^1.4.0",
+    "angular-cookies": "~1.4.8",
+    "flag-icon-css": "^3.1.0",
+    "angular-socket-io": "0.7.0",
+    "socket.io-client": "2.1.0",
+    "angular-base64-upload": "^0.1.23"
+  },
+  "overrides": {
+    "jquery.easy-pie-chart": {
+      "dependencies": {
+        "jquery": ">=1.9.0"
+      },
+      "main": [
+        "dist/angular.easypiechart.min.js"
+      ]
+    }
+  },
+  "resolutions": {
+    "angular": "~1.4.8",
+    "angular-bootstrap": "2.5.0"
+  }
+}

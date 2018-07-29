@@ -1,0 +1,58 @@
+.app-header.navbar
+  //- navbar header
+  .navbar-header(class='{{App.app.settings.navbarHeaderColor}}')
+    button.pull-right.visible-xs.dk(ng-click='App.app.settings.mobileHeader = !App.app.settings.mobileHeader' ng-if='App.$state.current.name !== "extension"')
+      i.fa.fa-cog
+    button.pull-right.visible-xs.dk(ng-click='App.hideExt()' ng-if='App.$state.current.name === "extension"')
+      i.fa.fa-times
+    //- brand
+    a.navbar-brand.text-lt(style='line-height: 44px;width: 258px;background: #4173A9;' ng-class="{'company-logo' : App.app.settings.isAdmin, 'consultant-logo': !App.app.settings.isAdmin}" ui-sref='{{App.$state.current.name !== "extension" ? "dash.packages" : ""}}')
+      img.pull-left(style='width: 30px;margin-top: 5px;' src='assets/images/logo.png', alt='{{App.app.name}}')
+      span(style='margin-left: -122px;font-weight: 400;font-size: 18px;' title='{{App.app.name}}') {{App.app.name}}
+  //- navbar collapse
+  .collapse.pos-rlt.navbar-collapse.box-shadow(
+    class='{{App.app.settings.navbarCollapseColor}}'
+    ng-class="{ show: App.app.settings.mobileHeader, 'company-header' : App.app.settings.isAdmin}"
+    style='margin-left: 53px'
+  )
+    //- buttons
+    .nav.navbar-nav.hidden-xs.hide
+      a.btn.no-shadow.navbar-btn(href='', ng-click='App.app.settings.asideFolded = !App.app.settings.asideFolded')
+        i.fa.fa-fw(class="{{App.app.settings.asideFolded ? 'fa-indent' : 'fa-dedent'}}")
+      a.btn.no-shadow.navbar-btn(href='', ui-toggle-class='show', target='#aside-user')
+        i.icon-user.fa-fw
+    //ng-focus="App.openSearchCandidate($event)"
+
+    aside
+    .col-sm-5.col-md-2: form.w-full.navbar-form.no-padder(role='search' ng-if="!App.userinfo.isBlocked")
+
+
+    ul.nav.navbar-nav.navbar-right
+      li
+        a.n-hv(
+          uib-popover-template='"components/navbar/popover.html"'
+          popover-trigger='"outsideClick"'
+          popover-placement='bottom-right'
+          popover-is-open='NavBar.isOpen')
+          i.fa.fa-lg.fa-th.text-white.th-scale-y
+      li.nav-menu-item
+        a.n-hv(ui-sref='notifications', title='Notifications', href='/notifications')
+          notify-count
+      li
+        a.no-hv.m-t-sm.m-r-sm(
+          uib-popover-template='"components/navbar/profile-popover.html"'
+          popover-trigger='"outsideClick"'
+          popover-placement='bottom-right'
+          popover-is-open='NavBar.isProfPopOpen'
+          style='padding: 0 10px;'
+        ): div.bg-light.b-info.b-a.text-center(style='height: 30px;width: 30px;border-radius: 50%;')
+            span.text-md.text-u-c(
+              ng-if='!NavBar.user.profile_photo_url'
+              style='color: #4675b6;line-height: 1.7em;'
+              ng-bind='NavBar.userInitial'
+            )
+            img(
+              ng-if='NavBar.user.profile_photo_url'
+              ng-src='{{NavBar.user.profile_photo_url}}'
+              style='height: 30px;width: 30px;border-radius: 50%;'
+            )

@@ -1,0 +1,78 @@
+div.m-t-xl.no-margin
+  .hbox
+    .wrapper-md.bg-white-only
+      div
+        .h1.font-thin.h3
+          | LOYALTY POINTS HISTORY
+      hr.no-margin-bottom
+      .row
+        .wrapper-md.col-md-12
+          .panel.panel-default
+            .panel-heading
+              | HISTORY
+            .table-responsive
+              #DataTables_Table_0_wrapper.dataTables_wrapper.form-inline.dt-bootstrap.no-footer
+                .row.hide
+                  .col-xs-6
+                    #DataTables_Table_0_length.dataTables_length
+                      label
+                        | Show
+                        select.form-control.input-sm(name='DataTables_Table_0_length', aria-controls='DataTables_Table_0')
+                          option(value='10') 10
+                          option(value='25') 25
+                          option(value='50') 50
+                          option(value='100') 100
+                        |  entries
+                  .col-xs-6
+                    #DataTables_Table_0_filter.dataTables_filter
+                      label
+                        | Search:
+                        input.form-control.input-sm(type='search', aria-controls='DataTables_Table_0')
+                table#DataTables_Table_0.table.table-striped.m-b-none.dataTable.no-footer(ui-jq='dataTable', ui-options="{\
+                      sAjaxSource: 'vendor/jquery/datatables/datatable.json',\
+                      aoColumns: [\
+                      { mData: 'engine' },\
+                      { mData: 'browser' },\
+                      { mData: 'platform' },\
+                      { mData: 'version' },\
+                      { mData: 'grade' }\
+                      ]\
+                      }", role='grid', aria-describedby='DataTables_Table_0_info')
+                  thead
+                    tr(role='row')
+                      th.sorting_asc(style='width: 186px;', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Date
+                      th.sorting(style='width: 242px;', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') Description
+                      th.sorting(style='width: 241px;', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Points
+                  tbody
+                    tr.odd(role='row')
+                      td.sorting_1 _
+                      td -
+                      td -
+
+
+                .row.hide
+                  .col-xs-6
+                    #DataTables_Table_0_info.dataTables_info(role='status', aria-live='polite') Showing 1 to 10 of 57 entries
+                  .col-xs-6
+                    #DataTables_Table_0_paginate.dataTables_paginate.paging_simple_numbers
+                      ul.pagination
+                        li#DataTables_Table_0_previous.paginate_button.previous.disabled(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') Previous
+                        li.paginate_button.active(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') 1
+                        li.paginate_button(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') 2
+                        li.paginate_button(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') 3
+                        li.paginate_button(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') 4
+                        li.paginate_button(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') 5
+                        li.paginate_button(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') 6
+                        li#DataTables_Table_0_next.paginate_button.next(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') Next
+
+
+
+

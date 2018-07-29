@@ -1,0 +1,73 @@
+
+.list-group.list-group-sp(style='border-left:1px solid #ddd;padding-top: 48px; position: relative; height: 83%; width: 100%; top: 0; bottom: 50px; overflow-x: hidden;overflow-wrap: break-word;' scroll-to-bottom='$ctrl.ui.scrollToBottom')
+  .padder-md
+    // streamline
+    .m-b.text-md Recent Activity
+    .streamline.b-l.m-b
+      .sl-item(
+        ng-repeat='comment in $ctrl.pkg.comments | orderBy: ["created_at", "id"]'
+        ng-class="comment.User.id !== $ctrl.user.id  ? 'b-success.b-l' : ''"
+      )
+        .m-l
+          .text-muted(
+            ng-bind='" " + $ctrl.moment(comment.created_at).fromNow()'
+            uib-tooltip="{{comment.created_at | date:'MMM d, y'}} IST {{comment.created_at | date:'h:mm a'}}"
+            tooltip-placement='left'
+            tooltip-append-to-body='true'
+          )
+          p
+            a.text-info(ui-sref='customer.view({ id: comment.User.id })' ng-bind='comment.User.name')
+            span(ng-if='comment.comments') &nbsp;commented {{comment.comments}}
+
+      .hide.bg-info.wrapper-sm.m-l-n.m-r-n.m-b.r.r-2x
+        | Create tasks for the team
+
+    // / streamline
+
+
+    div.clear(style='max-width: 90%')
+      .text-sm(ng-if="$ctrl.pkg.comments[$index-1].User.id !== comment.User.id")
+        a.text-info-dker()
+        span &nbsp;updated to &nbsp;
+        span.text-danger-dker.text-md(
+          ng-if='$ctrl.states[comment.state_id].action'
+          ng-bind='$ctrl.states[comment.state_id].action'
+        )
+        span(
+          style='color: #333'
+
+
+        )
+      .bg-white-only
+        p.m-n(ng-if='comment.comments')
+          i.fa.fa-discourse
+          span(ng-bind='comment.comments')
+
+
+
+
+  .m-b-lg(style='height: 80px;')
+form.b-a.form.form-validation.wrapper-xs.bg-white.col-xs-4(
+  style='position: fixed;border-width: 2px !important;' name='commentForm'
+  ng-submit='$ctrl.insert()'
+
+)
+  textarea(
+    elastic
+    name='comments'
+    ng-model='$ctrl.post.comments'
+    autocomplete="off"
+    tabindex="-1"
+    placeholder="Enter your comment.."
+    required
+    style='width: 100%;resize: none;min-height: 30px;border: none;'
+    ng-keypress='$event.keyCode === 13 ? $ctrl.insert($event) : "";'
+    ng-focus='$ctrl.showCommentBtn = true'
+    ng-blur='$ctrl.hideCommentButton()'
+  )
+  quick-state-change(pkg='$ctrl.pkg' ng-show='!$ctrl.showCommentBtn')
+  div(ng-show='$ctrl.showCommentBtn')
+    hr.m-n
+    button.btn-info.m-t-xs.btn.btn-sm.b-r.pull-right(type='submit' ng-disabled='commentForm.$invalid')
+      i.fa.fa-paper-plane.m-r-xs
+      span Comment

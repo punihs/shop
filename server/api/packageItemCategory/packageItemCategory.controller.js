@@ -5,7 +5,7 @@ const {
 
 exports.index = (req, res, next) => {
   const options = {
-    attributes: ['id'],
+    attributes: ['id', 'name'],
     limit: Number(req.query.limit) || 20,
   };
   return PackageItemCategory

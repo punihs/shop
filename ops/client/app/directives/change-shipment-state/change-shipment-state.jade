@@ -1,0 +1,108 @@
+.modal-header
+  .modal-title
+    .h4.text-info Change Status of Shipment- # {{$ctrl.shpmt.id}}
+      .close(ng-click='$ctrl.$uibModalInstance.dismiss("close")') ×
+form.form-validation(name="form" ng-submit='$ctrl.ok()')
+  .modal-body
+    //- by default angular doesn't set value to module
+    label.input-group(ng-init='$ctrl.data.state_id = $ctrl.states[$ctrl.stateId].Childs[0].state_id')
+      strong {{$ctrl.states[$ctrl.stateId].config.state_id}}
+      select.form.form-control(ng-model='$ctrl.data.state_id' ng-disabled='$ctrl.states[$ctrl.stateId].Childs.length===1' ng-if='$ctrl.stateId !== 12')
+        option(ng-repeat='state in $ctrl.states[$ctrl.stateId].Childs' ng-value='state.state_id' ng-selected='$first') {{$ctrl.states[state.state_id].action}}
+      //- Customized Selction of states for Interview Confirm
+      div: .btn-group.text-center(ng-init="$ctrl.data.state_id = $ctrl.package._root_.is_drive ? 8 : 5" ng-if='$ctrl.stateId === 12')
+        label.w-xs.btn.btn-sm.btn-success(ng-model='$ctrl.data.state_id', uib-btn-radio="5" ng-disabled='$ctrl.package._root_.is_drive')
+          i.fa.fa-check.text-active
+          | Telephonic
+        label.w-xs.btn.btn-sm.btn-primary(ng-model='$ctrl.data.state_id', uib-btn-radio="8")
+          i.fa.fa-check.text-active
+          | Personal
+        label.w-xs.btn.btn-sm.btn-info(ng-model='$ctrl.data.state_id', uib-btn-radio="17" ng-disabled='$ctrl.package._root_.is_drive')
+          i.fa.fa-check.text-active
+          | Video
+    label.input-group(ng-if='$ctrl.states[$ctrl.stateId].config.scheduled_on')
+      strong {{$ctrl.states[$ctrl.stateId].config.scheduled_on}}
+      .input-group
+        input.form.form-control(
+          type='text' uib-datepicker-popup='dd-MMMM-yyyy'
+          ng-model='$ctrl.exData.scheduled_on_date'
+          ng-change='$ctrl.setScheduledOn()'
+          is-open='$ctrl.ui.scheduledOn'
+          close-text='Close'
+          ng-click='$ctrl.ui.scheduledOn = true'
+          required='$ctrl.stateId !== 19'
+          ng-model-options='{debounce: 300}'
+        )
+    label.input-group(ng-if='$ctrl.states[$ctrl.stateId].config.scheduled_on' ng-show='$ctrl.stateId === 12')
+      strong Time
+      .input-group
+        div.w-sm(
+          ng-model='$ctrl.exData.scheduled_on_time'
+          uib-timepicker ng-change='$ctrl.setScheduledOn()'
+          hour-step='1'
+          minute-step='15'
+          show-meridian='true'
+          ng-model-options='{debounce: 300}'
+        )
+    label.input-group(ng-if='$ctrl.states[$ctrl.stateId].config.suggested_join_date')
+      strong {{$ctrl.states[$ctrl.stateId].config.suggested_join_date}}
+      .input-group
+        input.form.form-control(type='text' uib-datepicker-popup='dd-MMMM-yyyy' ng-model='$ctrl.data.suggested_join_date' is-open='$ctrl.ui.suggestedJoinDate' close-text='Close' ng-click='$ctrl.ui.suggestedJoinDate = true' required)
+
+    label.input-group(ng-if='$ctrl.states[$ctrl.stateId].config.currency')
+      strong {{$ctrl.states[$ctrl.stateId].config.currency}}
+      select.form.form-control(ng-model='$ctrl.data.currency' ng-init='$ctrl.data.currency = "INR"' required)
+
+        //- Hack:: Couldn't set default model value to INR
+        //- Angular Add undefined option in list of options
+        option(value='INR') INR India Rupees
+        option(ng-repeat='(currencyKey, currency) in $ctrl.currency' ng-value='currencyKey') {{currency}}
+
+    //- Offered CTC Input
+    .input-group
+      label(ng-if='$ctrl.states[$ctrl.stateId].config.offered_ctc_raw')
+        strong {{$ctrl.states[$ctrl.stateId].config.offered_ctc_raw}}
+        br
+        input.form.form-control(ng-model='$ctrl.data.offered_ctc_raw' step='0.1' min='0.1' type='number' ng-change='$ctrl.data.offered_ctc = ($ctrl.data.offered_ctc_raw/100000).toFixed(2)' required)
+      label(ng-if='$ctrl.states[$ctrl.stateId].config.offered_ctc_raw')
+        strong {{$ctrl.states[$ctrl.stateId].config.offered_ctc}}
+        br
+        input.form.form-control(readonly='' ng-model='$ctrl.data.offered_ctc')
+
+    //- Final CTC Input for candidate joined
+    .input-group
+      label(ng-if='$ctrl.states[$ctrl.stateId].config.final_ctc_raw')
+        strong {{$ctrl.states[$ctrl.stateId].config.final_ctc_raw}}
+        br
+        input.form.form-control(ng-model='$ctrl.data.final_ctc_raw' step='0.1' min='0.1' type='number' ng-change='$ctrl.data.final_ctc = ($ctrl.data.final_ctc_raw/100000).toFixed(2)' required)
+      label(ng-if='$ctrl.states[$ctrl.stateId].config.final_ctc_raw')
+        strong {{$ctrl.states[$ctrl.stateId].config.final_ctc}}
+        br
+        input.form.form-control(readonly='' ng-model='$ctrl.data.final_ctc')
+    div.padder.text-primary.text-sm(ng-if='$ctrl.ui.checking')
+      i.fa.fa-spin.fa-circle-o-notch
+      span.m-l-xs Checking slot availibility ...
+    .text-sm.font-bold(ng-if='$ctrl.showMessage' ng-class='{"text-danger": $ctrl.data.state_id === 5, "text-warning": $ctrl.data.state_id !== 5}')
+      span An Interview is already scheduled for&nbsp;
+        span(ng-if='$ctrl.user.client_id !== $ctrl.interviewee.client_id') someone
+        a.text-primary.text-u-l(
+          ng-if='$ctrl.user.client_id === $ctrl.interviewee.client_id'
+          ng-bind='$ctrl.interviewee.name'
+          ui-sref='package.view({packageId: $ctrl.interviewee.id})'
+          target='_blank'
+        )
+        span &nbsp;on&nbsp;
+        span(ng-bind='$ctrl.interviewee.interview_time | date: "dd MMM yyyy, h:mma"')
+    label.input-group
+      strong Instructions and Comments
+      br
+      textarea.form.form-control(name='textarea' placeholder='{{$ctrl.states[$ctrl.stateId].config.comments}}' rows='7' cols='50' ng-model='$ctrl.data.comments')
+
+  .modal-footer
+    button.btn.btn-primary(type='submit'
+      ng-disabled='form.$invalid || $ctrl.submitting || ($ctrl.showMessage && $ctrl.data.state_id === 5) || $ctrl.ui.checking'
+    )
+      span.text-white(ng-if='!$ctrl.submitting') Submit
+      span(ng-if='$ctrl.submitting')
+        i.fa.fa-spin.fa-circle-o-notch
+        span.text-white &nbsp;&nbsp;Submitting...

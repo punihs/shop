@@ -1,0 +1,48 @@
+.modal-header
+  .modal-title
+    .h4.text-info Upload Photos
+      .close(ng-click='UploadPhoto.cancel()') ×
+.modal-body
+  .row(ng-hide='showAdditional')
+    .col-md-3.photo-left
+      i.fa.fa-camera.big-cam
+    .col-md-9
+      .panel.b-a.ng-scope
+        .panel-heading.b-b.b-light
+          h4.font-bold.no-margin Basic Photos
+            span INR 40
+        .panel-body
+          p View low-resolution photos taken of your package when it arrived at the Shoppre to confirm package cpntents
+          a.btn.btn-success.text-u-c(ng-click='showBasic=true') Get Now
+  .row(ng-hide='showBasic')
+    .col-md-3.photo-left
+      i.fa.fa-camera.big-cam
+    .col-md-9
+      .panel.b-a.ng-scope
+        .panel-heading.b-b.b-light
+          h4.font-bold.no-margin Additional Photos
+            span INR 500
+        .panel-body
+          p Order up 10 high-resolution photos of your content to confirm color, condition and item details
+          a.btn.btn-success.text-u-c(ng-click='showAdditional=true') Request Now
+  .row(ng-if='showBasic')
+    .panel.b-a.ng-scope
+      .panel-body
+        .alert.alert-warning
+          h4.text-center.no-margin
+            i.fa.fa-info-circle.m-r-xs
+            | Will be charged INR-50.00 Do you wish to continue?
+          .text-center.m-t-md
+            a.btn.btn-warning.text-u-c(ng-click='UploadPhoto.cancel()') Cancel
+            a.btn.btn-success.text-u-c.m-l-xs(ng-click='') Continue
+
+  .row(ng-if='showAdditional')
+    .panel.b-a.ng-scope
+      .panel-body
+        .alert.alert-warning
+          h4.text-center.no-margin
+            i.fa.fa-info-circle.m-r-xs
+            | Will be charged INR-500.00 Do you wish to continue?
+          .text-center.m-t-md
+            a.btn.btn-warning.text-u-c(ng-click='UploadPhoto.cancel()') Cancel
+            a.btn.btn-success.text-u-c.m-l-xs(ng-click='') Continue

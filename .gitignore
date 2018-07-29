@@ -11,6 +11,9 @@ logs
 /public/js
 .nyc_output
 /coverage/
+/ops/.jscsrc
+/ops/.jshintignore
+accounts/.git
 bower_components
 /public/app/js/
 /public/app/

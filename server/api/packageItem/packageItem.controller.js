@@ -54,7 +54,7 @@ exports.show = (req, res, next) => {
       attributes: ['id', 'quantity', 'price_amount', 'total_amount'],
       where: { id: req.param.id },
     })
-    .then(packageitems => res.json(packageitems))
+    .then(packageitem => res.json(packageitem))
     .catch(next);
 };
 
@@ -64,23 +64,11 @@ exports.destroy = async (req, res) => {
   return res.json(status);
 };
 
-exports.destroy = async (req, res) => {
-  const { id } = req.params;
-  const status = await PackageItem.destroy({ where: { id } });
-  return res.json(status);
-};
-
-exports.metaUpdate = async (req, res) => {
+exports.update = async (req, res) => {
   const { id } = req.params;
   const packageItem = req.body;
   packageItem.total = packageItem.price_amount * packageItem.quantity;
   const status = await PackageItem.update(packageItem, { where: { package_id: id } });
-  return res.json(status);
-};
-
-exports.update = async (req, res) => {
-  const { id } = req.params;
-  const status = await PackageItem.update({ object: null }, { where: { id } });
   return res.json(status);
 };
 

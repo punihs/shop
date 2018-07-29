@@ -1,0 +1,43 @@
+.modal-header
+  .modal-title
+    //.h4.text-info Payment Details - {{JobPayment.job._root_.payment}}
+    .h4.text-info Click To Copy
+      //.h4.text-info Fixed Module - Standard
+      .close.text-dark(ng-click='ClickToCopy.cancel()') ×
+.modal-body
+  div.foo.text-black
+    button.pull-right.btn.btn-info(ngclipboard='', data-clipboard-target='.foo')
+      | Copy to Clipboard
+    h3.text-black {{ClickToCopy.job.role}}
+    div(ng-if='ClickToCopy.job._root_.short_description')
+      b About Company :
+      p {{ClickToCopy.job._root_.short_description}}
+    div(ng-if='ClickToCopy.job.job_location')
+      b Location :
+      |  {{ClickToCopy.job.job_location}}
+    div(ng-if='ClickToCopy.job.min_exp')
+      b Experience :
+      |  {{ClickToCopy.job.min_exp}} – {{ClickToCopy.job.max_exp}} Years
+    div(ng-if='ClickToCopy.job.functional_area')
+      b Function :
+      |  {{ClickToCopy.job.functional_area}}
+    div(ng-if='ClickToCopy.job.vacancy')
+      b Vacancy :
+      |  {{ClickToCopy.job.vacancy}}
+    div
+      b Job Description :
+      p(ng-bind-html="ClickToCopy.trustAsHtml(ClickToCopy.job.responsibility)" style='word-break: break-all;')
+    div(ng-if='ClickToCopy.job.degrees')
+      b Qualification :
+      span(ng-repeat='value in ClickToCopy.job.degrees') &nbsp;{{value}}&nbsp;
+
+    div(ng-if='ClickToCopy.job.days_per_week')
+      b Working Days :
+      |  {{ClickToCopy.job.days_per_week}} Days a Week ({{ClickToCopy.job.start_work_time}} to {{ClickToCopy.job.end_work_time}})
+    div(ng-if='ClickToCopy.job.job_nature')
+      b Job Nature :
+      |  {{ClickToCopy.job.job_nature}}
+.modal-footer
+  button.btn.btn-info(ngclipboard='', data-clipboard-target='.foo')
+    | Copy to Clipboard
+  a.btn.btn-danger(ng-click='ClickToCopy.cancel()') Close

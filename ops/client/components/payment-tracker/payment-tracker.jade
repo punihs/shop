@@ -1,0 +1,29 @@
+.payment-tracker
+  .modal-header
+    img.m-r-xs.m-t-n-xs(src='/assets/images/money.svg' style='height: 30px;width: 30px;')
+    span.font-bold(style='font-size: 20px;line-height: 2em;') Track Payment
+    span.pull-right.pointer(style='font-size: 2.1em;' ng-click='$ctrl.$uibModalInstance.dismiss(false)') ✕
+
+  .modal-body.bg-white-only
+
+    .wrapper-xs.text-center
+      .circle-holder.text-center(ng-repeat='tracker in $ctrl.paymentTrack')
+        .m-t-md.common-font(ng-bind='tracker.name' ng-class='{"text-muted": $ctrl.selectedIndex !== $index, "font-bold": $ctrl.selectedIndex === $index }')
+        .circle.outer-circle(ng-class='{"highlight": $ctrl.selectedIndex === $index}')
+          .circle-filled(ng-class='{"green": tracker.flag, "gray": !tracker.flag}' ng-click='tracker.flag && $ctrl.selectTrack($index)')
+        .inline(ng-class='{"arrow-up": $ctrl.selectedIndex === $index}' style='position: absolute;left: {{$ctrl.arrowPos}}%;')
+        .connector(ng-if='!$first' ng-class='{"green": tracker.flag, "gray": !tracker.flag}')
+
+    div(style='position: relative;')
+      .padder.b-t(style='width: 92%;margin-left: 4%;')
+      .h4.m-l-xl.m-t-md.text-primary
+        span.m-r-xs(ng-bind='$ctrl.paymentTrack[$ctrl.selectedIndex].name')
+        span -
+        span.m-l.xs(ng-bind='$ctrl.paymentTrack[$ctrl.selectedIndex].created')
+      .m-l-xl.m-t-xs.text-muted.common-font(ng-bind='$ctrl.paymentTrack[$ctrl.selectedIndex].description')
+
+      table.hidden.m-t-sm(style='margin-bottom: 10px;width: 92%;margin-left: 4%;')
+        tr(ng-repeat='item in [1,2,3,4]')
+          td(style='padding: 8px;' width='40') Mon. 25th Dec, 2.00pm
+          td(style='padding: 8px;' width='60') Lorem Ipsum
+

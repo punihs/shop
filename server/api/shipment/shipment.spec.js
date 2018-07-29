@@ -2,22 +2,48 @@
 
 // const r = require;
 const request = require('supertest');
+const moment = require('moment');
+const assert = require('assert');
+const sinon = require('sinon');
+
 const app = require('./../../app');
 const auth = require('../../../logs/credentials');
 const {
   // Package, Address, Country, User, AccessToken, RefreshToken, Session,
   // ShipmentMeta, PackageState,
-  ShipmentIssue, Shipment,
+  ShipmentIssue, Shipment, Address, PackageState, Package, PackageCharge, LoyaltyPoint,
 } = require('../../conn/sqldb');
 
-const assert = require('assert');
-
+const {
+  SALUTATIONS: {
+    MR,
+  },
+} = require('../../config/constants');
+const { SHIPPING_PARTNERS: { DHL } } = require('../../config/constants/objects');
+const fakeResponse = require('../../conn/shipper/dhl/sample');
+const shipper = require('../../conn/shipper');
 // const log = debug('s.shipment.spec');
 
 describe('GET /api/shipments', () => {
   it('return 400 on no packages for shipments', (done) => {
     request(app)
       .get('/api/shipments')
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+describe('GET /api/shipments/count?bucket=IN_QUEUE', () => {
+  it('return count of shipments in queue', (done) => {
+    request(app)
+      .get('/api/shipments/count')
+      .query({
+        bucket: 'IN_QUEUE',
+      })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
       .expect(200)
@@ -159,6 +185,9 @@ describe('GET /api/shipments/1/packages', () => {
 
 describe('GET /api/shipments/:id', () => {
   before((done) => {
+    sinon
+      .stub(shipper[DHL], 'status').callsFake(() => Promise.resolve(fakeResponse));
+
     Promise.all([
       ShipmentIssue.destroy({ where: { shipment_id: 10 } }),
     ]).then(() => Shipment
@@ -169,7 +198,7 @@ describe('GET /api/shipments/:id', () => {
         },
       })
       .then(() => Shipment
-        .create(assert({
+        .create({
           id: 10,
           coupon: 0.0,
           is_axis_banned_item: '0',
@@ -208,13 +237,18 @@ describe('GET /api/shipments/:id', () => {
           payment_gateway_name: 'wire',
           weight: 27.35,
           pick_up_charge: null,
-          tracking_code: 'ABC123',
           dispatch_date: '2017-12-11T13:46:00.000+05:30',
-          shipping_carrier: 'dhl',
-          tracking_url: 'DHL1324',
-        }))
+
+          shipping_partner_id: DHL, // replace with valid test data
+          tracking_code: '6422614100', // replace with valid test data
+        })
         .then(() => done())));
   });
+
+  after(() => {
+    shipper[DHL].status.restore();
+  });
+
 
   it('return shipments', (done) => {
     request(app)
@@ -222,7 +256,21 @@ describe('GET /api/shipments/:id', () => {
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
       .expect(200)
-      .then(() => {
+      .then(() => done());
+  });
+
+  it('will tracking shipment delivery status', (done) => {
+    request(app)
+      .get('/api/shipments/10/status')
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then((res) => {
+        const response = JSON.parse(res.text);
+        const events = response.result['req:TrackingResponse'].AWBInfo[1].ShipmentInfo.ShipmentEvent;
+        const lastEvent = events[events.length - 1];
+        const lastStatus = lastEvent.ServiceEvent.Description;
+        assert(lastStatus === 'Delivered - Signed for by', 'should be delivered');
         done();
       });
   });
@@ -433,7 +481,6 @@ describe('GET /api/shipments/:id', () => {
 //         package_weight: '2.00',
 //         package_value: '300.00',
 //         tracking_id: '56567678',
-//         tracking_url: 'www.dhl.com',
 //         trackingid: '386',
 //       })
 //       .set('Authorization', `Bearer ${auth.access_token}`)
@@ -509,7 +556,7 @@ describe('GET /api/shipments/queue', () => {
       .get('/api/shipments/queue')
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
-      .expect(201)
+      .expect(200)
       .then(() => {
         done();
       });
@@ -522,7 +569,7 @@ describe('GET /api/shipments/history', () => {
       .get('/api/shipments/history')
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
-      .expect(201)
+      .expect(200)
       .then(() => {
         done();
       });
@@ -548,23 +595,7 @@ describe('GET /api/shipments/326/invoice', () => {
       .get('/api/shipments/326/invoice')
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
-      .expect(201)
-      .then(() => {
-        done();
-      });
-  });
-});
-
-describe('PUT /api/shipments/2/cancel', () => {
-  it('will cancel the ship request', (done) => {
-    request(app)
-      .put('/api/shipments/2/cancel')
-      .send({
-        order_code: '631-646-7270',
-      })
-      .set('Authorization', `Bearer ${auth.access_token}`)
-      .expect('Content-Type', /json/)
-      .expect(201)
+      .expect(200)
       .then(() => {
         done();
       });
@@ -576,7 +607,7 @@ describe('PUT /api/shipments/finalShip', () => {
     request(app)
       .put('/api/shipments/finalShip')
       .send({
-        ship_request_id: 116,
+        shipment_id: 116,
         insurance: 2,
         wallet: 1,
         payment_gateway_name: 'wire',
@@ -590,17 +621,17 @@ describe('PUT /api/shipments/finalShip', () => {
   });
 });
 
-describe('PUT /api/shipments/2/cancel', () => {
+describe('PUT /api/shipments/2/cancel 1', () => {
   it('will cancel the ship request', (done) => {
     request(app)
       .put('/api/shipments/2/cancel')
       .send({
         order_code: '631-646-7270',
-        cutomer_id: 646,
+        customer_id: 646,
       })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
-      .expect(201)
+      .expect(200)
       .then(() => {
         done();
       });
@@ -612,7 +643,7 @@ describe('PUT /api/shipments/payRetrySubmit', () => {
     request(app)
       .put('/api/shipments/payRetrySubmit')
       .send({
-        ship_request_id: 300,
+        shipment_id: 300,
         insurance: 2,
         wallet: 0,
         payment_gateway_name: 'cash',
@@ -631,7 +662,7 @@ describe('PUT /api/shipments/payRetrySubmit', () => {
     request(app)
       .put('/api/shipments/payRetrySubmit')
       .send({
-        ship_request_id: 300,
+        shipment_id: 300,
         insurance: 2,
         wallet: 0,
         payment_gateway_name: 'wire',
@@ -650,7 +681,7 @@ describe('PUT /api/shipments/payRetrySubmit', () => {
     request(app)
       .put('/api/shipments/payRetrySubmit')
       .send({
-        ship_request_id: 300,
+        shipment_id: 300,
         insurance: 0,
         wallet: 1,
         payment_gateway_name: 'wallet',
@@ -669,6 +700,312 @@ describe('PUT /api/shipments/retryPayment?order_code=620-620-7220', () => {
   it(' will allow to change the payment mode ', (done) => {
     request(app)
       .put('/api/shipments/retryPayment?order_code=620-620-7220')
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+describe('GET /api/shipments/redirectShipment', () => {
+  before(() => Promise.all([Address
+    .create({
+      salutation: MR,
+      first_name: 'Abhinav',
+      last_name: 'Mishra',
+      line1: 'C/O Deepak Tiwari, 1013 Folsom Ranch Drive,',
+      line2: 'Apt 102',
+      state: 'Mumbai',
+      city: 'Mumbai',
+      customer_id: 646,
+      is_default: true,
+    })
+    .then(() => PackageState
+      .create({
+        id: 100,
+        package_id: 2,
+        state_id: 5,
+        user_id: 646,
+        comments: 'testing',
+        status: true,
+      }))
+    .then(() => Package.update({ package_state_id: 100, customer_id: 646 }, { where: { id: 2 } })),
+  ]));
+  it('will redirect to shipment creation ( test case selected packages for shipment )', (done) => {
+    request(app)
+      .get('/api/shipments/redirectShipment')
+      .send({
+        package_ids: [3, 2],
+        repack: 0,
+        sticker: 0,
+        extra_packing: 0,
+        orginal_box: 0,
+        gift_wrap: 0,
+        gift_note: 0,
+        mark_personal_use: 0,
+        invoice_include: 0,
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+
+  after(() => Address
+    .destroy({ force: true, where: { customer_id: 646 } })
+    .then(() => PackageCharge
+      .destroy({ force: true, where: { id: 100 } }))
+    .then(() => Package
+      .update({ package_state_id: 1 }, { where: { id: 2 } }))
+    .then(() => PackageState
+      .destroy({ force: true, where: { package_id: 2 } })));
+});
+
+describe('GET /api/shipments/redirectShipment', () => {
+  it('will redirect to shipment creation ( test case for package not found )', (done) => {
+    request(app)
+      .get('/api/shipments/redirectShipment')
+      .send({
+        package_ids: [365214],
+        repack: 0,
+        sticker: 0,
+        extra_packing: 0,
+        orginal_box: 0,
+        gift_wrap: 0,
+        gift_note: 0,
+        mark_personal_use: 0,
+        invoice_include: 0,
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+
+describe('GET /api/shipments/redirectShipment', () => {
+  before(() => Promise.all([Address
+    .create({
+      salutation: MR,
+      first_name: 'Abhinav',
+      last_name: 'Mishra',
+      line1: 'C/O Deepak Tiwari, 1013 Folsom Ranch Drive,',
+      line2: 'Apt 102',
+      state: 'Mumbai',
+      city: 'Mumbai',
+      customer_id: 646,
+      is_default: true,
+    })
+    .then(() => PackageState
+      .create({
+        id: 100,
+        package_id: 2,
+        state_id: 5,
+        user_id: 646,
+        comments: 'testing',
+        status: true,
+      }))
+    .then(() => Package.update({
+      package_state_id: 100,
+      customer_id: 646,
+      created_at: moment().add(-25, 'days'),
+    }, { where: { id: 2 } })),
+  ]));
+  it('will redirect to shipment creation  ( test case locker number of days expiry ) ', (done) => {
+    request(app)
+      .get('/api/shipments/redirectShipment')
+      .send({
+        package_ids: [2],
+        repack: 0,
+        sticker: 0,
+        extra_packing: 0,
+        orginal_box: 0,
+        gift_wrap: 0,
+        gift_note: 0,
+        mark_personal_use: 0,
+        invoice_include: 0,
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+
+  after(() => Address
+    .destroy({ force: true, where: { customer_id: 646 } })
+    .then(() => PackageCharge
+      .destroy({ force: true, where: { id: 100 } }))
+    .then(() => Package
+      .update({
+        package_state_id: 1,
+        created_at: moment().add(25, 'days'),
+      }, { where: { id: 2 } }))
+    .then(() => PackageState
+      .destroy({ force: true, where: { package_id: 2 } })));
+});
+
+
+describe('GET /api/shipments/redirectShipment', () => {
+  before(() => Promise.all([Address
+    .create({
+      salutation: MR,
+      first_name: 'Abhinav',
+      last_name: 'Mishra',
+      line1: 'C/O Deepak Tiwari, 1013 Folsom Ranch Drive,',
+      line2: 'Apt 102',
+      state: 'Mumbai',
+      city: 'Mumbai',
+      customer_id: 646,
+      is_default: true,
+    })
+    .then(() => PackageState
+      .create({
+        id: 100,
+        package_id: 2,
+        state_id: 5,
+        user_id: 646,
+        comments: 'testing',
+        status: true,
+      }))
+    .then(() => Package.update({
+      package_state_id: 100,
+      customer_id: 646,
+      content_type: 2,
+      created_at: moment().add(-19, 'days'),
+    }, { where: { id: 2 } }))
+    .then(() => PackageState.update({
+      state_id: 5,
+    }, { where: { id: 1 } })),
+  ]));
+  it('will redirect to shipment creation ( test case for special items ) ', (done) => {
+    request(app)
+      .get('/api/shipments/redirectShipment')
+      .send({
+        package_ids: [3, 2],
+        repack: 0,
+        sticker: 0,
+        extra_packing: 0,
+        orginal_box: 0,
+        gift_wrap: 0,
+        gift_note: 0,
+        mark_personal_use: 0,
+        invoice_include: 0,
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+
+  after(() => Address
+    .destroy({ force: true, where: { customer_id: 646 } })
+    .then(() => PackageCharge
+      .destroy({ force: true, where: { id: 100 } }))
+    .then(() => Package
+      .update({
+        package_state_id: 1,
+        created_at: moment().add(25, 'days'),
+        content_type: 1,
+      }, { where: { id: 2 } }))
+    .then(() => PackageState
+      .destroy({ force: true, where: { package_id: 2 } }))
+    .then(() => PackageState.update({
+      state_id: 1,
+    }, { where: { id: 1 } })));
+});
+
+describe('PUT /api/shipments/115/state', () => {
+  before(async () => LoyaltyPoint.create({
+    total_points: '100', points: '100', customer_id: 129, level: 1,
+  }));
+  it(' will create final ship request after payment done ', (done) => {
+    request(app)
+      .put('/api/shipments//115/state')
+      .send({
+        state_id: 22,
+        comments: 'shipment state change',
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+  // after(() => LoyaltyPoint
+  //   .destroy({ force: true, where: { customer_id: 129 } }));
+});
+
+describe('PUT /api/shipments/116', () => {
+  it(' Update shipment', (done) => {
+    request(app)
+      .put('/api/shipments/116')
+      .send({
+        address: '314 Euphoria Circle, Cary, NC, United States - 27519',
+        coupon_amount: 0,
+        customer_name: 'Abhinav Mishra',
+        discount_amount: 15680,
+        estimated_amount: 15680,
+        final_amount: 15680,
+        final_weight: 27.35,
+        loyalty_amount: 0,
+        package_level_charges_amount: 0,
+        packages_count: 1,
+        payment_gateway_fee_amount: 0,
+        phone: '-8605147508',
+        pick_up_charge_amount: 200,
+        shipment_type_id: 1,
+        sub_total_amount: 31360,
+        value_amount: 6679.92,
+        volumetric_weight: 0,
+        wallet_amount: 0,
+        weight: 3,
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+describe('PUT /api/shipments/115', () => {
+  it(' Update shipment', (done) => {
+    request(app)
+      .put('/api/shipments/115')
+      .send({
+        address: '314 Euphoria Circle, Cary, NC, United States - 27519',
+        coupon_amount: 0,
+        customer_name: 'Abhinav Mishra',
+        discount_amount: 15680,
+        estimated_amount: 15680,
+        final_amount: 15680,
+        final_weight: 27.35,
+        loyalty_amount: 0,
+        package_level_charges_amount: 0,
+        packages_count: 1,
+        payment_gateway_fee_amount: 0,
+        phone: '-8605147508',
+        pick_up_charge_amount: 200,
+        shipment_type_id: 1,
+        sub_total_amount: 31360,
+        value_amount: 6679.92,
+        volumetric_weight: 0,
+        wallet_amount: 0,
+        weight: 8,
+      })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
       .expect(200)

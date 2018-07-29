@@ -1,20 +1,19 @@
 const _ = require('lodash');
 const debug = require('debug');
-const uuidv4 = require('uuid/v4');
+
 const crypto = require('crypto');
 
-const Minio = require('../../conn/minio');
 const {
-  User, State, ActionableState, GroupState, Shipment, Country, Package, Order, ShippingPreference,
+  User, State, ActionableState, GroupState, Shipment, Country, Package, ShippingPreference,
   ReferCode, LoyaltyPoint, LoyaltyHistory, Locker,
 } = require('../../conn/sqldb');
-const { MINIO_BUCKET } = require('../../config/environment');
 
 const log = debug('s.user.controller');
 const {
   LOYALTY_TYPE: {
-    CREDIT,
+    REWARD,
   },
+  STATE_TYPES,
 } = require('../../config/constants');
 
 exports.index = (req, res, next) => {
@@ -36,9 +35,6 @@ exports.index = (req, res, next) => {
       attributes: ['id'],
     }, {
       model: Package,
-      attributes: ['id'],
-    }, {
-      model: Order,
       attributes: ['id'],
     }, {
       model: Locker,
@@ -81,8 +77,9 @@ exports.index = (req, res, next) => {
 exports.me = (req, res, next) => {
   const options = {
     attributes: [
-      'id', 'salutation', 'first_name', 'last_name', 'email', 'alternate_email',
+      'id', 'salutation', 'first_name', 'last_name', 'email', 'alternate_email', 'group_id',
       'phone_code', 'phone', 'secondary_phone_code', 'secondary_phone', 'profile_photo_url',
+      'virtual_address_code', 'wallet_balance_amount',
     ],
     limit: Number(req.query.limit) || 20,
   };
@@ -98,28 +95,38 @@ exports.states = (req, res, next) => {
   State
     .findAll({
       attributes: ['id', 'name', 'parent_id', 'config'],
+      where: { type: STATE_TYPES[req.query.type] },
       include: [
         {
           model: State,
           as: 'Childs',
           attributes: [['id', 'state_id']],
+          where: {
+            type: STATE_TYPES[req.query.type],
+          },
           required: false,
         },
         {
           model: ActionableState,
           as: 'Actions',
-          where: { group_id: groupId },
+          where: {
+            group_id: groupId,
+            type: STATE_TYPES[req.query.type],
+          },
           attributes: [['child_id', 'state_id']],
           required: false,
         },
         { // for Hire: 2, Partner: 5, Others: 5(internal)
           model: GroupState,
-          where: { group_id: [2, 5, 15].includes(groupId) ? groupId : 4 },
+          // where: { group_id: [2, 5, 15].includes(groupId) ? groupId : 4 },
           attributes: ['name', 'description'],
           required: false,
         },
       ],
-      order: [['id', 'ASC'], [{ model: ActionableState, as: 'Actions' }, 'id', 'ASC']],
+      order: [
+        ['id', 'ASC'],
+        [{ model: ActionableState, as: 'Actions' }, 'id', 'ASC'],
+      ],
     })
     .then((stateList) => {
       const out = [];
@@ -134,6 +141,7 @@ exports.states = (req, res, next) => {
       });
 
       res.json(out);
+      // res.json([null, ...out.filter(x => x)]);
     })
     .catch(next);
 };
@@ -161,21 +169,6 @@ exports.show = (req, res, next) => {
         model: Country,
         attributes: ['id', 'name', 'iso2'],
       }, {
-        model: User,
-        as: 'ReferredUser',
-        attributes: ['id', 'name', 'salutation', 'first_name', 'last_name'],
-      }, {
-        model: Shipment,
-        attributes: ['id'],
-      }, {
-        model: Package,
-        attributes: ['id'],
-        required: false,
-      }, {
-        model: Order,
-        attributes: ['id'],
-        required: false,
-      }, {
         model: Locker,
         attributes: ['id', 'name', 'short_name', 'allocated_at'],
       }],
@@ -195,19 +188,6 @@ exports.update = (req, res, next) => {
   return User
     .update(req.body, { where: { id } })
     .then(({ id: Id }) => res.json({ id: Id }))
-    .catch(next);
-};
-
-exports.presignedUrl = (req, res, next) => {
-  const { filename } = req.query;
-  const now = new Date();
-  const object = `${now.getFullYear()}/${now.getMonth()}/${uuidv4()}.${filename.split('.').pop()}`;
-  return Minio
-    .uploadLink({
-      object,
-      bucket: MINIO_BUCKET,
-    })
-    .then(url => res.json({ object, url }))
     .catch(next);
 };
 
@@ -237,24 +217,26 @@ exports.submitRegister = async (req, res) => {
         where: { customer_id: customerId },
       };
       loyalPoints = 200;
-      const loyaltyPoint = {};
+      const loyaltyUpdate = {};
 
       await LoyaltyPoint
         .find(optionLoyalty)
-        .then((friendId) => {
-          loyaltyPoint.points = loyalPoints;
-          loyaltyPoint.total_points = friendId.total_points + loyalPoints;
+        .then((loyaltyPoint) => {
+          loyaltyUpdate.points = loyaltyPoint.points + loyalPoints;
+          loyaltyUpdate.total_points = loyaltyPoint.total_points + loyalPoints;
 
-          if (friendId.total_points < 1000) {
-            loyaltyPoint.level = 1;
-          } else if (friendId.total_points >= 1000 && friendId.total_points < 6000) {
-            loyaltyPoint.level = 2;
-          } else if (friendId.total_points >= 6000 && friendId.total_points < 26000) {
-            loyaltyPoint.level = 3;
-          } else if (friendId.total_points >= 26000) {
-            loyaltyPoint.level = 4;
+          if (loyaltyPoint.total_points < 1000) {
+            loyaltyUpdate.level = 1;
+          } else if (loyaltyPoint.total_points >= 1000 &&
+            loyaltyPoint.total_points < 6000) {
+            loyaltyUpdate.level = 2;
+          } else if (loyaltyPoint.total_points >= 6000 &&
+            loyaltyPoint.total_points < 26000) {
+            loyaltyUpdate.level = 3;
+          } else if (loyaltyPoint.total_points >= 26000) {
+            loyaltyUpdate.level = 4;
           }
-          friendId.update(loyaltyPoint);
+          loyaltyPoint.update(loyaltyUpdate);
         });
 
       // const friend = LoyaltyPoint
@@ -271,7 +253,7 @@ exports.submitRegister = async (req, res) => {
       loyaltyHistory.customer_id = refer.customer_id;
       loyaltyHistory.points = loyalPoints;
       loyaltyHistory.redeemed = new Date();
-      loyaltyHistory.type = CREDIT;
+      loyaltyHistory.type = REWARD;
       loyaltyHistory.description = 'Your friend signed up with the referral code that you sent';
       await LoyaltyHistory.create(loyaltyHistory);
 
@@ -355,7 +337,7 @@ exports.submitRegister = async (req, res) => {
   loyaltyHistory.customer_id = newCustomer.id;
   loyaltyHistory.points = loyalPoints;
   loyaltyHistory.redeemed = new Date();
-  loyaltyHistory.type = CREDIT;
+  loyaltyHistory.type = REWARD;
   loyaltyHistory.description = 'Signed up with the referral code that your friend sent';
   await LoyaltyHistory.create(loyaltyHistory);
 

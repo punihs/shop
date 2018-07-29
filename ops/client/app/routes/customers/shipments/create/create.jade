@@ -1,0 +1,294 @@
+div.m-t-xl.no-margin
+  .hbox#applicantNewdiv
+    customer-header.bg-white-only.w-full.b-b(customer="$ctrl.customer" style='position: fixed;z-index: 6;height: 40px;')
+    directive-header(
+      options="$ctrl"
+      buttons="{ buckets: false, view: $ctrl.shipment, viewShipments: true }"
+      App="App"
+    )
+    .m-t-lg
+    .wrapper-md.bg-white-only
+      div
+        .h1.m-l-md.font-thin.h3
+          | {{$ctrl.EDIT ? 'Edit' : 'Create'}} Shipment
+
+      form.form.form-validation.form-horizontal.wrapper-md(
+        name="newShipmentForm"
+        novalidate
+        ng-submit='$ctrl.create(newShipmentForm)'
+        autocomplete='off'
+      )
+        .row
+          .col-md-12.col-sm-12.col-xs-12
+            .col-md-7
+              .row(ng-if='$ctrl.EDIT')
+                .col-md-12
+                  .col-md-6.col-sm-5.col-xs-12.no-padder
+                    label.col-xs-12.input-group
+                      | Name
+                      span.text-danger *
+                      input.form.form-control(
+                      type='text'
+                      name='customer_name'
+                      placeholder='eg. Abhinav'
+                      ng-model='$ctrl.data.customer_name'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.customer_name.$dirty && newShipmentForm.customer_name.$invalid') Please enter Customer Name
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Phone
+                      span.text-danger *
+                      input.form.form-control(
+                      type='text'
+                      name='phone'
+                      placeholder='eg. 90000000000'
+                      ng-model='$ctrl.data.phone'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.phone.$dirty && newShipmentForm.phone.$invalid') Please enter Phone number
+              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
+              .row(ng-if='$ctrl.EDIT')
+                .col-md-12
+                  .col-md-12.col-sm-12.col-xs-12.no-padder
+                    label.col-xs-12.input-group
+                      | Address
+                      span.text-danger *
+                      input.form.form-control(
+                      type='text'
+                      name='address'
+                      placeholder='eg. xyz'
+                      ng-model='$ctrl.data.address'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.address.$dirty && newShipmentForm.address.$invalid') Please enter address
+              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
+              .row(ng-if='$ctrl.EDIT')
+                .col-md-12
+                  .col-md-6.col-sm-5.col-xs-12.no-padder
+                    label.col-xs-12.input-group
+                      | Item Count
+                      span.text-danger *
+                      input.form.form-control(
+                      type='text'
+                      name='packages_count'
+                      placeholder='eg. 1'
+                      ng-model='$ctrl.data.packages_count'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.packages_count.$dirty && newShipmentForm.packages_count.$invalid') Please enter packages count
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Weight
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='final_weight'
+                      placeholder='eg. 2'
+                      ng-model='$ctrl.data.final_weight'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.final_weight.$dirty && newShipmentForm.final_weight.$invalid') Please enter Weight
+              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
+              .row(ng-if='$ctrl.EDIT')
+                .col-md-12
+                  .col-md-4.col-sm-5.col-xs-12.no-padder
+                    label.col-xs-12.input-group
+                      | Actual weight
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='weight'
+                      placeholder='eg. 1'
+                      ng-model='$ctrl.data.weight'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.weight.$dirty && newShipmentForm.weight.$invalid') Please enter weight
+                  .col-md-4.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Volumetric Weight
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='volumetric_weight'
+                      placeholder='eg. 2'
+                      ng-model='$ctrl.data.volumetric_weight'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.volumetric_weight.$dirty && newShipmentForm.volumetric_weight.$invalid') Please enter volumetric weight
+                  .col-md-4.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Item Value
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='value_amount'
+                      placeholder='eg. 2000'
+                      ng-model='$ctrl.data.value_amount'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.value_amount.$dirty && newShipmentForm.value_amount.$invalid') Please enter value Amount
+
+              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
+              .row(ng-if='$ctrl.EDIT')
+                .col-md-12
+                  .col-md-6.col-sm-5.col-xs-12.no-padder
+                    label.col-xs-12.input-group
+                      | Sub Total
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='sub_total_amount'
+                      placeholder='eg. 1000'
+                      ng-model='$ctrl.data.sub_total_amount'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.sub_total_amount.$dirty && newShipmentForm.sub_total_amount.$invalid') Please enter Sub total Amount
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Country Discount
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='discount_amount'
+                      placeholder='eg. 200'
+                      ng-model='$ctrl.data.discount_amount'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.discount_amount.$dirty && newShipmentForm.discount_amount.$invalid') Please enter Discount Amount
+              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
+              .row(ng-if='$ctrl.EDIT')
+                .col-md-12
+                  .col-md-6.col-sm-5.col-xs-12.no-padder
+                    label.col-xs-12.input-group
+                      | Package Level charges
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='package_level_charges_amount'
+                      placeholder='eg. 1000'
+                      ng-model='$ctrl.data.package_level_charges_amount'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.package_level_charges_amount.$dirty && newShipmentForm.package_level_charges_amount.$invalid') Please enter package level charges
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Pickup charges
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='pick_up_charge_amount'
+                      placeholder='eg. 200'
+                      ng-model='$ctrl.data.pick_up_charge_amount'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.pick_up_charge_amount.$dirty && newShipmentForm.pick_up_charge_amount.$invalid') Please enter pick up charge
+              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
+              .row(ng-if='$ctrl.EDIT')
+                .col-md-12
+                  .col-md-6.col-sm-5.col-xs-12.no-padder
+                    label.col-xs-12.input-group
+                      | Estimated charges
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='estimated_amount'
+                      placeholder='eg. 1000'
+                      ng-model='$ctrl.data.estimated_amount'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.estimated_amount.$dirty && newShipmentForm.estimated_amount.$invalid') Please enter Estimated Amount
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Coupon Rewards
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='coupon_amount'
+                      placeholder='eg. 200'
+                      ng-model='$ctrl.data.coupon_amount'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.coupon_amount.$dirty && newShipmentForm.coupon_amount.$invalid') Please enter coupon Amount
+              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
+              .row(ng-if='$ctrl.EDIT')
+                .col-md-12
+                  .col-md-6.col-sm-5.col-xs-12.no-padder
+                    label.col-xs-12.input-group
+                      | Loyalty charges
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='loyalty_amount'
+                      placeholder='eg. 1000'
+                      ng-model='$ctrl.data.loyalty_amount'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.loyalty_amount.$dirty && newShipmentForm.loyalty_amount.$invalid') Please enter loyalty Amount
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Payment Gateway Fee
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      text=0
+                      name='payment_gateway_fee_amount'
+                      placeholder='eg. 200'
+                      ng-model='$ctrl.data.payment_gateway_fee_amount'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.payment_gateway_fee_amount.$dirty && newShipmentForm.payment_gateway_fee_amount.$invalid') Please enter payment gateway fee
+              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
+              .row(ng-if='$ctrl.EDIT')
+                .col-md-12
+                  .col-md-6.col-sm-5.col-xs-12.no-padder
+                    label.col-xs-12.input-group
+                      | wallet Amount Used
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='wallet_amount'
+                      placeholder='eg. 1000'
+                      ng-model='$ctrl.data.wallet_amount'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.wallet_amount.$dirty && newShipmentForm.wallet_amount.$invalid') Please enter wallet Amount
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Final Amount
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='final_amount'
+                      placeholder='eg. 200'
+                      ng-model='$ctrl.data.final_amount'
+                      required
+                      )
+
+              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
+              .row(ng-if='$ctrl.EDIT')
+                .col-md-12
+                  .col-md-6.col-sm-5.col-xs-12.no-padder
+                    label.col-xs-12.input-group
+                      | Shipment Type
+                      select.form.form-control(
+                      ng-model='$ctrl.data.shipment_type_id'
+                      name='shipment_type_id'
+                      ng-options='shipmentType.id as shipmentType.name for shipmentType in $ctrl.shipmentTypes'
+                      )
+              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
+              .row
+                  h4(ng-bind="$ctrl.error.message" style="color:red;")
+                  button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting || (!$ctrl.submitting && !newShipmentForm.$dirty)")
+                    span.fa.fa-forward.m-r-sm
+                    span.text-white(ng-if='!$ctrl.submitting') {{$ctrl.EDIT ? '' : 'Quick ' }} Update
+                    span(ng-if='$ctrl.submitting')
+                      i.fa.fa-spin.fa-circle-o-notch
+                      span.text-white &nbsp;&nbsp;Submitting...
+
+
+    .clearfix
+
+//div(ng-show='$ctrl.submitting')
+//  span(ng-include="'app/routes/jobs/cv-uploading/cv-uploading.html'")
+

@@ -1,0 +1,26 @@
+.pull-left.wrapper-sm.no-padder-top.truncate(title='{{$ctrl.job.client_name}} - {{$ctrl.job.role}} – {{$ctrl.job.job_location}}' style='max-width:255px;')
+  span.h4.text-info(ng-bind='$ctrl.job.qrex_client_name || $ctrl.job.client_name')
+  span.h4.text-info(ng-bind='" - "+ $ctrl.job.role')
+  span.h4(ng-bind='" - " + $ctrl.job.job_location')
+.pull-left.wrapper-sm
+  span.b-1x.b-r.b-l.b-ligth-dker
+.pull-left.wrapper-sm.no-padder-top.ng-binding(title='Salary range')
+  i.fa.fa-lg.fa-inr.text-light-dker
+  span.m-l-xs(ng-bind='$ctrl.job.min_sal')
+  span.m-l-xs –
+  span.m-l-xs(ng-bind='$ctrl.job.max_sal')
+  span Lakhs
+.pull-left.wrapper-sm.no-padder-top(title='Minumux/Maximum experience')
+  i.fa.fa-md.fa-line-chart.text-light-dker
+  span &nbsp;&nbsp;
+  span.m-l-xs(ng-bind='$ctrl.job.min_exp')
+  span.m-l-xs  -
+  span.m-l-xs(ng-bind='$ctrl.job.max_exp')
+  span Years
+.pull-left.wrapper-sm.no-padder-top(title='Total vacancy')
+  i.fa.fa-md.fa-users.text-light-dker
+  span &nbsp;&nbsp;Vacancy
+  span.m-l-xs(ng-bind='$ctrl.job.vacancy')
+.pull-left.wrapper-sm.no-padder-top(title='Job status')
+  span.b-a.rounded.text-success.b-success.bg-white-only(ng-if='!(job.job_status === "Closed")')
+    span.padder.h5(ng-bind='job.job_status === "Closed" ? "Closed" : "Open"')

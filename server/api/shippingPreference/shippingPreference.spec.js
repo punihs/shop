@@ -20,11 +20,13 @@ describe('put /api/shippingPreference update meta', () => {
     request(app)
       .put('/api/shippingPreference/1')
       .send({
-        standard_photo: 1,
-        scan_doc: 1,
-        pack_extra: 1,
+        is_basic_photo: true,
+        is_advanced_photo: true,
+        is_scan_document: true,
+        is_repacking: true,
+        is_sticker: false,
         max_weight: 1,
-        tax_id: 321321,
+        tax_id: '321321',
       })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)

@@ -89,6 +89,18 @@ Minio.agreementCompat = function agreementCompat(filePath) {
   return (filePath || '').replace('/home/gloryque/QDMS/', '');
 };
 
+Minio.streamToBuffer = (stream) => {
+  const streamPr = new Promise((resolve) => {
+    const buffers = [];
+    stream.on('data', buffer => buffers.push(buffer));
+    stream.on('end', () => {
+      const buffer = Buffer.concat(buffers);
+      return resolve(buffer);
+    });
+  });
+  return streamPr;
+};
+
 Minio.downloadLink = (minioObject, qualify = false) => {
   const minObj = minioObject;
   minObj.bucket = minObj.bucket || MINIO_BUCKET; // Bucket name always in lowercase

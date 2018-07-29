@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('./../../app');
-const { Package } = require('../../conn/sqldb');
+const { Package, PackageItem } = require('../../conn/sqldb');
 const auth = require('../../../logs/credentials');
 const opsAuth = require('../../../logs/ops-credentials');
 
@@ -32,8 +32,12 @@ describe('GET /api/packageItems/:id', () => {
 
 
 describe('POST /api/packageItem', () => {
-  before(async () => {
-    await Package.create({});
+  let pkg;
+  before((done) => {
+    Package.create({}).then((pack) => {
+      pkg = pack;
+      done();
+    });
   });
 
   it('save packageItem', (done) => {
@@ -41,7 +45,7 @@ describe('POST /api/packageItem', () => {
       .post('/api/packageItems')
       .send({
         name: 'kurtha2',
-        package_id: 1,
+        package_id: pkg.id,
         package_item_category_id: 9,
         quantity: 1,
         price_amount: 200,
@@ -58,41 +62,30 @@ describe('POST /api/packageItem', () => {
         done();
       });
   });
-});
 
-describe('POST /api/packageItem', () => {
-  before(async () => {
-    await Package.create({});
-  });
-
-  it('save packageItem', (done) => {
-    request(app)
-      .post('/api/packageItems')
-      .send({
-        name: 'kurtha2',
-        package_id: 2,
-        package_item_category_id: 9,
-        quantity: 1,
-        price_amount: 200,
-        confirmed_by: 1,
-        photo_file: {
-          filename: 'x.jpg',
-          base64: 'aGVsbG8=',
-        },
-      })
-      .set('Authorization', `Bearer ${opsAuth.access_token}`)
-      .expect('Content-Type', /json/)
-      .expect(201)
-      .then(() => {
-        done();
-      });
+  after((done) => {
+    PackageItem
+      .destroy({ force: true, where: { package_id: pkg.id } })
+      .then(() => pkg
+        .destroy({ force: true })
+        .then(() => {
+          done();
+        }));
   });
 });
 
 describe('PUT /api/packageItem update meta', () => {
+  let pkg;
+  before((done) => {
+    Package.create({}).then((pack) => {
+      pkg = pack;
+      done();
+    });
+  });
+
   it('PUT packageItem', (done) => {
     request(app)
-      .put('/api/packageItems/1/meta')
+      .put('/api/packageItems/1')
       .send({
         name: 'mobile',
         package_item_category_id: 7,
@@ -106,25 +99,30 @@ describe('PUT /api/packageItem update meta', () => {
         done();
       });
   });
-});
 
-describe('Destroy /api/packageItem update meta', () => {
-  it('Destroy destroy packageItem', (done) => {
-    request(app)
-      .delete('/api/packageItems/1')
-      .set('Authorization', `Bearer ${opsAuth.access_token}`)
-      .expect('Content-Type', /json/)
-      .expect(200)
-      .then(() => {
-        done();
-      });
+  after((done) => {
+    PackageItem
+      .destroy({ force: true, where: { package_id: pkg.id } })
+      .then(() => pkg
+        .destroy({ force: true })
+        .then(() => {
+          done();
+        }));
   });
 });
 
-describe('PUT /api/packageItem update image to null', () => {
-  it('PUT packageItem/2/image', (done) => {
+describe('Destroy /api/packageItem', () => {
+  let pkg;
+  before((done) => {
+    Package.create({}).then((pack) => {
+      pkg = pack;
+      done();
+    });
+  });
+
+  it('Destroy packageItem', (done) => {
     request(app)
-      .put('/api/packageItems/2/image')
+      .delete(`/api/packageItems/${pkg.id}`)
       .set('Authorization', `Bearer ${opsAuth.access_token}`)
       .expect('Content-Type', /json/)
       .expect(200)

@@ -1,0 +1,108 @@
+div.bg-white.lter.page-profile(ng-init="App.fullPage=true")
+  div(ng-if='!$ctrl.showConfirm' style="position: relative")
+    div.col-sm-4.hidden-xs.thumbnail.fixed(style="background: url(assets/images/new_user.svg) top center / 60% 60% no-repeat #D4E0EB ; background-position: right 50% top 50%; height: 100%;" ng-hide="TermsAndConditions.flag")
+    div.col-sm-8.col-sm-offset-4.bg-white(style="background-color: #fff; height: 100%; position: fixed; overflow-y: scroll;")
+      form.form.form-validation(name='profileDetail' ng-submit="$ctrl.update()")
+        div.col-sm-offset-1.col-sm-11(style='padding-top: 4%')
+          h1.text-black(style='border-bottom: 1 px;') Complete your
+            b.text-bold(style='color: green; font-weight: 600') &nbsp;Profile
+          hr(style='width: 100%;')
+          .row
+            .col-md-6.col-sm-6.col-xs-6
+              label.col-xs-12.input-group.text-black
+                | Name
+                input.form-control(type='text' placeholder='eg. First name' ng-model='$ctrl.data.firstname' q-text-maxlength="60"  autofocus)
+            .col-md-6.col-sm-6.col-xs-6
+              label.col-xs-12.input-group.text-black
+                | &nbsp;
+                input.form-control(type='text' placeholder='eg. Last name' ng-model='$ctrl.data.lastname' q-text-maxlength="60")
+          br
+          .row
+            .col-md-12.col-sm-12.col-xs-12
+              label.col-xs-12.input-group.text-black
+                | Display Name
+                input.form-control(type='text' placeholder='eg. Display Name' ng-model='$ctrl.data.name' q-text-maxlength="60")
+          h2.text-black(style='border-bottom: 1 px;') Contact Details
+          h4.text-black.newLabel Work
+          hr(style='width: 100%;')
+          .row
+            .col-xs-6
+              label.col-xs-12.input-group.text-black
+                | Email Id
+                input.form-control(type='email' placeholder='eg. xyz@domain.com' ng-model='$ctrl.data.email_id' q-text-maxlength="60"  autofocus  )
+            .col-xs-6
+              label.col-xs-12.input-group.text-black
+                | Mobile Number
+                input.form-control(type='text' placeholder='eg. 98xxxxxx00' ng-model='$ctrl.data.number' ng-pattern='/^[1-9]\\d{9}$/' required )
+          br
+          h4.text-black.newLabel Personal
+            hr(style='width: 100%;')
+            .row
+              .col-xs-6
+                label.col-xs-12.input-group.text-black
+                  | Email Id
+                  input.form-control(type='email' placeholder='eg. xyz@domain.com' ng-model='$ctrl.data.additional_email_id' ng-pattern='/^[1-9]\\d{9}$/')
+              .col-xs-6
+                label.col-xs-12.input-group.text-black
+                  | WhatsApp Mobile Number
+                  i.fa.fa-question-circle.m-l-sm.pointer(
+                  uib-tooltip="Required for Clients to directly contact you"
+                  tooltip-placement='top'
+                  tooltip-append-to-body='true'
+                  )
+                  input.form-control(type='text'  placeholder='eg. 98xxxxxx00' ng-pattern='/^[1-9]\\d{9}$/' ng-model='$ctrl.data.additional_number')
+            .no-padder
+              .hbox
+                .col.thumb-xxs.v-middle
+                  i.fa.fa-exclamation-circle.text-gray
+                .col
+                  span(style='font-size: 12px;') Don't worry, we won't spam you!
+                  br
+                  span(style='font-size: 12px;') We'll send you your account details here in case you forgot.
+
+          .row
+          br
+          button.btn.btn-success.m-t-xs(type='submit') Proceed
+          div.m-b-lg
+          div.m-b-lg
+          br
+          br
+  div(ng-if='$ctrl.showConfirm' style="position: relative")
+    div.col-sm-4.hidden-xs.thumbnail.fixed(style="background: url(assets/images/lock.svg) top center / 40% 40% no-repeat #D5ECE4; background-position: right 50% top 45%; height: 100%;" ng-hide="TermsAndConditions.flag")
+    div.col-sm-8.col-sm-offset-4.bg-white(style="background-color: #fff; height: 100%; position: fixed; overflow-y: scroll;")
+      .div.col-sm-offset-1.col-sm-11(style='padding-top:23%')
+        h1
+          b.text-bold.text-black.text-success OTP
+        .row
+          .col-md-6.col-sm-6.col-xs-6
+            input.form.form-control(type='text' placeholder='6-digit OTP' ng-model='$ctrl.otp' q-text-maxlength="60"  autofocus  )
+        br
+        .col-sm-12.no-padder
+          .hbox
+            .col.thumb-xxs.v-middle
+              i.fa.fa-exclamation-circle.fa-2x.fa-reverse.text-gray &nbsp;
+            .col
+              span.text-black(style='font-size: 15px;') Enter the OTP sent to your registered office number {{$ctrl.data.number}}
+          .hbox
+            .col.thumb-xxs.v-middle
+
+            .col
+              a.text-info(ng-if='!$ctrl.showLink' ng-click='$ctrl.resentOtp($ctrl.data.number)' style='text') Resend OTP
+        .row
+        br
+        .alert.alert-success.alert-dismissible.fade.in(ng-if='$ctrl.message' role='alert')
+          button.close(type='button', data-dismiss='alert', ng-click="$ctrl.message = ''" aria-label='Close')
+            span(aria-hidden='true') &times;
+          strong {{$ctrl.message}}
+
+        div.row
+          div.col-sm-1
+            a.btn.btn-default(ng-click='$ctrl.showConfirm=!$ctrl.showConfirm') Back
+          div.col-sm-2
+            button.btn.btn-success(type='button' ng-click='$ctrl.verifyNumber($ctrl.otp)') Proceed
+          div.col-sm-2
+            a.btn(type='button' ui-sref="customers.list({status: 'New'})") Skip the step
+        div.m-b-lg
+        div.m-b-lg
+        br
+        br

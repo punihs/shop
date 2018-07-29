@@ -1,0 +1,23 @@
+//- list
+ul.nav.navbar-nav.navbar-left
+  li.hidden-folded.padder.m-t.m-b-sm.text-muted.text-xs Navigation
+  li.nav-menu-item(ui-sref-active='active'): a.hv(ui-sref='dashboard')
+    i.fa.fa-dashboard.text-white
+    span DASHBOARD
+  li.hide.nav-menu-item(ui-sref-active='active' uib-dropdown)
+    a.hv(uib-dropdown-toggle ui-sref='orders.list({status: "All"})')
+      i.fa.fa-list-alt.text-white
+      span ORDERS
+  li.nav-menu-item(ui-sref-active='active' uib-dropdown)
+    a.hv(uib-dropdown-toggle ui-sref='customers.list({status: "All"})')
+      i.fa.fa-list-alt.text-white
+      span CUSTOMERS
+  li.nav-menu-item(ui-sref-active='active' uib-dropdown)
+    a.hv(uib-dropdown-toggle ui-sref='shipments.index({status: "All"})')
+      i.fa.fa-list-alt.text-white
+      span SHIPMENTS
+
+  li.nav-menu-item(ui-sref-active='active'): a.hv(ui-sref='packages.index({status: "All"})')
+    i.fa.fa-users.text-white
+    span PACKAGES
+

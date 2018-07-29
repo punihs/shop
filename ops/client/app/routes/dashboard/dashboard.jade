@@ -1,0 +1,100 @@
+.dashboard
+  .hbox
+    .col-md-12.no-padder
+      .bg-light
+        .col-md-3.col-sm-3.padder.p-t-md
+          .col-md-12.no-padder.bg-white-only(ng-style='{"height": ( App.app.settings.isAdmin ? "87vh" : "92vh")}')
+            .bg-light.lter.b-b
+              .col-xs-12.col-md-12.text-center(style='padding-top: 20px;')
+                h1.m-n.text-info
+                  img(src='assets/images/user_icon.svg' width='30%')
+              .col-sm-12.col-xs-12.h3.text-center.text-primary-dker Hi, {{$ctrl.user.name}}
+              .col-xs-12.col-md-12.b-b.padder-v.wrapper-sm
+                .col-md-9.no-padder
+                  .col-md-12.no-padder
+                    .col-md-7.no-padder
+                      .text-gray(style='padding-bottom : 2px;') Screening Ratio
+                    .col-md-5.no-padder
+                      .inline.m-l-sm.m-r-sm.text-lg(
+                        style='height: 8px;width: 8px;\
+                        background: rgb({{$ctrl.calculateRGBColor($ctrl.summary.screeningRatio, true)}})\
+                      ')
+                      span.text-black(ng-bind='$ctrl.summary.screeningRatio+"%"')
+                  .col-md-12.no-padder
+                    .col-md-7.no-padder
+                      .text-gray(style='padding-bottom : 2px;') Shortlisting Ratio
+                    .col-md-5.no-padder
+                      .inline.m-l-sm.m-r-sm(
+                        style='height: 8px;width: 8px;\
+                        background: rgb({{$ctrl.calculateRGBColor($ctrl.summary.shortlistingRatio, true)}})\
+                      ')
+                      span.text-black(ng-bind='$ctrl.summary.shortlistingRatio+"%"')
+                  .col-md-12.no-padder(ng-show='!$ctrl.summary.newClient')
+                    .col-md-7.no-padder
+                      .text-gray(style='padding-bottom : 2px;') Global Rating
+                    .col-md-5.no-padder
+                      .inline.m-l-sm.m-r-sm(
+                        style='height: 8px;width: 8px;\
+                        background: rgb({{$ctrl.calculateRGBColor($ctrl.summary.rating.toFixed(1))}})\
+                      ')
+                      span.text-black(ng-bind='($ctrl.summary.rating.toFixed(1) || 1)')
+                .col-md-3.no-padder.text-center(ng-if='!$ctrl.summary.newClient')
+                  a.w-full(
+                    uib-tooltip="{{$ctrl.medal.list[$ctrl.medal.type].comment}}"
+                    tooltip-placement='bottom'
+                    tooltip-append-to-body='true'
+                  )
+                    img.no-padder.thumb-sm(data-ng-src='{{$ctrl.medal.list[$ctrl.medal.type].icon}}')
+                    .w-full(ng-bind='$ctrl.medal.list[$ctrl.medal.type].name')
+              .col-sm-12.col-xs-12.padder-v.text-center.text-primary-lter.h5 Here are your actions for the day
+              .col-sm-12.m-b-sm(ng-repeat="item in $ctrl.stateTiles")
+                a.b-a.wrapper-sm.btn-block.btn-group-justified(ui-sref='packages.index({status: "All", sid: item.id})' ng-class='{"btn-info text-white": item.count }' target='_blank')
+                  .h5.pull-left.text-left.text-ellipsis(ng-bind='$ctrl.states[item.id].action' style='width:200px')
+                  .h5.pull-right(ng-bind='item.count')
+
+        .col-md-9.col-sm-9.padder.p-t-md.no-padder-left
+          .col-sm-12.no-padder.h2.m-t-sm.m-b-sm.text-primary(style='font-size:22px;') Overview {{this.seletedTile}}
+          .col-sm-12.m-b-sm.bg-white
+              .col-sm-2.no-padder
+                .col-sm-12.p-t-md.p-b-md.padder.text-gray
+                  .pointer.inline(ng-click='$ctrl.getTilesData($ctrl.stageTiles[0].id, 0, true)' ng-class='{"text-primary": $ctrl.seletedTile === 0}')
+                    .panel-title(ng-bind='$ctrl.stageTiles[0].title' style='height:38px;')
+                    h1.text-uppercase(ng-bind='$ctrl.stageTiles[0].count')
+              .col-sm-10.no-padder
+                .col-sm-2.p-t-md.p-b-md.padder.text-gray(ng-repeat="(key, item) in $ctrl.stageTiles" ng-if="key !== 0")
+                  .pointer.inline(ng-click='$ctrl.getTilesData(item.id, key, true)' ng-class='{"text-primary": $ctrl.seletedTile === key}')
+                    .panel-title(ng-bind='item.title' style='height:38px;')
+                    h1.text-uppercase(ng-bind='item.count')
+
+          .col-sm-12.m-t-xs.no-padder
+            .no-padder.col-md-12
+              .panel.panel-default.card-height
+                .panel-heading(style='background: #fff')
+                  .text-blue.h4(ng-bind='$ctrl.stageTiles[$ctrl.seletedTile].title')
+                .panel-body.responsive-table.no-padder(ng-style='{"max-height": ( App.app.settings.isAdmin ? "54vh" : "59vh")}' style='overflow: auto;overflow-x:hidden')
+                  div.m-t-md.m-b-sm.wrapper-lg.lter(ng-if='!$ctrl.summary.candidateData.length', style='color: #aaa')
+                    div.text-center
+                      i.fa.fa-smile-o.fa-3x
+                    h5.text-center You have no candidates currently in this stage.
+                  table.table.m-b-none.text-gray(ng-if='$ctrl.summary.candidateData.length')
+                    thead
+                      tr
+                        th.col-xs-3 Candidate Name
+                        th.col-xs-2 Client Name
+                        th.col-xs-3 Position
+                        th.col-xs-2 Status
+                        th.col-xs-2(ng-show='App.app.settings.isAdmin') Candidate Owner
+                    tbody
+                      tr(ng-class="$last ?'':'b-b'" ng-repeat='applicant in $ctrl.summary.candidateData')
+                        td: a.w-sm.text-ellipsis(ui-sref='applicant.view({applicantId: applicant.id})' ng-bind="applicant.name" target="_blank")
+                        td: .w-sm.text-ellipsis(ng-bind='applicant._root_.client_name')
+                        td: .w-sm.text-ellipsis(ng-bind='applicant._root_.role')
+                        td: .w-sm.text-ellipsis(ng-bind='$ctrl.states[applicant.state_id].action')
+                        td: .w-sm.text-ellipsis(ng-bind='applicant.owner_name' ng-show='App.app.settings.isAdmin')
+                  .col-xs-12.text-center.m-b-sm.m-t-sm
+                    a.btn.active.m-t-xs(ng-if="$ctrl.ui.loading")
+                      i.fa.fa-circle-o-notch.fa-spin
+                      strong &nbsp;Loading
+                    a.btn.btn-primary.m-t-xs(ng-if="$ctrl.ui.lazyLoad" ng-click="$ctrl.getTilesData($ctrl.stageTiles[$ctrl.seletedTile].id, $ctrl.seletedTile)")
+                      i.fa.fa-plus-circle
+                      strong &nbsp;Load More

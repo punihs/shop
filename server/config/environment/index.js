@@ -8,9 +8,9 @@ const IS_DEV = env.NODE_ENV === 'development';
 
 const config = {
   all: {
-    env: process.env.NODE_ENV,
-    port: process.env.PORT || 5000,
-    ip: process.env.IP || '0.0.0.0',
+    env: env.NODE_ENV,
+    port: env.PORT || 5000,
+    ip: env.IP || '0.0.0.0',
     root,
     URLS_MEMBER: `${env.PREFIX}member.${env.DOMAIN}`,
     URLS_WWW: `${env.PREFIX}www.${env.DOMAIN}`,
@@ -21,6 +21,10 @@ const config = {
         client_id: '569763436942-abu23ni3ethv0n64mscbdihm1518t0pd.apps.googleusercontent.com',
         client_secret: 'EX9E5-vBMf5z6mJwAywlCSMe',
       },
+    },
+    paytm: {
+      MID: 'INDLLP22228431438570',
+      KEY: 'r&Xd973ZIk43rWzq',
     },
   },
   development: {

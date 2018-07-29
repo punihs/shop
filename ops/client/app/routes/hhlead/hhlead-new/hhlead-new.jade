@@ -1,0 +1,112 @@
+.container
+  .m-t-xxl.hidden-xs(style='height: 20px;')
+  .row
+    .col-xs-12.no-padder(ng-repeat='(key, value) in $ctrl.ui.alerts' ng-if='$ctrl.ui.alerts[key]')
+      .hbox.wrapper-xs.r-2x.text-white(class='{{$ctrl.ui.colors[key]}}')
+        .col.thumb-sm
+          i.fa.fa-2x.m-l-sm.m-t-xs(class='{{$ctrl.ui.logos[key]}}')
+        .col-xs-11.text-lg
+          h4.m-t-sm(ng-bind='value')
+        .col.thumb-xs
+          i.fa.fa-times.m-t-sm.fa-lg.pointer(ng-click='$ctrl.ui.alerts[key] = "" ;')
+  .row
+    .col-xs-12.col-md-12.col-sm-12.bg-white-only.m-t
+      form.form-validation.form.form-horizontal.padder.m-b-sm( name="leadsForm" ng-submit='$ctrl.create(leadsForm)' novalidate)
+        .row
+          img.m-t-n-sm.thumb-sm(src='/assets/images/hh-services.svg')
+          .inline.h3.text-primary.dker.wrapper-sm.font-bold HeadHonchos Services
+        .row
+          .col-xs-9.m-b-sm
+            a.text-primary(href='https://www.headhonchos.com' target='_blank') HeadHonchos.com&nbsp;
+            span which is now part of ShoppRe, helps candidates grow their careers by the following services. When you recommend candidates for these services, HeadHonchos will help them out and you will earn revenue share for generating leads.
+          .col-xs-3.no-padder.text-right
+              a.text-primary.pointer.text-u-l(style='margin-right: 14px;' target='_blank' ng-href='{{$ctrl.URLS.HELP}}/knowledge-base/candidate-services-lead-payout/') Payout for Successful Leads
+        .b-b.m-b
+        .row
+          .col-md-6.col-sm-6.col-xs-12
+            label.col-xs-12.input-group
+              | First Name
+              span.text-danger *
+              input.form.form-control(
+                ng-model='$ctrl.data.first_name'
+                type='text'
+                name="first_name"
+                placeholder='eg. John'
+                required
+                maxlength='50'
+                ng-pattern="/[a-z \']$/i"
+              )
+              .text-danger(ng-show='leadsForm.first_name.$dirty && leadsForm.first_name.$invalid')
+                span First Name must be alphabets only
+          .col-md-6.col-sm-6.col-xs-12
+            label.col-xs-12.input-group
+              | Last Name
+              span.text-danger *
+              input.form.form-control(
+                type='text'
+                name="last_name"
+                ng-model="$ctrl.data.last_name"
+                placeholder='eg. Dove'
+                required
+                maxlength='50'
+                ng-pattern="/[a-z \']$/i"
+              )
+              .text-danger(ng-show='leadsForm.last_name.$dirty && leadsForm.last_name.$invalid')
+                span Last Name must not be empty and must be alphabets only
+
+        .row.m-t-md
+          .col-md-6.col-sm-6.col-xs-12
+            label.col-xs-12.input-group
+              | Email Id
+              span.text-danger *
+              input.form.form-control(
+                type='email'
+                ng-model='$ctrl.data.email'
+                name="email"
+                placeholder='eg. john.dove@gmail.com'
+                required
+              )
+              .text-danger(ng-show='leadsForm.email.$dirty && leadsForm.email.$invalid')
+                span Please enter a valid email
+          .col-md-6.col-sm-6.col-xs-12
+            label.col-xs-12.input-group
+              | Mobile Number
+              span.text-danger *
+              input.form.form-control(
+                type='text'
+                name="mobile"
+                placeholder='eg. 10 Digit Mobile Number'
+                ng-model='$ctrl.data.mobile'
+                maxlength='10'
+                ng-pattern='/[0-9]{10}$/'
+                required
+              )
+              .text-danger(ng-show='leadsForm.mobile.$dirty && leadsForm.mobile.$invalid')
+                span Mobile must be a 10 digit number
+        .m-t-md(style='height: 10px;')
+        .row
+          .col-xs-12
+            span.text-primary Services&nbsp;
+            em (atleast one)
+            span.text-danger *
+        .row.wrapper-sm
+          .col-xs-12.col-sm-4.col-md-4.checkbox(ng-repeat='service in $ctrl.services')
+            label.i-checks.i-checks-sm
+              input(
+                type='checkbox'
+                ng-model='service.checked'
+                ng-change='$ctrl.selectService(service)'
+              )
+              i
+              .inline(ng-bind='service.name')
+        .row.wrapper-xs(ng-if='$ctrl.is_other')
+          label.col-xs-12 Other
+            span.text-danger *
+            input.form-control(type='text' placeholder='Any other service' ng-model='$ctrl.ui.other' required)
+        .row.wrapper-sm
+          .col-xs-12.text-center
+            button.btn.btn-success(ng-disabled='leadsForm.$invalid || !$ctrl.data.services.length || $ctrl.loading')
+              span(ng-if='$ctrl.loading')
+                i.fa.fa-circle-o-notch.fa-spin.m-r-xs
+              span(ng-if='$ctrl.loading') SUBMITTING....
+              span(ng-if='!$ctrl.loading') SUBMIT

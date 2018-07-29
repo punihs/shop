@@ -1,0 +1,270 @@
+//- hide admin view
+div(ng-init='App.app.settings.isAdmin = false')
+.wrapper-xs.b-b.clear.bg-light(ng-if='App.$stateParams.jobId || App.$stateParams.id')
+  a.wrapper-xs.h4.b-b(ng-href='/extension/chrome/applicants/new')
+    i.text-light.fa.fa-chevron-circle-left
+    span.text-light.m-l-xs Back
+
+div.text-center.m-t-md(ng-if='App.$stateParams.id')
+  i.fa.fa-2x.fa-thumbs-up(style='color: green;')
+  .text-muted.h4.wrapper-md(style='color:#58666e;') CV Uploaded Successfully
+  a.wrapper-sm.text-center(ui-sref='applicant({ applicantId: App.$stateParams.id })' target="_blank" ng-click='$ctrl.openApplicant(App.$stateParams.id);')
+    button.padder.btn.btn-primary.btn-md(type='button')
+      span.text-md.padder View CV
+      .ripples.buttonRipples: span.ripplesCircle
+
+.hbox(style='background: #f9f9f9;' ng-if='!App.$stateParams.id')
+  ext-jobs-nav(ng-if='!App.$stateParams.jobId')
+  div(ng-if='App.$stateParams.jobId')
+    .m-t-xs.m-l-sm.m-r-xs
+      .text-lg.text-light(ng-bind='$ctrl.job.client_name')
+      div.clear
+        .pull-left.no-padder.wrapper-sm.no-padder-top.truncate(
+          title='{{$ctrl.job.role}} - {{$ctrl.job.job_location}}'
+          style='max-width:475px;'
+        )
+          span.text-lg.text-dark(ng-bind='$ctrl.job.role')
+          span.m-l-xs.m-r-xs -
+          span.text-lg.text-muted(ng-bind='$ctrl.job.job_location')
+    .clearfix.m-l-sm.m-r-xs
+      .pull-left.wrapper-sm.no-padder-top.no-padder-left(title='Salary range')
+        i.fa.fa-lg.fa-inr.text-light-dker
+        span.m-l-xs(ng-bind='$ctrl.job.min_sal')
+        span.m-l-xs.m-r-xs –
+        span(ng-bind='$ctrl.job.max_sal')
+        span.m-l-xs Lakhs
+      .pull-left.wrapper-sm.no-padder-top(title='Minumux/Maximum experience')
+        i.fa.fa-md.fa-line-chart.text-light-dker
+        span.m-l-xs(ng-bind='$ctrl.job.min_exp')
+        span.m-l-xs.m-r-xs -
+        span(ng-bind='$ctrl.job.max_exp')
+        span.m-l-xs Years
+      .pull-left.wrapper-sm.no-padder-top.no-padder-right(title='Total vacancy')
+        i.fa.fa-md.fa-users.text-light-dker
+        span.m-l-xs  Vacancy
+        span.m-l-xs(ng-bind='$ctrl.job.vacancy')
+    .b-b.m-t-xs.m-b-xs
+    form.form.form-validation.form-horizontal.wrapper-sm(
+      name="uploadCVForm"
+      novalidate
+      ng-submit='$ctrl.create(null,uploadCVForm)'
+    )
+      div.clearfix
+        .alert-danger.wrapper-xs(ng-show='$ctrl.error', ng-bind='$ctrl.error')
+        .alert-success.wrapper-xs(ng-show='$ctrl.success', ng-bind='$ctrl.success')
+      .h3.text-info
+        span.pull-left Upload CV
+        .pull-right.m-t-n-xs.no-padder-top.no-padder-left(title='Send JD')
+          a.btn.btn-default(ng-click='$ctrl.sendJD($ctrl.data, $ctrl.job.id);') Send JD
+      .w-full.m-t-sm
+        label.w-full.input-group(ng-if='$ctrl.job.is_drive')
+          span Interview Date
+          span.text-danger *
+          input.form.form-control(
+            type='text'
+            name='scheduled_on_date'
+            placeholder='eg: 20-May-2017'
+            datepicker-options='$ctrl.dateOptions'
+            uib-datepicker-popup='dd-MMMM-yyyy'
+            ng-model='$ctrl.data.scheduled_on'
+            ng-change='$ctrl.setScheduledOn()'
+            is-open='$ctrl.ui.scheduledOn'
+            close-text='Close'
+            ng-click='$ctrl.ui.scheduledOn = true'
+            required
+            )
+        .w-full
+          .hbox
+            label.col
+              | Candidate Name
+              span.text-danger *
+              input.form.form-control(type='text' name="name" placeholder='eg. Candidate Name'
+              ng-model='$ctrl.data.name' q-text-maxlength="60"   q-pattern='[^a-zA-Z. ]*'
+              autofocus required )
+              span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && uploadCVForm.name.$dirty && uploadCVForm.name.$invalid') Please enter candidate name
+          .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+          .row
+            .col-md-6.col-sm-6.col-xs-12
+              div.hbox
+                label.col
+                  span Email Address
+                  span.text-danger *
+                  input.form.form-control(type='email' name="email_id" placeholder='eg. Email'
+                  ng-model='$ctrl.data.email_id' q-text-maxlength="60"
+                  q-applicant-job-unique='email~{{$ctrl.job.id}}~{{$ctrl.prescreen}}'
+                  ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/"
+                  ucf-lowercase required)
+                  span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && uploadCVForm.email_id.$dirty && uploadCVForm.email_id.$invalid && !uploadCVForm.email_id.$error.unique') Please enter valid email address
+                  span.wrapper-xs.text-xs.text-danger(ng-show='uploadCVForm.email_id.$error.unique') with this email, Someone already applied.
+            .col-md-6.col-sm-6.col-xs-12
+              div.hbox
+                label.col
+                  | Mobile Number
+                  span.text-danger *
+                  input.form.form-control(
+                  type='number'
+                  name='number'
+                  placeholder='eg. 10 Digit Mobile Number'
+                  ng-model='$ctrl.data.number'
+                  q-applicant-job-unique='number~{{$ctrl.job.id}}~{{$ctrl.prescreen}}~{{$ctrl.data.scheduled_on.toISOString()}}'
+                  ng-pattern='/^[1-9]\\d{9}$/'
+                  required
+                  )
+                  span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && uploadCVForm.number.$dirty && uploadCVForm.number.$invalid && !uploadCVForm.number.$error.unique') Please enter valid mobile number
+                  span.wrapper-xs.text-xs.text-danger(ng-show='uploadCVForm.number.$error.unique') with this number, Someone already applied.
+          .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+          .row
+            .col-md-6.col-sm-6.col-xs-12
+              .hbox
+                label.col
+                  | Current Designation
+                  span.text-danger *
+                  input.form-control(type='text' name='designation_id' ng-model='$ctrl.Designations.model'
+                  q-text-maxlength="60" placeholder='Designation'
+                  uib-typeahead='designation for designation in $ctrl.Designations.get($viewValue)'
+                  typeahead-loading='$ctrl.Designations.loadingDesignations'
+                  typeahead-no-results='$ctrl.Designations.noResults'
+                  typeahead-on-select='$ctrl.Designations.create($item)'
+                  ng-blur="$ctrl.Designations.blur()"
+                  typeahead-wait-ms="10" autocomplete="off"  ucf_sentence required)
+                  span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && uploadCVForm.designation_id.$dirty && uploadCVForm.designation_id.$invalid') Please select current designation
+                  i.fa.fa-refresh.fa-spin(ng-show='$ctrl.Designations.loadingDesignations')
+            .col-md-6.col-sm-6.col-xs-12
+              .hbox
+                label.col
+                  | Current Employer
+                  span.text-danger *
+                  input.form-control(type='text' name="employer_id" ng-model='$ctrl.Employers.model' typeahead-focus-on-select="false"
+                  q-text-maxlength="60" placeholder='Current Employer'
+                  uib-typeahead='employer.name for employer in $ctrl.Employers.get($viewValue)'
+                  typeahead-loading='$ctrl.Employers.loadingEmployers'
+                  typeahead-no-results='$ctrl.Employers.noResults'
+                  typeahead-on-select='$ctrl.Employers.select($item)'
+                  ng-blur="$ctrl.Employers.blur()"
+                  typeahead-wait-ms="10" autocomplete="off"  ucf_sentence required)
+                  span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && uploadCVForm.employer_id.$dirty && uploadCVForm.employer_id.$invalid') Please select current employer
+                  i.fa.fa-refresh.fa-spin(ng-show='$ctrl.Employers.loadingEmployers')
+          .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+          .row
+            .col-md-6.col-xs-12
+              .hbox
+                label.col
+                  | Current CTC(Lakh)
+                  span.text-danger *
+                  input.form.form-control(type='number' name="salary" placeholder='eg. 3.25'
+                  ng-model='$ctrl.data.salary' q-float-maxlength="6" max="999" min="0" required)
+                  span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && uploadCVForm.salary.$dirty && uploadCVForm.salary.$invalid') Please enter current ctc
+            .col-md-6.col-sm-6.col-xs-12
+              .hbox
+                label.col
+                  | Expected CTC(Lakh)
+                  span.text-danger *
+                  input.form.form-control(type='number' name="expected_ctc" placeholder='eg. 5.62'
+                  ng-model='$ctrl.data.expected_ctc' q-float-maxlength="6" max="999" min="0" required)
+                  span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && uploadCVForm.expected_ctc.$dirty && uploadCVForm.expected_ctc.$invalid') Please enter expected ctc
+          .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+          .row
+            .col-md-6.col-sm-6.col-xs-12
+              .hbox
+                label.col
+                  | Notice Period(in Days)
+                  span.text-danger *
+                  input.form.form-control(type='number' name="notice_period" placeholder='eg. 90'
+                  ng-model='$ctrl.data.notice_period' q-maxlength="3" max="365" min="0" required)
+                  span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && uploadCVForm.notice_period.$dirty && uploadCVForm.notice_period.$invalid') Please enter notice period
+            .col-md-6.col-sm-6.col-xs-12
+              .hbox
+                label.col
+                  div
+                    span Candidate Total Experience
+                    span.text-danger *
+                    .hide {{ $ctrl.data.total_exp = ( $ctrl.data.total_exp_y - 0) + (($ctrl.data.total_exp_m? ($ctrl.data.total_exp_m / 100):0) -0)}}
+                  input(type="hidden" ng-model="$ctrl.data.total_exp" required)
+                  div(style="width:48%;display:inline-block")
+                    input.form-control(type='text' name="total_exp_y" placeholder='Years'
+                    ng-model='$ctrl.data.total_exp_y' q-maxlength="2" max="99" required)
+                  div.pull-right(style="width:48%;display:inline-block")
+                    input.form-control(type='number' name="total_exp_m" placeholder='Months'
+                    ng-model='$ctrl.data.total_exp_m' q-maxlength="2" max="11" min="0" required)
+          .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+          .row
+            .col-md-6.col-sm-6.col-xs-12
+              .hbox
+                label.col
+                  | Highest Qualification
+                  span.text-danger *
+                  input.form-control(type='text' name="degree_id" ng-model='$ctrl.Degrees.model' q-text-maxlength="60"
+                  placeholder='Degree' uib-typeahead='degree for degree in $ctrl.Degrees.get($viewValue)'
+                  typeahead-loading='$ctrl.Degrees.loadingDegrees'
+                  typeahead-no-results='$ctrl.Degrees.noResults'
+                  typeahead-on-select='$ctrl.Degrees.create($item)'
+                  ng-blur="$ctrl.Degrees.blur()"
+                  typeahead-wait-ms="10" autocomplete="off" ucf_sentence required)
+                  span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && uploadCVForm.degree_id.$dirty && uploadCVForm.degree_id.$invalid') Please select highest degree
+                  i.fa.fa-refresh.fa-spin(ng-show='$ctrl.Degrees.loadingDegrees')
+            .col-md-6.col-sm-6.col-xs-12
+              .hbox
+                label.col
+                  | Current Location
+                  span.text-danger *
+                  input.form-control(type='text' name="region_id" ng-model='$ctrl.Regions.model'
+                  q-text-maxlength="60" placeholder='Job Location'
+                  uib-typeahead='region.name for region in $ctrl.Regions.get($viewValue)'
+                  typeahead-loading='$ctrl.Regions.loadingRegions'
+                  typeahead-no-results='$ctrl.Regions.noResults'
+                  typeahead-on-select='$ctrl.Regions.select($item)'
+                  q-pattern='[^a-zA-Z ]*' typeahead-wait-ms="10" autocomplete="off" ucf_sentence required)
+                  span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && uploadCVForm.region_id.$dirty && uploadCVForm.region_id.$invalid') Please select current location
+                  i.fa.fa-refresh.fa-spin(ng-show='$ctrl.Regions.loadingRegions')
+                  div(ng-show='$ctrl.Regions.noResults')
+                    i.fa.fa-remove
+                    |  No Results Found
+          .line.line-dashed.b-b.line-lg.pull-in(ng-if='!$ctrl.job.is_drive' style='margin: 5px 0;')
+          .row(ng-if='!$ctrl.job.is_drive')
+            .col-md-12.col-sm-12.col-xs-12
+              label.col-xs-12.input-group
+                span Summary of the candidate
+                .pull-right(ng-bind='"(" + ($ctrl.data.ApplicantSummary.content.length || 0) + "/300)"')
+                textarea#cv_summary.form-control(
+                name="cv_summary"
+                rows='5'
+                ng-model='$ctrl.data.ApplicantSummary.content'
+                maxlength='300'
+                ng-change='$ctrl.valdiateSummary(uploadCVForm)'
+                )
+                .text-danger(ng-if='uploadCVForm.cv_summary.$invalid')
+                  | Above text contains unknown characters, please remove them to continue
+
+
+          .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+          .row
+            .col-md-12.col-sm-12.col-xs-12
+              .hbox
+                label.col
+                  | Select CV
+                  span.text-danger *
+                  .btn-file-wrapper(ng-class="uploadCVForm.file.$touched && uploadCVForm.file.$invalid ? 'input-file-danger':''" drag-drop-toggle)
+                    .btn-file
+                      span(ng-show="(uploadCVForm.file.$touched && uploadCVForm.file.$valid) || $ctrl.data.file")
+                        span.text-muted(ng-bind="$ctrl.data.file.name")
+                      p.no-margin(ng-hide="(uploadCVForm.file.$touched && uploadCVForm.file.$valid) || $ctrl.data.file")
+                        span.text-bold Choose a file
+                        |  or Drag it here.
+                      span.file-support(ng-hide="(uploadCVForm.file.$touched && uploadCVForm.file.$valid) || $ctrl.data.file") Supported Formats: pdf, doc, docx, rtf, txt
+                      input.form-control(ngf-select='' type="file" ng-model='$ctrl.data.file'
+                      name='file' ngf-pattern="'.pdf,.doc,.docx,.rtf,.txt'"  ngf-max-size="5MB"
+                      ngf-max-files="1"  onclick="this.value = null" )
+                  span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && !$ctrl.data.file && !uploadCVForm.file.$invalid') Please choose file
+                  span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && uploadCVForm.file.$invalid') Please choose supported file
+          .row
+            .col-md-8
+              .text-danger.font-bold(ng-if="uploadCVForm.salary.$error.max") Please check Current CTC
+              .text-danger.font-bold(ng-if="uploadCVForm.file.$error.maxSize") Please select file less than 5MB
+            .col-md-6.col-xs-12
+              h4
+              button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting")
+                span.text-white(ng-if='!$ctrl.submitting') Upload CV
+                span(ng-if='$ctrl.submitting')
+                  i.fa.fa-spin.fa-circle-o-notch
+                  span.text-white &nbsp;&nbsp;Submitting...
+    .clearfix

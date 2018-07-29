@@ -1,0 +1,13 @@
+.modal-header.bg-light.dk
+  .modal-title
+    .text-info-dker.h4(ng-bind='$ctrl.title')
+
+.modal-body.bg-white-only
+  .wrapper-xs.h4.text-black(ng-bind='$ctrl.description')
+
+  .clear
+    .pull-right.wrapper-xs
+      strong
+        a.btn.btn-lg.text-info-dker(ng-click='$ctrl.$uibModalInstance.close(true)') Yes
+      strong
+        a.btn.btn-lg.text-info-dker(ng-click='$ctrl.$uibModalInstance.dismiss()') No

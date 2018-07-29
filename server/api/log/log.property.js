@@ -9,7 +9,7 @@ module.exports = DataTypes => ({
   response_time: DataTypes.DECIMAL(15, 4),
   body_bytes_sent: DataTypes.STRING,
   status: DataTypes.INTEGER,
-  request: DataTypes.STRING,
+  request: DataTypes.TEXT,
   body: DataTypes.JSON,
   query: DataTypes.JSON,
   method: DataTypes.STRING,

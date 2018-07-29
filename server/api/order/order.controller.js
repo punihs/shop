@@ -3,21 +3,27 @@ const _ = require('lodash');
 const Ajv = require('ajv');
 
 const { orderCreate } = require('./order.schema');
-const { Order, Store } = require('./../../conn/sqldb');
+const { Package, Store } = require('./../../conn/sqldb');
 const minio = require('./../../conn/minio');
-const logger = require('./../../components/logger');
-const { GROUPS: { OPS, CUSTOMER } } = require('./../../config/constants');
+const {
+  GROUPS: {
+    OPS, CUSTOMER,
+  },
+  PACKAGE_TYPES: {
+    INCOMING,
+  },
+} = require('./../../config/constants');
 
 const log = debug('s.order.controller');
 
 exports.index = (req, res, next) => {
   const options = {
-    attributes: ['id', 'store_id', 'invoice_code', 'tracking_code', 'package_id', 'name'],
+    attributes: ['id', 'store_id', 'invoice_code', 'tracking_number'],
     include: [{
       model: Store,
       attributes: ['id', 'name'],
     }],
-    where: { },
+    where: { package_type: INCOMING },
     order: [['id', 'DESC']],
     limit: Number(req.query.limit) || 20,
   };
@@ -26,7 +32,7 @@ exports.index = (req, res, next) => {
     options.where.customer_id = req.user.id;
   }
 
-  return Order
+  return Package
     .findAll(options)
     .then(orders => res.json({ items: orders, total: 10 }))
     .catch(next);
@@ -34,26 +40,26 @@ exports.index = (req, res, next) => {
 
 exports.show = (req, res, next) => {
   const options = {
-    attributes: ['id', 'store_id', 'invoice_code', 'tracking_code', 'name'],
+    attributes: ['id', 'store_id', 'invoice_code', 'tracking_number'],
     include: [{
       model: Store,
       attributes: ['id', 'name'],
     }],
     where: {
       customer_id: req.user.id,
+      package_type: INCOMING,
     },
     limit: Number(req.query.limit) || 20,
   };
 
-  return Order
+  return Package
     .findById(req.params.id, options)
     .then(order => res.json(order))
     .catch(next);
 };
 
-exports.create = async (req, res, next) => {
+exports.create = async (req, res) => {
   const IS_OPS = req.user.group_id === OPS;
-
   const ajv = new Ajv();
   ajv.addSchema(orderCreate, 'OrderCreate');
   const valid = ajv.validate('OrderCreate', req.body);
@@ -62,38 +68,22 @@ exports.create = async (req, res, next) => {
     log('create', ajv.errorsText());
     return res.status(400).json({ message: ajv.errorsText() });
   }
+  const order = req.body;
+  order.created_by = req.user.id;
 
-  try {
-    const { invoice_file: invoiceFile } = req.body;
-
-    if (invoiceFile && !['txt', 'pdf'].includes(invoiceFile.filename.split('.').pop())) {
-      return res.status(400).end('Invalid File');
-    }
-
-    const order = req.body;
-    order.created_by = req.user.id;
-
-    if (!IS_OPS) order.customer_id = req.user.id;
-
-    const saved = await Order.create(order);
-    const { id } = saved;
-
-    if (req.body.invoice_file) {
-      minio
-        .base64UploadCustom('orders', id, invoiceFile)
-        .then(({ object }) => saved.update({ object }))
-        .catch(err => logger.error('order.express', err, req.user, req.body));
-    }
-
-    return res.status(201).json({ id });
-  } catch (e) {
-    return next(e);
+  if (req.query.type === 'INCOMING') {
+    order.package_type = INCOMING;
   }
+  if (!IS_OPS) order.customer_id = req.user.id;
+
+  const saved = await Package.create(order);
+  const { id } = saved;
+  return res.status(201).json({ id });
 };
 
 exports.download = (req, res, next) => {
   const { id } = req.params;
-  return Order
+  return Package
     .findById(id, {
       attributes: ['object', 'name'],
       include: [{
@@ -112,22 +102,9 @@ exports.download = (req, res, next) => {
 
 exports.update = async (req, res) => {
   const { id } = req.params;
-  const order = _.pick(req.body, ['store_id', 'invoice_code', 'tracking_code', 'name']);
-  const { invoice_file: invoiceFile } = req.body;
-
-  if (invoiceFile && !['txt', 'pdf'].includes(invoiceFile.filename.split('.').pop())) {
-    return res.status(400).end('Invalid File');
-  }
-
-  const { object } = invoiceFile
-    ? await minio
-      .base64UploadCustom('orders', id, invoiceFile)
-    : {};
-
-  if (invoiceFile) order.object = object;
-
-  const status = await Order
-    .update(order, { where: { id: req.body.order_id } });
+  const order = _.pick(req.body, ['store_id', 'invoice_code', 'tracking_number', 'name', 'invoice', 'comments']);
+  const status = await Package
+    .update(order, { where: { id, package_type: INCOMING } });
 
   return res.json(status);
 };

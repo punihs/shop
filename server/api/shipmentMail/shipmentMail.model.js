@@ -7,10 +7,6 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
   });
 
-  // ShipmentMail.associate = (db) => {
-  //   ShipmentMail.hasMany(db.Shipment);
-  //   ShipmentMail.belongsTo(db.Shipment);
-  // };
   ShipmentMail.associate = (db) => {
     db.Shipment.hasMany(db.ShipmentMail);
     db.Shipment.belongsTo(ShipmentMail);

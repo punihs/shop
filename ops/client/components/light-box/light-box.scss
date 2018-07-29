@@ -1,0 +1,57 @@
+#light-box-fade {
+  display: none;
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  z-index: 1001;
+}
+
+#light-box {
+  position: fixed;
+  top: 40vh;
+  left: 34vw;
+  max-width: 1000px;
+  max-height: 500px;
+  margin-left: -300px;
+  margin-top: -180px;
+  z-index: 1002;
+  overflow: visible;
+  background: #000;
+}
+
+#boxclose {
+  float: right;
+  cursor: pointer;
+  color: #fff;
+  border: 1px solid #AEAEAE;
+  border-radius: 3px;
+  background: #222222;
+  font-size: 31px;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 0px;
+  padding: 11px 3px;
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  z-index: 1002;
+  opacity: 0.9;
+}
+
+.boxclose:before {
+  content: "×";
+}
+
+#light-box-fade:hover ~ #boxclose {
+  display:none;
+}
+
+.lightboxOpenButton {
+  opacity: 0.8;
+  &:hover {
+    opacity: 1;
+  }
+}

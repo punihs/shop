@@ -1,0 +1,13 @@
+.directive-header {
+  .nav {
+    > li {
+      > a.imp {
+        &:hover,
+        &:focus {
+          color: #fff !important;
+          background: #27c24c !important;
+        }
+      }
+    }
+  }
+}

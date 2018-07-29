@@ -1,0 +1,161 @@
+div.m-t-xl.no-margin
+  .hbox
+    .wrapper-md.bg-white-only
+      div
+        .h1.m-l-md.font-thin.h3
+          | Create New Order
+          span(ng-bind='" " + $ctrl.TITLE')
+          ul.nav.nav-pills.nav-sm.pull-right
+            li.m-r-xs.pull-right
+              a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
+                ui-sref='orders.list'
+                popover-trigger="'mouseenter'"
+                popover-placement='bottom'
+                popover-append-to-body='true'
+              )
+                span.fa.fa-backward
+                span  Go Back
+
+      hr.no-margin-bottom
+      form.form.form-validation.form-horizontal.wrapper-md(
+        name="createOrderForm"
+        novalidate
+        ng-submit='$ctrl.create(createOrderForm)'
+      )
+        .row
+          .col-md-12.col-sm-12.col-xs-12.no-padder
+            .col-md-7
+              .row
+                .col-md-6.col-sm-6.col-xs-12.no-padder-right
+                  .alert.alert-success(ng-show='$ctrl.show_success')
+                    h4.panel-title.text-center.font-thin.h5
+                      | Your order has been submitted to shoppre package collecting centre. We will update you once your package receive our facility.
+
+              .row
+                .col-md-6.col-sm-6.col-xs-12.no-padder-right
+                  label.col-xs-12.input-group
+                    | Product Name
+                    span.text-danger *
+                    input.form.form-control(
+                      type='text'
+                      name="name"
+                      placeholder='eg. Saree'
+                      ng-model='$ctrl.data.name'
+                      value='saree'
+                      autofocus
+                      required
+                    )
+                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && createOrderForm.name.$dirty && createOrderForm.name.$invalid') Please enter Product Name
+
+              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+              .row
+                .col-md-6.col-sm-6.col-xs-12.no-padder-right
+                  label.col-xs-12.input-group
+                    | Store
+                    span.text-danger *
+                    input.form-control(
+                      type='text'
+                      name="store_id"
+                      ng-model='$ctrl.Stores.model'
+                      placeholder='eg: Amazon.in'
+                      uib-typeahead='region.name for region in $ctrl.Stores.get($viewValue)'
+                      typeahead-loading='$ctrl.Stores.loadingStores'
+                      typeahead-no-results='$ctrl.Stores.noResults'
+                      typeahead-on-select='$ctrl.Stores.select($item)'
+                      typeahead-wait-ms="10"
+                      autocomplete="off"
+                      required
+                    )
+                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && createOrderForm.store_id.$dirty && createOrderForm.store_id.$invalid') Please select current location
+                    i.fa.fa-refresh.fa-spin(ng-show='$ctrl.Stores.loadingStores')
+                    div(ng-show='$ctrl.Stores.noResults')
+                      i.fa.fa-remove
+                      |  No Results Found
+
+                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && createOrderForm.store_id.$dirty && createOrderForm.store_id.$invalid') Please enter Store Name
+
+              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+              .row
+                .col-md-6.col-sm-6.col-xs-12.no-padder-right
+                  label.col-xs-12.input-group
+                    | Tracking Number(optional)
+                    input.form.form-control(
+                      type='text'
+                      name='tracking_code'
+                      placeholder='eg. 94114'
+                      ng-model='$ctrl.data.tracking_code'
+                      autofocus
+                    )
+
+              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+
+              .row
+                .col-md-6.col-sm-6.col-xs-12.no-padder-right
+                  label.col-xs-12.input-group
+                    | Order / Invoice Number (optional)
+                  label.col-xs-12.input-group
+                    input.form.form-control(
+                      type='text'
+                      name='invoice_code'
+                      placeholder='eg. 9844717202'
+                      ng-model='$ctrl.data.invoice_code'
+                      autofocus
+                    )
+              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+              .row
+                .col-md-6.col-sm-6.col-xs-12.no-padder-right
+                  label.col-xs-12.input-group
+                    | Notes (optional)
+                  label.col-xs-12.input-group
+                    textarea.form.form-control(
+                      name='comments'
+                      placeholder=''
+                      ng-model='$ctrl.data.comments'
+                      rows='3'
+                      autofocus
+
+                    )
+              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+              .row
+                .col-md-6.col-sm-6.col-xs-6.no-padder-right
+                  .hbox
+                    label.col
+                      | Invoice
+                      span.text-danger *
+                      .btn-file-wrapper(ng-class="createOrderForm.file.$touched && createOrderForm.file.$invalid ? 'input-file-danger':''" drag-drop-toggle)
+                        .btn-file
+                          span(ng-show="(createOrderForm.file.$touched && createOrderForm.file.$valid) || $ctrl.data.file")
+                            span.text-muted(ng-bind="$ctrl.data.file.name")
+                          p.no-margin(ng-hide="(createOrderForm.file.$touched && createOrderForm.file.$valid) || $ctrl.data.file")
+                            span.text-bold Choose a file
+                            |  or Drag it here.
+                          span.file-support(ng-hide="(createOrderForm.file.$touched && createOrderForm.file.$valid) || $ctrl.data.file") Supported Formats: pdf, doc, docx, rtf, txt
+                          input.form-control(
+                            type="file"
+                            ng-model='$ctrl.file'
+                            name='file'
+                            ngf-pattern="'.pdf,.doc,.docx,.rtf,.txt,.png,.jpeg,.jpg,.bmp'"
+                            ngf-max-size="5MB"
+                            ngf-max-files="1"
+                            ngf-select='$ctrl.uploadFile($ctrl.file)'
+                            onclick="this.value = null"
+                            required
+                          )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && !$ctrl.data.file && !createOrderForm.file.$invalid') Please choose file
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && createOrderForm.file.$invalid') Please choose supported file
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && createOrderForm.file.$dirty && createOrderForm.file.$invalid') Please choose supported file
+
+              .row
+                .col-md-6.col-xs-12
+                  h4(ng-bind="$ctrl.error.message" style="color:red;")
+                  button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting")
+                    span.fa.fa-forward.m-r-sm
+                    span.text-white(ng-if='!$ctrl.submitting') Save New Order
+                    span(ng-if='$ctrl.submitting')
+                      i.fa.fa-spin.fa-circle-o-notch
+                      span.text-white &nbsp;&nbsp;Submitting...
+
+    .clearfix
+
+div(ng-show='$ctrl.submitting')
+  span(ng-include="'app/routes/jobs/cv-uploading/cv-uploading.html'")

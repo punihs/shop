@@ -1,5 +1,4 @@
 const debug = require('debug');
-const ses = require('../../conn/ses');
 
 const log = debug('s-api-package-notification');
 
@@ -16,19 +15,28 @@ exports.stateChange = async ({
   log({ customer });
   const store = await Store
     .findById(pkg.store_id, { raw: true, attributes: ['name'] });
-
-  return ses.sendTemplatedEmailAsync({
-    Source: `"${actingUser.first_name} from Shoppre" <${actingUser.email}>`,
-    ReplyToAddresses: ['support@shoppre.com'],
-    Destination: {
-      ToAddresses: [customer.email],
-    },
-    Template: 'package_state-change',
-    TemplateData: JSON.stringify({
-      nextStateId,
-      pkg: { ...pkg, Store: store },
-      customer: customer.toJSON(),
-      actingUser,
-    }),
+  const event = {};
+  return event.fire({
+    ses: [{
+      Source: `"${actingUser.first_name} from Shoppre" <${actingUser.email}>`,
+      ReplyToAddresses: ['support@shoppre.com'],
+      Destination: {
+        ToAddresses: [customer.email],
+      },
+      Template: 'package_state-change',
+      TemplateData: JSON.stringify({
+        nextStateId,
+        pkg: { ...pkg, Store: store },
+        customer: customer.toJSON(),
+        actingUser,
+      }),
+    }],
+    onesignal: [{
+      userId: customer.id,
+      msg: {
+        title: `Your shipment arrived from ${store}`,
+      },
+    }],
   });
 };
+

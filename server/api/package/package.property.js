@@ -1,5 +1,10 @@
 const {
-  CONSIGNMENT_TYPES: { DOC, NONDOC }, CONTENT_TYPES: { REGULAR, SPECIAL },
+  CONTENT_TYPES: { REGULAR, SPECIAL }, 
+  PACKAGE_TYPES: {
+    INCOMING,
+    PERSONAL_SHOPPER,
+    COD,
+  },
 } = require('../../config/constants');
 
 module.exports = DataTypes => ({
@@ -10,22 +15,47 @@ module.exports = DataTypes => ({
     allowNull: false,
     unique: true,
   },
-  consignment_type: {
-    type: DataTypes.ENUM,
-    defaultValue: NONDOC,
-    values: [DOC, NONDOC],
+  is_doc: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
   },
   reference_code: DataTypes.STRING,
   comments: DataTypes.STRING,
   weight: DataTypes.DECIMAL(15, 2),
-  price_amount: DataTypes.STRING,
+  total_amount: DataTypes.DECIMAL(15, 2),
 
   content_type: {
     type: DataTypes.ENUM,
     values: [REGULAR, SPECIAL],
     defaultValue: 1,
   },
+  package_type: {
+    type: DataTypes.ENUM,
+    values: [INCOMING, PERSONAL_SHOPPER, COD],
+  },
   is_public: { type: DataTypes.BOOLEAN, defaultValue: false },
   splitting_directions: DataTypes.STRING,
+  total_quantity: DataTypes.INTEGER,
+  personal_shopper_cost: DataTypes.INTEGER,
+  sales_tax: DataTypes.INTEGER,
+  delivery_charge: DataTypes.INTEGER,
+  payment_gateway_fee: DataTypes.INTEGER,
+  sub_total: DataTypes.INTEGER,
+  amount_paid: DataTypes.INTEGER,
+  seller_invoice: DataTypes.STRING,
+  wallet: DataTypes.INTEGER,
+  promo_code: DataTypes.STRING,
+  promo_discount: DataTypes.INTEGER,
+  promo_info: DataTypes.STRING,
+  admin_read: DataTypes.BOOLEAN,
+  admin_info: DataTypes.STRING,
+  if_promo_unavailable: DataTypes.STRING,
+  instruction: DataTypes.STRING,
+  payment_gateway_name: DataTypes.STRING,
+  payment_status: DataTypes.STRING,
+  status: DataTypes.STRING,
+  invoice: DataTypes.STRING,
+  invoice_code: DataTypes.STRING,
+  notes: DataTypes.STRING,
+  tracking_number: DataTypes.STRING,
 });
-

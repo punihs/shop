@@ -1,0 +1,83 @@
+.payment-tracker {
+  $seagreen: #3db748;
+
+  .modal-header {
+    background: $seagreen !important;
+    color: #fff;
+  }
+
+  .circle {
+    display: inline-block;
+    margin-top: 35px;
+    z-index: 2;
+  }
+
+  .circle-filled {
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+  }
+
+  .connector {
+    width: 20%;
+    height: 2px;
+    position: absolute;
+    margin-left: -10%;
+    margin-top: -22px;
+    z-index: 1;
+  }
+
+  .b-green {
+    border: 2px solid #3db748;
+  }
+
+  .b-gray {
+    border: 2px solid #aaa;
+  }
+
+  .green {
+    background-color: #3db748;
+  }
+
+  .gray {
+    background-color: #aaa;
+  }
+
+  .outer-circle {
+    position: relative;
+    height: 31px;
+    width: 32px;
+    border-radius: 50%;
+    z-index: 2;
+  }
+
+  .outer-circle.highlight {
+    border: 2px solid #3db748;
+    background: #fff;
+  }
+
+  .circle-holder {
+    width: 20%;
+    display: inline-block;
+    height: 150px;
+  }
+
+  .arrow-up {
+    position: absolute;
+    top: 162px;
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 15px solid #eee;
+  }
+  .modal-header {
+    padding: 5px 15px;
+  }
+  .common-font {
+    font-size: 15px;
+  }
+}

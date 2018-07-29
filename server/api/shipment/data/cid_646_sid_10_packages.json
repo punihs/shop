@@ -4,7 +4,7 @@
     "customer_id": 646,
     "store_id": 704,
 
-    "consignment_type": "2",
+    "is_doc": "false",
     "reference_code": "fb10",
     "weight": 0.84,
     "price_amount": 125.0,

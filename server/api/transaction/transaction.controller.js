@@ -35,3 +35,14 @@ exports.create = async (req, res, next) => {
     .catch(next);
 };
 
+exports.WalletTransaction = async (walletAmount, customerId, shipment, transactionType) => {
+  const transaction = {};
+  transaction.customer_id = customerId;
+  transaction.amount = walletAmount;
+  transaction.type = transactionType;
+  transaction.description = `Wallet balance offsetted against shipment cost | Shipment ID  ${shipment.order_code}`;
+
+  await Transaction
+    .create(transaction);
+};
+

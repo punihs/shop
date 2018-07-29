@@ -2,7 +2,7 @@
 module.exports = (constants) => {
   const {
     GROUP: {
-      OPS, MEMBER, MARKETING, MANAGEMENT,
+      OPS, MEMBER, MARKETING, MANAGEMENT, FINANCE,
     },
     COUNTRY: {
       IND,
@@ -15,7 +15,7 @@ module.exports = (constants) => {
       salutation: 'Mr',
       first_name: 'Saneel',
       last_name: 'E S',
-      email: 'saneel@gmail.com',
+      email: 'support@shoppre.com',
       phone_code: '91',
       phone: '7891378913',
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
@@ -253,7 +253,7 @@ module.exports = (constants) => {
       phone_code: '91',
       phone: '7891378913',
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6', // admin1234
-      group_id: 1,
+      group_id: OPS,
     }, { // Payment Approval
       id: 115,
       salutation: 'Mr',
@@ -263,7 +263,7 @@ module.exports = (constants) => {
       phone_code: '91',
       phone: '7891378913',
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6', // admin1234
-      group_id: 1,
+      group_id: FINANCE,
     }, { // -SALES
       id: 116,
       salutation: 'Mrs',
@@ -274,8 +274,19 @@ module.exports = (constants) => {
       phone: '9844717202',
       password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
       group_id: 2,
+    }, {
+      id: 738,
+      salutation: 'Mr',
+      first_name: 'Vikas',
+      last_name: 'Kumar',
+      email: 'vikasjson@gmail.com',
+      phone_code: '91',
+      phone: '9634679754',
+      password: '$2y$10$4Yg4RRg.HLMIpvd2L5nQO.vaRT.cW9NlsfXwi5alT1nKCa7dIs1R6',
+      group_id: 2,
     },
   ].map(x => ({
+
     country_id: IND,
     ...x,
     profile_photo_url: 'https://lh3.googleusercontent.com/-UYCUQAneuQo/AAAAAAAAAAI/AAAAAAAAAAo/tGVHInxDmiY/photo.jpg?sz=50',

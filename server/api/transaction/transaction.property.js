@@ -11,7 +11,6 @@ module.exports = DataTypes => ({
     primaryKey: true,
     type: DataTypes.INTEGER,
   },
-  customer_id: DataTypes.INTEGER,
   amount: DataTypes.DECIMAL(15, 2),
   type: {
     type: DataTypes.ENUM,

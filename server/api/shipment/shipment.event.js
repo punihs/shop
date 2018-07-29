@@ -2,7 +2,7 @@
 const {
   User, Notification,
 } = require('../../conn/sqldb');
-const ses = require('../../conn/ses');
+const ses = require('../../conn/email/ses');
 const logger = require('../../components/logger');
 const eventEmitter = require('../../conn/event');
 

@@ -1,0 +1,79 @@
+div
+  .hbox(before-bottom='$ctrl.loadOrders()' style="position:relative")
+    div.m-t-xl(style='position: fixed;right: 5px;z-index: 9;padding-top: 2px;')
+      ul.nav.nav-pills.nav-sm.m-t-xs
+        li.m-r-xs.pull-right: a(ng-if='$ctrl.orders.length') {{$ctrl.orders.length}} of {{$ctrl.total}} CV(s)
+        li.m-r-xs.pull-right.pointer(title='Export' ng-click='$ctrl.ExcelDownload.download($ctrl.params, $ctrl.$stateParams.jobId);'): button.btn.btn-sm.bg-white-only.b-gray: span.fa.fa-file-excel-o
+        li.m-r-xs.pull-right.pointer(title='Filter' ng-click='App.openCandidateFilter()'): button.btn.btn-sm.bg-white-only.b-gray: span.fa.fa-filter
+        li.pull-right.col.pointer.m-r-xs
+          uib-dropdown
+            button.btn.btn-sm.bg-white-only.b-gray(type='button', uib-dropdown-toggle='', aria-haspopup='true', aria-expanded='false')
+              | {{ ($ctrl.sorts | filter:{ key: $ctrl.params.sort }: true)[0].name !== 'Default' ? ($ctrl.sorts | filter:{ key: $ctrl.params.sort }: true)[0].name+'&nbsp;&nbsp;' : '' }}
+              span.fa.fa-sort-alpha-asc
+            ul.dropdown-menu.pull-right(uib-dropdown-menu='')
+              li(ng-repeat="sort in $ctrl.sorts")
+                a(href='#' ng-bind='sort.name' ng-click='$ctrl.sort(sort.key)')
+    .bg-light(style='min-height: 200px;')
+      //- Job top cover container
+      directive-header(
+        viewdata="$ctrl"
+        page="{jobOrders:true}"
+        buttons="{upload:true}"
+        App="App"
+      )
+      .m-t-xxl.m-b-md(style='height: 1px;')
+      .wrapper-md
+        .wrapper-md(ng-if='!$ctrl.orders.length')
+          .hbox
+            .col: h1.m-t-lg.text-center.text-muted(ng-if='!$ctrl.ui.loading') No Orders
+
+        .m-t-sm.hbox(ng-repeat='order in $ctrl.orders')
+          .col.bg-white.b-a
+            .col-xs-12.col-md-10.no-padder
+              .tl-content.m-none.padder.w-full.w-auto-xs
+                .m-b-sm
+                  label.i-checks.i-checks-sm.m-b-none
+                    input(type='checkbox' ng-model='order.checked')
+                    i
+                  a(ui-sref='order.show({id: order.id})')
+                    strong.text-primary-lt  {{order.name}}
+
+                  .btn-group.pull-right.m-t-n-xs(uib-dropdown='' uib-keyboard-nav='' dropdown-append-to-body)
+                    button.w-full.btn(class='b-{{App.states[order.state_id].config.color}} text-{{App.states[order.state_id].config.color}} bg-white-only' uib-dropdown-toggle='' ng-disabled='!App.states[order.state_id].Actions.length || (order.state_id === 43 && !!$ctrl.prescreen) ' style='padding: 4px 8px;')
+                      span(ng-bind='App.states[order.state_id].action')
+                      span(ng-if='App.states[order.state_id].Actions.length>0').caret.m-l-xs
+                    ul.dropdown-menu(uib-dropdown-menu='' role='menu' aria-labelledby='btn-append-to-body')
+                      li(role='menuitem' ng-repeat='state in App.states[order.state_id].Actions')
+                        a(href='' ng-click='$ctrl.ChangeState.open(order, state.state_id, $ctrl.$stateParams.jobId)' ng-bind='::App.states[state.state_id].action')
+
+                  span.pull-right.padder(ng-if='order.interview_type && order.interview_time')
+                    i.fa(class='text-{{App.interviewUI[order.interview_type].color}}-dker fa-{{App.interviewUI[order.interview_type].icon}}')
+                    |  {{order.interview_time | date : 'd MMM, h:mm a'}}
+
+                .panel-body.pull-in.b-t.wrapper-xs
+                  .col-xs-4.text-ellipsis
+                    i.fa.fa-bookmark(style='margin:0 2px;')
+                    | {{order.invoice_code}}
+                  .col-xs-4.text-ellipsis
+                    i.fa.fa-graduation-cap
+                    | {{order.Store.name}}
+            .col-xs-12.col-md-2.no-padder
+              .m-none.wrapper-sm.w-full.w-auto-xs
+                .clearfix
+                  span.pull-right.padder.m-t-xxs  {{order.created_at | date: 'h:mm a'}} &nbsp;
+                  span.pull-right.m-b.m-t
+                .panel-body.pull-in.m-r-n-sm.wrapper-xs.b-t
+                  .clearfix
+                    a(
+                    target='_blank'
+                    ng-href='{{$ctrl.URLS.API}}/orders/{{order.id}}/download?access_token={{$ctrl.token}}'
+                    )
+                      i.btn.pull-right.text-success-dker.m-t-xs.fa.fa-lg.fa-download
+
+      .col-xs-2.col-xs-offset-5
+        button.pull-left.btn.active.m-t-md(ng-if="$ctrl.ui.loading")
+          i.fa.fa-circle-o-notch.fa-spin
+          strong &nbsp;Loading
+        button.pull-left.btn.btn-primary.m-t-xs(ng-if="$ctrl.ui.lazyLoad" ng-click="$ctrl.loadOrders()")
+          i.fa.fa-plus-circle
+          strong &nbsp;Load More

@@ -1,16 +1,21 @@
 const debug = require('debug');
 const moment = require('moment');
+const _ = require('lodash');
+const xlsx = require('node-xlsx');
 
 const eventEmitter = require('../../conn/event');
 const db = require('../../conn/sqldb');
+const shipper = require('../../conn/shipper');
 
 const {
-  Country, Shipment, Package, Address, PackageMeta, ShipmentMeta, Notification, ShipmentIssue,
-  PackageState, Redemption, Coupon, LoyaltyHistory, User, LoyaltyPoint, Transaction,
+  Country, Shipment, Package, Address, PackageCharge, ShipmentMeta, Notification, ShipmentIssue,
+  PackageState, Redemption, Coupon, LoyaltyHistory, User, LoyaltyPoint, Transaction, Locker,
+  ShipmentState, Store, ShipmentType,
 } = db;
 
 const { SHIPPING_RATE } = require('../../config/environment');
 const {
+  SHIPMENT_STATE_ID_NAMES,
   SHIPMENT_STATE_IDS: {
     CANCELED, DELIVERED, DISPATCHED,
   },
@@ -20,28 +25,125 @@ const {
   },
   PAYMENT_GATEWAY: { WIRE, WALLET, CASH },
 } = require('../../config/constants');
+const BUCKETS = require('../../config/constants/buckets');
+
+const { ADDED_TO_SHIPMENT } = require('../../config/constants/packageStates');
 
 const log = debug('s.shipment.controller');
+const { index } = require('./shipment.service');
 
-exports.index = (req, res, next) => {
-  const options = {
-    limit: Number(req.query.limit) || 20,
-    attributes: ['id', 'number_of_packages'],
-  };
-  if (req.query.customer_id) {
-    options.where = { customer_id: req.query.customer_id };
-  }
-  if (req.query.status) {
-    options.where = { status: req.query.status };
-  }
+exports.index = (req, res, next) => index(req)
+  .then((result) => {
+    if (req.query.xlsx) {
+      const header = [
+        'id', 'Store Name', 'Virtual Address Code', 'Status',
+      ];
+      const excel = xlsx.build([{
+        name: 'Shipments',
+        data: [header]
+          .concat(result
+            .Shipments
+            .map(({
+              id,
+              Store: store,
+              Customer,
+              ShipmentState: shipmentState,
+            }) => [
+              id, store.name, Customer.virtual_address_code,
+              SHIPMENT_STATE_ID_NAMES[shipmentState.state_id],
+            ])),
+      }]);
 
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+      res.setHeader(
+        'Content-disposition',
+        `attachment; filename=Packages_${moment()
+          .format('DD-MM-YYYY')}.xlsx`,
+      );
+
+      return res.end(excel, 'binary');
+    }
+    log({ result });
+    return res.json(result);
+  })
+  .catch(next);
+
+exports.show = async (req, res, next) => {
+  log('show', req.query);
   return Shipment
-    .findAll(options)
-    .then(shipments => res.json(shipments))
+    .findById(req.params.id, {
+      attributes: req.query.fl
+        ? req.query.fl.split(',')
+        : ['id', 'customer_id', 'created_at', 'weight', 'packages_count'],
+      include: [{
+        model: ShipmentState,
+        attributes: ['id', 'state_id'],
+        required: false,
+      }, {
+        model: ShipmentType,
+        attributes: ['id', 'name'],
+      }, {
+        attributes: ['id', 'weight', 'package_state_id', 'price_amount'],
+        model: Package,
+        include: [{
+          model: Store,
+          attributes: ['name'],
+        }],
+      }, {
+        model: User,
+        as: 'Customer',
+        attributes: [
+          'id', 'name', 'first_name', 'last_name', 'salutation', 'virtual_address_code',
+          'mobile', 'phone', 'phone_code',
+        ],
+        include: [{
+          model: Country,
+          attributes: ['id', 'name', 'iso2'],
+        }, {
+          model: Locker,
+          attributes: ['id', 'name', 'short_name', 'allocated_at'],
+        }],
+      }, {
+        model: Country,
+        attributes: ['id', 'name', 'iso2', 'iso3'],
+      }, {
+        model: Address,
+        attributes: [
+          'id', 'city', 'name', 'salutation', 'first_name', 'last_name', 'mobile', 'phone_code',
+          'phone',
+        ],
+      }],
+    })
+    .then((shipment) => {
+      if (!shipment) return res.status(404).end();
+
+      return res.json({
+        ...shipment.toJSON(),
+        state_id: shipment.ShipmentState && shipment.ShipmentState.state_id,
+      });
+    })
     .catch(next);
 };
 
-exports.show = (req, res) => Shipment.findById(req.params.id).then(shipment => res.json(shipment));
+exports.status = async (req, res, next) => Shipment
+  .findById(req.params.id, {
+    attributes: ['shipping_partner_id', 'tracking_code'],
+    raw: true,
+  })
+  .then((shipment) => {
+    log('status:shipment', shipment);
+    return shipper[shipment.shipping_partner_id]
+      .status(shipment.tracking_code)
+      .then((result) => {
+        log('result', result);
+        return res
+          .json({
+            shipper: shipment.shipping_partner_id,
+            result,
+          });
+      });
+  })
+  .catch(next);
 
 exports.unread = async (req, res) => {
   const { id } = req.params;
@@ -50,10 +152,69 @@ exports.unread = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  // normal update
-  // tracking update
   const { id } = req.params;
-  const status = await Shipment.update(req.body, { where: { id } });
+
+  const optionsMeta = {
+    attributes: ['liquid_charge_amount', 'overweight_charge_amount', 'is_liquid'],
+    where: { shipment_id: id },
+  };
+
+  const shipmentMeta = await ShipmentMeta
+    .find(optionsMeta);
+  const updateShipment = req.body;
+  const updateMeta = {};
+
+  let packageLevelCharges = '';
+  log('liquid', shipmentMeta.is_liquid);
+  if (shipmentMeta.is_liquid === '1') {
+    packageLevelCharges -= shipmentMeta.liquid_charge_amount || 0;
+    log('weight', req.body.weight);
+    log({ packageLevelCharges });
+    if (req.body.weight < 5) {
+      updateMeta.liquid_charge_amount = 1150.00;
+    } else if (req.body.weight >= 5 && req.body.weight < 10) {
+      updateMeta.liquid_charge_amount = 1650.00;
+    } else if (req.body.weight >= 10 && req.body.weight < 15) {
+      updateMeta.liquid_charge_amount = 2750.00;
+    }
+    if (req.body.weight >= 15) {
+      updateMeta.liquid_charge_amount = 3150.00;
+    }
+  }
+  if (shipmentMeta.overweight === '1') {
+    packageLevelCharges -= shipmentMeta.overweight_charge_amount || 0;
+    if (req.body.weight > 30) {
+      updateMeta.overweight_charge_amount = 2500.00;
+    } else {
+      updateMeta.overweight = '0';
+      updateMeta.overweight_charge_amount = 0;
+    }
+  } else if (req.body.weight > 30) {
+    updateMeta.overweight = '1';
+    updateMeta.overweight_charge_amount = 2500.00;
+  } else {
+    updateMeta.overweight = '0';
+    updateMeta.overweight_charge_amount = 0;
+  }
+  log(JSON.stringify(updateMeta));
+  await ShipmentMeta.update(updateMeta, { where: { shipment_id: id } });
+  packageLevelCharges = Number(packageLevelCharges);
+  packageLevelCharges += Number(updateMeta.liquid_charge_amount) || 0;
+  packageLevelCharges += Number(updateMeta.overweight_charge_amount) || 0;
+  updateShipment.package_level_charges_amount = packageLevelCharges;
+
+  const subTotalAmount = req.body.sub_total_amount;
+  const discountAmount = req.body.discount_amount;
+  const pickUpChargeAmount = req.body.pick_up_charge_amount || 0;
+  const estimatedAmount =
+    (subTotalAmount - discountAmount) + packageLevelCharges + pickUpChargeAmount;
+  log(subTotalAmount, discountAmount, packageLevelCharges, pickUpChargeAmount);
+  updateShipment.sub_total_amount = subTotalAmount;
+  updateShipment.discount_amount = discountAmount;
+  updateShipment.estimated_amount = estimatedAmount;
+  const status = await Shipment.update(updateShipment, { where: { id } });
+
+  // const status = await Shipment.update(req.body, { where: { id } });
   return res.json(status);
 };
 
@@ -66,20 +227,25 @@ exports.metaUpdate = async (req, res) => {
   return res.json(status);
 };
 
-
 exports.destroy = async (req, res) => {
   const { id } = req.params;
 
   const shipment = await Shipment
-    .findById(id);
+    .find({
+      where: { id },
+      include: [{
+        model: Package,
+        attributes: ['id'],
+      }],
+    });
 
   log('shipment id', shipment.status);
   if (![CANCELED, DELIVERED, DISPATCHED].includes(shipment.status)) {
     return res.json({ message: `Can not delete item as it is already ${shipment.status}` });
   }
 
-  await Promise.all(shipment.package_ids.split(',')
-    .map(packageId => Package
+  await Promise.all(shipment.Packages
+    .map(({ id: packageId }) => Package
       .updateState({
         db,
         packageId,
@@ -108,7 +274,7 @@ const calcShipping = async (countryId, weight, type) => {
 const getEstimation = async (packageIds, countryId, userId) => {
   const packages = await Package.findAll({
     include: [{
-      model: PackageMeta,
+      model: PackageCharge,
     }],
     where: {
       customer_id: userId,
@@ -135,13 +301,15 @@ const getEstimation = async (packageIds, countryId, userId) => {
     shipping.price += pack.price;
     shipping.weight += pack.weight;
 
-    const meta = pack.PackageMeta || {};
+    const packageCharge = pack.PackageCharge || {};
 
-    const packageLevelCharges = meta.storage + meta.address + meta.handling + meta.pickup
-      + meta.doc + meta.liquid + meta.basic_photo + meta.advance_photo
-      + meta.split + meta.scan_doc;
+    const keys = [
+      'storage_amount', 'wrong_address_amount', 'special_handling_amount', 'receive_mail_amount',
+      'pickup_amount', 'basic_photo_amount', 'advanced_photo_amount', 'split_package_amount',
+      'scan_document_amount',
+    ];
 
-    shipping.level += packageLevelCharges;
+    shipping.level += keys.reduce((nxt, key) => (nxt + (packageCharge[key] || 0)), 0);
 
     const shippingCharge = calcShipping(countryId, pack.weight, pack.type);
 
@@ -217,38 +385,38 @@ const saveShipment = ({
 
 const saveShipmentMeta = ({ req, sR, packageIds }) => {
   const meta = Object.assign({ shipment_id: sR.id }, req.body);
-  meta.repack_amt = (req.repack === 1) ? 100.00 : 0;
-  meta.sticker_amt = (req.sticker === 1) ? 0 : 0;
-  meta.original_amt = 0;
+  meta.repacking_charge_amount = (req.repack === 1) ? 100.00 : 0;
+  meta.sticker_charge_amount = (req.sticker === 1) ? 0 : 0;
+  meta.sticker_charge_amount = 0;
 
   if (packageIds.length) {
     meta.consolid = '1';
-    meta.consolid_amt = (packageIds.length - 1) * 100.00;
+    meta.consolidation_charge_amount = (packageIds.length - 1) * 100.00;
   }
 
-  meta.giftwrap_amt = (req.gift_wrap === 1) ? 100.00 : 0;
-  meta.giftnote_amt = (req.gift_note === 1) ? 50.00 : 0;
+  meta.gift_wrap_charge_amount = (req.gift_wrap === 1) ? 100.00 : 0;
+  meta.gift_note_charge_amount = (req.gift_note === 1) ? 50.00 : 0;
 
-  meta.extrapack_amt = (req.extrapack === 1) ? 500.00 : 0;
+  meta.extra_packing_charge_amount = (req.extra_packing === 1) ? 500.00 : 0;
 
   if (req.liquid === '1') {
     if (req.weight < 5) {
-      meta.liquid_amt = 1150.00;
+      meta.liquid_charge_amount = 1150.00;
     }
     if (req.weight >= 5 && req.weight < 10
     ) {
-      meta.liquid_amt = 1650.00;
+      meta.liquid_charge_amount = 1650.00;
     }
     if (req.weight >= 10 && req.weight < 15
     ) {
-      meta.liquid_amt = 2750.00;
+      meta.liquid_charge_amount = 2750.00;
     }
     if (req.weight >= 15) {
-      meta.liquid_amt = 3150.00;
+      meta.liquid_charge_amount = 3150.00;
     }
   }
-  meta.profoma_taxid = req.invoice_taxid;
-  meta.profoma_personal = req.invoice_personal;
+  meta.proforma_taxid = req.invoice_taxid;
+  meta.proforma_personal = req.invoice_personal;
   meta.invoice_include = req.invoice_include;
   return ShipmentMeta.create(meta);
 };
@@ -256,11 +424,12 @@ const saveShipmentMeta = ({ req, sR, packageIds }) => {
 const updateShipment = async ({ sR, shipmentMeta }) => {
   let packageLevelCharges = sR.package_level_charges;
 
-  packageLevelCharges += shipmentMeta.repack_amt + shipmentMeta.sticker_amt
-    + shipmentMeta.extrapack_amt + shipmentMeta.original_amt + shipmentMeta.giftwrap_amt
-    + shipmentMeta.giftnote_amt + shipmentMeta.consolid_amt;
+  packageLevelCharges += shipmentMeta.repacking_charge_amount + shipmentMeta.sticker_charge_amount
+    + shipmentMeta.extra_packing_charge_amount +
+    shipmentMeta.original_ship_box_charge__amount + shipmentMeta.gift_wrap_charge_amount
+    + shipmentMeta.gift_note_charge_amount + shipmentMeta.consolidation_charge_amount;
 
-  packageLevelCharges += shipmentMeta.liquid_amt;
+  packageLevelCharges += shipmentMeta.liquid_charge_amount;
 
   const updateShip = await Shipment.findById(sR.id);
 
@@ -273,11 +442,19 @@ const updateShipment = async ({ sR, shipmentMeta }) => {
   return sR.update(updateShip);
 };
 
-const updatePackages = packageIds => Package.update({
-  status: 'processing',
-}, {
-  where: { id: packageIds },
-});
+const updatePackages = (shipmentId, packageIds, actingUser) => {
+  packageIds.map(id => Package.updateState({
+    db,
+    nextStateId: ADDED_TO_SHIPMENT,
+    pkg: { id },
+    actingUser,
+  }));
+  return Package.update({
+    shipment_id: shipmentId,
+  }, {
+    where: { id: packageIds },
+  });
+};
 
 
 exports.create = async (req, res, next) => {
@@ -303,7 +480,7 @@ exports.create = async (req, res, next) => {
 
     const updateShip = await updateShipment({ shipmentMeta, sR });
 
-    updatePackages(packageIds);
+    updatePackages(sR.id, packageIds);
 
     eventEmitter.emit('shipment:create', {
       userId, sR, packages, address, updateShip,
@@ -319,55 +496,106 @@ exports.create = async (req, res, next) => {
 exports.shipQueue = async (req, res) => {
   const options = {
     attributes: [
-      'order_code', 'package_ids', 'customer_name', 'address',
+      'order_code', 'customer_name', 'address',
       'phone', 'packages_count', 'weight', 'estimated_amount',
     ],
     where: { status: ['inqueue', 'inreview', 'received', 'confirmation'] },
   };
-  await Shipment.find(options)
+  await Shipment
+    .find(options)
     .then(shipment =>
-      res.status(201).json({ shipment }));
+      res.json({ shipment }));
 };
 
-exports.history = async (req, res) => {
+exports.count = async (req, res) => {
+  const buckets = BUCKETS.SHIPMENT;
+  return Shipment
+    .count({
+      where: {
+        customer_id: req.user.id,
+      },
+      include: [{
+        model: ShipmentState,
+        where: {
+          state_id: buckets[req.user.group_id][req.query.bucket || 'IN_QUEUE'],
+        },
+      }],
+    })
+    .then(count => res.json(count));
+};
+
+exports.history = (req, res, next) => {
   const options = {
     attributes: [
-      'order_code', 'package_ids', 'customer_name', 'address', 'status', 'tracking_code', 'dispatch_date',
-      'shipping_carrier', 'tracking_url',
-      'phone', 'packages_count', 'weight', 'estimated_amount', 'created_at', 'final_amount',
+      'order_code', 'customer_name', 'address', 'status', 'tracking_code',
+      'dispatch_date', 'shipping_carrier', 'phone', 'packages_count', 'weight',
+      'estimated_amount', 'created_at', 'final_amount',
     ],
-    where: { status: ['dispatched', 'delivered', 'canceled', 'refunded'] },
+    where: {
+      status: ['dispatched', 'delivered', 'canceled', 'refunded'],
+    },
   };
-  await Shipment.find(options)
-    .then(shipmentHistory =>
-      res.status(201).json({ shipmentHistory }));
+
+  return Shipment
+    .findAll(options)
+    .then(shipments => res.json(shipments))
+    .catch(next);
 };
 
-exports.cancelRequest = async (req, res) => {
-  const cutomerId = req.user.id;
-  const orderCode = req.body.order_code;
-  const options = {
-    attributes: ['id', 'created_at', 'package_ids'],
-    where: { customer_id: cutomerId, status: ['inreview', 'inqueue'], order_code: orderCode },
-  };
+exports.cancelRequest = async (req, res, next) => {
+  const { id: customerId } = req.user;
+  const { order_code: orderCode } = req.body;
 
-  const shipment = await Shipment
-    .find(options);
+  return Shipment
+    .find({
+      attributes: ['id', 'created_at'],
+      where: {
+        customer_id: customerId,
+        status: ['inreview', 'inqueue'],
+        order_code: orderCode,
+      },
+    })
+    .then((shipment) => {
+      if (!shipment) return res.status(400).json({ message: 'requested shipment not exist' });
 
-  if (moment(shipment.created_at).diff(moment(), 'hours') <= 1) {
-    await Shipment
-      .update({ status: 'canceled' }, { where: { id: shipment.id } });
-    await Package
-      .update({ status: 'ship' }, { where: { id: [shipment.package_ids.split((','))] } });
+      const creationTimeGap = moment(shipment.created_at).diff(moment(), 'hours');
 
-    const notification = {};
-    notification.customer_id = cutomerId;
-    notification.action_type = 'shipment';
-    notification.action_id = shipment.id;
-    notification.action_description = `Shipment request cancelled - Order#  ${shipment.order_code}`;
-    await Notification.create(notification)
-      .then(() => res.status(201).json({ message: 'Ship request has been cancelled!', shipment }));
-  }
+      if (creationTimeGap > 1) {
+        const message = 'You can cancel shipment 1 hour from shipment creation. ' +
+                      `creationTimeGap: ${creationTimeGap}`;
+        return res
+          .status(400)
+          .json({ message });
+      }
+
+      return Promise
+        .all([
+          Shipment
+            .update({
+              status: 'canceled',
+            }, {
+              where: {
+                id: shipment.id,
+              },
+            }),
+          Package
+            .update({
+              status: 'ship',
+            }, {
+              where: {
+                shipment_id: shipment.id,
+              },
+            }),
+          Notification.create({
+            customer_id: customerId,
+            action_type: 'shipment',
+            action_id: shipment.id,
+            action_description: `Shipment request cancelled - Order#  ${shipment.order_code}`,
+          }),
+        ])
+        .then(() => res.json({ message: 'Ship request has been cancelled!', shipment }));
+    })
+    .catch(next);
 };
 
 exports.invoice = async (req, res) => {
@@ -377,9 +605,9 @@ exports.invoice = async (req, res) => {
     .find({ where: { order_code: id } });
   if (shipment) {
     packages = await Package
-      .findAll({ where: { id: shipment.package_ids.split(',') } });
+      .findAll({ where: { shipment_id: shipment.id } });
   }
-  return res.status(201).json({ packages, shipment });
+  return res.json({ packages, shipment });
 };
 
 
@@ -459,9 +687,9 @@ exports.finalShipRequest = async (req, res) => {
   const customer = await User
     .find(optionCustomer);
   const shipmentSave = {};
-  const shipRequestId = req.body.ship_request_id;
+  const shipRequestId = req.body.shipment_id;
   const shipOptions = {
-    attributes: ['id', 'package_ids', 'customer_id', 'estimated_amount', 'order_code'],
+    attributes: ['id', 'customer_id', 'estimated_amount', 'order_code'],
     where: { id: shipRequestId },
   };
   const shipment = await Shipment
@@ -473,10 +701,7 @@ exports.finalShipRequest = async (req, res) => {
   payment.coupon = 0;
   payment.loyalty = 0;
   payment.final_amount = shipment.estimated_amount;
-  // const options = {
-  //   attributes: ['points', 'customer_Id'],
-  //   where: { customer_Id: customerId },
-  // };
+
   const options = {
     attributes: ['points', 'customer_Id'],
     where: { customer_Id: customerId },
@@ -675,10 +900,9 @@ exports.finalShipRequest = async (req, res) => {
   return res.json({ message: 'success' });
 };
 
-
 exports.payRetrySubmit = async (req, res) => {
   const customerId = req.user.id;
-  const shipRequestId = req.body.ship_request_id;
+  const shipRequestId = req.body.shipment_id;
   log('payRetrySubmit', shipRequestId);
   const shipmentSave = {};
   const payment = {};
@@ -691,7 +915,7 @@ exports.payRetrySubmit = async (req, res) => {
 
   const shipment = await Shipment
     .findById(shipRequestId, {
-      attributes: ['id', 'package_ids', 'estimated_amount',
+      attributes: ['id', 'estimated_amount',
         'customer_id', 'order_code', 'wallet_amount', 'loyalty_amount', 'coupon_amount',
       ],
     });
@@ -856,7 +1080,7 @@ exports.retryPayment = async (req, res) => {
     });
 
   const optionShipment = {
-    attributes: ['id', 'estimated_amount', 'payment_gateway_fee_amount', 'package_ids'],
+    attributes: ['id', 'estimated_amount', 'payment_gateway_fee_amount'],
     where: { customer_id: customerId, order_code: orderCode, payment_status: ['failed', 'pending'] },
   };
 
@@ -869,7 +1093,7 @@ exports.retryPayment = async (req, res) => {
 
   const optionPackage = {
     attributes: ['id'],
-    where: { customer_id: customerId, id: shipment.package_ids.split(',') },
+    where: { customer_id: customerId, shipment_id: shipment.id },
   };
   const packages = await Package
     .find(optionPackage);
@@ -984,7 +1208,7 @@ exports.confirmShipment = async (req, res) => {
     });
 
   const optionsShipment = {
-    attributes: ['id', 'package_ids', 'estimated_amount', 'package_level_charges_Amount'],
+    attributes: ['id', 'estimated_amount', 'package_level_charges_Amount'],
     where: {
       customer_id: customerId,
       order_code: orderCode,
@@ -1000,10 +1224,10 @@ exports.confirmShipment = async (req, res) => {
   }
 
   const optionsPackage = {
-    attributes: ['id', 'price_amount', 'weight', 'reference_code', 'order_code'],
+    attributes: ['id', 'price_amount', 'weight', 'order_code'],
     where: {
       customer_id: customerId,
-      id: shipment.package_ids.split(','),
+      shipment_id: shipment.id,
     },
   };
   const packages = await Package
@@ -1135,3 +1359,253 @@ exports.confirmShipment = async (req, res) => {
     walletAmount: customer.wallet_balance_amount,
   });
 };
+
+exports.createShipment = async (req, res) => {
+  const customerId = req.user.id;
+  log('createShipment.customerId', customerId);
+
+  if (!req.user.package_ids) {
+    log('createshipments-package-ids', req.user.package_ids);
+    res.status(400).json({ message: 'package is not found' });
+  }
+
+  log('createshipments-package-ids', req.user.package_ids);
+  const packageIds = req.user.package_ids;
+  const { options } = req.user;
+  const optionPackage = {
+    attributes: ['id'],
+    where: { customer_id: customerId, id: packageIds },
+    include: [{
+      model: PackageCharge,
+      attributes: ['storage_amount', 'wrong_address_amount', 'special_handling_amount',
+        'receive_mail_amount', 'pickup_amount', 'basic_photo_amount',
+        'advanced_photo_amount', 'split_package_amount', 'scan_document_amount'],
+    }],
+  };
+
+  const packages = await Package
+    .findAll(optionPackage);
+
+  let consolidationChargesAmount = 0;
+  if (!packages) {
+    res.redirect('customer.locker').status(400).json({ message: 'package not found' });
+  }
+  log('packageIds.split ', packageIds.length);
+  if (packageIds.length > 1) {
+    consolidationChargesAmount = (packageIds.length - 1) * 100.00;
+  }
+  const charges = {
+    storage_amount: 0,
+    photo_amount: 0,
+    pickup_amount: 0,
+    special_handling_amount: 0,
+    receive_mail_amount: 0,
+    split_package_amount: 0,
+    wrong_address_amount: 0,
+    consolidation_charge_amount: consolidationChargesAmount,
+    optsAmount: 0,
+    scan_document_amount: 0,
+  };
+
+  let pack = '';
+  // eslint-disable-next-line no-restricted-syntax
+  for (pack of packages) {
+    charges.storage_amount += pack.storage_amount || 0;
+    charges.photo_amount += pack.basic_photo_amount || 0 + pack.advanced_photo_amount || 0;
+    charges.pickup_amount += pack.pickup_amount || 0;
+    charges.special_handling_amount += pack.special_handling_amount || 0;
+    charges.doc += pack.doc || 0;
+    charges.split_package_amount += pack.split_package_amount || 0;
+    charges.wrong_address_amount += pack.wrong_address_amount || 0;
+    charges.scan_document_amount += pack.scan_document_amount || 0;
+    log('adding package charges', charges);
+  }
+  log('charges', charges);
+
+  let extrapackAmount = 0;
+  if (options.extra_packing === 1) {
+    extrapackAmount = 500.00;
+  }
+  const repackAmount = (options.repack === 1) ? 100.00 : 0;
+  const stickerAmount = (options.sticker === 1) ? 0.00 : 0;
+  const originalAmount = 0;
+  const giftwrapAmount = (options.gift_wrap === 1) ? 100.00 : 0;
+  const giftnoteAmount = (options.gift_note === 1) ? 50.00 : 0;
+
+  charges.optsAmount = repackAmount + stickerAmount +
+    extrapackAmount + originalAmount + giftwrapAmount + giftnoteAmount;
+
+  const addresses = Address
+    .find(
+      { attributes: ['salutation', 'first_name', 'last_name', 'line1', 'line2', 'state'] },
+      { where: { customer_id: customerId } },
+    );
+
+  const customer = User
+    .find(
+      { attributes: ['salutation', 'first_name', 'last_name', 'email', 'virtual_address_code', 'phone_code'] },
+      { where: { id: customerId } },
+    );
+
+  const optionCountrty = {
+    attributes: req.query.fl
+      ? req.query.fl.split(',')
+      : ['id', 'name', 'slug', 'phone_code'],
+    limit: Number(req.query.limit) || 20,
+    offset: Number(req.query.offset) || 0,
+  };
+
+  const countries = Country
+    .find(optionCountrty);
+
+  res.json(packages, addresses, options, charges, customer, countries);
+};
+
+exports.redirectShipment = async (req, res) => {
+  const customerId = req.user.id;
+  const packageIds = req.body.package_ids;
+  log('redirectShipment.packageIds', packageIds);
+  const option = {
+    attributes: ['id', 'content_type', 'created_at'],
+    where: {
+      id: packageIds,
+      customer_id: customerId,
+    },
+    include: [{
+      model: PackageState,
+      attributes: [],
+      where: {
+        state_id: SHIP,
+      },
+    }],
+  };
+  log('redirectShipment.packageIds', packageIds);
+  const checkLiquid = [];
+
+  const packages = await Package
+    .findAll(option);
+
+  log('redirectShipment.packages length', Package.length);
+
+  if (!packages.length) {
+    return res.status(200).json({ message: 'package not found' });
+  }
+
+  let pack = '';
+  // eslint-disable-next-line no-restricted-syntax
+  for (pack of packages) {
+    checkLiquid[pack.id] = (pack.content_type === '2') ? '1' : '0';
+    const expireDate = moment(pack.created_at, 'DD-MM-YYYY').add(20, 'days');
+    log('redirectShipment.checkLiquid[pack.id]', checkLiquid[pack.id]);
+
+    if (moment() > expireDate) {
+      const todayDate = moment();
+      const interval = todayDate.diff(pack.created_at, 'days');
+      log('redirectShipment.interval', interval);
+      log('redirectShipment.today date', moment());
+      log('redirectShipment.expireDate date', expireDate);
+      log('redirectShipment.created_at date', pack.created_at);
+      const storageCharge = (interval - 20) * 100;
+
+      PackageCharge
+        .update(
+          { storage_amount: storageCharge },
+          { where: { id: pack.id } },
+        );
+
+      log('redirectShipment.PackageCharge', checkLiquid[pack.id]);
+    }
+  }
+
+  log('redirectShipment.checkLiquid-test', checkLiquid);
+
+  const arrayIntersect = _.intersection(checkLiquid, ['1', '0']);
+  log('redirectShipment.arrayIntersect', arrayIntersect);
+  let liquid = '';
+
+  if (arrayIntersect.length === 2) {
+    log('redirectShipment.Packages containing special items must be chosen and shipped separately');
+    return res.json({ error: 'Packages containing special items must be chosen and shipped separately' });
+  }
+
+  liquid = checkLiquid.includes('1') ? '1' : '0';
+  log('redirectShipment.liquid', liquid);
+
+  const options = {
+    repack: req.body.repack,
+    sticker: req.body.sticker,
+    extra_packing: req.body.extra_packing,
+    orginal_box: req.body.orginal_box,
+    gift_wrap: req.body.gift_wrap,
+    gift_note: req.body.gift_note,
+    giftnote_txt: req.body.giftnote_txt,
+    liquid,
+    max_weight: req.body.max_weight,
+    invoice_taxid: req.body.tax_id,
+    mark_personal_use: req.body.mark_personal_use,
+    invoice_include: req.body.invoice_include,
+  };
+
+  let address = '';
+  if (req.body.addressId) {
+    address = await Address
+      .findById(req.body.addressId);
+    if (address) {
+      const optionAddress = {
+        attributes: ['id'],
+        where: { customer_id: customerId, is_default: 1 },
+      };
+      address = await Address
+        .find(optionAddress);
+      if (address) {
+        log('redirectShipment.Ship request required address to proceed!');
+        return res.redirect('customer.address').json({ error: 'Ship request required address to proceed!' });
+      }
+    }
+  } else {
+    const optionAddress = {
+      attributes: ['id'],
+      where: { customer_id: customerId, is_default: 1 },
+    };
+    log('redirectShipment.testing break point address');
+    address = await Address
+      .find(optionAddress);
+    if (!address) {
+      log('redirectShipment.Ship request required address to proceed!');
+      return res.json({ error: 'Ship request required address to proceed!' });
+    }
+  }
+  log('redirectShipment.testing break point');
+
+  req.user.package_ids = packageIds;
+  req.user.options = options;
+  req.user.address = address;
+
+  const result = await this.createShipment(req, res);
+  return result;
+};
+
+exports.state = async (req, res, next) => Shipment
+  .findById(req.params.id)
+  .then((shipment) => {
+    log({ shipment });
+    if (!shipment.dispatch_date || !shipment.shipping_carrier || !shipment.number_of_packages ||
+        !shipment.weight_by_shipping_partner ||
+        !shipment.value_by_shipping_partner || !shipment.tracking_code) {
+      log('You must update Shipment Tracking Information to send dispatch notification!');
+      return res.json({
+        error: 'You must update Shipment Tracking Information to send dispatch notification!',
+      });
+    }
+
+    return Shipment
+      .updateShipmentState({
+        db,
+        shipment,
+        actingUser: req.user,
+        nextStateId: req.body.state_id,
+        comments: req.body.comments,
+      })
+      .then(status => res.json(status));
+  })
+  .catch(next);

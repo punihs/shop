@@ -1,0 +1,13 @@
+client/app/urls.constant.js
+client/app/app.constant.js
+node_modules
+public
+.tmp
+.sass-cache
+.idea
+client/bower_components
+dist
+/server/config/local.env.js
+npm-debug.log
+coverage
+client/app/ng-modules

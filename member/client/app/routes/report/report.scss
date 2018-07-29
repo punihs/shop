@@ -1,0 +1,59 @@
+.overview {
+  .dateCheck {
+    div[uib-datepicker-popup-wrap] {
+      display: inline;
+    }
+  }
+
+  .padding-left-none {
+    padding-left: 0;
+  }
+
+  .padding-right-none {
+    padding-right: 0;
+  }
+
+  .stats{
+    &:hover {
+      color: $brand-primary;
+    }
+  }
+
+  .inner-circle {
+    border-radius: 50%;
+    height: 106px;
+    width: 106px;
+    position: absolute;
+    z-index: 2;
+    background: #fff;
+    top: 9px;
+    left: 9px;
+  }
+
+  .outer-circle {
+    margin: auto auto;
+    border-radius: 50%;
+    height: 124px;
+    width: 124px;
+    position: relative;
+    background: #C9DBE6;
+    z-index: 1;
+    color: #B3B3B3;
+    &:hover {
+      background: #4787B5;
+    }
+  }
+
+  .outer-circle.highlight {
+    background: #4787B5 !important;
+    color: #333333 !important;
+  }
+
+  .circle-holder {
+    width: 16.5%;
+    display: inline-block;
+    &:hover {
+      color: #4787B5;;
+    }
+  }
+}

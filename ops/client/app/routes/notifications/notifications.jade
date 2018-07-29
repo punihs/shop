@@ -1,0 +1,101 @@
+div.banner-fixes-preset(ng-init="sidebar=true;App.app.settings.noOverflowY=true;")
+  div(style='position: relative;'
+    ng-init="sideb = {showPriorityFacet:false,showCEMFacet:false,showClientFacet:true,showCUNFacet:false}"
+  )
+    .bg-white-only.b-b(style='z-index: 2;height: 45px;')
+      .col-sm-2.no-padder.w-md
+        ul.nav.nav-pills.nav-sm.wrapper-sm
+          li.text-muted.text-sm
+            span.wrapper-sm.h4.text-black-dk Notifications
+      .p-t-xs.padder-md.m-b-xs
+        .clear(ng-if='$ctrl.notes.length > 0')
+          .btn-group.pull-left
+            button.btn.btn-default(
+              ng-click='$ctrl.searchText = {}; $ctrl.showUnread = false'
+              ng-class='{active: !$ctrl.showUnread}'
+            ) All
+
+            button.btn.btn-default(
+              ng-click='$ctrl.searchText = {read: false}; $ctrl.showUnread = true'
+              ng-class='{active: $ctrl.showUnread}'
+            ) Unread
+          .pull-right
+            button.btn(ng-if='$ctrl.counts.count > 0' ng-click='$ctrl.readAll()')
+              span Mark all as read
+              span.badge.bg-white.m-l-xs(ng-bind='$ctrl.counts.count')
+
+.hbox#ApplicantSearchResults(style="height:60%;overflow-y:scroll; position: relative")
+  .col-sm-2.w-md.bg-white-only(style="height: 89vh;")
+    .flex-box(style='overflow-y: auto;overflow-x: hidden;height:94%;')
+      div
+        ul.nav.nav-sm(style="overflow-y:auto;overflow-x:hidden;")
+
+          //Left Sidebar
+          li.wrapper-xs.b-b(ng-repeat="category in $ctrl.categories track by $index")
+            .h5.text-black.pointer.wrapper-xs.m-b-xs(
+              ng-click='$ctrl.ui.close[$index] = !$ctrl.ui.close[$index];$ctrl.getArchive($index)'
+              style='height: 25px;padding-left: 0 !important;'
+            )
+              i.fa.pull-right.fa-chevron-up(
+                ng-if="$index !== 3"
+                ng-class='{ "fa-chevron-down": $ctrl.ui.close[$index], "fa-chevron-up": !$ctrl.ui.close[$index] }',
+                style='font-size: 12px; margin-top: 2px;'
+              )
+              .pull-left.text-md.text-ellipsis.text-black-dk {{category.title}} &nbsp;
+                span {{$ctrl.getTotal(category.tags)}}
+            div(style='max-height:200px;overflow: auto;')
+              ul.nav.nav-sm.h6.collapse(
+                style='overflow: hidden'
+                uib-collapse='$ctrl.ui.close[$index]', aria-expanded='false', aria-hidden='true'
+              )
+                // - Notification Groups
+                li.m-b-xs(
+                  style='width: 200px;'
+                )
+                  div(ng-repeat="(tagId, tag) in category.tags " ng-if='tag.name')
+                    a.col-xs-12.pointer.no-padder.m-t-xs
+                      .col-xs-11.no-padder
+                        .left-padding-5.m-b-xs.m-t-xs(style='font-size:15px')
+                          .border-facet.m-l-xs.pull-left(
+                            ng-class="{'text-primary-dker': tagId === $ctrl.selectedNotification || '' === $ctrl.selectedNotification}"
+                            ng-click='$ctrl.selectNotification(tagId)'
+                          ) {{tag.name}} &nbsp;
+                            span(ng-if='tag.count > 0') ({{tag.count}})
+
+  div(style='margin-left: 250px;padding-right: 10px;')
+    .m-t-sm.wrapper-xs.w-full(ng-if='$ctrl.notes.length > 0',
+      when-scrolled="$ctrl.getList()"
+    )
+      .list-group: div.clear(
+        ng-repeat='note in $ctrl.notes | filter: $ctrl.searchText'
+        before-bottom='$ctrl.load()',
+        ng-init='App.app.settings.noOverflowY = false;'
+      )
+        a.media.list-group-item(
+          target='_blank'
+          href='{{note.payloads[0].link}}'
+          ng-class='{"bg-light dk": !note.read}'
+          ng-click='!note.read && $ctrl.readOne(note)'
+        )
+          span.media-body
+            .h4(ng-bind='note.payloads[0].title')
+            .m-t-xs
+            .h5(ng-bind='note.payloads[0].body')
+            .text-muted(ng-bind='note.timeago')
+        a.pos-rlt.pull-right.m-t-n-lg
+          i.wrapper-sm.m-t-n-xs.fa.fa-circle(
+            title='Mark as read'
+            ng-if='!note.read'
+            ng-click='$ctrl.readOne(note)'
+          )
+
+          i.wrapper-sm.m-t-n-xs.fa.fa-circle-o(
+            title='Mark as unread'
+            ng-if='note.read'
+            ng-click='$ctrl.unreadOne(note)'
+          )
+      .text-center.m-t-md
+        span.btn(title='Loading ...' ng-if="$ctrl.ui.loading")
+          i.fa.fa-spin.fa-circle-o-notch.fa-lg.rounded
+        span.btn(title='Load more' ng-if="$ctrl.ui.lazyLoad" ng-click="$ctrl.getList()")
+          i.fa.fa-arrow-down.fa-lg.rounded

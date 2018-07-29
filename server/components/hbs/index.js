@@ -1,9 +1,9 @@
 
-import path from 'path';
-import handlebars from 'handlebars';
-import fs from 'fs';
+const path = require('path');
+const handlebars = require('handlebars');
+const fs = require('fs');
 
-import config from '../../config/environment';
+const config = require('../../config/environment');
 
 const hbs = {
   render(view, data) {
@@ -37,4 +37,3 @@ hbs.fields = (view) => {
 };
 
 module.exports = hbs;
-export default hbs;

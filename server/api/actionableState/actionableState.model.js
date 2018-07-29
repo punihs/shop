@@ -1,14 +1,7 @@
+const properties = require('./actionableState.property');
 
 module.exports = (sequelize, DataTypes) => {
-  const ActionableState = sequelize.define('ActionableState', {
-    id: {
-      type: DataTypes.INTEGER(11),
-      autoIncrement: true,
-      primaryKey: true,
-      allowNull: false,
-      unique: true,
-    },
-  }, {
+  const ActionableState = sequelize.define('ActionableState', properties(DataTypes), {
     tableName: 'actionable_states',
     timestamps: true,
     underscored: true,

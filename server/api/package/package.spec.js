@@ -5,10 +5,22 @@ const opsAuth = require('../../../logs/ops-credentials');
 const wwwAuth = require('../../../logs/www-credentials');
 
 const {
-  CONSIGNMENT_TYPES: { DOC }, CONTENT_TYPES: { REGULAR, SPECIAL },
+  CONTENT_TYPES: { REGULAR, SPECIAL },
 } = require('../../config/constants');
 
-describe('public GET /api/packages', () => {
+describe('public: GET /api/packages', () => {
+  it('return packages', (done) => {
+    request(app)
+      .get('/api/packages?public=true')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+describe('www: GET /api/packages ', () => {
   it('return packages', (done) => {
     request(app)
       .get('/api/packages')
@@ -21,11 +33,13 @@ describe('public GET /api/packages', () => {
   });
 });
 
+const abhinavAuth = auth;
+
 describe('member GET /api/packages', () => {
   it('return packages', (done) => {
     request(app)
       .get('/api/packages')
-      .set('Authorization', `Bearer ${auth.access_token}`)
+      .set('Authorization', `Bearer ${abhinavAuth.access_token}`)
       .expect('Content-Type', /json/)
       .expect(200)
       .then(() => {
@@ -77,7 +91,7 @@ describe('POST /api/packages update meta', () => {
       .send({
         seller: 'Amazon.in',
         reference_code: '123',
-        consignment_type: DOC,
+        is_doc: true,
         price_amount: 2000,
         weight: 2,
         content_type: SPECIAL,

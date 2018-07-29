@@ -1,0 +1,31 @@
+div(ng-if='$ctrl.states[$ctrl.pkg.state_id].Actions.length')
+  button.btn.btn-sm.bg-white-only.b-a.rounded(
+    class='{{"b-"+$ctrl.states[state.state_id].config.color + " text-"+$ctrl.states[state.state_id].config.color}}'
+    ng-repeat='state in $ctrl.states[$ctrl.pkg.state_id].Actions track by $index'
+    ng-bind='$ctrl.states[state.state_id].action'
+    ng-if='$index < 2'
+    type='button'
+    ng-click='$ctrl.ChangeState.open($ctrl.pkg, ($ctrl.pkg._root_.is_drive && $ctrl.pkg.state_id === 44) ? 12 : state.state_id, $ctrl.pkg._root_.id)'
+    style='margin-left: 2px;'
+  )
+  .inline.btn-group.dropup(uib-dropdown='' ng-if='$ctrl.states[$ctrl.pkg.state_id].Actions.length > 2')
+    button.btn.bg-white-only.dropdown-toggle.rounded.b-a.padder-lg.m-t-xs.btn-sm.m-b-xs(
+      type='button'
+      uib-dropdown-toggle=''
+      aria-haspopup='true'
+      aria-expanded='false'
+      style='margin-left: 2px;padding: 3px 15px'
+    )
+      i.fa.fa-ellipsis-h
+    ul.dropdown-menu(
+      uib-dropdown-menu=''
+      role='menu'
+      aria-labelledby='single-button'
+      style="right: 0; left: auto;"
+    )
+      li(role='menuitem' ng-repeat='state in $ctrl.states[$ctrl.pkg.state_id].Actions track by $index' ng-if='$index > 1')
+        a(
+          ng-click='$ctrl.ChangeState.open($ctrl.pkg, ($ctrl.pkg._root_.is_drive && $ctrl.pkg.state_id === 44) ? 12 : state.state_id, $ctrl.pkg._root_.id)'
+          ng-bind='::$ctrl.states[state.state_id].action'
+          class='{{"text-"+$ctrl.states[state.state_id].config.color}}'
+        )

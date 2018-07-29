@@ -1,0 +1,14 @@
+config:
+  target: 'http://localhost:5000'
+  phases:
+    - duration: 10
+      arrivalRate: 5
+scenarios:
+  - name: "Stores & Coupons"
+    flow:
+      - get:
+          url: "/api/stores"
+      - think: 1
+      - get:
+          url: "/api/coupons"
+

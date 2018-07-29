@@ -1,0 +1,63 @@
+// Changing this directive will impact: job.applicants job.applicants.new job.references.list
+div.directive-header
+
+  .bg-light.b-b.padder.w-full.bg-white-only.m-t-xl(
+    style='position:fixed;z-index: 6;height: 42px;'
+    ng-if='page.customerPackages'
+  )
+    ul.nav.nav-pills.nav-sm.m-t-xs(
+      ng-if='page.customerPackages'
+    )
+      li: label.i-checks.i-checks-sm.m-t-xs.m-b-none.m-l-md(ng-show="buttons.buckets")
+        input(
+          type='checkbox'
+          ng-click='options.setChecked(options.checkAll)'
+          ng-model='options.checkAll'
+        )
+        i.m-r-none(ng-if='options.packages.length > 0')
+      li(ng-repeat='status in options.buckets' ui-sref-active="active" ng-show="buttons.buckets")
+        a(
+          ui-sref='customer.packages.index({ id: options.customer.id, status: status })'
+          ng-bind="status"
+        )
+
+
+  div(style='position: fixed;right: 5px;z-index: 9;margin-top: 7px;')
+    ul.nav.nav-pills.nav-sm
+      li.m-r-xs.pull-right: a.h5.font-bold.b-a(
+        ng-class="buttons.highlight == 'view-applicants'?'btn-success b-success':'b-info text-info' "
+        ng-show="buttons.viewPackages"
+        ui-sref='customer.packages.index({ id: options.customer.id, status: "ALL" })'
+        uib-popover="for {{options.customer.virtual_address_code}} - {{options.customer.name}}"
+      )
+        i.fa.fa-list
+
+      li.m-r-xs.pull-right: a.h5.font-bold.b-a(
+        ng-class="buttons.highlight == 'view'?'btn-info':'b-info text-info ' "
+        ng-show="buttons.view"
+        ui-sref='package.show({ id: options.pkg.id })'
+      )
+        i.fa.fa-eye
+
+
+      li.m-r-xs.pull-right(ng-if='buttons.packageCreate')
+        a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
+        ui-sref='package.items({ id: options.$stateParams.id })'
+        popover-trigger="'mouseenter'"
+        popover-placement='bottom'
+        popover-append-to-body='true'
+        )
+          span  Add Package Items
+      li.m-r-xs.pull-right(ng-if='buttons.create')
+        a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
+          ui-sref='customer.packages.create({ customer_id: options.customer.id })'
+          uib-popover="for {{options.customer.virtual_address_code}} - {{options.customer.name}}"
+          popover-trigger="'mouseenter'"
+          popover-placement='bottom'
+          popover-append-to-body='true'
+        )
+          span Add Package
+
+
+
+  .h5.btn-info.b-a.b-info.font-bold

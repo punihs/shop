@@ -1,0 +1,56 @@
+.wrapper-md(style='overflow-x:hidden; font-size:15px;')
+  .hbox.m-b-sm.m-t-md
+    .row
+      .col-sm-3.no-padder-right.m-t-xs
+        span Filter by
+      .col-sm-9.no-padder-left
+        .v-middle.w-full: .m-l-md.bg-light.padder.rounded
+          input.w-full.no-border.bg-light.wrapper-xs.input-md(type='text' placeholder='Search' ng-model='$ctrl.searchText')
+        .padder.pos-fix(style='right: 0;top: 0;')
+          .pointer.pull-right.fa-2x.font-thin(ng-click="$ctrl.$uibModalInstance.dismiss('cancel')") ×
+  div.row
+    .col-sm-3.no-padder-right.m-t-sm.b-r(style='min-height: 280px;')
+      div.wrapper-xs(ng-repeat="(type, facets) in $ctrl.ui.filtered" ng-if='$ctrl.ui.filtered[type].length' ng-class='{"bg-light": $ctrl.facet === type}')
+        .col.v-middle(ng-click='$ctrl.facet = type; $ctrl.searchText=""')
+          a.text-capitalize(
+          ng-model='$ctrl.facet'
+          ng-class='{"text-primary font-bold": $ctrl.facet === type}'
+          )
+            span(ng-if='type === "states"') Status
+
+
+
+    .col-sm-9.no-padder-left.m-t-sm
+      div(ng-repeat="(type, facets) in $ctrl.ui.filtered" ng-if='$ctrl.ui.filtered[type].length')
+        div(ng-if='$ctrl.facet === type')
+          .w-full
+            .b-b.font-thin.wrapper-sm(ng-if='type === "states" || type === "vendors"'): label.i-checks.i-checks-sm.block
+              input(
+              type='checkbox'
+              ng-checked='$ctrl.ui.selected[type] === $ctrl.all[type].length'
+              ng-model='$ctrl.ui.selectAll[type]'
+              ng-click='$ctrl.selectAll(type)'
+              )
+              i
+              .inline Select all
+
+            .w-full(style='overflow-x: hidden' ng-if='type === "states" || type === "vendors" || type === "locations" || type === "channels"')
+              .m-l-sm.b-b(style='max-height: 240px;overflow-y:auto;width:100.2%'): ul.nav
+                li.wrapper-sm.b-b(ng-repeat='facet in facets | filter: $ctrl.searchText')
+                  label.i-checks.i-checks-sm.m-b-none.block
+                    input(
+                    type='checkbox'
+                    ng-checked='facet.checked'
+                    ng-change='$ctrl.changed(facet.checked, type)'
+                    ng-model='facet.checked'
+                    ng-value='1'
+                    )
+                    i
+                    .inline(ng-bind='$ctrl.RENAMED_STATES[facet.id] || facet.name')
+
+
+
+
+  .text-center.m-t-sm
+    button.btn.padder-md.m-r-md(ng-click='$ctrl.reset()') Reset
+    button.btn.btn-blue.padder-md(ng-click='$ctrl.apply()') Apply

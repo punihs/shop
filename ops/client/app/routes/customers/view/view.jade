@@ -1,0 +1,28 @@
+div.bg-white-only#CustomerView
+  customer-header.bg-white-only.w-full.b-b(customer="$ctrl.data" style='position: fixed;z-index: 6;height: 40px;')
+  directive-header(
+    options="$ctrl"
+    page="{$ctrl:true}"
+    buttons="{\
+        buckets: true,\
+        create: true,\
+        viewPackages: true,\
+      }"
+    App="App"
+  )
+
+  .hbox.hbox-auto-xs.hbox-auto-sm
+    .col.clearfix.wrapper-md
+
+      //- Customer top cover container
+      .m-t-xxl.m-b-md(style='height: 5px;')
+      .wrapper-xs.text-center
+        .hbox.q-jd-alert.text-left
+          .col.v-middle.w-xs.text-center
+            i.fa.fa-warning.fa-2x.text-warning-dker
+          .col
+            span
+              li
+                | Coming
+                strong &nbsp;soon
+

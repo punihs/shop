@@ -1,0 +1,77 @@
+#packageShow {
+  .nav-comment {
+    right: -9px !important;
+  }
+}
+.div-alternate {
+  > div {
+    &:nth-child(even) {
+      background: #ECEDEF;
+    }
+  }
+}
+
+.tooltip-inner {
+  white-space:pre-wrap;
+}
+
+.bg-gd-applicant {
+  background: linear-gradient(#176a99,#0b2a41);
+}
+
+.tr-child-even th {
+  width:25%
+}
+
+.title-color {
+  color:#24647D !important;
+}
+
+.comment-box[contentEditable=true]:empty:not(:focus):before {
+  content:attr(data-text)
+}
+
+.scrollArea table th .box {
+  border: none !important;
+  margin-left: 5px;
+}
+
+.scrollArea table {
+  th {
+      &:first-child {
+        .box {
+          margin-left: 15px;
+        }
+      }
+      &:nth-child(4) {
+        .box {
+          margin-left: -5px;
+        }
+      }
+      &.box {
+        margin-left: 5px;
+      }
+  }
+}
+  .scrollableContainer .headerSpacer {
+    border-bottom: 1px solid #ddd !important;
+    background: #fff;
+  }
+
+.sticky-note {
+  .sticky-heading {
+    background-color: #C4E7CF;
+    border-radius: 5px 5px 0 0;
+  }
+
+  .sticky-body {
+    background-color: #D7F1D8;
+    border-radius: 0 0 5px 5px;
+    min-height: 50px;
+  }
+
+  .show {
+    max-height: 40px;
+    overflow: hidden;
+  }
+}

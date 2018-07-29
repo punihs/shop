@@ -1,0 +1,261 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" ng-app="uiGenApp" ng-controller="AppController as App"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" ng-app="uiGenApp" ng-controller="`AppController as App"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" ng-app="uiGenApp" ng-controller="AppController as App"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" ng-app="uiGenApp" ng-controller="AppController as App"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <base href="/">
+  <title ng-bind="App.Page.title()"> Membership</title>
+  <meta name="description" content="dashboard, recruiter, client">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="manifest" href="manifest.json">
+  <link rel="shortcut icon" href="https://www.shoppre.com/img/favicon.png">
+  <link rel="icon" type="image/png" href="https://www.shoppre.com/img/favicon.png" sizes="60x60">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(client) app/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
+  <link rel="stylesheet" href="bower_components/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.css" />
+  <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+  <link rel="stylesheet" href="bower_components/angular-scrollable-table/scrollable-table.css" />
+  <link rel="stylesheet" href="bower_components/angularjs-slider/dist/rzslider.css" />
+  <link rel="stylesheet" href="bower_components/AngularJS-Toaster/toaster.css" />
+  <link rel="stylesheet" href="bower_components/isteven-angular-multiselect/isteven-multi-select.css" />
+  <link rel="stylesheet" href="bower_components/flag-icon-css/css/flag-icon.min.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css({.tmp,client}) app/app.css -->
+  <link rel="stylesheet" href="app/app.css">
+  <!-- injector:css -->
+  <link rel="stylesheet" href="app/css/source-sans-pro.css">
+  <!-- endinjector -->
+  <!-- endbuild -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.5.1/socket.io.min.js"></script>
+
+</head>
+<body>
+<!--[if lt IE 7]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<!-- Add your site or application content here -->
+<div id="app" ng-class="{
+    'app-header-fixed':true,
+    'app-aside-fixed':true,
+    'app-aside-folded':App.app.settings.asideFolded,
+    'app-aside-dock':App.app.settings.asideDock,
+    'container':App.app.settings.container      }" class="app">
+  <!--<header>-->
+  <banner class="banner"></banner>
+  <navbar></navbar> <!--<div ng-include="'html/blocks/header.html'" class="app-header navbar"></div>-->
+  <!--</header>-->
+  <content>
+    <div class="app-content" ng-class="{'m-t-xl': App.app.settings.isAdmin}">
+      <div ui-butterbar=""></div>
+      <a href="" ui-toggle-class="off-screen" data-target=".app-aside" class="off-screen-toggle hide"></a>
+      <div>
+        <toaster-container  toaster-options="{'position-class': 'toast-bottom-right'}"></toaster-container>
+        <announcement></announcement>
+        <div class="hbox">
+          <div ng-if="App.showShipmentSideBar()" class="col w-md">
+            <!--<div class="wrapper b-b bg">-->
+            <!--<a ui-sref="app.mail.compose" class="btn btn-sm btn-danger w-xs font-bold" href="#/app/mail/compose">Manage JD</a>-->
+            <!--</div>-->
+            <shipment-nav></shipment-nav>
+          </div>
+          <div ui-view class="col"></div>
+        </div>
+      </div>
+    </div>
+  </content>
+</div>
+<!--<div ng-include="'html/blocks/aside.html'" ng-class="{    'off-screen': App.app.settings.offScreen,  }" class="app-aside hidden-xs {{App.app.settings.asideColor}}"></div>-->
+
+<!--<navbar></navbar>-->
+<!--<div ui-view=""></div>-->
+<!--<footer></footer>-->
+
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-52116787-4', 'auto');
+  if(localStorage.userinfo) {
+    user = JSON.parse(localStorage.userinfo)
+    ga('set', 'userId', user.id);
+  }
+  ga('send', 'pageview');
+</script>
+<tawk></tawk>
+<comet-chat></comet-chat>
+
+<!--[if lt IE 9]>
+<script src="bower_components/es5-shim/es5-shim.js"></script>
+<script src="bower_components/json3/lib/json3.min.js"></script>
+<![endif]-->
+<!-- build:js({client,node_modules}) app/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-http-auth/src/http-auth-interceptor.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.js"></script>
+<script src="bower_components/chart.js/dist/Chart.js"></script>
+<script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
+<script src="bower_components/lodash/lodash.js"></script>
+<script src="bower_components/restangular/dist/restangular.js"></script>
+<script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
+<script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+<script src="bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js"></script>
+<script src="bower_components/jquery.easy-pie-chart/dist/angular.easypiechart.min.js"></script>
+<script src="bower_components/angular-scrollable-table/angular-scrollable-table.js"></script>
+<script src="bower_components/angularjs-slider/dist/rzslider.js"></script>
+<script src="bower_components/AngularJS-Toaster/toaster.js"></script>
+<script src="bower_components/clipboard/dist/clipboard.js"></script>
+<script src="bower_components/ngclipboard/dist/ngclipboard.js"></script>
+<script src="bower_components/isteven-angular-multiselect/isteven-multi-select.js"></script>
+<script src="bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-socket-io/socket.js"></script>
+<script src="bower_components/angular-base64-upload/src/angular-base64-upload.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+<!-- build:js(.tmp) app/app.js -->
+<script src="app/app.js"></script>
+<!-- injector:js -->
+<script src="app/routes/calendar/calendar.controller.js"></script>
+<script src="app/app.constant.js"></script>
+<script src="app/directives/add-comments/add-comments.controller.js"></script>
+<script src="app/directives/add-follower/add-follower.controller.js"></script>
+<script src="app/directives/announcement-modal/announcement-modal.controller.js"></script>
+<script src="app/directives/change-shipment-state/change-shipment-state.service.js"></script>
+<script src="app/directives/change-state/change-state.service.js"></script>
+<script src="app/directives/click-tocopy/click-tocopy.controller.js"></script>
+<script src="app/directives/common.directive.js"></script>
+<script src="app/directives/confirm-dialog/confirm-dialog.service.js"></script>
+<script src="app/directives/directive-header/directive-header.directive.js"></script>
+<script src="app/directives/directive-header/directive-header.service.js"></script>
+<script src="app/directives/download-resume/download-resume.controller.js"></script>
+<script src="app/directives/email-candidate/email-candidate.controller.js"></script>
+<script src="app/directives/full-screen-content/full-screen-content.directive.js"></script>
+<script src="app/directives/job-comment/job-comment.directive.js"></script>
+<script src="app/directives/job-detail/job-detail.directive.js"></script>
+<script src="app/directives/job-payment/job-payment.controller.js"></script>
+<script src="app/directives/logout/logout.controller.js"></script>
+<script src="app/directives/notify-count/notify-count.directive.js"></script>
+<script src="app/directives/package-filter/package-filter.js"></script>
+<script src="app/directives/reapply/reapply.controller.js"></script>
+<script src="app/directives/reapply/reapply.service.js"></script>
+<script src="app/directives/reauth/reauth.directive.js"></script>
+<script src="app/directives/shipment-filter/shipment-filter.js"></script>
+<script src="app/directives/social-share/social-share.controller.js"></script>
+<script src="app/directives/text-focus/text-focus.directive.js"></script>
+<script src="app/directives/upload-excel/upload-excel.service.js"></script>
+<script src="app/directives/upload-photos/upload-photos.controller.js"></script>
+<script src="app/event.js"></script>
+<script src="app/factories/ExcelDownload/ExcelDownload.service.js"></script>
+<script src="app/factories/URLS/URLS.service.js"></script>
+<script src="app/factories/prototype/prototype.js"></script>
+<script src="app/factories/qui.components/before.bottom.js"></script>
+<script src="app/factories/qui.components/contenteditable.js"></script>
+<script src="app/factories/qui.components/form.js"></script>
+<script src="app/factories/qui.components/keypress.js"></script>
+<script src="app/factories/qui.components/scroll.to.bottom.js"></script>
+<script src="app/factories/qui.core/constants/auth-events.js"></script>
+<script src="app/factories/qui.core/constants/currency.js"></script>
+<script src="app/factories/qui.core/services/auth.interceptor.js"></script>
+<script src="app/factories/qui.core/services/auth.js"></script>
+<script src="app/factories/qui.core/services/moment.js"></script>
+<script src="app/factories/qui.core/services/page.js"></script>
+<script src="app/factories/qui.core/services/session.js"></script>
+<script src="app/factories/qui.core/services/user.js"></script>
+<script src="app/routes/access/access.js"></script>
+<script src="app/routes/access/oauth/oauth.controller.js"></script>
+<script src="app/routes/accounts/accounts.js"></script>
+<script src="app/routes/accounts/address/address-list.controller.js"></script>
+<script src="app/routes/accounts/address/address-new.controller.js"></script>
+<script src="app/routes/accounts/badge/badge.controller.js"></script>
+<script src="app/routes/accounts/billing/billing.controller.js"></script>
+<script src="app/routes/accounts/client-tnc/client-tnc.controller.js"></script>
+<script src="app/routes/accounts/download-extension/download-extension.controller.js"></script>
+<script src="app/routes/accounts/empanelment/empanelment.controller.js"></script>
+<script src="app/routes/accounts/preferences/preferencesController.js"></script>
+<script src="app/routes/accounts/profile-detail/profile-detail.controller.js"></script>
+<script src="app/routes/accounts/profile/profile.controller.js"></script>
+<script src="app/routes/accounts/terminated-message/terminated-message.controller.js"></script>
+<script src="app/routes/accounts/transaction/transaction.controller.js"></script>
+<script src="app/app.controller.js"></script>
+<script src="app/routes/calendar/calendar.js"></script>
+<script src="app/routes/career/career.controller.js"></script>
+<script src="app/routes/career/career.js"></script>
+<script src="app/routes/customers/customer-header/customer-header.directive.js"></script>
+<script src="app/routes/customers/customers.js"></script>
+<script src="app/routes/customers/list/list.controller.js"></script>
+<script src="app/routes/customers/packages/create/create.controller.js"></script>
+<script src="app/routes/customers/packages/index/index.controller.js"></script>
+<script src="app/routes/customers/packages/packages.js"></script>
+<script src="app/routes/customers/view/view.controller.js"></script>
+<script src="app/routes/dash/createShipmentRequest/shipment-request.controller.js"></script>
+<script src="app/routes/dash/createShipmentRequest/shipment-request.js"></script>
+<script src="app/routes/dash/dash.js"></script>
+<script src="app/routes/dash/packages/packages.controller.js"></script>
+<script src="app/routes/extension/extension.js"></script>
+<script src="app/routes/hhlead/hhlead-new/hhlead-new.controller.js"></script>
+<script src="app/routes/hhlead/hhlead.js"></script>
+<script src="app/routes/loyaltypoints/loyaltyController.js"></script>
+<script src="app/routes/loyaltypoints/loyaltypoint.js"></script>
+<script src="app/routes/membership/membership-controller.js"></script>
+<script src="app/routes/membership/membership.js"></script>
+<script src="app/routes/notifications/notifications.controller.js"></script>
+<script src="app/routes/notifications/notifications.js"></script>
+<script src="app/routes/orders/list/list.controller.js"></script>
+<script src="app/routes/orders/new/new.controller.js"></script>
+<script src="app/routes/orders/orders.js"></script>
+<script src="app/routes/orders/show/show.controller.js"></script>
+<script src="app/routes/packages/charges/charges.controller.js"></script>
+<script src="app/routes/packages/index/index.controller.js"></script>
+<script src="app/routes/packages/items/items.controller.js"></script>
+<script src="app/routes/packages/packages.js"></script>
+<script src="app/routes/packages/show/show.controller.js"></script>
+<script src="app/routes/report/report-list/report-list.controller.js"></script>
+<script src="app/routes/report/report-overview/report-overview.controller.js"></script>
+<script src="app/routes/report/report.js"></script>
+<script src="app/routes/shipments/list.controller.js"></script>
+<script src="app/routes/shipments/packages/create/create.controller.js"></script>
+<script src="app/routes/shipments/packages/index/index.controller.js"></script>
+<script src="app/routes/shipments/packages/packages.js"></script>
+<script src="app/routes/shipments/shipment-header/shipment-header.directive.js"></script>
+<script src="app/routes/shipments/shipments.js"></script>
+<script src="components/aside/aside.directive.js"></script>
+<script src="components/career-modal/career-modal.service.js"></script>
+<script src="components/comment/comment.directive.js"></script>
+<script src="components/footer/footer.directive.js"></script>
+<script src="components/light-box/light-box.directive.js"></script>
+<script src="components/list-modal/list-modal.service.js"></script>
+<script src="components/navbar/navbar.controller.js"></script>
+<script src="components/navbar/navbar.directive.js"></script>
+<script src="components/navigation/navigation.directive.js"></script>
+<script src="components/payment-tracker/payment-tracker.service.js"></script>
+<script src="components/preferences/preferences.controller.js"></script>
+<script src="components/preferences/preferences.directive.js"></script>
+<script src="components/quick-state-change/quick-state-change.directive.js"></script>
+<script src="components/region-suggest/region-suggest.controller.js"></script>
+<script src="components/region-suggest/region-suggest.directive.js"></script>
+<script src="components/shipment-nav/shipment-nav.directive.js"></script>
+<script src="components/show-applicant/show-applicant.service.js"></script>
+<script src="components/socket/socket.service.js"></script>
+<script src="components/web-notify/web-notify.config.js"></script>
+<!-- endinjector -->
+<!-- endbuild -->
+</body>
+</html>

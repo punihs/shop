@@ -1,0 +1,270 @@
+.bg-light.lter.b-b.wrapper-md.ng-scope
+  .wrapper-md.bg-white-only
+    .row
+      .col-md-6
+        .div-border-create
+          h2.m-n.alert.alert-info 1. DELIVERY ADDRESS
+          .clearfix
+          .radio
+            label.i-checks.div-list
+              input(type='radio', name='a', value='option2', checked='')
+              i
+              |                 Mr. Chandan Kumar D N  +91 9844717202
+              br
+              | Bangalore line, Nelamanagala, Bangalore, Karnataka, India - 577432
+            .clearfix
+            .radio
+              label.i-checks.div-list
+                input(type='radio', name='a', value='option2', checked='')
+                i
+                |                 Mr. punith HS  +91 8970972343
+                br
+                | chandan, chandan, banglore, karnataka, India - 572105
+
+            button.btn.btn-primary.btn-addon.btn-lg.div-list.pull-right.btn-add-address
+              i.fa.fa-plus
+              | Add Address
+            .clearfix
+        div.div-border-create
+          h2.m-n.alert.alert.alert-info.panel-warning 2. SHIPMENT SUMMARY
+            .clearfix
+          .div
+            p.div-list 1 Packages in this shipment
+          .full-width
+            .wrapper-md.ng-scope
+              .panel.panel-default
+                .panel-heading
+                  h4
+                    a(href='') Add More Packages
+                div
+                  table.table.table-bordered.m-b-none.default.footable-loaded.footable(
+                  ui-jq='footable', data-filter='#filter', data-page-size='5')
+                    thead
+                      tr
+                        th.footable-visible.footable-first-column.footable-sortable(data-toggle='true')
+                        th.footable-visible.footable-sortable
+                          | From
+                          span.footable-sort-indicator
+                        th.footable-visible.footable-sortable(data-hide='phone,tablet')
+                          | Package ID
+                          span.footable-sort-indicator
+                        th.footable-visible.footable-sortable(data-hide='phone,tablet', data-name='Date Of Birth')
+                          | Total Value
+                          span.footable-sort-indicator
+                        th.footable-visible.footable-last-column.footable-sortable(data-hide='phone')
+                          | Weight
+                          span.footable-sort-indicator
+                        th.footable-visible.footable-last-column.footable-sortable(data-hide='phone')
+                          .checkbox.no-margin
+                            label.i-checks
+                              input(type='checkbox', checked='', value='')
+                              i
+                    tbody
+                      tr.footable-even(style='display: table-row;' ng-repeat="package in $ctrl.packages")
+                        td.footable-visible.footable-first-column
+                        td.footable-visible
+                          a(ui-sref='package.show({ id: package.id })' ng-bind='package.Store.name')
+                        td.footable-visible(ng-bind='package.id')
+                        td.footable-visible(
+                        ng-bind='$ctrl.moment(package.created_at).fromNow()'
+                        uib-tooltip="{{package.created_at | date:'MMM d, y'}} IST {{package.created_at | date:'h:mm a'}}"
+                        tooltip-placement='right'
+                        tooltip-append-to-body='true'
+                        )
+                        td.footable-visible(
+                        ng-bind='package.price_amount'
+                        )
+                        td.footable-visible(ng-bind='package.weight')
+                        td.footable-visible(data-value='78025368997') Photos
+                        td.footable-visible
+                          .checkbox.no-margin
+                            label.i-checks
+                              input(type='checkbox', checked='', value='')
+                              i
+                      tr.footable-even
+                        td.footable-visible.footable-first-column
+                        td.footable-visible Amazon.in 31
+                        td.footable-visible PCKG-15423247752
+                        td.footable-visible ₹ 100.00
+                        td.footable-visible 2
+                        td.footable-visible
+                          .checkbox.no-margin
+                            label.i-checks
+                              input(type='checkbox', checked='1', value='1')
+                              i
+                      tr.footable-even.table-footer
+                        td.footable-visible.footable-first-column
+                        td.footable-visible
+                        td.footable-visible Shipment Totals
+                        td.footable-visible ₹ 100.00
+                        td.footable-visible Final Weight of Shipment to be calculated
+                        td.footable-visible
+
+
+          .clearfix
+            .div-list
+              h4
+                //a.bg-danger(href='') Cancel Request
+                button.btn.btn-danger Cancel Request
+              p Order confirmation email will be sent to
+                span.summary-order chandankumardn@gmail.com
+              button.btn.btn-sm.btn-success.m-t-xs.text-u-c.pull-left.m-t-md.m-b-md(type='submit') Confirm Your Ship Request *
+              .clearfix
+              p.pull-left * Kindly note that you CANNOT change your Delivery Address, Package Selection or your Shipping Preferences after you create your ship request.
+
+      .col-md-3
+        .list-group-item.text-danger.text-u-c
+          span.badge.pull-right.bg-success 00
+          |     Shoppre Wallet
+        .panel.panel-info.m-t-md
+          .panel-heading.font-bold.text-u-c SHIPPING PREFERENCES SUMMARY
+          .panel-body
+            form.ng-pristine.ng-valid(role='form')
+              ul.list-group.list-group-lg.m-b-none.list-unstyled
+                li
+                  .checkbox
+                    label.i-checks
+                      input(type='checkbox', value='')
+                      i
+                      | Discard Shoe boxes
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                li
+                  .checkbox
+                    label.i-checks
+                      input(type='checkbox', value='')
+                      i
+                      | Add extra packing material
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                li
+                  .checkbox
+                    label.i-checks
+                      input(type='checkbox', value='')
+                      i
+                      | Ship in original boxes(do not repack)
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                li
+                  .checkbox
+                    label.i-checks
+                      input(type='checkbox', value='')
+                      i
+                      | Gift Wrap
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                li
+                  .checkbox
+                    label.i-checks
+                      input(type='checkbox', value='')
+                      i
+                      | Gift Note
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                li
+                  .form-group
+                    .col-lg-2.no-padder
+                      input.form-control.no-padder.text-center(type='text', placeholder='in KG')
+                    label.col-lg-9.control-label.m-t-xs Max weight per package (in KG)
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover=''
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+                .clearfix
+        .panel.panel-info.m-t-md
+          .panel-heading.font-bold.text-u-c PACKAGE LEVEL CHARGES SUMMARY
+          .panel-body
+            form.ng-pristine.ng-valid(role='form')
+              ul.list-group.list-group-lg.m-b-none.list-unstyled
+                li
+                  i
+                    span.badge.pull-right.bg-success 00
+                    | Shipping Preference Charges
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                li
+                  i
+                    span.badge.pull-right.bg-success 00
+                    | Additional Storage Fee
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                li
+                  i
+                    span.badge.pull-right.bg-success 00
+                    | Photo Charges
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                li
+                  i
+                    span.badge.pull-right.bg-success 00
+                    | Consolidation Charges
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                li
+                  i
+                    span.badge.pull-right.bg-success 00
+                    | Pick-up Service
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                li
+                  i
+                    span.badge.pull-right.bg-success 00
+                    | Split Package
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                .clearfix
+        .panel.panel-info.m-t-md
+          .panel-heading.font-bold.text-u-c SHIPPING CHARGES
+          .panel-body
+              p To be estimated after we pack your items
+              button.btn.btn-sm.btn-success.m-t-xs.text-u-c.pull-left.m-t-md.m-b-md(type='submit') Confirm Your Ship Request *
+              .clearfix
+              p * Kindly note that you CANNOT change your Delivery Address, Package Selection or your
+                Shipping Preferences after you create your ship request.
+

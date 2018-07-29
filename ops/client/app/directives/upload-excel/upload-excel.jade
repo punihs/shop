@@ -1,0 +1,57 @@
+.modal-header
+  .modal-title
+    .h4.text-info Upload Excel
+      .close(ng-click='$ctrl.$uibModalInstance.dismiss()') ×
+form.form-validation(name="form" ng-submit='$ctrl.upload()')
+  .modal-body
+    //- by default angular doesn't set value to module
+    label.input-group.m-b
+      strong Upload your candidates complete information in the Excel template provided below
+      a.b-a.font-bold.b-success.text-success.wrapper-xs.inline.m-t-xs(
+        href='https://cdn.quezx.com/docs/Bulk_Upload_Template.xlsx'
+        target='_blank')
+        span.text-success Download Excel Template
+    label.input-group.m-b
+      strong Select Interview Date
+      .input-group
+        input.form.form-control.m-t-xs(
+          type='text' uib-datepicker-popup='dd-MMMM-yyyy'
+          ng-model='$ctrl.exData.scheduled_on_date'
+          ng-change='$ctrl.setScheduledOn()'
+          is-open='$ctrl.ui.scheduledOn'
+          close-text='Close'
+          ng-click='$ctrl.ui.scheduledOn = true'
+          required='$ctrl.stateId !== 19'
+          ng-model-options='{debounce: 300}'
+        )
+    .alert.alert-warning.text-black(style='background: #FFD8A9;') Note - Select one interview date and upload excel with candidates to be scheduled for that date. Repeat process for multiple dates.
+    label(for='file'): strong Upload Excel
+    span.text-danger.m-r-sm.wrapper-xs(ng-if='$ctrl.error' ng-bind='$ctrl.error')
+    .btn-file-wrapper(ng-class="$ctrl.file.$touched && $ctrl.file.$invalid ? 'input-file-danger':''" drag-drop-toggle)
+      .btn-file
+        span(ng-show="($ctrl.file.$touched && $ctrl.file.$valid) || $ctrl.data.file")
+          span.text-muted(ng-bind="$ctrl.data.file.filename")
+        p.no-margin(ng-hide="($ctrl.file.$touched && $ctrl.file.$valid) || $ctrl.data.file")
+          span.text-bold Choose a file
+          |  or Drag it here.
+        span.file-support(ng-hide="($ctrl.file.$touched && $ctrl.file.$valid) || $ctrl.data.file") Supported Formats: xls,xlsx
+        input.form-control(
+          type="file"
+          id='file'
+          accept=".xls,.xlsx"
+          ng-model='$ctrl.data.file'
+          name='file'
+          required
+          base-sixty-four-input)
+
+  .modal-footer.wrapper-sm
+    .inline.wrapper-xs.pull-left.text-danger(ng-if='$ctrl.ui.url')
+      span(ng-bind=' $ctrl.ui.failed + "/" + $ctrl.ui.total')
+      span &nbsp;records failed,&nbsp;
+      a.text-primary.text-u-l( ng-href='{{$ctrl.ui.url}}' target='_blank') Click Here
+      span &nbsp;to download the error report.
+    button.btn.btn-primary(type='submit' ng-disabled='form.$invalid || $ctrl.uploading' )
+      span.text-white(ng-if='!$ctrl.uploading') Upload
+      span(ng-if='$ctrl.uploading')
+        i.fa.fa-spin.fa-circle-o-notch
+        span.text-white &nbsp;&nbsp;Uploading...

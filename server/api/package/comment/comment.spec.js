@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../../../app');
-const { Package } = require('../../../conn/sqldb');
+const { Package, Comment } = require('../../../conn/sqldb');
 const auth = require('../../../../logs/credentials');
 const opsAuth = require('../../../../logs/ops-credentials');
 
@@ -31,13 +31,17 @@ describe('member GET /api/packages/1/comments', () => {
 });
 
 describe('ops POST /api/packages/1/comments', () => {
-  before(async () => {
-    await Package.create({});
+  let pkg;
+  before((done) => {
+    Package.create({}).then((pack) => {
+      pkg = pack;
+      done();
+    });
   });
 
-  it('save packages/1/comments', (done) => {
+  it('save packages/:id/comments', (done) => {
     request(app)
-      .post('/api/packages/1/comments')
+      .post(`/api/packages/${pkg.id}/comments`)
       .send({
         comments: 'Ping',
       })
@@ -48,17 +52,28 @@ describe('ops POST /api/packages/1/comments', () => {
         done();
       });
   });
+
+  after((done) => {
+    Comment
+      .destroy({ where: { object_id: pkg.id }, force: true })
+      .then(() => pkg.destroy({ force: true }))
+      .then(() => done());
+  });
 });
 
 
 describe('member POST /api/packages/1/comments', () => {
-  before(async () => {
-    await Package.create({});
+  let pkg;
+  before((done) => {
+    Package.create({}).then((pack) => {
+      pkg = pack;
+      done();
+    });
   });
 
-  it('save packages/1/comments', (done) => {
+  it('save packages/:id/comments', (done) => {
     request(app)
-      .post('/api/packages/1/comments')
+      .post(`/api/packages/${pkg.id}/comments`)
       .send({
         comments: 'Pong',
       })
@@ -68,6 +83,13 @@ describe('member POST /api/packages/1/comments', () => {
       .then(() => {
         done();
       });
+  });
+
+  after((done) => {
+    Comment
+      .destroy({ where: { object_id: pkg.id }, force: true })
+      .then(() => pkg.destroy({ force: true }))
+      .then(() => done());
   });
 });
 

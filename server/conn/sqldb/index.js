@@ -7,6 +7,9 @@ const oauthComponent = require('../../components/oauth/sequelize');
 const sqlDefaults = {
   dialect: 'mysql',
   timezone: '+05:30',
+  dialectOptions: {
+    decimalNumbers: true,
+  },
   define: {
     charset: 'utf8',
     dialectOptions: {
@@ -24,8 +27,10 @@ const db = {
   // - Enums
   'Country', 'Place', 'PaymentGateway', 'Locker', 'CountryGuide',
 
+  'EmailTemplate', 'EmailLog', 'EmailTemplateAd', 'EmailPreference', 'Ad',
+
   // - Basic
-  'User', 'UserMeta', 'Group', 'Estimation', 'PasswordReset',
+  'User', 'UserMeta', 'Group', 'Estimation', 'PasswordReset', 'Follower', 'SocketSession',
 
   // - Customer Account
   // Shoppre.com - Inspired by MyUS.com
@@ -33,16 +38,16 @@ const db = {
 
   'Order',
 
-  'Package', 'PackageMeta', 'PackageState', 'State', 'ActionableState', 'GroupState',
-  'PackageItem', 'PackageComment',
+  'Package', 'PackageCharge', 'PackageState', 'State', 'ActionableState', 'GroupState',
+  'PackageItem',
   'PackageItemCategory',
 
   'PhotoRequest',
 
-  'Shipment', 'ShipmentMeta', 'ShipmentType', 'ShipmentIssue', 'ShippingPartner',
+  'Shipment', 'ShipmentMeta', 'ShipmentType', 'ShipmentIssue', 'ShippingPartner', 'ShipmentState',
   'Transaction',
   // - Notifications
-  'Notification', 'ShipmentMail',
+  'Notification', 'Comment', 'ShipmentMail',
 
   // - loyalty points, coupon
   'LoyaltyPoint', 'LoyaltyHistory', 'Redemption', 'ReferCode',
@@ -59,10 +64,13 @@ const db = {
   'Coupon',
 
   // - Reviews
-  'Review', 'Feedback',
+  'Review', 'Feedback', 'Campaign',
 
   // - Estomations
   'Estimation',
+
+  // - payment gateway
+  'DirectPayment',
 
   // Shoppre Digital Inspired by Marketo.com
   // - Website - Google My Business - Hardy
