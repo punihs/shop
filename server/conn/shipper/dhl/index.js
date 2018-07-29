@@ -29,7 +29,7 @@ const xml2json = (xml) => {
   return promisify(parser.parseString)(xml);
 };
 
-exports.status = (trackingCode) => {
+const status = (trackingCode) => {
   log('status', trackingCode);
   return rp({
     method: 'POST',
@@ -42,6 +42,42 @@ exports.status = (trackingCode) => {
     .then((response) => {
       log('response from dhl', response);
       return xml2json(response);
+    });
+};
+
+exports.status = status;
+
+exports.lastStatus = (trackingCode) => {
+  log('status', trackingCode);
+  return status(trackingCode)
+    .then((response) => {
+      log('response', response);
+      const { AWBInfo } = response['req:TrackingResponse'];
+      log('response', AWBInfo);
+
+      if (!(AWBInfo && AWBInfo.length)) {
+        /* eslint prefer-promise-reject-errors:0 */
+        return Promise
+          .reject({ message: 'wrong shipment tracking number' });
+      }
+
+      const events = AWBInfo[1].ShipmentInfo.ShipmentEvent;
+      const lastEvent = events[events.length - 1];
+      const timestamp = `${lastEvent.Date} ${lastEvent.Time}`;
+      return {
+        status: {
+          timestamp,
+          message: lastEvent.ServiceEvent.Description,
+        },
+        customPayload: {
+          timestamp,
+          service_event_code: lastEvent.ServiceEvent.EventCode,
+          service_event_description: lastEvent.ServiceEvent.Description,
+          signatory: lastEvent.Signatory,
+          service_area_code: lastEvent.ServiceArea.ServiceAreaCode,
+          service_area_dscription: lastEvent.ServiceArea.Description,
+        },
+      };
     });
 };
 

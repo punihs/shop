@@ -27,6 +27,9 @@ const db = {
   // - Enums
   'Country', 'Place', 'PaymentGateway', 'Locker',
 
+  // - Tracking
+  'DHLLog',
+
   'EmailTemplate', 'EmailLog', 'EmailTemplateAd', 'EmailPreference', 'Ad',
 
   // - Basic
