@@ -1,7 +1,7 @@
 
 const rp = require('request-promise');
-const { URLS_API } = require('../../config/environment');
-const { URLS_MYACCOUNT } = require('../../config/environment');
+const { URLS_API, URLS_MYACCOUNT, URLS_WWW } = require('../../config/environment');
+
 
 exports.index = (req, res, next) => Promise
   .all([
@@ -9,9 +9,11 @@ exports.index = (req, res, next) => Promise
   ])
   .then(([countries]) => {
     res.render('countryGuide/index', {
-      title: 'Country title',
-      meta_description: 'Country_metaDesctription',
-      meta_title: 'Country_metaTitle',
+      URLS_MYACCOUNT,
+      URLS_WWW,
+      title: 'Country Guides | Shoppre - International Shipping Partner',
+      meta_description: 'Know how Shoppre a parcel forwarding &amp; international shipping services work for online shopping in India while ensuring fast service at unbelievably low prices.',
+      meta_keywords: 'know how, shoppre, parcel forwarding, international shipping services, online shopping in india, fast service, dhl, fedex, dtdc',
       countries,
     });
   })
@@ -27,10 +29,11 @@ exports.show = (req, res, next) => Promise
     res
       .render('countryGuide/show', Object
         .assign(country, {
-          title: 'International Shipping from India, Flipkart International Delivery',
-          meta_description: 'Meta Title International Shipping from India, Flipkart International Delivery',
-          meta_title: 'Meta Description International Shipping from India, Flipkart International Delivery',
           URLS_MYACCOUNT,
+          URLS_WWW,
+          title: 'Country Guides | Shoppre - International Shipping Partner',
+          meta_description: 'Know how Shoppre a parcel forwarding &amp; international shipping services work for online shopping in India while ensuring fast service at unbelievably low prices.',
+          meta_keywords: 'know how, shoppre, parcel forwarding, international shipping services, online shopping in india, fast service, dhl, fedex, dtdc',
         }));
   })
   .catch(next);

@@ -1,0 +1,32 @@
+extends ../layout
+block content
+  head
+    title '#{title}'
+      meta(name='description', content= '#{meta_description}')
+      meta(property='og:title', content='#{meta_title}')
+  .body
+    .container
+      center
+        img(src='/cdn/img/dhl.png', alt='')
+      h2  Shipments we sent across the Globe
+       // each shipment in shipments
+      -for shipment in shipments
+        .shipment_card
+         .row
+           .col-md-12(style='padding-left: 35px')
+             // each countries in shipment.Country
+             // -for countries in shipment.Country
+             -for c in shipment.Country
+                 h1= c.name
+                 a(href="/show?id=#{shipment.id}" style="color:#ff691e;")
+                   h4
+                     b  To #{c.name}
+                 .row
+                   .col-md-2
+                     h5 Weight :&nbsp#{shipment.weight} kg.
+                   .col-md-3
+                     h5 Total Charge : INR &nbsp#{shipment.final_amount}
+                   .col-md-3
+                     h5 Delivered In : &nbsp#{days} Days
+        //center
+        // | {{ $shipments->appends(Request::except('page'))->links() }} {{-- For Pagination--}}

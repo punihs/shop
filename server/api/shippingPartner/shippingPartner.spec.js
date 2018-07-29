@@ -13,10 +13,22 @@ const app = require('./../../app');
 //   });
 // });
 
-describe('GET /api/shippingPartners/partners?type=dhl', () => {
-  it('return shippingPartners/partners?type=dhl', (done) => {
+describe('GET /api/shippingPartners/partner/dhl', () => {
+  it('return shippingPartners/partner/dhl', (done) => {
     request(app)
-      .get('/api/shippingPartners/partners?type=dhl')
+      .get('/api/shippingPartners/partner/dhl')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+describe('GET /api/shippingPartners/partners/dhl/detail/11', () => {
+  it('return shippingPartners/partner/dhl/detail/11', (done) => {
+    request(app)
+      .get('/api/shippingPartners/partner/dhl/detail/11')
       .expect('Content-Type', /json/)
       .expect(200)
       .then(() => {

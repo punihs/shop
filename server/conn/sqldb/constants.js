@@ -57,6 +57,8 @@ const constants = {};
   { name: 'country_guide', keyMap: false },
   { name: 'shipping_rate', keyMap: false },
   { name: 'shipment_mail', keyMap: false },
+  { name: 'store_category', keyMap: false },
+  { name: 'store_category_club', keyMap: false },
 ]
   .forEach(({ name, keyMap = true }) => {
     const data = r(`./../../api/${_.camelCase(name)}/${_.camelCase(name)}.seed`)(constants);

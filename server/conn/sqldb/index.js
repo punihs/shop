@@ -51,7 +51,7 @@ const db = {
   'ShippingPartner', 'Link', 'ShippingRate',
 
   // - Product
-  'Store', 'Category',
+  'Store', 'Category', 'StoreCategory', 'StoreCategoryClub',
 
   // - faq
   'FaqCategory', 'Faq',

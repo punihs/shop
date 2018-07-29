@@ -8,8 +8,8 @@ exports.index = (req, res, next) => {
       'id', 'name', 'slug', 'iso2', 'iso3', 'phone_code', 'currency_code', 'capital_city',
       'discount_percentage', 'is_shipping_available', 'flag',
     ],
-    limit: Number(req.query.limit) || 20,
-    offset: Number(req.query.offset) || 0,
+    // limit: Number(req.query.limit) || 20,
+    // offset: Number(req.query.offset) || 0,
 
   };
   return Country

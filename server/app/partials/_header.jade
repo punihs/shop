@@ -21,13 +21,13 @@ header
       .collapse.navbar-collapse
         ul.nav.navbar-nav
           li
-            a(href="/about") About Shoppre
+            a(href="#{URLS_WWW}/about") About Shoppre
           li
             a(href='https://goo.gl/forms/fEYWqUJjfguCjqif1') Become a Partner
           li
-            a(href="faqs") FAQ
-          li
-            a(href='https://www.quora.com/search?q=shoppre.com', target='_blank') Ask Questions
+            a(href="#{URLS_WWW}/faqs") FAQ
+          //li
+          //  a(href='https://www.quora.com/search?q=shoppre.com', target='_blank') Ask Questions
 
         ul.nav.navbar-nav.navbar-right
 
@@ -40,24 +40,14 @@ header
               i.fa.fa-mobile.icon_margen
               | +91 804094 4077
           if loggedIn
-
-            li
-              a(href="#{URLS_MYACCOUNT}/locker")
-                i.fa.fa-user
-                |  {{Auth::guard('customer')->user()->name}}
-            li
-              a(href="{{route('customer.logout')}}")
-                i.fa.fa-sign-out
-                |  Logout
-            |                     @else
-            li
-              a(href="#{URLS_MYACCOUNT}/login")
-                i.fa.fa-unlock-alt
-                |  Login
-            li
-              a(href="#{URLS_MYACCOUNT}/register")
-                i.fa.fa-user
-                |    Sign up
+          li
+            a(href="#{URLS_MYACCOUNT}/login")
+              i.fa.fa-unlock-alt
+              |  Login
+          li
+            a(href="#{URLS_MYACCOUNT}/register")
+              i.fa.fa-user
+              |    Sign up
 
 
 
@@ -72,31 +62,39 @@ header
           span.icon-bar
           span.icon-bar
         a.navbar-brand(href="/")
-          img(src='https://myaccount.shoppre.com/img/logo.png', alt='Shoppre - Borderless Shipping From India')
+          img(src='/app/img/original-logo.png', alt='Shoppre - Borderless Shipping From India')
       #bs-example-navbar-collapse-1.collapse.navbar-collapse
         ul.nav.navbar-nav.navbar-right
 
           li
-            a(href="/") Home
+            a(href="#{URLS_WWW}/") Home
           li.hidden-sm.hidden-md.hidden-lg
-            a(href="/about") About Shoppre
+            a(href="#{URLS_WWW}/about") About Shoppre
           li
             button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', data-hover='dropdown')
               strong SERVICES
               span.caret
             ul.dropdown-menu
               li
-                a(href="/services") Shoppre Services
+                a(href="#{URLS_WWW}/services") Overview
               li
-                a(href="/consolidation-service") Consolidation Service
+                a(href="#{URLS_WWW}/shop-from-india-ship-worldwide") Shop and Ship
               li
-                a(href="#{URLS_MYACCOUNT}/personal-shopper") How Personal Shopper Works
+                a(href="#{URLS_WWW}/consolidation-service") Repacking & Consolidation
               li
-                a(href="/browse-categories") Browse Categories
+                a(href="#{URLS_MYACCOUNT}/personal-shopper") Schedule a Pickup
+              li
+                a(href="#{URLS_MYACCOUNT}/personal-shopper") Personal Shopper
+              li
+                a(href="#{URLS_WWW}/browse-categories") Indian Online Shops
+              li
+                a(href="#{URLS_WWW}/indian-virtual-address") Virtual Address
+              li
+                a(href="#{URLS_WWW}/sellers-shipping") Sellers Shipping
           li
-            a(href="/how-it-works") How Shoppre Works
+            a(href="#{URLS_WWW}/how-it-works") How Shoppre Works
           li
-            a(href="/pricing") Price Calculator
+            a(href="#{URLS_WWW}/pricing") Price Calculator
           li
-            a(href="/contactUs") Contact us
+            a(href="#{URLS_WWW}/contactUs") Contact us
 

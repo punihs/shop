@@ -1,6 +1,6 @@
 const rp = require('request-promise');
 const { URLS_API } = require('../../config/environment');
-const { URLS_MYACCOUNT } = require('../../config/environment');
+const { URLS_MYACCOUNT, URLS_WWW } = require('../../config/environment');
 
 
 exports.index = (req, res, next) => Promise
@@ -10,12 +10,13 @@ exports.index = (req, res, next) => Promise
   ])
   .then(([countries, reviews]) => {
     res.render('pricing/index', {
-      title: 'Country title',
-      meta_description: 'Country_metaDesctription',
-      meta_title: 'Country_metaTitle',
+      title: 'Pricing | Shipping Cost Calculator - Shoppre',
+      meta_description: 'Get the right plan that suits your need and calculate your shipping costs from India to any country. Save upto 75% on shipping rates!',
+      meta_keywords: 'calculate your shipping costs, from india to any country, save 75% on shipping rates, repackaging service, shipping calculator',
       countries,
       reviews,
       URLS_MYACCOUNT,
+      URLS_WWW,
       states: [
         {
           state: 'AP',

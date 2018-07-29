@@ -1,14 +1,14 @@
 extends ../layout
-block content
-  head
-    title '#{title}'
-    meta(name='description', content= '#{meta_description}')
-    meta(property='og:title', content='#{meta_title}')
-  .body
+block head
+  title #{title}
+  meta(name='description', content= '#{meta_description}')
+  meta(name="keywords" content="#{meta_keywords}")
 
+block content
+  .body
     section.page_head
       .pagebanner
-        img(src="/cdn/img/banner.jpg", width='100%')
+        img(src="#{URLS_WWW}/cdn/img/banner.jpg", width='100%')
         .banner-cap
           h2 PRICING
           h2
@@ -38,7 +38,7 @@ block content
             a.popup-modal(href='#vol_model') Learn how to calculate the Volumetric Weight
           #vol_model.white-popup-block.mfp-hide
             h3 How To Calculate Volumetric Weight
-            img(src="cdn/img/vol_calc.png")
+            img(src="#{URLS_WWW}/cdn/img/vol_calc.png")
             a.btn.btn-close.popup-modal-dismiss(href='#')
               i.fa.fa-times
         .col-md-7
@@ -54,9 +54,6 @@ block content
                   select.form-control.select2(name='country')
                     option(value='') Select Country
                      each country in countries
-                       //option(value='#{country.id}'.country.id == 226 ? 'selected' : "")#{country.name}
-                       //option(value='#{country.id}' == 226 ? 'selected' : "")#{country.name}
-                         //{ [IS_BELOW_300 ? '$gte' : '$eq']: IS_BELOW_300 ? weight : 0 },
                        option(value='#{country.iso2}') #{country.name}
                 .clearfix
               .form-group
@@ -160,7 +157,7 @@ block content
               | 1 lbs = 0.4536 Kg
               span (1 Kg = 2.2046 lbs)
             h5 Parcel Sample :
-            img(src="cdn/img/parcelsample.png")
+            img(src="#{URLS_WWW}/cdn/img/parcelsample.png")
         .col-md-5
           .getquote.block
             h3 DOMESTIC SHIPMENT
@@ -263,7 +260,7 @@ block content
               h4 INTERNATIONAL SHIPMENT
               li From Bengaluru, directly to your doorstep abroad
               li From any city in India, directly to your doostep abroad
-            a.btn.btn-block.btn-shoppre(href="#{URLS_MYACCOUNT}/schedulePickup.Index}")
+            a.btn.btn-block.btn-shoppre(href="#{URLS_MYACCOUNT}/schedulePickup")
               | FILL THE FORM TO HEAR BACK FROM US
         .clearfix
 
@@ -493,14 +490,28 @@ block content
                 .item
                   .col-sm-3.text-center
                     if !review.Country.flag
-                       img.img-circle(src="/cdn/img/flags/#{review.Country.flag}")
+                       img.img-circle(src="#{URLS_WWW}/cdn/img/flags/#{review.Country.flag}")
                   .col-sm-9
                     p #{review.description}
                     span.name #{review.name}
-                    span #{review.Country.name}}
+                    span #{review.Country.name}
                   .clearfix
             .text-center
-              a.btn.orange(href="{{route('reviews')}}") View All Shoppre Reviews
+              a.btn.orange(href="#{URLS_WWW}/reviews") View All Shoppre Reviews
+
+    section.signup_free
+      .container
+        .row
+          .col-md-12
+            h3
+              | So what are you waiting for? Shopp
+              span.red re
+              | ! Open your big box of happiness
+              |                         today!
+            p All you need is a membership to get your Indian Shipping Address immediately!
+            a.btn.btn-shoppre(href="#{URLS_WWW}/register")
+              | sign up for
+              | free
 
 
     block js_script

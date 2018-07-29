@@ -146,7 +146,7 @@ exports.shipCalculate = async (req, res) => {
   let { weight } = req.body;
   const option = {
     attributes: ['id', 'discount_percentage'],
-    where: { id: req.body.country },
+    where: { iso2: req.body.country },
   };
   const country = await Country
     .find(option);
@@ -190,7 +190,6 @@ exports.shipCalculate = async (req, res) => {
     .findAll(optionShippingRate);
   let amount = 0;
   let rate = 0;
-
   if (rates.length) {
     const prices = {};
     // eslint-disable-next-line no-restricted-syntax

@@ -45,6 +45,7 @@ const estimation = require('./api/estimation');
 const coupon = require('./api/coupon');
 const userPackage = require('./api/user/package');
 const photoRequest = require('./api/photoRequest');
+const storeCategory = require('./api/storeCategory');
 const webRoutes = require('./webRoutes');
 
 module.exports = (app) => {
@@ -63,6 +64,7 @@ module.exports = (app) => {
     specialRequest,
   );
   app.use('/api/shippingPartners', shippingPartner);
+  app.use('/api/storeCategory', storeCategory);
   app.use('/api/addresses', authenticate(), address);
   app.use('/api/shipments', authenticate(), shipment, shipmentPackage);
   app.use('/api/shippingPreference', authenticate(), shippingPreference);

@@ -1,0 +1,12 @@
+extends ../layout
+block head
+  title #{title}
+  meta(name='description', content= '#{meta_description}')
+  meta(name="keywords" content="#{meta_keywords}")
+block css_style
+
+block content
+  section
+    div(style='text-align: center')
+      iframe(src='https://docs.google.com/forms/d/e/1FAIpQLSdL11DQD_pOS2tBNXWaI0d8ryZ4DD0foA-Z7ZR0f0hUG3qpSg/viewform?embedded=true', width='900', height='2000', frameborder='0', marginheight='0', marginwidth='0') Loading...
+

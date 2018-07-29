@@ -1,0 +1,12 @@
+extends ../layout
+block head
+  title #{title}
+  meta(name='description', content= '#{meta_description}')
+  meta(name="keywords" content="#{meta_keywords}")
+block css_style
+
+block content
+  section
+  div(style='text-align: center')
+    a(href='https://myaccount.shoppre.com/login?shop-ship-page')
+      img(src="#{URLS_WWW}/app/img/how-to-shop-from-india-ship-worldwide.png", alt='how-to-shop-from-india-ship-worldwide')

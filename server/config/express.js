@@ -16,6 +16,7 @@ module.exports = (app) => {
     res.on('finish', () => activityLogger({ db })(req, res, next));
     next();
   });
+  app.locals.pretty = true;
   if (config.env !== 'production') app.use(morgan('dev'));
   app.use(express.static(`${config.root}/public`));
   app.use(bodyParser.json());

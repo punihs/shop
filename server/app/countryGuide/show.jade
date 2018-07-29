@@ -1,13 +1,10 @@
 extends ../layout
+block head
+  title #{title}
+  meta(name='description', content= '#{meta_description}')
+  meta(name="keywords" content="#{meta_keywords}")
+
 block content
-  head
-    title '#{title}'
-    meta(name='description', content= '#{meta_description}')
-    meta(property='og:title', content='#{meta_title}')
-
-    link(rel='stylesheet', href="/app/css/owl.carousel.min.css")
-    link(rel='stylesheet', href='/app/css/magnific-popup.css')
-
   .body
     //if !countryGuide.banner_img
     //  section.cguide_head(style="background-image: url(/cdn/country/guide/banner')/#{countryGuide.banner_img});")
@@ -83,9 +80,9 @@ block content
                   select.form-control.select2(name='country')
                     option(value='') Select Country
                       each calc_country in countries
-                        //option(value='#{calc_country.iso2}') #{calc_country.name}
+                        option(value='#{calc_country.id}') #{calc_country.name}
                         //option(value='#{calc_country.id == country.id ? "selected" : ""}') #{calc_country.name}
-                        option(value='#{calc_country.id} #{calc_country.id === country.id }' ? 'selected' : '') #{calc_country.name}
+                        //option(value='#{calc_country.id} #{calc_country.id === country.id }' ? country.id : 'selected') #{calc_country.name}
                         //<option value="{{$calc_country->id}}" {{$calc_country->id == $country->id ? 'selected' : ''}}>{{$calc_country->name}}</option>
 
                 .clearfix
