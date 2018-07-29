@@ -1,10 +1,10 @@
 const geoip = require('geoip-lite');
 
-const { env, DOMAIN, PREFIX } = require('../config/environment');
+const { env, PREFIX } = require('../config/environment');
 
 const regionsMap = {
   DEFAULT: 'us-west-2',
-  IN: 'ap-southeast-1',
+  IN: 'ap-south-1',
 };
 
 module.exports = () => (req, res, next) => {
@@ -14,7 +14,7 @@ module.exports = () => (req, res, next) => {
     req.connection.socket.remoteAddress;
 
   const s3Region = regionsMap[(geoip.lookup(ipAddress) || {}).country] || regionsMap.DEFAULT;
-  req.s3BaseUrl = `${PREFIX}s3.${s3Region}.amazonaws.${env !== 'production' ? 'test' : 'com'}/s3.${s3Region}.${DOMAIN}`;
+  req.s3BaseUrl = `${PREFIX}s3.${s3Region}.amazonaws.${env !== 'production' ? 'test' : 'com'}/cdn`;
 
   next();
 };

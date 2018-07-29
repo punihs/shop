@@ -60,6 +60,7 @@ const shipmentFollower = require('./api/shipment/follower');
 const shipmentTypes = require('./api/shipmentType');
 const webRoutes = require('./webRoutes');
 const minio = require('./conn/minio/minio.route');
+const cron = require('./cron');
 
 module.exports = (app) => {
   webRoutes(app);
@@ -113,6 +114,7 @@ module.exports = (app) => {
     userShipment,
   );
   app.use('/api/faqs', faqCategory);
+  app.use('/api/crons', cron);
   app.use('/api/places', place);
   app.use('/api/stores', store);
   app.use('/api/paymentGateways', paymentGateway);

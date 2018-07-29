@@ -10,7 +10,7 @@ const shipper = require('../../conn/shipper');
 const {
   Country, Shipment, Package, Address, PackageCharge, ShipmentMeta, Notification, ShipmentIssue,
   PackageState, Redemption, Coupon, LoyaltyHistory, User, LoyaltyPoint, Transaction, Locker,
-  ShipmentState, Store, ShipmentType,
+  ShipmentState, Store, ShipmentType, DHLLog,
 } = db;
 
 const { SHIPPING_RATE } = require('../../config/environment');
@@ -1609,3 +1609,38 @@ exports.state = async (req, res, next) => Shipment
       .then(status => res.json(status));
   })
   .catch(next);
+
+const models = {
+  1: DHLLog,
+};
+
+exports.updateShipmetStatus = () => {
+  const DISPATCHED_TO_DELIVERED = [18, 19, 21, 20, 23, 26, 24, 25, 28, 27, 29, 30, 31, 36];
+
+  return Shipment
+    .findAll({
+      attributes: [
+        'id', 'tracking_code', 'shipping_partner_id',
+      ],
+      include: [{
+        model: ShipmentState,
+        attributes: ['id', 'state_id'],
+        where: { state_id: DISPATCHED_TO_DELIVERED },
+      }],
+    })
+    .then((shipments) => {
+      log('shipments', shipments.length);
+      return Promise
+        .all(shipments
+          .map((shipment) => {
+            log('shipment', shipment.toJSON());
+            return shipper[shipment.shipping_partner_id]
+              .lastStatus(shipment.tracking_code)
+              .then(({ customPayload }) => models[shipment.shipping_partner_id]
+                .create({
+                  shipment_id: shipment.id,
+                  ...customPayload,
+                }));
+          }));
+    });
+};

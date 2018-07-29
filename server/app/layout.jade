@@ -21,25 +21,24 @@ html(lang='en')
 
     // Bootstrap
     link(rel="manifest" href="/manifest.json")
-    link(href="#{URLS_WWW}/app/css/bootstrap.min.css", rel='stylesheet')
+    link(href="#{s3BaseUrl}/css/bootstrap.min.css", rel='stylesheet')
     //// Font Awesome
-    link(href="#{URLS_WWW}/app/css/font-awesome.min.css", rel='stylesheet')
+    link(href="#{s3BaseUrl}/css/font-awesome.min.css", rel='stylesheet')
     link(rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.jqueryui.min.css")
-    link(href="#{URLS_WWW}/app/css/txtProgress.min.css", rel='stylesheet')
-    link(href="#{URLS_WWW}/app/css/algolia.css" rel="stylesheet")
-    link(href="#{URLS_WWW}/app/css/style.css", rel='stylesheet')
-    link(href="#{URLS_WWW}/app/css/dhl.css", rel='stylesheet')
+    link(href="#{s3BaseUrl}/css/txtProgress.min.css", rel='stylesheet')
+    link(href="#{s3BaseUrl}/css/algolia.css" rel="stylesheet")
+    link(href="#{s3BaseUrl}/css/style.css", rel='stylesheet')
+    link(href="#{s3BaseUrl}/css/dhl.css", rel='stylesheet')
     //script(src='/cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js')
     //script(src='/cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js')
-    script(src="#{URLS_WWW}/cdn/js/jquery.min.js")
-    script(src='#{URLS_WWW}/cdn/js/slider-js/jssor.js')
-    script(src='#{URLS_WWW}/cdn/js/slider-js/jssor.slider.js')
+    script(src="#{s3BaseUrl}js/jquery.min.js")
+    script(src='#{s3BaseUrl}js/slider-js/jssor.js')
+    script(src='#{s3BaseUrl}js/slider-js/jssor.slider.js')
 
     //Owl Carousel
-    link(rel='stylesheet', href="#{URLS_WWW}/app/css/owl.carousel.min.css")
+    link(rel='stylesheet', href="#{s3BaseUrl}/css/owl.carousel.min.css")
     // Magnific Popup
-    link(rel='stylesheet', href="#{URLS_WWW}/app/css/magnific-popup.css")
-    //link(href="#{URLS_WWW}/bower_components/components-font-awesome/css/fontawesome-all.css", rel='stylesheet')
+    link(rel='stylesheet', href="#{s3BaseUrl}/css/magnific-popup.css")
     block css_style
     link(rel='publisher', href='https://plus.google.com/101070316798366909776/')
     meta(name='google-play-app', content='app-id=com.shoppre.play')
@@ -186,16 +185,16 @@ html(lang='en')
 
     include ./partials/_footer
 
-    script(src="#{URLS_WWW}/cdn/js/jquery.min.js")
-    script(src="#{URLS_WWW}/bower_components/bootstrap/dist/js/bootstrap.min.js")
-    script(src="#{URLS_WWW}/cdn/js/txtProgress.min.js")
+    script(src="#{s3BaseUrl}js/jquery.min.js")
+    script(src="#{s3BaseUrl}/bower_components/bootstrap/dist/js/bootstrap.min.js")
+    script(src="#{s3BaseUrl}js/txtProgress.min.js")
     script(src='https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js')
     script(src='https://cdn.datatables.net/1.10.16/js/dataTables.jqueryui.min.js')
-    script(src="#{URLS_WWW}/cdn/js/validate.min.js")
+    script(src="#{s3BaseUrl}js/validate.min.js")
 
 
-    script(src="#{URLS_WWW}/cdn/js/home.js")
-    script(src="#{URLS_WWW}/cdn/js/select2.min.js")
+    script(src="#{s3BaseUrl}js/home.js")
+    script(src="#{s3BaseUrl}js/select2.min.js")
 
     script.
       $(document).ready(function () {
@@ -231,7 +230,7 @@ html(lang='en')
         })
       })
 
-    script(src="#{URLS_WWW}/cdn/js/liscroller.1.0.js")
+    script(src="#{s3BaseUrl}js/liscroller.1.0.js")
 
       script(type='text/javascript').
         $(document).ready(function () {

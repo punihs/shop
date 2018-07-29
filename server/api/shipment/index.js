@@ -23,6 +23,7 @@ router.put('/:id/meta', controller.metaUpdate);
 router.delete('/:id', controller.destroy);
 router.get('/:id/invoice', controller.invoice);
 router.put('/:id/state', controller.state);
+router.get('/cron/partners', controller.updateShipmetStatus);
 
 module.exports = router;
 
