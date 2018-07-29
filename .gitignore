@@ -12,3 +12,5 @@ logs
 .nyc_output
 /coverage/
 bower_components
+/public/app/js/
+/public/app/
