@@ -94,7 +94,7 @@ exports.show = async (req, res, next) => {
         as: 'Customer',
         attributes: [
           'id', 'name', 'first_name', 'last_name', 'salutation', 'virtual_address_code',
-          'mobile', 'email', 'phone', 'phone_code',
+          'mobile', 'phone', 'phone_code',
         ],
         include: [{
           model: Country,
@@ -110,7 +110,7 @@ exports.show = async (req, res, next) => {
         model: Address,
         attributes: [
           'id', 'city', 'name', 'salutation', 'first_name', 'last_name', 'mobile', 'phone_code',
-          'phone', 'email',
+          'phone',
         ],
       }],
     })
@@ -152,10 +152,69 @@ exports.unread = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  // normal update
-  // tracking update
   const { id } = req.params;
-  const status = await Shipment.update(req.body, { where: { id } });
+
+  const optionsMeta = {
+    attributes: ['liquid_charge_amount', 'overweight_charge_amount', 'is_liquid'],
+    where: { shipment_id: id },
+  };
+
+  const shipmentMeta = await ShipmentMeta
+    .find(optionsMeta);
+  const updateShipment = req.body;
+  const updateMeta = {};
+
+  let packageLevelCharges = '';
+  log('liquid', shipmentMeta.is_liquid);
+  if (shipmentMeta.is_liquid === '1') {
+    packageLevelCharges -= shipmentMeta.liquid_charge_amount || 0;
+    log('weight', req.body.weight);
+    log({ packageLevelCharges });
+    if (req.body.weight < 5) {
+      updateMeta.liquid_charge_amount = 1150.00;
+    } else if (req.body.weight >= 5 && req.body.weight < 10) {
+      updateMeta.liquid_charge_amount = 1650.00;
+    } else if (req.body.weight >= 10 && req.body.weight < 15) {
+      updateMeta.liquid_charge_amount = 2750.00;
+    }
+    if (req.body.weight >= 15) {
+      updateMeta.liquid_charge_amount = 3150.00;
+    }
+  }
+  if (shipmentMeta.overweight === '1') {
+    packageLevelCharges -= shipmentMeta.overweight_charge_amount || 0;
+    if (req.body.weight > 30) {
+      updateMeta.overweight_charge_amount = 2500.00;
+    } else {
+      updateMeta.overweight = '0';
+      updateMeta.overweight_charge_amount = 0;
+    }
+  } else if (req.body.weight > 30) {
+    updateMeta.overweight = '1';
+    updateMeta.overweight_charge_amount = 2500.00;
+  } else {
+    updateMeta.overweight = '0';
+    updateMeta.overweight_charge_amount = 0;
+  }
+  log(JSON.stringify(updateMeta));
+  await ShipmentMeta.update(updateMeta, { where: { shipment_id: id } });
+  packageLevelCharges = Number(packageLevelCharges);
+  packageLevelCharges += Number(updateMeta.liquid_charge_amount) || 0;
+  packageLevelCharges += Number(updateMeta.overweight_charge_amount) || 0;
+  updateShipment.package_level_charges_amount = packageLevelCharges;
+
+  const subTotalAmount = req.body.sub_total_amount;
+  const discountAmount = req.body.discount_amount;
+  const pickUpChargeAmount = req.body.pick_up_charge_amount || 0;
+  const estimatedAmount =
+    (subTotalAmount - discountAmount) + packageLevelCharges + pickUpChargeAmount;
+  log(subTotalAmount, discountAmount, packageLevelCharges, pickUpChargeAmount);
+  updateShipment.sub_total_amount = subTotalAmount;
+  updateShipment.discount_amount = discountAmount;
+  updateShipment.estimated_amount = estimatedAmount;
+  const status = await Shipment.update(updateShipment, { where: { id } });
+
+  // const status = await Shipment.update(req.body, { where: { id } });
   return res.json(status);
 };
 

@@ -946,3 +946,71 @@ describe('PUT /api/shipments/115/state', () => {
   // after(() => LoyaltyPoint
   //   .destroy({ force: true, where: { customer_id: 129 } }));
 });
+
+describe('PUT /api/shipments/116', () => {
+  it(' Update shipment', (done) => {
+    request(app)
+      .put('/api/shipments/116')
+      .send({
+        address: '314 Euphoria Circle, Cary, NC, United States - 27519',
+        coupon_amount: 0,
+        customer_name: 'Abhinav Mishra',
+        discount_amount: 15680,
+        estimated_amount: 15680,
+        final_amount: 15680,
+        final_weight: 27.35,
+        loyalty_amount: 0,
+        package_level_charges_amount: 0,
+        packages_count: 1,
+        payment_gateway_fee_amount: 0,
+        phone: '-8605147508',
+        pick_up_charge_amount: 200,
+        shipment_type_id: 1,
+        sub_total_amount: 31360,
+        value_amount: 6679.92,
+        volumetric_weight: 0,
+        wallet_amount: 0,
+        weight: 3,
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+describe('PUT /api/shipments/115', () => {
+  it(' Update shipment', (done) => {
+    request(app)
+      .put('/api/shipments/115')
+      .send({
+        address: '314 Euphoria Circle, Cary, NC, United States - 27519',
+        coupon_amount: 0,
+        customer_name: 'Abhinav Mishra',
+        discount_amount: 15680,
+        estimated_amount: 15680,
+        final_amount: 15680,
+        final_weight: 27.35,
+        loyalty_amount: 0,
+        package_level_charges_amount: 0,
+        packages_count: 1,
+        payment_gateway_fee_amount: 0,
+        phone: '-8605147508',
+        pick_up_charge_amount: 200,
+        shipment_type_id: 1,
+        sub_total_amount: 31360,
+        value_amount: 6679.92,
+        volumetric_weight: 0,
+        wallet_amount: 0,
+        weight: 8,
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});

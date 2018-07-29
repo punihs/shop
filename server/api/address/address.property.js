@@ -21,6 +21,18 @@ module.exports = DataTypes => ({
   pincode: DataTypes.STRING,
   phone_code: DataTypes.STRING,
   phone: DataTypes.STRING,
-  email: DataTypes.STRING,
   is_default: DataTypes.BOOLEAN,
+  email: {
+    type: DataTypes.STRING(64),
+    validate: {
+      isEmail: {
+        args: true,
+        msg: 'Please input a valid email',
+      },
+      max: {
+        args: 64,
+        msg: 'Email id must less than 64 characters.',
+      },
+    },
+  },
 });

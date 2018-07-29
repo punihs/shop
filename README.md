@@ -25,7 +25,23 @@ accounts 5001
 ops 5002
 member 5003
 
-To start ui for chrome onesignal notifications
+```bash
+sudo nano /etc/nginx/conf.d/s3.ap-southeast-1.amazonaws.test.conf
+server {
+  listen 80;
+  server_name s3.ap-southeast-1.amazonaws.test;
+  root /home/pulse/SFS/s3.ap-southeast-1.shoppre.test;
+  index index.html;
+}
+
+# testing nginx config
+sudo nginx -t
+
+# if above command show success
+sudo systemctl restart nginx 
+```
+
+# To start ui for chrome onesignal notifications
 
 ```sh
 http-server  -S -o
