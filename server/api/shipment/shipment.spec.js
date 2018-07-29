@@ -1042,4 +1042,3 @@ describe('GET /api/shipments/cron/partners', () => {
       });
   });
 });
-
