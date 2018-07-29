@@ -7,7 +7,7 @@ block head
 block content
   section.page_head
     .pagebanner
-      img(src='cdn/img/banner1.jpg', width='100%')
+      img(src='img/banner1.jpg', width='100%')
       .banner-cap
         h2 Frequently Asked Questions - Shoppre
   section.faq_content
@@ -39,6 +39,6 @@ block content
         h3 Please note, this FAQ is subject to updates
         p Please check back from time to time for the latest information.
         h3 Still Have Questions?
-        a.btn.btn-shoppre(href="#{URLS_WWW}/contactUs") Contact Us
+        a.btn.btn-shoppre(href="#{s3BaseUrl}/contactUs") Contact Us
   block script
-    script(src="/cdn/js/jquery.min.js")
+    script(src="#{s3BaseUrl}/js/jquery.min.js")

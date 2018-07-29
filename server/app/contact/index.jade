@@ -26,7 +26,7 @@ block css_style
 block content
   section.page_head
     .pagebanner
-      img(src="#{URLS_WWW}/app/img/banner2.jpg", width='100%')
+      img(src="#{s3BaseUrl}/img/banner2.jpg", width='100%')
       .banner-cap
         h2
           | Contact
@@ -36,7 +36,7 @@ block content
   section.contact_ico
     .container
       .blox
-        img(src='https://www.shoppre.com/img/contact1.png')
+        img(src='#{req.s3BaseUrl}/img/contact1.png')
         h4 Call
         span
           a(href='tel:+91 80 4094 4077') +91 80 4094 4077
@@ -67,27 +67,27 @@ block content
               .form-group
                 .input-group
                   .input-group-addon
-                    img(src='/cdn/img/name.png')
+                    img(src='/img/name.png')
                   input.form-control(type='text', placeholder='First Name', name='firstname')
               .form-group
                 .input-group
                   .input-group-addon
-                    img(src='/cdn/img/name.png')
+                    img(src='/img/name.png')
                   input.form-control(type='text', placeholder='Last Name', name='lastname')
               .form-group
                 .input-group
                   .input-group-addon
-                    img(src='/cdn/img/mail.png')
+                    img(src='/img/mail.png')
                   input.form-control(type='email', placeholder='Email', name='email')
               .form-group
                 .input-group
                   .input-group-addon
-                    img(src='/cdn/img/locker.png')
+                    img(src='/img/locker.png')
                   input.form-control(type='text', placeholder='My Locker(optional)', name='locker')
               .form-group
                 .input-group
                   .input-group-addon
-                    img(src='/cdn/img/country.png')
+                    img(src='/img/country.png')
                   select.form-control.select2(name='country')
                     option(value='') Select Country
                       each country in countries
@@ -96,12 +96,12 @@ block content
               .form-group
                 .input-group
                   .input-group-addon
-                    img(src='/cdn/img/phone-512.png')
+                    img(src='/img/phone-512.png')
                   input.form-control(type='number', placeholder='Contact Number', name='phone')
               .form-group
                 .input-group
                   .input-group-addon
-                    img(src='/cdn/img/reason.png')
+                    img(src='/img/reason.png')
                   select.form-control.select2(name='reason')
                     option(value='Select Reason') Select Reason
                     option(value="Can't I sign into my account")
@@ -182,19 +182,19 @@ block content
               | Sephora Office, Mezzanine Floor, Flora Creek Hotel Apartments, Near Deira City Centre, Port Saeed | 119062 Dubai, UAE
           .contact_social
             a(href='https://www.facebook.com/goshoppre/', target='_blank')
-              img(src='/cdn/img/facebook.png')
+              img(src='/img/facebook.png')
               span Like Us
             a(href='https://www.instagram.com/shoppre_official/?hl=en', target='_blank')
-              img(src='/cdn/img/instagram.png')
+              img(src='/img/instagram.png')
               span Follow us
             a(href='https://twitter.com/Go_Shoppre', target='_blank')
-              img(src='/cdn/img/twitter.png')
+              img(src='/img/twitter.png')
               span Tweet to us
             a(href='https://www.youtube.com/channel/UCCBP1ybWY9spoleKqMgAQaw', target='_blank')
-              img(src='/cdn/img/youtube.png')
+              img(src='/img/youtube.png')
               span Watch our videos
 
-  script(src="#{URLS_WWW}/cdn/js/jquery.min.js")
+  script(src="#{s3BaseUrl}/js/jquery.min.js")
   script(type='text/javascript').
     var map1, map2;
     function initialize() {

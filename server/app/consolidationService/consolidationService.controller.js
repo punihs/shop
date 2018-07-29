@@ -1,9 +1,9 @@
 
-const { URLS_API, URLS_WWW, URLS_MYACCOUNT } = require('../../config/environment');
+const { URLS_API, s3BaseUrl, URLS_MYACCOUNT } = require('../../config/environment');
 
 exports.index = (req, res) => {
   res.render('consolidationService/index', {
-    URLS_WWW,
+    s3BaseUrl,
     URLS_API,
     URLS_MYACCOUNT,
     title: 'Shoppre Consolidation Service - Save On Shipping Costs',

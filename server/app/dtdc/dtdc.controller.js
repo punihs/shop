@@ -31,7 +31,7 @@ exports.show = (req, res, next) => Promise
           title: 'International Shipping from India, Flipkart International Delivery',
           meta_description: 'Meta Title International Shipping from India, Flipkart International Delivery',
           meta_title: 'Meta Description International Shipping from India, Flipkart International Delivery',
-          logo: '/app/img/dhl.png',
+          logo: `${req.s3BaseUrl}/app/img/dhl.png`,
         })))
   .catch(next);
 

@@ -1,6 +1,6 @@
 
 const rp = require('request-promise');
-const { URLS_API, URLS_MYACCOUNT, URLS_WWW } = require('../../config/environment');
+const { URLS_API, URLS_MYACCOUNT, s3BaseUrl } = require('../../config/environment');
 
 
 exports.index = (req, res, next) => Promise
@@ -10,7 +10,7 @@ exports.index = (req, res, next) => Promise
   .then(([countries]) => {
     res.render('countryGuide/index', {
       URLS_MYACCOUNT,
-      URLS_WWW,
+      s3BaseUrl,
       title: 'Country Guides | Shoppre - International Shipping Partner',
       meta_description: 'Know how Shoppre a parcel forwarding &amp; international shipping services work for online shopping in India while ensuring fast service at unbelievably low prices.',
       meta_keywords: 'know how, shoppre, parcel forwarding, international shipping services, online shopping in india, fast service, dhl, fedex, dtdc',
@@ -30,7 +30,7 @@ exports.show = (req, res, next) => Promise
       .render('countryGuide/show', Object
         .assign(country, {
           URLS_MYACCOUNT,
-          URLS_WWW,
+          s3BaseUrl,
           title: 'Country Guides | Shoppre - International Shipping Partner',
           meta_description: 'Know how Shoppre a parcel forwarding &amp; international shipping services work for online shopping in India while ensuring fast service at unbelievably low prices.',
           meta_keywords: 'know how, shoppre, parcel forwarding, international shipping services, online shopping in india, fast service, dhl, fedex, dtdc',

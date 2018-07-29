@@ -8,7 +8,7 @@ block content
 
   section.page_head
     .pagebanner
-      img(src="#{URLS_WWW}/cdn/img/banner.jpg", width='100%')
+      img(src="#{s3BaseUrl}/img/banner.jpg", width='100%')
       .banner-cap
         h2 Brands
         h2.text-orange Browse Categories
@@ -80,7 +80,7 @@ block content
                      .col-sm-3
                        .seller_box
                          a(href='#{subitemweb.url}', target='_blank', title='#{subitemweb.Store.name}')
-                           span.brand_logo(style="background-image: url('#{URLS_WWW}/cdn/img/stores/#{subitemweb.Store.logo}');")
+                           span.brand_logo(style="background-image: url('#{s3BaseUrl}/img/stores/#{subitemweb.Store.logo}');")
                          a.myfavstore(href='#', data-clubid='#{subitemweb.Store.id}')
                            i.bookmark-icon
                          if !subitemweb.info
@@ -93,7 +93,7 @@ block content
                     .col-sm-3
                       .seller_box
                         a(href='#{subitemfbs.url}', target='_blank', title='#{subitemfbs.Store.name}')
-                          span.brand_logo(style="background-image: url('#{URLS_WWW}/cdn/img/stores/#{subitemfbs.Store.logo}');")
+                          span.brand_logo(style="background-image: url('#{s3BaseUrl}/img/stores/#{subitemfbs.Store.logo}');")
                         a.myfavstore.active(href='#', data-clubid='#{subitemfbs.Store.id}')
                           i.bookmark-icon
                         span.info #{subitemfbs.info}
@@ -103,7 +103,7 @@ block content
                     .col-sm-3
                       .seller_box
                         a(href='#{subitemfeats.url}', target='_blank', title='#{subitemfeats.Store.name}')
-                          span.brand_logo(style="background-image: url('#{URLS_WWW}/cdn/img/stores/#{subitemfeats.Store.url}")
+                          span.brand_logo(style="background-image: url('#{s3BaseUrl}/img/stores/#{subitemfeats.Store.url}")
                         a.myfavstore.active(href='#', data-clubid='#{subitemfeats.Store.id}')
                           i.bookmark-icon
                         span.info #{subitemfeats.info}
@@ -119,5 +119,5 @@ block content
           p All you need is a membership to get your Indian Shipping Address immediately!
           a.btn.btn-shoppre(href="#{URLS_MYACCOUNT}/register") sign up for free
   block js_script
-  script(src="/cdn/js/jquery.min.js")
-  //script(type='text/javascript', src='#{URLS_WWW}/cdn/js/store.js')
+  script(src="#{s3BaseUrl}/js/jquery.min.js")
+  //script(type='text/javascript', src='#{s3BaseUrl}/js/store.js')

@@ -31,16 +31,16 @@ block content
       .container
         ul
           li
-            img(src="/cdn/img/cguide_ico1.png")
+            img(src="/img/cguide_ico1.png")
             strong Shipping Costs
           li
-            img(src="/cdn/img/cguide_ico2.png")
+            img(src="/img/cguide_ico2.png")
             strong Duties & Taxes
           li
-            img(src="/cdn/img/cguide_ico3.png")
+            img(src="/img/cguide_ico3.png")
             strong Prohibited Items
           li
-            img(src="/cdn/img/cguide_ico4.png")
+            img(src="/img/cguide_ico4.png")
             strong Transit Times
 
     if !reviews
@@ -54,7 +54,7 @@ block content
                    .item
                      .col-sm-3.text-center
                        if !review.country.flag
-                         img.img-circle(src="{cdn/country'}/{review.country.flag}")
+                         img.img-circle(src="#{s3BaseUrl}/img/#{review.country.flag}")
 
                      .col-sm-9
                        p #{review.review}
@@ -220,7 +220,7 @@ block content
         if !countryGuide.dutytax
           article
             h2
-              img(src="/cdn/img/cguide_box1.png")
+              img(src="/img/cguide_box1.png")
               |  Duties and Taxes
             .col-md-8
               | !{countryGuide.dutytax}
@@ -235,7 +235,7 @@ block content
         if !countryGuide.transits
           article
             h2
-              img(src="/cdn/img/cguide_box2.png")
+              img(src="/img/cguide_box2.png")
               |  PACKAGE TRANSIT TIMES
             .col-md-8
               | !{countryGuide.transits}
@@ -250,7 +250,7 @@ block content
         if !countryGuide.forbidden
           article
             h2
-              img(src="/cdn/img/cguide_box3.png")
+              img(src="/img/cguide_box3.png")
               |  PRODUCTS YOU CAN'T SHIP INTERNATIONALY TO #{name}
             .col-md-8
               !{countryGuide.forbidden}
@@ -335,7 +335,7 @@ block content
             a.btn.btn-shoppre(href="/register") sign up for free
 
     block js_script
-    script(src="/cdn/js/jquery.min.js")
+    script(src="#{s3BaseUrl}/js/jquery.min.js")
     script(type='text/javascript').
       $(document).ready(function () {
         $("#shipping").validate({

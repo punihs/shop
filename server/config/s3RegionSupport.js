@@ -14,7 +14,7 @@ module.exports = () => (req, res, next) => {
     req.connection.socket.remoteAddress;
 
   const s3Region = regionsMap[(geoip.lookup(ipAddress) || {}).country] || regionsMap.DEFAULT;
-  req.s3BaseUrl = `${PREFIX}s3.${s3Region}.amazonaws.${env !== 'production' ? 'test' : 'com'}/cdn`;
+  req.s3BaseUrl = `${PREFIX}s3.${s3Region}.amazonaws.${env !== 'production' ? 'test' : 'com'}`;
 
   next();
 };

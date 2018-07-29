@@ -1,5 +1,5 @@
 const rp = require('request-promise');
-const { URLS_API, URLS_WWW, URLS_MYACCOUNT } = require('../../config/environment');
+const { URLS_API, s3BaseUrl, URLS_MYACCOUNT } = require('../../config/environment');
 
 exports.index = (req, res, next) => Promise
   .all([
@@ -10,7 +10,7 @@ exports.index = (req, res, next) => Promise
     //   .assign(countries, {}));
     res
       .render('contact/index', {
-        URLS_WWW,
+        s3BaseUrl,
         URLS_API,
         URLS_MYACCOUNT,
         title: 'Contact | Shoppre - International Shipping Partner',

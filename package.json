@@ -26,6 +26,8 @@
     "email-build": "node server/emails build",
     "email-update-send": "nodemon  server/emails update-send",
     "email-deploy": "DEBUG=q-* node server/emails deploy",
+    "s3init": "cd ~/SFS/s3.ap-southeast-1.amazonaws.test; cd ~/SFS/s3.ap-southeast-1.amazonaws.test; git clone git@github.com:shoppre/s3.git cdn",
+    "s3get": "cd ~/SFS/s3.ap-southeast-1.amazonaws.test/cdn; git stash; git pull",
     "ssh-copy-id": "ssh-copy-id pulse@staging-app1.shoppre.com",
     "tunnel": "ssh -R 5557:localhost:5557 pulse@staging-app1.shoppre.com",
     "clear-bucket": "node server/conn/minio/remove-bucket",

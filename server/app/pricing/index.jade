@@ -8,7 +8,7 @@ block content
   .body
     section.page_head
       .pagebanner
-        img(src="#{URLS_WWW}/cdn/img/banner.jpg", width='100%')
+        img(src="#{s3BaseUrl}/img/banner.jpg", width='100%')
         .banner-cap
           h2 PRICING
           h2
@@ -38,7 +38,7 @@ block content
             a.popup-modal(href='#vol_model') Learn how to calculate the Volumetric Weight
           #vol_model.white-popup-block.mfp-hide
             h3 How To Calculate Volumetric Weight
-            img(src="#{URLS_WWW}/cdn/img/vol_calc.png")
+            img(src="#{s3BaseUrl}/img/vol_calc.png")
             a.btn.btn-close.popup-modal-dismiss(href='#')
               i.fa.fa-times
         .col-md-7
@@ -157,7 +157,7 @@ block content
               | 1 lbs = 0.4536 Kg
               span (1 Kg = 2.2046 lbs)
             h5 Parcel Sample :
-            img(src="#{URLS_WWW}/cdn/img/parcelsample.png")
+            img(src="#{s3BaseUrl}/img/parcelsample.png")
         .col-md-5
           .getquote.block
             h3 DOMESTIC SHIPMENT
@@ -490,14 +490,14 @@ block content
                 .item
                   .col-sm-3.text-center
                     if !review.Country.flag
-                       img.img-circle(src="#{URLS_WWW}/cdn/img/flags/#{review.Country.flag}")
+                       img.img-circle(src="#{s3BaseUrl}/img/flags/#{review.Country.flag}")
                   .col-sm-9
                     p #{review.description}
                     span.name #{review.name}
                     span #{review.Country.name}
                   .clearfix
             .text-center
-              a.btn.orange(href="#{URLS_WWW}/reviews") View All Shoppre Reviews
+              a.btn.orange(href="#{s3BaseUrl}/reviews") View All Shoppre Reviews
 
     section.signup_free
       .container
@@ -509,17 +509,17 @@ block content
               | ! Open your big box of happiness
               |                         today!
             p All you need is a membership to get your Indian Shipping Address immediately!
-            a.btn.btn-shoppre(href="#{URLS_WWW}/register")
+            a.btn.btn-shoppre(href="#{s3BaseUrl}/register")
               | sign up for
               | free
 
 
     block js_script
-    script(src="/cdn/js/jquery.min.js")
-    script(src="/cdn/js/jquery.magnific-popup.min.js")
-    script(src="/cdn/js/select2.min.js")
-    script(src="/cdn/js/owl.carousel.min.js")
-    script(src="/cdn/js/validate.min.js")
+    script(src="#{s3BaseUrl}/js/jquery.min.js")
+    script(src="#{s3BaseUrl}/js/jquery.magnific-popup.min.js")
+    script(src="#{s3BaseUrl}/js/select2.min.js")
+    script(src="#{s3BaseUrl}/js/owl.carousel.min.js")
+    script(src="#{s3BaseUrl}/js/validate.min.js")
 
     script(type='text/javascript').
       /* Magnific Popup */

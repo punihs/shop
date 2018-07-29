@@ -8,7 +8,7 @@ block content
 
   section.page_head
     .pagebanner
-      img(src="#{URLS_WWW}/cdn/img/banner2.jpg", width='100%')
+      img(src="#{s3BaseUrl}/img/banner2.jpg", width='100%')
       .banner-cap
         h2
           | Shoppre delivers to
@@ -44,9 +44,9 @@ block content
           p Simply login to get your Personal Indian Shipping Address immediately!
           a.btn.btn-shoppre(href="#{URLS_MYACCOUNT}/register") sign up for free
 
-  //script(src="cdn/js/select2.min.js")
+  //script(src="js/select2.min.js")
   block script
-  script(src="/cdn/js/jquery.min.js")
+  script(src="#{s3BaseUrl}/js/jquery.min.js")
   script(type='text/javascript').
     $(document).ready(function () {
       $(".select2").select2();

@@ -29,10 +29,14 @@ member 5003
 sudo nano /etc/nginx/conf.d/s3.ap-southeast-1.amazonaws.test.conf
 server {
   listen 80;
-  server_name s3.ap-southeast-1.amazonaws.test;
+  server_name s3.ap-south-1.amazonaws.test s3.us-west-2.amazonaws.test;
   root /home/pulse/SFS/s3.ap-southeast-1.shoppre.test;
   index index.html;
 }
+
+# add `10.0.0.200 s3.ap-south-1.amazonaws.test`
+# add `10.0.0.200 s3.us-west-2.amazonaws.test`
+sudo nano /etc/hosts
 
 # testing nginx config
 sudo nginx -t

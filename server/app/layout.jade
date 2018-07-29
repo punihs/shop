@@ -6,8 +6,8 @@ html(lang='en')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     block head
-    link(rel='shortcut icon', href="#{URLS_WWW}/img/favicon.png")
-    link(rel='icon', type='image/png', href="#{URLS_WWW}/img/favicon.png", sizes='60x60')
+    link(rel='shortcut icon', href="#{s3BaseUrl}/img/favicon.png")
+    link(rel='icon', type='image/png', href="#{s3BaseUrl}/img/favicon.png", sizes='60x60')
     meta(http-equiv='Cache-Control', content='public')
     meta(http-equiv='Cache-Control', content='max-age=3600')
     meta(http-equiv='Cache-Control', content='must-revalidate')
@@ -31,9 +31,9 @@ html(lang='en')
     link(href="#{s3BaseUrl}/css/dhl.css", rel='stylesheet')
     //script(src='/cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js')
     //script(src='/cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js')
-    script(src="#{s3BaseUrl}js/jquery.min.js")
-    script(src='#{s3BaseUrl}js/slider-js/jssor.js')
-    script(src='#{s3BaseUrl}js/slider-js/jssor.slider.js')
+    script(src="#{s3BaseUrl}/js/jquery.min.js")
+    script(src='#{s3BaseUrl}/js/slider-js/jssor.js')
+    script(src='#{s3BaseUrl}/js/slider-js/jssor.slider.js')
 
     //Owl Carousel
     link(rel='stylesheet', href="#{s3BaseUrl}/css/owl.carousel.min.css")
@@ -43,7 +43,7 @@ html(lang='en')
     link(rel='publisher', href='https://plus.google.com/101070316798366909776/')
     meta(name='google-play-app', content='app-id=com.shoppre.play')
     meta(property='fb:app_id', content='1819630241632764')
-    meta(property='al:android:url', content='#{URLS_WWW}/')
+    meta(property='al:android:url', content='#{s3BaseUrl}/')
     meta(property='al:android:package', content='com.shoppre.play')
     meta(property='al:android:app_name', content='Shoppre - International Shipping from India')
     meta(name='msvalidate.01', content='0E25F147AD9B658B4418A996E97D0D7D')
@@ -108,7 +108,7 @@ html(lang='en')
                       span Google Plus
                       i.fa.fa-google-plus
                 .col-sm-6
-                  form.login-form(role='form', method='POST', action="#{URLS_WWW}/login", novalidate='novalidate')
+                  form.login-form(role='form', method='POST', action="#{s3BaseUrl}/login", novalidate='novalidate')
                     input(type='hidden', name='_token', value='{{ csrf_token() }}')
                     .form-group
                       label(for='') Email
@@ -142,7 +142,7 @@ html(lang='en')
                       i.fa.fa-google-plus
                 span.or_separate OR
                 h3 CREATE AN ACCOUNT
-                form.register-form(role='form', method='POST', action="#{URLS_WWW}/home/signup", novalidate='novalidate')
+                form.register-form(role='form', method='POST', action="#{s3BaseUrl}/home/signup", novalidate='novalidate')
                   input(type='hidden', name='_token', value='')
                   .col-sm-6
                     .row
@@ -185,16 +185,16 @@ html(lang='en')
 
     include ./partials/_footer
 
-    script(src="#{s3BaseUrl}js/jquery.min.js")
-    script(src="#{s3BaseUrl}/bower_components/bootstrap/dist/js/bootstrap.min.js")
-    script(src="#{s3BaseUrl}js/txtProgress.min.js")
+    script(src="#{s3BaseUrl}/js/jquery.min.js")
+    script(src="#{s3BaseUrl}/js/bootstrap.min.js")
+    script(src="#{s3BaseUrl}/js/txtProgress.min.js")
     script(src='https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js')
     script(src='https://cdn.datatables.net/1.10.16/js/dataTables.jqueryui.min.js')
-    script(src="#{s3BaseUrl}js/validate.min.js")
+    script(src="#{s3BaseUrl}/js/validate.min.js")
 
 
-    script(src="#{s3BaseUrl}js/home.js")
-    script(src="#{s3BaseUrl}js/select2.min.js")
+    script(src="#{s3BaseUrl}/js/home.js")
+    script(src="#{s3BaseUrl}/js/select2.min.js")
 
     script.
       $(document).ready(function () {
@@ -230,7 +230,7 @@ html(lang='en')
         })
       })
 
-    script(src="#{s3BaseUrl}js/liscroller.1.0.js")
+    script(src="#{s3BaseUrl}/js/liscroller.1.0.js")
 
       script(type='text/javascript').
         $(document).ready(function () {

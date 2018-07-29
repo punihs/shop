@@ -23,7 +23,7 @@ exports.show = (req, res, next) => Promise
     res
       .render('country/show', Object
         .assign(countries, {
-          logo: '/cdn/img/stores.png',
+          logo: '/img/stores.png',
           title: 'Country title',
           meta_description: 'Country_metaDesctription',
           meta_title: 'Country_metaTitle',
