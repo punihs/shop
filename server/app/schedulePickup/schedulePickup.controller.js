@@ -1,5 +1,5 @@
 const rp = require('request-promise');
-const { URLS_API, s3BaseUrl, URLS_MYACCOUNT } = require('../../config/environment');
+const { URLS_API, URLS_MYACCOUNT } = require('../../config/environment');
 
 exports.index = (req, res, next) => Promise
   .all([
@@ -15,7 +15,6 @@ exports.index = (req, res, next) => Promise
     res.render('schedulePickup/index', Object
       .assign(countries, {
         states,
-        s3BaseUrl,
         URLS_API,
         URLS_MYACCOUNT,
         s3BaseUrl: req.s3BaseUrl,
