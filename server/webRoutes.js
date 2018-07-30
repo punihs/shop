@@ -55,14 +55,4 @@ module.exports = (app) => {
   app.use('/indian-virtual-address', virtualAddress);
   app.use('/shop-from-india-ship-worldwide', shopShip);
   app.use('/sellers-shipping', sellerShipping);
-  // app.use('/destinations', countryGuide);
-  // app.use('/packages', countryGuide);  //itemName, storeName,storeId
-  // app.use('/shipments', countryGuide); // dhl,paymentGateway,deliveryTime,price
-  // app.use('/users', countryGuide);     //name,flipkart
-  // app.use('/coupons', countryGuide); //coupons
-  // app.use('/sources', countryGuide); //objectType,link
-  // app.use('/emails/', countryGuide);  //emails sent
-  // app.use('/estimations', countryGuide); // estimation,source,countryid
-  // app.use('/categories', countryGuide);  //
-  // app.use('/states', countryGuide);  // states list-- parentid for
 };

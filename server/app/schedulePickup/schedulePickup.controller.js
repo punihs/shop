@@ -7,11 +7,6 @@ exports.index = (req, res, next) => Promise
     rp(`${URLS_API}/api/places?type=indian_states`, { json: true }),
   ])
   .then(([countries, states]) => {
-    // return res.json({
-    //   countries,
-    //   states,
-    // });
-
     res.render('schedulePickup/index', Object
       .assign(countries, {
         states,

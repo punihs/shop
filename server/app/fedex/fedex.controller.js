@@ -6,9 +6,6 @@ exports.index = (req, res, next) => Promise
     rp(`${URLS_API}/api/shippingPartners/partners?type=dhl`, { json: true }),
   ])
   .then(([shipments]) => {
-    // return res.json({
-    //   shipments,
-    // });
     res
       .render('dhl/index', Object
         .assign(shipments, {

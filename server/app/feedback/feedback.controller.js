@@ -1,4 +1,3 @@
-// const rp = require('request-promise');
 const { URLS_API } = require('../../config/environment');
 
 exports.index = (req, res) => {

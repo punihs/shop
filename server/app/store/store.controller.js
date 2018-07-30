@@ -6,11 +6,6 @@ exports.index = (req, res, next) => Promise
     rp(`${URLS_API}/api/storeCategory`, { json: true }),
   ])
   .then(([countries, states]) => {
-    // return res.json({
-    //   countries,
-    //   states,
-    // });
-
     res.render('store/show', Object
       .assign(countries, {
         states,

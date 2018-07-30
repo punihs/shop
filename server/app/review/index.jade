@@ -18,14 +18,11 @@ block content
                   | By
                   span #{review.name}
                   |  on #{review.created_at}
-                  //|  on #{date('j F, Y', shortFormat(review.created_at))}
                 input.rating.rated(value='#{review.rating}' style='float: right;')
                 p #{review.description}
-                //i - #{review->country->name}}
                 i - Google Review
                 i - #{review.source_id}
               .clearfix
-              //| #{reviews.links() }
         .col-md-4
           .review_form
             h3 Leave your own feedback
@@ -33,31 +30,18 @@ block content
               .form-group
                 label Name *
                 input.form-control(type='text', name='person', placeholder='Enter Your Name')
-                //|                 @if ($errors->has('person'))
-                //span.error {{ $errors->first('person') }}
-                //|                 @endif
               .form-group
                 label Country *
                 select.form-control.select2(name='country_id')
                   option(value='') Select Country
                    each country in countries || []
                     option(value='#{$country.id}') #{$country.name}
-                //
-                //|                 @if ($errors->has('country_id'))
-                //span.error {{ $errors->first('country_id') }}
-                //|                 @endif
               .form-group
                 textarea.form-control(rows='8', name='review', placeholder='Comments & Tips')
-                //|                 @if ($errors->has('review'))
-                //span.error {{ $errors->first('review') }}
-                //|                 @endif
               .form-group
                 label Rating *
                 .rating-star
                   input#input-rate.rating(type='text', name='rating')
-                //|                 @if ($errors->has('rating'))
-                //span.error {{ $errors->first('rating') }}
-                //|                 @endif
               .form-group
                 button.btn.btn-block.btn-shoppre(type='submit') Submit Feedback
 

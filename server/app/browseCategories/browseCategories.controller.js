@@ -6,9 +6,6 @@ exports.index = (req, res, next) => Promise
     rp(`${URLS_API}/api/storeCategory`, { json: true }),
   ])
   .then((Categories) => {
-    // return res.json({
-    //   Categories,
-    // });
     res.render('browseCategories/index', {
       Categories,
       s3BaseUrl: req.s3BaseUrl,
@@ -16,7 +13,6 @@ exports.index = (req, res, next) => Promise
       title: 'Browse Categories: List of Top Indian Shopping Sites | Shoppre',
       meta_disctription: 'Shop from list of Top Indian Shopping Sites, Facebook &amp; Instagram Sellers. Save by combining multiple packages into one and get it shipped to your country.',
       meta_keywords: 'shop, list of top indian shopping sites, facebook, instagram sellers, multiple packages, shipped to your country',
-      // stores,
     });
   })
   .catch(next);

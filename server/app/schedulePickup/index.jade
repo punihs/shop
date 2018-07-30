@@ -32,8 +32,6 @@ block content
                   |  :
                 input.form-control(type='text', placeholder='Enter first name', name='first_name')
                 var errors = ''
-                //if errors.has('first_name')
-                //   span.error #{errors.first('first_name')}
                 .clearfix
             .col-sm-6
               .form-group.label-align
@@ -42,8 +40,6 @@ block content
                   span.mendatory_fields *
                   |  :
                 input.form-control(type='text', placeholder='Enter last name', name='last_name')
-                //if errors.has('last_name')
-                //   span.error #{errors.first('last_name')}
 
                 .clearfix
           .row
@@ -66,9 +62,6 @@ block content
                      each country in countries
                        option(value='#{country.phone_code}')#{country.iso2}
                        | #{country.phone_code}
-
-                  //if errors.has('code')
-                  //   span.error #{errors.first('code')}
 
                 .col-sm-4.box-size
                   input.form-control(type='text', name='mobile', placeholder='Phone Number')

@@ -7,9 +7,6 @@ exports.index = (req, res, next) => Promise
     rp(`${URLS_API}/api/faqs`, { json: true }),
   ])
   .then(([faq]) => {
-    // return res.json({
-    //   faq,
-    // });
     res.render('faq/index', Object
       .assign(faq, {
         s3BaseUrl: req.s3BaseUrl,

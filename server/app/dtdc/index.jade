@@ -9,18 +9,14 @@ block content
       center
         img(src='#{s3BaseUrl}/img/dhl.png', alt='')
       h2  Shipments we sent across the Globe
-       // each shipment in shipments
-      -for shipment in shipments
+      -for country in shipment.Countries
         .shipment_card
          .row
            .col-md-12(style='padding-left: 35px')
-             // each countries in shipment.Country
-             // -for countries in shipment.Country
-             -for c in shipment.Country
-                 h1= c.name
+                 h1= country.name
                  a(href="/show?id=#{shipment.id}" style="color:#ff691e;")
                    h4
-                     b  To #{c.name}
+                     b  To #{country.name}
                  .row
                    .col-md-2
                      h5 Weight :&nbsp#{shipment.weight} kg.
@@ -28,5 +24,4 @@ block content
                      h5 Total Charge : INR &nbsp#{shipment.final_amount}
                    .col-md-3
                      h5 Delivered In : &nbsp#{days} Days
-        //center
-        // | {{ $shipments->appends(Request::except('page'))->links() }} {{-- For Pagination--}}
+

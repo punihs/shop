@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false,
     underscored: true,
   });
+
+  ShippingPartner.associate = (db) => {
+    ShippingPartner.hasMany(db.Shipment);
+  };
   return ShippingPartner;
 };
 

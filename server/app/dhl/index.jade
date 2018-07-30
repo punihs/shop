@@ -9,7 +9,6 @@ block content
       center
         img(src='#{s3BaseUrl}/img/dhl.png', alt='')
       h2  Shipments we sent across the Globe
-       // each shipment in shipments
       -for shipment in shipments
         .shipment_card
          .row
@@ -26,5 +25,3 @@ block content
                      h5 Total Charge : INR &nbsp#{shipment.final_amount}
                    .col-md-3
                      h5 Delivered In : &nbsp#{days} Days
-        //center
-        // | {{ $shipments->appends(Request::except('page'))->links() }} {{-- For Pagination--}}

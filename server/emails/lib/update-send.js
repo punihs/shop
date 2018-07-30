@@ -10,7 +10,6 @@ exports.cmd = (e) => {
   const templateFullName = e || CURRENT_EMAIL || 'package_state-change';
   const [layout, template] = templateFullName.split('_');
   const emailBaseDir = `${root}/server/api/${layout}/emails`;
-
   const { instances } = required(`${emailBaseDir}/${template}/${template}`);
 
   return Promise

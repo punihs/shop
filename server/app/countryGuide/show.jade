@@ -5,10 +5,6 @@ block head
   meta(name="keywords" content="#{meta_keywords}")
 
 block content
-    //if !countryGuide.banner_img
-    //  section.cguide_head(style="background-image: url(/cdn/country/guide/banner')/#{countryGuide.banner_img});")
-    //else
-
     section.cguide_head
       .left_head
         h2
@@ -41,9 +37,6 @@ block content
           li
             img(src="#{URLS_WWW}/cdn/img/cguide_ico4.png")
             strong Transit Times
-      // each g in countryGuide
-      //   p !{g.dutytax}
-
       if(reviews)
         section.testimonails.cguide_reviews
           .container

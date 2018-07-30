@@ -93,7 +93,6 @@ html(lang='en')
       // Modal // Trigger the modal with a button
       #myModal.modal.fade(role='dialog')
         .modal-dialog
-          // Modal content
           .modal-content
             .modal-header
               button#btnClosePopup.close(type='button') ×
@@ -127,10 +126,6 @@ html(lang='en')
                   span.login-bttm
                     a#btn_signup_popup(href='javascript:void(0)') Not a member? Register
                 .col-sm-6
-                  //a.class_pointer(href="{{route('campaignDetailChannel',['cname'=>$home_campaign->slug,\
-                  //   'eid'=>$home_campaign->employee_id,'channel'=>$home_campaign->channel])}}")
-                  //  img(src='/img/campaigns/{{$home_campaign->image}}')
-                  //|                             @endif
               .signup-content
                 h3.head-tag SIGN UP WITH
                 .text-center
@@ -253,7 +248,7 @@ html(lang='en')
     // End of shoppre-international-shipping-courier Zendesk Widget script
 
     script.
-      if (window.location.href == "https://www.shoppre.com/campaign/flyer/616") {
+      if (window.location.href == "#{URLS_WWW}/campaign/flyer/616") {
         if (!localStorage.newsUrlVisit) {
           console.log("News Enter");
           localStorage.newsUrlVisit = window.location.href;
@@ -287,7 +282,7 @@ html(lang='en')
       };
 
     // Start of HubSpot Embed Code
-    script#hs-script-loader(type='text/javascript', async='', defer='', src='//js.hs-scripts.com/4601740.js')
+    script#hs-script-loader(type='text/javascript', async='', defer='', src='#{s3BaseUrl}/js.hs-scripts.com/4601740.js')
     // End of HubSpot Embed Code
     block js_script
     script(type='text/javascript').
