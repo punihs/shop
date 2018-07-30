@@ -253,5 +253,4 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
 }].map(x => ({ ...x, rate_type: FIXED }));
