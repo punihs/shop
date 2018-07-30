@@ -47,7 +47,7 @@ exports.create = async (req, res, next) => {
     orderId = checkPersonalShopperPackages.id;
 
     const options = {
-      attributes: ['total_quantity', 'total_amount', 'id'],
+      attributes: ['total_quantity', 'price_amount', 'id'],
       where: { id: orderId },
     };
 
@@ -58,9 +58,9 @@ exports.create = async (req, res, next) => {
       .find(options);
 
     personalShopPackage.total_quantity = req.body.quantity + shopperPackage.total_quantity;
-    totalPrice = (req.body.quantity * price) + shopperPackage.total_amount;
+    totalPrice = (req.body.quantity * price) + shopperPackage.price_amount;
 
-    personalShopPackage.total_amount = totalPrice;
+    personalShopPackage.price_amount = totalPrice;
     let psCost = (7 / 100) * totalPrice;
     psCost = Math.round(psCost);
     if (psCost < 200) { psCost = 200; }
@@ -93,7 +93,7 @@ exports.create = async (req, res, next) => {
     personalShopperPackage.reference_code = referenceNumber;
     personalShopperPackage.total_quantity = req.body.quantity;
     totalPrice = req.body.quantity * price;
-    personalShopperPackage.total_amount = totalPrice;
+    personalShopperPackage.price_amount = totalPrice;
 
     let psCost = (7 / 100) * totalPrice;
     psCost = Math.round(psCost);
@@ -221,7 +221,7 @@ exports.updateOrder = async (req, res) => {
         const orderId = checkPersonalShopperPackages.id;
 
         const options = {
-          attributes: ['total_quantity', 'total_amount'],
+          attributes: ['total_quantity', 'price_amount'],
           where: { id: orderId },
         };
 
@@ -232,15 +232,14 @@ exports.updateOrder = async (req, res) => {
 
         // - Todo: @meena111 Please Check
         newQty = (checkPersonalShopperPackages.total_quantity -
-          (checkPersonalShopperItems.PackageItems[0] || { quantity: 0 }).quantity) +
-          req.body.quantity;
+          checkPersonalShopperItems.PackageItems[0].quantity) + req.body.quantity;
+        newPrice = checkPersonalShopperPackages.price_amount -
+          checkPersonalShopperItems.PackageItems[0].total_amount;
 
-        newPrice = checkPersonalShopperPackages.total_amount -
-          (checkPersonalShopperItems.PackageItems[0] || { total_amount: 0 }).total_amount;
         newPrice += req.body.quantity * price;
 
 
-        personalShopPackage.total_amount = newPrice;
+        personalShopPackage.price_amount = newPrice;
         personalShopPackage.total_quantity = newQty;
         let psCost = (7 / 100) * newPrice;
         psCost = Math.round(psCost);
@@ -285,7 +284,7 @@ exports.updateOrder = async (req, res) => {
         const orderId = updatePersonalShopperPackages.id;
 
         const options = {
-          attributes: ['total_amount', 'total_quantity'],
+          attributes: ['price_amount', 'total_quantity'],
           where: { id: orderId },
         };
 
@@ -296,10 +295,10 @@ exports.updateOrder = async (req, res) => {
 
 
         newQty = updatePersonalShopperPackages.total_quantity + req.body.quantity;
-        newPrice = updatePersonalShopperPackages.total_amount;
+        newPrice = updatePersonalShopperPackages.price_amount;
         newPrice += req.body.quantity * price;
 
-        personalShopPackage.total_amount = newPrice;
+        personalShopPackage.price_amount = newPrice;
         personalShopPackage.total_quantity = newQty;
 
         let psCost = (7 / 100) * newPrice;
@@ -339,7 +338,7 @@ exports.updateOrder = async (req, res) => {
         personalShopperPackage.reference_code = referenceNumber;
         personalShopperPackage.total_quantity = req.body.quantity;
         totalPrice = req.body.quantity * price;
-        personalShopperPackage.total_amount = totalPrice;
+        personalShopperPackage.price_amount = totalPrice;
 
         let psCost = (7 / 100) * totalPrice;
         psCost = Math.round(psCost);
@@ -416,7 +415,7 @@ exports.destroyReq = async (req, res) => {
   }
   const personalShopperPackage = await Package
     .find({
-      attributes: ['id', 'total_amount', 'total_quantity'],
+      attributes: ['id', 'price_amount', 'total_quantity'],
       where: {
         customer_id: customerId,
         status: 'pending',
@@ -428,9 +427,9 @@ exports.destroyReq = async (req, res) => {
 
   // - Todo: @meena111 Please check
   newQty = personalShopperPackage.total_quantity -
-    (checkPersonalShopperItems.PackageItems[0] || { quantity: 0 }).quantity;
-  newPrice = personalShopperPackage.total_amount -
-    (checkPersonalShopperItems.PackageItems[0] || { total_amount: 0 }).total_amount;
+    checkPersonalShopperItems.PackageItems[0].quantity;
+  newPrice = personalShopperPackage.price_amount -
+    checkPersonalShopperItems.PackageItems[0].total_amount;
 
   if (newQty <= 0) {
     await Package
@@ -442,7 +441,7 @@ exports.destroyReq = async (req, res) => {
     const orderId = personalShopperPackage.id;
 
     const options = {
-      attributes: ['total_amount', 'total_quantity'],
+      attributes: ['price_amount', 'total_quantity'],
       where: { id: orderId },
     };
 
@@ -451,7 +450,7 @@ exports.destroyReq = async (req, res) => {
     const shopPackage = await Package
       .findAll(options);
 
-    personalShopPackage.total_amount = newPrice;
+    personalShopPackage.price_amount = newPrice;
     personalShopPackage.total_quantity = newQty;
 
     let psCost = (7 / 100) * newPrice;
@@ -513,7 +512,7 @@ exports.submitOptions = async (req, res) => {
     const orderId = personalShopPackage.id;
 
     const options = {
-      attributes: ['total_amount', 'total_quantity', 'personal_shopper_cost'],
+      attributes: ['price_amount', 'total_quantity', 'personal_shopper_cost'],
       where: { id: orderId },
     };
 
@@ -521,7 +520,7 @@ exports.submitOptions = async (req, res) => {
     const shopPackage = await Package
       .find(options);
 
-    subtotal = shopPackage.total_amount;
+    subtotal = shopPackage.price_amount;
     const saleTax = personalShopPackage.sales_tax;
     const shipCharge = personalShopPackage.delivery_charge;
     if (saleTax) {
@@ -953,7 +952,7 @@ exports.updateShopOrder = async (req, res, next) => {
         return res.json({ error: 'Please update final amount paid to website and seller invoice to proceed!' });
       }
       personalShop.status = 'processed';
-      const customerPaidToWebsite = personalShopPackage.total_amount +
+      const customerPaidToWebsite = personalShopPackage.price_amount +
         personalShopPackage.sales_tax + personalShopPackage.delivery_charge;
       const walletAdded = customerPaidToWebsite - personalShop.amount_paid;
       customer.wallet_balance_amount = totalWalletAmount + walletAdded;

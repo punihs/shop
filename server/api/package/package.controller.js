@@ -27,7 +27,7 @@ exports.indexPublic = (req, res, next) => {
 
   const options = {
     where: {},
-    attributes: ['id', 'total_amount', 'weight', 'store_id'],
+    attributes: ['id', 'price_amount', 'weight', 'store_id'],
     offset: Number(req.query.offset) || 0,
     limit: (limit && limit > 20) ? 20 : limit,
     raw: true,
@@ -122,7 +122,7 @@ exports.create = async (req, res, next) => {
     'reference_code',
     'virtual_address_code',
     'weight',
-    'total_amount',
+    'price_amount',
     'customer_id',
     'content_type',
   ];
@@ -188,7 +188,7 @@ exports.update = (req, res, next) => {
     'store_id',
     'reference_code',
     'weight',
-    'total_amount',
+    'price_amount',
     'customer_id',
     'is_doc',
     'content_type',

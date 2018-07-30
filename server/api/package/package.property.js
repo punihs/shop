@@ -22,7 +22,6 @@ module.exports = DataTypes => ({
   reference_code: DataTypes.STRING,
   comments: DataTypes.STRING,
   weight: DataTypes.DECIMAL(15, 2),
-  total_amount: DataTypes.DECIMAL(15, 2),
   price_amount: DataTypes.DECIMAL(15, 2),
 
   content_type: {
