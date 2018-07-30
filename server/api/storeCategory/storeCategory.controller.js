@@ -113,7 +113,6 @@ exports.show = async (req, res) => {
     offset: Number(req.query.offset) || 0,
   };
 
-
   const web = await StoreCategoryClub
     .findAll(storesweb);
 

@@ -7,7 +7,6 @@ module.exports = () => [
     rank: '1',
     featured: '1',
     info: 'AbeBooks Books, art & collectibles Amazon Web',
-
   }, {
     id: '2',
     store_category_id: '1',
@@ -16,8 +15,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '3',
     store_category_id: '1',
@@ -26,8 +23,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '4',
     store_category_id: '1',
@@ -36,8 +31,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '5',
     store_category_id: '1',
@@ -46,8 +39,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '6',
     store_category_id: '1',
@@ -56,8 +47,6 @@ module.exports = () => [
     rank: '6',
     featured: null,
     info: null,
-
-
   }, {
     id: '7',
     store_category_id: '1',
@@ -66,8 +55,6 @@ module.exports = () => [
     rank: '7',
     featured: null,
     info: null,
-
-
   }, {
     id: '8',
     store_category_id: '1',
@@ -76,8 +63,6 @@ module.exports = () => [
     rank: '8',
     featured: null,
     info: null,
-
-
   }, {
     id: '9',
     store_category_id: '1',
@@ -86,8 +71,6 @@ module.exports = () => [
     rank: '9',
     featured: null,
     info: null,
-
-
   }, {
     id: '10',
     store_category_id: '1',
@@ -96,8 +79,6 @@ module.exports = () => [
     rank: '10',
     featured: null,
     info: null,
-
-
   }, {
     id: '11',
     store_category_id: '1',
@@ -106,8 +87,6 @@ module.exports = () => [
     rank: '11',
     featured: null,
     info: null,
-
-
   }, {
     id: '12',
     store_category_id: '1',
@@ -116,8 +95,6 @@ module.exports = () => [
     rank: '12',
     featured: null,
     info: null,
-
-
   }, {
     id: '13',
     store_category_id: '1',
@@ -126,8 +103,6 @@ module.exports = () => [
     rank: '13',
     featured: null,
     info: null,
-
-
   }, {
     id: '14',
     store_category_id: '1',
@@ -136,8 +111,6 @@ module.exports = () => [
     rank: '14',
     featured: null,
     info: null,
-
-
   }, {
     id: '15',
     store_category_id: '1',
@@ -146,8 +119,6 @@ module.exports = () => [
     rank: '15',
     featured: null,
     info: null,
-
-
   }, {
     id: '17',
     store_category_id: '2',
@@ -156,8 +127,6 @@ module.exports = () => [
     rank: '1',
     featured: null,
     info: null,
-
-
   }, {
     id: '18',
     store_category_id: '2',
@@ -166,8 +135,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '19',
     store_category_id: '2',
@@ -176,8 +143,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '20',
     store_category_id: '2',
@@ -186,8 +151,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '21',
     store_category_id: '2',
@@ -196,8 +159,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '22',
     store_category_id: '2',
@@ -206,8 +167,6 @@ module.exports = () => [
     rank: '6',
     featured: null,
     info: null,
-
-
   }, {
     id: '23',
     store_category_id: '2',
@@ -216,8 +175,6 @@ module.exports = () => [
     rank: '7',
     featured: null,
     info: null,
-
-
   }, {
     id: '24',
     store_category_id: '2',
@@ -226,8 +183,6 @@ module.exports = () => [
     rank: '8',
     featured: null,
     info: null,
-
-
   }, {
     id: '25',
     store_category_id: '2',
@@ -236,8 +191,6 @@ module.exports = () => [
     rank: '9',
     featured: null,
     info: null,
-
-
   }, {
     id: '26',
     store_category_id: '2',
@@ -246,8 +199,6 @@ module.exports = () => [
     rank: '10',
     featured: null,
     info: null,
-
-
   }, {
     id: '27',
     store_category_id: '2',
@@ -256,8 +207,6 @@ module.exports = () => [
     rank: '11',
     featured: null,
     info: null,
-
-
   }, {
     id: '28',
     store_category_id: '2',
@@ -266,8 +215,6 @@ module.exports = () => [
     rank: '12',
     featured: null,
     info: null,
-
-
   }, {
     id: '29',
     store_category_id: '2',
@@ -276,8 +223,6 @@ module.exports = () => [
     rank: '13',
     featured: null,
     info: null,
-
-
   }, {
     id: '30',
     store_category_id: '2',
@@ -286,8 +231,6 @@ module.exports = () => [
     rank: '14',
     featured: null,
     info: null,
-
-
   }, {
     id: '31',
     store_category_id: '2',
@@ -296,8 +239,6 @@ module.exports = () => [
     rank: '15',
     featured: null,
     info: null,
-
-
   }, {
     id: '32',
     store_category_id: '2',
@@ -306,8 +247,6 @@ module.exports = () => [
     rank: '16',
     featured: null,
     info: null,
-
-
   }, {
     id: '33',
     store_category_id: '2',
@@ -316,8 +255,6 @@ module.exports = () => [
     rank: '17',
     featured: null,
     info: null,
-
-
   }, {
     id: '34',
     store_category_id: '2',
@@ -326,8 +263,6 @@ module.exports = () => [
     rank: '18',
     featured: null,
     info: null,
-
-
   }, {
     id: '35',
     store_category_id: '2',
@@ -336,8 +271,6 @@ module.exports = () => [
     rank: '19',
     featured: null,
     info: null,
-
-
   }, {
     id: '36',
     store_category_id: '2',
@@ -346,8 +279,6 @@ module.exports = () => [
     rank: '20',
     featured: null,
     info: null,
-
-
   }, {
     id: '37',
     store_category_id: '2',
@@ -356,8 +287,6 @@ module.exports = () => [
     rank: '21',
     featured: null,
     info: null,
-
-
   }, {
     id: '38',
     store_category_id: '2',
@@ -366,8 +295,6 @@ module.exports = () => [
     rank: '22',
     featured: null,
     info: null,
-
-
   }, {
     id: '39',
     store_category_id: '2',
@@ -376,8 +303,6 @@ module.exports = () => [
     rank: '23',
     featured: null,
     info: null,
-
-
   }, {
     id: '40',
     store_category_id: '2',
@@ -386,8 +311,6 @@ module.exports = () => [
     rank: '24',
     featured: null,
     info: null,
-
-
   }, {
     id: '41',
     store_category_id: '2',
@@ -396,8 +319,6 @@ module.exports = () => [
     rank: '25',
     featured: null,
     info: null,
-
-
   }, {
     id: '42',
     store_category_id: '2',
@@ -406,8 +327,6 @@ module.exports = () => [
     rank: '26',
     featured: null,
     info: null,
-
-
   }, {
     id: '43',
     store_category_id: '2',
@@ -416,8 +335,6 @@ module.exports = () => [
     rank: '27',
     featured: null,
     info: null,
-
-
   }, {
     id: '44',
     store_category_id: '2',
@@ -426,8 +343,6 @@ module.exports = () => [
     rank: '28',
     featured: null,
     info: null,
-
-
   }, {
     id: '45',
     store_category_id: '2',
@@ -436,8 +351,6 @@ module.exports = () => [
     rank: '29',
     featured: null,
     info: null,
-
-
   }, {
     id: '46',
     store_category_id: '2',
@@ -446,8 +359,6 @@ module.exports = () => [
     rank: '30',
     featured: null,
     info: null,
-
-
   }, {
     id: '47',
     store_category_id: '2',
@@ -456,8 +367,6 @@ module.exports = () => [
     rank: '31',
     featured: null,
     info: null,
-
-
   }, {
     id: '48',
     store_category_id: '2',
@@ -466,8 +375,6 @@ module.exports = () => [
     rank: '32',
     featured: null,
     info: null,
-
-
   }, {
     id: '49',
     store_category_id: '2',
@@ -476,8 +383,6 @@ module.exports = () => [
     rank: '33',
     featured: null,
     info: null,
-
-
   }, {
     id: '50',
     store_category_id: '2',
@@ -486,8 +391,6 @@ module.exports = () => [
     rank: '34',
     featured: null,
     info: null,
-
-
   }, {
     id: '51',
     store_category_id: '3',
@@ -496,8 +399,6 @@ module.exports = () => [
     rank: '1',
     featured: null,
     info: null,
-
-
   }, {
     id: '52',
     store_category_id: '3',
@@ -506,8 +407,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '54',
     store_category_id: '3',
@@ -516,8 +415,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '55',
     store_category_id: '3',
@@ -526,8 +423,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '56',
     store_category_id: '3',
@@ -536,8 +431,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '57',
     store_category_id: '3',
@@ -546,8 +439,6 @@ module.exports = () => [
     rank: '7',
     featured: null,
     info: null,
-
-
   }, {
     id: '58',
     store_category_id: '2',
@@ -556,8 +447,6 @@ module.exports = () => [
     rank: '35',
     featured: null,
     info: null,
-
-
   }, {
     id: '59',
     store_category_id: '2',
@@ -566,8 +455,6 @@ module.exports = () => [
     rank: '37',
     featured: null,
     info: null,
-
-
   }, {
     id: '60',
     store_category_id: '2',
@@ -576,8 +463,6 @@ module.exports = () => [
     rank: '38',
     featured: null,
     info: null,
-
-
   }, {
     id: '61',
     store_category_id: '2',
@@ -586,8 +471,6 @@ module.exports = () => [
     rank: '39',
     featured: null,
     info: null,
-
-
   }, {
     id: '62',
     store_category_id: '2',
@@ -596,8 +479,6 @@ module.exports = () => [
     rank: '40',
     featured: null,
     info: null,
-
-
   }, {
     id: '63',
     store_category_id: '2',
@@ -606,8 +487,6 @@ module.exports = () => [
     rank: '41',
     featured: null,
     info: null,
-
-
   }, {
     id: '64',
     store_category_id: '2',
@@ -616,8 +495,6 @@ module.exports = () => [
     rank: '42',
     featured: null,
     info: null,
-
-
   }, {
     id: '65',
     store_category_id: '2',
@@ -626,8 +503,6 @@ module.exports = () => [
     rank: '44',
     featured: null,
     info: null,
-
-
   }, {
     id: '66',
     store_category_id: '2',
@@ -636,8 +511,6 @@ module.exports = () => [
     rank: '45',
     featured: null,
     info: null,
-
-
   }, {
     id: '67',
     store_category_id: '2',
@@ -646,8 +519,6 @@ module.exports = () => [
     rank: '46',
     featured: null,
     info: null,
-
-
   }, {
     id: '68',
     store_category_id: '2',
@@ -656,8 +527,6 @@ module.exports = () => [
     rank: '47',
     featured: null,
     info: null,
-
-
   }, {
     id: '69',
     store_category_id: '2',
@@ -666,8 +535,6 @@ module.exports = () => [
     rank: '48',
     featured: null,
     info: null,
-
-
   }, {
     id: '70',
     store_category_id: '2',
@@ -676,8 +543,6 @@ module.exports = () => [
     rank: '49',
     featured: null,
     info: null,
-
-
   }, {
     id: '71',
     store_category_id: '2',
@@ -686,8 +551,6 @@ module.exports = () => [
     rank: '50',
     featured: null,
     info: null,
-
-
   }, {
     id: '72',
     store_category_id: '2',
@@ -696,8 +559,6 @@ module.exports = () => [
     rank: '52',
     featured: null,
     info: null,
-
-
   }, {
     id: '73',
     store_category_id: '2',
@@ -706,8 +567,6 @@ module.exports = () => [
     rank: '53',
     featured: null,
     info: null,
-
-
   }, {
     id: '74',
     store_category_id: '2',
@@ -716,8 +575,6 @@ module.exports = () => [
     rank: '54',
     featured: null,
     info: null,
-
-
   }, {
     id: '75',
     store_category_id: '2',
@@ -726,8 +583,6 @@ module.exports = () => [
     rank: '55',
     featured: null,
     info: null,
-
-
   }, {
     id: '76',
     store_category_id: '2',
@@ -736,8 +591,6 @@ module.exports = () => [
     rank: '56',
     featured: null,
     info: null,
-
-
   }, {
     id: '77',
     store_category_id: '2',
@@ -746,8 +599,6 @@ module.exports = () => [
     rank: '57',
     featured: null,
     info: null,
-
-
   }, {
     id: '78',
     store_category_id: '2',
@@ -756,8 +607,6 @@ module.exports = () => [
     rank: '58',
     featured: null,
     info: null,
-
-
   }, {
     id: '79',
     store_category_id: '2',
@@ -766,8 +615,6 @@ module.exports = () => [
     rank: '59',
     featured: null,
     info: null,
-
-
   }, {
     id: '80',
     store_category_id: '2',
@@ -776,8 +623,6 @@ module.exports = () => [
     rank: '60',
     featured: null,
     info: null,
-
-
   }, {
     id: '81',
     store_category_id: '2',
@@ -786,8 +631,6 @@ module.exports = () => [
     rank: '61',
     featured: null,
     info: null,
-
-
   }, {
     id: '82',
     store_category_id: '2',
@@ -796,8 +639,6 @@ module.exports = () => [
     rank: '62',
     featured: null,
     info: null,
-
-
   }, {
     id: '83',
     store_category_id: '2',
@@ -806,8 +647,6 @@ module.exports = () => [
     rank: '63',
     featured: null,
     info: null,
-
-
   }, {
     id: '84',
     store_category_id: '2',
@@ -816,8 +655,6 @@ module.exports = () => [
     rank: '64',
     featured: null,
     info: null,
-
-
   }, {
     id: '85',
     store_category_id: '2',
@@ -826,8 +663,6 @@ module.exports = () => [
     rank: '65',
     featured: null,
     info: null,
-
-
   }, {
     id: '86',
     store_category_id: '2',
@@ -836,8 +671,6 @@ module.exports = () => [
     rank: '66',
     featured: null,
     info: null,
-
-
   }, {
     id: '87',
     store_category_id: '2',
@@ -846,8 +679,6 @@ module.exports = () => [
     rank: '67',
     featured: null,
     info: null,
-
-
   }, {
     id: '88',
     store_category_id: '2',
@@ -856,8 +687,6 @@ module.exports = () => [
     rank: '68',
     featured: null,
     info: null,
-
-
   }, {
     id: '89',
     store_category_id: '3',
@@ -866,8 +695,6 @@ module.exports = () => [
     rank: '8',
     featured: null,
     info: null,
-
-
   }, {
     id: '90',
     store_category_id: '3',
@@ -876,8 +703,6 @@ module.exports = () => [
     rank: '9',
     featured: null,
     info: null,
-
-
   }, {
     id: '91',
     store_category_id: '3',
@@ -886,8 +711,6 @@ module.exports = () => [
     rank: '10',
     featured: null,
     info: null,
-
-
   }, {
     id: '92',
     store_category_id: '3',
@@ -896,8 +719,6 @@ module.exports = () => [
     rank: '11',
     featured: null,
     info: null,
-
-
   }, {
     id: '93',
     store_category_id: '3',
@@ -906,8 +727,6 @@ module.exports = () => [
     rank: '12',
     featured: null,
     info: null,
-
-
   }, {
     id: '94',
     store_category_id: '3',
@@ -916,8 +735,6 @@ module.exports = () => [
     rank: '13',
     featured: null,
     info: null,
-
-
   }, {
     id: '95',
     store_category_id: '3',
@@ -926,8 +743,6 @@ module.exports = () => [
     rank: '14',
     featured: null,
     info: null,
-
-
   }, {
     id: '96',
     store_category_id: '3',
@@ -936,8 +751,6 @@ module.exports = () => [
     rank: '15',
     featured: null,
     info: null,
-
-
   }, {
     id: '97',
     store_category_id: '3',
@@ -946,8 +759,6 @@ module.exports = () => [
     rank: '16',
     featured: null,
     info: null,
-
-
   }, {
     id: '98',
     store_category_id: '4',
@@ -956,8 +767,6 @@ module.exports = () => [
     rank: '1',
     featured: null,
     info: null,
-
-
   }, {
     id: '99',
     store_category_id: '4',
@@ -966,8 +775,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '100',
     store_category_id: '4',
@@ -976,8 +783,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '101',
     store_category_id: '4',
@@ -986,8 +791,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '102',
     store_category_id: '4',
@@ -996,8 +799,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '103',
     store_category_id: '4',
@@ -1006,8 +807,6 @@ module.exports = () => [
     rank: '6',
     featured: null,
     info: null,
-
-
   }, {
     id: '105',
     store_category_id: '4',
@@ -1016,8 +815,6 @@ module.exports = () => [
     rank: '7',
     featured: null,
     info: null,
-
-
   }, {
     id: '106',
     store_category_id: '4',
@@ -1026,8 +823,6 @@ module.exports = () => [
     rank: '8',
     featured: null,
     info: null,
-
-
   }, {
     id: '107',
     store_category_id: '4',
@@ -1036,8 +831,6 @@ module.exports = () => [
     rank: '9',
     featured: null,
     info: null,
-
-
   }, {
     id: '108',
     store_category_id: '4',
@@ -1046,8 +839,6 @@ module.exports = () => [
     rank: '10',
     featured: null,
     info: null,
-
-
   }, {
     id: '109',
     store_category_id: '4',
@@ -1056,8 +847,6 @@ module.exports = () => [
     rank: '12',
     featured: null,
     info: null,
-
-
   }, {
     id: '110',
     store_category_id: '4',
@@ -1066,8 +855,6 @@ module.exports = () => [
     rank: '13',
     featured: null,
     info: null,
-
-
   }, {
     id: '111',
     store_category_id: '4',
@@ -1076,8 +863,6 @@ module.exports = () => [
     rank: '14',
     featured: null,
     info: null,
-
-
   }, {
     id: '112',
     store_category_id: '4',
@@ -1086,8 +871,6 @@ module.exports = () => [
     rank: '15',
     featured: null,
     info: null,
-
-
   }, {
     id: '113',
     store_category_id: '4',
@@ -1096,8 +879,6 @@ module.exports = () => [
     rank: '16',
     featured: null,
     info: null,
-
-
   }, {
     id: '114',
     store_category_id: '4',
@@ -1106,8 +887,6 @@ module.exports = () => [
     rank: '17',
     featured: null,
     info: null,
-
-
   }, {
     id: '115',
     store_category_id: '4',
@@ -1116,8 +895,6 @@ module.exports = () => [
     rank: '18',
     featured: null,
     info: null,
-
-
   }, {
     id: '116',
     store_category_id: '4',
@@ -1126,8 +903,6 @@ module.exports = () => [
     rank: '19',
     featured: null,
     info: null,
-
-
   }, {
     id: '117',
     store_category_id: '4',
@@ -1136,8 +911,6 @@ module.exports = () => [
     rank: '20',
     featured: null,
     info: null,
-
-
   }, {
     id: '118',
     store_category_id: '4',
@@ -1146,8 +919,6 @@ module.exports = () => [
     rank: '21',
     featured: null,
     info: null,
-
-
   }, {
     id: '119',
     store_category_id: '4',
@@ -1156,8 +927,6 @@ module.exports = () => [
     rank: '22',
     featured: null,
     info: null,
-
-
   }, {
     id: '120',
     store_category_id: '4',
@@ -1166,8 +935,6 @@ module.exports = () => [
     rank: '23',
     featured: null,
     info: null,
-
-
   }, {
     id: '121',
     store_category_id: '4',
@@ -1176,8 +943,6 @@ module.exports = () => [
     rank: '24',
     featured: null,
     info: null,
-
-
   }, {
     id: '122',
     store_category_id: '4',
@@ -1186,8 +951,6 @@ module.exports = () => [
     rank: '25',
     featured: null,
     info: null,
-
-
   }, {
     id: '123',
     store_category_id: '4',
@@ -1196,8 +959,6 @@ module.exports = () => [
     rank: '26',
     featured: null,
     info: null,
-
-
   }, {
     id: '124',
     store_category_id: '4',
@@ -1206,8 +967,6 @@ module.exports = () => [
     rank: '27',
     featured: null,
     info: null,
-
-
   }, {
     id: '125',
     store_category_id: '4',
@@ -1216,8 +975,6 @@ module.exports = () => [
     rank: '28',
     featured: null,
     info: null,
-
-
   }, {
     id: '126',
     store_category_id: '4',
@@ -1226,8 +983,6 @@ module.exports = () => [
     rank: '30',
     featured: null,
     info: null,
-
-
   }, {
     id: '127',
     store_category_id: '4',
@@ -1236,8 +991,6 @@ module.exports = () => [
     rank: '31',
     featured: null,
     info: null,
-
-
   }, {
     id: '128',
     store_category_id: '4',
@@ -1246,8 +999,6 @@ module.exports = () => [
     rank: '32',
     featured: null,
     info: null,
-
-
   }, {
     id: '129',
     store_category_id: '5',
@@ -1256,8 +1007,6 @@ module.exports = () => [
     rank: '1',
     featured: null,
     info: null,
-
-
   }, {
     id: '130',
     store_category_id: '5',
@@ -1266,8 +1015,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '131',
     store_category_id: '5',
@@ -1276,8 +1023,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '132',
     store_category_id: '5',
@@ -1286,8 +1031,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '133',
     store_category_id: '5',
@@ -1296,8 +1039,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '134',
     store_category_id: '5',
@@ -1306,8 +1047,6 @@ module.exports = () => [
     rank: '6',
     featured: null,
     info: null,
-
-
   }, {
     id: '135',
     store_category_id: '5',
@@ -1316,8 +1055,6 @@ module.exports = () => [
     rank: '7',
     featured: null,
     info: null,
-
-
   }, {
     id: '136',
     store_category_id: '5',
@@ -1326,8 +1063,6 @@ module.exports = () => [
     rank: '9',
     featured: null,
     info: null,
-
-
   }, {
     id: '137',
     store_category_id: '5',
@@ -1336,8 +1071,6 @@ module.exports = () => [
     rank: '10',
     featured: null,
     info: null,
-
-
   }, {
     id: '138',
     store_category_id: '5',
@@ -1346,8 +1079,6 @@ module.exports = () => [
     rank: '11',
     featured: null,
     info: null,
-
-
   }, {
     id: '139',
     store_category_id: '5',
@@ -1356,8 +1087,6 @@ module.exports = () => [
     rank: '12',
     featured: null,
     info: null,
-
-
   }, {
     id: '140',
     store_category_id: '5',
@@ -1366,8 +1095,6 @@ module.exports = () => [
     rank: '13',
     featured: null,
     info: null,
-
-
   }, {
     id: '141',
     store_category_id: '5',
@@ -1376,8 +1103,6 @@ module.exports = () => [
     rank: '15',
     featured: null,
     info: null,
-
-
   }, {
     id: '142',
     store_category_id: '5',
@@ -1386,8 +1111,6 @@ module.exports = () => [
     rank: '16',
     featured: null,
     info: null,
-
-
   }, {
     id: '143',
     store_category_id: '5',
@@ -1396,8 +1119,6 @@ module.exports = () => [
     rank: '17',
     featured: null,
     info: null,
-
-
   }, {
     id: '144',
     store_category_id: '5',
@@ -1406,8 +1127,6 @@ module.exports = () => [
     rank: '18',
     featured: null,
     info: null,
-
-
   }, {
     id: '145',
     store_category_id: '5',
@@ -1416,8 +1135,6 @@ module.exports = () => [
     rank: '19',
     featured: null,
     info: null,
-
-
   }, {
     id: '146',
     store_category_id: '5',
@@ -1426,8 +1143,6 @@ module.exports = () => [
     rank: '20',
     featured: null,
     info: null,
-
-
   }, {
     id: '147',
     store_category_id: '5',
@@ -1436,8 +1151,6 @@ module.exports = () => [
     rank: '21',
     featured: null,
     info: null,
-
-
   }, {
     id: '148',
     store_category_id: '5',
@@ -1446,8 +1159,6 @@ module.exports = () => [
     rank: '22',
     featured: null,
     info: null,
-
-
   }, {
     id: '149',
     store_category_id: '6',
@@ -1456,8 +1167,6 @@ module.exports = () => [
     rank: '1',
     featured: null,
     info: null,
-
-
   }, {
     id: '150',
     store_category_id: '6',
@@ -1466,8 +1175,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '151',
     store_category_id: '6',
@@ -1476,8 +1183,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '152',
     store_category_id: '6',
@@ -1486,8 +1191,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '153',
     store_category_id: '6',
@@ -1496,8 +1199,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '154',
     store_category_id: '6',
@@ -1506,8 +1207,6 @@ module.exports = () => [
     rank: '6',
     featured: null,
     info: null,
-
-
   }, {
     id: '155',
     store_category_id: '6',
@@ -1516,8 +1215,6 @@ module.exports = () => [
     rank: '7',
     featured: null,
     info: null,
-
-
   }, {
     id: '156',
     store_category_id: '6',
@@ -1526,8 +1223,6 @@ module.exports = () => [
     rank: '8',
     featured: null,
     info: null,
-
-
   }, {
     id: '157',
     store_category_id: '6',
@@ -1536,8 +1231,6 @@ module.exports = () => [
     rank: '9',
     featured: null,
     info: null,
-
-
   }, {
     id: '158',
     store_category_id: '6',
@@ -1546,8 +1239,6 @@ module.exports = () => [
     rank: '10',
     featured: null,
     info: null,
-
-
   }, {
     id: '159',
     store_category_id: '6',
@@ -1556,8 +1247,6 @@ module.exports = () => [
     rank: '11',
     featured: null,
     info: null,
-
-
   }, {
     id: '160',
     store_category_id: '6',
@@ -1566,8 +1255,6 @@ module.exports = () => [
     rank: '12',
     featured: null,
     info: null,
-
-
   }, {
     id: '161',
     store_category_id: '6',
@@ -1576,8 +1263,6 @@ module.exports = () => [
     rank: '14',
     featured: null,
     info: null,
-
-
   }, {
     id: '162',
     store_category_id: '6',
@@ -1586,8 +1271,6 @@ module.exports = () => [
     rank: '15',
     featured: null,
     info: null,
-
-
   }, {
     id: '163',
     store_category_id: '6',
@@ -1596,8 +1279,6 @@ module.exports = () => [
     rank: '16',
     featured: null,
     info: null,
-
-
   }, {
     id: '164',
     store_category_id: '6',
@@ -1606,8 +1287,6 @@ module.exports = () => [
     rank: '17',
     featured: null,
     info: null,
-
-
   }, {
     id: '165',
     store_category_id: '6',
@@ -1616,8 +1295,6 @@ module.exports = () => [
     rank: '19',
     featured: null,
     info: null,
-
-
   }, {
     id: '166',
     store_category_id: '6',
@@ -1626,8 +1303,6 @@ module.exports = () => [
     rank: '20',
     featured: null,
     info: null,
-
-
   }, {
     id: '167',
     store_category_id: '6',
@@ -1636,8 +1311,6 @@ module.exports = () => [
     rank: '21',
     featured: null,
     info: null,
-
-
   }, {
     id: '168',
     store_category_id: '6',
@@ -1646,8 +1319,6 @@ module.exports = () => [
     rank: '24',
     featured: null,
     info: null,
-
-
   }, {
     id: '169',
     store_category_id: '7',
@@ -1656,8 +1327,6 @@ module.exports = () => [
     rank: '1',
     featured: null,
     info: null,
-
-
   }, {
     id: '170',
     store_category_id: '7',
@@ -1666,8 +1335,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '171',
     store_category_id: '7',
@@ -1676,8 +1343,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '172',
     store_category_id: '7',
@@ -1686,8 +1351,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '173',
     store_category_id: '7',
@@ -1696,8 +1359,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '174',
     store_category_id: '7',
@@ -1706,8 +1367,6 @@ module.exports = () => [
     rank: '6',
     featured: null,
     info: null,
-
-
   }, {
     id: '175',
     store_category_id: '7',
@@ -1716,8 +1375,6 @@ module.exports = () => [
     rank: '7',
     featured: null,
     info: null,
-
-
   }, {
     id: '176',
     store_category_id: '7',
@@ -1726,8 +1383,6 @@ module.exports = () => [
     rank: '8',
     featured: null,
     info: null,
-
-
   }, {
     id: '177',
     store_category_id: '7',
@@ -1736,8 +1391,6 @@ module.exports = () => [
     rank: '9',
     featured: null,
     info: null,
-
-
   }, {
     id: '178',
     store_category_id: '7',
@@ -1746,8 +1399,6 @@ module.exports = () => [
     rank: '10',
     featured: null,
     info: null,
-
-
   }, {
     id: '179',
     store_category_id: '7',
@@ -1756,8 +1407,6 @@ module.exports = () => [
     rank: '11',
     featured: null,
     info: null,
-
-
   }, {
     id: '180',
     store_category_id: '7',
@@ -1766,8 +1415,6 @@ module.exports = () => [
     rank: '12',
     featured: null,
     info: null,
-
-
   }, {
     id: '181',
     store_category_id: '7',
@@ -1776,8 +1423,6 @@ module.exports = () => [
     rank: '13',
     featured: null,
     info: null,
-
-
   }, {
     id: '182',
     store_category_id: '7',
@@ -1786,8 +1431,6 @@ module.exports = () => [
     rank: '15',
     featured: null,
     info: null,
-
-
   }, {
     id: '183',
     store_category_id: '7',
@@ -1796,8 +1439,6 @@ module.exports = () => [
     rank: '16',
     featured: null,
     info: null,
-
-
   }, {
     id: '184',
     store_category_id: '7',
@@ -1806,8 +1447,6 @@ module.exports = () => [
     rank: '17',
     featured: null,
     info: null,
-
-
   }, {
     id: '185',
     store_category_id: '7',
@@ -1816,8 +1455,6 @@ module.exports = () => [
     rank: '18',
     featured: null,
     info: null,
-
-
   }, {
     id: '186',
     store_category_id: '7',
@@ -1826,8 +1463,6 @@ module.exports = () => [
     rank: '19',
     featured: null,
     info: null,
-
-
   }, {
     id: '188',
     store_category_id: '7',
@@ -1836,8 +1471,6 @@ module.exports = () => [
     rank: '20',
     featured: null,
     info: null,
-
-
   }, {
     id: '189',
     store_category_id: '7',
@@ -1846,8 +1479,6 @@ module.exports = () => [
     rank: '21',
     featured: null,
     info: null,
-
-
   }, {
     id: '190',
     store_category_id: '7',
@@ -1856,8 +1487,6 @@ module.exports = () => [
     rank: '22',
     featured: null,
     info: null,
-
-
   }, {
     id: '191',
     store_category_id: '7',
@@ -1866,8 +1495,6 @@ module.exports = () => [
     rank: '23',
     featured: null,
     info: null,
-
-
   }, {
     id: '192',
     store_category_id: '7',
@@ -1876,8 +1503,6 @@ module.exports = () => [
     rank: '24',
     featured: null,
     info: null,
-
-
   }, {
     id: '193',
     store_category_id: '7',
@@ -1886,8 +1511,6 @@ module.exports = () => [
     rank: '25',
     featured: null,
     info: null,
-
-
   }, {
     id: '194',
     store_category_id: '7',
@@ -1896,8 +1519,6 @@ module.exports = () => [
     rank: '26',
     featured: null,
     info: null,
-
-
   }, {
     id: '195',
     store_category_id: '7',
@@ -1906,8 +1527,6 @@ module.exports = () => [
     rank: '27',
     featured: null,
     info: null,
-
-
   }, {
     id: '196',
     store_category_id: '7',
@@ -1916,8 +1535,6 @@ module.exports = () => [
     rank: '28',
     featured: null,
     info: null,
-
-
   }, {
     id: '197',
     store_category_id: '7',
@@ -1926,8 +1543,6 @@ module.exports = () => [
     rank: '29',
     featured: null,
     info: null,
-
-
   }, {
     id: '198',
     store_category_id: '7',
@@ -1936,8 +1551,6 @@ module.exports = () => [
     rank: '30',
     featured: null,
     info: null,
-
-
   }, {
     id: '199',
     store_category_id: '7',
@@ -1946,8 +1559,6 @@ module.exports = () => [
     rank: '31',
     featured: null,
     info: null,
-
-
   }, {
     id: '200',
     store_category_id: '7',
@@ -1956,8 +1567,6 @@ module.exports = () => [
     rank: '32',
     featured: null,
     info: null,
-
-
   }, {
     id: '201',
     store_category_id: '7',
@@ -1966,8 +1575,6 @@ module.exports = () => [
     rank: '33',
     featured: null,
     info: null,
-
-
   }, {
     id: '202',
     store_category_id: '7',
@@ -1976,8 +1583,6 @@ module.exports = () => [
     rank: '34',
     featured: null,
     info: null,
-
-
   }, {
     id: '203',
     store_category_id: '7',
@@ -1986,8 +1591,6 @@ module.exports = () => [
     rank: '35',
     featured: null,
     info: null,
-
-
   }, {
     id: '204',
     store_category_id: '7',
@@ -1996,8 +1599,6 @@ module.exports = () => [
     rank: '37',
     featured: null,
     info: null,
-
-
   }, {
     id: '205',
     store_category_id: '7',
@@ -2006,8 +1607,6 @@ module.exports = () => [
     rank: '36',
     featured: null,
     info: null,
-
-
   }, {
     id: '206',
     store_category_id: '7',
@@ -2016,8 +1615,6 @@ module.exports = () => [
     rank: '38',
     featured: null,
     info: null,
-
-
   }, {
     id: '207',
     store_category_id: '7',
@@ -2026,8 +1623,6 @@ module.exports = () => [
     rank: '39',
     featured: null,
     info: null,
-
-
   }, {
     id: '208',
     store_category_id: '7',
@@ -2036,8 +1631,6 @@ module.exports = () => [
     rank: '40',
     featured: null,
     info: null,
-
-
   }, {
     id: '209',
     store_category_id: '7',
@@ -2046,8 +1639,6 @@ module.exports = () => [
     rank: '41',
     featured: null,
     info: null,
-
-
   }, {
     id: '210',
     store_category_id: '7',
@@ -2056,8 +1647,6 @@ module.exports = () => [
     rank: '42',
     featured: null,
     info: null,
-
-
   }, {
     id: '211',
     store_category_id: '7',
@@ -2066,8 +1655,6 @@ module.exports = () => [
     rank: '43',
     featured: null,
     info: null,
-
-
   }, {
     id: '212',
     store_category_id: '7',
@@ -2076,8 +1663,6 @@ module.exports = () => [
     rank: '44',
     featured: null,
     info: null,
-
-
   }, {
     id: '213',
     store_category_id: '7',
@@ -2086,8 +1671,6 @@ module.exports = () => [
     rank: '45',
     featured: null,
     info: null,
-
-
   }, {
     id: '214',
     store_category_id: '7',
@@ -2096,8 +1679,6 @@ module.exports = () => [
     rank: '46',
     featured: null,
     info: null,
-
-
   }, {
     id: '215',
     store_category_id: '7',
@@ -2106,8 +1687,6 @@ module.exports = () => [
     rank: '47',
     featured: null,
     info: null,
-
-
   }, {
     id: '216',
     store_category_id: '7',
@@ -2116,8 +1695,6 @@ module.exports = () => [
     rank: '48',
     featured: null,
     info: null,
-
-
   }, {
     id: '217',
     store_category_id: '7',
@@ -2126,8 +1703,6 @@ module.exports = () => [
     rank: '49',
     featured: null,
     info: null,
-
-
   }, {
     id: '218',
     store_category_id: '7',
@@ -2136,8 +1711,6 @@ module.exports = () => [
     rank: '50',
     featured: null,
     info: null,
-
-
   }, {
     id: '219',
     store_category_id: '8',
@@ -2146,8 +1719,6 @@ module.exports = () => [
     rank: '1',
     featured: null,
     info: null,
-
-
   }, {
     id: '220',
     store_category_id: '8',
@@ -2156,8 +1727,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '221',
     store_category_id: '8',
@@ -2166,8 +1735,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '222',
     store_category_id: '8',
@@ -2176,8 +1743,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '223',
     store_category_id: '8',
@@ -2186,8 +1751,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '224',
     store_category_id: '8',
@@ -2196,8 +1759,6 @@ module.exports = () => [
     rank: '6',
     featured: null,
     info: null,
-
-
   }, {
     id: '225',
     store_category_id: '8',
@@ -2206,8 +1767,6 @@ module.exports = () => [
     rank: '7',
     featured: null,
     info: null,
-
-
   }, {
     id: '226',
     store_category_id: '8',
@@ -2216,8 +1775,6 @@ module.exports = () => [
     rank: '8',
     featured: null,
     info: null,
-
-
   }, {
     id: '227',
     store_category_id: '8',
@@ -2226,8 +1783,6 @@ module.exports = () => [
     rank: '9',
     featured: null,
     info: null,
-
-
   }, {
     id: '228',
     store_category_id: '8',
@@ -2236,8 +1791,6 @@ module.exports = () => [
     rank: '10',
     featured: null,
     info: null,
-
-
   }, {
     id: '229',
     store_category_id: '8',
@@ -2246,8 +1799,6 @@ module.exports = () => [
     rank: '11',
     featured: null,
     info: null,
-
-
   }, {
     id: '230',
     store_category_id: '8',
@@ -2256,8 +1807,6 @@ module.exports = () => [
     rank: '12',
     featured: null,
     info: null,
-
-
   }, {
     id: '231',
     store_category_id: '8',
@@ -2266,8 +1815,6 @@ module.exports = () => [
     rank: '13',
     featured: null,
     info: null,
-
-
   }, {
     id: '232',
     store_category_id: '8',
@@ -2276,8 +1823,6 @@ module.exports = () => [
     rank: '14',
     featured: null,
     info: null,
-
-
   }, {
     id: '233',
     store_category_id: '8',
@@ -2286,8 +1831,6 @@ module.exports = () => [
     rank: '15',
     featured: null,
     info: null,
-
-
   }, {
     id: '234',
     store_category_id: '8',
@@ -2296,8 +1839,6 @@ module.exports = () => [
     rank: '16',
     featured: null,
     info: null,
-
-
   }, {
     id: '235',
     store_category_id: '8',
@@ -2306,8 +1847,6 @@ module.exports = () => [
     rank: '17',
     featured: null,
     info: null,
-
-
   }, {
     id: '236',
     store_category_id: '8',
@@ -2316,8 +1855,6 @@ module.exports = () => [
     rank: '18',
     featured: null,
     info: null,
-
-
   }, {
     id: '237',
     store_category_id: '9',
@@ -2326,8 +1863,6 @@ module.exports = () => [
     rank: '1',
     featured: null,
     info: null,
-
-
   }, {
     id: '238',
     store_category_id: '9',
@@ -2336,8 +1871,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '239',
     store_category_id: '9',
@@ -2346,8 +1879,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '240',
     store_category_id: '9',
@@ -2356,8 +1887,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '241',
     store_category_id: '9',
@@ -2366,8 +1895,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '242',
     store_category_id: '9',
@@ -2376,8 +1903,6 @@ module.exports = () => [
     rank: '6',
     featured: null,
     info: null,
-
-
   }, {
     id: '243',
     store_category_id: '9',
@@ -2386,8 +1911,6 @@ module.exports = () => [
     rank: '7',
     featured: null,
     info: null,
-
-
   }, {
     id: '244',
     store_category_id: '9',
@@ -2396,8 +1919,6 @@ module.exports = () => [
     rank: '8',
     featured: null,
     info: null,
-
-
   }, {
     id: '245',
     store_category_id: '9',
@@ -2406,8 +1927,6 @@ module.exports = () => [
     rank: '9',
     featured: null,
     info: null,
-
-
   }, {
     id: '246',
     store_category_id: '9',
@@ -2416,8 +1935,6 @@ module.exports = () => [
     rank: '10',
     featured: null,
     info: null,
-
-
   }, {
     id: '247',
     store_category_id: '9',
@@ -2426,8 +1943,6 @@ module.exports = () => [
     rank: '11',
     featured: null,
     info: null,
-
-
   }, {
     id: '248',
     store_category_id: '9',
@@ -2436,8 +1951,6 @@ module.exports = () => [
     rank: '12',
     featured: null,
     info: null,
-
-
   }, {
     id: '249',
     store_category_id: '9',
@@ -2446,8 +1959,6 @@ module.exports = () => [
     rank: '13',
     featured: null,
     info: null,
-
-
   }, {
     id: '250',
     store_category_id: '9',
@@ -2456,8 +1967,6 @@ module.exports = () => [
     rank: '14',
     featured: null,
     info: null,
-
-
   }, {
     id: '251',
     store_category_id: '9',
@@ -2466,8 +1975,6 @@ module.exports = () => [
     rank: '15',
     featured: null,
     info: null,
-
-
   }, {
     id: '252',
     store_category_id: '9',
@@ -2476,8 +1983,6 @@ module.exports = () => [
     rank: '16',
     featured: null,
     info: null,
-
-
   }, {
     id: '253',
     store_category_id: '9',
@@ -2486,8 +1991,6 @@ module.exports = () => [
     rank: '17',
     featured: null,
     info: null,
-
-
   }, {
     id: '254',
     store_category_id: '9',
@@ -2496,8 +1999,6 @@ module.exports = () => [
     rank: '18',
     featured: null,
     info: null,
-
-
   }, {
     id: '255',
     store_category_id: '9',
@@ -2506,8 +2007,6 @@ module.exports = () => [
     rank: '19',
     featured: null,
     info: null,
-
-
   }, {
     id: '256',
     store_category_id: '9',
@@ -2516,8 +2015,6 @@ module.exports = () => [
     rank: '20',
     featured: null,
     info: null,
-
-
   }, {
     id: '258',
     store_category_id: '9',
@@ -2526,8 +2023,6 @@ module.exports = () => [
     rank: '21',
     featured: null,
     info: null,
-
-
   }, {
     id: '259',
     store_category_id: '9',
@@ -2536,8 +2031,6 @@ module.exports = () => [
     rank: '22',
     featured: null,
     info: null,
-
-
   }, {
     id: '260',
     store_category_id: '9',
@@ -2546,8 +2039,6 @@ module.exports = () => [
     rank: '23',
     featured: null,
     info: null,
-
-
   }, {
     id: '261',
     store_category_id: '9',
@@ -2556,8 +2047,6 @@ module.exports = () => [
     rank: '24',
     featured: null,
     info: null,
-
-
   }, {
     id: '262',
     store_category_id: '9',
@@ -2566,8 +2055,6 @@ module.exports = () => [
     rank: '25',
     featured: null,
     info: null,
-
-
   }, {
     id: '263',
     store_category_id: '9',
@@ -2576,8 +2063,6 @@ module.exports = () => [
     rank: '26',
     featured: null,
     info: null,
-
-
   }, {
     id: '264',
     store_category_id: '10',
@@ -2586,8 +2071,6 @@ module.exports = () => [
     rank: '1',
     featured: null,
     info: null,
-
-
   }, {
     id: '265',
     store_category_id: '10',
@@ -2596,8 +2079,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '266',
     store_category_id: '10',
@@ -2606,8 +2087,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '267',
     store_category_id: '10',
@@ -2616,8 +2095,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '268',
     store_category_id: '10',
@@ -2626,8 +2103,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '269',
     store_category_id: '10',
@@ -2636,8 +2111,6 @@ module.exports = () => [
     rank: '6',
     featured: null,
     info: null,
-
-
   }, {
     id: '270',
     store_category_id: '10',
@@ -2646,8 +2119,6 @@ module.exports = () => [
     rank: '7',
     featured: null,
     info: null,
-
-
   }, {
     id: '271',
     store_category_id: '10',
@@ -2656,8 +2127,6 @@ module.exports = () => [
     rank: '9',
     featured: null,
     info: null,
-
-
   }, {
     id: '272',
     store_category_id: '11',
@@ -2666,8 +2135,6 @@ module.exports = () => [
     rank: '1',
     featured: null,
     info: null,
-
-
   }, {
     id: '273',
     store_category_id: '11',
@@ -2676,8 +2143,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '274',
     store_category_id: '11',
@@ -2686,8 +2151,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '275',
     store_category_id: '11',
@@ -2696,8 +2159,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '276',
     store_category_id: '11',
@@ -2706,8 +2167,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '277',
     store_category_id: '11',
@@ -2716,8 +2175,6 @@ module.exports = () => [
     rank: '6',
     featured: null,
     info: null,
-
-
   }, {
     id: '279',
     store_category_id: '11',
@@ -2726,8 +2183,6 @@ module.exports = () => [
     rank: '7',
     featured: null,
     info: null,
-
-
   }, {
     id: '280',
     store_category_id: '11',
@@ -2736,8 +2191,6 @@ module.exports = () => [
     rank: '8',
     featured: null,
     info: null,
-
-
   }, {
     id: '281',
     store_category_id: '11',
@@ -2746,8 +2199,6 @@ module.exports = () => [
     rank: '9',
     featured: null,
     info: null,
-
-
   }, {
     id: '282',
     store_category_id: '11',
@@ -2756,8 +2207,6 @@ module.exports = () => [
     rank: '10',
     featured: null,
     info: null,
-
-
   }, {
     id: '283',
     store_category_id: '11',
@@ -2766,8 +2215,6 @@ module.exports = () => [
     rank: '11',
     featured: null,
     info: null,
-
-
   }, {
     id: '284',
     store_category_id: '11',
@@ -2776,8 +2223,6 @@ module.exports = () => [
     rank: '12',
     featured: null,
     info: null,
-
-
   }, {
     id: '285',
     store_category_id: '11',
@@ -2786,8 +2231,6 @@ module.exports = () => [
     rank: '13',
     featured: null,
     info: null,
-
-
   }, {
     id: '286',
     store_category_id: '11',
@@ -2796,8 +2239,6 @@ module.exports = () => [
     rank: '14',
     featured: null,
     info: null,
-
-
   }, {
     id: '287',
     store_category_id: '11',
@@ -2806,8 +2247,6 @@ module.exports = () => [
     rank: '15',
     featured: null,
     info: null,
-
-
   }, {
     id: '288',
     store_category_id: '11',
@@ -2816,8 +2255,6 @@ module.exports = () => [
     rank: '16',
     featured: null,
     info: null,
-
-
   }, {
     id: '289',
     store_category_id: '11',
@@ -2826,8 +2263,6 @@ module.exports = () => [
     rank: '17',
     featured: null,
     info: null,
-
-
   }, {
     id: '290',
     store_category_id: '11',
@@ -2836,8 +2271,6 @@ module.exports = () => [
     rank: '19',
     featured: null,
     info: null,
-
-
   }, {
     id: '291',
     store_category_id: '11',
@@ -2846,8 +2279,6 @@ module.exports = () => [
     rank: '20',
     featured: null,
     info: null,
-
-
   }, {
     id: '292',
     store_category_id: '11',
@@ -2856,8 +2287,6 @@ module.exports = () => [
     rank: '21',
     featured: null,
     info: null,
-
-
   }, {
     id: '293',
     store_category_id: '11',
@@ -2866,8 +2295,6 @@ module.exports = () => [
     rank: '22',
     featured: null,
     info: null,
-
-
   }, {
     id: '294',
     store_category_id: '11',
@@ -2876,8 +2303,6 @@ module.exports = () => [
     rank: '23',
     featured: null,
     info: null,
-
-
   }, {
     id: '295',
     store_category_id: '11',
@@ -2886,8 +2311,6 @@ module.exports = () => [
     rank: '24',
     featured: null,
     info: null,
-
-
   }, {
     id: '296',
     store_category_id: '11',
@@ -2896,8 +2319,6 @@ module.exports = () => [
     rank: '25',
     featured: null,
     info: null,
-
-
   }, {
     id: '297',
     store_category_id: '11',
@@ -2906,8 +2327,6 @@ module.exports = () => [
     rank: '26',
     featured: null,
     info: null,
-
-
   }, {
     id: '298',
     store_category_id: '11',
@@ -2916,8 +2335,6 @@ module.exports = () => [
     rank: '27',
     featured: null,
     info: null,
-
-
   }, {
     id: '299',
     store_category_id: '11',
@@ -2926,8 +2343,6 @@ module.exports = () => [
     rank: '28',
     featured: null,
     info: null,
-
-
   }, {
     id: '300',
     store_category_id: '11',
@@ -2936,8 +2351,6 @@ module.exports = () => [
     rank: '29',
     featured: null,
     info: null,
-
-
   }, {
     id: '301',
     store_category_id: '12',
@@ -2946,8 +2359,6 @@ module.exports = () => [
     rank: '1',
     featured: null,
     info: null,
-
-
   }, {
     id: '302',
     store_category_id: '12',
@@ -2956,8 +2367,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '303',
     store_category_id: '12',
@@ -2966,8 +2375,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '304',
     store_category_id: '12',
@@ -2976,8 +2383,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '305',
     store_category_id: '12',
@@ -2986,8 +2391,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '306',
     store_category_id: '12',
@@ -2996,8 +2399,6 @@ module.exports = () => [
     rank: '7',
     featured: null,
     info: null,
-
-
   }, {
     id: '307',
     store_category_id: '12',
@@ -3006,8 +2407,6 @@ module.exports = () => [
     rank: '8',
     featured: null,
     info: null,
-
-
   }, {
     id: '308',
     store_category_id: '12',
@@ -3016,8 +2415,6 @@ module.exports = () => [
     rank: '9',
     featured: null,
     info: null,
-
-
   }, {
     id: '309',
     store_category_id: '12',
@@ -3026,8 +2423,6 @@ module.exports = () => [
     rank: '10',
     featured: null,
     info: null,
-
-
   }, {
     id: '310',
     store_category_id: '12',
@@ -3036,8 +2431,6 @@ module.exports = () => [
     rank: '11',
     featured: null,
     info: null,
-
-
   }, {
     id: '311',
     store_category_id: '12',
@@ -3046,8 +2439,6 @@ module.exports = () => [
     rank: '12',
     featured: null,
     info: null,
-
-
   }, {
     id: '312',
     store_category_id: '12',
@@ -3056,8 +2447,6 @@ module.exports = () => [
     rank: '13',
     featured: null,
     info: null,
-
-
   }, {
     id: '313',
     store_category_id: '12',
@@ -3066,8 +2455,6 @@ module.exports = () => [
     rank: '14',
     featured: null,
     info: null,
-
-
   }, {
     id: '314',
     store_category_id: '12',
@@ -3076,8 +2463,6 @@ module.exports = () => [
     rank: '15',
     featured: null,
     info: null,
-
-
   }, {
     id: '315',
     store_category_id: '12',
@@ -3086,8 +2471,6 @@ module.exports = () => [
     rank: '16',
     featured: null,
     info: null,
-
-
   }, {
     id: '316',
     store_category_id: '12',
@@ -3096,8 +2479,6 @@ module.exports = () => [
     rank: '17',
     featured: null,
     info: null,
-
-
   }, {
     id: '317',
     store_category_id: '12',
@@ -3106,8 +2487,6 @@ module.exports = () => [
     rank: '18',
     featured: null,
     info: null,
-
-
   }, {
     id: '318',
     store_category_id: '12',
@@ -3116,8 +2495,6 @@ module.exports = () => [
     rank: '19',
     featured: null,
     info: null,
-
-
   }, {
     id: '319',
     store_category_id: '12',
@@ -3126,8 +2503,6 @@ module.exports = () => [
     rank: '20',
     featured: null,
     info: null,
-
-
   }, {
     id: '320',
     store_category_id: '12',
@@ -3136,8 +2511,6 @@ module.exports = () => [
     rank: '21',
     featured: null,
     info: null,
-
-
   }, {
     id: '321',
     store_category_id: '12',
@@ -3146,8 +2519,6 @@ module.exports = () => [
     rank: '22',
     featured: null,
     info: null,
-
-
   }, {
     id: '322',
     store_category_id: '12',
@@ -3156,8 +2527,6 @@ module.exports = () => [
     rank: '23',
     featured: null,
     info: null,
-
-
   }, {
     id: '323',
     store_category_id: '12',
@@ -3166,8 +2535,6 @@ module.exports = () => [
     rank: '24',
     featured: null,
     info: null,
-
-
   }, {
     id: '324',
     store_category_id: '12',
@@ -3176,8 +2543,6 @@ module.exports = () => [
     rank: '25',
     featured: null,
     info: null,
-
-
   }, {
     id: '325',
     store_category_id: '12',
@@ -3186,8 +2551,6 @@ module.exports = () => [
     rank: '26',
     featured: null,
     info: null,
-
-
   }, {
     id: '326',
     store_category_id: '12',
@@ -3196,8 +2559,6 @@ module.exports = () => [
     rank: '27',
     featured: null,
     info: null,
-
-
   }, {
     id: '327',
     store_category_id: '12',
@@ -3206,8 +2567,6 @@ module.exports = () => [
     rank: '28',
     featured: null,
     info: null,
-
-
   }, {
     id: '328',
     store_category_id: '13',
@@ -3216,8 +2575,6 @@ module.exports = () => [
     rank: '1',
     featured: null,
     info: null,
-
-
   }, {
     id: '329',
     store_category_id: '13',
@@ -3226,8 +2583,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '330',
     store_category_id: '13',
@@ -3236,8 +2591,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '331',
     store_category_id: '13',
@@ -3246,8 +2599,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '332',
     store_category_id: '13',
@@ -3256,8 +2607,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '333',
     store_category_id: '13',
@@ -3266,8 +2615,6 @@ module.exports = () => [
     rank: '6',
     featured: null,
     info: null,
-
-
   }, {
     id: '334',
     store_category_id: '13',
@@ -3276,8 +2623,6 @@ module.exports = () => [
     rank: '7',
     featured: null,
     info: null,
-
-
   }, {
     id: '335',
     store_category_id: '13',
@@ -3286,8 +2631,6 @@ module.exports = () => [
     rank: '8',
     featured: null,
     info: null,
-
-
   }, {
     id: '336',
     store_category_id: '13',
@@ -3296,8 +2639,6 @@ module.exports = () => [
     rank: '9',
     featured: null,
     info: null,
-
-
   }, {
     id: '337',
     store_category_id: '13',
@@ -3306,8 +2647,6 @@ module.exports = () => [
     rank: '10',
     featured: null,
     info: null,
-
-
   }, {
     id: '338',
     store_category_id: '13',
@@ -3316,8 +2655,6 @@ module.exports = () => [
     rank: '11',
     featured: null,
     info: null,
-
-
   }, {
     id: '339',
     store_category_id: '13',
@@ -3326,8 +2663,6 @@ module.exports = () => [
     rank: '12',
     featured: null,
     info: null,
-
-
   }, {
     id: '340',
     store_category_id: '13',
@@ -3336,8 +2671,6 @@ module.exports = () => [
     rank: '13',
     featured: null,
     info: null,
-
-
   }, {
     id: '341',
     store_category_id: '13',
@@ -3346,8 +2679,6 @@ module.exports = () => [
     rank: '14',
     featured: null,
     info: null,
-
-
   }, {
     id: '342',
     store_category_id: '13',
@@ -3356,8 +2687,6 @@ module.exports = () => [
     rank: '15',
     featured: null,
     info: null,
-
-
   }, {
     id: '343',
     store_category_id: '13',
@@ -3366,8 +2695,6 @@ module.exports = () => [
     rank: '16',
     featured: null,
     info: null,
-
-
   }, {
     id: '344',
     store_category_id: '13',
@@ -3376,8 +2703,6 @@ module.exports = () => [
     rank: '17',
     featured: null,
     info: null,
-
-
   }, {
     id: '345',
     store_category_id: '13',
@@ -3386,8 +2711,6 @@ module.exports = () => [
     rank: '18',
     featured: null,
     info: null,
-
-
   }, {
     id: '346',
     store_category_id: '13',
@@ -3396,8 +2719,6 @@ module.exports = () => [
     rank: '19',
     featured: null,
     info: null,
-
-
   }, {
     id: '347',
     store_category_id: '13',
@@ -3406,8 +2727,6 @@ module.exports = () => [
     rank: '20',
     featured: null,
     info: null,
-
-
   }, {
     id: '348',
     store_category_id: '13',
@@ -3416,8 +2735,6 @@ module.exports = () => [
     rank: '21',
     featured: null,
     info: null,
-
-
   }, {
     id: '349',
     store_category_id: '13',
@@ -3426,8 +2743,6 @@ module.exports = () => [
     rank: '22',
     featured: null,
     info: null,
-
-
   }, {
     id: '350',
     store_category_id: '13',
@@ -3436,8 +2751,6 @@ module.exports = () => [
     rank: '23',
     featured: null,
     info: null,
-
-
   }, {
     id: '351',
     store_category_id: '13',
@@ -3446,8 +2759,6 @@ module.exports = () => [
     rank: '24',
     featured: null,
     info: null,
-
-
   }, {
     id: '352',
     store_category_id: '13',
@@ -3456,8 +2767,6 @@ module.exports = () => [
     rank: '25',
     featured: null,
     info: null,
-
-
   }, {
     id: '353',
     store_category_id: '13',
@@ -3466,8 +2775,6 @@ module.exports = () => [
     rank: '26',
     featured: null,
     info: null,
-
-
   }, {
     id: '354',
     store_category_id: '13',
@@ -3476,8 +2783,6 @@ module.exports = () => [
     rank: '27',
     featured: null,
     info: null,
-
-
   }, {
     id: '355',
     store_category_id: '13',
@@ -3486,8 +2791,6 @@ module.exports = () => [
     rank: '27',
     featured: null,
     info: null,
-
-
   }, {
     id: '356',
     store_category_id: '13',
@@ -3496,8 +2799,6 @@ module.exports = () => [
     rank: '28',
     featured: null,
     info: null,
-
-
   }, {
     id: '357',
     store_category_id: '13',
@@ -3506,8 +2807,6 @@ module.exports = () => [
     rank: '29',
     featured: null,
     info: null,
-
-
   }, {
     id: '358',
     store_category_id: '13',
@@ -3516,8 +2815,6 @@ module.exports = () => [
     rank: '30',
     featured: null,
     info: null,
-
-
   }, {
     id: '359',
     store_category_id: '13',
@@ -3526,8 +2823,6 @@ module.exports = () => [
     rank: '31',
     featured: null,
     info: null,
-
-
   }, {
     id: '360',
     store_category_id: '13',
@@ -3536,8 +2831,6 @@ module.exports = () => [
     rank: '32',
     featured: null,
     info: null,
-
-
   }, {
     id: '361',
     store_category_id: '13',
@@ -3546,8 +2839,6 @@ module.exports = () => [
     rank: '34',
     featured: null,
     info: null,
-
-
   }, {
     id: '362',
     store_category_id: '13',
@@ -3556,8 +2847,6 @@ module.exports = () => [
     rank: '35',
     featured: null,
     info: null,
-
-
   }, {
     id: '363',
     store_category_id: '13',
@@ -3566,8 +2855,6 @@ module.exports = () => [
     rank: '36',
     featured: null,
     info: null,
-
-
   }, {
     id: '364',
     store_category_id: '14',
@@ -3576,8 +2863,6 @@ module.exports = () => [
     rank: '1',
     featured: null,
     info: null,
-
-
   }, {
     id: '365',
     store_category_id: '3',
@@ -3586,8 +2871,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '366',
     store_category_id: '3',
@@ -3596,8 +2879,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '367',
     store_category_id: '3',
@@ -3606,8 +2887,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '368',
     store_category_id: '2',
@@ -3616,8 +2895,6 @@ module.exports = () => [
     rank: '36',
     featured: null,
     info: null,
-
-
   }, {
     id: '369',
     store_category_id: '2',
@@ -3626,8 +2903,6 @@ module.exports = () => [
     rank: '43',
     featured: null,
     info: null,
-
-
   }, {
     id: '370',
     store_category_id: '2',
@@ -3636,8 +2911,6 @@ module.exports = () => [
     rank: '69',
     featured: null,
     info: null,
-
-
   }, {
     id: '371',
     store_category_id: '2',
@@ -3646,8 +2919,6 @@ module.exports = () => [
     rank: '70',
     featured: null,
     info: null,
-
-
   }, {
     id: '372',
     store_category_id: '3',
@@ -3656,8 +2927,6 @@ module.exports = () => [
     rank: '6',
     featured: null,
     info: null,
-
-
   }, {
     id: '373',
     store_category_id: '4',
@@ -3666,8 +2935,6 @@ module.exports = () => [
     rank: '29',
     featured: null,
     info: null,
-
-
   }, {
     id: '374',
     store_category_id: '5',
@@ -3676,8 +2943,6 @@ module.exports = () => [
     rank: '8',
     featured: null,
     info: null,
-
-
   }, {
     id: '375',
     store_category_id: '5',
@@ -3686,8 +2951,6 @@ module.exports = () => [
     rank: '23',
     featured: null,
     info: null,
-
-
   }, {
     id: '376',
     store_category_id: '5',
@@ -3696,8 +2959,6 @@ module.exports = () => [
     rank: '24',
     featured: null,
     info: null,
-
-
   }, {
     id: '377',
     store_category_id: '6',
@@ -3706,8 +2967,6 @@ module.exports = () => [
     rank: '23',
     featured: null,
     info: null,
-
-
   }, {
     id: '378',
     store_category_id: '10',
@@ -3716,8 +2975,6 @@ module.exports = () => [
     rank: '8',
     featured: null,
     info: null,
-
-
   }, {
     id: '379',
     store_category_id: '11',
@@ -3726,8 +2983,6 @@ module.exports = () => [
     rank: '18',
     featured: null,
     info: null,
-
-
   }, {
     id: '380',
     store_category_id: '14',
@@ -3736,8 +2991,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '381',
     store_category_id: '14',
@@ -3746,8 +2999,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '382',
     store_category_id: '14',
@@ -3756,8 +3007,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '383',
     store_category_id: '14',
@@ -3766,8 +3015,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '384',
     store_category_id: '14',
@@ -3776,8 +3023,6 @@ module.exports = () => [
     rank: '6',
     featured: null,
     info: null,
-
-
   }, {
     id: '385',
     store_category_id: '14',
@@ -3786,8 +3031,6 @@ module.exports = () => [
     rank: '7',
     featured: null,
     info: null,
-
-
   }, {
     id: '386',
     store_category_id: '14',
@@ -3796,8 +3039,6 @@ module.exports = () => [
     rank: '8',
     featured: null,
     info: null,
-
-
   }, {
     id: '387',
     store_category_id: '14',
@@ -3806,8 +3047,6 @@ module.exports = () => [
     rank: '9',
     featured: null,
     info: null,
-
-
   }, {
     id: '388',
     store_category_id: '14',
@@ -3816,8 +3055,6 @@ module.exports = () => [
     rank: '10',
     featured: null,
     info: null,
-
-
   }, {
     id: '389',
     store_category_id: '14',
@@ -3826,8 +3063,6 @@ module.exports = () => [
     rank: '11',
     featured: null,
     info: null,
-
-
   }, {
     id: '390',
     store_category_id: '14',
@@ -3836,8 +3071,6 @@ module.exports = () => [
     rank: '12',
     featured: null,
     info: null,
-
-
   }, {
     id: '391',
     store_category_id: '14',
@@ -3846,8 +3079,6 @@ module.exports = () => [
     rank: '13',
     featured: null,
     info: null,
-
-
   }, {
     id: '392',
     store_category_id: '14',
@@ -3856,8 +3087,6 @@ module.exports = () => [
     rank: '14',
     featured: null,
     info: null,
-
-
   }, {
     id: '393',
     store_category_id: '14',
@@ -3866,8 +3095,6 @@ module.exports = () => [
     rank: '15',
     featured: null,
     info: null,
-
-
   }, {
     id: '394',
     store_category_id: '14',
@@ -3876,8 +3103,6 @@ module.exports = () => [
     rank: '16',
     featured: null,
     info: null,
-
-
   }, {
     id: '395',
     store_category_id: '14',
@@ -3886,8 +3111,6 @@ module.exports = () => [
     rank: '17',
     featured: null,
     info: null,
-
-
   }, {
     id: '396',
     store_category_id: '14',
@@ -3896,8 +3119,6 @@ module.exports = () => [
     rank: '18',
     featured: null,
     info: null,
-
-
   }, {
     id: '397',
     store_category_id: '14',
@@ -3906,8 +3127,6 @@ module.exports = () => [
     rank: '19',
     featured: null,
     info: null,
-
-
   }, {
     id: '398',
     store_category_id: '14',
@@ -3916,8 +3135,6 @@ module.exports = () => [
     rank: '20',
     featured: null,
     info: null,
-
-
   }, {
     id: '399',
     store_category_id: '16',
@@ -3926,8 +3143,6 @@ module.exports = () => [
     rank: '1',
     featured: null,
     info: null,
-
-
   }, {
     id: '400',
     store_category_id: '16',
@@ -3936,8 +3151,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '401',
     store_category_id: '16',
@@ -3946,8 +3159,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '402',
     store_category_id: '16',
@@ -3956,8 +3167,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '403',
     store_category_id: '16',
@@ -3966,8 +3175,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '404',
     store_category_id: '16',
@@ -3976,8 +3183,6 @@ module.exports = () => [
     rank: '6',
     featured: null,
     info: null,
-
-
   }, {
     id: '405',
     store_category_id: '16',
@@ -3986,8 +3191,6 @@ module.exports = () => [
     rank: '7',
     featured: null,
     info: null,
-
-
   }, {
     id: '406',
     store_category_id: '16',
@@ -3996,8 +3199,6 @@ module.exports = () => [
     rank: '8',
     featured: null,
     info: null,
-
-
   }, {
     id: '407',
     store_category_id: '16',
@@ -4006,8 +3207,6 @@ module.exports = () => [
     rank: '9',
     featured: null,
     info: null,
-
-
   }, {
     id: '408',
     store_category_id: '16',
@@ -4016,8 +3215,6 @@ module.exports = () => [
     rank: '10',
     featured: null,
     info: null,
-
-
   }, {
     id: '409',
     store_category_id: '16',
@@ -4026,8 +3223,6 @@ module.exports = () => [
     rank: '11',
     featured: null,
     info: null,
-
-
   }, {
     id: '410',
     store_category_id: '16',
@@ -4036,8 +3231,6 @@ module.exports = () => [
     rank: '12',
     featured: null,
     info: null,
-
-
   }, {
     id: '411',
     store_category_id: '16',
@@ -4046,8 +3239,6 @@ module.exports = () => [
     rank: '13',
     featured: null,
     info: null,
-
-
   }, {
     id: '412',
     store_category_id: '16',
@@ -4056,8 +3247,6 @@ module.exports = () => [
     rank: '14',
     featured: null,
     info: null,
-
-
   }, {
     id: '413',
     store_category_id: '16',
@@ -4066,8 +3255,6 @@ module.exports = () => [
     rank: '15',
     featured: null,
     info: null,
-
-
   }, {
     id: '414',
     store_category_id: '16',
@@ -4076,8 +3263,6 @@ module.exports = () => [
     rank: '16',
     featured: null,
     info: null,
-
-
   }, {
     id: '415',
     store_category_id: '16',
@@ -4086,8 +3271,6 @@ module.exports = () => [
     rank: '17',
     featured: null,
     info: null,
-
-
   }, {
     id: '416',
     store_category_id: '16',
@@ -4096,8 +3279,6 @@ module.exports = () => [
     rank: '18',
     featured: null,
     info: null,
-
-
   }, {
     id: '417',
     store_category_id: '16',
@@ -4106,8 +3287,6 @@ module.exports = () => [
     rank: '19',
     featured: null,
     info: null,
-
-
   }, {
     id: '418',
     store_category_id: '16',
@@ -4116,8 +3295,6 @@ module.exports = () => [
     rank: '20',
     featured: null,
     info: null,
-
-
   }, {
     id: '419',
     store_category_id: '16',
@@ -4126,8 +3303,6 @@ module.exports = () => [
     rank: '21',
     featured: null,
     info: null,
-
-
   }, {
     id: '420',
     store_category_id: '18',
@@ -4136,8 +3311,6 @@ module.exports = () => [
     rank: '1',
     featured: null,
     info: null,
-
-
   }, {
     id: '421',
     store_category_id: '18',
@@ -4146,8 +3319,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '422',
     store_category_id: '18',
@@ -4156,8 +3327,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '423',
     store_category_id: '18',
@@ -4166,8 +3335,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '424',
     store_category_id: '18',
@@ -4176,8 +3343,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '425',
     store_category_id: '18',
@@ -4186,8 +3351,6 @@ module.exports = () => [
     rank: '6',
     featured: null,
     info: null,
-
-
   }, {
     id: '426',
     store_category_id: '18',
@@ -4196,8 +3359,6 @@ module.exports = () => [
     rank: '7',
     featured: null,
     info: null,
-
-
   }, {
     id: '427',
     store_category_id: '18',
@@ -4206,8 +3367,6 @@ module.exports = () => [
     rank: '8',
     featured: null,
     info: null,
-
-
   }, {
     id: '428',
     store_category_id: '18',
@@ -4216,8 +3375,6 @@ module.exports = () => [
     rank: '9',
     featured: null,
     info: null,
-
-
   }, {
     id: '429',
     store_category_id: '18',
@@ -4226,8 +3383,6 @@ module.exports = () => [
     rank: '10',
     featured: null,
     info: null,
-
-
   }, {
     id: '430',
     store_category_id: '18',
@@ -4236,8 +3391,6 @@ module.exports = () => [
     rank: '11',
     featured: null,
     info: null,
-
-
   }, {
     id: '431',
     store_category_id: '18',
@@ -4246,8 +3399,6 @@ module.exports = () => [
     rank: '12',
     featured: null,
     info: null,
-
-
   }, {
     id: '432',
     store_category_id: '18',
@@ -4256,8 +3407,6 @@ module.exports = () => [
     rank: '13',
     featured: null,
     info: null,
-
-
   }, {
     id: '433',
     store_category_id: '18',
@@ -4266,8 +3415,6 @@ module.exports = () => [
     rank: '14',
     featured: null,
     info: null,
-
-
   }, {
     id: '434',
     store_category_id: '18',
@@ -4276,8 +3423,6 @@ module.exports = () => [
     rank: '15',
     featured: null,
     info: null,
-
-
   }, {
     id: '435',
     store_category_id: '18',
@@ -4286,8 +3431,6 @@ module.exports = () => [
     rank: '16',
     featured: null,
     info: null,
-
-
   }, {
     id: '436',
     store_category_id: '18',
@@ -4296,8 +3439,6 @@ module.exports = () => [
     rank: '17',
     featured: null,
     info: null,
-
-
   }, {
     id: '437',
     store_category_id: '18',
@@ -4306,8 +3447,6 @@ module.exports = () => [
     rank: '18',
     featured: null,
     info: null,
-
-
   }, {
     id: '438',
     store_category_id: '22',
@@ -4316,8 +3455,6 @@ module.exports = () => [
     rank: '1',
     featured: null,
     info: null,
-
-
   }, {
     id: '439',
     store_category_id: '22',
@@ -4326,8 +3463,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '440',
     store_category_id: '22',
@@ -4336,8 +3471,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '441',
     store_category_id: '22',
@@ -4346,8 +3479,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '442',
     store_category_id: '22',
@@ -4356,8 +3487,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '443',
     store_category_id: '22',
@@ -4366,8 +3495,6 @@ module.exports = () => [
     rank: '6',
     featured: null,
     info: null,
-
-
   }, {
     id: '444',
     store_category_id: '22',
@@ -4376,8 +3503,6 @@ module.exports = () => [
     rank: '7',
     featured: null,
     info: null,
-
-
   }, {
     id: '445',
     store_category_id: '22',
@@ -4386,8 +3511,6 @@ module.exports = () => [
     rank: '8',
     featured: null,
     info: null,
-
-
   }, {
     id: '446',
     store_category_id: '22',
@@ -4396,8 +3519,6 @@ module.exports = () => [
     rank: '9',
     featured: null,
     info: null,
-
-
   }, {
     id: '447',
     store_category_id: '22',
@@ -4406,8 +3527,6 @@ module.exports = () => [
     rank: '12',
     featured: null,
     info: null,
-
-
   }, {
     id: '448',
     store_category_id: '22',
@@ -4416,8 +3535,6 @@ module.exports = () => [
     rank: '13',
     featured: null,
     info: null,
-
-
   }, {
     id: '449',
     store_category_id: '22',
@@ -4426,8 +3543,6 @@ module.exports = () => [
     rank: '14',
     featured: null,
     info: null,
-
-
   }, {
     id: '450',
     store_category_id: '22',
@@ -4436,8 +3551,6 @@ module.exports = () => [
     rank: '15',
     featured: null,
     info: null,
-
-
   }, {
     id: '451',
     store_category_id: '22',
@@ -4446,8 +3559,6 @@ module.exports = () => [
     rank: '16',
     featured: null,
     info: null,
-
-
   }, {
     id: '452',
     store_category_id: '22',
@@ -4456,8 +3567,6 @@ module.exports = () => [
     rank: '17',
     featured: null,
     info: null,
-
-
   }, {
     id: '453',
     store_category_id: '22',
@@ -4466,8 +3575,6 @@ module.exports = () => [
     rank: '18',
     featured: null,
     info: null,
-
-
   }, {
     id: '454',
     store_category_id: '22',
@@ -4476,8 +3583,6 @@ module.exports = () => [
     rank: '19',
     featured: null,
     info: null,
-
-
   }, {
     id: '455',
     store_category_id: '22',
@@ -4486,8 +3591,6 @@ module.exports = () => [
     rank: '20',
     featured: null,
     info: null,
-
-
   }, {
     id: '456',
     store_category_id: '22',
@@ -4496,8 +3599,6 @@ module.exports = () => [
     rank: '21',
     featured: null,
     info: null,
-
-
   }, {
     id: '457',
     store_category_id: '22',
@@ -4506,8 +3607,6 @@ module.exports = () => [
     rank: '22',
     featured: null,
     info: null,
-
-
   }, {
     id: '458',
     store_category_id: '22',
@@ -4516,8 +3615,6 @@ module.exports = () => [
     rank: '23',
     featured: null,
     info: null,
-
-
   }, {
     id: '459',
     store_category_id: '22',
@@ -4526,8 +3623,6 @@ module.exports = () => [
     rank: '24',
     featured: null,
     info: null,
-
-
   }, {
     id: '460',
     store_category_id: '22',
@@ -4536,8 +3631,6 @@ module.exports = () => [
     rank: '25',
     featured: null,
     info: null,
-
-
   }, {
     id: '461',
     store_category_id: '23',
@@ -4546,8 +3639,6 @@ module.exports = () => [
     rank: '1',
     featured: null,
     info: null,
-
-
   }, {
     id: '462',
     store_category_id: '23',
@@ -4556,8 +3647,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '463',
     store_category_id: '23',
@@ -4566,8 +3655,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '464',
     store_category_id: '23',
@@ -4576,8 +3663,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '465',
     store_category_id: '23',
@@ -4586,8 +3671,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '466',
     store_category_id: '23',
@@ -4596,8 +3679,6 @@ module.exports = () => [
     rank: '6',
     featured: null,
     info: null,
-
-
   }, {
     id: '467',
     store_category_id: '23',
@@ -4606,8 +3687,6 @@ module.exports = () => [
     rank: '7',
     featured: null,
     info: null,
-
-
   }, {
     id: '468',
     store_category_id: '23',
@@ -4616,8 +3695,6 @@ module.exports = () => [
     rank: '8',
     featured: null,
     info: null,
-
-
   }, {
     id: '469',
     store_category_id: '23',
@@ -4626,8 +3703,6 @@ module.exports = () => [
     rank: '9',
     featured: null,
     info: null,
-
-
   }, {
     id: '470',
     store_category_id: '23',
@@ -4636,8 +3711,6 @@ module.exports = () => [
     rank: '10',
     featured: null,
     info: null,
-
-
   }, {
     id: '471',
     store_category_id: '23',
@@ -4646,8 +3719,6 @@ module.exports = () => [
     rank: '11',
     featured: null,
     info: null,
-
-
   }, {
     id: '472',
     store_category_id: '23',
@@ -4656,8 +3727,6 @@ module.exports = () => [
     rank: '12',
     featured: null,
     info: null,
-
-
   }, {
     id: '473',
     store_category_id: '23',
@@ -4666,8 +3735,6 @@ module.exports = () => [
     rank: '13',
     featured: null,
     info: null,
-
-
   }, {
     id: '474',
     store_category_id: '23',
@@ -4676,8 +3743,6 @@ module.exports = () => [
     rank: '14',
     featured: null,
     info: null,
-
-
   }, {
     id: '475',
     store_category_id: '23',
@@ -4686,8 +3751,6 @@ module.exports = () => [
     rank: '15',
     featured: null,
     info: null,
-
-
   }, {
     id: '476',
     store_category_id: '23',
@@ -4696,8 +3759,6 @@ module.exports = () => [
     rank: '16',
     featured: null,
     info: null,
-
-
   }, {
     id: '477',
     store_category_id: '23',
@@ -4706,8 +3767,6 @@ module.exports = () => [
     rank: '17',
     featured: null,
     info: null,
-
-
   }, {
     id: '478',
     store_category_id: '23',
@@ -4716,8 +3775,6 @@ module.exports = () => [
     rank: '18',
     featured: null,
     info: null,
-
-
   }, {
     id: '479',
     store_category_id: '23',
@@ -4726,8 +3783,6 @@ module.exports = () => [
     rank: '19',
     featured: null,
     info: null,
-
-
   }, {
     id: '480',
     store_category_id: '23',
@@ -4736,8 +3791,6 @@ module.exports = () => [
     rank: '20',
     featured: null,
     info: null,
-
-
   }, {
     id: '481',
     store_category_id: '23',
@@ -4746,8 +3799,6 @@ module.exports = () => [
     rank: '21',
     featured: null,
     info: null,
-
-
   }, {
     id: '482',
     store_category_id: '23',
@@ -4756,8 +3807,6 @@ module.exports = () => [
     rank: '22',
     featured: null,
     info: null,
-
-
   }, {
     id: '483',
     store_category_id: '23',
@@ -4766,8 +3815,6 @@ module.exports = () => [
     rank: '23',
     featured: null,
     info: null,
-
-
   }, {
     id: '484',
     store_category_id: '23',
@@ -4776,8 +3823,6 @@ module.exports = () => [
     rank: '24',
     featured: null,
     info: null,
-
-
   }, {
     id: '485',
     store_category_id: '23',
@@ -4786,8 +3831,6 @@ module.exports = () => [
     rank: '25',
     featured: null,
     info: null,
-
-
   }, {
     id: '486',
     store_category_id: '24',
@@ -4796,8 +3839,6 @@ module.exports = () => [
     rank: '1',
     featured: null,
     info: null,
-
-
   }, {
     id: '487',
     store_category_id: '24',
@@ -4806,8 +3847,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '488',
     store_category_id: '24',
@@ -4816,8 +3855,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '489',
     store_category_id: '24',
@@ -4826,8 +3863,6 @@ module.exports = () => [
     rank: '4',
     featured: null,
     info: null,
-
-
   }, {
     id: '490',
     store_category_id: '24',
@@ -4836,8 +3871,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '491',
     store_category_id: '24',
@@ -4846,8 +3879,6 @@ module.exports = () => [
     rank: '6',
     featured: null,
     info: null,
-
-
   }, {
     id: '492',
     store_category_id: '24',
@@ -4856,8 +3887,6 @@ module.exports = () => [
     rank: '7',
     featured: null,
     info: null,
-
-
   }, {
     id: '493',
     store_category_id: '24',
@@ -4866,8 +3895,6 @@ module.exports = () => [
     rank: '9',
     featured: null,
     info: null,
-
-
   }, {
     id: '494',
     store_category_id: '24',
@@ -4876,8 +3903,6 @@ module.exports = () => [
     rank: '10',
     featured: null,
     info: null,
-
-
   }, {
     id: '495',
     store_category_id: '24',
@@ -4886,8 +3911,6 @@ module.exports = () => [
     rank: '11',
     featured: null,
     info: null,
-
-
   }, {
     id: '496',
     store_category_id: '24',
@@ -4896,8 +3919,6 @@ module.exports = () => [
     rank: '12',
     featured: null,
     info: null,
-
-
   }, {
     id: '497',
     store_category_id: '24',
@@ -4906,8 +3927,6 @@ module.exports = () => [
     rank: '13',
     featured: null,
     info: null,
-
-
   }, {
     id: '498',
     store_category_id: '24',
@@ -4916,8 +3935,6 @@ module.exports = () => [
     rank: '14',
     featured: null,
     info: null,
-
-
   }, {
     id: '499',
     store_category_id: '25',
@@ -4926,8 +3943,6 @@ module.exports = () => [
     rank: '1',
     featured: null,
     info: null,
-
-
   }, {
     id: '500',
     store_category_id: '25',
@@ -4936,8 +3951,6 @@ module.exports = () => [
     rank: '2',
     featured: null,
     info: null,
-
-
   }, {
     id: '501',
     store_category_id: '25',
@@ -4946,8 +3959,6 @@ module.exports = () => [
     rank: '3',
     featured: null,
     info: null,
-
-
   }, {
     id: '502',
     store_category_id: '25',
@@ -4956,8 +3967,6 @@ module.exports = () => [
     rank: '5',
     featured: null,
     info: null,
-
-
   }, {
     id: '503',
     store_category_id: '25',
@@ -4966,8 +3975,6 @@ module.exports = () => [
     rank: '6',
     featured: null,
     info: null,
-
-
   }, {
     id: '504',
     store_category_id: '25',

@@ -13,8 +13,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: DOC,
-
-
 }, {
   id: '9087',
   country_id: '226',
@@ -25,8 +23,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: DOC,
-
-
 }, {
   id: '9088',
   country_id: '226',
@@ -37,8 +33,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: DOC,
-
-
 }, {
   id: '9089',
   country_id: '226',
@@ -49,8 +43,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: DOC,
-
-
 }, {
   id: '9090',
   country_id: '226',
@@ -61,8 +53,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9091',
   country_id: '226',
@@ -73,8 +63,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9092',
   country_id: '226',
@@ -85,8 +73,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9093',
   country_id: '226',
@@ -97,8 +83,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9094',
   country_id: '226',
@@ -109,8 +93,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9095',
   country_id: '226',
@@ -121,8 +103,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9096',
   country_id: '226',
@@ -133,8 +113,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9097',
   country_id: '226',
@@ -145,8 +123,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9098',
   country_id: '226',
@@ -157,8 +133,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9099',
   country_id: '226',
@@ -169,8 +143,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9100',
   country_id: '226',
@@ -181,8 +153,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9101',
   country_id: '226',
@@ -193,8 +163,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9102',
   country_id: '226',
@@ -205,8 +173,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9103',
   country_id: '226',
@@ -217,8 +183,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9104',
   country_id: '226',
@@ -229,8 +193,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9105',
   country_id: '226',
@@ -241,8 +203,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9106',
   country_id: '226',
@@ -253,8 +213,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9107',
   country_id: '226',
@@ -265,8 +223,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9108',
   country_id: '226',
@@ -277,8 +233,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9110',
   country_id: '226',
@@ -289,8 +243,6 @@ module.exports = () => [{
   courier: 'DTDC-DHL',
   timerange: '2-5',
   consignment_type: NONDOC,
-
-
 }, {
   id: '9112',
   country_id: '226',
@@ -302,6 +254,4 @@ module.exports = () => [{
   timerange: '2-5',
   consignment_type: NONDOC,
 
-
 }].map(x => ({ ...x, rate_type: FIXED }));
-
