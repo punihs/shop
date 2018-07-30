@@ -29,16 +29,17 @@ html(lang='en')
     link(href="#{s3BaseUrl}/css/algolia.css" rel="stylesheet")
     link(href="#{s3BaseUrl}/css/style.css", rel='stylesheet')
     link(href="#{s3BaseUrl}/css/dhl.css", rel='stylesheet')
+
+    //Owl Carousel
+    link(rel='stylesheet', href="#{s3BaseUrl}/css/owl.carousel.min.css")
+    // Magnific Popup
+    link(rel='stylesheet', href="#{s3BaseUrl}/css/magnific-popup.css")
     //script(src='/cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js')
     //script(src='/cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js')
     script(src="#{s3BaseUrl}/js/jquery.min.js")
     script(src='#{s3BaseUrl}/js/slider-js/jssor.js')
     script(src='#{s3BaseUrl}/js/slider-js/jssor.slider.js')
 
-    //Owl Carousel
-    link(rel='stylesheet', href="#{s3BaseUrl}/css/owl.carousel.min.css")
-    // Magnific Popup
-    link(rel='stylesheet', href="#{s3BaseUrl}/css/magnific-popup.css")
     block css_style
     link(rel='publisher', href='https://plus.google.com/101070316798366909776/')
     meta(name='google-play-app', content='app-id=com.shoppre.play')
@@ -185,9 +186,10 @@ html(lang='en')
 
     include ./partials/_footer
 
-    script(src="#{s3BaseUrl}/js/jquery.min.js")
     script(src="#{s3BaseUrl}/js/bootstrap.min.js")
     script(src="#{s3BaseUrl}/js/txtProgress.min.js")
+    script(src="#{s3BaseUrl}/js/owl.carousel.min.js")
+    script(src="#{s3BaseUrl}/js/jquery.magnific-popup.min.js")
     script(src='https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js')
     script(src='https://cdn.datatables.net/1.10.16/js/dataTables.jqueryui.min.js')
     script(src="#{s3BaseUrl}/js/validate.min.js")
@@ -263,7 +265,7 @@ html(lang='en')
       function storecustomer(url, coupon) {
         $.ajax({
           url: '/api/campaign/newaspaper',
-          type: "POST",
+          type: "GET",
           data: {
             url: url,
             coupon: coupon
@@ -283,7 +285,6 @@ html(lang='en')
       }
       }
       };
-      </body></html>
 
     // Start of HubSpot Embed Code
     script#hs-script-loader(type='text/javascript', async='', defer='', src='//js.hs-scripts.com/4601740.js')

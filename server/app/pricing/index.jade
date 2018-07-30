@@ -489,15 +489,15 @@ block content
               each review in reviews
                 .item
                   .col-sm-3.text-center
-                    if !review.Country.flag
-                       img.img-circle(src="#{s3BaseUrl}/img/flags/#{review.Country.flag}")
+                    //if !review.Country.flag
+                    //   img.img-circle(src="#{s3BaseUrl}/img/flags/#{review.Country.flag}")
                   .col-sm-9
                     p #{review.description}
                     span.name #{review.name}
-                    span #{review.Country.name}
+                    span #{review.Country}
                   .clearfix
             .text-center
-              a.btn.orange(href="#{s3BaseUrl}/reviews") View All Shoppre Reviews
+              a.btn.orange(href="/reviews") View All Shoppre Reviews
 
     section.signup_free
       .container
@@ -600,7 +600,7 @@ block content
             $('#ship_result').hide();
             jQuery.ajax({
               url: '/api/pricing/shipCalculate',
-              type: "POST",
+              type: "GET",
               data: {
                 _token: token,
                 country: country,
@@ -674,7 +674,7 @@ block content
             $("#quote_load").show();
             jQuery.ajax({
               url: '/qoute/submit',
-              type: "POST",
+              type: "GET",
               data: $("#form_quote").serialize(),
               success: function (data) {
                 $('#form_quote')[0].reset();

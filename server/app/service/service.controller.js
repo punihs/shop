@@ -1,8 +1,8 @@
-const { URLS_API, s3BaseUrl, URLS_MYACCOUNT } = require('../../config/environment');
+const { URLS_API, URLS_MYACCOUNT } = require('../../config/environment');
 
 exports.index = (req, res) => {
   res.render('service/index', {
-    s3BaseUrl,
+    s3BaseUrl: req.s3BaseUrl,
     URLS_API,
     URLS_MYACCOUNT,
     title: 'Shoppre Services | Personal Shopper | Shop &amp; Ship Worldwide',

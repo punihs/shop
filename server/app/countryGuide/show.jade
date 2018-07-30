@@ -5,7 +5,6 @@ block head
   meta(name="keywords" content="#{meta_keywords}")
 
 block content
-  .body
     //if !countryGuide.banner_img
     //  section.cguide_head(style="background-image: url(/cdn/country/guide/banner')/#{countryGuide.banner_img});")
     //else
@@ -31,450 +30,447 @@ block content
       .container
         ul
           li
-            img(src="/img/cguide_ico1.png")
+            img(src="#{URLS_WWW}/cdn/img/cguide_ico1.png")
             strong Shipping Costs
           li
-            img(src="/img/cguide_ico2.png")
+            img(src="#{URLS_WWW}/cdn/img/cguide_ico2.png")
             strong Duties & Taxes
           li
-            img(src="/img/cguide_ico3.png")
+            img(src="#{URLS_WWW}/cdn/img/cguide_ico3.png")
             strong Prohibited Items
           li
-            img(src="/img/cguide_ico4.png")
+            img(src="#{URLS_WWW}/cdn/img/cguide_ico4.png")
             strong Transit Times
+      // each g in countryGuide
+      //   p !{g.dutytax}
 
-    if !reviews
-      section.testimonails.cguide_reviews
-        .container
-          .row
-            .col-sm-12
-              h2 What our members in #{country.name}.toUpperCase() are saying?
-              .testimons.owl-carousel
-                 -for review in reviews
-                   .item
-                     .col-sm-3.text-center
-                       if !review.country.flag
-                         img.img-circle(src="#{s3BaseUrl}/img/#{review.country.flag}")
-
-                     .col-sm-9
-                       p #{review.review}
-                       span.name #{$review.person}
-                       span #{review.country.name}
-                     .clearfix
-
-              .text-center
-                a.btn(href="/reviews") View All Shoppre Reviews
+      if(reviews)
+        section.testimonails.cguide_reviews
+          .container
+            .row
+              .col-sm-12
+                h2 What our members in #{country.name} are saying?
+                .testimons.owl-carousel.owl-loaded.owl-drag
+                  each review in reviews
+                    .item
+                    .col-sm-3.text-center
+                      if !country.flag||[]
+                        //img.img-circle(src="/cdn/country/#{country.flag}")
+                    .col-sm-9
+                      p #{review.description}
+                      span.name #{review.name}
+                      span.name #{country.name}
+                    .clearfix
+                .text-center
+                   a.btn(href="#{URLS_WWW}/reviews") View All Shoppre Reviews
 
     section.shipping-calculator
-      .container
-        .col-md-7
-          .calculator.block
-            h3.text-red INTERNATIONAL SHIPPING CALCULATOR
-            h4 (From your Shoppre Locker in Bengaluru to your doorstep Abroad)
-            span#calc_error
-              | Sorry! No delivery options available in requested country. Please contact our support team for assistance.
-            form#shipping.calc-form
-              .form-group
-                label.col-sm-12 Where  do you want to send your package?
-                .col-sm-12
-                  select.form-control.select2(name='country')
-                    option(value='') Select Country
-                      each calc_country in countries
-                        option(value='#{calc_country.id}') #{calc_country.name}
-                        //option(value='#{calc_country.id == country.id ? "selected" : ""}') #{calc_country.name}
-                        //option(value='#{calc_country.id} #{calc_country.id === country.id }' ? country.id : 'selected') #{calc_country.name}
-                        //<option value="{{$calc_country->id}}" {{$calc_country->id == $country->id ? 'selected' : ''}}>{{$calc_country->name}}</option>
-
-                .clearfix
-              .form-group
-                label.col-sm-5.control-label(style='top: 8px;') Package Type:
-                .col-sm-7
-                  .radio
-                    label.checkbox-inline
-                      input(type='radio', name='type', value='nondoc', checked='')
-                      | Non Document
-                  .radio
-                    label.checkbox-inline
-                      input(type='radio', name='type', value='doc')
-                      | Document
-                .clearfix
-              .form-group
-                label.col-sm-12.control-label How much does your package weigh?
-                .col-sm-6
-                  input.form-control(type='text', name='weight', placeholder='Enter Weight')
-                .col-sm-6
-                  .radio
-                    label.checkbox-inline
-                      input(type='radio', name='unit', value='kg', checked='')
-                      | Kilograms
-                  .radio
-                    label.checkbox-inline
-                      input(type='radio', name='unit', value='lbs')
-                      | Pounds
-                .clearfix
-              .form-group
-                label.col-sm-8.control-label(style='top: 8px;') What are the dimensions of your package? (Optional)
-                .col-sm-4
-                  .radio
-                    label.checkbox-inline
-                      input(type='radio', name='scale', value='cm', checked='')
-                      | cm
-                  .radio
-                    label.checkbox-inline
-                      input(type='radio', name='scale', value='in')
-                      | in
-                .clearfix
-              .form-group.smallboxs
-                .col-sm-3
-                  input.form-control(type='text', name='length')
-                  strong Length
-                .col-sm-3
-                  input.form-control(type='text', name='width')
-                  strong Width
-                .col-sm-3
-                  input.form-control(type='text', name='height')
-                  strong Height
-                .clearfix
-              .clearfix
-              .col-sm-12
-                button.btn.btn-block.btn-shoppre(type='submit') GET UPFRONT SHIPPING RATES
-              .clearfix
-            #ship_result.calc-result(style='position: relative;box-shadow: none;')
-              h4.text-red ESTIMATED SHIPPING COST*
-              p.info
-                | Best carrier will be automatically chosen according to your country and weight of shipment. We use trusted courier services like DHL, FedEx and DTDC.
-              .result.table-responsive
-                table.table.table-bordered
-                  tr
-                    td.bg-white
-                      span#ship_time
-                      |  Business Days
-                      span.text-red **
-                    td
-                      i.fa.fa-rupee
-                      span#ship_cost
-                    td
-                      span.striked
-                        i.fa.fa-rupee
-                        span#ship_oldcost
-                    td.discount
-                      span#ship_disc
-                      | % OFF
-              ul.points
-                li
-                  span.text-red *
-                  |  The chargeable weight is always the greater of the two: Volumetric or the Actual weight.
-                li
-                  span.text-red *
-                  |  The rates displayed are INCLUSIVE of the fuel surcharge and taxes within India.
-                li
-                  span.text-red *
-                  |  You may need to pay duties or tax when your shipment arrives, as per the import law of the receiving country.
-                li
-                  span.text-red *
-                  |  Excludes oversized and palletized shipments, and special products (liquids, homemade food, etc.)
-                li
-                  span.text-red **
-                  |  After dispatch from Shoppre facility. Does not apply to ship requests made after 3pm IST on Saturdays, or on holidays. Shipments that may require additional time include those containing items under review or hazardous materials, oversized packages or where additional export documentation is required.
-            #calc_load
-        .col-md-5
-          .xchange_rate.block
-            h3 Exchange Rate Calculator
-            span#calc_error
-            form#xchange_calc
-              .form-group
-                p#xchange_display
-                  | 1 INR = X
-                  | #{xchange_rate}
-                  | #{currency}
-              .form-group
-                .col-md-2
-                  input#rate_from.form-control.ratebox(type='text', value='1')
-                .col-md-10
-                  select#country_from.form-control.select2
-                    option(value='') Select Country
-                     each xchange_from in countries
-                       option(value='#{[99].includes(xchange_from.id)? "selected" : ""}') #{xchange_from.name}
-                       //option(value='#{xchange_from.id}'== '99' ? 'selected' : '')#{xchange_from.name}
-
-                 .clearfix
-              .form-group
-                .col-md-2
-                   input#rate_to.form-control.ratebox(type='text', value='#{xchangeRate}')
-                 .col-md-10
-                   select#country_to.form-control.select2
+       .container
+         .col-md-7
+           .calculator.block
+             h3.text-red INTERNATIONAL SHIPPING CALCULATOR
+             h4 (From your Shoppre Locker in Bengaluru to your doorstep Abroad)
+             span#calc_error
+               | Sorry! No delivery options available in requested country. Please contact our support team for assistance.
+             form#shipping.calc-form
+               .form-group
+                 label.col-sm-12 Where  do you want to send your package?
+                 .col-sm-12
+                   select.form-control.select2(name='country')
                      option(value='') Select Country
-                     each xchange_from in countries
-                       option(value='#{[99].includes(xchange_from.id)? "selected" : ""}') #{xchange_from.name}
-                       //option(value='#{xchange_to.id}'== '#{country.id}' ? 'selected' : '')#{xchange_to.name}
-
+                       each calc_country in countries
+                         option(value='#{calc_country.id}') #{calc_country.name}
                  .clearfix
-             strong Country Name : #{country.name}
-             strong Capital : #{country.capital_city}
-             input#rate_input(type='hidden', value='#{xchangeRate}')
+               .form-group
+                 label.col-sm-5.control-label(style='top: 8px;') Package Type:
+                 .col-sm-7
+                   .radio
+                     label.checkbox-inline
+                       input(type='radio', name='type', value='nondoc', checked='')
+                       | Non Document
+                   .radio
+                     label.checkbox-inline
+                       input(type='radio', name='type', value='doc')
+                       | Document
+                 .clearfix
+               .form-group
+                 label.col-sm-12.control-label How much does your package weigh?
+                 .col-sm-6
+                   input.form-control(type='text', name='weight', placeholder='Enter Weight')
+                 .col-sm-6
+                   .radio
+                     label.checkbox-inline
+                       input(type='radio', name='unit', value='kg', checked='')
+                       | Kilograms
+                   .radio
+                     label.checkbox-inline
+                       input(type='radio', name='unit', value='lbs')
+                       | Pounds
+                 .clearfix
+               .form-group
+                 label.col-sm-8.control-label(style='top: 8px;') What are the dimensions of your package? (Optional)
+                 .col-sm-4
+                   .radio
+                     label.checkbox-inline
+                       input(type='radio', name='scale', value='cm', checked='')
+                       | cm
+                   .radio
+                     label.checkbox-inline
+                       input(type='radio', name='scale', value='in')
+                       | in
+                 .clearfix
+               .form-group.smallboxs
+                 .col-sm-3
+                   input.form-control(type='text', name='length')
+                   strong Length
+                 .col-sm-3
+                   input.form-control(type='text', name='width')
+                   strong Width
+                 .col-sm-3
+                   input.form-control(type='text', name='height')
+                   strong Height
+                 .clearfix
+               .clearfix
+               .col-sm-12
+                 button.btn.btn-block.btn-shoppre(type='submit') GET UPFRONT SHIPPING RATES
+               .clearfix
+             #ship_result.calc-result(style='position: relative;box-shadow: none;')
+               h4.text-red ESTIMATED SHIPPING COST*
+               p.info
+                 | Best carrier will be automatically chosen according to your country and weight of shipment. We use trusted courier services like DHL, FedEx and DTDC.
+               .result.table-responsive
+                 table.table.table-bordered
+                   tr
+                     td.bg-white
+                       span#ship_time
+                       |  Business Days
+                       span.text-red **
+                     td
+                       i.fa.fa-rupee
+                       span#ship_cost
+                     td
+                       span.striked
+                         i.fa.fa-rupee
+                         span#ship_oldcost
+                     td.discount
+                       span#ship_disc
+                       | % OFF
+               ul.points
+                 li
+                   span.text-red *
+                   |  The chargeable weight is always the greater of the two: Volumetric or the Actual weight.
+                 li
+                   span.text-red *
+                   |  The rates displayed are INCLUSIVE of the fuel surcharge and taxes within India.
+                 li
+                   span.text-red *
+                   |  You may need to pay duties or tax when your shipment arrives, as per the import law of the receiving country.
+                 li
+                   span.text-red *
+                   |  Excludes oversized and palletized shipments, and special products (liquids, homemade food, etc.)
+                 li
+                   span.text-red **
+                   |  After dispatch from Shoppre facility. Does not apply to ship requests made after 3pm IST on Saturdays, or on holidays. Shipments that may require additional time include those containing items under review or hazardous materials, oversized packages or where additional export documentation is required.
              #calc_load
+         .col-md-5
+           .xchange_rate.block
+             h3 Exchange Rate Calculator
+             span#calc_error
+             form#xchange_calc
+               .form-group
+                 p#xchange_display
+                   | 1 INR = X
+                   | #{xchange_rate}
+                   | #{currency}
+               .form-group
+                 .col-md-2
+                   input#rate_from.form-control.ratebox(type='text', value='1')
+                 .col-md-10
+                   select#country_from.form-control.select2
+                     option(value='') Select Country
+                      each xchange_from in countries
+                        option(value='#{[99].includes(xchange_from.id)? "selected" : ""}') #{xchange_from.name}
+
+                  .clearfix
+               .form-group
+                 .col-md-2
+                    input#rate_to.form-control.ratebox(type='text', value='#{xchangeRate}')
+                  .col-md-10
+                    select#country_to.form-control.select2
+                      option(value='') Select Country
+                      each xchange_from in countries
+                        option(value='#{xchange_from.id}') #{xchange_from.name}
+
+
+                  .clearfix
+              strong Country Name : #{country.name}
+              strong Capital : #{country.capital_city}
+              input#rate_input(type='hidden', value='#{xchangeRate}')
+              #calc_load
+          .clearfix
+
+     section.cguide_blocks
+       .container
+         each cguide in countryGuide
+           if (cguide.dutytax)
+             article
+               h2
+                 img(src="#{URLS_WWW}/cdn/img/cguide_box1.png")
+                 |  Duties and Taxes
+               .col-md-8
+                 | !{cguide.dutytax}
+
+               if (cguide.dutytax_meta)
+                 .col-md-4
+                   aside
+                     h3 The Shoppre Advantage
+                     p #{cguide.dutytax_meta}
+               .clearfix
+
+           if (cguide.transits)
+             article
+               h2
+                 img(src="#{URLS_WWW}/cdn/img/cguide_box2.png")
+                 |  PACKAGE TRANSIT TIMES
+               .col-md-8
+                 | !{cguide.transits}
+
+               if !cguide.transits_meta
+                 .col-md-4
+                   aside
+                     h3 The Shoppre Advantage
+                     p #{cguide.transits_meta}
+               .clearfix
+
+           if (cguide.forbidden)
+             article
+               h2
+                 img(src="#{URLS_WWW}/cdn/img/cguide_box3.png")
+                 |  PRODUCTS YOU CAN'T SHIP INTERNATIONALY TO #{name}
+               .col-md-8
+                 | !{cguide.forbidden}
+
+               if (cguide.forbidden_meta)
+                 .col-md-4
+                   aside
+                     h3 The Shoppre Advantage
+                     p #{cguide.forbidden_meta}
+               .clearfix
+
+     section.cguide_video.violet-grade
+       each cguide in countryGuide
+         aside
+           if !cguide && !cguide.video_url
+             a.popup-youtube(href='#{cguide.video_url}') Watch Video
+           else
+             a.popup-youtube(href='https://www.youtube.com/watch?v=Zf77ljCx9Ik') Watch Video
+
+         article
+           if !cguide && !cguide.video_head
+               h3 #{cguide.video_head}
+           else
+               h3 Partner up with Shoppre to make your Shopping and Shipping Experience SEAMLESS!
+
+           if !cguide && cguide.video_desc
+               p #{cguide.video_desc}
+           else
+               p Shopping at any  Indian online store is easy with help from Shoppre. Become a member,
+               |receive a Shoppre address with a Personal Locker and ship items from Indian sellers to our
+               |  distribution center. Once we receive your purchase, we will help you export everything right to your doorstep.
          .clearfix
 
-    section.cguide_blocks
-      .container
-        if !countryGuide.dutytax
-          article
-            h2
-              img(src="/img/cguide_box1.png")
-              |  Duties and Taxes
-            .col-md-8
-              | !{countryGuide.dutytax}
+     section.cguide_stores
+       .container
+         .col-md-8.col-md-offset-2.text-center
+           h2 Which Indian Stores can I buy from?
+           p
+             | As a Shoppre member, you can shop ANY Indian Online Store (Websites or even Social Media Business Pages) to find great sales on your favorite products -- makeup, designer clothes, ethnic wear, children's clothing, baby goods, home goods, electronics, men’s kurtas, shoes and more. With Shoppre, you can buy almost anything you desire.
+           a.btn.btn-shoppre(href="#{URLS_WWW}/browse-categories") Brands You Love
+           p
+             | Shoppre also offers a Personal Shopping Service where
+             a(href="#{URLS_MYACCOUNT}/personal-shopper") we can buy items on your behalf
+             | . This comes in handy if an Indian website is not accepting your International credit card.
 
-            if !countryGuide.dutytax_meta
-              .col-md-4
-                aside
-                  h3 The Shoppre Advantage
-                  p #{countryGuide.dutytax_meta}
-            .clearfix
+     section.cguide_warning
+       .container
+         .col-md-8.col-md-offset-2
+           h2 Items that Cannot be Exported From India
+           p
+             | India has laws on what may not leave its borders. The following is a partial list of items Shoppre is legally unable to ship from its Bengaluru facility:
+           ul
+             li Medical items
+             li Products made in Iran
+             li Military equipment
+             li Mobile telephones
+             li Knives
+             li Jewelry
+             li Infectious substances
+             li Magnetized material
+           ul
+             li Checks, blank stock
+             li Blank money orders
+             li Nuclear material
+             li Political material
+             li Tobacco
+             li Devices for smoking opium, hash
+             li Pornography
+           .clearfix
+           p
+             a(href="#{URLS_WWW}/contact") CONTACT US
+             |  if you have any doubts regarding what you can ship to your country. Our team of Logistics experts will get back to you as soon as possible
 
-        if !countryGuide.transits
-          article
-            h2
-              img(src="/img/cguide_box2.png")
-              |  PACKAGE TRANSIT TIMES
-            .col-md-8
-              | !{countryGuide.transits}
+     section.signup_free.violet-grade
+       .container
+         .row
+           .col-md-12
+             h3
+               | So what are you waiting for? Shopp
+               span.text-orange re
+               | ! Open your big box of happiness today!
+             p Simply login to get your Personal Indian Shipping Address immediately!
+             a.btn.btn-shoppre(href="#{URLS_WWW}/register") sign up for free
 
-            if !countryGuide.transits_meta
-              .col-md-4
-                aside
-                  h3 The Shoppre Advantage
-                  p #{countryGuide.transits_meta}
-            .clearfix
 
-        if !countryGuide.forbidden
-          article
-            h2
-              img(src="/img/cguide_box3.png")
-              |  PRODUCTS YOU CAN'T SHIP INTERNATIONALY TO #{name}
-            .col-md-8
-              !{countryGuide.forbidden}
+     script(src="#{URLS_WWW}/cdn/js/jquery.min.js")
+     script(type='text/javascript').
+       $(document).ready(function () {
+         $("#shipping").validate({
+           rules:
+             {
+               country: {required: true},
+               weight: {required: true},
+               unit: {required: true},
+             },
+           messages:
+             {
+               country: {required: "Please select country"},
+               weight: {required: "Please enter weight to calculate."},
+               unit: {required: "Please select unit of weight."},
+             },
+           submitHandler: function (form) {
+             var country = $("select[name='country']").val();
+             var weight = $("input[name='weight']").val();
+             var unit = $("input[name='unit']:checked").val();
+             var type = $("input[name='type']:checked").val();
+             var length = $("input[name='length']").val();
+             var width = $("input[name='width']").val();
+             var height = $("input[name='height']").val();
+             var token = $('input[name=_token]').val();
+             $("#calc_load").show();
+             $('#calc_error').hide();
+             $('#ship_result').hide();
+             jQuery.ajax({
+               url: '/api/pricing/shipCalculate',
+               type: "GET",
+               data: {
+                 _token: token,
+                 country: country,
+                 weight: weight,
+                 unit: unit,
+                 type: type,
+                 length: length,
+                 width: width,
+                 height: height
+               },
+               success: function (data) {
+                 $("#calc_load").hide();
+                 if (data.error == "1") {
+                   $('#calc_error').css('display', 'block');
+                 } else {
+                   $('#ship_oldcost').text(data.amount);
+                   var disamount = (data.discount / 100) * data.amount;
+                   var finalcost = Math.round(data.amount - disamount).toFixed(2);
+                   $('#ship_cost').text(finalcost);
+                   $('#ship_time').text(data.time);
+                   $('#ship_disc').text(data.discount);
+                   $('#ship_result').slideDown();
+                 }
+               }
+             });
+             return false;
+           },
+         });
+       });
 
-            if !countryGuide.forbidden_meta
-              .col-md-4
-                aside
-                  h3 The Shoppre Advantage
-                  p #{countryGuide.forbidden_meta}
-            .clearfix
+     script(type='text/javascript').
+       $(document).ready(function () {
+         $('.testimons').owlCarousel({
+           loop: true,
+           margin: 10,
+           responsiveClass: true,
+           navText: '',
+           autoplay: true,
+           autoplayTimeout: 8500,
+           responsive: {
+             0: {
+               items: 1,
+               nav: true
+             },
+             600: {
+               items: 1,
+               nav: true
+             },
+             1000: {
+               items: 1,
+               nav: true,
+               loop: true
+             }
+           }
+         });
+       });
 
-    section.cguide_video.violet-grade
-      aside
-        if !countryGuide && !countryGuide.video_url
-          a.popup-youtube(href='#{countryGuide.video_url}') Watch Video
-        else
-          a.popup-youtube(href='https://www.youtube.com/watch?v=Zf77ljCx9Ik') Watch Video
+     script(type='text/javascript').
+       $(document).ready(function () {
+         $(".select2").select2();
+       });
+       $("#select_iso").change(function () {
+         if ($(this).val().length != 0) {
+           window.location = "/country/" + $(this).val();
+         }
+       });
+       $("#xchange_calc select").change(function () {
+         var country_from = $("#country_from").val();
+         var country_to = $("#country_to").val();
+         var token = $('input[name=_token]').val();
+         $(".xchange_rate #calc_load").show();
+         jQuery.ajax({
+           url: '/calculate/exchange-rate',
+           type: "GET",
+           data: {_token: token, country_from: country_from, country_to: country_to},
+           success: function (data) {
+             $(".xchange_rate #calc_load").hide();
+             if (data.error) {
+               $('.xchange_rate #calc_error').css('display', 'block').text('We can not process this request! Try again later.');
+             } else {
+               $(".xchange_rate #xchange_display").html("1 " + data.from_curr + " = " + data.rate + " " + data.to_curr);
+               $(".xchange_rate #rate_input").val(data.rate);
+               $(".xchange_rate #rate_from").val(1);
+               $(".xchange_rate #rate_to").val(data.rate);
+             }
+           }
+         });
+       });
+       $(document).on('keyup', '.xchange_rate #rate_from', function () {
+         var rate_from = $(".xchange_rate #rate_from").val();
+         var rate_input = $(".xchange_rate #rate_input").val();
+         var rate_to = parseFloat(rate_from) * parseFloat(rate_input);
+         $(".xchange_rate #rate_to").val(rate_to.toFixed(3));
+       });
+       $(document).on('keyup', '.xchange_rate #rate_to', function () {
+         var rate_to = $(".xchange_rate #rate_to").val();
+         var rate_input = $(".xchange_rate #rate_input").val();
+         var rate_from = parseFloat(rate_to) / parseFloat(rate_input);
+         $(".xchange_rate #rate_from").val(rate_from.toFixed(3));
+       });
 
-      article
-        if !countryGuide && !countryGuide.video_head
-            h3 #{countryGuide.video_head}
-        else
-            h3 Partner up with Shoppre to make your Shopping and Shipping Experience SEAMLESS!
-
-        if !countryGuide && countryGuide.video_desc
-            p #{countryGuide.video_desc}
-        else
-            p Shopping at any  Indian online store is easy with help from Shoppre. Become a member,
-            |receive a Shoppre address with a Personal Locker and ship items from Indian sellers to our
-            |  distribution center. Once we receive your purchase, we will help you export everything right to your doorstep.
-      .clearfix
-
-    section.cguide_stores
-      .container
-        .col-md-8.col-md-offset-2.text-center
-          h2 Which Indian Stores can I buy from?
-          p
-            | As a Shoppre member, you can shop ANY Indian Online Store (Websites or even Social Media Business Pages) to find great sales on your favorite products -- makeup, designer clothes, ethnic wear, children's clothing, baby goods, home goods, electronics, men’s kurtas, shoes and more. With Shoppre, you can buy almost anything you desire.
-          a.btn.btn-shoppre(href="/browse-categories") Brands You Love
-          p
-            | Shoppre also offers a Personal Shopping Service where
-            a(href="#{URLS_MYACCOUNT}/personal-shopper") we can buy items on your behalf
-            | . This comes in handy if an Indian website is not accepting your International credit card.
-
-    section.cguide_warning
-      .container
-        .col-md-8.col-md-offset-2
-          h2 Items that Cannot be Exported From India
-          p
-            | India has laws on what may not leave its borders. The following is a partial list of items Shoppre is legally unable to ship from its Bengaluru facility:
-          ul
-            li Medical items
-            li Products made in Iran
-            li Military equipment
-            li Mobile telephones
-            li Knives
-            li Jewelry
-            li Infectious substances
-            li Magnetized material
-          ul
-            li Checks, blank stock
-            li Blank money orders
-            li Nuclear material
-            li Political material
-            li Tobacco
-            li Devices for smoking opium, hash
-            li Pornography
-          .clearfix
-          p
-            a(href="/contact") CONTACT US
-            |  if you have any doubts regarding what you can ship to your country. Our team of Logistics experts will get back to you as soon as possible
-
-    section.signup_free.violet-grade
-      .container
-        .row
-          .col-md-12
-            h3
-              | So what are you waiting for? Shopp
-              span.text-orange re
-              | ! Open your big box of happiness today!
-            p Simply login to get your Personal Indian Shipping Address immediately!
-            a.btn.btn-shoppre(href="/register") sign up for free
-
-    block js_script
-    script(src="#{s3BaseUrl}/js/jquery.min.js")
-    script(type='text/javascript').
-      $(document).ready(function () {
-        $("#shipping").validate({
-          rules:
-            {
-              country: {required: true},
-              weight: {required: true},
-              unit: {required: true},
-            },
-          messages:
-            {
-              country: {required: "Please select country"},
-              weight: {required: "Please enter weight to calculate."},
-              unit: {required: "Please select unit of weight."},
-            },
-          submitHandler: function (form) {
-            var country = $("select[name='country']").val();
-            var weight = $("input[name='weight']").val();
-            var unit = $("input[name='unit']:checked").val();
-            var type = $("input[name='type']:checked").val();
-            var length = $("input[name='length']").val();
-            var width = $("input[name='width']").val();
-            var height = $("input[name='height']").val();
-            var token = $('input[name=_token]').val();
-            $("#calc_load").show();
-            $('#calc_error').hide();
-            $('#ship_result').hide();
-            jQuery.ajax({
-              url: '/api/pricing/shipCalculate',
-              type: "POST",
-              data: {
-                _token: token,
-                country: country,
-                weight: weight,
-                unit: unit,
-                type: type,
-                length: length,
-                width: width,
-                height: height
-              },
-              success: function (data) {
-                $("#calc_load").hide();
-                if (data.error == "1") {
-                  $('#calc_error').css('display', 'block');
-                } else {
-                  $('#ship_oldcost').text(data.amount);
-                  var disamount = (data.discount / 100) * data.amount;
-                  var finalcost = Math.round(data.amount - disamount).toFixed(2);
-                  $('#ship_cost').text(finalcost);
-                  $('#ship_time').text(data.time);
-                  $('#ship_disc').text(data.discount);
-                  $('#ship_result').slideDown();
-                }
-              }
-            });
-            return false;
-          },
-        });
-      });
-
-    script(type='text/javascript').
-      $(document).ready(function () {
-        $('.testimons').owlCarousel({
-          loop: true,
-          margin: 10,
-          responsiveClass: true,
-          navText: '',
-          autoplay: true,
-          autoplayTimeout: 8500,
-          responsive: {
-            0: {
-              items: 1,
-              nav: true
-            },
-            600: {
-              items: 1,
-              nav: true
-            },
-            1000: {
-              items: 1,
-              nav: true,
-              loop: true
-            }
-          }
-        });
-      });
-
-    script(type='text/javascript').
-      $(document).ready(function () {
-        $(".select2").select2();
-      });
-      $("#select_iso").change(function () {
-        if ($(this).val().length != 0) {
-          window.location = "/country/" + $(this).val();
-        }
-      });
-      $("#xchange_calc select").change(function () {
-        var country_from = $("#country_from").val();
-        var country_to = $("#country_to").val();
-        var token = $('input[name=_token]').val();
-        $(".xchange_rate #calc_load").show();
-        jQuery.ajax({
-          url: '/calculate/exchange-rate',
-          type: "POST",
-          data: {_token: token, country_from: country_from, country_to: country_to},
-          success: function (data) {
-            $(".xchange_rate #calc_load").hide();
-            if (data.error) {
-              $('.xchange_rate #calc_error').css('display', 'block').text('We can not process this request! Try again later.');
-            } else {
-              $(".xchange_rate #xchange_display").html("1 " + data.from_curr + " = " + data.rate + " " + data.to_curr);
-              $(".xchange_rate #rate_input").val(data.rate);
-              $(".xchange_rate #rate_from").val(1);
-              $(".xchange_rate #rate_to").val(data.rate);
-            }
-          }
-        });
-      });
-      $(document).on('keyup', '.xchange_rate #rate_from', function () {
-        var rate_from = $(".xchange_rate #rate_from").val();
-        var rate_input = $(".xchange_rate #rate_input").val();
-        var rate_to = parseFloat(rate_from) * parseFloat(rate_input);
-        $(".xchange_rate #rate_to").val(rate_to.toFixed(3));
-      });
-      $(document).on('keyup', '.xchange_rate #rate_to', function () {
-        var rate_to = $(".xchange_rate #rate_to").val();
-        var rate_input = $(".xchange_rate #rate_input").val();
-        var rate_from = parseFloat(rate_to) / parseFloat(rate_input);
-        $(".xchange_rate #rate_from").val(rate_from.toFixed(3));
-      });
-
-    script(type='text/javascript').
-      $(document).ready(function () {
-        $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
-          disableOn: 700,
-          type: 'iframe',
-          mainClass: 'mfp-fade',
-          removalDelay: 160,
-          preloader: false,
-          fixedContentPos: false
-        });
-      });
+     script(type='text/javascript').
+       $(document).ready(function () {
+         $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
+           disableOn: 700,
+           type: 'iframe',
+           mainClass: 'mfp-fade',
+           removalDelay: 160,
+           preloader: false,
+           fixedContentPos: false
+         });
+       });

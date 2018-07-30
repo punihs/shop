@@ -1,6 +1,6 @@
 
 const rp = require('request-promise');
-const { URLS_API, s3BaseUrl, URLS_MYACCOUNT } = require('../../config/environment');
+const { URLS_API, URLS_MYACCOUNT } = require('../../config/environment');
 
 exports.index = (req, res, next) => Promise
   .all([
@@ -12,7 +12,7 @@ exports.index = (req, res, next) => Promise
     // });
     res.render('faq/index', Object
       .assign(faq, {
-        s3BaseUrl,
+        s3BaseUrl: req.s3BaseUrl,
         URLS_API,
         URLS_MYACCOUNT,
         title: 'FAQ | Shoppre - International Shipping Partner',

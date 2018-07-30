@@ -9,6 +9,7 @@ exports.index = (req, res, next) => Promise
   .then(([countries]) =>
     res
       .render('country/index', countries, {
+        s3BaseUrl: req.s3BaseUrl,
         title: 'Country title',
         meta_description: 'Country_metaDesctription',
         meta_title: 'Country_metaTitle',
@@ -23,6 +24,7 @@ exports.show = (req, res, next) => Promise
     res
       .render('country/show', Object
         .assign(countries, {
+          s3BaseUrl: req.s3BaseUrl,
           logo: '/img/stores.png',
           title: 'Country title',
           meta_description: 'Country_metaDesctription',

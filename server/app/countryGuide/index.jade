@@ -53,6 +53,6 @@ block content
     });
     $("#select_iso").change(function () {
       if ($(this).val().length != 0) {
-        window.location = "/country-guide/" + $(this).val();
+        window.location = "#{URLS_WWW}/country-guide/" + $(this).val();
       }
     });

@@ -1,6 +1,6 @@
 const rp = require('request-promise');
 const { URLS_API } = require('../../config/environment');
-const { URLS_MYACCOUNT, s3BaseUrl } = require('../../config/environment');
+const { URLS_MYACCOUNT } = require('../../config/environment');
 
 
 exports.index = (req, res, next) => Promise
@@ -16,7 +16,7 @@ exports.index = (req, res, next) => Promise
       countries,
       reviews,
       URLS_MYACCOUNT,
-      s3BaseUrl,
+      s3BaseUrl: req.s3BaseUrl,
       states: [
         {
           state: 'AP',

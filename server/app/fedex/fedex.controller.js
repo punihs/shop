@@ -12,6 +12,7 @@ exports.index = (req, res, next) => Promise
     res
       .render('dhl/index', Object
         .assign(shipments, {
+          s3BaseUrl: req.s3BaseUrl,
           title: 'International Shipping from India, Flipkart International Delivery',
           meta_description: 'Meta Title International Shipping from India, Flipkart International Delivery',
           meta_title: 'Meta Description International Shipping from India, Flipkart International Delivery',
@@ -27,6 +28,7 @@ exports.show = (req, res, next) => Promise
     res
       .render('shippingPartner/show', Object
         .assign(shippingPartner, {
+          s3BaseUrl: req.s3BaseUrl,
           seo,
           title: 'International Shipping from India, Flipkart International Delivery',
           meta_description: 'Meta Title International Shipping from India, Flipkart International Delivery',

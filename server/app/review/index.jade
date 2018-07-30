@@ -1,12 +1,11 @@
 extends ../layout
+block head
+  title #{title}
+  meta(name='description', content= '#{meta_description}')
+  meta(name="keywords" content="#{meta_keywords}")
+  link(href="#{s3BaseUrl}/css/select2.min.css", rel='stylesheet')
+  link(href="#{s3BaseUrl}/css/star-rating.min.css", rel='stylesheet')
 block content
-  head
-    title '#{title}'
-    meta(name='description', content= '#{meta_description}')
-    meta(property='og:title', content='#{meta_title}')
-    link(href="/app/css/select2.min.css", rel='stylesheet')
-    link(href="/app/css/star-rating.min.css", rel='stylesheet')
-    //link(href="/app/fonts", rel='stylesheet')
   .body
     section.reviews
       .container
