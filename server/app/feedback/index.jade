@@ -1,11 +1,13 @@
 extends ../layout
+block head
+  title #{title}
+  meta(name='description', content= '#{meta_description}')
+  meta(name="keywords" content="#{meta_keywords}")
+block css_style
+  link(href="#{s3BaseUrl}/css/select2.min.css", rel='stylesheet')
+  link(href="#{s3BaseUrl}/css/star-rating.min.css", rel='stylesheet')
+
 block content
-  head
-    title '#{title}'
-    meta(name='description', content= '#{meta_disctription}')
-    meta(property='og:title', content= '#{meta_title}')
-    link(href="/app/css/select2.min.css", rel='stylesheet')
-    link(href="/app/css/star-rating.min.css", rel='stylesheet')
   .body
     section.timeline
       br
@@ -18,7 +20,8 @@ block content
           h1 Feedback Form
       br
       .container(style='background-color: whitesmoke')
-        form.form-horizontal(method='post', action="{{route('feedback.submit')}}")
+        //form.form-horizontal(method='post', action="{{route('feedback.submit')}}")
+        form.form-horizontal(method='post', action="submit")
           .feedback-container
             .row
               .col-md-8.col-sm-offset-2
@@ -103,6 +106,30 @@ block content
     script(src="#{s3BaseUrl}/js/jquery.min.js")
     script(src="#{s3BaseUrl}/js/star-rating.min.js", type='text/javascript')
     script(src="#{s3BaseUrl}/js/select2.min.js")
+    script.
+      $(document).ready(function () {
+        $('#userForm').submit(function () {
+          // show that something is loading
+          $('#response').html("<b>Loading response...</b>");
+          // Call ajax for pass data to other place
+          $.ajax({
+            type: 'POST',
+            url: 'get_information.php',
+            data: $(this).serialize() // getting filed value in serialize form
+          })
+            .done(function (data) { // if getting done then call.
+              // show the response
+              $('#response').html(data);
+            })
+            .fail(function () { // if fail then getting message
+              // just in case posting your form failed
+              alert("Posting failed.");
+            });
+          // to prevent refreshing the whole page page
+          return false;
+        });
+      });
+
     script.
       $(".rated").rating({
         'size': 'xs',

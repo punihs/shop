@@ -1,4 +1,4 @@
-const { Review, Country } = require('./../../conn/sqldb');
+const { Review, Country, Source } = require('./../../conn/sqldb');
 
 exports.index = (req, res, next) => {
   const options = {
@@ -6,6 +6,10 @@ exports.index = (req, res, next) => {
     include: [{
       model: Country,
       attributes: ['name', 'flag'],
+    },
+    {
+      model: Source,
+      attributes: ['name'],
     }],
     limit: Number(req.query.limit) || 20,
     offset: Number(req.query.offset) || 0,

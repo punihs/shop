@@ -4,6 +4,11 @@ block head
   meta(name='description', content= '#{meta_description}')
   meta(name="keywords" content="#{meta_keywords}")
 block css_style
+  //Owl Carousel
+  link(rel='stylesheet', href="#{s3BaseUrl}/css/owl.carousel.min.css")
+  // Magnific Popup
+  link(rel='stylesheet', href="#{s3BaseUrl}/css/magnific-popup.css")
+
   meta(property='og:title', content='Shop and Ship with ShoppRe | International Courier & Consolidation Services')
   meta(property='og:type', content='website')
   meta(property='og:description', content="Signup for Indian Address. Shop your favorite Indian store and Ship Internationally. India's #1 international courier, shipping and consolidation company.")
@@ -149,7 +154,7 @@ block css_style
     }
 
 block content
-  .body
+
     section
       include ../partials/slider
     section.all-about
@@ -187,7 +192,7 @@ block content
               h2 Save 60-80%
               h4 Storage, Consolidation & Repackaging!
           .text-center
-            a.btn.btn-shoppre(href="#{s3BaseUrl}/about") Why You Will Love Us
+            a.btn.btn-shoppre(href="/about") Why You Will Love Us
     section.services
       .container
         .row
@@ -221,7 +226,7 @@ block content
                     | to select which portal you can shop your favorite product from.
               .clearfix
               .text-center
-                a.btn.btn-shoppre(href="#{s3BaseUrl}/services") Learn More
+                a.btn.btn-shoppre(href="/services") Learn More
     section.works
       .container
         .row
@@ -237,7 +242,7 @@ block content
                     | Sign up with Shoppre and receive your FREE Personal Locker with a Virtual Indian
                     | Shipping Address.
               li
-                a(href="#{s3BaseUrl}/browse-categories")
+                a(href="#/browse-categories")
                   h3 Explore
                   p
                     | Find out from which Indian Online store you can get your favorite product.
@@ -260,7 +265,7 @@ block content
                     | as soon as your package arrives at ShoppRe facility. You can ship your items at your
                     | convenience in just a click!
               li
-                a(href="#{s3BaseUrl}/consolidation-service")
+                a(href="/consolidation-service")
                   h3 RECEIVE & ENJOY
                   p
                     | Save up to 60-80% by our Consolidation, Repackaging and Storage services. Enjoy the special
@@ -268,7 +273,7 @@ block content
                     | Get your items in just 2-5 Days!
             .clearfix
             .text-center
-              a.btn.btn-shoppre(href="#{s3BaseUrl}/how-it-works") Learn More
+              a.btn.btn-shoppre(href="/how-it-works") Learn More
     section.brandslove
       .container
         .row
@@ -305,11 +310,11 @@ block content
                 a(href='https://www.snapdeal.com/', target='_blank' alt="SnapDeal India ShoppRe Shipping")
                   img(src="#{s3BaseUrl}/img/snapdeal.png")
             .text-center
-              a.btn.btn-shoppre(href="#{s3BaseUrl}/browse-categories") Browse Categories
+              a.btn.btn-shoppre(href="/browse-categories") Browse Categories
     section.pricing
       .container
         .row
-          h2.shipping-head Shipping From India - Pricing
+          h2.shipping-head Shipping WorldWide From IndiaprivacyPolicy
           .col-md-12
             p.head-text-content
               | We have heavily optimised our operations to give you the best deal.
@@ -341,7 +346,7 @@ block content
                     | and Taxes, Restricted Items, Current Exchange rates, Country Alerts, etc.
               .clearfix
             .text-center
-              a.btn.btn-shoppre(href="#{s3BaseUrl}/pricing") Learn More
+              a.btn.btn-shoppre(href="/pricing") Learn More
     section.signup_free
       .container
         .row

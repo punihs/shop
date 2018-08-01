@@ -29,6 +29,7 @@ const dhl = require('./app/dhl');
 const virtualAddress = require('./app/virtualAddress');
 const shopShip = require('./app/shopShip');
 const sellerShipping = require('./app/sellerShipping');
+const termsAndConditions = require('./app/termsAndConditions');
 
 module.exports = (app) => {
   app.use('/', home);
@@ -55,4 +56,5 @@ module.exports = (app) => {
   app.use('/indian-virtual-address', virtualAddress);
   app.use('/shop-from-india-ship-worldwide', shopShip);
   app.use('/sellers-shipping', sellerShipping);
+  app.use('/terms-and-conditions', termsAndConditions);
 };

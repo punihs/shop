@@ -28,12 +28,10 @@ html(lang='en')
     link(href="#{s3BaseUrl}/css/txtProgress.min.css", rel='stylesheet')
     link(href="#{s3BaseUrl}/css/algolia.css" rel="stylesheet")
     link(href="#{s3BaseUrl}/css/style.css", rel='stylesheet')
-    link(href="#{s3BaseUrl}/css/dhl.css", rel='stylesheet')
+    link(href="#{s3BaseUrl}/css/style1.css", rel='stylesheet')
+    //link(href="#{s3BaseUrl}/css/dhl.css", rel='stylesheet')
 
-    //Owl Carousel
-    link(rel='stylesheet', href="#{s3BaseUrl}/css/owl.carousel.min.css")
-    // Magnific Popup
-    link(rel='stylesheet', href="#{s3BaseUrl}/css/magnific-popup.css")
+
     //script(src='/cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js')
     //script(src='/cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js')
     script(src="#{s3BaseUrl}/js/jquery.min.js")
@@ -109,7 +107,7 @@ html(lang='en')
                       i.fa.fa-google-plus
                 .col-sm-6
                   form.login-form(role='form', method='POST', action="#{s3BaseUrl}/login", novalidate='novalidate')
-                    input(type='hidden', name='_token', value='{{ csrf_token() }}')
+                    input(type='hidden', name='_token', value=csrf_token)
                     .form-group
                       label(for='') Email
                       input.form-control.valid(type='email', placeholder='Enter your email address', name='email_id', value='', required='', autofocus='', aria-required='true', aria-invalid='false')
@@ -282,7 +280,7 @@ html(lang='en')
       };
 
     // Start of HubSpot Embed Code
-    script#hs-script-loader(type='text/javascript', async='', defer='', src='#{s3BaseUrl}/js.hs-scripts.com/4601740.js')
+    //script#hs-script-loader(type='text/javascript', async='', defer='', src='#{s3BaseUrl}/js.hs-scripts.com/4601740.js')
     // End of HubSpot Embed Code
     block js_script
     script(type='text/javascript').

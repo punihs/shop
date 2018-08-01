@@ -18,3 +18,15 @@ exports.index = (req, res, next) => Promise
       });
   })
   .catch(next);
+
+exports.confirmation = (req, res) => {
+  res
+    .render('contact/confirmation', {
+      s3BaseUrl: req.s3BaseUrl,
+      URLS_API,
+      URLS_MYACCOUNT,
+      title: 'Thank you for your Feedback - Shoppre.com',
+      meta_description: 'Thank you for your Feedback',
+      meta_keywords: 'questions, concerns, about your package, shipping services, please call us, start live chat, whatsapp, team shoppre',
+    });
+};

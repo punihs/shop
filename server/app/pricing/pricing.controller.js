@@ -5,7 +5,7 @@ const { URLS_MYACCOUNT } = require('../../config/environment');
 
 exports.index = (req, res, next) => Promise
   .all([
-    rp(`${URLS_API}/api/countries`, { json: true }),
+    rp(`${URLS_API}/api/countries?limit=236`, { json: true }),
     rp(`${URLS_API}/api/reviews`, { json: true }),
   ])
   .then(([countries, reviews]) => {

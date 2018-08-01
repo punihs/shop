@@ -1,13 +1,13 @@
 extends ../layout
 block head
-    title '#{title}'
+    title #{title}
     meta(name='description', content= "#{meta_disctription}")
     meta(name="keywords" content="#{meta_keywords}")
 block content
 
   section.page_head
     .pagebanner
-      img(src='/img/banner1.jpg', width='100%')
+      img(src='#{s3BaseUrl}/img/banner1.jpg', width='100%')
       .banner-cap
         h2
           | All About
@@ -50,7 +50,7 @@ block content
         span.text-orange Shoppre?
       .whyblock
         .col-sm-4
-          img(src='/img/why-shoppre-1.png')
+          img(src='#{s3BaseUrl}/img/why-shoppre-1.png')
         .col-sm-8
           p
             | Our team of logistics experts have developed a streamlined shipping and handling process, tailored to handle challenges unique to India.They worry about customs and red tape so you don't have to! All while ensuring fast, dependable service at unbelievably low prices!
@@ -60,7 +60,7 @@ block content
           p
             | Need help with any aspect of your shopping experience? Our friendly, efficient customer service team is here to guide you through every step of the process!
         .col-sm-4
-          img(src='/img/why-shoppre-2.png')
+          img(src='#{s3BaseUrl}/img/why-shoppre-2.png')
         .clearfix
   section.about_partner
     .container
@@ -71,7 +71,7 @@ block content
             | Our influence and bulk shipping volume have allowed Shoppre to build long-term partnerships with every major global shipper, including DHL, FedEx and DTDC. As our partners, these global shippers provide Shoppre with the lowest possible rates, fastest delivery times and best shipping solutions.
           a.btn.btn-shoppre(href='https://goo.gl/forms/fEYWqUJjfguCjqif1') Become a Partner
       .col-sm-4.rightside
-        img(src='/img/abt_partner.png')
+        img(src='#{s3BaseUrl}/img/abt_partner.png')
         p
           | We analyze routes and rates so members can choose the fastest or most affordable delivery, depending on their needs.
   section.signup_free.violet-grade

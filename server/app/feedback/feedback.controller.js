@@ -6,9 +6,9 @@ exports.index = (req, res) => {
     {
       URLS_API,
       s3BaseUrl: req.s3BaseUrl,
-      title: 'aboutpage',
-      meta_disctription: 'discription',
-      meta_title: 'metatital',
+      title: 'Shoppre.com - Member Feedback Form | Shoppre',
+      meta_disctription: 'How we are doing? Regarding your most recent shipment received through Shoppre.com, please leave your feedback, suggestion and provide us more information.',
+      meta_keywords: 'shipment, suggestion, feedback, information, form',
     },
   );
 };

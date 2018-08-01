@@ -7,7 +7,7 @@ exports.index = (req, res, next) => {
   };
   return FaqCategory
     .findAll(options)
-    .then(faqCategory => res.json(faqCategory))
+    .then(faqCategory => res.json({ faqCategory }))
     .catch(next);
 };
 
