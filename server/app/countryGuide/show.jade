@@ -48,7 +48,7 @@ block content
                     .item
                     .col-sm-3.text-center
                       if !country.flag||[]
-                        //img.img-circle(src="/cdn/country/#{country.flag}")
+                    img.img-circle(src="#{s3BaseUrl}/cdn/country/#{country.flag}")
                     .col-sm-9
                       p #{review.description}
                       span.name #{review.name}

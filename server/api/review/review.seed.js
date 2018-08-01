@@ -1,12 +1,11 @@
 
 module.exports = () => [{
-  name: 'Vineel Danala',
-  source_id: 2,
-  description: 'Representatives are really helpful and polite. Sorry I made one of your representatives wait for half an hour while picking up the package. Delivered the package to US within the timeline mentioned.',
+  name: 'Varun Murali',
+  source_id: 1,
+  description: 'Excellent service. My courier reached from Delhi to USA in 3 days, out of which one was a Sunday.Everything was perfect and I was assisted by Tanuja very politely and she explained me each and every nuance of it.Affordable price, and great service. Keep it up!',
   rating: 5,
-  is_approved: '',
-  approved_by: '',
-  customer_id: 3525,
-  shipment_id: 736,
-  country_id: 226,
+  is_approved: true,
+  approved_by: 1,
+  customer_id: 129,
+  shipment_id: 115,
 }];
