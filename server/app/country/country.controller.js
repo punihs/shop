@@ -1,6 +1,6 @@
 
 const rp = require('request-promise');
-const { URLS_API } = require('../../config/environment');
+const { URLS_API, URLS_WWW } = require('../../config/environment');
 
 exports.index = (req, res, next) => Promise
   .all([
@@ -9,6 +9,7 @@ exports.index = (req, res, next) => Promise
   .then(([countries]) =>
     res
       .render('country/index', countries, {
+        URLS_WWW,
         s3BaseUrl: req.s3BaseUrl,
         title: 'Country title',
         meta_description: 'Country_metaDesctription',
