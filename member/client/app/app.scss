@@ -643,6 +643,7 @@ li.dndPlaceholder {
 }
 .btn-add-address {
   margin-top: -55px;
+  margin-right: 10px;
 }
 .summary-order {
   font-size: 16px;
@@ -655,4 +656,31 @@ li.dndPlaceholder {
 .div-border-create {
   border: 2px solid #faebcc;
   margin-bottom: 20px;
+}
+.txt-kg{
+  margin-top: 11px;
+}
+.chkbox_background {
+  background: #eaeaea;
+  padding: 5px;
+}
+.final-ship-charge {
+  background: #eaeaea;
+  text-align: center;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+.invalid-promo {
+  color: #f05050 !important;
+  border: 1px solid red;
+  padding: 5px;
+  margin-bottom: 6px;
+}
+.promo-success {
+  color: green !important;
+  border: 1px solid green;
+  padding: 5px;
+  margin-bottom: 6px;
 }

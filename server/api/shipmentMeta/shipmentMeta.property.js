@@ -6,66 +6,30 @@ module.exports = DataTypes => ({
     allowNull: false,
     unique: true,
   },
-  repack: {
-    type: DataTypes.ENUM,
-    values: ['0', '1'],
-  },
+  repack: DataTypes.TINYINT,
   repacking_charge_amount: DataTypes.DOUBLE,
-  sticker: {
-    type: DataTypes.ENUM,
-    values: ['0', '1'],
-  },
+  sticker: DataTypes.TINYINT,
 
   sticker_charge_amount: DataTypes.DOUBLE,
-  extrapack: {
-    type: DataTypes.ENUM,
-    values: ['0', '1'],
-  },
+  extrapack: DataTypes.TINYINT,
   extra_packing_charge_amount: DataTypes.DOUBLE,
-  original: {
-    type: DataTypes.ENUM,
-    values: ['0', '1'],
-  },
+  original: DataTypes.TINYINT,
   original_ship_box_charge__amount: DataTypes.DOUBLE,
   max_weight: DataTypes.FLOAT,
-  consolidation: {
-    type: DataTypes.ENUM,
-    values: ['0', '1'],
-  },
+  consolidation: DataTypes.TINYINT,
   consolidation_charge_amount: DataTypes.DOUBLE,
-  gift_wrap: {
-    type: DataTypes.ENUM,
-    values: ['0', '1'],
-  },
+  gift_wrap: DataTypes.TINYINT,
   gift_wrap_charge_amount: DataTypes.DOUBLE,
-  gift_note: {
-    type: DataTypes.ENUM,
-    values: ['0', '1'],
-  },
+  gift_note: DataTypes.TINYINT,
   gift_note_charge_amount: DataTypes.DOUBLE,
   giftnote_txt: DataTypes.STRING,
-  insurance: {
-    type: DataTypes.ENUM,
-    values: ['0', '1'],
-  },
+  insurance: DataTypes.TINYINT,
   insurance_amount: DataTypes.DOUBLE,
-  is_liquid: {
-    type: DataTypes.ENUM,
-    values: ['0', '1'],
-  },
+  is_liquid: DataTypes.TINYINT,
   liquid_charge_amount: DataTypes.DOUBLE,
-  overweight: {
-    type: DataTypes.ENUM,
-    values: ['0', '1'],
-  },
+  overweight: DataTypes.TINYINT,
   overweight_charge_amount: DataTypes.DOUBLE,
   proforma_taxid: DataTypes.STRING,
-  proforma_personal: {
-    type: DataTypes.ENUM,
-    values: ['0', '1'],
-  },
-  invoice_include: {
-    type: DataTypes.ENUM,
-    values: ['0', '1'],
-  },
+  proforma_personal: DataTypes.TINYINT,
+  invoice_include: DataTypes.TINYINT,
 });

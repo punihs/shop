@@ -53,6 +53,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Package.hasMany(db.PackageItem);
+    Package.hasMany(db.PhotoRequest);
     Package.hasMany(db.PackageState, {
       as: 'PackageStates',
       foreignKey: 'state_id',
@@ -81,10 +82,9 @@ module.exports = (sequelize, DataTypes) => {
     log('updateState', nextStateId);
     const options = {
       package_id: pkg.id,
-      user_id: actingUser.id,
+      user_id: 646, // - actingUser.id,
       state_id: nextStateId,
     };
-
     if (stateIdcommentMap[nextStateId]) options.comments = stateIdcommentMap[nextStateId];
     if (comments) options.comments = comments || stateIdcommentMap[nextStateId];
 

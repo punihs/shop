@@ -73,34 +73,36 @@ module.exports = (sequelize, DataTypes) => {
     Shipment.belongsTo(db.Country);
     Shipment.belongsTo(db.ShipmentType);
     Shipment.hasMany(db.ShipmentIssue);
+    Shipment.hasOne(db.ShipmentMeta);
     db.Country.hasMany(Shipment);
   };
 
   Shipment.updateShipmentState = async ({
     db,
     nextStateId,
-    shpmnt,
+    shipment,
     actingUser,
     comments = null,
   }) => {
     log('updateShipmentState', nextStateId);
-    log('shp', shpmnt);
+    log('shp', shipment);
     const options = {
-      shipment_id: shpmnt.id,
+      shipment_id: shipment.id,
       user_id: actingUser.id,
       state_id: nextStateId,
     };
-
+    log({ options });
     if (stateIdcommentMap[nextStateId]) options.comments = stateIdcommentMap[nextStateId];
     if (comments) options.comments = comments || stateIdcommentMap[nextStateId];
 
 
-    const shipmentState = db.ShipmentState.create(options);
+    const shipmentState = await db.ShipmentState
+      .create(options);
     switch (nextStateId) {
       case PAYMENT_CONFIRMED: {
         const optionsLoyalty = {
           attributes: ['id', 'total_points', 'points', 'level'],
-          where: { customer_Id: shpmnt.customer_id },
+          where: { customer_Id: shipment.customer_id },
         };
         const loyaltyId = await db.LoyaltyPoint
           .find(optionsLoyalty);
@@ -110,15 +112,15 @@ module.exports = (sequelize, DataTypes) => {
         log('level', loyaltyId.level);
         if (loyaltyId.shipment_id !== 1) {
           if (loyaltyId.level === 1) {
-            points = ((5 / 100) * shpmnt.final_amount);
+            points = ((5 / 100) * shipment.final_amount);
           } else if (loyaltyId.level === 2) {
-            points = ((8 / 100) * shpmnt.final_amount);
+            points = ((8 / 100) * shipment.final_amount);
           } else if (loyaltyId.level === 3) {
-            points = ((10 / 100) * shpmnt.final_amount);
+            points = ((10 / 100) * shipment.final_amount);
           } else if (loyaltyId.level === 4) {
-            points = ((12 / 100) * shpmnt.final_amount);
+            points = ((12 / 100) * shipment.final_amount);
           }
-          log('final amount', shpmnt.final_amount);
+          log('final amount', shipment.final_amount);
           log('level', loyaltyId.level);
           loyalty.points = loyaltyId.points + points;
           loyalty.total_points = loyaltyId.points + points;
@@ -132,54 +134,55 @@ module.exports = (sequelize, DataTypes) => {
           } else if (loyaltyId.total >= 26000) {
             loyalty.level = 4;
           }
-          loyalty.shipment_id = shpmnt.id;
+          loyalty.shipment_id = shipment.id;
           log({ loyalty });
           await db.LoyaltyPoint.update(loyalty, { where: { id: loyaltyId.id } });
 
           const misclenious = {};
-          misclenious.customer_id = shpmnt.customer_id;
+          misclenious.customer_id = shipment.customer_id;
           misclenious.description = 'Shipping Reward';
           misclenious.points = points;
           misclenious.type = REWARD;
           await db.LoyaltyHistory.create(misclenious);
         }
-        if (!shpmnt.tracking) {
+        if (!shipment.tracking) {
           const tracking = {};
           tracking.dispatch_date = moment();
-          tracking.number_of_packages = shpmnt.packages_count;
-          tracking.weight_by_shipping_partner = shpmnt.weight;
-          tracking.value_by_shipping_partner = shpmnt.value_amount;
-          await db.Shipment.update(tracking, { where: { id: shpmnt.id } });
+          tracking.number_of_packages = shipment.packages_count;
+          tracking.weight_by_shipping_partner = shipment.weight;
+          tracking.value_by_shipping_partner = shipment.value_amount;
+          await db.Shipment.update(tracking, { where: { id: shipment.id } });
         }
 
-        shpmnt.getPackages()
+        shipment.getPackages()
           .then(packageItems => notification
             .stateChange({
               db,
               nextStateId,
-              shpmnt,
+              shipment,
               actingUser,
               packageItems,
             }))
-          .catch(err => logger.error('statechange notification', nextStateId, shpmnt, err));
+          .catch(err => logger.error('statechange notification', nextStateId, shipment, err));
 
         break;
       }
       case SHIPMENT_HANDED: {
         log('state changed - shipment handed to partner', SHIPMENT_HANDED);
-        if (shpmnt.tracking_code) {
+        if (shipment.tracking_code) {
           // - Todo:  add this code before creating state
-          // const tracking = shpmnt.tracking_code;
-          // if (!shpmnt.dispatch_date || !shpmnt.shipping_carrier || !shpmnt.number_of_packages ||
-          //   !shpmnt.weight_by_shipping_partner ||
-          //   !shpmnt.value_by_shipping_partner || !shpmnt.tracking_code) {
+          // const tracking = shipment.tracking_code;
+          // if (!shipment.dispatch_date || !shipment.shipping_carrier
+          // || !shipment.number_of_packages ||
+          //   !shipment.weight_by_shipping_partner ||
+          //   !shipment.value_by_shipping_partner || !shipment.tracking_code) {
           //   return res.json({ error:
           // 'You must update Shipment Tracking Information to send dispatch notification!' });
           // }
           // $shpmnt->shipping_status = 'dispatched';
 
           const couponAppliedStatus = await db.Redemption
-            .update({ status: 'success' }, { where: { shipment_order_code: shpmnt.order_code } });
+            .update({ status: 'success' }, { where: { shipment_order_code: shipment.order_code } });
 
           let promo = '';
           if (couponAppliedStatus) {
@@ -198,7 +201,7 @@ module.exports = (sequelize, DataTypes) => {
                 // await db.User(optionCashBack)
                 //   .then(total_wallet_amount => {
                 const cashbackAmount =
-                    shpmnt.estimated_amount * (promo.cashback_percentage / 100);
+                    shipment.estimated_amount * (promo.cashback_percentage / 100);
                 const maxCouponAmount = promo.max_cashback_amount || 0;
                 let totalCashbackAmount = 0;
                 if (cashbackAmount <= maxCouponAmount) {
@@ -210,7 +213,7 @@ module.exports = (sequelize, DataTypes) => {
                 transaction.customer_id = actingUser.customer_id;
                 transaction.amount = totalCashbackAmount;
                 transaction.type = CREDIT;
-                transaction.description = `Wallet transactions for coupon code | Shipment ID  ${shpmnt.order_code}`;
+                transaction.description = `Wallet transactions for coupon code | Shipment ID  ${shipment.order_code}`;
                 // });
               }
             }
@@ -230,7 +233,7 @@ module.exports = (sequelize, DataTypes) => {
         log('state changed CANCELLED', SHIPMENT_CANCELLED);
 
         // const options = {
-        //   package_id: shpmnt.id,
+        //   package_id: shipment.id,
         //   user_id: actingUser.id,
         //   state_id: SHIPMENT_CANCELLED,
         // };
@@ -240,7 +243,7 @@ module.exports = (sequelize, DataTypes) => {
             db.Package.update({
               shipment_state_id: packageState.id,
             }, {
-              where: { shipment_id: shpmnt.id },
+              where: { shipment_id: shipment.id },
             });
           });
         // Mail::to($customer->email)->send(new ShipmentCancelled($packages, $shipRqst));
@@ -267,28 +270,28 @@ module.exports = (sequelize, DataTypes) => {
         break;
       }
       case INQUEUE: {
-        shpmnt.getPackages()
+        shipment.getPackages()
           .then(packages => notification
             .stateChange({
               db,
               nextStateId,
-              shpmnt,
+              shipment,
               actingUser,
               packages,
             }))
-          .catch(err => logger.error('statechange notification', nextStateId, shpmnt, err));
+          .catch(err => logger.error('statechange notification', nextStateId, shipment, err));
         break;
       }
       default: {
         log('state changed default');
       }
     }
-
+    log('shipmentState', shipmentState.id);
     return db.Shipment
       .update({
         shipment_state_id: shipmentState.id,
       }, {
-        where: { id: shpmnt.id },
+        where: { id: shipment.id },
       });
   };
   return Shipment;
