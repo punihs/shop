@@ -25,7 +25,7 @@ const db = {
 
 [
   // - Enums
-  'Country', 'Place', 'PaymentGateway', 'Locker',
+  'Country', 'Place', 'PaymentGateway', 'Locker', 'CountryGuide',
 
   // - Tracking
   'DHLLog',
@@ -50,16 +50,16 @@ const db = {
   'Shipment', 'ShipmentMeta', 'ShipmentType', 'ShipmentIssue', 'ShippingPartner', 'ShipmentState',
   'Transaction',
   // - Notifications
-  'Notification', 'Comment',
+  'Notification', 'Comment', 'ShipmentMail',
 
   // - loyalty points, coupon
   'LoyaltyPoint', 'LoyaltyHistory', 'Redemption', 'ReferCode',
 
   // - Organitation
-  'ShippingPartner', 'Link',
+  'ShippingPartner', 'Link', 'ShippingRate',
 
   // - Product
-  'Store', 'Category',
+  'Store', 'Category', 'StoreCategory', 'StoreCategoryClub',
 
   // - faq
   'FaqCategory', 'Faq',

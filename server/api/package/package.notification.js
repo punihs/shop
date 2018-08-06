@@ -1,5 +1,7 @@
 const debug = require('debug');
 
+const event = require('../../emails/lib/events');
+
 const log = debug('s-api-package-notification');
 
 exports.stateChange = async ({
@@ -15,7 +17,7 @@ exports.stateChange = async ({
   log({ customer });
   const store = await Store
     .findById(pkg.store_id, { raw: true, attributes: ['name'] });
-  const event = {};
+
   return event.fire({
     ses: [{
       Source: `"${actingUser.first_name} from Shoppre" <${actingUser.email}>`,

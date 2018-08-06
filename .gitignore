@@ -14,3 +14,9 @@ logs
 /ops/.jscsrc
 /ops/.jshintignore
 accounts/.git
+bower_components
+/public/app/js/
+/public/app/
+/.jshintignore
+/.jshintrc
+/.idea/*

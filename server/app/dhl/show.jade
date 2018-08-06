@@ -1,0 +1,24 @@
+extends ../layout
+block content
+  head
+    title '#{title}'
+      meta(name='description', content= '#{meta_description}')
+      meta(property='og:title', content='#{meta_title}')
+  .body
+    .container
+      .shipping_detail
+        .row
+          .col-md-4
+            img(src='#{s3BaseUrl}/img/dhl.png', alt='')
+        br
+        br
+        .row
+          .col-md-4.package_items
+            center
+              h4 Items customer purchased from various indian online stores
+            ul
+              | @foreach($packages as $package)
+              | @foreach($package->items as $package_items)
+              li(style='font-size: 14px;color: chocolate;') {{$package_items->item}}
+              |                                 @endforeach
+              |                             @endforeach

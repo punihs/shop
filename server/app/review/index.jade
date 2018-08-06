@@ -1,0 +1,138 @@
+extends ../layout
+block head
+  title #{title}
+  meta(name='description', content= '#{meta_description}')
+  meta(name="keywords" content="#{meta_keywords}")
+  link(href="#{s3BaseUrl}/css/select2.min.css", rel='stylesheet')
+  link(href="#{s3BaseUrl}/css/star-rating.min.css", rel='stylesheet')
+block content
+  .body
+    section.page_head
+      .pagebanner
+        img(src='#{s3BaseUrl}/img/banner1.jpg', width='100%')
+        .banner-cap
+          h2
+            | Member
+            span.text-orange Reviews
+    section.reviews_head
+      .container
+        .col-md-8.col-md-offset-2
+          h2
+            | What members are saying about
+            span.text-orange Shoppre
+          p
+            | Our members love our top-rated service and how easy and worry-free we make shopping and shipping from INDIA
+
+    section.reviews
+      .container
+        .col-md-8
+          .list
+            h3 Latest Reviews
+            each review in reviews
+              .blox
+                h4= review.name
+                  | By
+                  span #{review.name}
+                  -var cdate = moment().format("Do MMM  YY", review.created_at)
+                  |  on #{cdate}
+                input.rating.rated(value='#{review.rating}' style='float: right;')
+                if(review.description)
+                   p #{review.description}
+                if(review.Source)
+                   i - #{review.Source.name}
+                if(review.Country)
+                   i - #{review.Country.name}
+              .clearfix
+        .col-md-4
+          .review_form
+            h3 Leave your own feedback
+            form(method='post', action="submit")
+              .form-group
+                label Name *
+                input.form-control(type='text', name='person', placeholder='Enter Your Name')
+              .form-group
+                label Country *
+                select.form-control.select2(id='c_id' name='country_id')
+                  option(value='') Select Country
+                   each country in countries || []
+                    option(id='#{country.id}' value='#{country.id}') #{country.name}
+              .form-group
+                textarea#review.form-control(rows='8', name='review', placeholder='Comments & Tips')
+              .form-group
+                label Rating *
+                .rating-star
+                  input#input-rate.rating(type='text', name='rating')
+              .form-group
+                button.btn.btn-block.btn-shoppre(type='submit') Submit Feedback
+
+    script(src="#{s3BaseUrl}/js/jquery.min.js")
+    script(src="#{s3BaseUrl}/js/star-rating.min.js", type='text/javascript')
+    script(src="#{s3BaseUrl}/js/select2.min.js")
+    script.
+      $(document).ready(function () {
+        $("#c_id").on('change', function () {
+          debugger;
+          event.preventDefault();
+          window.cid = ($(this).find('option:selected').attr('id'));
+        });
+
+        $('form').submit(function (event) {
+          debugger;
+          var review = $('#review').val();
+          event.preventDefault();
+          var country_id = window.cid;
+          var formData = {
+            'name': $('input[name=person]').val(),
+            'source_id': 4 ,
+            'description': review,
+            'country_id': country_id,
+            'rating': $('input[name=rating]').val(),
+
+            // 'name': 'Varun Murali',
+            // 'description': 'Excellent service',
+            // 'rating': 5,
+            // 'is_approved': true,
+            // 'customer_id': 129,
+            // 'shipment_id': 115,
+            // 'country_id': 1
+
+          };
+          $.ajax({
+            type: 'POST',
+            url: '#{URLS_WWW}/api/reviews',
+            data: formData,
+            dataType: 'json',
+            encode: true
+          })
+          .done(function (data) {
+            debugger;
+            console.log(data);
+            location.reload();
+          });
+        });
+      });
+
+    script.
+      $(".rated").rating({
+        'size': 'xs',
+        'min': 0,
+        'max': 5,
+        'step': 1,
+        'displayOnly': true,
+        'showClear': false,
+        'showCaption': false
+      });
+      $("#input-rate").rating({
+        'size': 'sm',
+        'min': 0,
+        'max': 5,
+        'step': 1,
+        'showClear': false,
+        'showCaption': false
+      });
+    script(src="#{s3BaseUrl}/js/select2.min.js")
+    script(type='text/javascript').
+      $(document).ready(function () {
+        $(".select2").select2();
+      });
+

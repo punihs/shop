@@ -14,3 +14,16 @@ describe('GET /api/countries', () => {
       });
   });
 });
+
+describe('GET /api/countries/afghanistan', () => {
+  it('return countries/afghanistan', (done) => {
+    request(app)
+      .get('/api/countries/afghanistan')
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});

@@ -101,7 +101,7 @@ exports.index = ({ query, params, user: actingUser }) => {
   // console.log('status in query: ', options.include[0].where.state_id)
   // const shipmentStateModel = { ...options.include[0] };
   // shipmentStateModel.where.state_id = BUCKET.VIEW_ALL;
-  log('bucket in query: ', options.include[0].where.state_id);
+  // log('bucket in query: ', options.include[0].where.state_id);
   return Promise
     .all([
       Package

@@ -135,6 +135,15 @@ const constants = {
     PERSONAL_SHOPPER: '2',
     COD: '3',
   },
+  RATE_TYPES: {
+    FIXED: '1',
+    MULTIPLE: '2', // 'Liquid, Cream, Oil & Home-made food items'
+  },
+  SHIPPING_PARTNERS_ID: {
+    DHL: 1,
+    FEDEX: 2,
+    DTDC: 3,
+  },
 };
 
 constants.PACKAGE_STATE_ID_NAMES = Object

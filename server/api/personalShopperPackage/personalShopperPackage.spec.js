@@ -96,7 +96,7 @@ describe('POST /api/personalShopperPackages', () => {
   });
 });
 
-describe('PUT /api/personalShopperPackages', () => {
+describe('1 PUT /api/personalShopperPackages', () => {
   it('update personalShopperPackages', (done) => {
     request(app)
       .put('/api/personalShopperPackages')

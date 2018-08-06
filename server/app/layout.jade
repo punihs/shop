@@ -5,26 +5,60 @@ html(lang='en')
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    title
-      block title
-    meta(name='description', content="@yield('description')")
-    meta(name='keywords', content="@yield('keywords')")
-    link(rel='shortcut icon', href="/favicon.png')}}")
-    link(rel='icon', type='image/png', href="/favicon.png'", sizes='60x60')
+    block head
+    link(rel='shortcut icon', href="#{s3BaseUrl}/img/favicon.png")
+    link(rel='icon', type='image/png', href="#{s3BaseUrl}/img/favicon.png", sizes='60x60')
+    meta(http-equiv='Cache-Control', content='public')
+    meta(http-equiv='Cache-Control', content='max-age=3600')
+    meta(http-equiv='Cache-Control', content='must-revalidate')
+    meta(http-equiv='Expires', content='public')
+    meta(http-equiv='Expires', content='mon, 28 sep 2015 14:30:00 GMT')
+    meta(http-equiv='Expires', content='must-revalidate')
+    meta(http-equiv='Last-Modified', content='public')
+    meta(http-equiv='Last-Modified', content='fri, 01 may 2015 14:30:00 GMT')
+    meta(http-equiv='Last-Modified', content='must-revalidate')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+
     // Bootstrap
-    link(href="/bower_components/bootstrap/dist/css/bootstrap.css", rel='stylesheet')
-    // Font Awesome
-    link(href="/bower_components/components-font-awesome/css/fontawesome-all.css", rel='stylesheet')
-    block css_style
+    link(rel="manifest" href="/manifest.json")
+    link(href="#{s3BaseUrl}/css/bootstrap.min.css", rel='stylesheet')
+    //// Font Awesome
+    link(href="#{s3BaseUrl}/css/font-awesome.min.css", rel='stylesheet')
+    link(rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.jqueryui.min.css")
+    link(href="#{s3BaseUrl}/css/txtProgress.min.css", rel='stylesheet')
+    link(href="#{s3BaseUrl}/css/algolia.css" rel="stylesheet")
     link(href="#{s3BaseUrl}/css/style.css", rel='stylesheet')
-    link(href="/app/css/dhl.css", rel='stylesheet')
+    link(href="#{s3BaseUrl}/css/style1.css", rel='stylesheet')
+    //link(href="#{s3BaseUrl}/css/dhl.css", rel='stylesheet')
+
+
+    //script(src='/cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js')
+    //script(src='/cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js')
+    script(src="#{s3BaseUrl}/js/jquery.min.js")
+    script(src='#{s3BaseUrl}/js/slider-js/jssor.js')
+    script(src='#{s3BaseUrl}/js/slider-js/jssor.slider.js')
+
+    block css_style
     link(rel='publisher', href='https://plus.google.com/101070316798366909776/')
     meta(name='google-play-app', content='app-id=com.shoppre.play')
     meta(property='fb:app_id', content='1819630241632764')
-    meta(property='al:android:url', content='https://www.shoppre.com/')
+    meta(property='al:android:url', content='#{s3BaseUrl}/')
     meta(property='al:android:package', content='com.shoppre.play')
     meta(property='al:android:app_name', content='Shoppre - International Shipping from India')
     meta(name='msvalidate.01', content='0E25F147AD9B658B4418A996E97D0D7D')
+    // Facebook Messanger icon alignment
+    style.
+      .fb_dialog.fb_dialog_advanced.fb_customer_chat_bubble_animated_no_badge.fb_customer_chat_bubble_pop_in {
+        right: initial !important;
+        left: 62pt !important;
+        z-index: 9999999 !important;
+      }
+
+      .fb-customerchat.fb_invisible_flow.fb_iframe_widget iframe {
+        right: initial !important;
+        left: 18pt !important;
+      }
+    // End Facebook Messanger Icon Alignment
     block schema_markup
     // Google Tag Manager
     script.
@@ -46,14 +80,117 @@ html(lang='en')
     // Google Tag Manager (noscript)
     noscript
       iframe(src='https://www.googletagmanager.com/ns.html?id=GTM-NRL4B6X', height='0', width='0', style='display:none;visibility:hidden')
+    script.
+        if (!localStorage.referer) {
+          localStorage.referer = "no-referrer";
+          localStorage.firstVisit = window.location.href;
+        }
     // End Google Tag Manager (noscript)
     include ./partials/_header
+    .container
+      // Modal // Trigger the modal with a button
+      #myModal.modal.fade(role='dialog')
+        .modal-dialog
+          .modal-content
+            .modal-header
+              button#btnClosePopup.close(type='button') ×
+            .modal-body
+              .login-content
+                h3.head-tag Log in to Shoppre Account
+                .text-center
+                  .login-social
+                    a.facebook(href='https://myaccount.shoppre.com/social/oauth/facebook')
+                      i.fa.fa-facebook
+                      span Facebook
+                    a.google(href='https://myaccount.shoppre.com/social/oauth/google')
+                      span Google Plus
+                      i.fa.fa-google-plus
+                .col-sm-6
+                  form.login-form(role='form', method='POST', action="#{s3BaseUrl}/login", novalidate='novalidate')
+                    input(type='hidden', name='_token', value=csrf_token)
+                    .form-group
+                      label(for='') Email
+                      input.form-control.valid(type='email', placeholder='Enter your email address', name='email_id', value='', required='', autofocus='', aria-required='true', aria-invalid='false')
+                    .form-group
+                      label(for='') Password
+                      input.form-control.valid(type='password', placeholder='Enter your password', name='l_password', required='', aria-required='true', aria-invalid='false')
+                    .checkbox
+                      label
+                        input(type='checkbox', name='remember_me')
+                        span.label
+                          | Remember Me
+                          small (Not recommended for public computers)
+                    button.btn.btn-block.btn-shoppre(type='submit') Sign in to your account
+                  span.login-bttm
+                    a#btn_signup_popup(href='javascript:void(0)') Not a member? Register
+                .col-sm-6
+              .signup-content
+                h3.head-tag SIGN UP WITH
+                .text-center
+                  .login-social
+                    a.facebook(href='https://myaccount.shoppre.com/social/oauth/facebook')
+                      i.fa.fa-facebook
+                      span Facebook
+                    a.google(href='https://myaccount.shoppre.com/social/oauth/google')
+                      span Google Plus
+                      i.fa.fa-google-plus
+                span.or_separate OR
+                h3 CREATE AN ACCOUNT
+                form.register-form(role='form', method='POST', action="#{s3BaseUrl}/home/signup", novalidate='novalidate')
+                  input(type='hidden', name='_token', value='')
+                  .col-sm-6
+                    .row
+                      .form-group
+                        .input-group
+                          .input-group-addon
+                            i.fa.fa-address-card
+                          input.form-control(type='text', name='firstname', value='', placeholder='First Name *', required='', autofocus='', aria-required='true')
+                  .col-sm-6
+                    .row
+                      .form-group
+                        .input-group
+                          .input-group-addon
+                            i.fa.fa-address-card
+                          input.form-control(type='text', name='lastname', value='', placeholder='Last Name *', required='', aria-required='true')
+                  .clearfix
+                  .form-group
+                    .input-group
+                      .input-group-addon
+                        i.fa.fa-envelope
+                      input.form-control(type='text', name='email', value='', placeholder='Email *', required='', aria-required='true')
+                  .form-group
+                    .input-group
+                      .input-group-addon
+                        i.fa.fa-lock
+                      input.form-control(type='password', placeholder='Password *', name='password', required='', aria-required='true')
+                  .form-group
+                    .input-group
+                      .input-group-addon
+                        i.fa.fa-lock
+                      input.form-control(type='password', placeholder='Reconfirm Password *', name='password_confirmation', required='', aria-required='true')
+                  .form-group.content-padding
+                    button.btn.btn-shoppre.btn-block(type='submit') Sign Up
+                span#btn_login_popup.register-bttm
+                  | Already a member?
+                  a(href='javascript:void(0)') Sign in
+                  |  here!
+            .modal-footer
     block content
+
     include ./partials/_footer
-    script(src="/bower_components/jquery/jquery.js")
-    script(src="/bower_components/bootstrap/dist/js/bootstrap.min.js")
-    script(src="/cdn/js/txtProgress.min.js")
-    script(src="/cdn/js/validate.min.js")
+
+    script(src="#{s3BaseUrl}/js/bootstrap.min.js")
+    script(src="#{s3BaseUrl}/js/txtProgress.min.js")
+    script(src="#{s3BaseUrl}/js/owl.carousel.min.js")
+    script(src="#{s3BaseUrl}/js/jquery.magnific-popup.min.js")
+    script(src='https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js')
+    script(src='https://cdn.datatables.net/1.10.16/js/dataTables.jqueryui.min.js')
+    script(src="#{s3BaseUrl}/js/validate.min.js")
+
+
+    script(src="#{s3BaseUrl}/js/home.js")
+    script(src="#{s3BaseUrl}/js/select2.min.js")
+
     script.
       $(document).ready(function () {
         $("#btnClosePopup").click(function () {
@@ -87,38 +224,29 @@ html(lang='en')
           'html': true
         })
       })
-    // li-Scroller
-    script(src="/cdn/js/liscroller.1.0.js")
-    script(type='text/javascript').
-      $(document).ready(function () {
-        $("ul#liticker").liScroll({travelocity: 0.05});
-      });
-    // Facebook Pixel Code
+
+    script(src="#{s3BaseUrl}/js/liscroller.1.0.js")
+
+      script(type='text/javascript').
+        $(document).ready(function () {
+          $("ul#liticker").liScroll({travelocity: 0.05});
+        });
+
+
+    // Start of shoppre-international-shipping-courier Zendesk Widget script
     script.
-      !function (f, b, e, v, n, t, s) {
-        if (f.fbq) return;
-        n = f.fbq = function () {
-          n.callMethod ?
-            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-        };
-        if (!f._fbq) f._fbq = n;
-        n.push = n;
-        n.loaded = !0;
-        n.version = '2.0';
-        n.queue = [];
-        t = b.createElement(e);
-        t.async = !0;
-        t.src = v;
-        s = b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t, s)
-      }(window,
-        document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '437389746641326'); // Insert your pixel ID here.
-      fbq('track', 'PageView');
-    noscript
-      img(height='1', width='1', style='display:none', src='https://www.facebook.com/tr?id=437389746641326&ev=PageView&noscript=1')
+      /*<![CDATA[*/window.zE || (function (e, t, s) {
+        var n = window.zE = window.zEmbed = function () {
+          n._.push(arguments)
+        }, a = n.s = e.createElement(t), r = e.getElementsByTagName(t)[0];
+        n.set = function (e) {
+          n.set._.push(e)
+        }, n._ = [], n.set._ = [], a.async = true, a.setAttribute("charset", "utf-8"), a.src = "https://static.zdassets.com/ekr/asset_composer.js?key=" + s, n.t = +new Date, a.type = "text/javascript", r.parentNode.insertBefore(a, r)
+      })(document, "script", "2ab4b736-3ac8-4f95-8b6f-e2c9d6325182");/*]]>*/
+    // End of shoppre-international-shipping-courier Zendesk Widget script
+
     script.
-      if (window.location.href == "https://www.shoppre.com/campaign/flyer/616") {
+      if (window.location.href == "#{URLS_WWW}/campaign/flyer/616") {
         if (!localStorage.newsUrlVisit) {
           console.log("News Enter");
           localStorage.newsUrlVisit = window.location.href;
@@ -130,7 +258,7 @@ html(lang='en')
       function storecustomer(url, coupon) {
         $.ajax({
           url: '/api/campaign/newaspaper',
-          type: "POST",
+          type: "GET",
           data: {
             url: url,
             coupon: coupon
@@ -140,4 +268,29 @@ html(lang='en')
           }
         });
       }
+
+    script(type='text/JavaScript').
+      window.zESettings = {
+      webWidget: {
+      position: {
+      horizontal: 'right',
+      vertical: 'bottom'
+      }
+      }
+      };
+
+    // Start of HubSpot Embed Code
+    //script#hs-script-loader(type='text/javascript', async='', defer='', src='#{s3BaseUrl}/js.hs-scripts.com/4601740.js')
+    // End of HubSpot Embed Code
     block js_script
+    script(type='text/javascript').
+      $(document).ready(function () {
+        $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
+          disableOn: 700,
+          type: 'iframe',
+          mainClass: 'mfp-fade',
+          removalDelay: 160,
+          preloader: false,
+          fixedContentPos: false
+        });
+      });

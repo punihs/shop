@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Review.associate = (db) => {
     Review.belongsTo(db.Shipment);
+    Review.belongsTo(db.Source);
     Review.belongsTo(db.Country);
     Review.belongsTo(db.User, {
       foreignKey: 'customer_id',
