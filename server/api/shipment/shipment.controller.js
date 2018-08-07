@@ -840,6 +840,7 @@ exports.finalShipRequest = async (req, res) => {
       break;
     default: break;
   }
+
   shipmentSave.coupon_amount = payment.coupon;
   shipmentSave.wallet_amount = payment.wallet;
   shipmentSave.loyalty_amount = payment.loyalty;
@@ -990,6 +991,7 @@ exports.finalShipRequest = async (req, res) => {
     default: break;
       // return res.redirect(getPaymentURL('shipping.request.response'));
   }
+  return res.json({ message: 'success' });
 };
 
 exports.payRetrySubmit = async (req, res) => {

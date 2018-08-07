@@ -59,9 +59,6 @@ class shipmentRequestController {
         this.shipments = packages;
         this.customer = customer;
         this.shipmentMeta = shipmentMeta;
-        // log('customer', customer);
-        // log('packages', packages);
-        // log('charges', shipmentMeta);
         console.log('this.shipments', this.shipments);
         this.data = {
           repack: false,
@@ -82,10 +79,6 @@ class shipmentRequestController {
         customer.Addresses.forEach(x => {
           if (x.is_default) this.data.address_id = x.id;
         });
-
-        // log('data123', this.data);
-        // log('$ctrl.data.liquid', this.data.IS_LIQUID);
-
         packages.forEach(x => {
           this.totalpackagePriceAmount += x.price_amount;
         });
@@ -105,10 +98,6 @@ class shipmentRequestController {
     this.submitting = true;
 
     const ids = this.$packageIds;
-    // log({ ids });
-    // log('data', this.data);
-    // log('newShipmentForm', newShipmentForm);
-
     const method = 'post';
 
     return this
@@ -132,8 +121,8 @@ class shipmentRequestController {
         this.error = err.data;
       });
   }
-
 }
+
 angular
   .module('uiGenApp')
   .controller('shipmentRequestController', shipmentRequestController);

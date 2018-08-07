@@ -43,8 +43,6 @@ class AddAddressController {
       noResults: false,
       loadingCountry: false,
     };
-
-    // if (this.EDIT) this.getAddress();
   }
 
   create(newAddressForm) {
@@ -76,7 +74,6 @@ class AddAddressController {
         newAddressForm[err.data.field].$setValidity('required', false);
         $(`input[name="${field}"]`)[0].focus();
 
-
         this
           .toaster
           .pop('error', 'There was problem creating address. Please contact Shoppre team.');
@@ -98,12 +95,10 @@ class AddAddressController {
 }
 
 class AddAddress {
-  /*  @ngInject  */
   constructor($uibModal, Session) {
     this.$uibModal = $uibModal;
     this.Session = Session;
   }
-
 
   open(customerId) {
     console.log({ customerId });

@@ -750,8 +750,9 @@ describe('GET /api/shipments/redirectShipment', () => {
   ]));
   it('will redirect to shipment creation ( test case selected packages for shipment )', (done) => {
     request(app)
-      .get('/api/shipments/redirectShipment?packageIds=7')
+      .get('/api/shipments/redirectShipment?packageIds=3,2')
       .send({
+        package_ids: [3, 2],
         repack: 0,
         sticker: 0,
         extra_packing: 0,
@@ -771,19 +772,20 @@ describe('GET /api/shipments/redirectShipment', () => {
 
   after(() => Address
     .destroy({ force: true, where: { customer_id: 646 } })
-    // .then(() => PackageCharge
-    //   .destroy({ force: true, where: { package_id: 2 } }))
+    .then(() => PackageCharge
+      .destroy({ force: true, where: { id: 100 } }))
     .then(() => Package
-      .update({ package_state_id: 100 }, { where: { id: 2 } })));
-    // .then(() => PackageState
-    //   .destroy({ force: true, where: { package_id: 2 } })));
+      .update({ package_state_id: 1 }, { where: { id: 2 } }))
+    .then(() => PackageState
+      .destroy({ force: true, where: { package_id: 2 } })));
 });
 
-describe('GET /api/shipments/redirectShipment', () => {
+describe('GET /api/shipments/redirectShipment?packageIds=365214', () => {
   it('will redirect to shipment creation ( test case for package not found )', (done) => {
     request(app)
       .get('/api/shipments/redirectShipment?packageIds=365214')
       .send({
+        package_ids: [365214],
         repack: 0,
         sticker: 0,
         extra_packing: 0,
@@ -829,12 +831,13 @@ describe('GET /api/shipments/redirectShipment', () => {
       package_state_id: 100,
       customer_id: 646,
       created_at: moment().add(-25, 'days'),
-    }, { where: { id: 1 } })),
+    }, { where: { id: 2 } })),
   ]));
   it('will redirect to shipment creation  ( test case locker number of days expiry ) ', (done) => {
     request(app)
-      .get('/api/shipments/redirectShipment?packageIds=1')
+      .get('/api/shipments/redirectShipment?packageIds=2')
       .send({
+        package_ids: [2],
         repack: 0,
         sticker: 0,
         extra_packing: 0,
@@ -862,7 +865,7 @@ describe('GET /api/shipments/redirectShipment', () => {
         created_at: moment().add(25, 'days'),
       }, { where: { id: 2 } }))
     .then(() => PackageState
-      .destroy({ where: { package_id: 2 } })));
+      .destroy({ force: true, where: { package_id: 2 } })));
 });
 
 
@@ -882,7 +885,7 @@ describe('GET /api/shipments/redirectShipment', () => {
     .then(() => PackageState
       .create({
         id: 100,
-        package_id: 7,
+        package_id: 2,
         state_id: 5,
         user_id: 646,
         comments: 'testing',
@@ -896,13 +899,13 @@ describe('GET /api/shipments/redirectShipment', () => {
     }, { where: { id: 2 } }))
     .then(() => PackageState.update({
       state_id: 5,
-    }, { where: { id: 11 } })),
+    }, { where: { id: 1 } })),
   ]));
   it('will redirect to shipment creation ( test case for special items ) ', (done) => {
     request(app)
-      .get('/api/shipments/redirectShipment?packageIds=7')
+      .get('/api/shipments/redirectShipment?packageIds=3,2')
       .send({
-        // package_ids: [11],
+        package_ids: [3, 2],
         repack: 0,
         sticker: 0,
         extra_packing: 0,
@@ -931,7 +934,7 @@ describe('GET /api/shipments/redirectShipment', () => {
         content_type: 1,
       }, { where: { id: 2 } }))
     .then(() => PackageState
-      .destroy({ force: true, where: { package_id: 7 } }))
+      .destroy({ force: true, where: { package_id: 2 } }))
     .then(() => PackageState.update({
       state_id: 1,
     }, { where: { id: 1 } })));

@@ -232,12 +232,6 @@ module.exports = (sequelize, DataTypes) => {
       case SHIPMENT_CANCELLED: {
         log('state changed CANCELLED', SHIPMENT_CANCELLED);
 
-        // const options = {
-        //   package_id: shipment.id,
-        //   user_id: actingUser.id,
-        //   state_id: SHIPMENT_CANCELLED,
-        // };
-
         await db.PackageState
           .then((packageState) => {
             db.Package.update({
