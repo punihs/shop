@@ -28,7 +28,7 @@ block content
         .col-md-8
           .list
             h3 Latest Reviews
-            each review in reviews
+            each review in items
               .blox
                 h4= review.name
                   | By
@@ -43,6 +43,13 @@ block content
                 if(review.Country)
                    i - #{review.Country.name}
               .clearfix
+
+          ul.pagination
+            if offset !== 0
+              li <
+            if items.length === 20
+              li >
+
         .col-md-4
           .review_form
             h3 Leave your own feedback
@@ -64,6 +71,7 @@ block content
                   input#input-rate.rating(type='text', name='rating')
               .form-group
                 button.btn.btn-block.btn-shoppre(type='submit') Submit Feedback
+
 
     script(src="#{s3BaseUrl}/js/jquery.min.js")
     script(src="#{s3BaseUrl}/js/star-rating.min.js", type='text/javascript')
