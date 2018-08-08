@@ -14,7 +14,8 @@ const {
 
 const {
   PACKAGE_STATE_ID_NAMES,
-  PACKAGE_STATE_IDS: { CREATED },
+  PACKAGE_STATE_IDS: { PACKAGE_ITEMS_UPLOAD_PENDING },
+  PACKAGE_TYPES: { INCOMING },
 } = require('../../config/constants');
 const logger = require('../../components/logger');
 
@@ -42,10 +43,12 @@ exports.indexPublic = (req, res, next) => {
 
 exports.index = (req, res, next) => index(req)
   .then((result) => {
+    console.log('testing all the requirements');
     if (req.query.xlsx) {
       const header = [
         'id', 'Store Name', 'Virtual Address Code', 'Status',
       ];
+      console.log('testing index');
       const excel = xlsx.build([{
         name: 'Packages',
         data: [header]
@@ -61,7 +64,6 @@ exports.index = (req, res, next) => index(req)
               PACKAGE_STATE_ID_NAMES[packageState.state_id],
             ])),
       }]);
-
       res.setHeader('Content-Type', 'application/vnd.openxmlformats');
       res.setHeader(
         'Content-disposition',
@@ -150,7 +152,7 @@ exports.create = async (req, res, next) => {
 
         return Package.updateState({
           db,
-          nextStateId: CREATED,
+          nextStateId: PACKAGE_ITEMS_UPLOAD_PENDING,
           pkg: { ...pkg, id },
           actingUser: req.user,
         }).then(() => res.status(201).json({ id, Locker: locker }));
@@ -217,3 +219,65 @@ exports.unread = async (req, res) => {
   const status = await Package.update({ admin_read: false }, { where: { id } });
   return res.json(status);
 };
+
+exports.count = (req, res, next) => {
+  const { customerId } = req.user.id;
+  const options = {
+    attributes: ['id'],
+    where: { customer_id: customerId, package_type: INCOMING },
+    include: [{
+      model: PackageState,
+      where: { state_id: 5 },
+    }],
+  };
+  const readyToShipCount = Package
+    .count(options);
+
+  const optionInReview = {
+    attributes: ['id'],
+    where: { customer_id: customerId, package_type: INCOMING },
+    include: [{
+      model: PackageState,
+      where: { state_id: 4 },
+    }],
+  };
+  const inReviewCount = Package
+    .count(optionInReview)
+    .catch(next);
+
+  const optionActionRequired = {
+    attributes: ['id'],
+    where: { customer_id: customerId, package_type: INCOMING },
+    include: [{
+      model: PackageState,
+      where: { state_id: 3 },
+    }],
+  };
+  const actionRequiredCount = Package
+    .count(optionActionRequired)
+    .catch(next);
+
+  const optionAll = {
+    attributes: ['id'],
+    where: { customer_id: customerId, package_type: INCOMING },
+    include: [{
+      model: PackageState,
+      where: { state_id: [3, 4, 5] },
+    }],
+  };
+  const allCount = Package
+    .count(optionAll)
+    .catch(next);
+
+  return res.json({
+    readyToShipCount, inReviewCount, actionRequiredCount, allCount,
+  });
+};
+
+exports.addNote = async (req, res) => {
+  const { id } = req.params;
+  await Package
+    .update(req.body, { where: { id } });
+  return res.json({ message: 'Note updated to your package' });
+};
+

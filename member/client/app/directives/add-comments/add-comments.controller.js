@@ -1,6 +1,12 @@
 class AddcommentCtrl {
-  constructor($uibModalInstance) {
+  constructor($uibModalInstance, toaster, $http, $state, id) {
     this.$uibModalInstance = $uibModalInstance;
+    this.toaster = toaster;
+    this.$http = $http;
+    this.$state = $state;
+    this.id = id;
+    console.log({ id });
+    this.data = {};
   }
 
   cancel() {
@@ -9,6 +15,26 @@ class AddcommentCtrl {
 
   ok() {
     this.$uibModalInstance.close();
+  }
+  saveNote() {
+    this.submitting = true;
+    this.$http
+      .put(`/packages/${this.id}/addNote`, this.data)
+      .then(({ data: { message } }) => {
+        console.log(this.data);
+        this
+          .toaster
+          .pop('success', message);
+        this.submitting = false;
+        this.$state.reload();
+      })
+      .catch((err) => {
+        this
+          .toaster
+          .pop('error', err.data.message);
+        this.submitting = false;
+        this.error = err.data;
+      });
   }
 }
 

@@ -102,6 +102,14 @@ const packageStates = [{
   id: 15,
   name: 'Discard Requested',
   config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 52,
+  name: 'Standard Photo request', // -review php
+  config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 53,
+  name: 'Advanced Photo request', // -review php
+  config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
 }].map(x => ({ ...x, type: PACKAGE }));
 
 const shipmentStates = [{
