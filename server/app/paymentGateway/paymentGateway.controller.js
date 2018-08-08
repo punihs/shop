@@ -11,6 +11,7 @@ exports.show = (req, res, next) => Promise
     res
       .render('paymentGateway/show', Object
         .assign(paymentGateway, {
+          s3BaseUrl: req.s3BaseUrl,
           logo: 'img/PayPal.png',
           title: 'Online Shopping: Best Stores for Shopping Online - PayPal CA',
           meta_description: 'Shop with PayPal at millions of online stores by logging in with just your email and password. Secure check out at eBay, Best Buy, Home Depot and more.',

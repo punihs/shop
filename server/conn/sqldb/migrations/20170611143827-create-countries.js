@@ -24,6 +24,7 @@ module.exports = {
     phone_code: DataTypes.INTEGER,
     currency_code: DataTypes.STRING(3),
     capital_city: DataTypes.STRING,
+    flag: DataTypes.STRING,
     discount_percentage: DataTypes.INTEGER,
     is_shipping_available: DataTypes.BOOLEAN,
   }, timestamps(3, DataTypes)), engine),

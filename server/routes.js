@@ -37,7 +37,7 @@ const country = require('./api/country');
 const review = require('./api/review');
 const category = require('./api/category');
 const feedback = require('./api/feedback');
-const shippingPartner = require('./api/shippingPartner');
+const shippingPartnerShipments = require('./api/shippingPartner/shipment');
 const health = require('./api/health');
 const seo = require('./api/seo');
 const paymentGateway = require('./api/paymentGateway');
@@ -54,8 +54,10 @@ const userShipment = require('./api/user/shipment');
 const emailPreference = require('./api/emailPreference');
 const emailTemplate = require('./api/emailTemplate');
 const photoRequest = require('./api/package/photoRequest');
+const storeCategory = require('./api/storeCategory');
 const follower = require('./api/package/follower');
 const shipmentFollower = require('./api/shipment/follower');
+const redemption = require('./api/redemption');
 const shipmentTypes = require('./api/shipmentType');
 const webRoutes = require('./webRoutes');
 const minio = require('./conn/minio/minio.route');
@@ -79,7 +81,8 @@ module.exports = (app) => {
     photoRequest,
     follower,
   );
-  app.use('/api/shippingPartners', shippingPartner);
+  app.use('/api/shippingPartners', shippingPartnerShipments);
+  app.use('/api/storeCategory', storeCategory);
   app.use('/api/addresses', authenticate(), address);
   app.use(
     '/api/shipments',
@@ -90,7 +93,7 @@ module.exports = (app) => {
     shipmentFollower,
   );
   app.use('/api/shippingPreference', authenticate(), shippingPreference);
-  app.use('/api/transactions', authenticate(), transaction);
+  app.use('/api/transactions', transaction);
   app.use('/api/campaigns', authenticate(), campaign);
   app.use('/api/notifications', authenticate(), notification);
   app.use('/api/loyaltyHistories', authenticate(), loyaltyHistory);
@@ -100,6 +103,7 @@ module.exports = (app) => {
   app.use('/api/reviews', review);
   app.use('/api/categories', category);
   app.use('/api/feedbacks', feedback);
+  app.use('/api/redemptions', authenticate(), redemption);
   app.use('/api/orders', authenticate(), orders);
   app.use('/api/pricing', pricing);
   app.use('/api/packageItems', authenticate(), packageItem);

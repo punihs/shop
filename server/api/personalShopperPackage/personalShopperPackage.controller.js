@@ -234,6 +234,7 @@ exports.updateOrder = async (req, res) => {
           checkPersonalShopperItems.PackageItems[0].quantity) + req.body.quantity;
         newPrice = checkPersonalShopperPackages.price_amount -
           checkPersonalShopperItems.PackageItems[0].total_amount;
+
         newPrice += req.body.quantity * price;
 
 
@@ -361,25 +362,29 @@ exports.updateOrder = async (req, res) => {
         shopPackageId = packageId.id;
       }
     }
-    const personalShopperItem = {};
-    personalShopperItem.package_id = shopPackageId;
-    personalShopperItem.store_type = req.body.store_type;
-    personalShopperItem.quantity = req.body.quantity;
-    personalShopperItem.url = req.body.url;
-    personalShopperItem.code = req.body.code;
-    personalShopperItem.name = req.body.name;
-    personalShopperItem.color = req.body.color;
-    personalShopperItem.size = req.body.size;
-    personalShopperItem.price_amount = price;
-    personalShopperItem.total_amount = price * req.body.quantity;
-    personalShopperItem.note = req.body.note;
-    personalShopperItem.if_item_unavailable = req.body.if_item_unavailable;
-    personalShopperItem.status = 'pending';
+    const packageItem = {};
+    packageItem.package_id = shopPackageId;
+    packageItem.store_type = req.body.store_type;
+    packageItem.quantity = req.body.quantity;
+    packageItem.url = req.body.url;
+    packageItem.code = req.body.code;
+    packageItem.name = req.body.name;
+    packageItem.color = req.body.color;
+    packageItem.size = req.body.size;
+    packageItem.price_amount = price;
+    packageItem.total_amount = price * req.body.quantity;
+    packageItem.note = req.body.note;
+    packageItem.if_item_unavailable = req.body.if_item_unavailable;
+    packageItem.status = 'pending';
 
     await PackageItem
-      .update(personalShopperItem, { where: { id: checkPersonalShopperItems.PackageItems[0].id } });
+      .update(packageItem, {
+        where: {
+          id: (checkPersonalShopperItems.PackageItems[0] || { quantity: 0 }).id,
+        },
+      });
 
-    return res.json(personalShopperItem);
+    return res.json(packageItem);
   }
   return res.json(checkPersonalShopperItems);
 };
@@ -429,7 +434,7 @@ exports.destroyReq = async (req, res) => {
       .destroy({ where: { id: personalShopperPackage.id } });
 
     await PackageItem
-      .destroy({ where: { id: checkPersonalShopperItems.PackageItems[0].id } });
+      .destroy({ where: { id: (checkPersonalShopperItems.PackageItems[0] || { id: 0 }).id } });
   } else {
     const orderId = personalShopperPackage.id;
 
@@ -462,7 +467,7 @@ exports.destroyReq = async (req, res) => {
       .update(personalShopPackage, { where: { id: orderId } });
 
     await PackageItem
-      .destroy({ where: { id: checkPersonalShopperItems.PackageItems[0].id } });
+      .destroy({ where: { id: (checkPersonalShopperItems.PackageItems[0] || { id: 0 }).id } });
   }
   return res.json(PackageItem);
 };

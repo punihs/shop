@@ -23,7 +23,7 @@ describe('EmailPreferences', () => {
 
   before(() => EmailTemplate
     .findOrCreate({
-      where: { name: 'package_state-change' },
+      where: { name: 'package_state-change_1' },
       defaults: {
         group_id: Meta.group_id,
         description: Meta.description,
@@ -61,7 +61,7 @@ describe('EmailPreferences', () => {
               .sendTemplatedEmailAsync({
                 Source: 'support@shoppre.com',
                 Destination: { ToAddresses: [VIKASJSON_EMAIL] },
-                Template: 'package_state-change',
+                Template: 'package_state-change_1',
                 TemplateData: '{"customer":{"name":"Shoprre"}}',
               })
               .then((emailResponse) => {

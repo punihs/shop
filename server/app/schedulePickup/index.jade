@@ -1,0 +1,335 @@
+extends ../layout
+block head
+  title '#{title}'
+  meta(name='description', content= '#{meta_description}')
+  meta(name="keywords" content="#{meta_keywords}")
+
+block content
+  section.timeline
+    .container
+      #scheduleModel.modal.fade(role='dialog')
+        .modal-dialog
+          .modal-content
+            .modal-body
+              .login-content
+                h3.head-tag Congratulations !
+                h4.head-tag Your Schedule Pickup Request Submitted Successfully.
+                .text-center
+                  .login-social
+                    a.btn.btn-block.btn-shoppre.btn-shoppre-padding(href="#{s3BaseUrl}") Finish
+            .modal-footer
+      h3 Schedule Your Pickup
+      .schedule-container
+        form#form-pickup.form-horizontal
+          h4.head-align
+            u YOUR CONTACT DETAILS :
+          .row
+            .col-sm-6
+              .form-group
+                label
+                  | First Name
+                  span.mendatory_fields *
+                  |  :
+                input.form-control(type='text', placeholder='Enter first name', name='first_name')
+                var errors = ''
+                .clearfix
+            .col-sm-6
+              .form-group.label-align
+                label
+                  | Last Name
+                  span.mendatory_fields *
+                  |  :
+                input.form-control(type='text', placeholder='Enter last name', name='last_name')
+
+                .clearfix
+          .row
+            .col-sm-6
+              .form-group
+                label
+                  | Email
+                  span.mendatory_fields *
+                  |  :
+                input.form-control(type='email', placeholder='Enter email', name='user_email')
+                .clearfix
+            .form-group
+              label.control-label.label-padding
+                | Phone
+                span.mendatory_fields *
+              .row
+                .col-sm-2
+                  select.select2.form-control(name='phone_code')
+                    option(value='') Country Code
+                     each country in countries
+                       option(value='#{country.phone_code}')#{country.iso2}
+                       | #{country.phone_code}
+
+                .col-sm-4.box-size
+                  input.form-control(type='text', name='mobile', placeholder='Phone Number')
+          h4.head-align
+            u  PICK-UP ADDRESS :
+          .row
+            .col-sm-6
+              .form-group
+                label
+                  | First Name
+                  span.mendatory_fields *
+                  |  :
+                input.form-control(type='text', placeholder='Enter first name', name='pc_fname')
+                .clearfix
+            .col-sm-6
+              .form-group.label-align
+                label
+                  | Last Name
+                  span.mendatory_fields *
+                  |  :
+                input.form-control(type='text', placeholder='Enter last name', name='pc_lname')
+                .clearfix
+          .row
+            .col-sm-6
+              .form-group
+                label
+                  | State
+                  span.mendatory_fields *
+                  |  :
+                select.select2.form-control(name='pc_state')
+                  option(value='') Select State
+                    each  state in states
+                      option(value='#{state.name}')
+                        | #{state.name}
+
+                .clearfix
+            .col-sm-6
+              .form-group.label-align
+                label
+                  | City
+                  span.mendatory_fields *
+                  |  :
+                input.form-control(type='text', placeholder='Enter City', name='pc_city')
+                .clearfix
+          .row
+            .col-sm-6
+              .form-group
+                label
+                  | Street
+                  span.mendatory_fields *
+                  |  :
+                input.form-control(type='text', placeholder='Plaese Enter Street', name='pc_street')
+                .clearfix
+            .col-sm-6
+              .form-group.label-align
+                label
+                  | Pincode
+                  span.mendatory_fields *
+                  |  :
+                input.form-control(type='text', placeholder='Enter Pincode', name='pc_pincode')
+                .clearfix
+          .row
+            .col-sm-6
+              .form-group
+                label
+                  | Mobile
+                  span.mendatory_fields *
+                  |  :
+                input.form-control(type='text', placeholder='Enter Mobile', name='pc_contact_no')
+                .clearfix
+            .col-sm-6
+              .form-group.label-align
+                label Email :
+                input.form-control(type='text', placeholder='Enter Email', name='pc_email')
+                .clearfix
+          h4.head-align
+            u PACKAGE INFORMATION :
+          .row
+            .col-sm-6
+              .form-group
+                label
+                  | Weight Of Package(in kg)
+                  span.mendatory_fields *
+                  |  :
+                input.form-control(type='number', placeholder='Enter package weight', name='package_weight')
+                .clearfix
+            .col-sm-6
+              .form-group.label-align
+                label Size Of The Package If You Are Aware( Length, Breadth and Height ) :
+                input.form-control(type='text', placeholder='Enter package size', name='size_of_package')
+                .clearfix
+          .row
+            .col-sm-12
+              .form-group
+                label
+                  | No Of Packages
+                  span.mendatory_fields *
+                  |  :
+                input.form-control(type='number', placeholder='Enter No Of Packages', name='no_of_packages')
+                .clearfix
+          .row
+            .col-sm-12
+              .form-group
+                label
+                  | Items Of The Package
+                  span.mendatory_fields *
+                  |  :
+                input.form-control(type='text', placeholder='Enter Package Items', name='package_items')
+                .clearfix
+          .row
+            .col-sm-12
+              .form-group
+                label
+                  u  Does It Contains The Following:
+                br
+                input(type='checkbox', name='home_made', value='Home Made Food items')
+                |  Home Made Food
+                |                                 items
+                br
+                input(type='checkbox', name='branded_food_items', value='Branded Food items')
+                |  Branded
+                |                                 Food
+                |                                 items
+                br
+                input(type='checkbox', name='liquid_items', value='Liquid items')
+                |  Liquid items
+                br
+                input(type='checkbox', name='medicine_items', value='Medicines - Allopathy/Ayurvedic/Homeopathic')
+                |                                 Medicines - Allopathy/Ayurvedic/Homeopathic
+                br
+                input(type='checkbox', name='electronics', value='Electronics')
+                |  Electronic items
+                br
+                input(type='checkbox', name='other', value='Other')
+                |  Other
+                br
+                .clearfix
+          .other_item_box
+            .row
+              .col-sm-12
+                .form-group
+                  label Other Item Detail:
+                  input.form-control(type='text', placeholder='Enter Other Item Detail', name='other_items')
+                  .clearfix
+          h4.head-align
+            u DESTINATION ADDRESS :
+          .row
+            .col-sm-6
+              .form-group
+                label
+                  | Firstname
+                  span.mendatory_fields *
+                  |  :
+                input.form-control(type='text', placeholder='Enter first name', name='dc_fname')
+                .clearfix
+            .col-sm-6
+              .form-group.label-align
+                label
+                  | Lastname
+                  span.mendatory_fields *
+                  |  :
+                input.form-control(type='text', placeholder='Enter last name', name='dc_lname')
+                .clearfix
+          .row
+            .col-sm-6
+              .form-group
+                label
+                  | Street
+                  span.mendatory_fields *
+                  |  :
+                input.form-control(type='text', placeholder='Plaese Enter Street', name='dc_street')
+                .clearfix
+            .col-sm-6
+              .form-group.label-align
+                label
+                  | Pincode
+                  span.mendatory_fields *
+                  |  :
+                input.form-control(type='text', placeholder='Enter Pincode', name='dc_pincode')
+                .clearfix
+          .row
+            .col-sm-6
+              .form-group
+                label State :
+                input.form-control(type='text', placeholder='Enter State', name='dc_state')
+                .clearfix
+            .col-sm-6
+              .form-group.label-align
+                label
+                  | City
+                  span.mendatory_fields *
+                  |  :
+                input.form-control(type='text', placeholder='Enter City', name='dc_city')
+                .clearfix
+          .row
+            .col-sm-6
+              .form-group
+                label.control-label
+                  | Country
+                  span.mendatory_fields *
+                select.select2.form-control(name='dc_country')
+                  option(value='') Select Country
+                  each  country in countries
+                    option(value='#{country.name}') #{country.name}
+
+            .col-sm-6
+              .form-group.label-align
+                label.control-label
+                  | Phone
+                  span.mendatory_fields *
+                .row
+                  .col-sm-4
+                    select.select2.form-control(name='dc_phone_code')
+                      option(value='') Country Code
+                      each country in countries
+                        option(value='#{country.phone_code}') #{country.iso2}
+                        |#{country.phone_code}
+
+                  .col-sm-8
+                    input.form-control(type='text', name='dc_contact_no', placeholder='Phone Number')
+          h4.head-align
+            u  PAYMENT METHOD :
+          .row
+            .col-sm-12
+              .form-group
+                label
+                  | Amount Transfer Options
+                  span.mendatory_fields
+                  | :
+                br
+                input(type='radio', name='payment_option', value='shoppre_account')
+                |                                 Transferwise.com or Bank
+                |                                 Transer
+                |                                 Name: INDIANSHOPPRE LLP , Account
+                br
+                |       Number: 917020057881967 ,
+                |                                 IFS
+                |                                 Code: UTIB0000009 ,
+                |                                 MICR Code:
+                br
+                |        560211002 ,
+                u
+                  | E-mail ID:
+                  | support@shoppre.com
+                | , Swift Code: AXISINBB009
+                br
+                input(type='radio', name='payment_option', value='paypal')
+                |  PayPal - 10% Extra -
+                |                                 support@shoppre.com
+                br
+                input(type='radio', name='payment_option', value='paytm')
+                |                                 Paytm - {{env('PAYTM_CHARGE')}}% Extra - 9148357733
+                br
+                input(type='radio', name='payment_option', value='card')
+                |  Debit/Credit Card
+                .clearfix
+                |                                 @if ($errors->has('payment_option'))
+                span.error {{ $errors->first('payment_option') }}
+                |                                 @endif
+          .row
+            .col-sm-12
+              .form-group
+                label
+                  | Comment
+                  span.mendatory_fields
+                  | :
+                input.form-control(type='text', name='comment', placeholder='Enter Any Extra Comment .......')
+          .row
+            .col-md-4.col-sm-offset-4
+              button.btn.btn-block.btn-shoppre(type='submit') Confirm Pickup
+          .clearfix

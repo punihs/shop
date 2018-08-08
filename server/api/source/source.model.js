@@ -7,6 +7,9 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
   });
 
+  Source.associate = (db) => {
+    Source.hasMany(db.Review);
+  };
   return Source;
 };
 

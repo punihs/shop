@@ -1,7 +1,7 @@
 extends ../layout
 block content
   head
-    title '#{title}'
+    title #{title}
     meta(name='description', content= '#{meta_description}')
     meta(property='og:title', content='#{meta_title}')
   .body
@@ -12,11 +12,9 @@ block content
     .row
       .col-sm-3
         .movie-card#oceans-11
-          img(src="/cdn/img/PayPal.png", style='height:120px' itemprop="logo")
+          img(src="#{s3BaseUrl}/img/PayPal.png", style='height:120px' itemprop="logo")
       .col-sm-9
         h1(itemprop="name")
-          //| #{name}
-            | Countries
         h4(itemprop="description")= '#{description}'
 
 

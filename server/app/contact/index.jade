@@ -1,0 +1,225 @@
+extends ../layout
+block head
+  title #{title}
+  meta(name='description', content= '#{meta_description}')
+  meta(name="keywords" content="#{meta_keywords}")
+block css_style
+  style.
+    #map1, #map2 {
+      height: 180px;
+      width: 100%;
+    }
+
+    .infobox {
+    }
+
+    .infobox h5 {
+      margin: 0;
+    }
+
+    .infobox p {
+      margin: 0;
+      font-size: 12px;
+      margin-top: 5px !important;
+    }
+
+block content
+  section.page_head
+    .pagebanner
+      img(src="#{s3BaseUrl}/img/banner2.jpg", width='100%')
+      .banner-cap
+        h2
+          | Contact
+          span.text-orange Us
+
+
+  section.contact_ico
+    .container
+      .blox
+        img(src='#{s3BaseUrl}/img/contact1.png')
+        h4 Call
+        span
+          a(href='tel:+91 80 4094 4077') +91 80 4094 4077
+      .blox
+        img(src='https://www.shoppre.com/img/contact3.png')
+        h4 Email
+        span
+          a(href='mailto:support@shoppre.com') support@shoppre.com
+      .blox
+        img(src='https://www.shoppre.com/img/contact4.png')
+        h4 Live Chat
+        span
+          a(href='https://tawk.to/chat/59d72784c28eca75e4624678/default/?$_tawk_popout=true', target='_blank') Our Team is at your service 24/7
+      .blox
+        img(src='https://www.shoppre.com/img/contact5.png')
+        h4 Hours
+        span
+          | Monday - Sunday
+          br
+          | service 24/7
+
+    section.contact_us
+      .container
+        .col-sm-7
+          .contact_form
+            form.form-horizontal(method='post', action='https://www.shoppre.com/contact/submit')
+              input(type='hidden', name='_token', value='Bm7G09hF7wE5EvBxEEfK99dZnAkpdveOgSqbGZmY')
+              .form-group
+                .input-group
+                  .input-group-addon
+                    img(src='#{s3BaseUrl}/img/name.png')
+                  input.form-control(type='text', placeholder='First Name', name='firstname')
+              .form-group
+                .input-group
+                  .input-group-addon
+                    img(src='#{s3BaseUrl}/img/name.png')
+                  input.form-control(type='text', placeholder='Last Name', name='lastname')
+              .form-group
+                .input-group
+                  .input-group-addon
+                    img(src='#{s3BaseUrl}/img/mail.png')
+                  input.form-control(type='email', placeholder='Email', name='email')
+              .form-group
+                .input-group
+                  .input-group-addon
+                    img(src='#{s3BaseUrl}/img/locker.png')
+                  input.form-control(type='text', placeholder='My Locker(optional)', name='locker')
+              .form-group
+                .input-group
+                  .input-group-addon
+                    img(src='#{s3BaseUrl}/img/country.png')
+                  select.form-control.select2(name='country')
+                    option(value='') Select Country
+                      each country in countries
+                        option(value= '#{country.id}') #{country.name}
+
+              .form-group
+                .input-group
+                  .input-group-addon
+                    img(src='#{s3BaseUrl}/img/phone-512.png')
+                  input.form-control(type='number', placeholder='Contact Number', name='phone')
+              .form-group
+                .input-group
+                  .input-group-addon
+                    img(src='#{s3BaseUrl}/img/reason.png')
+                  select.form-control.select2(name='reason')
+                    option(value='Select Reason') Select Reason
+                    option(value="Can't I sign into my account")
+                      | Can't I sign into my account
+                    option(value='Can you ship Dangerous Goods?')
+                      | Can you ship Dangerous Goods?
+                    option(value='Can you buy goods for me?')
+                      | Can you buy goods for me?
+                    option(value='Can I shop from any website I want?')
+                      | Can I shop from any website I
+                      | want?
+                    option(value='Do you offer a pick up service?')
+                      | Do you offer a pick up service?
+                    option(value='How do I apply for a membership?')
+                      | How do I apply for a membership?
+                    option(value='How do I cancel my account?')
+                      | How do I cancel my account?
+                    option(value='How do I cancel my shipment request?')
+                      | How do I cancel my shipment
+                      | request?
+                    option(value='How do I place a Personal Shopper order?')
+                      | How do I place a Personal
+                      | Shopper order?
+                    option(value='How can I purchase items online?')
+                      | How can I purchase items online?
+                    option(value='How do I partner with Shoppre.com?')
+                      | How do I partner with
+                      | Shoppre.com?
+                    option(value='How do I track my package?')
+                      | How do I track my package?
+                    option(value='How Much do you Charge for Shipping?')
+                      | How Much do you Charge for
+                      | Shipping?
+                    option(value='What are my payment options?')
+                      | What are my payment options?
+                    option(value='What are the Personal Shopper works?')
+                      | What are the Personal Shopper
+                      | works?
+                    option(value='What are the Personal Shopper Fees?')
+                      | What are the Personal Shopper
+                      | Fees?
+                    option(value='When am I charged for duties and taxes?')
+                      | When am I charged for
+                      | duties and taxes?
+                    option(value='Why am I not able to create a ship request?')
+                      | Why am I not able to
+                      | create a ship request?
+                    option(value='What carriers do you ship with?')
+                      | What carriers do you ship with?
+                    option(value='What if I entered my address wrong?')
+                      | What if I entered my address
+                      | wrong?
+                    option(value='Where is my package?')
+                      | Where is my package?
+                    option(value='What is the consolidation process?')
+                      | What is the consolidation
+                      | process?
+                    option(value='Why was my registration unsuccessful?')
+                      | Why was my registration
+                      | unsuccessful?
+                    option(value='Other Help?')
+                      | Other Help?
+              .form-group.textarea
+                textarea.form-control(type='text', rows='6', placeholder='Enter Your Message', name='msg_content')
+              .form-group
+                .input-group
+                  button.btn.btn-shoppre(type='submit') Send Message
+        .col-sm-5
+          .contact_loc
+            h4 Our Office in India
+            #map1
+            p
+              | IndianShoppre LLP, First Floor, No. 181, 2nd Cross Road, 7th Main, Koramangala 1st Block, Bengaluru I 560034, Karnataka, India
+            hr
+            h4 Our Office in U.A.E
+            #map2
+            p
+              | Sephora Office, Mezzanine Floor, Flora Creek Hotel Apartments, Near Deira City Centre, Port Saeed | 119062 Dubai, UAE
+          .contact_social
+            a(href='https://www.facebook.com/goshoppre/', target='_blank')
+              img(src='#{s3BaseUrl}/img/facebook.png')
+              span Like Us
+            a(href='https://www.instagram.com/shoppre_official/?hl=en', target='_blank')
+              img(src='#{s3BaseUrl}/img/instagram.png')
+              span Follow us
+            a(href='https://twitter.com/Go_Shoppre', target='_blank')
+              img(src='#{s3BaseUrl}/img/twitter.png')
+              span Tweet to us
+            a(href='https://www.youtube.com/channel/UCCBP1ybWY9spoleKqMgAQaw', target='_blank')
+              img(src='#{s3BaseUrl}/img/youtube.png')
+              span Watch our videos
+
+  script(src="#{s3BaseUrl}/js/jquery.min.js")
+  script(type='text/javascript').
+    var map1, map2;
+    function initialize() {
+      var LatLng1 = {lat: 12.9257893, lng: 77.6343453};
+      map1= new google.maps.Map(document.getElementById("map1"), {
+        zoom: 14,
+        center: LatLng1,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+      var marker1 = new google.maps.Marker({
+        position: LatLng1,
+        map: map1,
+      });
+      var LatLng2 = {lat: 25.2534363, lng: 55.3282428};
+      map2 = new google.maps.Map(document.getElementById("map2"), {
+        zoom: 14,
+        center: LatLng2,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+      var marker2 = new google.maps.Marker({
+        position: LatLng2,
+        map: map2,
+      });
+    }
+  script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDQzl11fjwwyiw_KRIV61HN7U-5HPPwmLQ&callback=initialize')
+  noscript.img(height='1', width='1', style='display:none', src='https://www.facebook.com/tr?id=437389746641326&ev=PageView&noscript=1')
+
+

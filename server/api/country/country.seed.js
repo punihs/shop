@@ -9,6 +9,7 @@ module.exports = () => [
     is_shipping_available: 1,
     slug: 'afghanistan',
     currency_code: 'AFN',
+    flag: 'afghanistan.jpg',
     capital_city: 'Kabul',
   },
   {
@@ -21,6 +22,7 @@ module.exports = () => [
     is_shipping_available: 1,
     slug: 'albania',
     currency_code: 'ALL',
+    flag: 'albania.png',
     capital_city: 'Tirana',
   },
   {

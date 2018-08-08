@@ -25,5 +25,11 @@ angular.module('uiGenApp')
         controller: 'shipmentConfirm',
         controllerAs: '$ctrl',
       })
+      .state('dash.response', {
+        url: '/115/request/reponse',
+        templateUrl: 'app/routes/dash/response/response.html',
+        controller: 'PaymentResponse',
+        controllerAs: '$ctrl',
+      })
     ;
   });

@@ -18,11 +18,12 @@ exports.show = (req, res, next) => Promise
     res
       .render('shippingPartner/show', Object
         .assign(shippingPartner, {
+          s3BaseUrl: req.s3BaseUrl,
           seo,
           title: 'International Shipping from India, Flipkart International Delivery',
           meta_description: 'Meta Title International Shipping from India, Flipkart International Delivery',
           meta_title: 'Meta Description International Shipping from India, Flipkart International Delivery',
-          logo: '/app/img/dhl.png',
+          logo: `${req.s3BaseUrl}/app/img/dhl.png`,
         })))
   .catch(next);
 

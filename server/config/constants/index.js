@@ -27,14 +27,23 @@ const constants = {
     ABANDON: 'abandon',
   },
   PACKAGE_STATE_IDS: {
-    CREATED: 1,
-    PROCESSING: 1,
-    VALUES: 2,
-    REVIEW: 3,
-    DELIVERED: 4,
-    SHIP: 5,
-    INREVIEW: 6,
-    PAYMENT_CONFIRMED: 22,
+    PACKAGE_ITEMS_UPLOAD_PENDING: 1,
+    AWAITING_VERIFICATION: 2,
+    CUSTOMER_INPUT: 3,
+    IN_REVIEW: 4,
+    READY_TO_SHIP: 5,
+    DAMAGED: 6,
+    RETURN_REQUEST_FROM_CUSTOMER: 7,
+    RETURN_PICKUP_DONE: 8,
+    PS_RETURN_REQUESTED: 9,
+    PS_REFUND_RECIEVED: 10,
+    SPLIT_PACKAGE: 11,
+    SPLIT_PACKAGE_PROCESSED: 12,
+    DISCARDED: 13,
+    ADDED_SHIPMENT: 14,
+    DISCARD_REQUESTED: 15,
+    STANDARD_PHOTO_REQUEST: 52,
+    ADVANCED_PHOTO_REQUEST: 53,
   },
   SHIPMENT_COUPON_STATES: {
     PENDING: 'pending',
@@ -136,6 +145,15 @@ const constants = {
     INCOMING: '1',
     PERSONAL_SHOPPER: '2',
     COD: '3',
+  },
+  RATE_TYPES: {
+    FIXED: '1',
+    MULTIPLE: '2', // 'Liquid, Cream, Oil & Home-made food items'
+  },
+  SHIPPING_PARTNERS_ID: {
+    DHL: 1,
+    FEDEX: 2,
+    DTDC: 3,
   },
 };
 

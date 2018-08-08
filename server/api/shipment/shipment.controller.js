@@ -783,17 +783,16 @@ exports.finalShipRequest = async (req, res) => {
     .find(redemptionOptions);
   let couponAmount = 0;
 
-  const couponOptions = {
-    attributes: ['id', 'code', 'cashback_percentage', 'discount_percentage'],
-    where: {
-      code: couponAppliedStatus.coupon_code,
-      expires_at: {
-        $gt: new Date(),
-      },
-    },
-  };
-
   if (couponAppliedStatus) {
+    const couponOptions = {
+      attributes: ['id', 'code', 'cashback_percentage', 'discount_percentage', 'max_cashback_amount'],
+      where: {
+        code: couponAppliedStatus.coupon_code,
+        expires_at: {
+          $gt: new Date(),
+        },
+      },
+    };
     const promo = await Coupon
       .find(couponOptions);
     if (promo) {
@@ -967,6 +966,7 @@ exports.finalShipRequest = async (req, res) => {
   req.user.ship_request_id = shipment.id;
   req.user.isWalletUsed = 0;
   req.user.isRetryPayment = 0;
+
   log({ message: 'payment.paytm.start' });
   switch (paymentGatewayName) {
     // eslint-disable-next-line no-case-declarations
@@ -979,8 +979,9 @@ exports.finalShipRequest = async (req, res) => {
 
     case 'paypal':
       log({ message: 'payment.paypal.start' });
-      res.json({ message: 'payment.paypal.start' });
-      break;
+      res.json({ message: 'payment.paypal.start' });     
+      return res.redirect(`https://member.shoppre.test/paymentGateway/axis?checksum=${encryptedData}`);
+      // break; 
     // eslint-disable-next-line no-case-declarations
     case 'paytm':
       log({ message: 'payment.paytm.start' });
@@ -1030,7 +1031,7 @@ exports.payRetrySubmit = async (req, res) => {
         shipmentWalletAmount += customerWalletAmount;
       }
       req.user.is_wallet_used = 1;
-      req.user.is_retry_payment = 0;
+      req.user.is_retry_payment = 1;
     }
     // end
 
@@ -1753,3 +1754,31 @@ exports.updateShipmetStatus = () => {
           }));
     });
 };
+
+
+exports.response = async (req, res) => {
+  const { id } = req.params;
+  const customerId = req.user.id;
+  const options = {
+    attributes: ['id', 'value_amount', 'address', 'customer_id', 'weight',
+      'order_code', 'final_amount', 'package_level_charges_amount', 'customer_name', 'phone'],
+    where: { id },
+    include: [{
+      model: User,
+      as: 'Customer',
+      attributes: ['id', 'email'],
+    }, {
+      model: PaymentGateway,
+      attributes: ['id', 'name', 'value'],
+    }],
+  };
+  const shipment = await Shipment
+    .find(options);
+  log({ shipment });
+  if (shipment && shipment.customer_id === customerId) {
+    // return res.json({ shipment });
+    return res.json({ shipment });
+  }
+  return res.status(404).json({ message: 'shipment not found' });
+};
+

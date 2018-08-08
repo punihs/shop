@@ -2,13 +2,16 @@ const debug = require('debug');
 const sequelize = require('sequelize');
 
 const {
-  Package, Store, User, Locker, PackageState,
+  Package, Store, User, Locker, PackageState, PackageItem,
 } = require('../../conn/sqldb');
 
-const { APPS, GROUPS: { CUSTOMER, OPS } } = require('./../../config/constants');
+const {
+  APPS, GROUPS: { CUSTOMER, OPS },
+  PACKAGE_STATE_IDS: { STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST },
+} = require('./../../config/constants');
 const BUCKETS = require('./../../config/constants/buckets');
 
-const log = debug('s-api-package-service');
+const log = console.log; //debug('s-api-package-service');
 
 const kvmap = (arr, key, value) => arr.reduce((nxt, x) => ({ ...nxt, [x[key]]: x[value] }), {});
 
@@ -28,12 +31,15 @@ exports.index = ({ query, params, user: actingUser }) => {
 
   switch (true) {
     case (actingUser.app_id === APPS.MEMBER && actingUser.group_id === CUSTOMER): {
-      options.attributes = ['id', 'created_at', 'weight', 'price_amount'];
+      options.attributes = ['id', 'created_at', 'weight', 'price_amount', 'store_id'];
       options.where.customer_id = actingUser.id;
       options.include = [{
         where: {},
         model: PackageState,
         attributes: ['id', 'state_id'],
+      }, {
+        model: PackageItem,
+        attributes: ['id', 'name', 'price_amount', 'quantity', 'total_amount'],
       }, {
         model: Store,
         attributes: ['id', 'name'],
@@ -42,7 +48,7 @@ exports.index = ({ query, params, user: actingUser }) => {
     }
     case (actingUser.app_id === APPS.OPS && actingUser.group_id === OPS): {
       if (IS_CUSTOMER_PAGE) options.where.customer_id = params.customerId;
-      options.attributes = ['id', 'customer_id', 'created_at', 'weight', 'price_amount'];
+      options.attributes = ['id', 'customer_id', 'created_at', 'weight', 'price_amount', 'store_id'];
       options.include = [{
         where: {},
         model: PackageState,
@@ -101,7 +107,7 @@ exports.index = ({ query, params, user: actingUser }) => {
   // console.log('status in query: ', options.include[0].where.state_id)
   // const shipmentStateModel = { ...options.include[0] };
   // shipmentStateModel.where.state_id = BUCKET.VIEW_ALL;
-  log('bucket in query: ', options.include[0].where.state_id);
+  // log('bucket in query: ', options.include[0].where.state_id);
   return Promise
     .all([
       Package
@@ -122,10 +128,17 @@ exports.index = ({ query, params, user: actingUser }) => {
             group: ['state_id'],
             raw: true,
           }),
-      // Package
-      //   .count({ where: options.where, include: [shipmentStateModel] }),
+      Package
+        .findAll({
+          attributes: ['id'],
+          include: [{
+            model: PackageState,
+            attributes: ['comments', 'id'],
+            where: { state_id: [STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST] },
+          }],
+        }),
     ])
-    .then(([packages, total, facets, viewAllCount]) => ({
+    .then(([packages, total, facets, viewAllCount, photoRequests]) => ({
       packages: packages
         .map(x => (x.PackageState ? ({ ...x.toJSON(), state_id: x.PackageState.state_id }) : x)),
       total,
@@ -133,5 +146,6 @@ exports.index = ({ query, params, user: actingUser }) => {
         state_id: kvmap(facets, 'state_id', 'cnt'),
       },
       viewAllCount,
+      photoRequests,
     }));
 };

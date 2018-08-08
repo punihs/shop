@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     phone_code: DataTypes.INTEGER,
     currency_code: DataTypes.STRING,
     capital_city: DataTypes.STRING,
+    flag: DataTypes.STRING,
     discount_percentage: DataTypes.INTEGER,
     is_shipping_available: DataTypes.BOOLEAN,
   }, {
@@ -22,6 +23,11 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false,
     underscored: true,
   });
+
+  Country.associate = (db) => {
+    Country.hasMany(db.CountryGuide);
+    Country.hasMany(db.Review);
+  };
 
   return Country;
 };

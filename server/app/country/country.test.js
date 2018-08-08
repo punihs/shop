@@ -18,7 +18,7 @@ describe('Website on Desktop View', async () => {
   it('Website Should Load Successfully', async () => {
     let response;
     try {
-      response = await page.goto(`${URLS_API}/api/countries`, {
+      response = await page.goto(`${URLS_API}/api/place`, {
         timeout: 0,
         waitUntil: 'domcontentloaded',
       });

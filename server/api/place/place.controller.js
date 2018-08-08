@@ -16,30 +16,15 @@ exports.index = (req, res, next) => {
       model: Shipment,
       attributes: ['weight', 'courier_charge_amount'],
     }];
-  }
-
-  if (type === 'indian_states') {
+  } else if (type === 'indian_states') {
     options.where.type = 'state';
     options.where.parent_id = 86;
+  } else {
+    options.where.type = type;
   }
 
   return Place
     .findAll(options)
     .then(places => res.json(places))
-    .catch(next);
-};
-
-exports.show = (req, res, next) => {
-  const { slug } = req.params;
-  const options = {
-    attributes: req.query.fl
-      ? req.query.fl.split(',')
-      : ['id', 'name', 'slug', 'type'],
-    where: { slug },
-  };
-
-  return Place
-    .find(options)
-    .then(place => res.json(place))
     .catch(next);
 };

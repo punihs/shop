@@ -4,18 +4,26 @@ const morgan = require('morgan');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const responseTime = require('response-time');
+const helmet = require('helmet');
+
 const oauthComponent = require('./../components/oauth/express');
 const config = require('./environment');
 const routes = require('../routes');
 const db = require('../conn/sqldb');
-const responseTime = require('response-time');
-const helmet = require('helmet');
+const { activityLogger } = require('../components/log');
 const { apiLogger } = require('../components/log');
 const logger = require('../components/logger');
 const rateLimit = require('./ratelimit');
 const s3RegionSupport = require('./s3RegionSupport');
 
+
 module.exports = (app) => {
+  app.use((req, res, next) => {
+    res.on('finish', () => activityLogger({ db })(req, res, next));
+    next();
+  });
+  Object.assign(app.locals, { pretty: true });
   if (config.env !== 'production') app.use(morgan('dev'));
   app.enable('trust proxy');
   app.use(responseTime());
