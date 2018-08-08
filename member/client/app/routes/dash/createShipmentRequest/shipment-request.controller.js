@@ -1,5 +1,5 @@
 class shipmentRequestController {
-  constructor($http, Page, $stateParams, $location, AddAddress) {
+  constructor($http, Page, $stateParams, $location, AddAddress, toaster) {
     this.AddAddress = AddAddress;
     this.$http = $http;
     this.Page = Page;
@@ -11,6 +11,7 @@ class shipmentRequestController {
     this.$stateParams = $stateParams;
     this.$packageIds = this.$location.search().packageIds;
     this.data = {};
+    this.toaster = toaster;
     this.totalChargeAmount = 0;
     this.totalAmount_from_api = 0;
     this.operationsAmount = 0;
@@ -49,7 +50,6 @@ class shipmentRequestController {
       extrapackAmount + originalAmount + giftwrapAmount + giftnoteAmount;
     this.totalChargeAmount = this.charges + this.totalAmount_from_api;
     this.operationsAmount = this.charges;
-    console.log(this.data);
   }
 
   getList() {
@@ -59,7 +59,6 @@ class shipmentRequestController {
         this.shipments = packages;
         this.customer = customer;
         this.shipmentMeta = shipmentMeta;
-        console.log('this.shipments', this.shipments);
         this.data = {
           repack: false,
           sticker: false,
@@ -75,7 +74,6 @@ class shipmentRequestController {
           invoice_include: false,
         };
 
-        console.log(this.data);
         customer.Addresses.forEach(x => {
           if (x.is_default) this.data.address_id = x.id;
         });
@@ -83,17 +81,19 @@ class shipmentRequestController {
           this.totalpackagePriceAmount += x.price_amount;
         });
 
+        // eslint-disable-next-line no-restricted-syntax,guard-for-in
         for (const key in shipmentMeta) {
           this.totalAmount_from_api += shipmentMeta[key];
         }
         this.totalChargeAmount = this.totalAmount_from_api;
       })
       .catch(err => {
-        alert(err.data.message);
-      });
+        this
+          .toaster
+          .pop('danger', err.data.message); });
   }
 
-  create(newShipmentForm) {
+  create() {
     if (this.submitting) return null;
     this.submitting = true;
 

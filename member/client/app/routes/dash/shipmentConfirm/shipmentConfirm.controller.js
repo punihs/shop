@@ -1,9 +1,10 @@
 class shipmentConfirm {
-  constructor($http, Page, $stateParams, $location, ViewPhotoService) {
+  constructor($http, Page, $stateParams, $location, ViewPhotoService, toaster) {
     this.ViewPhotoService = ViewPhotoService;
     this.$http = $http;
     this.Page = Page;
     this.$location = $location;
+    this.toaster = toaster;
     this.$stateParams = $stateParams;
     this.packages = [];
     this.shipment = [];
@@ -23,8 +24,6 @@ class shipmentConfirm {
   $onInit() {
     this.Page.setTitle('Shipment confirmation');
     this.getList();
-    console.log('pakg', this.packages);
-    console.log('ship', this.shipment);
   }
 
   openPhoto(id) {
@@ -44,8 +43,6 @@ class shipmentConfirm {
       .get('/shipments/confirmShipment?order_code=1000')
       .then(({ data: { shipment, packages, payment, promoStatus,
         couponAmount, couponName, paymentGateway } }) => {
-        console.log({ shipment, packages, payment, promoStatus,
-          couponAmount, couponName, paymentGateway });
         this.packages = [];
         this.packages.push(packages);
         this.paymentGateway = paymentGateway;
@@ -53,30 +50,25 @@ class shipmentConfirm {
         const shipmentMeta = [];
         shipmentMeta.push(shipment);
         this.shipmentMeta = shipmentMeta[0].ShipmentMetum;
-        console.log('meat', this.shipmentMeta);
-        console.log('ship', this.shipment);
         this.payment = payment;
-        console.log('value', this.shipment.value_amount);
-        console.log('pg', this.paymentGateway);
         this.promoStatus = promoStatus;
         this.couponAmount = couponAmount;
         this.data.default_payment_gateway = payment.payment_gateway_name;
       })
       .catch(err => {
-        alert(err.data.message);
+        this
+          .toaster
+          .pop('danger', err.data.message);
       });
   }
   walletClicked() {
-    // if (this.couponCode) {
     if (this.wallet === true) {
       this.wallet = false;
     } else {
       this.wallet = true;
-      // }
     }
   }
   selectedGateway() {
-    console.log('this.s', this.data.default_payment_gateway);
   }
   applyPromoCode() {
     if (this.couponCode) {
@@ -88,7 +80,9 @@ class shipmentConfirm {
           this.getList();
         })
         .catch(err => {
-          alert(err.data.message);
+          this
+            .toaster
+            .pop('danger', err.data.message);
         });
     } else {
       this.message = 'Enter Promocode';

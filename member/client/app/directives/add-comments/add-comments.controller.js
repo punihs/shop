@@ -5,7 +5,6 @@ class AddcommentCtrl {
     this.$http = $http;
     this.$state = $state;
     this.id = id;
-    console.log({ id });
     this.data = {};
   }
 
@@ -21,7 +20,6 @@ class AddcommentCtrl {
     this.$http
       .put(`/packages/${this.id}/addNote`, this.data)
       .then(({ data: { message } }) => {
-        console.log(this.data);
         this
           .toaster
           .pop('success', message);

@@ -101,7 +101,6 @@ class AddAddress {
   }
 
   open(customerId) {
-    console.log({ customerId });
     return this.$uibModal.open({
       templateUrl: 'app/directives/address/address.html',
       controller: AddAddressController,

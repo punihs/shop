@@ -1,8 +1,9 @@
 class PaymentResponse {
-  constructor($http, Page, $uibModal, $stateParams, CONFIG, $location, $state, Session) {
+  constructor($http, Page, $uibModal, toaster) {
     this.$http = $http;
     this.Page = Page;
     this.$uibModal = $uibModal;
+    this.toaster = toaster;
     this.shipmentId = 115;
     this.$onInit();
   }
@@ -10,13 +11,14 @@ class PaymentResponse {
   $onInit() {
     this.$http
       .get(`/shipments/${this.shipmentId}/request/response`)
-      .then(({ data: { shipment }}) => {
-        alert(shipment.PaymentGateway.value);
-        console.log({ shipment });
+      .then(({ data: { shipment } }) => {
+        // alert(shipment.PaymentGateway.value);
         this.shipment = shipment;
       })
       .catch(err => {
-        alert(err.data.message);
+        this
+          .toaster
+          .pop('danger', err.data.message);
       });
   }
 }

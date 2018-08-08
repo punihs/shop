@@ -8,7 +8,6 @@ class DownloadResumeCtrl {
     this.$state = $state;
     this.data = [];
     this.id = id;
-    console.log(value);
     this.data = {
       message1: '',
       message2: '',
@@ -29,7 +28,6 @@ class DownloadResumeCtrl {
     this.$http
       .put(`/packages/${this.id}/${this.value}`, this.data)
       .then(({ data: { message } }) => {
-        console.log(this.data);
         this
           .toaster
           .pop('success', message);
