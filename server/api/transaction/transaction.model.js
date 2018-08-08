@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
           log('action', transaction.toJSON());
           const { db } = Transaction;
           const user = db.User.build({ id: transaction.customer_id });
-          const action = Number(transaction.type) === 1 ? 'decrement' : 'increment';
+          const action = Number(transaction.type) === 2 ? 'decrement' : 'increment';
           user[action]({ wallet_balance_amount: transaction.amount })
             .catch(err => logger.error('hook', err));
         },

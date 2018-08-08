@@ -724,6 +724,7 @@ describe('PUT /api/shipments/retryPayment?order_code=620-620-7220', () => {
   });
 });
 
+
 describe('GET /api/shipments/redirectShipment', () => {
   before(() => Promise.all([Address
     .create({
