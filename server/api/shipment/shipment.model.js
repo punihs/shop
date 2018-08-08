@@ -59,6 +59,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'address_id',
     });
     Shipment.hasMany(db.Package);
+    Shipment.hasOne(db.ShipmentMeta);
     db.Place.hasMany(Shipment, {
       foreignKey: 'destination_city_id',
     });
