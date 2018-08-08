@@ -751,7 +751,7 @@ describe('GET /api/shipments/redirectShipment', () => {
   ]));
   it('will redirect to shipment creation ( test case selected packages for shipment )', (done) => {
     request(app)
-      .get('/api/shipments/redirectShipment')
+      .get('/api/shipments/redirectShipment?packageIds=3,2')
       .send({
         package_ids: [3, 2],
         repack: 0,
@@ -781,10 +781,10 @@ describe('GET /api/shipments/redirectShipment', () => {
       .destroy({ force: true, where: { package_id: 2 } })));
 });
 
-describe('GET /api/shipments/redirectShipment', () => {
+describe('GET /api/shipments/redirectShipment?packageIds=365214', () => {
   it('will redirect to shipment creation ( test case for package not found )', (done) => {
     request(app)
-      .get('/api/shipments/redirectShipment')
+      .get('/api/shipments/redirectShipment?packageIds=365214')
       .send({
         package_ids: [365214],
         repack: 0,
@@ -798,7 +798,7 @@ describe('GET /api/shipments/redirectShipment', () => {
       })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
-      .expect(200)
+      .expect(400)
       .then(() => {
         done();
       });
@@ -836,7 +836,7 @@ describe('GET /api/shipments/redirectShipment', () => {
   ]));
   it('will redirect to shipment creation  ( test case locker number of days expiry ) ', (done) => {
     request(app)
-      .get('/api/shipments/redirectShipment')
+      .get('/api/shipments/redirectShipment?packageIds=2')
       .send({
         package_ids: [2],
         repack: 0,
@@ -904,7 +904,7 @@ describe('GET /api/shipments/redirectShipment', () => {
   ]));
   it('will redirect to shipment creation ( test case for special items ) ', (done) => {
     request(app)
-      .get('/api/shipments/redirectShipment')
+      .get('/api/shipments/redirectShipment?packageIds=3,2')
       .send({
         package_ids: [3, 2],
         repack: 0,

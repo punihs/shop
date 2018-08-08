@@ -785,8 +785,8 @@ exports.finalShipRequest = async (req, res) => {
 
   const couponAppliedStatus = await Redemption
     .find(redemptionOptions);
-  log({ couponAppliedStatus });
   let couponAmount = 0;
+
   if (couponAppliedStatus) {
     const couponOptions = {
       attributes: ['id', 'code', 'cashback_percentage', 'discount_percentage', 'max_cashback_amount'],
@@ -843,6 +843,7 @@ exports.finalShipRequest = async (req, res) => {
       break;
     default: break;
   }
+
   shipmentSave.coupon_amount = payment.coupon;
   shipmentSave.wallet_amount = payment.wallet;
   shipmentSave.loyalty_amount = payment.loyalty;
@@ -967,8 +968,9 @@ exports.finalShipRequest = async (req, res) => {
   // send(new ShipmentConfirmed(shipments)); // mail pending
   log('shipment', shipments);
   req.user.ship_request_id = shipment.id;
-  // req.user.isWalletUsed = 0;
-  // req.user.isRetryPayment = 0;
+  req.user.isWalletUsed = 0;
+  req.user.isRetryPayment = 0;
+
   log({ message: 'payment.paytm.start' });
   switch (paymentGatewayName) {
     // eslint-disable-next-line no-case-declarations
@@ -976,24 +978,25 @@ exports.finalShipRequest = async (req, res) => {
       log({ message: 'payment.axis.start' });
       const encryptedData = axis.create(req, res);
       // log({ encryptedData });
-      return res.redirect(`https://member.shoppre.test/paymentGateway/axis?checksum=${encryptedData}`);
-      // break;
+      res.redirect(`https://member.shoppre.test/paymentGateway/axis?checksum=${encryptedData}`);
+      break;
 
     case 'paypal':
       log({ message: 'payment.paypal.start' });
-      return res.json({ message: 'payment.paypal.start' });
-      // break;
+      res.json({ message: 'payment.paypal.start' });     
+      return res.redirect(`https://member.shoppre.test/paymentGateway/axis?checksum=${encryptedData}`);
+      // break; 
     // eslint-disable-next-line no-case-declarations
     case 'paytm':
       log({ message: 'payment.paytm.start' });
       const gencheckSum = paytm.create(req, res);
       log('paytm1', gencheckSum);
-      return res.render(`membership/paytm?checksum=${gencheckSum}`);
-      // break;
+      res.render(`membership/paytm?checksum=${gencheckSum}`);
+      break;
     default: break;
       // return res.redirect(getPaymentURL('shipping.request.response'));
   }
-  return 0;
+  return res.json({ message: 'success' });
 };
 
 exports.payRetrySubmit = async (req, res) => {

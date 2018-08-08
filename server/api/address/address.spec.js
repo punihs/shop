@@ -47,6 +47,7 @@ describe('error POST /api/addresses ', () => {
         phone_code: '91',
         phone: '9844717202',
         is_default: true,
+        customer_id: 646,
       })
       .set('Authorization', `Bearer ${opsAuth.access_token}`)
       .expect('Content-Type', /json/)
@@ -74,6 +75,7 @@ describe('POST /api/addresses', () => {
         phone_code: '91',
         phone: '9844717202',
         is_default: '1',
+        customer_id: 646,
       })
       .set('Authorization', `Bearer ${opsAuth.access_token}`)
       .expect('Content-Type', /json/)

@@ -16,6 +16,7 @@ module.exports = {
     state: DataTypes.STRING,
     city: DataTypes.STRING,
     pincode: DataTypes.STRING,
+    email: DataTypes.STRING,
     country_id: keys('countries'),
     phone_code: DataTypes.STRING,
     phone: DataTypes.STRING,

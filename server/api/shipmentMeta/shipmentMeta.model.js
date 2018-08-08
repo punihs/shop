@@ -7,5 +7,10 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     paranoid: true,
   });
+
+  ShipmentMeta.associate = (db) => {
+    ShipmentMeta.belongsTo(db.Shipment);
+  };
+
   return ShipmentMeta;
 };
