@@ -93,7 +93,7 @@
                 ) Cancel Request
               p Order confirmation email will be sent to
                 span.summary-order {{$ctrl.customer.email}}
-              button.btn.btn-sm.btn-success.m-t-xs.text-u-c.pull-left.m-t-md.m-b-md(type='submit' ng-click='$ctrl.create(newShipmentForm)')  Confirm Your Ship Request *
+              button.btn.btn-sm.btn-success.m-t-xs.text-u-c.pull-left.m-t-md.m-b-md(type='submit' ng-click='$ctrl.create()')  Confirm Your Ship Request *
               .clearfix
               p.pull-left * Kindly note that you CANNOT change your Delivery Address, Package Selection or your Shipping Preferences after you create your ship request.
 
@@ -108,7 +108,7 @@
             form.form.form-validation.form-horizontal.wrapper-md(
             name="newShipmentForm"
             novalidate
-            ng-submit='$ctrl.create(newShipmentForm)'
+            ng-submit='$ctrl.create()'
             autocomplete='off'
             )
               ul.list-group.list-group-lg.m-b-none.list-unstyled

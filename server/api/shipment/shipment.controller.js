@@ -23,7 +23,6 @@ const {
   SHIPMENT_STATE_IDS: {
     CANCELED, DELIVERED, DISPATCHED, SHIPMENT_HANDED, PACKAGING_REQUESTED,
     PAYMENT_COMPLETED, PAYMENT_FAILED,
-    CANCELED, DELIVERED, DISPATCHED, SHIPMENT_HANDED, PACKAGING_REQUESTED, PAYMENT_COMPLETED,
   },
   PACKAGE_STATE_IDS: { SHIP },
   LOYALTY_TYPE: {
@@ -983,9 +982,9 @@ exports.finalShipRequest = async (req, res) => {
 
     case 'paypal':
       log({ message: 'payment.paypal.start' });
-      res.json({ message: 'payment.paypal.start' });     
+      res.json({ message: 'payment.paypal.start' });
       return res.redirect(`https://member.shoppre.test/paymentGateway/axis?checksum=${encryptedData}`);
-      // break; 
+      // break;
     // eslint-disable-next-line no-case-declarations
     case 'paytm':
       log({ message: 'payment.paytm.start' });

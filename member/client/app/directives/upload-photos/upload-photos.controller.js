@@ -35,7 +35,6 @@ class UploadphotosCtrl {
     this.$http
       .put(`/packages/${this.id}/photoRequests`, this.data)
       .then(({ data: { message } }) => {
-        console.log(message);
         this.showAdditional = false;
         this.showBasic = true;
         this.success = true;
@@ -67,7 +66,6 @@ class UploadphotosCtrl {
     this.$http
       .put(`/packages/${this.id}/photoRequests`, this.data)
       .then(({ data: { message } }) => {
-        console.log(message);
         this
           .toaster
           .pop('success', message);
