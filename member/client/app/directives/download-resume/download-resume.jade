@@ -1,16 +1,29 @@
-.modal-header
+.modal-headermessage
   .modal-title
     .h4.text-info {{DownloadResume.offer.name}}
       span.font-bold.m-l-xs {{DownloadResume.offer.price}}
       .close(ng-click='DownloadResume.cancel()') ×
 .modal-body
-    p {{DownloadResume.offer.innerDescription}}
-    textarea.form-control(rows=4)
-    .checkbox
-      label.i-checks
-        input(type='checkbox', value='')
-        i
-        | I understand that I will have to pay a fee of INR 400 for the return, which will appear in my Shoppre Wallet.
+  p {{DownloadResume.offer.innerDescription}}
+  .radio(ng-if="DownloadResume.value === 'return'")
+    label.i-checks
+      input(type='radio', name='a', value='return_pickup', checked='', ng-model="DownloadResume.data.return_pickup")
+      i
+      | The sender will pick-up the package directly from Shoppre facility.
+      | You shall pay them for the charges, if any.
+  textarea.form-control(rows=4, ng-if="DownloadResume.value === 'return'",  ng-model="DownloadResume.data.message1")
+  .radio(ng-if="DownloadResume.value === 'return'")
+    label.i-checks
+      input(type='radio', name='a', value='return_shoppre', checked='', ng-model="DownloadResume.data.return_shoppre")
+      i
+      | Shoppre has to return the package for you to the Sender.
+      | You will be charged as per our Domestic Shipping Rates which will be notified to you via email.
+  textarea.form-control(rows=4, ng-hide="DownloadResume.value === 'abandon'",  ng-model="DownloadResume.data.message2")
+  .checkbox(ng-hide="DownloadResume.value === 'abandon'")
+    label.i-checks
+      input(type='checkbox', value='')
+      i
+      | I understand that I will have to pay a fee of INR 400 for the return, which will appear in my Shoppre Wallet.
 .modal-footer
   a.btn.btn-warning.text-u-c(ng-click='DownloadResume.cancel()') Cancel Request
-  a.btn.btn-success.text-u-c(ng-click='') Submit Request
+  a.btn.btn-success.text-u-c(ng-click='DownloadResume.submitRequest()') Submit Request

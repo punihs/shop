@@ -2,11 +2,15 @@ const debug = require('debug');
 const {
   Package, Notification,
 } = require('../../../conn/sqldb');
+const db = require('../../../conn/sqldb');
 
 const log = debug('s.api.package.specialRequest');
+const {
+  PACKAGE_STATE_IDS: { RETURN_REQUEST_FROM_CUSTOMER, SPLIT_PACKAGE, DISCARD_REQUESTED },
+} = require('../../../config/constants');
 
 exports.return = async (req, res) => {
-  const { returnPackid } = req.body;
+  const returnPackid = req.params.id;
   const customerId = req.user.id;
   let returnMsg = '';
   const options = {
@@ -22,22 +26,31 @@ exports.return = async (req, res) => {
     }
     // sending mail is pending here
     await Package.update(
-      { status: 'return', review: 'Return to sender requested', return_send: returnMsg },
+      { status: 'return', return_send: returnMsg },
       { where: { id: returnPackid } },
     );
+
+    Package.updateState({
+      db,
+      nextStateId: RETURN_REQUEST_FROM_CUSTOMER,
+      pkg: { id: returnPackid },
+      actingUser: req.user,
+      comments: 'Return to sender requested',
+    });
+
     const notification = {};
     notification.customer_id = customerId;
     notification.action_type = 'package';
     notification.action_id = returnPackid;
     notification.action_description = 'Return to sender requested - Order#'.concat(returnPackid);
-    await Notification.create(notification)
-      .then(() => res.status(201).json({ message: 'package updated' }));
+    await Notification.create(notification);
+    return res.status(201).json({ message: 'package return status updated' });
   }
-  res.status(201).json({ message: 'package not found' });
+  res.status(400).json({ message: 'package not found' });
 };
 
 exports.split = async (req, res) => {
-  const { splitPackid } = req.body;
+  const splitPackid = req.params.id;
   const customerId = req.user.id;
   let splitMsg = '';
   const options = {
@@ -50,9 +63,16 @@ exports.split = async (req, res) => {
   }
   // sending mail is pending here
   await Package.update(
-    { status: 'split', review: 'Split package requested', split_pack: splitMsg },
+    { status: 'split', splitting_directions: splitMsg },
     { where: { id: splitPackid } },
   );
+  Package.updateState({
+    db,
+    nextStateId: SPLIT_PACKAGE,
+    pkg: { id: splitPackid },
+    actingUser: req.user,
+    comments: 'Split Package requested',
+  });
   const notification = {};
   notification.customer_id = customerId;
   notification.action_type = 'package';
@@ -63,7 +83,7 @@ exports.split = async (req, res) => {
 };
 
 exports.abandon = async (req, res) => {
-  const { abandonPackid } = req.body;
+  const abandonPackid = req.params.id;
   log('abandon', abandonPackid);
   const customerId = req.user.id;
   // sending mail is pending here
@@ -71,6 +91,13 @@ exports.abandon = async (req, res) => {
     { status: 'abandon' },
     { where: { id: abandonPackid } },
   );
+  Package.updateState({
+    db,
+    nextStateId: DISCARD_REQUESTED,
+    pkg: { id: abandonPackid },
+    actingUser: req.user,
+    comments: 'Abandon Package requested',
+  });
   const notification = {};
   notification.customer_id = customerId;
   notification.action_type = 'package';

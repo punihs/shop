@@ -1,4 +1,5 @@
 const debug = require('debug');
+const db = require('../../../conn/sqldb');
 
 const {
   Package, PhotoRequest, PackageCharge, Notification, PackageItem,
@@ -8,6 +9,7 @@ const log = debug('s.photoRequest.controller');
 const {
   PHOTO_REQUEST_TYPES: { BASIC, ADVANCED },
   PHOTO_REQUEST_STATES: { COMPLETED },
+  PACKAGE_STATE_IDS: { STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST },
   PACKAGE_CHARGES: { BASIC_PHOTO, ADVANCED_PHOTO },
 } = require('../../../config/constants');
 
@@ -70,11 +72,24 @@ exports.create = (req, res, next) => {
       }
 
       // - status === 'pending'
+      const photoStatus = type === 'basic_photo' ? STANDARD_PHOTO_REQUEST : ADVANCED_PHOTO_REQUEST;
+      const photoComments = type === 'basic_photo' ? 'Standard' : 'Advanced';
+      console.log({ photoStatus });
       await pkg
         .update({
           status: 'review',
           review: `Requested for ${REVEW_TEXT} Photos`,
         });
+      const packId = {
+        id: packageId,
+      };
+      Package.updateState({
+        db,
+        nextStateId: photoStatus,
+        pkg: packId,
+        actingUser: req.user,
+        comments: `Requested for ${photoComments} Photos`,
+      });
 
       return res.status(201).json({ error: '1', status });
     })
