@@ -84,6 +84,7 @@ const constants = {
     SHIPMENT_CANCELLED: 41,
     SHIPMENT_HANDED: 24,
     PAYMENT_COMPLETED: 20,
+    PAYMENT_FAILED: 21,
   },
   PRICE_ENTERER: {
     SHOPPRE: '1',

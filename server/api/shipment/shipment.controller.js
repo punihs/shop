@@ -18,8 +18,11 @@ const {
 } = db;
 
 const {
+  TRANSACTION_TYPES: { DEBIT },
   SHIPMENT_STATE_ID_NAMES,
   SHIPMENT_STATE_IDS: {
+    CANCELED, DELIVERED, DISPATCHED, SHIPMENT_HANDED, PACKAGING_REQUESTED,
+    PAYMENT_COMPLETED, PAYMENT_FAILED,
     CANCELED, DELIVERED, DISPATCHED, SHIPMENT_HANDED, PACKAGING_REQUESTED, PAYMENT_COMPLETED,
   },
   PACKAGE_STATE_IDS: { SHIP },
@@ -716,11 +719,12 @@ const updateCustomerWallet = async (shipment, customerId) => {
   }
 };
 
-const walletTransaction = async (walletAmount, customer, shipment) => {
+const walletTransaction = async (walletAmount, customer, shipment, type) => {
   const transaction = {};
   transaction.customer_id = customer.id;
   // transaction.wallet_id = $customer->balance->id;
   transaction.amount = walletAmount;
+  transaction.type = type;
   transaction.description = `Wallet balance offsetted against shipment cost | Shipment ID ${shipment.order_code}`;
   Transaction.create(transaction);
 };
@@ -860,14 +864,13 @@ exports.finalShipRequest = async (req, res) => {
         comments: 'Wire payment selected',
       });
 
-
-    if (isWalletUsed === 1) {
-      await User
-        .update(
-          { wallet_balance_amount: 0 },
-          { where: { id: customerId } },
-        );
-    }
+    // if (isWalletUsed === 1) {
+    //   await User
+    //     .update(
+    //       { wallet_balance_amount: 0 },
+    //       { where: { id: customerId } },
+    //     );
+    // }
   } else if (paymentGatewayName === 'cash') {
     shipmentSave.payment_gateway_id = CASH;
     shipmentSave.status = 'inqueue';
@@ -881,13 +884,13 @@ exports.finalShipRequest = async (req, res) => {
         nextStateId: PAYMENT_COMPLETED,
         comments: 'cash payment selected',
       });
-    if (isWalletUsed === 1) {
-      await User
-        .update(
-          { wallet_balance_amount: 0 },
-          { where: { id: customerId } },
-        );
-    }
+    // if (isWalletUsed === 1) {
+    //   await User
+    //     .update(
+    //       { wallet_balance_amount: 0 },
+    //       { where: { id: customerId } },
+    //     );
+    // }
   } else if (paymentGatewayName === 'wallet') {
     log('remainingWalletAmount', WALLET);
     shipmentSave.payment_gateway_id = WALLET;
@@ -897,6 +900,7 @@ exports.finalShipRequest = async (req, res) => {
     const customerTotalWalletAmount = customer.wallet_balance_amount;
     const remainingWalletAmount = customerTotalWalletAmount - payment.final_amount;
     log('remainingWalletAmount', remainingWalletAmount);
+    log('customer.wallet_balance_amount', customer.wallet_balance_amount);
 
     Shipment
       .updateShipmentState({
@@ -907,7 +911,6 @@ exports.finalShipRequest = async (req, res) => {
         comments: 'Wire payment selected',
       });
 
-
     await User
       .update(
         { wallet_balance_amount: remainingWalletAmount },
@@ -915,7 +918,7 @@ exports.finalShipRequest = async (req, res) => {
       );
 
     await updateCustomerWallet(shipment, customerId);
-    await walletTransaction(payment.final_amount, customer, shipment);
+    await walletTransaction(payment.final_amount, customer, shipment, DEBIT);
   } else {
     shipmentSave.payment_status = 'pending';
     shipmentSave.status = 'confirmation';
@@ -924,7 +927,8 @@ exports.finalShipRequest = async (req, res) => {
     .update(shipmentSave, { where: { id: shipRequestId } });
 
   if (shipmentSave.wallet !== 0) {
-    await walletTransaction(shipment.wallet, customer, shipment);
+    log('customer.transaction1', customer.wallet_balance_amount);
+    await walletTransaction(shipment.wallet, customer, shipment, DEBIT);
   }
 
   const notification = {};
@@ -1010,14 +1014,15 @@ exports.payRetrySubmit = async (req, res) => {
 
   const shipment = await Shipment
     .findById(shipRequestId, {
-      attributes: ['id', 'estimated_amount',
+      attributes: ['id', 'estimated_amount', 'final_amount',
         'customer_id', 'order_code', 'wallet_amount', 'loyalty_amount', 'coupon_amount',
       ],
     });
 
   if (shipment && shipment.customer_id === customerId) {
     payment.coupon = 0;
-    payment.final_amount = 0;
+    payment.final_amount = shipment.estimated_amount;
+    log('payment.final_amount 1', payment.final_amount);
 
     let customerWalletAmount = 0;
     req.user.is_wallet_used = 0;
@@ -1041,17 +1046,20 @@ exports.payRetrySubmit = async (req, res) => {
       shipmentSave.payment_status = 'success';
     }
 
-    shipmentSave.wallet = shipmentWalletAmount;
+    shipmentSave.wallet_amount = shipmentWalletAmount;
 
     shipmentSave.final_amount = payment.final_amount -
       shipment.wallet_amount - shipment.loyalty_amount - shipment.coupon_amount;
 
     req.user.ship_request_id = shipment.id;
-    const savedShipment = await Shipment
-      .update(shipmentSave, { where: { id: shipRequestId } });
 
+    await Shipment
+      .update(shipmentSave, { where: { id: shipRequestId } });
+    const savedShipment = await Shipment
+      .findById(shipRequestId);
+    log('savedShipment123', JSON.stringify(savedShipment));
     if (customerWalletAmount > 0) {
-      await walletTransaction(customerWalletAmount, customer, shipment);
+      await walletTransaction(customerWalletAmount, customer, shipment, DEBIT);
     }
 
     let customerTotalWalletAmount = '';
@@ -1102,9 +1110,9 @@ exports.payRetrySubmit = async (req, res) => {
             });
           }
         }
-        if (req.body.wallet) {
-          await User.update({ wallet_balance_amount: 0 }, { where: { id: customerId } });
-        }
+        // if (req.body.wallet) {
+        //   await User.update({ wallet_balance_amount: 0 }, { where: { id: customerId } });
+        // }
 
         await Shipment.update({
           payment_gateway_id: WIRE,
@@ -1116,9 +1124,9 @@ exports.payRetrySubmit = async (req, res) => {
         log('wire', shipRequestId);
         break;
       case 'cash':
-        if (req.body.wallet) {
-          await User.update({ wallet_balance_amount: 0 }, { where: { id: customerId } });
-        }
+        // if (req.body.wallet) {
+        //   await User.update({ wallet_balance_amount: 0 }, { where: { id: customerId } });
+        // }
 
         await Shipment.update({
           payment_gateway_id: CASH,
@@ -1131,23 +1139,24 @@ exports.payRetrySubmit = async (req, res) => {
         break;
 
       case 'wallet':
+        log('saveshipment', JSON.stringify(savedShipment));
         customerTotalWalletAmount = customer.wallet_balance_amount || 0;
-        log('savedShipment.wallet_amount', savedShipment.wallet_amount || 0);
+        log('savedShipment.wallet_amount', savedShipment.wallet_amount);
         totalShipmentAmount =
           payment.final_amount - savedShipment.wallet_amount || 0 -
           savedShipment.loyalty_amount || 0 - savedShipment.coupon_amount || 0;
         remainingWalletAmount =
           customerTotalWalletAmount - totalShipmentAmount;
         log('remainingWalletAmount', remainingWalletAmount);
-        await User.update({
-          wallet_balance_amount: remainingWalletAmount,
-        }, {
-          where:
-              {
-                id: customerId,
-              },
-        });
-        await walletTransaction(payment.final_amount, customer, savedShipment);
+        // await User.update({
+        //   wallet_balance_amount: remainingWalletAmount,
+        // }, {
+        //   where:
+        //       {
+        //         id: customerId,
+        //       },
+        // });
+        await walletTransaction(payment.final_amount, customer, savedShipment, DEBIT);
         break;
       case 'paypal':
         return res.redirect('payment.paypal.start');
@@ -1167,6 +1176,7 @@ exports.payRetrySubmit = async (req, res) => {
 exports.retryPayment = async (req, res) => {
   const customerId = req.user.id;
   const orderCode = req.query.order_code;
+  log({ orderCode });
 
   const customer = await User
     .findById(customerId, {
@@ -1175,8 +1185,25 @@ exports.retryPayment = async (req, res) => {
     });
 
   const optionShipment = {
-    attributes: ['id', 'estimated_amount', 'payment_gateway_fee_amount'],
-    where: { customer_id: customerId, order_code: orderCode, payment_status: ['failed', 'pending'] },
+    attributes: ['id', 'package_level_charges_Amount', 'weight', 'pick_up_charge_amount', 'address',
+      'discount_amount', 'estimated_amount', 'packages_count', 'sub_total_amount', 'customer_name',
+      'value_amount', 'phone', 'is_axis_banned_item', 'order_code', 'wallet_amount', 'payment_gateway_fee_amount',
+      'loyalty_amount'],
+    where: { customer_id: customerId, order_code: orderCode },
+    include: [{
+      model: ShipmentState,
+      attributes: ['id', 'state_id'],
+      where: { state_id: PAYMENT_FAILED },
+    }, {
+      model: User,
+      as: 'Customer',
+      attributes: ['id', 'wallet_balance_amount'],
+    }, {
+      model: ShipmentMeta,
+      attributes: ['id', 'repacking_charge_amount', 'sticker_charge_amount', 'extra_packing_charge_amount', 'original_ship_box_charge__amount',
+        'consolidation_charge_amount', 'gift_wrap_charge_amount', 'gift_note_charge_amount', 'insurance_amount',
+        'liquid_charge_amount', 'overweight_charge_amount', 'shipment_id'],
+    }],
   };
 
   const shipment = await Shipment
@@ -1187,9 +1214,25 @@ exports.retryPayment = async (req, res) => {
   }
 
   const optionPackage = {
-    attributes: ['id'],
-    where: { customer_id: customerId, shipment_id: shipment.id },
+    attributes: ['id', 'price_amount', 'weight',
+      'reference_code', 'store_id'],
+    where: {
+      customer_id: customerId,
+      shipment_id: shipment.id,
+    },
+    include: [{
+      model: PackageItem,
+      attributes: ['name', 'quantity', 'price_amount'],
+    }, {
+      model: PackageCharge,
+      attributes: ['storage_amount', 'receive_mail_amount', 'pickup_amount', 'basic_photo_amount', 'scan_document_amount',
+        'wrong_address_amount', 'special_handling_amount', 'advanced_photo_amount', 'split_package_amount'],
+    }, {
+      model: Store,
+      attributes: ['name'],
+    }],
   };
+
   const packages = await Package
     .find(optionPackage);
 
@@ -1206,13 +1249,15 @@ exports.retryPayment = async (req, res) => {
   } else {
     payment.amount = shipment.estimated_amount - shipment.wallet_amount;
   }
-
+  log('1', payment.amount);
+  log('shipment.wallet_amount', shipment.wallet_amount);
+  log('est', shipment.estimated_amount, 'pg', shipment.payment_gateway_fee_amount);
   if (req.body.wallet === 1) {
     payment.amount -= customer.wallet_balance_amount;
   }
   payment.wallet = customer.wallet_balance_amount;
   payment.amount -= shipment.loyalty_amount;
-
+  log('2', payment.amount);
   const optionRedemtion = {
     attributes: ['shipment_order_code', 'coupon_code'],
     where: { shipment_order_code: orderCode },
@@ -1251,11 +1296,13 @@ exports.retryPayment = async (req, res) => {
         promoStatus = 'discount_success';
       }
       payment.amount -= payment.coupon;
+      log('3', payment.amount);
     } else {
       promoStatus = 'promo_expired';
     }
   }
-  switch (req.body.payment_gateway_name) {
+  log('gateway:', req.query.payment_gateway_name);
+  switch (req.query.payment_gateway_name) {
     case 'card':
       payment.paymentGatewayName = 'card';
       break;
@@ -1272,16 +1319,27 @@ exports.retryPayment = async (req, res) => {
       payment.paymentGatewayName = 'paypal';
       payment.paymentGatewayFee = (10 / 100) * payment.amount;
       payment.amount += payment.paymentGatewayFee;
+      log('4', payment.amount);
       break;
     case 'paytm':
       payment.paymentGatewayName = 'paytm';
       payment.paymentGatewayFee = (3 / 100) * payment.amount;
       payment.amount += payment.paymentGatewayFee;
+      log('5', payment.amount);
       break;
     default:
       payment.paymentGatewayName = 'wire';
       break;
   }
+
+  const optionsPaymentGateway = {
+    attributes: ['id', 'name', 'description', 'value'],
+    limit: 20,
+  };
+  const paymentGateway = await PaymentGateway
+    .findAll(optionsPaymentGateway);
+  log(JSON.stringify(paymentGateway));
+  log({ payment });
 
   return res.json({
     shipment,
@@ -1290,6 +1348,7 @@ exports.retryPayment = async (req, res) => {
     promoStatus,
     couponAmount,
     couponName,
+    paymentGateway,
     wallet_amount: customer.wallet_balance_amount,
   });
 };
@@ -1558,7 +1617,6 @@ exports.createShipment = async (req, res) => {
   }
   log('charges', shipmentMeta);
 
-
   const optionsCustomer = {
     attributes: ['id', 'salutation', 'first_name', 'last_name', 'email',
       'virtual_address_code', 'wallet_balance_amount'],
@@ -1754,7 +1812,6 @@ exports.updateShipmetStatus = () => {
           }));
     });
 };
-
 
 exports.response = async (req, res) => {
   const { id } = req.params;

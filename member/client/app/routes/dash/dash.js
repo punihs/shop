@@ -31,5 +31,11 @@ angular.module('uiGenApp')
         controller: 'PaymentResponse',
         controllerAs: '$ctrl',
       })
+      .state('dash.retryPayment', {
+        url: '/115/request/payment/retryPayment',
+        templateUrl: 'app/routes/dash/retryPayment/retryPayment.html',
+        controller: 'RetryPayment',
+        controllerAs: '$ctrl',
+      })
     ;
   });
