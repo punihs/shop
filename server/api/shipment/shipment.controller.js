@@ -23,6 +23,7 @@ const {
   SHIPMENT_STATE_IDS: {
     CANCELED, DELIVERED, DISPATCHED, SHIPMENT_HANDED, PACKAGING_REQUESTED,
     PAYMENT_COMPLETED, PAYMENT_FAILED,
+    CANCELED, DELIVERED, DISPATCHED, SHIPMENT_HANDED, PACKAGING_REQUESTED, PAYMENT_COMPLETED,
   },
   PACKAGE_STATE_IDS: { SHIP },
   LOYALTY_TYPE: {
@@ -862,7 +863,6 @@ exports.finalShipRequest = async (req, res) => {
         comments: 'Wire payment selected',
       });
 
-
     // if (isWalletUsed === 1) {
     //   await User
     //     .update(
@@ -909,7 +909,6 @@ exports.finalShipRequest = async (req, res) => {
         nextStateId: PAYMENT_COMPLETED,
         comments: 'Wire payment selected',
       });
-
 
     await User
       .update(
@@ -1615,7 +1614,6 @@ exports.createShipment = async (req, res) => {
   }
   log('charges', shipmentMeta);
 
-
   const optionsCustomer = {
     attributes: ['id', 'salutation', 'first_name', 'last_name', 'email',
       'virtual_address_code', 'wallet_balance_amount'],
@@ -1811,7 +1809,6 @@ exports.updateShipmetStatus = () => {
           }));
     });
 };
-
 
 exports.response = async (req, res) => {
   const { id } = req.params;

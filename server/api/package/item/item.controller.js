@@ -4,6 +4,7 @@ const debug = require('debug');
 const log = debug('package');
 
 const db = require('../../../conn/sqldb');
+const minio = require('../../../conn/minio');
 
 const {
   PackageItem, PackageItemCategory,
@@ -36,5 +37,17 @@ exports.create = (req, res, next) => {
       created_by: req.user.id,
     })
     .then(({ id }) => res.json({ id }))
+    .catch(next);
+};
+
+exports.image = (req, res, next) => {
+  log('index', req.query);
+  return PackageItem
+    .findById(req.params.id, {
+      attributes: ['id', 'object'],
+    })
+    .then(({ object }) => minio
+      .downloadLink({ object })
+      .then(url => res.json({ url })))
     .catch(next);
 };

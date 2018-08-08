@@ -9,6 +9,9 @@ module.exports = {
       type: DataTypes.INTEGER,
     },
     name: DataTypes.STRING,
+    description: DataTypes.STRING,
+    value: DataTypes.STRING,
+    status: DataTypes.INTEGER,
   }, timestamps(3, DataTypes)), engine),
   down(queryInterface) {
     return queryInterface.dropTable('payment_gateways');

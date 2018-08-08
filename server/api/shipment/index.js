@@ -23,6 +23,7 @@ router.delete('/:id', controller.destroy);
 router.get('/:id/invoice', controller.invoice);
 router.put('/:id/state', controller.state);
 router.get('/cron/partners', controller.updateShipmetStatus);
+router.get('/:id/request/response', controller.response);
 
 module.exports = router;
 

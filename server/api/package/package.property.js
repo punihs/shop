@@ -35,6 +35,7 @@ module.exports = DataTypes => ({
   },
   is_public: { type: DataTypes.BOOLEAN, defaultValue: false },
   splitting_directions: DataTypes.STRING,
+  return_send: DataTypes.STRING,
   total_quantity: DataTypes.INTEGER,
   personal_shopper_cost: DataTypes.INTEGER,
   sales_tax: DataTypes.INTEGER,

@@ -72,3 +72,20 @@ exports.update = async (req, res) => {
   return res.json(status);
 };
 
+
+exports.values = async (req, res) => {
+  req.body.forEach((x) => {
+    PackageItem
+      .update(
+        {
+          price_amount: x.price_amount,
+          quantity: x.quantity,
+          total_amount: x.price_amount * x.quantity,
+        },
+        { where: { id: x.id } },
+      );
+  });
+  console.log('body', req.body);
+  return res.json({ message: 'Values updated succesfully' });
+};
+

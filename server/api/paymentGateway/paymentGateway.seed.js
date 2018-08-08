@@ -1,29 +1,25 @@
 module.exports = () => [
   {
     id: 1,
-    name: 'Paytm',
-  },
-  {
-    id: 2,
     name: 'Wire Transfer/Money Order',
-  },
-
-  {
+    value: 'wire',
+  }, {
+    id: 2,
+    name: 'Paper Cash',
+    value: 'cash',
+  }, {
     id: 3,
-    name: 'Credit/Debit Card',
-  },
-
-  {
+    name: 'Paytm',
+    description: '(3% Extra Payment Gateway Charge) - Indian PayTm/Bank Accounts Only)',
+    value: 'paytm',
+  }, {
     id: 4,
     name: 'Paypal',
-  },
-
-  {
+    description: '(10% Extra Payment Gateway Charge) - International PayPal/Bank Accounts Only',
+    value: 'paypal',
+  }, {
     id: 5,
     name: 'Wallet',
-  },
-  {
-    id: 6,
-    name: 'Paper Cash',
+    value: 'wallet',
   },
 ];

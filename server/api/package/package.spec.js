@@ -118,3 +118,15 @@ describe('DELETE /api/packages/1', () => {
       });
   });
 });
+describe('www: GET /api/packages/count ', () => {
+  it('return packages', (done) => {
+    request(app)
+      .get('/api/packages/count')
+      .set('Authorization', `Bearer ${wwwAuth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});

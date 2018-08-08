@@ -1,9 +1,9 @@
 .modal-header
   .modal-title
     .h4.text-info Upload Photos
-      .close(ng-click='UploadPhoto.cancel()') ×
+      .close(ng-click='$ctrl.cancel()') ×
 .modal-body
-  .row(ng-hide='showAdditional')
+  .row(ng-hide='$ctrl.showAdditional')
     .col-md-3.photo-left
       i.fa.fa-camera.big-cam
     .col-md-9
@@ -13,8 +13,8 @@
             span INR 40
         .panel-body
           p View low-resolution photos taken of your package when it arrived at the Shoppre to confirm package cpntents
-          a.btn.btn-success.text-u-c(ng-click='showBasic=true') Get Now
-  .row(ng-hide='showBasic')
+          a.btn.btn-success.text-u-c(ng-click='$ctrl.continueBasic()') Get Now
+  .row(ng-hide='$ctrl.showBasic')
     .col-md-3.photo-left
       i.fa.fa-camera.big-cam
     .col-md-9
@@ -24,8 +24,8 @@
             span INR 500
         .panel-body
           p Order up 10 high-resolution photos of your content to confirm color, condition and item details
-          a.btn.btn-success.text-u-c(ng-click='showAdditional=true') Request Now
-  .row(ng-if='showBasic')
+          a.btn.btn-success.text-u-c(ng-click='$ctrl.continueAdditional()') Request Now
+  .row(ng-if='$ctrl.basicRequest')
     .panel.b-a.ng-scope
       .panel-body
         .alert.alert-warning
@@ -33,10 +33,10 @@
             i.fa.fa-info-circle.m-r-xs
             | Will be charged INR-50.00 Do you wish to continue?
           .text-center.m-t-md
-            a.btn.btn-warning.text-u-c(ng-click='UploadPhoto.cancel()') Cancel
-            a.btn.btn-success.text-u-c.m-l-xs(ng-click='') Continue
+            a.btn.btn-warning.text-u-c(ng-click='$ctrl.cancel()') Cancel
+            a.btn.btn-success.text-u-c.m-l-xs(ng-click='$ctrl.requestBasic()') Continue
 
-  .row(ng-if='showAdditional')
+  .row(ng-if='$ctrl.additionalRequest' )
     .panel.b-a.ng-scope
       .panel-body
         .alert.alert-warning
@@ -44,5 +44,8 @@
             i.fa.fa-info-circle.m-r-xs
             | Will be charged INR-500.00 Do you wish to continue?
           .text-center.m-t-md
-            a.btn.btn-warning.text-u-c(ng-click='UploadPhoto.cancel()') Cancel
-            a.btn.btn-success.text-u-c.m-l-xs(ng-click='') Continue
+            a.btn.btn-warning.text-u-c(ng-click='$ctrl.cancel()') Cancel
+            a.btn.btn-success.text-u-c.m-l-xs(ng-click='$ctrl.requestAdvanced()') Continue
+  .row
+    p(ng-if='$ctrl.success') Success! Your request for standard photos has been submitted.
+      | Your package is now in review by Shoppre team. You will be notified by customer service when your photos are ready to view.

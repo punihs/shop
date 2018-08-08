@@ -1,12 +1,17 @@
 
 const express = require('express');
 const controller = require('./item.controller');
-const autheticate = require('../../../components/oauth/authenticate');
+const authenticate = require('../../../components/oauth/authenticate');
 
 const router = express.Router();
 
-router.get('/:packageId/items', autheticate(), controller.index);
-router.post('/:packageId/items', autheticate(), controller.create);
+router.get('/:packageId/items', authenticate(), controller.index);
+router.post('/:packageId/items', authenticate(), controller.create);
+router.get(
+  '/:packageId/items/:id/image',
+  // authenticate(),
+  controller.image,
+);
 
 module.exports = router;
 
