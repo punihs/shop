@@ -1,7 +1,12 @@
 const moment = require('moment');
 const debug = require('debug');
 const checkSum = require('./paytm.checksum');
+const path = require('path');
+const dotenv = require('dotenv');
 const transaction = require('../../transaction/transaction.controller');
+
+const root = path.normalize(`${__dirname}/../../../..`);
+const env = dotenv.config({ path: path.join(root, '.env') }).parsed;
 
 const log = debug('s.paytm.controller');
 const {
@@ -22,7 +27,7 @@ exports.create = async (req, res) => {
   log('customer', customer);
 
   // Todo: remove below one line after completion of testing
-  req.user.ship_request_id = 11;
+  req.user.ship_request_id = 115;
   log('shipRequestId', req.user.ship_request_id);
   const shipRequestId = req.user.ship_request_id;
   const isWalletUsed = req.user.is_wallet_used;
@@ -60,11 +65,11 @@ exports.create = async (req, res) => {
     const customerWalletAmount = customer.wallet_balance_amount || 0;
     finalAmount -= customerWalletAmount;
   }
-
+  finalAmount = 1;
   const paramList = {};
-  const currentTime = moment().format('HH:mm:ss');
-  currentTime.replace(':', '');
-  const orderId = `PAY ${customerId}"-"${currentTime}`;
+  let currentTime = moment().format('HH:mm:ss');
+  currentTime = currentTime.replace(':', '');
+  const orderId = `PAY${customerId}-${currentTime}`;
   const customerVirtualCode = customer.virtual_address_code;
   const industryTypeId = 'Retail109';
   const channelId = 'WEB';
@@ -84,7 +89,8 @@ exports.create = async (req, res) => {
   paramList.CHANNEL_ID = channelId;
   paramList.TXN_AMOUNT = transactionAmount;
   paramList.WEBSITE = 'INDLLPWEB';
-  paramList.CALLBACK_URL = 'https://localhost:5000/api/paymentGateways/paytm';
+  paramList.CALLBACK_URL = `api.${env.DOMAIN}/api/paymentGateways/paytm/response`;
+
 
   if (phone) {
     paramList.MOBILE_NO = phone;
@@ -98,7 +104,10 @@ exports.create = async (req, res) => {
   log('paramList', paramList);
 
   const key = KEY || 'r&Xd973ZIk43rWzq';
-  const gencheckSum = checkSum.genchecksum(paramList, key, (err, params) => res.json({ params }));
+  let gencheckSum = '';
+  checkSum.genchecksum(paramList, key, (err, params) => {
+    gencheckSum = params;
+  });
   return gencheckSum;
 };
 

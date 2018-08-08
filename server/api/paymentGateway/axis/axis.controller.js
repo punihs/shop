@@ -33,7 +33,7 @@ exports.create = async (req, res) => {
         'customer_id', 'order_code', 'wallet_amount', 'loyalty_amount', 'coupon_amount', 'phone'],
     });
 
-  let finalAmount = 0;
+  let finalAmount = 1;
   if (!shipment) {
     return res.status(400).json({ message: 'Shipment not found' });
   }
@@ -94,7 +94,7 @@ exports.directPaymentInitiate = async (req, res) => {
   return res.json(encryptedData);
 };
 
-exports.callPHPApi = async (amount, orderInfo, MerchTxnRef) => {
+exports.callPHPApi = async (amount, orderInfo, MerchTxnRef, redirecturl) => {
   let encriptValue = '';
   const options = {
     uri: 'https://cp.shoppre.com/axis',
@@ -102,6 +102,7 @@ exports.callPHPApi = async (amount, orderInfo, MerchTxnRef) => {
       orderInfo,
       amount,
       MerchTxnRef,
+      redirecturl,
     },
   };
 

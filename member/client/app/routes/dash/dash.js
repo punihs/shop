@@ -19,5 +19,17 @@ angular.module('uiGenApp')
         controller: 'shipmentRequestController',
         controllerAs: '$ctrl',
       })
+      .state('dash.shipmentConfirm', {
+        url: '/request/confirm?order_code=1000',
+        templateUrl: 'app/routes/dash/shipmentConfirm/shipmentConfirm.html',
+        controller: 'shipmentConfirm',
+        controllerAs: '$ctrl',
+      })
+      .state('dash.response', {
+        url: '/115/request/reponse',
+        templateUrl: 'app/routes/dash/response/response.html',
+        controller: 'PaymentResponse',
+        controllerAs: '$ctrl',
+      })
     ;
   });
