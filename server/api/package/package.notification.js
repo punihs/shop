@@ -14,31 +14,44 @@ exports.stateChange = async ({
       ],
     });
 
-  log({ customer });
-  const store = await Store
-    .findById(pkg.store_id, { raw: true, attributes: ['name'] });
-
-  return event.fire({
-    ses: [{
-      Source: `"${actingUser.first_name} from Shoppre" <${actingUser.email}>`,
-      ReplyToAddresses: ['support@shoppre.com'],
-      Destination: {
-        ToAddresses: [customer.email],
-      },
-      Template: 'package_state-change',
-      TemplateData: JSON.stringify({
-        nextStateId,
-        pkg: { ...pkg, Store: store },
-        customer: customer.toJSON(),
-        actingUser,
-      }),
-    }],
-    onesignal: [{
-      userId: customer.id,
-      msg: {
-        title: `Your shipment arrived from ${store}`,
-      },
-    }],
-  });
+  log('package notification', { customer });
+  return Store
+    .findById(pkg.store_id, { raw: true, attributes: ['name'] })
+    .then(store => event
+      .fire({
+        ses: [{
+          Source: `"${actingUser.first_name} from Shoppre" <${actingUser.email}>`,
+          ReplyToAddresses: ['support@shoppre.com'],
+          Destination: {
+            ToAddresses: [customer.email],
+          },
+          Template: 'package_state-change',
+          TemplateData: JSON.stringify({
+            nextStateId,
+            pkg: { ...pkg, Store: store },
+            customer: customer.toJSON(),
+            actingUser,
+          }),
+        }, {
+          Source: `"${actingUser.first_name} from Shoppre" <${actingUser.email}>`,
+          ReplyToAddresses: ['support@shoppre.com'],
+          Destination: {
+            ToAddresses: [customer.email],
+          },
+          Template: 'package_state-change',
+          TemplateData: JSON.stringify({
+            nextStateId,
+            pkg: { ...pkg, Store: store },
+            customer: customer.toJSON(),
+            actingUser,
+          }),
+        }],
+        onesignal: [{
+          userId: customer.id,
+          msg: {
+            title: `Your shipment arrived from ${store}`,
+          },
+        }],
+      }));
 };
 

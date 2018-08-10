@@ -11,7 +11,7 @@ const {
 } = require('./../../config/constants');
 const BUCKETS = require('./../../config/constants/buckets');
 
-const log = console.log; //debug('s-api-package-service');
+const log = debug('s-api-package-service');
 
 const kvmap = (arr, key, value) => arr.reduce((nxt, x) => ({ ...nxt, [x[key]]: x[value] }), {});
 

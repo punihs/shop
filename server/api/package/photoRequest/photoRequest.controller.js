@@ -74,7 +74,7 @@ exports.create = (req, res, next) => {
       // - status === 'pending'
       const photoStatus = type === 'basic_photo' ? STANDARD_PHOTO_REQUEST : ADVANCED_PHOTO_REQUEST;
       const photoComments = type === 'basic_photo' ? 'Standard' : 'Advanced';
-      console.log({ photoStatus });
+      log({ photoStatus });
       await pkg
         .update({
           status: 'review',

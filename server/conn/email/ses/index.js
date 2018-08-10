@@ -41,6 +41,7 @@ const email = {
   quarc: connection,
   sendTemplatedEmail,
   sendTemplatedEmailAsync: sendTemplatedEmail,
+  send: sendTemplatedEmail,
 };
 
 module.exports = email;

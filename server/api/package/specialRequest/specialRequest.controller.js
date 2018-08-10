@@ -13,40 +13,43 @@ exports.return = async (req, res) => {
   const returnPackid = req.params.id;
   const customerId = req.user.id;
   let returnMsg = '';
-  const options = {
-    where: { customer_id: customerId, id: returnPackid },
-  };
-  const packages = await Package
-    .find(options);
-  if (packages) {
-    if (req.body.return_type === 'return_pickup') {
-      returnMsg = 'return_pickup,'.concat(req.body.message1);
-    } else {
-      returnMsg = 'return_shoppre,'.concat(req.body.message2);
-    }
-    // sending mail is pending here
-    await Package.update(
-      { status: 'return', return_send: returnMsg },
-      { where: { id: returnPackid } },
-    );
 
-    Package.updateState({
-      db,
-      nextStateId: RETURN_REQUEST_FROM_CUSTOMER,
-      pkg: { id: returnPackid },
-      actingUser: req.user,
-      comments: 'Return to sender requested',
+  const pkg = await Package
+    .find({
+      where: { customer_id: customerId, id: returnPackid },
     });
 
-    const notification = {};
-    notification.customer_id = customerId;
-    notification.action_type = 'package';
-    notification.action_id = returnPackid;
-    notification.action_description = 'Return to sender requested - Order#'.concat(returnPackid);
-    await Notification.create(notification);
-    return res.status(201).json({ message: 'package return status updated' });
+  if (!pkg) return res.status(400).json({ message: 'package not found' });
+
+  if (req.body.return_type === 'return_pickup') {
+    returnMsg = 'return_pickup,'.concat(req.body.message1);
+  } else {
+    returnMsg = 'return_shoppre,'.concat(req.body.message2);
   }
-  res.status(400).json({ message: 'package not found' });
+
+  // sending mail is pending here
+  await Package.update(
+    { status: 'return', return_send: returnMsg },
+    { where: { id: returnPackid } },
+  );
+
+  Package.updateState({
+    db,
+    nextStateId: RETURN_REQUEST_FROM_CUSTOMER,
+    pkg: { id: returnPackid },
+    actingUser: req.user,
+    comments: 'Return to sender requested',
+  });
+
+  const notification = {};
+  notification.customer_id = customerId;
+  notification.action_type = 'package';
+  notification.action_id = returnPackid;
+  notification.action_description = 'Return to sender requested - Order#'.concat(returnPackid);
+
+  await Notification.create(notification);
+
+  return res.status(201).json({ message: 'package return status updated' });
 };
 
 exports.split = async (req, res) => {

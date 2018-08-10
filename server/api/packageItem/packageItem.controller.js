@@ -1,15 +1,21 @@
+const debug = require('debug');
 const moment = require('moment');
 const {
   PackageItem,
 } = require('../../conn/sqldb');
 const minio = require('../../conn/minio');
-const { PRICE_ENTERER: { SHOPPRE } } = require('../../config/constants');
+const {
+  PRICE_ENTERER: { SHOPPRE },
+} = require('../../config/constants');
+
+const log = debug('api-packageItem-controller');
 
 exports.index = (req, res, next) => {
   const options = {
     attributes: ['id', 'name'],
     limit: Number(req.query.limit) || 20,
   };
+
   return PackageItem
     .findAll(options)
     .then(packages => res.json(packages))
@@ -85,7 +91,8 @@ exports.values = async (req, res) => {
         { where: { id: x.id } },
       );
   });
-  console.log('body', req.body);
+
+  log('body', req.body);
   return res.json({ message: 'Values updated succesfully' });
 };
 

@@ -31,7 +31,7 @@ angular.module('uiGenApp', [
 ])
 
   .config(($urlRouterProvider, $locationProvider) => {
-    $urlRouterProvider.when('/', '/dashboard');
+    $urlRouterProvider.when('/', '/packages');
     $urlRouterProvider.otherwise(($injector) => $injector.get('$state').go('access.404'));
 
     $locationProvider.html5Mode(true);

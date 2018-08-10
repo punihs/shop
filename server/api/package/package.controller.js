@@ -43,12 +43,12 @@ exports.indexPublic = (req, res, next) => {
 
 exports.index = (req, res, next) => index(req)
   .then((result) => {
-    console.log('testing all the requirements');
+    log('testing all the requirements');
     if (req.query.xlsx) {
       const header = [
         'id', 'Store Name', 'Virtual Address Code', 'Status',
       ];
-      console.log('testing index');
+      log('testing index');
       const excel = xlsx.build([{
         name: 'Packages',
         data: [header]

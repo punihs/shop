@@ -7,14 +7,14 @@ const notification = require('./package.notification');
 
 const {
   PACKAGE_STATE_IDS: {
-    CREATED, SHIP, RETURN_DONE, SPLIT_DONE, REVIEW, INVOICE, VALUES,
+    PACKAGE_ITEMS_UPLOAD_PENDING, SHIP, RETURN_DONE, SPLIT_DONE, REVIEW, INVOICE, VALUES,
   },
   PACKAGE_CHARGES: { RETURN_CHARGE },
   TRANSACTION_TYPES: { DEBIT },
 } = require('../../config/constants');
 
 const stateIdcommentMap = {
-  [CREATED]: 'Package Recieved',
+  [PACKAGE_ITEMS_UPLOAD_PENDING]: 'Package Recieved',
   [VALUES]: 'Package waiting for customer input value action',
   [INVOICE]: 'Package under review for customer invoice upload',
   [REVIEW]: 'Package is under shoppre review',
@@ -79,7 +79,7 @@ module.exports = (sequelize, DataTypes) => {
     actingUser,
     comments = null,
   }) => {
-    log('updateState', nextStateId);
+    log('updateState', nextStateId, pkg, comments);
     const options = {
       package_id: pkg.id,
       user_id: actingUser.id,
@@ -142,7 +142,7 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
 
-        if ([CREATED].includes(nextStateId)) {
+        if ([PACKAGE_ITEMS_UPLOAD_PENDING].includes(nextStateId)) {
           notification
             .stateChange({
               db,
