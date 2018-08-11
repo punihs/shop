@@ -19,6 +19,11 @@ angular.module('uiGenApp')
         controller: 'shipmentRequestController',
         controllerAs: '$ctrl',
       })
+      .state('dash.schedulePickup', {
+        url: '/create',
+        templateUrl: 'app/routes/dash/schedulePickup/schedule-pickup.html',
+        controller: 'schedulePickupController',
+
       .state('dash.shipmentConfirm', {
         url: '/request/confirm?order_code=1000',
         templateUrl: 'app/routes/dash/shipmentConfirm/shipmentConfirm.html',

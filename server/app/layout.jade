@@ -34,7 +34,8 @@ html(lang='en')
 
     //script(src='/cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js')
     //script(src='/cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js')
-    script(src="#{s3BaseUrl}/js/jquery.min.js")
+    //script(src="#{s3BaseUrl}/js/jquery.min.js")
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
     script(src='#{s3BaseUrl}/js/slider-js/jssor.js')
     script(src='#{s3BaseUrl}/js/slider-js/jssor.slider.js')
 
@@ -47,6 +48,81 @@ html(lang='en')
     meta(property='al:android:app_name', content='Shoppre - International Shipping from India')
     meta(name='msvalidate.01', content='0E25F147AD9B658B4418A996E97D0D7D')
     // Facebook Messanger icon alignment
+
+    script(async='', src='https://cdn.ampproject.org/v0.js')
+    link(rel='canonical', href='http://example.ampproject.org/article-metadata.html')
+    script(async='', custom-element='amp-carousel', src='https://cdn.ampproject.org/v0/amp-carousel-0.1.js')
+
+
+
+
+
+
+    style(amp-boilerplate='').
+      body {
+        -webkit-animation: -amp-start 8s steps(1, end) 0s 1 normal both;
+        -moz-animation: -amp-start 8s steps(1, end) 0s 1 normal both;
+        -ms-animation: -amp-start 8s steps(1, end) 0s 1 normal both;
+        animation: -amp-start 8s steps(1, end) 0s 1 normal both
+      }
+
+      @-webkit-keyframes -amp-start {
+        from {
+          visibility: hidden
+        }
+        to {
+          visibility: visible
+        }
+      }
+
+      @-moz-keyframes -amp-start {
+        from {
+          visibility: hidden
+        }
+        to {
+          visibility: visible
+        }
+      }
+
+      @-ms-keyframes -amp-start {
+        from {
+          visibility: hidden
+        }
+        to {
+          visibility: visible
+        }
+      }
+
+      @-o-keyframes -amp-start {
+        from {
+          visibility: hidden
+        }
+        to {
+          visibility: visible
+        }
+      }
+
+      @keyframes -amp-start {
+        from {
+          visibility: hidden
+        }
+        to {
+          visibility: visible
+        }
+      }
+    noscript
+      style(amp-boilerplate='').
+        body {
+          -webkit-animation: none;
+          -moz-animation: none;
+          -ms-animation: none;
+          animation: none
+        }
+
+      // amp
+
+
+
     style.
       .fb_dialog.fb_dialog_advanced.fb_customer_chat_bubble_animated_no_badge.fb_customer_chat_bubble_pop_in {
         right: initial !important;

@@ -14,7 +14,7 @@ describe('GET /api/reviews', () => {
   });
 });
 describe('POST /api/reviews', () => {
-  it('return reviews', (done) => {
+  it('insert the reviews records', (done) => {
     request(app)
       .post('/api/reviews')
       .send({

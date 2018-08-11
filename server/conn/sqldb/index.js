@@ -75,6 +75,8 @@ const db = {
   // - payment gateway
   'DirectPayment',
 
+  // - schedule pickup request
+  'SchedulePickup',
   // Shoppre Digital Inspired by Marketo.com
   // - Website - Google My Business - Hardy
   // - SEO - MOZ

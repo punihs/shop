@@ -1,13 +1,14 @@
 extends ../layout
+block head
+  title #{title}
+  meta(name='description', content= '#{meta_description}')
+  meta(name="keywords" content="#{meta_keywords}")
+
 block content
-  head
-    title '#{title}'
-    meta(name='description', content= '#{meta_disctription}')
-    meta(property='og:title', content= '#{meta_title}')
   .body
     section.page_head
       .pagebanner
-        img(src='img/banner1.jpg', width='100%')
+        img(src='#{s3BaseUrl}/img/banner1.jpg', width='100%')
         .banner-cap
           h2
             | Our

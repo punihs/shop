@@ -59,6 +59,7 @@ const follower = require('./api/package/follower');
 const shipmentFollower = require('./api/shipment/follower');
 const redemption = require('./api/redemption');
 const shipmentTypes = require('./api/shipmentType');
+const schedulePickups = require('./api/schedulePickup');
 const webRoutes = require('./webRoutes');
 const minio = require('./conn/minio/minio.route');
 const cron = require('./cron');
@@ -128,6 +129,7 @@ module.exports = (app) => {
   app.use('/api/coupons', coupon);
   app.use('/api/emailPreferences', authenticate(), emailPreference);
   app.use('/api/emailTemplates', authenticate(), emailTemplate);
+  app.use('/api/schedulePickup', authenticate(), schedulePickups);
   app.get('/secured', authenticate(), (req, res) => res.json({ name, version }));
 
   app.get('/health', (req, res) => res.json({ name, version }));

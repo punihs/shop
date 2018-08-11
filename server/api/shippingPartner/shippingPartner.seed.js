@@ -11,4 +11,12 @@ module.exports = () => [{
   id: 3,
   name: 'DTDC',
   slug: 'dtdc',
+}, {
+  id: 4,
+  name: 'Bluedart',
+  slug: 'bluedart',
+}, {
+  id: 5,
+  name: 'Aipex',
+  slug: 'aipex',
 }];
