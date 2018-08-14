@@ -27,14 +27,14 @@ class shipmentConfirm {
   }
 
   openPhoto(id) {
-    const modal = this.ViewPhotoService.open(id);
-    modal
-      .result
-      .then((data) => {
-        // if (data.is_default === true) {
-        //   // this.data.address_id = data.id;
-        // }
-      });
+    this.ViewPhotoService.open(id);
+    // modal
+    //   .result
+    //   .then((data) => {
+    //     // if (data.is_default === true) {
+    //     //   // this.data.address_id = data.id;
+    //     // }
+    //   });
   }
 
   getList() {

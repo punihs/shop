@@ -1,6 +1,7 @@
 div.m-t-xl.no-margin
   .wrapper-md.bg-white-only
     .row
+
       .col-md-8.m-t-xs
         .h1.m-l-md.font-thin.h3.m-b-md.text-u-c
           | Packages in locker&nbsp;
@@ -89,7 +90,8 @@ div.m-t-xl.no-margin
                           i.fa.fa-sort-desc
                         td.footable-visible
                           a(ui-sref='package.show({ id: package.id })' ng-bind='package.Store.name')
-                        td.footable-visible(ng-bind='package.id')
+                        td.footable-visible {{package.id}}
+                          span.badge.bg-success.m-l-xs.pull-right(ng-if='package.content_type == 2') PUNITH
                         td.footable-visible(
                         ng-bind='$ctrl.moment(package.created_at).fromNow()'
                         uib-tooltip="{{package.created_at | date:'MMM d, y'}} IST {{package.created_at | date:'h:mm a'}}"
@@ -140,18 +142,18 @@ div.m-t-xl.no-margin
                                       p.m-t-xs
                                         button.no-padder.btn-link.text-warning.m-r-xs(ng-click='$ctrl.AddCommnet(package.id)') Add your notes
                                         | to the package, this is for your use only, Shoppre will not review this area.
-                                      .col-sm-4.pull-right
-                                        ul.nav.nav-pills.nav-sm
+                                      .col-sm-5.pull-right.right-pad-0
+                                        ul.nav.nav-pills.nav-sm.package-submit-ul
                                           li.m-r-xs.pull-right.ng-scope
                                             a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(ng-click="$ctrl.submitValues(package.id, $index)")
                                               span Submit Item Values
                                           li.m-r-xs.pull-right.ng-scope
-                                            a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(ng-click="$ctrl.resetValues()")
+                                            a.h5.font-bold.b-a.btn-addon.btn-success.imp(ng-click="$ctrl.resetValues($index)")
                                               span Reset Values
                                     tr
                                       td(colspan=8)
-                                        h4.font-thin.m-t-md OPTIONAL SERVICES
-                                          .input-group-btn.dropdown.open(uib-dropdown='', style='')
+                                          h4.font-thin OPTIONAL SERVICES
+                                          .input-group-btn.dropdown.open.full-width(uib-dropdown='', style='')
                                             button.btn.btn-default.full-width.dropdown-toggle.text-left.m-b-md(type='button', uib-dropdown-toggle='', aria-haspopup='true', aria-expanded='true')
                                               span.text-u-c.m-r-xs Special Offers
                                               span.caret
@@ -195,8 +197,8 @@ div.m-t-xl.no-margin
                                         | to the package, this is for your use only, Shoppre will not review this area.
                                   tr
                                     td(colspan=8)
-                                      h4.font-thin.m-t-md OPTIONAL SERVICES
-                                        .input-group-btn.dropdown.open(uib-dropdown='', style='')
+                                        h4.font-thin.m-t-md OPTIONAL SERVICES
+                                        .input-group-btn.dropdown.open.full-width(uib-dropdown='', style='')
                                           button.btn.btn-default.full-width.dropdown-toggle.text-left.m-b-md(type='button', uib-dropdown-toggle='', aria-haspopup='true', aria-expanded='true')
                                             span.text-u-c.m-r-xs Special Offers
                                             span.caret
@@ -274,8 +276,8 @@ div.m-t-xl.no-margin
                                         |  to the package, this is for your use only, Shoppre will not review this area.
                                   tr
                                     td(colspan=8)
-                                      h4.font-thin.m-t-md OPTIONAL SERVICES
-                                        .input-group-btn.dropdown.open(uib-dropdown='', style='')
+                                        h4.font-thin.m-t-md OPTIONAL SERVICES
+                                        .input-group-btn.dropdown.open.full-width(uib-dropdown='', style='')
                                           button.btn.btn-default.full-width.dropdown-toggle.text-left.m-b-md(type='button', uib-dropdown-toggle='', aria-haspopup='true', aria-expanded='true')
                                             span.text-u-c.m-r-xs Special Offers
                                             span.caret
@@ -544,7 +546,7 @@ div.m-t-xl.no-margin
             .col-md-2.no-padder
               img(src='/assets/images/dashico8.png')
             .col-md-9
-              .h4.text-u-c Blog
+              .h4.text-u-c.top-margin-10  Blog
 
 
 

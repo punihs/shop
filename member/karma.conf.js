@@ -45,6 +45,7 @@ module.exports = function (config) {
       'client/bower_components/angular-cookies/angular-cookies.js',
       'client/bower_components/angular-socket-io/socket.js',
       'client/bower_components/angular-base64-upload/src/angular-base64-upload.js',
+      'client/bower_components/angular-ui-carousel/dist/ui-carousel.js',
       'client/bower_components/ui-select/dist/select.js',
       // endbower
       'client/app/app.js',

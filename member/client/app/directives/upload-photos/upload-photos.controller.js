@@ -1,9 +1,20 @@
 class UploadphotosCtrl {
-  constructor($uibModalInstance, $http, id, $state) {
+  constructor($uibModalInstance, $http, id, $state, $scope) {
     this.id = id;
     this.$state = $state;
     this.$http = $http;
     this.$uibModalInstance = $uibModalInstance;
+    $scope.myInterval = 5000;
+    $scope.noWrapSlides = false;
+    $scope.active = 0;
+    this.slides = [
+      { id: 1, image: 'assets/images/item-2.jpg' },
+      { id: 2, image: 'assets/images/item-2.jpg' },
+      { id: 3, image: 'assets/images/item-2.jpg' },
+      { id: 4, image: 'assets/images/item-2.jpg' },
+      { id: 5, image: 'assets/images/item-2.jpg' },
+      { id: 6, image: 'assets/images/item-2.jpg' },
+    ];
   }
 
   cancel() {
@@ -28,6 +39,10 @@ class UploadphotosCtrl {
     this.basicRequest = false;
     this.additionalRequest = true;
   }
+  checkPhotos() {
+    this.showAdditional = false;
+    this.photoExist = false;
+  }
   requestBasic() {
     this.data = {
       type: 'basic_photo',
@@ -35,11 +50,12 @@ class UploadphotosCtrl {
     this.$http
       .put(`/packages/${this.id}/photoRequests`, this.data)
       .then(({ data: { message } }) => {
-        this.showAdditional = false;
+        this.showAdditional = true;
         this.showBasic = true;
         this.success = true;
         this.basicRequest = false;
         this.additionalRequest = false;
+        this.photoList = true;
         this
           .toaster
           .pop('success', message);
@@ -56,10 +72,11 @@ class UploadphotosCtrl {
   }
   requestAdvanced() {
     this.showAdditional = true;
-    this.showBasic = false;
+    this.showBasic = true;
     this.success = true;
     this.basicRequest = false;
     this.additionalRequest = false;
+    this.photoList = true;
     this.data = {
       type: 'advanced_photo',
     };

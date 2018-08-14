@@ -1,10 +1,10 @@
 .bg-light.lter.b-b.wrapper-md.ng-scope
   .wrapper-md.bg-white-only
-    .row
-      .col-md-6
-        .div-border-create
-          h2.m-n.alert.alert-info 1. DELIVERY ADDRESS
-          .row
+    .container
+      .row
+        .col-md-8
+          .div-border-create
+            h2.m-n.alert.alert-info 1. DELIVERY ADDRESS
             .col-md-8.col-lg-8.radioBox(ng-repeat='item in $ctrl.customer.Addresses')
               .radio
                 label.i-checks
@@ -14,353 +14,353 @@
                   | {{item.line1}} <BR>
                   | {{item.line2}}
                   | {{item.id}}
-            .col-md-1.col-md-offset-2.padding-5
+            .col-md-3.padding-5.m-b-md.m-t-xs
               a.btn.btn-success(ng-click="$ctrl.open()") Add Address
-        div.div-border-create
-          h2.m-n.alert.alert.alert-info.panel-warning 2. SHIPMENT SUMMARY
-            .clearfix
-          .div
-            p.div-list {{$ctrl.shipments.length}} Packages in this shipment
-          .full-width
-            .wrapper-md.ng-scope
-              .panel.panel-default
-                .panel-heading
-                  h4
-                    a(href='') Add More Packages
-                div
-                  table.table.table-bordered.m-b-none.default.footable-loaded.footable.table-responsive(
-                  ui-jq='footable', data-filter='#filter', data-page-size='5')
-                    thead
-                      tr
-                        th.footable-visible.footable-first-column.footable-sortable(data-toggle='true')
-                        th.footable-visible.footable-sortable
-                          | From
-                          span.footable-sort-indicator
-                        th.footable-visible.footable-sortable(data-hide='phone,tablet')
-                          | Reference Code
-                          span.footable-sort-indicator
-                        th.footable-visible.footable-sortable(data-hide='phone,tablet', data-name='Date Of Birth')
-                          | Total Value
-                          span.footable-sort-indicator
-                        th.footable-visible.footable-last-column.footable-sortable(data-hide='phone')
-                          | Weight
-                          span.footable-sort-indicator
-                    tbody(ng-repeat="shipment in $ctrl.shipments" ng-init='$ctrl.MoreOption={}')
-                      tr.footable-even(style='display: table-row;')
-                        td.footable-visible.footable-first-column(ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]')
-                          i.fa.fa-sort-desc
-                        td.footable-visible
-                          a(ui-sref='package.show({ id: package.id })' ng-bind='shipment.Store.name')
-                        td.footable-visible(ng-bind='shipment.reference_code')
-                        td.footable-visible(
-                        ng-bind='shipment.price_amount'
-                        )
-                        td.footable-visible(ng-bind='shipment.weight')
-                      tr.footable-even(style='display: table-row;')
-                        td.footable-visible(colspan='5' ng-if='$ctrl.MoreOption[$index]')
-                          p(ng-if='$ctrl.standard_photo_check==="yes" || $ctrl.advc_photo_check==="yes"')
-                            button(href='') Photos
-
-                          table#DataTables_Table_4.table.table-bordered.m-b-none
-                            thead
-                              tr(role='row')
-                                th.sorting_asc.text-u-c(style='width: 186px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Package Details
-                                th.sorting.text-u-c(style='width: 242px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') QTY
-                                th.sorting.text-u-c(style='width: 241px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Value per Unit
-                                th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending') Value
-                            tbody(ng-repeat="item in shipment.PackageItems")
-                              tr.odd(role='row')
-                                td.sorting_1 {{item.name}}
-                                td {{item.quantity}}
-                                td {{item.price_amount}}
-                                td {{item.price_amount * item.quantity}}
-                    tr.footable-even.table-footer
-                      td.footable-visible.footable-first-column
-                      td.footable-visible
-                      td.footable-visible Shipment Totals
-                      td.footable-visible ₹{{$ctrl.totalpackagePriceAmount}}
-                      td.footable-visible Final Weight of Shipment to be calculated
-                      td.footable-visible
-          .clearfix
-            .div-list
-              h4
-                //a.bg-danger(href='') Cancel Request
-                button.btn.btn-danger(
-                ui-sref='dash.packages'
-                popover-trigger="'mouseenter'"
-                popover-placement='bottom'
-                popover-append-to-body='true'
-                ) Cancel Request
-              p Order confirmation email will be sent to
-                span.summary-order {{$ctrl.customer.email}}
-              button.btn.btn-sm.btn-success.m-t-xs.text-u-c.pull-left.m-t-md.m-b-md(type='submit' ng-click='$ctrl.create()')  Confirm Your Ship Request *
+          div.div-border-create.clearfix
+            h2.m-n.alert.alert.alert-info.panel-warning 2. SHIPMENT SUMMARY
               .clearfix
-              p.pull-left * Kindly note that you CANNOT change your Delivery Address, Package Selection or your Shipping Preferences after you create your ship request.
+            .div
+              p.div-list {{$ctrl.shipments.length}} Packages in this shipment
+            .full-width
+              .wrapper-md.ng-scope
+                .panel.panel-default
+                  .panel-heading
+                    h4
+                      a(href='') Add More Packages
+                  div
+                    table.table.table-bordered.m-b-none.default.footable-loaded.footable.table-responsive(
+                    ui-jq='footable', data-filter='#filter', data-page-size='5')
+                      thead
+                        tr
+                          th.footable-visible.footable-first-column.footable-sortable(data-toggle='true')
+                          th.footable-visible.footable-sortable
+                            | From
+                            span.footable-sort-indicator
+                          th.footable-visible.footable-sortable(data-hide='phone,tablet')
+                            | Reference Code
+                            span.footable-sort-indicator
+                          th.footable-visible.footable-sortable(data-hide='phone,tablet', data-name='Date Of Birth')
+                            | Total Value
+                            span.footable-sort-indicator
+                          th.footable-visible.footable-last-column.footable-sortable(data-hide='phone')
+                            | Weight
+                            span.footable-sort-indicator
+                      tbody(ng-repeat="shipment in $ctrl.shipments" ng-init='$ctrl.MoreOption={}')
+                        tr.footable-even(style='display: table-row;')
+                          td.footable-visible.footable-first-column(ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]')
+                            i.fa.fa-sort-desc
+                          td.footable-visible
+                            a(ui-sref='package.show({ id: package.id })' ng-bind='shipment.Store.name')
+                          td.footable-visible(ng-bind='shipment.reference_code')
+                          td.footable-visible(
+                          ng-bind='shipment.price_amount'
+                          )
+                          td.footable-visible(ng-bind='shipment.weight')
+                        tr.footable-even(style='display: table-row;')
+                          td.footable-visible(colspan='5' ng-if='$ctrl.MoreOption[$index]')
+                            p(ng-if='$ctrl.standard_photo_check==="yes" || $ctrl.advc_photo_check==="yes"')
+                              button(href='') Photos
 
-      .col-md-3
-        .list-group-item.text-danger.text-u-c
-          span.badge.pull-right.bg-success
-          span.badge.pull-right.bg-success {{$ctrl.customer.wallet_balance_amount}}
-          |     Shoppre Wallet
-        .panel.panel-info.m-t-md
-          .panel-heading.font-bold.text-u-c SHIPPING PREFERENCES SUMMARY
-          .panel-body
-            form.form.form-validation.form-horizontal.wrapper-md(
-            name="newShipmentForm"
-            novalidate
-            ng-submit='$ctrl.create()'
-            autocomplete='off'
-            )
-              ul.list-group.list-group-lg.m-b-none.list-unstyled
-                li
-                  .checkbox(ng-click='$ctrl.updateCharges()')
-                    label.i-checks(ng-if='$ctrl.data.repack === true')
-                      input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.repack')
-                    label.i-checks
-                      input(type='checkbox',  checked='false' value='' ng-model='$ctrl.data.repack')
-                      i
-                      | Discard Shoe boxes
-                    i.fa.fa-info-circle.m-l-xs(
-                    uib-popover=''
-                    popover-trigger="'mouseenter'"
-                    popover-placement='top'
-                    popover-append-to-body='true'
-                    )
-                li
-                  .checkbox(ng-click='$ctrl.updateCharges()')
-                    //label.i-checks
-                    label.i-checks(ng-if='$ctrl.data.extra_packing === true')
-                      input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.extra_packing')
-                    label.i-checks
-                      input(type='checkbox',  value='' ng-model='$ctrl.data.extra_packing')
-                      i
-                      | Add extra packing material
-                    i.fa.fa-info-circle.m-l-xs(
-                    uib-popover=''
-                    popover-trigger="'mouseenter'"
-                    popover-placement='top'
-                    popover-append-to-body='true'
-                    )
-                li
-                  .checkbox(ng-click='$ctrl.updateCharges()')
-                    label.i-checks(ng-if='$ctrl.data.original === true')
-                      input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.original')
-                    label.i-checks
-                      input(type='checkbox',  value='' ng-model='$ctrl.data.original')
-                      i
-                      | Ship in original boxes(do not repack)
-                    i.fa.fa-info-circle.m-l-xs(
-                    uib-popover=''
-                    popover-trigger="'mouseenter'"
-                    popover-placement='top'
-                    popover-append-to-body='true'
-                    )
-                li
-                  .checkbox(ng-click='$ctrl.updateCharges()')
-                    label.i-checks(ng-if='$ctrl.data.gift_wrap === true' )
-                      input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.gift_wrap')
-                    label.i-checks
-                      input(type='checkbox',  value='' ng-model='$ctrl.data.gift_wrap')
-                      i
-                      | Gift Wrap
-                    i.fa.fa-info-circle.m-l-xs(
-                    uib-popover=''
-                    popover-trigger="'mouseenter'"
-                    popover-placement='top'
-                    popover-append-to-body='true'
-                    )
-                li
-                  .checkbox(ng-click='$ctrl.updateCharges()')
-                    label.i-checks(ng-if='$ctrl.data.gift_note === true')
-                      input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.gift_note')
-                    label.i-checks
-                      input(type='checkbox',  value='' ng-model='$ctrl.data.gift_note')
-                      i
-                      | Gift Note
-                    i.fa.fa-info-circle.m-l-xs(
-                    uib-popover=''
-                    popover-trigger="'mouseenter'"
-                    popover-placement='top'
-                    popover-append-to-body='true'
-                    )
-                li.txt-kg
-                  .col-lg-2.no-padder
-                      input.form-control.no-padder.text-center(type='text', placeholder='in KG' ng-model='$ctrl.data.max_weight' ng-bind="$ctrl.data.max_weight")
-                    label.col-lg-9.control-label.m-t-xs Max weight per package (in KG)
+                            table#DataTables_Table_4.table.table-bordered.m-b-none
+                              thead
+                                tr(role='row')
+                                  th.sorting_asc.text-u-c(style='width: 186px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Package Details
+                                  th.sorting.text-u-c(style='width: 242px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') QTY
+                                  th.sorting.text-u-c(style='width: 241px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Value per Unit
+                                  th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending') Value
+                              tbody(ng-repeat="item in shipment.PackageItems")
+                                tr.odd(role='row')
+                                  td.sorting_1 {{item.name}}
+                                  td {{item.quantity}}
+                                  td {{item.price_amount}}
+                                  td {{item.price_amount * item.quantity}}
+                      tr.footable-even.table-footer
+                        td.footable-visible.footable-first-column
+                        td.footable-visible
+                        td.footable-visible Shipment Totals
+                        td.footable-visible ₹{{$ctrl.totalpackagePriceAmount}}
+                        td.footable-visible Final Weight of Shipment to be calculated
+                        td.footable-visible
+            .clearfix
+              .div-list
+                h4
+                  //a.bg-danger(href='') Cancel Request
+                  button.btn.btn-danger(
+                  ui-sref='dash.packages'
+                  popover-trigger="'mouseenter'"
+                  popover-placement='bottom'
+                  popover-append-to-body='true'
+                  ) Cancel Request
+                p Order confirmation email will be sent to
+                  span.summary-order {{$ctrl.customer.email}}
+                button.btn.btn-sm.btn-success.m-t-xs.text-u-c.pull-left.m-t-md.m-b-md(type='submit' ng-click='$ctrl.create()')  Confirm Your Ship Request *
+                .clearfix
+                p.pull-left * Kindly note that you CANNOT change your Delivery Address, Package Selection or your Shipping Preferences after you create your ship request.
+
+        .col-md-4
+          .list-group-item.text-danger.text-u-c
+            span.badge.pull-right.bg-success
+            span.badge.pull-right.bg-success {{$ctrl.customer.wallet_balance_amount}}
+            |     Shoppre Wallet
+          .panel.panel-info.m-t-md
+            .panel-heading.font-bold.text-u-c SHIPPING PREFERENCES SUMMARY
+            .panel-body
+              form.form.form-validation.form-horizontal.wrapper-md(
+              name="newShipmentForm"
+              novalidate
+              ng-submit='$ctrl.create()'
+              autocomplete='off'
+              )
+                ul.list-group.list-group-lg.m-b-none.list-unstyled
+                  li
+                    .checkbox(ng-click='$ctrl.updateCharges()')
+                      label.i-checks(ng-if='$ctrl.data.repack === true')
+                        input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.repack')
+                      label.i-checks
+                        input(type='checkbox',  checked='false' value='' ng-model='$ctrl.data.repack')
+                        i
+                        | Discard Shoe boxes
                       i.fa.fa-info-circle.m-l-xs(
                       uib-popover=''
                       popover-trigger="'mouseenter'"
                       popover-placement='top'
                       popover-append-to-body='true'
                       )
-                .clearfix
-        .panel.panel-info.m-t-md
-          .panel-heading.font-bold.text-u-c PACKAGE LEVEL CHARGES SUMMARY
-          .panel-body
-            form.ng-pristine.ng-valid(role='form')
-              ul.list-group.list-group-lg.m-b-none.list-unstyled
-                li
-                  | Shipping Preference Charges
-                  i(ng-if='$ctrl.operationsAmount > 0')
-                    span.badge.pull-right.bg-success {{$ctrl.operationsAmount}}
-                  i(ng-if='$ctrl.shipmentMeta.operationsAmount === 0')
-                    span.badge.pull-right.bg-success 00
-                  span(
-                  uib-tooltip = "includes the above mentioned charges"
-                  tooltip-placement='right'
-                  tooltip-append-to-body='true'
-                  )
+                  li
+                    .checkbox(ng-click='$ctrl.updateCharges()')
+                      //label.i-checks
+                      label.i-checks(ng-if='$ctrl.data.extra_packing === true')
+                        input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.extra_packing')
+                      label.i-checks
+                        input(type='checkbox',  value='' ng-model='$ctrl.data.extra_packing')
+                        i
+                        | Add extra packing material
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover=''
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+                  li
+                    .checkbox(ng-click='$ctrl.updateCharges()')
+                      label.i-checks(ng-if='$ctrl.data.original === true')
+                        input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.original')
+                      label.i-checks
+                        input(type='checkbox',  value='' ng-model='$ctrl.data.original')
+                        i
+                        | Ship in original boxes(do not repack)
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover=''
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+                  li
+                    .checkbox(ng-click='$ctrl.updateCharges()')
+                      label.i-checks(ng-if='$ctrl.data.gift_wrap === true' )
+                        input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.gift_wrap')
+                      label.i-checks
+                        input(type='checkbox',  value='' ng-model='$ctrl.data.gift_wrap')
+                        i
+                        | Gift Wrap
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover=''
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+                  li
+                    .checkbox(ng-click='$ctrl.updateCharges()')
+                      label.i-checks(ng-if='$ctrl.data.gift_note === true')
+                        input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.gift_note')
+                      label.i-checks
+                        input(type='checkbox',  value='' ng-model='$ctrl.data.gift_note')
+                        i
+                        | Gift Note
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover=''
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+                  li.txt-kg
+                    .col-md-2.no-padder
+                        input.form-control.no-padder.text-center(type='text', placeholder='in KG' ng-model='$ctrl.data.max_weight' ng-bind="$ctrl.data.max_weight")
+                      label.col-md-10.control-label.text-left Max weight per package (in KG)
+                        i.fa.fa-info-circle.m-l-xs(
+                        uib-popover=''
+                        popover-trigger="'mouseenter'"
+                        popover-placement='top'
+                        popover-append-to-body='true'
+                        )
+                  .clearfix
+          .panel.panel-info.m-t-md
+            .panel-heading.font-bold.text-u-c PACKAGE LEVEL CHARGES SUMMARY
+            .panel-body
+              form.ng-pristine.ng-valid(role='form')
+                ul.list-group.list-group-lg.m-b-none.list-unstyled
+                  li
+                    | Shipping Preference Charges
+                    i(ng-if='$ctrl.operationsAmount > 0')
+                      span.badge.pull-right.bg-success {{$ctrl.operationsAmount}}
+                    i(ng-if='$ctrl.shipmentMeta.operationsAmount === 0')
+                      span.badge.pull-right.bg-success 00
+                    span(
+                    uib-tooltip = "includes the above mentioned charges"
+                    tooltip-placement='right'
+                    tooltip-append-to-body='true'
+                    )
+                        i.m-l.fa.fa-info-circle
+                  li
+                    | Additional Storage Fee
+                    i(ng-if='$ctrl.shipmentMeta.storage_amount > 0')
+                      span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.storage_amount}}
+                    i(ng-if='$ctrl.shipmentMeta.storage_amount === 0')
+                      span.badge.pull-right.bg-success 00
+                    span(
+                    uib-tooltip = "Shoppre offers FREE storage up to 20 days*. Packages stored past the" +
+                    " free storage period will incur storage fees of INR 100/day from the 21st Day." +
+                    " Storage fees continue to accrue until your package is  shipped, picked-up," +
+                    " discarded or returned to the sender. " +
+                    "*No. of days may be more for Membership Partners, and Loyalty Members (Silver and above)."
+                    tooltip-placement='right'
+                    tooltip-append-to-body='true'
+                    )
                       i.m-l.fa.fa-info-circle
-                li
-                  | Additional Storage Fee
-                  i(ng-if='$ctrl.shipmentMeta.storage_amount > 0')
-                    span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.storage_amount}}
-                  i(ng-if='$ctrl.shipmentMeta.storage_amount === 0')
-                    span.badge.pull-right.bg-success 00
-                  span(
-                  uib-tooltip = "Shoppre offers FREE storage up to 20 days*. Packages stored past the" +
-                  " free storage period will incur storage fees of INR 100/day from the 21st Day." +
-                  " Storage fees continue to accrue until your package is  shipped, picked-up," +
-                  " discarded or returned to the sender. " +
-                  "*No. of days may be more for Membership Partners, and Loyalty Members (Silver and above)."
-                  tooltip-placement='right'
-                  tooltip-append-to-body='true'
-                  )
-                    i.m-l.fa.fa-info-circle
-                li
-                  | Photo Charges
-                  i(ng-if='$ctrl.shipmentMeta.photo_amount > 0')
-                    span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.photo_amount}}
-                  i(ng-if='$ctrl.shipmentMeta.photo_amount === 0')
-                    span.badge.pull-right.bg-success 00
-                  span(
-                  uib-tooltip = "Basic Photos: We take upto 5 Basic photographs of all your items for a cost of INR 50.</p>"+
-                  "Additional Photos: You can also request upto 10 additional photos (incase you want some " +
-                  "more details or if you want to inspect if the items are not damaged) for a cost of INR 500."+
-                  "*Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above)."
-                  tooltip-placement='right'
-                  tooltip-append-to-body='true'
-                  )
-                    i.m-l.fa.fa-info-circle
-                li
-                  | Consolidation Charges
-                  i(ng-if='$ctrl.shipmentMeta.consolidation_charge_amount > 0')
-                    span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.consolidation_charge_amount}}
-                  i(ng-if='$ctrl.shipmentMeta.consolidation_charge_amount === 0')
-                    span.badge.pull-right.bg-success 00
-                    i.fa.fa-info-circle
-                li
-                  | Pick-up Service
-                  i(ng-if='$ctrl.shipmentMeta.pickup_amount > 0')
-                    span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.pickup_amount}}
-                  i(ng-if='$ctrl.shipmentMeta.pickup_amount === 0')
-                    span.badge.pull-right.bg-success 00
-                  i.fa.fa-info-circle.m-l-xs(
+                  li
+                    | Photo Charges
+                    i(ng-if='$ctrl.shipmentMeta.photo_amount > 0')
+                      span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.photo_amount}}
+                    i(ng-if='$ctrl.shipmentMeta.photo_amount === 0')
+                      span.badge.pull-right.bg-success 00
+                    span(
+                    uib-tooltip = "Basic Photos: We take upto 5 Basic photographs of all your items for a cost of INR 50.</p>"+
+                    "Additional Photos: You can also request upto 10 additional photos (incase you want some " +
+                    "more details or if you want to inspect if the items are not damaged) for a cost of INR 500."+
+                    "*Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above)."
+                    tooltip-placement='right'
+                    tooltip-append-to-body='true'
+                    )
+                      i.m-l.fa.fa-info-circle
+                  li
+                    | Consolidation Charges
+                    i(ng-if='$ctrl.shipmentMeta.consolidation_charge_amount > 0')
+                      span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.consolidation_charge_amount}}
+                    i(ng-if='$ctrl.shipmentMeta.consolidation_charge_amount === 0')
+                      span.badge.pull-right.bg-success 00
+                      i.fa.fa-info-circle
+                  li
+                    | Pick-up Service
+                    i(ng-if='$ctrl.shipmentMeta.pickup_amount > 0')
+                      span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.pickup_amount}}
+                    i(ng-if='$ctrl.shipmentMeta.pickup_amount === 0')
+                      span.badge.pull-right.bg-success 00
+                    i.fa.fa-info-circle.m-l-xs(
 
-                  uib-popover=''
-                  popover-trigger="'mouseenter'"
-                  popover-placement='top'
-                  popover-append-to-body='true'
-                  )
-                li
-                  | Split Package
-                  i(ng-if='$ctrl.shipmentMeta.split_package_amount > 0')
-                    span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.split_package_amount}}
-                  i(ng-if='$ctrl.shipmentMeta.split_package_amount === 0')
-                    span.badge.pull-right.bg-success 00
-                  i.fa.fa-info-circle.m-l-xs(
-                  uib-popover=''
-                  popover-trigger="'mouseenter'"
-                  popover-placement='top'
-                  popover-append-to-body='true'
-                  )
-                li
-                  | Package Special Handling Fee
-                  i(ng-if='$ctrl.shipmentMeta.special_handling_amount > 0')
-                    span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.special_handling_amount}}
-                  i(ng-if='$ctrl.shipmentMeta.special_handling_amount === 0')
-                    span.badge.pull-right.bg-success 00
-                  i.fa.fa-info-circle.m-l-xs(
-                  uib-popover=''
-                  popover-trigger="'mouseenter'"
-                  popover-placement='top'
-                  popover-append-to-body='true'
-                  )
-                li
-                  | Receive Mail
-                  i(ng-if='$ctrl.shipmentMeta.receive_mail_amount > 0')
-                    span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.receive_mail_amount}}
-                  i(ng-if='$ctrl.shipmentMeta.receive_mail_amount === 0')
-                    span.badge.pull-right.bg-success 00
-                  i.fa.fa-info-circle.m-l-xs(
-                  uib-popover=''
-                  popover-trigger="'mouseenter'"
-                  popover-placement='top'
-                  popover-append-to-body='true'
-                  )
-                li
-                  | Scan Document
-                  i(ng-if='$ctrl.shipmentMeta.scan_document_amount > 0')
-                    span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.scan_document_amount}}
-                  i(ng-if='$ctrl.shipmentMeta.scan_document_amount === 0')
-                    span.badge.pull-right.bg-success 00
-                  i.fa.fa-info-circle.m-l-xs(
-                  uib-popover=''
-                  popover-trigger="'mouseenter'"
-                  popover-placement='top'
-                  popover-append-to-body='true'
-                  )
-                li
-                  | Address Correction
-                  i(ng-if='$ctrl.shipmentMeta.wrong_address_amount > 0')
-                    span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.wrong_address_amount}}
-                  i(ng-if='$ctrl.shipmentMeta.wrong_address_amount === 0')
-                    span.badge.pull-right.bg-success 00
-                  i.fa.fa-info-circle.m-l-xs(
-                  uib-popover=''
-                  popover-trigger="'mouseenter'"
-                  popover-placement='top'
-                  popover-append-to-body='true'
-                  )
-                li
-                  | Special Package Clearance Fee
-                  i(ng-if='$ctrl.data.liquid')
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                  li
+                    | Split Package
+                    i(ng-if='$ctrl.shipmentMeta.split_package_amount > 0')
+                      span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.split_package_amount}}
+                    i(ng-if='$ctrl.shipmentMeta.split_package_amount === 0')
+                      span.badge.pull-right.bg-success 00
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                  li
+                    | Package Special Handling Fee
+                    i(ng-if='$ctrl.shipmentMeta.special_handling_amount > 0')
+                      span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.special_handling_amount}}
+                    i(ng-if='$ctrl.shipmentMeta.special_handling_amount === 0')
+                      span.badge.pull-right.bg-success 00
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                  li
+                    | Receive Mail
+                    i(ng-if='$ctrl.shipmentMeta.receive_mail_amount > 0')
+                      span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.receive_mail_amount}}
+                    i(ng-if='$ctrl.shipmentMeta.receive_mail_amount === 0')
+                      span.badge.pull-right.bg-success 00
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                  li
+                    | Scan Document
+                    i(ng-if='$ctrl.shipmentMeta.scan_document_amount > 0')
+                      span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.scan_document_amount}}
+                    i(ng-if='$ctrl.shipmentMeta.scan_document_amount === 0')
+                      span.badge.pull-right.bg-success 00
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                  li
+                    | Address Correction
+                    i(ng-if='$ctrl.shipmentMeta.wrong_address_amount > 0')
+                      span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.wrong_address_amount}}
+                    i(ng-if='$ctrl.shipmentMeta.wrong_address_amount === 0')
+                      span.badge.pull-right.bg-success 00
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                  li
+                    | Special Package Clearance Fee
+                    i(ng-if='$ctrl.data.liquid')
+                      span.badge.pull-right.bg-success To Be Calculated
+                    i(ng-if='!$ctrl.data.liquid')
+                      span.badge.pull-right.bg-success 00
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                  li
+                    | Overweight Clearance Fee
                     span.badge.pull-right.bg-success To Be Calculated
-                  i(ng-if='!$ctrl.data.liquid')
-                    span.badge.pull-right.bg-success 00
-                  i.fa.fa-info-circle.m-l-xs(
-                  uib-popover=''
-                  popover-trigger="'mouseenter'"
-                  popover-placement='top'
-                  popover-append-to-body='true'
-                  )
-                li
-                  | Overweight Clearance Fee
-                  span.badge.pull-right.bg-success To Be Calculated
-                  i.fa.fa-info-circle.m-l-xs(
-                  uib-popover=''
-                  popover-trigger="'mouseenter'"
-                  popover-placement='top'
-                  popover-append-to-body='true'
-                  )
-                hr
-                li
-                  | Total Package Level Charges
-                  span.badge.pull-right.bg-success {{$ctrl.totalChargeAmount}}
-                  i.fa.fa-info-circle.m-l-xs(
-                  uib-popover=''
-                  popover-trigger="'mouseenter'"
-                  popover-placement='top'
-                  popover-append-to-body='true'
-                  )
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                  hr
+                  li
+                    | Total Package Level Charges
+                    span.badge.pull-right.bg-success {{$ctrl.totalChargeAmount}}
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=''
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
 
-                .clearfix
-                .panel.panel-info.m-t-md
-                  .panel-heading.font-bold.text-u-c SHIPPING CHARGES
-                  .panel-body
-                    p To be estimated after we pack your items
-                    button.btn.btn-sm.btn-success.m-t-xs.text-u-c.pull-left.m-t-md.m-b-md(ng-click='$ctrl.create(newShipmentForm)') Confirm Your Ship Request *
-                    .clearfix
-                    p * Kindly note that you CANNOT change your Delivery Address, Package Selection or your
-                      Shipping Preferences after you create your ship request.
+                  .clearfix
+                  .panel.panel-info.m-t-md
+                    .panel-heading.font-bold.text-u-c SHIPPING CHARGES
+                    .panel-body
+                      p To be estimated after we pack your items
+                      button.btn.btn-sm.btn-success.m-t-xs.text-u-c.pull-left.m-t-md.m-b-md(ng-click='$ctrl.create(newShipmentForm)') Confirm Your Ship Request *
+                      .clearfix
+                      p * Kindly note that you CANNOT change your Delivery Address, Package Selection or your
+                        Shipping Preferences after you create your ship request.
 

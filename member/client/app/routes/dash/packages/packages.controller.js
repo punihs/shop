@@ -1,6 +1,6 @@
 class PackageLockerController {
   constructor($http, Page, $uibModal, $stateParams, CONFIG, $location, $state, Session,
-              toaster, moment) {
+              toaster, moment, $scope) {
     this.$http = $http;
     this.Page = Page;
     this.$uibModal = $uibModal;
@@ -85,6 +85,12 @@ class PackageLockerController {
     // totalItemAmount = items
     // this.getCount();
     // this.getQueueCount();
+
+    this.orgiinalList = [];
+    this.orgiinalList = this.packages;
+    //   this.packages.forEach(item => {
+    //   this.orgiinalList.push(item);
+    // });
   }
 
   getTotalItemAmount(index) {
@@ -96,12 +102,10 @@ class PackageLockerController {
   }
 
   submitValues(id, index) {
-    console.log('Items', this.packages[index].PackageItems);
     const itemValues = this.packages[index].PackageItems;
     this.$http
       .put(`/packageItems/${id}/values`, itemValues)
       .then(({ data: { packages } }) => {
-        console.log(packages);
       });
     if (this.$stateParams.status === 'ACTION_REQUIRED') {
       this
@@ -112,8 +116,6 @@ class PackageLockerController {
         .toaster
         .pop('sucess', 'Changed Package Values in Ready to Send');
     }
-  }
-  resetValues() {
   }
 
 
@@ -134,9 +136,12 @@ class PackageLockerController {
     this.$http
       .get('/packages', { params: { status: this.$stateParams.status } })
       .then(({ data: { packages } }) => {
-        console.log(packages);
         this.packages.push(...packages);
       });
+  }
+
+
+  resetValues() {
   }
 
   // getCount() {
@@ -156,7 +161,8 @@ class PackageLockerController {
       templateUrl: 'app/directives/download-resume/download-resume.html',
       controller: 'DownloadResumeCtrl',
       controllerAs: 'DownloadResume',
-      size: 'lg',
+      size: 'md',
+
       resolve: {
         id() {
           return id;
@@ -177,7 +183,8 @@ class PackageLockerController {
       templateUrl: 'app/directives/upload-photos/upload-photos.html',
       controller: 'UploadphotosCtrl',
       controllerAs: '$ctrl',
-      size: 'lg',
+      bindToController: 'true',
+      size: 'md',
       resolve: {
         id() {
           return id;
@@ -201,8 +208,7 @@ class PackageLockerController {
   }
 
   createShipment() {
-    console.log(this.packages.filter(x => x.checked).map(x => x.id));
-    console.log(this.packages);
+    console.log(this.packages.filter(x => x.checked).map(x => x.id)); // - required
   }
 
 

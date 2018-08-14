@@ -112,7 +112,7 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 }
 .text-left{text-align:left}
 .position-relative{position:relative}
-.big-cam{font-size:10em}
+.big-cam{font-size:7em}
 .locker-up{
   position: absolute;
   right: -10px;
@@ -120,7 +120,7 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 }
 .text-left{text-align:left}
 .position-relative{position:relative}
-.big-cam{font-size:10em}
+
 .locker-up{
   position: absolute;
   right: -10px;
@@ -207,6 +207,15 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 
 .padding-5 {
   padding: 5px;
+}
+.padding-10 {
+  padding: 10px;
+}
+.left-pad-0{
+  padding-left:0px
+}
+.right-pad-0{
+  padding-right:0px
 }
 
 .right-padding-5 {
@@ -656,6 +665,7 @@ li.dndPlaceholder {
 .div-border-create {
   border: 2px solid #faebcc;
   margin-bottom: 20px;
+  clear:both
 }
 .txt-kg{
   margin-top: 11px;
@@ -696,4 +706,20 @@ li.dndPlaceholder {
   min-height: 225px;
   margin: 25px 0;
 }
-
+.carousal-h3{
+  background: #fff;
+  font-size: 36px;
+  line-height: 100px;
+  margin: 10px;
+}
+.package-submit-ul li a:hover{
+  color:#27c24c!important
+}
+.salution-danger{
+  position: absolute;
+  top: -17px;
+  left: 10px;
+}
+.no-border{
+  border:none!important;
+}

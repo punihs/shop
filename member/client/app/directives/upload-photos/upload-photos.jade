@@ -5,7 +5,7 @@
 .modal-body
   .row(ng-hide='$ctrl.showAdditional')
     .col-md-3.photo-left
-      i.fa.fa-camera.big-cam
+      i.fa.fa-camera.big-cam.m-t-md
     .col-md-9
       .panel.b-a.ng-scope
         .panel-heading.b-b.b-light
@@ -14,9 +14,11 @@
         .panel-body
           p View low-resolution photos taken of your package when it arrived at the Shoppre to confirm package cpntents
           a.btn.btn-success.text-u-c(ng-click='$ctrl.continueBasic()') Get Now
+  .row(ng-show='$ctrl.photoExist' ng-init='$ctrl.checkPhotos()')
+    h1.text-success PHOTO ALREADY THERE
   .row(ng-hide='$ctrl.showBasic')
     .col-md-3.photo-left
-      i.fa.fa-camera.big-cam
+      i.fa.fa-camera.big-cam.m-t-md
     .col-md-9
       .panel.b-a.ng-scope
         .panel-heading.b-b.b-light
@@ -25,6 +27,16 @@
         .panel-body
           p Order up 10 high-resolution photos of your content to confirm color, condition and item details
           a.btn.btn-success.text-u-c(ng-click='$ctrl.continueAdditional()') Request Now
+  .row(ng-show='$ctrl.photoList')
+    .col-md-12.text-center
+      .panel.no-margin(set-ng-animate='false')
+        div(style='height: 305px')
+          div(uib-carousel='', active='active', interval='myInterval', no-wrap='noWrapSlides')
+            div(uib-slide='', ng-repeat='slide in $ctrl.slides', index='$index')
+              img(ng-src='{{slide.image}}', style='margin:auto;')
+              .carousel-caption
+                //h4 Slide {{slide.id}}
+                //p {{slide.text}}
   .row(ng-if='$ctrl.basicRequest')
     .panel.b-a.ng-scope
       .panel-body
@@ -47,5 +59,5 @@
             a.btn.btn-warning.text-u-c(ng-click='$ctrl.cancel()') Cancel
             a.btn.btn-success.text-u-c.m-l-xs(ng-click='$ctrl.requestAdvanced()') Continue
   .row
-    p(ng-if='$ctrl.success') Success! Your request for standard photos has been submitted.
+    div.col-md-12(ng-if='$ctrl.success') Success! Your request for standard photos has been submitted.
       | Your package is now in review by Shoppre team. You will be notified by customer service when your photos are ready to view.

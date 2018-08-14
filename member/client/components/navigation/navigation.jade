@@ -4,7 +4,7 @@ ul.nav.navbar-nav.navbar-left
   li.nav-menu-item(ui-sref-active='active'): a.hv(ui-sref='dash.packages')
     i.fa.fa-dashboard.text-white
     span DASHBOARD
-  li.nav-menu-item(ui-sref-active='active'): a.hv(ui-sref='packages.index({status: "All"})')
+  li.hide.nav-menu-item(ui-sref-active='active'): a.hv(ui-sref='packages.index({status: "All"})')
     i.fa.fa-users.text-white
     span PACKAGES
   li.hide.nav-menu-item(ui-sref-active='active' uib-dropdown)
@@ -15,7 +15,7 @@ ul.nav.navbar-nav.navbar-left
     a.hv(uib-dropdown-toggle ui-sref='shipments.index({ status: "All" })')
       i.fa.fa-list-alt.text-white
       span SHIPMENTS
-  li.nav-menu-item(ui-sref-active='active'): a.hv(ui-sref='loyaltypoints.rewards')
+  li.hide.nav-menu-item(ui-sref-active='active'): a.hv(ui-sref='loyaltypoints.rewards')
     i.fa.fa-users.text-white
     span LOYALTY POINTS
   li.nav-menu-item(ui-sref-active='active'): a.hv(ui-sref='dash.createShipmentRequest')

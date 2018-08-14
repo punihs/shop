@@ -4,31 +4,33 @@ section.ship_response
       .col-sm-12
         .longblock
           h4.title SHIP REQUEST CONFIRMATION
-          h3.bg-success Success! You have completed your ship request.
-          p.confirm
-            | An email confirmation of your request has been sent to
-            a.summary-order(href='javascript:void(0)') {{$ctrl.shipment.Customer.email}}
-            | .
-          p(ng-if = "$ctrl.shipment.payment_gateway_name === 'wire'")
+          h3.alert.alert-success.text-center Success! You have completed your ship request.
+          .col-md-12
+            p.confirm
+              | An email confirmation of your request has been sent to
+              a.summary-order(href='javascript:void(0)') {{$ctrl.shipment.Customer.email}}
+              | .
+            p(ng-if = "$ctrl.shipment.payment_gateway_name === 'wire'")
           .col-sm-12
             .wireoption
               p.info
                 | We will dispatch your shipment once your payment to the below bank account is confirmed. Kindly note that we currently
-                strong DO NOT ACCEPT WESTERN UNION MONEY TRANSFERS
+                strong.m-l-xs DO NOT ACCEPT WESTERN UNION MONEY TRANSFERS
                 | .
                 strong
                   | Also, it may take up to 7 business days for the amount to reflect in our account, especially in case of International Wire Transfers.
                 |  In such a case, we advise you to opt for an alternative payment method if your shipment is urgent or if you don’t want to be charged with storage cost. Please click here if you wish to
-                a.summary-order(href='{{}}') change the payment method
+                a.summary-order.m-r-xs.m-l-xs(href='{{}}') change the payment method
                 | .
-              h4 Account Name: INDIANSHOPPRE LLP
-              p Account Number: 918020022874771
-              p Branch: Bangalore
-              p IFS Code: UTIB0000009
-              p MICR Code: 560211002
-              p E-mail ID: finance@shoppre.com
-              p Address: NO. 9, M.G. ROAD, BLOCK 'A'
-              p Swift Code: AXISINBB009
+              .bg-light.well
+                h4 Account Name: INDIANSHOPPRE LLP
+                p Account Number: 918020022874771
+                p Branch: Bangalore
+                p IFS Code: UTIB0000009
+                p MICR Code: 560211002
+                p E-mail ID: finance@shoppre.com
+                p Address: NO. 9, M.G. ROAD, BLOCK 'A'
+                p Swift Code: AXISINBB009
           p(ng-if = "$ctrl.shipment.PaymentGateway.value === 'cash'")
           .col-sm-12
             .cashoption
