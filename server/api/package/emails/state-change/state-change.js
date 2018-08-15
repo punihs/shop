@@ -23,6 +23,7 @@ module.exports = {
       SubjectPart: 'Your {{pkg.Store.name}} order #{{pkg.reference_code}} is received',
       HtmlPart: render({
         TemplateName: `${TemplateName}_${CUSTOMER}`,
+        extras: ['header', 'virtualAddress', 'items', 'footer', 'signature'],
         afterContent: ['global:cheers'],
       }),
     },
@@ -31,7 +32,8 @@ module.exports = {
     TemplateData,
     Template: {
       TemplateName: `${TemplateName}_${OPS}`,
-      SubjectPart: '{{customer.name}}: {{pkg.Store.name}} order #{{pkg.reference_code}} is received',
+      SubjectPart: '{{customer.name}}: {{pkg.Store.name}} order #{{pkg.reference_code}} ' +
+        'is received',
       HtmlPart: render({
         TemplateName: `${TemplateName}_${OPS}`,
         extras: ['packageItems'],

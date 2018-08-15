@@ -40,12 +40,14 @@ const ENV = viewConfig;
 
 module.exports = {
   CREATED: {
+    CREATED: true,
     pkg,
     customer,
     actingUser: OPS,
     ENV,
   },
-  INFORMATION_UPLOADED: {
+  AWAITING_VERIFICATION: {
+    AWAITING_VERIFICATION: true,
     pkg,
     customer,
     actingUser: OPS,
