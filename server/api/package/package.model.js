@@ -3,6 +3,7 @@ const debug = require('debug');
 const log = debug('s.api.package.model');
 const logger = require('../../components/logger');
 const properties = require('./package.property');
+
 const notification = require('./package.notification');
 
 const {
@@ -74,6 +75,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Package.updateState = ({
     db,
+    lastStateId,
     nextStateId,
     pkg,
     actingUser,
@@ -117,6 +119,7 @@ module.exports = (sequelize, DataTypes) => {
               .then(packageItems => notification
                 .stateChange({
                   db,
+                  lastStateId,
                   nextStateId,
                   pkg,
                   actingUser,
@@ -147,6 +150,7 @@ module.exports = (sequelize, DataTypes) => {
             .stateChange({
               db,
               nextStateId,
+              lastStateId,
               pkg,
               actingUser,
             })

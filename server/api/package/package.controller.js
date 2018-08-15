@@ -152,6 +152,7 @@ exports.create = async (req, res, next) => {
 
         return Package.updateState({
           db,
+          lastStateId: null,
           nextStateId: PACKAGE_ITEMS_UPLOAD_PENDING,
           pkg: { ...pkg, id },
           actingUser: req.user,

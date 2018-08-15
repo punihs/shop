@@ -11,6 +11,7 @@ const config = {
     env: env.NODE_ENV,
     port: env.PORT || 5000,
     ip: env.IP || '0.0.0.0',
+    LAMBDA_PORT: process.env.LAMBDA_PORT || 5004,
     root,
     URLS_MEMBER: `${env.PREFIX}member.${env.DOMAIN}`,
     URLS_WWW: `${env.PREFIX}www.${env.DOMAIN}`,
