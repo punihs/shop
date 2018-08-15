@@ -3,17 +3,17 @@ div
     div
       .bg-white-only.b-b(style='position: fixed;width: 100%; height: 44px;')
         ul.nav.nav-pills.nav-sm.m-t-xs
-          li(ng-repeat='status in $ctrl.buckets' ui-sref-active="active")
+          li(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active")
             a(
-              ui-sref='packages.index({ jobId: $ctrl.job.id, status: status })'
-              ng-bind="status" ng-hide="status == 'Bookmarked' && App.app.settings.isAdmin"
+              ui-sref='packages.index({ jobId: $ctrl.job.id, bucket: bucket })'
+              ng-bind="bucket" ng-hide="bucket == 'Bookmarked' && App.app.settings.isAdmin"
             )
       .wrapper-xs.bg-light(style='position: fixed; right: 0;background: #fff; z-index: 3;width:30%;')
         .pull-right.col.m-r-xs.m-t-xs(ng-if='$ctrl.packages.length') {{$ctrl.packages.length}} of {{$ctrl.total}} Packages(s)
         .pull-right.col.pointer.m-r-xs(ng-click='$ctrl.ExcelDownload.download($ctrl.params)')
-          button.btn.btn-sm.btn-default
+          button.btn.btn-sm.btn-default.hide
             span.fa.fa-file-excel-o
-        .pull-right.col.pointer.m-r-xs(ng-click='$ctrl.openPackageFilter()')
+        .pull-right.col.pointer.m-r-xs.hide(ng-click='$ctrl.openPackageFilter()')
           button.btn.btn-sm.btn-default
             span.fa.fa-filter
         .pull-right.col.pointer.m-r-xs
@@ -29,9 +29,9 @@ div
       table.table.m-b-none
         thead
           tr
-            th.col-xs-3 Name
             th.col-xs-3 Store
-            th.col-xs-3 Customer
+            th.col-xs-3 Name
+            th.col-xs-3 Locker
             th.col-xs-2 Status
       .col-xs-12(style='padding: 10px;')
         .col-xs-12(ng-show='$ctrl.packages.length === 0 && !$ctrl.ui.loading')

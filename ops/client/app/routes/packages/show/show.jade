@@ -16,7 +16,12 @@
         ui-sref="customer.package.update({ id: $ctrl.data.Customer.id, packageId: $ctrl.data.id })"
         style='width: 2em;'
         ): i.m-t-sm.wrapper-xs.fa.fa-edit(title='Edit Package')
-        .col.v-middle(uib-dropdown='')
+        a.col.v-middle(
+        ng-show='-1 !== $ctrl.editAllowedStates.indexOf($ctrl.data.state_id)'
+        ng-click="$ctrl.deletePackage($ctrl.$stateParams.id)"
+        style='width: 2em;'
+        ): i.m-t-sm.wrapper-xs.fa.fa-trash(title='Delete Package')
+        .col.hide.v-middle(uib-dropdown='')
           a(href='' style='width: 2em;' ): i.m-t-sm.wrapper-xs.fa.fa-ellipsis-v(uib-dropdown-toggle='')
           ul.m-r-xl.dropdown-menu(
           uib-dropdown-menu=''
@@ -182,8 +187,8 @@
         div
           .bg-white-only.b-b(style='position: fixed;width: 100%; height: 44px;')
             ul.nav.nav-pills.nav-sm.m-t-xs
-              li(ng-repeat='status in $ctrl.buckets' ui-sref-active="active")
-                a(ui-sref='packages.index({jobId:$ctrl.job.id,status: status})' ng-bind="status" ng-hide="status == 'Bookmarked' && App.app.settings.isAdmin")
+              li(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active")
+                a(ui-sref='packages.index({jobId:$ctrl.job.id, bucket: bucket })' ng-bind="bucket" ng-hide="bucket == 'Bookmarked' && App.app.settings.isAdmin")
           .wrapper-xs.bg-light(style='position: fixed; right: 0;background: #fff; z-index: 3;width:30%;')
             .pull-right.col.m-r-xs.m-t-xs(ng-if='$ctrl.packages.length') {{$ctrl.packages.length}} of {{$ctrl.total}} Packages(s)
             .pull-right.col.pointer.m-r-xs(ng-click='$ctrl.ExcelDownload.download($ctrl.params)')
@@ -214,11 +219,12 @@
               table.table.m-b-none
                 thead
                   tr
-                    th.col-xs-3 Name
-                    th.col-xs-3 Category
+                    th.col-xs-2 Name
+                    th.col-xs-2 Category
                     th.col-xs-2 Quantity
                     th.col-xs-2 Price
                     th.col-xs-2 Total Amount
+                    th.col-xs-2 DeletePackage
 
               .col-xs-12(style='padding: 10px;')
                 .col-xs-12(ng-show='$ctrl.packageItems.length === 0 && !$ctrl.ui.loading')
@@ -236,17 +242,18 @@
 
 
                 .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='packageItem in $ctrl.packageItems')
-                  .col-xs-3.wrapper-sm.m-t-xs
+                  .col-xs-2.wrapper-sm.m-t-xs
                     img.pull-left.m-r(
 
                       ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + packageItem.object.replace(".", "-thumb.")}}'
                       style='height: 30px;width: 30px;border-radius: 50%;'
                     )
-                    a(ui-sref='package.item.edit({ id: packageItem.id })' target="_blank") {{packageItem.name}}
-                  .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='packageItem.PackageItemCategory.name')
+                    a(ui-sref='package.item.edit({ id: $ctrl.$stateParams.id , packageItemId: packageItem.id })' target="_blank") {{packageItem.name}}
+                  .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='packageItem.PackageItemCategory.name')
                   .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(title="{{packageItem.quantity}}" ng-bind="packageItem.quantity + 'pc'")
                   .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="'₹' + packageItem.price_amount" title="{{packageItem.price_amount}}")
                   .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="'₹' + packageItem.total_amount" title="{{packageItem.total_amount}}")
+                  .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-trash(ng-click="$ctrl.deletePackageItem($ctrl.$stateParams.id, packageItem.id, $index)")
 
 
                 .col-xs-12.text-center

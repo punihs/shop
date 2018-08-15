@@ -1,6 +1,6 @@
 class PackageCreateController {
   constructor(
-    Page, $state, $stateParams, $http, toaster, customer, pkg, Session
+    Page, $state, $stateParams, $http, toaster, customer, pkg, Session, createStore,
   ) {
     this.Session = Session;
     this.Page = Page;
@@ -10,6 +10,7 @@ class PackageCreateController {
     this.$stateParams = $stateParams;
     this.toaster = toaster;
     this.Number = Number;
+    this.createStore = createStore;
     this.$ = $;
     this.submitting = false;
     this.data = pkg || {};
@@ -17,6 +18,7 @@ class PackageCreateController {
   }
 
   $onInit() {
+    this.focus('store_id');
     this.EDIT = !!this.$stateParams.packageId && this.$stateParams.packageId !== '';
     this.quickMode = this.EDIT ? false : (this.Session.read('quickMode') || false);
     this.TITLE = `${this.EDIT ? 'Edit' : 'Add New'} Package`;
@@ -44,7 +46,7 @@ class PackageCreateController {
         return this.Store.setId();
       },
 
-      get: (search) => this.$http
+      get: search => this.$http
         .get('/search', {
           params: {
             type: 'Store',
@@ -63,6 +65,18 @@ class PackageCreateController {
     if (this.EDIT) {
       this.Store.model = this.data.Store.name;
     }
+  }
+
+  open() {
+    // const modal = this.createStore.open();
+    this.createStore.open();
+    // modal
+    //   .result
+    //   .then((data) => {
+    //     if (data.is_default === true) {
+    //       this.data.address_id = data.id;
+    //     }
+    //   });
   }
 
   reset(newPackageForm) {
@@ -101,6 +115,11 @@ class PackageCreateController {
   }
 
   create(newPackageForm) {
+    if (!this.data.store_id) {
+      return this
+        .toaster
+        .pop('error', 'Store not found');
+    }
     if (this.submitting) return null;
     this.submitting = true;
     this.clickUpload = true;
@@ -109,6 +128,7 @@ class PackageCreateController {
 
     const data = Object.assign({ }, this.data);
     if (!form) return (this.submitting = false);
+
 
     const { packageId, id: customerId } = this.$stateParams;
     data.customer_id = customerId;

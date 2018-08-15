@@ -51,3 +51,28 @@ exports.image = (req, res, next) => {
       .then(url => res.json({ url })))
     .catch(next);
 };
+
+exports.update = async (req, res) => {
+  const { id } = req.params;
+  const packageItem = req.body;
+  packageItem.total = packageItem.price_amount * packageItem.quantity;
+  const status = await PackageItem.update(packageItem, { where: { id } });
+  return res.json(status);
+};
+
+exports.destroy = async (req, res, next) => {
+  const { id } = req.params;
+  const { packageId } = req.params;
+  await PackageItem.destroy({ where: { id, package_id: packageId } })
+    .then(status => res.json({ message: `Package Item ${id} deleted sucessfully`, status }))
+    .catch(next);
+};
+
+
+exports.createItem = (req, res, next) => {
+  PackageItemCategory
+    .create(req.body)
+    .then(itemCategory =>
+      res.json({ package_item_category_id: itemCategory.id, name: itemCategory.name }))
+    .catch(next);
+};

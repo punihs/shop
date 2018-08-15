@@ -8,7 +8,7 @@ const notification = require('./package.notification');
 
 const {
   PACKAGE_STATE_IDS: {
-    PACKAGE_ITEMS_UPLOAD_PENDING, SHIP, RETURN_DONE, SPLIT_DONE, REVIEW, INVOICE, VALUES,
+    PACKAGE_ITEMS_UPLOAD_PENDING, READY_TO_SHIP, RETURN_DONE, SPLIT_DONE, REVIEW, INVOICE, VALUES,
   },
   PACKAGE_CHARGES: { RETURN_CHARGE },
   TRANSACTION_TYPES: { DEBIT },
@@ -94,8 +94,8 @@ module.exports = (sequelize, DataTypes) => {
       .create(options)
       .then((packageState) => {
         switch (nextStateId) {
-          case SHIP: {
-            log('state changed', SHIP);
+          case READY_TO_SHIP: {
+            log('state changed', READY_TO_SHIP);
             // const photoRequest = await PhotoRequest.find({
             //   attributes: ['id'],
             //   where: {

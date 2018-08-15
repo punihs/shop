@@ -15,9 +15,9 @@ div.directive-header
           ng-model='options.checkAll'
         )
         i.m-r-none(ng-if='options.packages.length > 0')
-      li(ng-repeat='status in options.buckets' ui-sref-active="active" ng-show="buttons.buckets")
+      li(ng-repeat='bucket in options.buckets' ui-sref-active="active" ng-show="buttons.buckets")
         a(
-          ui-sref='customer.packages.index({ id: options.customer.id, status: status })'
+          ui-sref='customer.packages.index({ id: options.customer.id, bucket: bucket })'
           ng-bind="status"
         )
 
@@ -27,7 +27,7 @@ div.directive-header
       li.m-r-xs.pull-right: a.h5.font-bold.b-a(
         ng-class="buttons.highlight == 'view-applicants'?'btn-success b-success':'b-info text-info' "
         ng-show="buttons.viewPackages"
-        ui-sref='customer.packages.index({ id: options.customer.id, status: "ALL" })'
+        ui-sref='customer.packages.index({ id: options.customer.id, bucket: "ALL" })'
         uib-popover="for {{options.customer.virtual_address_code}} - {{options.customer.name}}"
       )
         i.fa.fa-list

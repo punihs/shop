@@ -25,3 +25,18 @@ describe('GET /api/stores/1', () => {
   });
 });
 
+describe('GET /api/stores', () => {
+  it('return /api/stores ', (done) => {
+    request(app)
+      .post('/api/stores')
+      .send({
+        name: 'shoppe.com',
+      })
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+

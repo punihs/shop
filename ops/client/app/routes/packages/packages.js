@@ -5,7 +5,7 @@
  */
 
 angular.module('uiGenApp')
-  .config($stateProvider => {
+  .config(($stateProvider) => {
     $stateProvider
       .state('packages', {
         abstract: true,
@@ -13,7 +13,7 @@ angular.module('uiGenApp')
         template: '<div ui-view></div>',
       })
       .state('packages.index', {
-        url: '?status&sid&uid',
+        url: '?bucket&sid&uid',
         templateUrl: 'app/routes/packages/index/index.html',
         controller: 'PackagesIndexController',
         controllerAs: '$ctrl',
@@ -40,9 +40,9 @@ angular.module('uiGenApp')
             };
 
             return $http
-            .get(`/packages/${$stateParams.id}`, { params })
-            .then(({ data: pkg }) => pkg)
-            .catch(() => $state.go('access.404'));
+              .get(`/packages/${$stateParams.id}`, { params })
+              .then(({ data: pkg }) => pkg)
+              .catch(() => $state.go('access.404'));
           },
         },
       })
@@ -64,7 +64,7 @@ angular.module('uiGenApp')
         controller: 'PackageItemsController',
         controllerAs: '$ctrl',
         resolve: {
-          pkg: ($stateParams) => ({ id: $stateParams.id }),
+          pkg: $stateParams => ({ id: $stateParams.id }),
           item: () => null,
         },
       })
@@ -79,9 +79,9 @@ angular.module('uiGenApp')
         controller: 'PackageItemsController',
         controllerAs: '$ctrl',
         resolve: {
-          pkg: ($stateParams) => ({ id: $stateParams.id }),
+          pkg: $stateParams => ({ id: $stateParams.id }),
           item: ($http, $stateParams, toaster) => $http
-            .get(`/packageItems/${$stateParams.id}`)
+            .get(`/packageItems/${$stateParams.packageItemId}`)
             .then(({ data }) => data)
             .catch(() => toaster.pop('error', 'Error loading package item')),
         },

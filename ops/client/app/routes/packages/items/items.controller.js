@@ -1,6 +1,7 @@
 class PackageItemsController {
   constructor(
-    Page, $state, $stateParams, $http, toaster, pkg, Session, item, S3, URLS
+    Page, $state, $stateParams, $http, toaster, pkg,
+    Session, item, S3, URLS, createCategory,
   ) {
     this.Session = Session;
     this.Page = Page;
@@ -15,7 +16,12 @@ class PackageItemsController {
     this.$ = $;
     this.submitting = false;
     this.data = item || {};
+    this.createCategory = createCategory;
     this.$onInit();
+  }
+
+  open() {
+    this.createCategory.open();
   }
 
   startUpload(ctrl, file) {
@@ -55,7 +61,7 @@ class PackageItemsController {
         return this.PackageItemCategory.setId();
       },
 
-      get: (search) => this.$http
+      get: search => this.$http
         .get('/search', {
           params: {
             type: 'PackageItemCategory',
@@ -112,7 +118,13 @@ class PackageItemsController {
   }
 
   create(newPackageItemForm) {
+    if (!this.data.package_item_category_id) {
+      return this
+        .toaster
+        .pop('error', 'Category not found');
+    }
     if (this.submitting) return null;
+
     this.submitting = true;
     this.clickUpload = true;
 
@@ -120,7 +132,6 @@ class PackageItemsController {
 
     const data = Object.assign({ }, this.data);
     if (!form) return (this.submitting = false);
-
     const { packageItemId, id: packageId } = this.$stateParams;
     data.packageId = packageId;
 

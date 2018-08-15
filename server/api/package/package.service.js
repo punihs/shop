@@ -2,12 +2,13 @@ const debug = require('debug');
 const sequelize = require('sequelize');
 
 const {
-  Package, Store, User, Locker, PackageState, PackageItem,
+  Package, Store, User, Locker, PackageState, PackageItem, PhotoRequest,
 } = require('../../conn/sqldb');
 
 const {
   APPS, GROUPS: { CUSTOMER, OPS },
   PACKAGE_STATE_IDS: { STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST },
+  PHOTO_REQUEST_STATES: { COMPLETED },
 } = require('./../../config/constants');
 const BUCKETS = require('./../../config/constants/buckets');
 
@@ -18,6 +19,8 @@ const kvmap = (arr, key, value) => arr.reduce((nxt, x) => ({ ...nxt, [x[key]]: x
 exports.index = ({ query, params, user: actingUser }) => {
   log('index', { groupId: actingUser.group_id, app_id: actingUser.app_id });
   log({ BUCKETS });
+
+  // - Locker Page or Member Dashboard
   const IS_CUSTOMER_PAGE = !!params.customerId;
   const BUCKET = BUCKETS.PACKAGE[actingUser.group_id];
   log({ BUCKET });
@@ -76,10 +79,15 @@ exports.index = ({ query, params, user: actingUser }) => {
   }
 
   const states = Object.keys(BUCKET);
-  if (query.sid) options.include[0].where.state_id = query.sid.split(',');
-  else if (states.includes(bucket) && options.include && options.include.length) {
+
+  // - filters
+  if (query.sid) {
+    options.include[0].where.state_id = query.sid.split(',');
+  } else if (states.includes(bucket) && options.include && options.include.length) {
     const AWAITING_VERIFICATION = 2;
-    if (query.status === 'TASKS') {
+
+    // - uploaded person can't do verification
+    if (bucket === 'TASKS') {
       options.include[0].where = {
         $or: {
           state_id: BUCKET[bucket].filter(x => (x !== AWAITING_VERIFICATION)),
@@ -89,7 +97,7 @@ exports.index = ({ query, params, user: actingUser }) => {
           },
         },
       };
-    } else if (query.status === 'FEEDBACK') {
+    } else if (bucket === 'FEEDBACK') {
       options.include[0].where = {
         $or: {
           state_id: BUCKET[bucket].filter(x => (x !== AWAITING_VERIFICATION)),
@@ -135,17 +143,20 @@ exports.index = ({ query, params, user: actingUser }) => {
             model: PackageState,
             attributes: ['comments', 'id'],
             where: { state_id: [STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST] },
+          }, {
+            model: PhotoRequest,
+            attributes: ['id'],
+            where: { status: COMPLETED },
           }],
         }),
     ])
-    .then(([packages, total, facets, viewAllCount, photoRequests]) => ({
+    .then(([packages, total, facets, photoRequests]) => ({
       packages: packages
         .map(x => (x.PackageState ? ({ ...x.toJSON(), state_id: x.PackageState.state_id }) : x)),
       total,
       facets: {
         state_id: kvmap(facets, 'state_id', 'cnt'),
       },
-      viewAllCount,
       photoRequests,
     }));
 };

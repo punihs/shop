@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     short_name: {
       type: DataTypes.VIRTUAL,
       get() {
+        if (!this.getDataValue('name')) return null;
         const name = this.getDataValue('name').split(' ')[0].toUpperCase();
         return `${this.getDataValue('id')}-${name}`;
       },
@@ -33,19 +34,20 @@ module.exports = (sequelize, DataTypes) => {
     log('allocation', customerId);
     return Locker
       .find({
-        where: { $or: [{ customer_id: customerId }, { customer_id: null }] },
+        where: { customer_id: customerId },
         attributes: ['id', 'name'],
-        limit: 1,
-        order: [['customer_id', 'DESC']],
       })
-      .then(locker => (locker.customer_id
+      .then(locker => (locker
         ? Promise.resolve(locker)
-        : locker
+        : Locker
           .update({
             customer_id: customerId,
             allocated_at: new Date(),
-          }, { where: { customer_id: null }, limit: 1 })
-          .then(() => locker)));
+          }, {
+            where: { customer_id: null },
+            limit: 1,
+          })
+          .then(() => Locker.find({ attributes: ['id', 'name'] }, { where: { customer_id: customerId } }))));
   };
 
   return Locker;

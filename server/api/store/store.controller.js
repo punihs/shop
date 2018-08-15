@@ -44,3 +44,22 @@ exports.show = (req, res, next) => {
     .then(store => res.json(store))
     .catch(next);
 };
+
+exports.create = async (req, res, next) => {
+  const option = {
+    attributes: ['id', 'name'],
+    where: { name: req.body.name },
+  };
+  const store = await Store
+    .find(option);
+  if (!store) {
+    Store
+      .create(req.body)
+      .then((storeId) => {
+        res.json({ storeId: storeId.id, name: storeId.name });
+      })
+      .catch(next);
+  } else {
+    res.json({ store_id: store.id, name: store.name });
+  }
+};

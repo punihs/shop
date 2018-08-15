@@ -1,13 +1,14 @@
 
 class ChangeStateController {
   /*  @ngInject   */
-  constructor($uibModalInstance, $http, pkg, Session, stateId, moment, customerId) {
+  constructor($uibModalInstance, $http, pkg, Session, stateId, moment, customerId, toaster) {
     this.$uibModalInstance = $uibModalInstance;
     this.$http = $http;
     this.pkg = pkg;
     this.Session = Session;
     this.stateId = stateId;
     this.moment = moment;
+    this.toaster = toaster;
     this.customerId = customerId;
   }
 
@@ -50,6 +51,9 @@ class ChangeStateController {
       .catch((response) => {
         this.submitting = false;
         this.changeStateError = response.error;
+        this
+          .toaster
+          .pop('error', response.data.message);
       });
   }
 }

@@ -17,9 +17,10 @@ exports.index = (req, res, next) => {
 exports.create = async (req, res, next) => {
   const ItemCategory = req.body;
   ItemCategory.created_by = ItemCategory.user_id;
-  return PackageItemCategory
+  PackageItemCategory
     .create(ItemCategory)
-    .then(({ id }) => res.status(201).json({ id }))
+    .then(itemCategory =>
+      res.json({ package_item_category_id: itemCategory.id, name: itemCategory.name }))
     .catch(next);
 };
 

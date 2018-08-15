@@ -176,4 +176,4 @@ class ShipmentsIndexController {
 }
 
 angular.module('uiGenApp')
-.controller('ShipmentsIndexController', ShipmentsIndexController);
+  .controller('ShipmentsIndexController', ShipmentsIndexController);

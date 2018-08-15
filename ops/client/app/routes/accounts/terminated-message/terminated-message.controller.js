@@ -4,7 +4,7 @@ angular.module('uiGenApp')
       const whatBlocked = User.userinfo.whatBlocked || [];
 
       if (whatBlocked.some(b => b.state === 'accounts.terminated-message')) {
-        $state.go('packages.index', { status: 'New' });
+        $state.go('packages.index', { bucket: 'Tasks' });
       }
     });
   });

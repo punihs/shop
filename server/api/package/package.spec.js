@@ -8,6 +8,11 @@ const {
   CONTENT_TYPES: { REGULAR, SPECIAL },
 } = require('../../config/constants');
 
+const {
+  Package,
+} = require('../../conn/sqldb');
+
+
 describe('public: GET /api/packages', () => {
   it('return packages', (done) => {
     request(app)
@@ -123,6 +128,27 @@ describe('www: GET /api/packages/count ', () => {
     request(app)
       .get('/api/packages/count')
       .set('Authorization', `Bearer ${wwwAuth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+describe('Destroy /api/package', () => {
+  let pkg;
+  before((done) => {
+    Package.create({}).then((pack) => {
+      pkg = pack;
+      done();
+    });
+  });
+
+  it('Destroy packages', (done) => {
+    request(app)
+      .delete(`/api/packages/${pkg.id}`)
+      .set('Authorization', `Bearer ${opsAuth.access_token}`)
       .expect('Content-Type', /json/)
       .expect(200)
       .then(() => {

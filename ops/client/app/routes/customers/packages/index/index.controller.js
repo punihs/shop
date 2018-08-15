@@ -36,7 +36,7 @@ class CustomersPackagesIndexController {
 
     // Set default status to ALL
     if (!this.buckets.includes(this.$stateParams.status)) {
-      this.$state.go('customer.packages.index', { status: 'TASKS' });
+      this.$state.go('customer.packages.index', { bucket: 'TASKS' });
       return;
     }
     this.packages = []; // collection of packages
@@ -76,13 +76,13 @@ class CustomersPackagesIndexController {
         this.packages.push(...result);
 
         this.total = total;
-      // data has been loaded
+        // data has been loaded
         this.ui.loading = false;
 
-      // check for returned results count and set lazy loadLoad false if less
+        // check for returned results count and set lazy loadLoad false if less
         this.ui.lazyLoad = angular.equals(result.length, this.params.limit);
 
-      // increment offset for next loading of results
+        // increment offset for next loading of results
         this.params.offset = this.params.offset + this.params.limit;
       });
   }
@@ -90,7 +90,7 @@ class CustomersPackagesIndexController {
   // returns array containing resultkey of search result
   getPackage(criteria = {}, returnkey = 'id') {
     return this.$filter('filter')(this.packages, criteria)
-    .map((pkg) => pkg[returnkey]);
+      .map(pkg => pkg[returnkey]);
   }
 
   // sets value
@@ -100,4 +100,4 @@ class CustomersPackagesIndexController {
 }
 
 angular.module('uiGenApp')
-.controller('CustomersPackagesIndexController', CustomersPackagesIndexController);
+  .controller('CustomersPackagesIndexController', CustomersPackagesIndexController);

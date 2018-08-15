@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const debug = require('debug');
-const moment = require('moment');
-const xlsx = require('node-xlsx');
+// const moment = require('moment');
+// const xlsx = require('node-xlsx');
 
 const log = debug('package');
 
@@ -9,12 +9,15 @@ const db = require('../../conn/sqldb');
 
 const {
   Package, Order, PackageItem, User, Follower,
-  Locker, Store, PackageState, Country,
+  Locker, Store, PackageState, Country, PackageCharge,
+  PhotoRequest,
 } = db;
 
 const {
-  PACKAGE_STATE_ID_NAMES,
-  PACKAGE_STATE_IDS: { PACKAGE_ITEMS_UPLOAD_PENDING },
+  PACKAGE_STATE_IDS: {
+    PACKAGE_ITEMS_UPLOAD_PENDING, READY_TO_SHIP,
+    STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST,
+  },
   PACKAGE_TYPES: { INCOMING },
 } = require('../../config/constants');
 const logger = require('../../components/logger');
@@ -44,35 +47,6 @@ exports.indexPublic = (req, res, next) => {
 exports.index = (req, res, next) => index(req)
   .then((result) => {
     log('testing all the requirements');
-    if (req.query.xlsx) {
-      const header = [
-        'id', 'Store Name', 'Virtual Address Code', 'Status',
-      ];
-      log('testing index');
-      const excel = xlsx.build([{
-        name: 'Packages',
-        data: [header]
-          .concat(result
-            .packages
-            .map(({
-              id,
-              Store: store,
-              Customer,
-              PackageState: packageState,
-            }) => [
-              id, store.name, Customer.virtual_address_code,
-              PACKAGE_STATE_ID_NAMES[packageState.state_id],
-            ])),
-      }]);
-      res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-      res.setHeader(
-        'Content-disposition',
-        `attachment; filename=Packages_${moment()
-          .format('DD-MM-YYYY')}.xlsx`,
-      );
-
-      return res.end(excel, 'binary');
-    }
     return res.json(result);
   })
   .catch(next);
@@ -161,9 +135,36 @@ exports.create = async (req, res, next) => {
     .catch(next);
 };
 
-exports.state = (req, res, next) => Package
-  .findById(req.params.id)
-  .then(pkg => Package
+exports.state = async (req, res, next) => {
+  const pkg = await Package
+    .findById(req.params.id);
+
+  log({ pkg });
+  if (req.body.state_id === READY_TO_SHIP) {
+    const photoRequest = Package.find({
+      attributes: ['id'],
+      where: { id: req.params.id },
+      include: [{
+        model: PackageState,
+        where: { state_id: [STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST] },
+      }],
+    });
+    if (!photoRequest) {
+      return res.status(400).json({ message: 'Please check and update the Photo Request Status !' });
+    }
+
+    const packageItemCount = await PackageItem.count({
+      where: { package_id: req.params.id },
+    });
+    log('count', JSON.stringify(packageItemCount));
+    log('pkg', pkg.total_quantity);
+
+    if (packageItemCount <= 0) {
+      return res.status(400).json({ message: 'please check your item count !' });
+    }
+  }
+
+  return Package
     .updateState({
       db,
       pkg,
@@ -171,8 +172,9 @@ exports.state = (req, res, next) => Package
       nextStateId: req.body.state_id,
       comments: req.body.comments,
     })
-    .then(status => res.json(status)))
-  .catch(next);
+    .then(status => res.json(status))
+    .catch(next);
+};
 
 exports.facets = (req, res, next) => Package
   .findById(req.params.id)
@@ -209,12 +211,19 @@ exports.update = (req, res, next) => {
     .catch(next);
 };
 
-exports.destroy = async (req, res) =>
-  // const { id } = req.params;
-  // await PackageItem.destroy({ where: { package_id: id } });
-  // await PackageCharge.destroy({ where: { id: id } });
-  // await PhotoRequest.destroy({ where: { package_id: id } });
+exports.destroy = async (req, res) => {
+  const { id } = req.params;
+  await PackageItem
+    .destroy({ where: { package_id: id } });
+  await PackageCharge
+    .destroy({ where: { id } });
+  await PhotoRequest
+    .destroy({ where: { package_id: id } });
+  await Package
+    .destroy({ where: { id } });
   res.status(200).json({ message: 'Deleted successfully' });
+};
+
 exports.unread = async (req, res) => {
   const { id } = req.params;
   const status = await Package.update({ admin_read: false }, { where: { id } });

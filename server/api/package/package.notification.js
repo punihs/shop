@@ -19,7 +19,6 @@ exports.stateChange = async ({
   ])
   .then(([customer, store]) => {
     log('package notification', { customer });
-
     const headers = {};
     hookshot
       .trigger('package:stateChange', {

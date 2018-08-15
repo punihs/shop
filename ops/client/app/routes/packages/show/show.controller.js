@@ -123,6 +123,36 @@ class PackageShowController {
       .delete(`/package/${id}/items`)
       .then(() => this.document.splice(key, 1));
   }
+
+  deletePackage(packageid) {
+    this
+      .$http
+      .delete(`/packages/${packageid}`)
+      .then(({ data: message }) => {
+        this.toaster
+          .pop('success', message);
+        this.$state.go('packages.index');
+      })
+      .catch(() => {
+        this.toaster
+          .pop('error', 'There was problem deleting package');
+      });
+  }
+
+  deletePackageItem(packageid, itemId, index) {
+    this
+      .$http
+      .delete(`/packages/${packageid}/item/${itemId}/delete`)
+      .then(({ data: message }) => {
+        this.toaster
+          .pop('success', message);
+        return this.packageItems.splice(index, 1);
+      })
+      .catch(() => {
+        this.toaster
+          .pop('error', 'There was problem deleting package item');
+      });
+  }
 }
 
 angular.module('uiGenApp')

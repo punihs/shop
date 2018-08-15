@@ -1,7 +1,7 @@
 const debug = require('debug');
 const moment = require('moment');
 const {
-  PackageItem,
+  PackageItem, Package, PackageItemCategory,
 } = require('../../conn/sqldb');
 const minio = require('../../conn/minio');
 const {
@@ -57,8 +57,15 @@ exports.create = async (req, res, next) => {
 exports.show = (req, res, next) => {
   PackageItem
     .find({
-      attributes: ['id', 'quantity', 'price_amount', 'total_amount'],
-      where: { id: req.param.id },
+      attributes: ['id', 'quantity', 'price_amount', 'total_amount', 'object', 'name'],
+      where: { id: req.params.id },
+      include: [{
+        model: Package,
+        attributes: ['id'],
+      }, {
+        model: PackageItemCategory,
+        attributes: ['id', 'name'],
+      }],
     })
     .then(packageitem => res.json(packageitem))
     .catch(next);

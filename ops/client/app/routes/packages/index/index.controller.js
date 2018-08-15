@@ -38,19 +38,23 @@ class PackagesIndexController {
 
     this.buckets = this.QCONFIG.PACKAGE_STATES;
 
-    this.$stateParams.status = this.$stateParams.status || this.$location.search().status;
+    this.$stateParams.bucket = this.$stateParams.bucket || this.$location.search().bucket;
 
-    // Set default status to ALL
-    if (!this.buckets.includes(this.$stateParams.status)) {
-      this.$state.go('packages.index', { status: 'TASKS' });
+    // Set default bucket to ALL
+    if (!this.buckets.includes(this.$stateParams.bucket)) {
+      this.$state.go('packages.index', { bucket: 'TASKS' });
       return;
     }
-    this.Page.setTitle(`${this.$stateParams.status} Packages`);
+    this.Page.setTitle(`${this.$stateParams.bucket} Packages`);
 
     this.packages = []; // collection of packages
     this.ui = { lazyLoad: true, loading: false }; // ui states
     this.xquery = '';
-    this.params = { sort: '-', offset: 0, limit: 15, q: this.xquery || '',
+    this.params = {
+      sort: '-',
+      offset: 0,
+      limit: 15,
+      q: this.xquery || '',
       fl: 'id,name,state_id,state_name',
       sid: this.$stateParams.sid || '',
     };
@@ -70,7 +74,8 @@ class PackagesIndexController {
           }, 800);
         }
       }
-      , true);
+      , true,
+    );
 
     // $emit coming from directive
     this.$scope.$on('loadMore', () => this.loadPackages());
@@ -102,11 +107,13 @@ class PackagesIndexController {
       .PackageFilter
       .open(filtered)
       .then(applied => {
-        this.$state.transitionTo(this.$state.current.name,
+        this.$state.transitionTo(
+          this.$state.current.name,
           Object.assign(this.$stateParams, {
             sid: applied.states && applied.states.join(','),
           }),
-          { notify: false });
+          { notify: false },
+        );
         this.$onInit();
       });
   }
@@ -126,15 +133,15 @@ class PackagesIndexController {
     this.ui = { lazyLoad: false, loading: true };
     this.params.q = this.xquery || '';
 
-    if (this.$stateParams.status === 'Interview') {
+    if (this.$stateParams.bucket === 'Interview') {
       this.params.interview_time = [
         this.moment().startOf('day').toISOString(),
         this.moment().startOf('day').add(1, 'months')
-        .toISOString(),
+          .toISOString(),
       ].join(',');
       this.params.fl += ',interview_time,interview_type';
     } else {
-      this.params.status = this.$stateParams.status.replace(' ', '_').toUpperCase();
+      this.params.bucket = this.$stateParams.bucket.replace(' ', '_').toUpperCase();
     }
 
     this.$http
@@ -148,7 +155,7 @@ class PackagesIndexController {
         }
 
         if (!packages.length && this.$rootScope.previousState === 'access.oauth') {
-          this.$state.go('packages.index', { status: 'ALL' });
+          this.$state.go('packages.index', { bucket: 'ALL' });
           return;
         }
         this.packages.push(...packages);
@@ -176,4 +183,4 @@ class PackagesIndexController {
 }
 
 angular.module('uiGenApp')
-.controller('PackagesIndexController', PackagesIndexController);
+  .controller('PackagesIndexController', PackagesIndexController);
