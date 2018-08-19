@@ -9,16 +9,20 @@ module.exports = () => [
     value: 'cash',
   }, {
     id: 3,
+    name: 'Debit/Credit',
+    value: 'card',
+  }, {
+    id: 4,
     name: 'Paytm',
     description: '(3% Extra Payment Gateway Charge) - Indian PayTm/Bank Accounts Only)',
     value: 'paytm',
   }, {
-    id: 4,
+    id: 5,
     name: 'Paypal',
     description: '(10% Extra Payment Gateway Charge) - International PayPal/Bank Accounts Only',
     value: 'paypal',
   }, {
-    id: 5,
+    id: 6,
     name: 'Wallet',
     value: 'wallet',
   },

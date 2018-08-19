@@ -68,11 +68,16 @@
                     td.footable-visible
           .clearfix
           // todo - check this payment gateway with PHP code
-          div.div-border-create
+          div.div-border-create.alert
             h2.m-n.alert.alert.alert-info.panel-warning 3. PAYMENT SUMMARY
             .panel-body
               .radio(ng-repeat="paymentgateway in $ctrl.paymentGateway", ng-click="$ctrl.selectedGateway()")
-                label.i-checks
+                label.i-checks(ng-if ="paymentgateway.value === 'wallet'")
+                  input(type='radio', name='a', value='{{paymentgateway.value}}' ng-model='$ctrl.data.default_payment_gateway' )
+                  i
+                  | {{paymentgateway.name}} {{paymentgateway.description}}
+                  b (₹{{$ctrl.shipment.Customer.wallet_balance_amount}})
+                label.i-checks(ng-if ="paymentgateway.value !== 'wallet'")
                   input(type='radio', name='a', value='{{paymentgateway.value}}' ng-model='$ctrl.data.default_payment_gateway' )
                   i
                   | {{paymentgateway.name}} {{paymentgateway.description}}
@@ -191,38 +196,38 @@
                       | Overweight Clearance Fee
                       span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipmentMeta.overweight_charge_amount}}
                 ul.list-group.list-group-lg.m-b-none.list-unstyled(ng-repeat="package in $ctrl.packages")
-                  li(ng-if="package.PackageCharge.storage_amount > 0")
+                  li(ng-if="$ctrl.packageChrages.storage_amount > 0")
                     p
                       | Additional Storage Fee
-                      span.fa.fa-rupee.totalvalue.pull-right {{package.PackageCharge.storage_amount}}
-                  li(ng-if="package.PackageCharge.basic_photo_amount > 0")
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.packageChrages.storage_amount}}
+                  li(ng-if="$ctrl.packageChrages.advanced_photo_amount > 0 || $ctrl.packageChrages.basic_photo_amount > 0")
                     p
                       | Photo Charges
-                      span.fa.fa-rupee.totalvalue.pull-right {{package.PackageCharge.basic_photo_amount + package.PackageCharge.advanced_photo_amount}}
-                  li(ng-if="package.PackageCharge.pickup_amount > 0")
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.packageChrages.basic_photo_amount + $ctrl.packageChrages.advanced_photo_amount}}
+                  li(ng-if="$ctrl.packageChrages.pickup_amount > 0")
                     p
                       | Pick-up Service
-                      span.fa.fa-rupee.totalvalue.pull-right {{package.PackageCharge.pickup_amount}}
-                  li(ng-if="package.PackageCharge.split_package_amount > 0")
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.packageChrages.pickup_amount}}
+                  li(ng-if="$ctrl.packageChrages.split_package_amount > 0")
                     p
                       | Split Package
-                      span.fa.fa-rupee.totalvalue.pull-right {{package.PackageCharge.split_package_amount}}
-                  li(ng-if="package.PackageCharge.special_handling_amount > 0")
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.packageChrages.split_package_amount}}
+                  li(ng-if="$ctrl.packageChrages.special_handling_amount > 0")
                     p
                       | Special Handling Fee
-                      span.fa.fa-rupee.totalvalue.pull-right {{package.PackageCharge.special_handling_amount}}
-                  li(ng-if="$ctrl.package.PackageCharge.receive_mail_amount > 0")
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.packageChrages.special_handling_amount}}
+                  li(ng-if="$ctrl.packageChrages.receive_mail_amount > 0")
                     p
                       | Special Handling Fee
-                      span.fa.fa-rupee.totalvalue.pull-right {{package.PackageCharge.receive_mail_amount}}
-                  li(ng-if="$ctrl.package.PackageCharge.scan_document_amount > 0")
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.packageChrages.receive_mail_amount}}
+                  li(ng-if="$ctrl.packageChrages.scan_document_amount > 0")
                     p
                       | Scan Document
-                      span.fa.fa-rupee.totalvalue.pull-right {{package.PackageCharge.scan_document_amount}}
-                  li(ng-if="package.PackageCharge.wrong_address_amount > 0")
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.packageChrages.scan_document_amount}}
+                  li(ng-if="$ctrl.packageChrages.wrong_address_amount > 0")
                     p
                       | Address Correction
-                      span.fa.fa-rupee.totalvalue.pull-right {{package.PackageCharge.wrong_address_amount}}
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.packageChrages.wrong_address_amount}}
                   li(ng-if="$ctrl.shipment.package_level_charges_Amount > 0")
                     hr
                     p
@@ -249,16 +254,17 @@
                   p(ng-if="$ctrl.shipment.payment_gateway_fee")
                     | Payment Gateway (PG) Fee:
                     span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.payment.payment_gateway_fee}}
-          ul.list-group.list-group-lg.m-b-none.list-unstyled.chkbox_background(ng-if="$ctrl.shipment.Customer.wallet_balance_amount")
-            li(ng-if="$ctrl.shipment.Customer.wallet_balance_amount < $ctrl.shipment.estimated_amount && $ctrl.shipment.Customer.wallet_balance_amount !== 0 ")
+          ul.list-group.list-group-lg.m-b-none.list-unstyled.chkbox_background(ng-if="$ctrl.shipment.Customer.wallet_balance_amount && $ctrl.shipment.Customer.wallet_balance_amount < $ctrl.shipment.estimated_amount && $ctrl.shipment.Customer.wallet_balance_amount !== 0")
+            li
               .checkbox( ng-click="$ctrl.walletClicked()" ng-if="$ctrl.shipment.Customer.wallet_balance_amount >= 0")
                 label.i-checks(ng-if="$ctrl.wallet === true")
                   input(
                   ng-model='$ctrl.wallet'
                   type='checkbox',
-                  checked=true,
-                  value='1'
+                  checked=true
                   )
+                  i
+                  | Shoppre Wallet
                 label.i-checks(ng-if="$ctrl.wallet === false")
                   input(
                   ng-model='$ctrl.wallet'
@@ -273,12 +279,13 @@
                   input(
                   ng-model="$ctrl.wallet",
                   type = 'checkbox',
-                  checked = true,
+                  checked,
                   value='1',
-                  disabled="disabled"
+                  disabled,
+                  ng-disabled="$ctrl.status = 'disabled'"
                   )
                   i
-                  | Shoppre Wallet
+                  | Shoppre Wallet test
                 span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.Customer.wallet_balance_amount}}
           div.final-ship-charge
             h4 Final Shipping Charges *

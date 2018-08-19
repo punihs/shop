@@ -1,11 +1,10 @@
-class shipmentConfirm {
-  constructor($http, Page, $stateParams, $location, ViewPhotoService, toaster, $state, $window) {
+class RetryPayment {
+  constructor($http, Page, $stateParams, $location, ViewPhotoService, toaster) {
     this.ViewPhotoService = ViewPhotoService;
     this.$http = $http;
     this.Page = Page;
     this.$location = $location;
     this.toaster = toaster;
-    this.$window = $window;
     this.$stateParams = $stateParams;
     this.packages = [];
     this.shipment = [];
@@ -17,17 +16,15 @@ class shipmentConfirm {
     this.message = '';
     this.promoStatus = '';
     this.couponAmount = '';
-    this.couponCode = '';
     this.standard_photo_check = 'yes';
     this.advc_photo_check = 0;
     this.paymentGateway = [];
     this.data = {};
-    this.$state = $state;
     this.$onInit();
-    // this.walletClicked();
+    this.walletClicked();
   }
   $onInit() {
-    this.Page.setTitle('Shipment confirmation');
+    this.Page.setTitle('Retry Payment');
     this.getList();
   }
 
@@ -38,9 +35,9 @@ class shipmentConfirm {
   getList(params) {
     let url = '';
     if (params) {
-      url = this.$http.get(`/shipments/confirmShipment?order_code=${this.$order_code}${params}`);
+      url = this.$http.put(`/shipments/retryPayment?order_code=1000${params}`);
     } else {
-      url = this.$http.get(`/shipments/confirmShipment?order_code=${this.$order_code}`);
+      url = this.$http.put('/shipments/retryPayment?order_code=1000');
     }
     url
       .then(({
@@ -49,18 +46,16 @@ class shipmentConfirm {
         },
       }) => {
         this.packages = [];
-        this.packages = packages;
-        // this.packages.push(packages);
+        this.packages.push(packages);
         this.paymentGateway = paymentGateway;
         this.shipment = shipment;
         const shipmentMeta = [];
         shipmentMeta.push(shipment);
         this.shipmentMeta = shipmentMeta[0].ShipmentMetum;
-        this.packageChrages = packages[0].PackageCharge;
         this.payment = payment;
         this.promoStatus = promoStatus;
         this.couponAmount = couponAmount;
-        this.data.default_payment_gateway = payment.payment_gateway_name;
+        this.data.default_payment_gateway = payment.paymentGatewayName;
       })
       .catch((err) => {
         this
@@ -68,18 +63,17 @@ class shipmentConfirm {
           .pop('error', err.data.message);
       });
   }
-
   walletClicked() {
     if (this.status !== 'disabled') {
       this.selectedGateway();
+      this.wallet = !this.wallet;
     } else {
       this.wallet = true;
     }
   }
-
   selectedGateway() {
     this.sendData = {
-      shipment_id: this.shipment.id,
+      shipment_id: 116, // - this.shipment.id,
       wallet: this.wallet ? 1 : 0,
       payment_gateway_name: this.data.default_payment_gateway,
     };
@@ -88,42 +82,20 @@ class shipmentConfirm {
     this.getList(params);
   }
 
-  applyPromoCode() {
-    if (this.couponCode) {
-      this.$http
-        .put(`/redemptions/apply?order_code=${this.shipment.order_code}&coupon_code=${this.couponCode}`)
-        .then(({ data: { message } }) => {
-          this.message = message;
-          this.getList();
-        })
-        .catch((err) => {
-          this
-            .toaster
-            .pop('error', err.data.message);
-        });
-    } else {
-      this.message = 'Enter Promocode';
-    }
-  }
   submitPayment() {
     if (this.submitting) return null;
     this.sendData = {
-      shipment_id: this.shipment.id,
+      shipment_id: 116, // - this.shipment.id,
       wallet: this.wallet ? 1 : 0,
       payment_gateway_name: this.data.default_payment_gateway,
     };
     const method = 'put';
+
     return this
-      .$http[method]('/shipments/finalShip', this.sendData)
-      .then(({ data: encryptedData }) => {
+      .$http[method]('/shipments/payRetrySubmit', this.sendData)
+      .then(({ data: url }) => {
+        window.location = url;
         this.submitting = false;
-        if (this.data.default_payment_gateway === 'card') {
-          this.$window.location = encryptedData;
-        } else if (this.data.default_payment_gateway === 'paytm') {
-          this.$state.go('dash.paytm', { encryptedData });
-        } else if (this.data.default_payment_gateway === 'paypal') {
-          this.$window.location = encryptedData.url;
-        }
       })
       .catch((err) => {
         this.submitting = false;
@@ -138,4 +110,4 @@ class shipmentConfirm {
 }
 angular
   .module('uiGenApp')
-  .controller('shipmentConfirm', shipmentConfirm);
+  .controller('RetryPayment', RetryPayment);

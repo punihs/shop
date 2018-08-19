@@ -31,8 +31,8 @@ div.m-t-xl.no-margin
             .nav-tabs-alt
               .bg-white-only.b-b(style='width: 100%; height: 44px;')
                 ul.nav.nav-tabs.nav-justified
-                  li(ng-repeat='status in $ctrl.buckets' ui-sref-active="active")
-                    a(ui-sref='dash.packages({ status: status })')
+                  li(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active")
+                    a(ui-sref='dash.packages({ bucket: bucket })')
                       span(ng-bind="$ctrl.CONFIG.PACKAGE_STATES[$index]")
                       span.badge.bg-warning.pull-right.no-margin.m-t-xs 16
 
@@ -64,22 +64,22 @@ div.m-t-xl.no-margin
                         th.footable-visible.footable-sortable(data-hide='phone,tablet', data-name='Date Of Birth')
                           | Date Recieved
                           span.footable-sort-indicator
-                        th.footable-visible.footable-last-column.footable-sortable.bg-warning.text-u-c(ng-if="$ctrl.$stateParams.status==='ACTION_REQUIRED'")
+                        th.footable-visible.footable-last-column.footable-sortable.bg-warning.text-u-c(ng-if="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'")
                           | ACTION REQUIRED
                           span.footable-sort-indicator
-                        th.footable-visible.footable-last-column.footable-sortable(ng-hide="$ctrl.$stateParams.status==='ACTION_REQUIRED'")
+                        th.footable-visible.footable-last-column.footable-sortable(ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'")
                           | Item Values
                           span.footable-sort-indicator
-                        th.footable-visible.footable-last-column.footable-sortable(ng-hide="$ctrl.$stateParams.status==='ACTION_REQUIRED'")
+                        th.footable-visible.footable-last-column.footable-sortable(ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'")
                           | Weight
                           span.footable-sort-indicator
-                        th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.status==='READY_TO_SEND'")
+                        th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'")
                           | Photos
                           span.footable-sort-indicator
-                        th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.status==='ALL'")
+                        th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.bucket==='ALL'")
                           | Status
                           span.footable-sort-indicator
-                        th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.status==='READY_TO_SEND'" )
+                        th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'" )
                           .checkbox.no-margin
                             label.i-checks
                               input(type='checkbox', ng-model="all", value='')
@@ -91,7 +91,7 @@ div.m-t-xl.no-margin
                         td.footable-visible
                           a(ui-sref='package.show({ id: package.id })' ng-bind='package.Store.name')
                         td.footable-visible {{package.id}}
-                          span.badge.bg-success.m-l-xs.pull-right(ng-if='package.content_type == 2') PUNITH
+                          span.badge.bg-success.m-l-xs.pull-right(ng-if='package.content_type == 2') SPECIAL
                         td.footable-visible(
                         ng-bind='$ctrl.moment(package.created_at).fromNow()'
                         uib-tooltip="{{package.created_at | date:'MMM d, y'}} IST {{package.created_at | date:'h:mm a'}}"
@@ -100,31 +100,31 @@ div.m-t-xl.no-margin
                         )
                         td.footable-visible(
                         ng-bind='package.price_amount'
-                        ng-hide="$ctrl.$stateParams.status==='ACTION_REQUIRED'"
+                        ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'"
                         )
-                        td.footable-visible.text-center(ng-if="$ctrl.$stateParams.status==='ACTION_REQUIRED'")
+                        td.footable-visible.text-center(ng-if="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'")
                           p.no-margin Provide Item Values
                           p.no-margin As required by Customs
-                        td.footable-visible(ng-hide="$ctrl.$stateParams.status==='ACTION_REQUIRED'" ng-bind='package.weight')
-                        td.footable-visible(ng-if="$ctrl.$stateParams.status==='READY_TO_SEND'" )
+                        td.footable-visible(ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'" ng-bind='package.weight')
+                        td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'" )
                           a(ng-click='$ctrl.uploadPhotos(package.id)')
                             u Photos
-                        td.footable-visible(ng-if="$ctrl.$stateParams.status==='ALL'" ng-bind='package.package_state_id' )
-                        td.footable-visible(ng-if="$ctrl.$stateParams.status==='READY_TO_SEND'")
+                        td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='ALL'" ng-bind='package.package_state_id' )
+                        td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'")
                           .checkbox.no-margin
                             label.i-checks
-                              input(type='checkbox', checked = 'checked', ng-checked="all", value='')
+                              input(type='checkbox', ng-model = 'package.checked', ng-checked="all", value='')
                               i
                       tr
                         form.form-validation(name="form" ng-submit='$ctrl.submitValue()')
-                            td(colspan=8 ng-if='$ctrl.$stateParams.status==="READY_TO_SEND" && $ctrl.MoreOption[$index]')
+                            td(colspan=8 ng-if='$ctrl.$stateParams.bucket==="READY_TO_SEND" && $ctrl.MoreOption[$index]')
                               table#DataTables_Table_1.table.table-bordered.m-b-none
                                 thead
                                   tr(role='row')
                                     th.sorting_asc.text-u-c(style='width: 186px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Package Details
                                     th.sorting.text-u-c(style='width: 242px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') QTY
                                     th.sorting.text-u-c(style='width: 241px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Value per Unit
-                                    th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending') Value
+                                    th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending')  Total Value
                                 tbody
                                   tr.odd(role='row' ng-repeat="item in package.PackageItems")
                                     td {{item.name}}
@@ -172,7 +172,7 @@ div.m-t-xl.no-margin
                                                   )
                                                   span.m-l-xs(ng-bind="specialRequest.price")
                                                   small.text-muted.clear.text-ellipsis(ng-bind="specialRequest.description")
-                            td(colspan=8 ng-if='$ctrl.$stateParams.status==="IN_REVIEW" && $ctrl.MoreOption[$index]')
+                            td(colspan=8 ng-if='$ctrl.$stateParams.bucket==="IN_REVIEW" && $ctrl.MoreOption[$index]')
                               button.btn.btn-md.btn-info.m-t-xs.m-b-xs(ng-click='$ctrl.uploadPhotos(package.id)') Photos
                               table#DataTables_Table_3.table.table-bordered.m-b-none
                                 thead
@@ -217,7 +217,7 @@ div.m-t-xl.no-margin
                                                 )
                                                 span.m-l-xs(ng-bind="specialRequest.price")
                                                 small.text-muted.clear.text-ellipsis(ng-bind="specialRequest.description")
-                            td(colspan=8 ng-if='$ctrl.$stateParams.status==="ACTION_REQUIRED" && $ctrl.MoreOption[$index]')
+                            td(colspan=8 ng-if='$ctrl.$stateParams.bucket==="ACTION_REQUIRED" && $ctrl.MoreOption[$index]')
                               table#DataTables_Table_5.table.table-bordered.m-b-none
                                 h5.font-bold How to provide item values:
                                   p
@@ -252,7 +252,7 @@ div.m-t-xl.no-margin
                                     td
                                       button.btn.btn-sm.btn-warning.m-b-xs.text-u-c.pull-right(type='submit', ng-click="$ctrl.submitValues(package.id, $index)") Confirm Package
 
-                            td(colspan=8 ng-if='$ctrl.$stateParams.status==="ALL" && $ctrl.MoreOption[$index]')
+                            td(colspan=8 ng-if='$ctrl.$stateParams.bucket==="ALL" && $ctrl.MoreOption[$index]')
                               table#DataTables_Table_7.table.table-bordered.m-b-none
                                 thead
                                   tr(role='row')
@@ -298,7 +298,7 @@ div.m-t-xl.no-margin
                                                 small.text-muted.clear.text-ellipsis(ng-bind="specialRequest.description")
           .clearfix
           .more-options.col-md-12
-            .ReadytoSend(ng-if='$ctrl.$stateParams.status==="READY_TO_SEND"')
+            .ReadytoSend(ng-if='$ctrl.$stateParams.bucket==="READY_TO_SEND"')
               button.btn.btn-sm.btn-warning.m-b-xs.text-u-c.pull-right(type='submit' ng-click="$ctrl.createShipment()") Create Ship Request
               .clearfix
               p *
@@ -502,7 +502,7 @@ div.m-t-xl.no-margin
         .list-group-item.text-danger.text-u-c
           span.badge.pull-right.bg-success(ng-bind='$ctrl.user.wallet_balance_amount')
           | Shoppre Wallet
-        .sidebarImage.m-t-md(ng-if='$ctrl.$stateParams.status!="READY_TO_SEND"')
+        .sidebarImage.m-t-md(ng-if='$ctrl.$stateParams.bucket!="READY_TO_SEND"')
           .col-md-6.sidebarSpecial.white-border
             .col-md-2.no-padder
               img(src='/assets/images/dashico1.png')

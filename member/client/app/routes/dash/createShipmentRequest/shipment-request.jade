@@ -116,7 +116,9 @@
                     .checkbox(ng-click='$ctrl.updateCharges()')
                       label.i-checks(ng-if='$ctrl.data.repack === true')
                         input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.repack')
-                      label.i-checks
+                        i
+                        | Discard Shoe boxes
+                      label.i-checks(ng-if='$ctrl.data.repack === false')
                         input(type='checkbox',  checked='false' value='' ng-model='$ctrl.data.repack')
                         i
                         | Discard Shoe boxes
@@ -128,10 +130,11 @@
                       )
                   li
                     .checkbox(ng-click='$ctrl.updateCharges()')
-                      //label.i-checks
                       label.i-checks(ng-if='$ctrl.data.extra_packing === true')
                         input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.extra_packing')
-                      label.i-checks
+                        i
+                        | Add extra packing material
+                      label.i-checks(ng-if='$ctrl.data.extra_packing === false')
                         input(type='checkbox',  value='' ng-model='$ctrl.data.extra_packing')
                         i
                         | Add extra packing material
@@ -143,10 +146,12 @@
                       )
                   li
                     .checkbox(ng-click='$ctrl.updateCharges()')
-                      label.i-checks(ng-if='$ctrl.data.original === true')
-                        input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.original')
-                      label.i-checks
-                        input(type='checkbox',  value='' ng-model='$ctrl.data.original')
+                      label.i-checks(ng-if='$ctrl.data.orginal_box === true')
+                        input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.orginal_box')
+                        i
+                        | Ship in original boxes(do not repack)
+                      label.i-checks(ng-if='$ctrl.data.orginal_box === false')
+                        input(type='checkbox',  value='' ng-model='$ctrl.data.orginal_box')
                         i
                         | Ship in original boxes(do not repack)
                       i.fa.fa-info-circle.m-l-xs(
@@ -157,9 +162,11 @@
                       )
                   li
                     .checkbox(ng-click='$ctrl.updateCharges()')
-                      label.i-checks(ng-if='$ctrl.data.gift_wrap === true' )
+                      label.i-checks(ng-if='$ctrl.data.gift_wrap === true')
                         input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.gift_wrap')
-                      label.i-checks
+                        i
+                        | Gift Wrap
+                      label.i-checks(ng-if='$ctrl.data.gift_wrap === false')
                         input(type='checkbox',  value='' ng-model='$ctrl.data.gift_wrap')
                         i
                         | Gift Wrap
@@ -173,7 +180,9 @@
                     .checkbox(ng-click='$ctrl.updateCharges()')
                       label.i-checks(ng-if='$ctrl.data.gift_note === true')
                         input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.gift_note')
-                      label.i-checks
+                        i
+                        | Gift Note
+                      label.i-checks(ng-if='$ctrl.data.gift_note === false')
                         input(type='checkbox',  value='' ng-model='$ctrl.data.gift_note')
                         i
                         | Gift Note
@@ -184,15 +193,15 @@
                       popover-append-to-body='true'
                       )
                   li.txt-kg
-                    .col-md-2.no-padder
-                        input.form-control.no-padder.text-center(type='text', placeholder='in KG' ng-model='$ctrl.data.max_weight' ng-bind="$ctrl.data.max_weight")
-                      label.col-md-10.control-label.text-left Max weight per package (in KG)
-                        i.fa.fa-info-circle.m-l-xs(
-                        uib-popover=''
-                        popover-trigger="'mouseenter'"
-                        popover-placement='top'
-                        popover-append-to-body='true'
-                        )
+                    .col-lg-2.no-padder
+                      input.form-control.no-padder.text-center(type='text', placeholder='in KG' ng-model='$ctrl.data.max_weight' ng-bind="$ctrl.data.max_weight")
+                    label.col-lg-9.control-label.m-t-xs Max weight per package (in KG)
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover=''
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
                   .clearfix
           .panel.panel-info.m-t-md
             .panel-heading.font-bold.text-u-c PACKAGE LEVEL CHARGES SUMMARY

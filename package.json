@@ -4,7 +4,8 @@
   "description": "Shoppre API",
   "main": "server/index.js",
   "scripts": {
-    "start": "npm-run-all --parallel start*;",
+    "start": "nodemon --ignore node_modules/ -e js server/app",
+    "start:payments": "cd php; php -S localhost:4040",
     "start:core": "nodemon --ignore node_modules/ -e js server/app",
     "start:lambda": "nodemon --ignore node_modules/ -e js lambda/app",
     "cluster": "NODE_ENV=production APP_MAIN=server/app.js WORKER_COUNT=4 node server/boot",
@@ -87,6 +88,7 @@
     "node-xlsx": "^0.12.0",
     "oauth2-server": "quezx/node-oauth2-server",
     "onesignal-node": "^1.1.2",
+    "paypal-rest-sdk": "^1.8.1",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "request-promise-middleware-framework": "^2.0.0",

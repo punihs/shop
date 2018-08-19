@@ -1,6 +1,6 @@
 class PackageLockerController {
   constructor($http, Page, $uibModal, $stateParams, CONFIG, $location, $state, Session,
-              toaster, moment, $scope) {
+              toaster, moment) {
     this.$http = $http;
     this.Page = Page;
     this.$uibModal = $uibModal;
@@ -25,14 +25,14 @@ class PackageLockerController {
   $onInit() {
     this.buckets = this.CONFIG.PACKAGE_STATES.map(x => x.replace(/ /g, '_').toUpperCase());
 
-    this.$stateParams.status = this.$stateParams.status || this.$location.search().status;
+    this.$stateParams.bucket = this.$stateParams.bucket || this.$location.search().bucket;
     this.store = 'Amazon';
-    // Set default status to ALL
-    if (!this.buckets.includes(this.$stateParams.status)) {
-      this.$state.go('dash.packages', { status: this.buckets[0] });
+    // Set default bucket to ALL
+    if (!this.buckets.includes(this.$stateParams.bucket)) {
+      this.$state.go('dash.packages', { bucket: this.buckets[0] });
       return;
     }
-    this.Page.setTitle(`${this.$stateParams.status} Packages`);
+    this.Page.setTitle(`${this.$stateParams.bucket} Packages`);
 
     this.packages = []; // collection of packages
     this.ui = { lazyLoad: true, loading: false }; // ui states
@@ -85,12 +85,6 @@ class PackageLockerController {
     // totalItemAmount = items
     // this.getCount();
     // this.getQueueCount();
-
-    this.orgiinalList = [];
-    this.orgiinalList = this.packages;
-    //   this.packages.forEach(item => {
-    //   this.orgiinalList.push(item);
-    // });
   }
 
   getTotalItemAmount(index) {
@@ -106,8 +100,9 @@ class PackageLockerController {
     this.$http
       .put(`/packageItems/${id}/values`, itemValues)
       .then(({ data: { packages } }) => {
+        console.log(packages);
       });
-    if (this.$stateParams.status === 'ACTION_REQUIRED') {
+    if (this.$stateParams.bucket === 'ACTION_REQUIRED') {
       this
         .toaster
         .pop('sucess', 'Package values Updated');
@@ -118,11 +113,10 @@ class PackageLockerController {
     }
   }
 
-
   // getQueueCount() {
   //   this
   //     .$http
-  //     .get('/shipments/count?status=IN_QUEUE')
+  //     .get('/shipments/count?bucket=IN_QUEUE')
   //     .then(({ data: count }) => {
   //       this.queueCount = count;
   //     });
@@ -134,7 +128,7 @@ class PackageLockerController {
 
   getList() {
     this.$http
-      .get('/packages', { params: { status: this.$stateParams.status } })
+      .get('/packages', { params: { bucket: this.$stateParams.bucket } })
       .then(({ data: { packages } }) => {
         this.packages.push(...packages);
       });
@@ -161,8 +155,7 @@ class PackageLockerController {
       templateUrl: 'app/directives/download-resume/download-resume.html',
       controller: 'DownloadResumeCtrl',
       controllerAs: 'DownloadResume',
-      size: 'md',
-
+      size: 'lg',
       resolve: {
         id() {
           return id;
@@ -183,8 +176,7 @@ class PackageLockerController {
       templateUrl: 'app/directives/upload-photos/upload-photos.html',
       controller: 'UploadphotosCtrl',
       controllerAs: '$ctrl',
-      bindToController: 'true',
-      size: 'md',
+      size: 'lg',
       resolve: {
         id() {
           return id;
@@ -208,7 +200,9 @@ class PackageLockerController {
   }
 
   createShipment() {
-    console.log(this.packages.filter(x => x.checked).map(x => x.id)); // - required
+    // console.log(this.packages.filter(x => x.checked).map(x => x.id));
+    const packageIds = this.packages.filter(x => x.checked).map(x => x.id);
+    this.$state.go('dash.createShipmentRequest', { packageIds });
   }
 
 

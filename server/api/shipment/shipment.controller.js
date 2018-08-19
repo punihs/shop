@@ -4,7 +4,7 @@ const _ = require('lodash');
 const xlsx = require('node-xlsx');
 const paytm = require('../../../server/api/paymentGateway/paytm/paytm.controller');
 const axis = require('../../../server/api/paymentGateway/axis/axis.controller');
-// const paypal = require('../../../server/api/paymentGateway/paypal/paypal.controller');
+const paypal = require('../../../server/api/paymentGateway/paypal/paypal.controller');
 
 const eventEmitter = require('../../conn/event');
 const db = require('../../conn/sqldb');
@@ -22,9 +22,9 @@ const {
   SHIPMENT_STATE_ID_NAMES,
   SHIPMENT_STATE_IDS: {
     CANCELED, DELIVERED, DISPATCHED, SHIPMENT_HANDED, PACKAGING_REQUESTED,
-    PAYMENT_COMPLETED, PAYMENT_FAILED,
+    PAYMENT_COMPLETED, PAYMENT_FAILED, PAYMENT_REQUESTED,
   },
-  PACKAGE_STATE_IDS: { SHIP },
+  PACKAGE_STATE_IDS: { READY_TO_SHIP },
   LOYALTY_TYPE: {
     REDEEM,
   },
@@ -176,14 +176,14 @@ exports.update = async (req, res) => {
     log('weight', req.body.weight);
     log({ packageLevelCharges });
     if (req.body.weight < 5) {
-      updateMeta.liquid_charge_amount = 1150.00;
+      updateMeta.liquid_charge_amount = 1392.40;
     } else if (req.body.weight >= 5 && req.body.weight < 10) {
-      updateMeta.liquid_charge_amount = 1650.00;
+      updateMeta.liquid_charge_amount = 3009.00;
     } else if (req.body.weight >= 10 && req.body.weight < 15) {
-      updateMeta.liquid_charge_amount = 2750.00;
+      updateMeta.liquid_charge_amount = 5369.00;
     }
     if (req.body.weight >= 15) {
-      updateMeta.liquid_charge_amount = 3150.00;
+      updateMeta.liquid_charge_amount = 7729.00;
     }
   }
   if (shipmentMeta.overweight === '1') {
@@ -254,7 +254,7 @@ exports.destroy = async (req, res) => {
       .updateState({
         db,
         packageId,
-        nextStateId: SHIP,
+        nextStateId: READY_TO_SHIP,
         actingUser: req.user,
       })));
 
@@ -276,26 +276,26 @@ const calcShipping = async (countryId, weight, type) => {
     attributes: ['amount'],
     where: {
       country_id: countryId,
-      item_type: docType,
-      min: {
+      consignment_type: docType,
+      minimum: {
         $lt: weight,
       },
     },
   };
   if (weight <= 300) {
-    optionsRate.where = {
-      max: {
-        $ge: weight,
-      },
+    optionsRate.where.maximum = {
+      $gte: weight,
     };
   } else {
-    optionsRate.where = { max: 0 };
+    optionsRate.where.max = 0;
   }
-  rate = ShippingRate
+  log('optionsRate', JSON.stringify(optionsRate));
+  rate = await ShippingRate
     .find(optionsRate);
-
+  log('rate', rate);
   if (rate) {
     const amount = (rate.rate_type === 'fixed') ? rate.amount : rate.amount * weight;
+    log('-----------amount', amount);
     return amount;
   }
   return false;
@@ -314,6 +314,7 @@ const getEstimation = async (packageIds, countryId, userId) => {
       id: packageIds,
     },
   });
+  log('packages', JSON.stringify(packages));
 
   const country = await Country
     .findById(countryId, {
@@ -329,12 +330,16 @@ const getEstimation = async (packageIds, countryId, userId) => {
     count: packages.length,
   };
   log({ shipping });
-  packages.forEach((p) => {
-    const pack = p.toJSON();
+  // packages.forEach((p) => {
+  let packItem = '';
+  // eslint-disable-next-line no-restricted-syntax
+  for (packItem of packages) {
+    const pack = packItem.toJSON();
     shipping.price += pack.price_amount;
     shipping.weight += pack.weight;
 
     const packageCharge = pack.PackageCharge || {};
+    log({ packageCharge });
 
     const keys = [
       'storage_amount', 'wrong_address_amount', 'special_handling_amount', 'receive_mail_amount',
@@ -343,18 +348,20 @@ const getEstimation = async (packageIds, countryId, userId) => {
     ];
     let type = '';
     type = pack.content_type === 1 ? 'doc' : 'nondoc';
+    type = type === 'doc' ? 1 : 2;
 
     shipping.level += keys.reduce((nxt, key) => (nxt + (packageCharge[key] || 0)), 0);
     log('data', countryId, pack.weight, type);
 
-    const shippingCharge = calcShipping(countryId, pack.weight, type);
+    // eslint-disable-next-line no-await-in-loop
+    const shippingCharge = await calcShipping(countryId, pack.weight, type);
+    log('shippingCharge', shippingCharge);
 
     if (shippingCharge) {
-      // todo - change the value;
-      shipping.sub_total_amount = 1000; // shippingCharge;
+      shipping.sub_total_amount = shippingCharge;
       log('shippingCharge', shippingCharge);
     }
-  });
+  }
   shipping.discount = (country.discount_percentage / 100) * shipping.sub_total_amount;
   let estimated = shipping.sub_total_amount - shipping.discount;
   estimated += shipping.level;
@@ -386,7 +393,7 @@ const getPackages = (userId, packageIds) => Package
       attributes: ['id', 'package_id'],
       model: PackageState,
       where: {
-        state_id: SHIP,
+        state_id: READY_TO_SHIP,
       },
     }],
   });
@@ -418,6 +425,7 @@ const saveShipment = ({
 
   shipment.order_code = orderCode;
   log({ shipment });
+  // log({ shipment });
   return Shipment
     .create(shipment);
 };
@@ -440,18 +448,18 @@ const saveShipmentMeta = ({ req, sR, packageIds }) => {
 
   if (req.body.liquid === true) {
     if (req.weight < 5) {
-      meta.body.liquid_charge_amount = 1150.00;
+      meta.body.liquid_charge_amount = 1392.40;
     }
     if (req.body.weight >= 5 && req.body.weight < 10
     ) {
-      meta.liquid_charge_amount = 1650.00;
+      meta.liquid_charge_amount = 3009.00;
     }
     if (req.body.weight >= 10 && req.body.weight < 15
     ) {
-      meta.liquid_charge_amount = 2750.00;
+      meta.liquid_charge_amount = 5369.00;
     }
     if (req.body.weight >= 15) {
-      meta.liquid_charge_amount = 3150.00;
+      meta.liquid_charge_amount = 7729.00;
     }
   }
   meta.proforma_taxid = req.body.invoice_taxid;
@@ -514,7 +522,7 @@ exports.create = async (req, res, next) => {
     const toAddress = await getAddress(address);
 
     const shipping = await getEstimation(packageIds, address.country_id, userId);
-
+    log({ shipping });
     const sR = await saveShipment({
       userId, address, toAddress, shipping,
     });
@@ -524,7 +532,7 @@ exports.create = async (req, res, next) => {
     const updateShip = await updateShipment({ shipmentMeta, sR });
     log('packageIds', packageIds);
     log('sR', sR.id);
-    updatePackages(sR.id, packageIds);
+    updatePackages(sR.id, packageIds, req.user);
 
     await Shipment.updateShipmentState({
       db,
@@ -910,11 +918,11 @@ exports.finalShipRequest = async (req, res) => {
         comments: 'Wire payment selected',
       });
 
-    await User
-      .update(
-        { wallet_balance_amount: remainingWalletAmount },
-        { where: { id: customerId } },
-      );
+    // await User
+    //   .update(
+    //     { wallet_balance_amount: remainingWalletAmount },
+    //     { where: { id: customerId } },
+    //   );
 
     await updateCustomerWallet(shipment, customerId);
     await walletTransaction(payment.final_amount, customer, shipment, DEBIT);
@@ -966,32 +974,28 @@ exports.finalShipRequest = async (req, res) => {
   // bcc('support@shoppre.com')->
   // send(new ShipmentConfirmed(shipments)); // mail pending
   log('shipment', shipments);
+  log('ship_request_id', shipment.id);
   req.user.ship_request_id = shipment.id;
   req.user.isWalletUsed = 0;
   req.user.isRetryPayment = 0;
 
-  log({ message: 'payment.paytm.start' });
+  log('message', paymentGatewayName);
   switch (paymentGatewayName) {
     // eslint-disable-next-line no-case-declarations
     case 'card':
       log({ message: 'payment.axis.start' });
       const encryptedData = axis.create(req, res);
-      // log({ encryptedData });
-      res.redirect(`https://member.shoppre.test/paymentGateway/axis?checksum=${encryptedData}`);
-      break;
-
+      log('after axis', encryptedData);
+      return encryptedData;
+    // eslint-disable-next-line no-case-declarations
     case 'paypal':
       log({ message: 'payment.paypal.start' });
-      res.json({ message: 'payment.paypal.start' });
-      return res.redirect(`https://member.shoppre.test/paymentGateway/axis?checksum=${encryptedData}`);
-      // break;
+      const responsePaypal = paypal.create(req, res);
+      return responsePaypal;
     // eslint-disable-next-line no-case-declarations
     case 'paytm':
       log({ message: 'payment.paytm.start' });
-      const gencheckSum = paytm.create(req, res);
-      log('paytm1', gencheckSum);
-      res.render(`membership/paytm?checksum=${gencheckSum}`);
-      break;
+      return paytm.create(req, res);
     default: break;
       // return res.redirect(getPaymentURL('shipping.request.response'));
   }
@@ -1363,11 +1367,10 @@ exports.confirmShipment = async (req, res) => {
   const optionsShipment = {
     attributes: ['id', 'package_level_charges_Amount', 'weight', 'pick_up_charge_amount', 'address',
       'discount_amount', 'estimated_amount', 'packages_count', 'sub_total_amount', 'customer_name',
-      'value_amount', 'phone', 'is_axis_banned_item', 'order_code'],
+      'value_amount', 'phone', 'is_axis_banned_item', 'order_code', 'shipment_state_id'],
     where: {
       customer_id: customerId,
       order_code: orderCode,
-      status: 'confirmation',
     },
     include: [{
       model: ShipmentMeta,
@@ -1378,6 +1381,10 @@ exports.confirmShipment = async (req, res) => {
       model: User,
       as: 'Customer',
       attributes: ['wallet_balance_amount'],
+    }, {
+      model: ShipmentState,
+      attributes: ['id', 'shipment_id'],
+      where: { state_id: PAYMENT_REQUESTED },
     }],
   };
 
@@ -1408,7 +1415,7 @@ exports.confirmShipment = async (req, res) => {
     }],
   };
   const packages = await Package
-    .find(optionsPackage);
+    .findAll(optionsPackage);
 
   const payment = {
     wallet: 0,
@@ -1420,7 +1427,7 @@ exports.confirmShipment = async (req, res) => {
   };
 
   payment.amount = shipment.estimated_amount;
-  if (customer.wallet_balance_amount < 0) {
+  if (customer.wallet_balance_amount < 0 || req.query.wallet === 1) {
     payment.wallet = customer.wallet_balance_amount;
     payment.amount -= payment.wallet;
   }
@@ -1498,7 +1505,7 @@ exports.confirmShipment = async (req, res) => {
   payment.loyalty = rewards;
   payment.amount -= payment.loyalty;
 
-  switch (req.body.payment_gateway_name) {
+  switch (req.query.payment_gateway_name) {
     case 'card':
       payment.payment_gateway_name = 'card';
       break;
@@ -1532,7 +1539,7 @@ exports.confirmShipment = async (req, res) => {
   };
   const paymentGateway = await PaymentGateway
     .findAll(optionsPaymentGateway);
-  log(JSON.stringify(paymentGateway));
+  log('payment gateway', JSON.stringify(payment));
   return res.json({
     shipment,
     packages,
@@ -1545,7 +1552,7 @@ exports.confirmShipment = async (req, res) => {
   });
 };
 
-exports.createShipment = async (req, res) => {
+exports.createShipment = async (req, res, IsShippingAddress) => {
   const customerId = req.user.id;
   log('createShipment.customerId', customerId);
   log('req.user.package_ids', req.query.packageIds);
@@ -1554,6 +1561,7 @@ exports.createShipment = async (req, res) => {
     log('createshipments-package-ids', req.user.ids);
     res.status(400).json({ message: 'package is not found' });
   }
+  log('req.query;', req.query);
 
   const { packageIds } = req.query;
   const { IS_LIQUID } = req.user;
@@ -1584,9 +1592,9 @@ exports.createShipment = async (req, res) => {
   if (!packages) {
     res.redirect('customer.locker').status(400).json({ message: 'package not found' });
   }
-  log('packageIds.split ', packageIds.length);
-  if (packageIds.length > 1) {
-    consolidationChargesAmount = (packageIds.length - 1) * 100.00;
+  log('packageIds.split ', packageIds.split(',').length);
+  if (packageIds.split(',').length > 1) {
+    consolidationChargesAmount = (packageIds.split(',').length - 1) * 100.00;
   }
   const shipmentMeta = {
     storage_amount: 0,
@@ -1600,18 +1608,21 @@ exports.createShipment = async (req, res) => {
     optsAmount: 0,
     scan_document_amount: 0,
   };
-
+  log({ shipmentMeta });
   let pack = '';
+  log('packages123 ', JSON.stringify(packages));
   // eslint-disable-next-line no-restricted-syntax
   for (pack of packages) {
-    shipmentMeta.storage_amount += pack.storage_amount || 0;
-    shipmentMeta.photo_amount += pack.basic_photo_amount || 0 + pack.advanced_photo_amount || 0;
-    shipmentMeta.pickup_amount += pack.pickup_amount || 0;
-    shipmentMeta.special_handling_amount += pack.special_handling_amount || 0;
-    shipmentMeta.doc += pack.doc || 0;
-    shipmentMeta.split_package_amount += pack.split_package_amount || 0;
-    shipmentMeta.wrong_address_amount += pack.wrong_address_amount || 0;
-    shipmentMeta.scan_document_amount += pack.scan_document_amount || 0;
+    shipmentMeta.storage_amount += pack.PackageCharge.storage_amount || 0;
+    shipmentMeta.photo_amount +=
+      pack.PackageCharge.basic_photo_amount || 0
+      + pack.PackageCharge.advanced_photo_amount || 0;
+    shipmentMeta.pickup_amount += pack.PackageCharge.pickup_amount || 0;
+    shipmentMeta.special_handling_amount += pack.PackageCharge.special_handling_amount || 0;
+    shipmentMeta.receive_mail_amount += pack.PackageCharge.receive_mail_amount || 0;
+    shipmentMeta.split_package_amount += pack.PackageCharge.split_package_amount || 0;
+    shipmentMeta.wrong_address_amount += pack.PackageCharge.wrong_address_amount || 0;
+    shipmentMeta.scan_document_amount += pack.PackageCharge.scan_document_amount || 0;
     log('adding package charges', shipmentMeta);
   }
   log('charges', shipmentMeta);
@@ -1631,9 +1642,9 @@ exports.createShipment = async (req, res) => {
   const customer = await User
     .find(optionsCustomer);
 
-  log(JSON.stringify(customer));
+  log(JSON.stringify(shipmentMeta));
   return res.json({
-    customer, packages, shipmentMeta, IS_LIQUID,
+    customer, packages, shipmentMeta, IS_LIQUID, IsShippingAddress,
   });
 };
 
@@ -1659,7 +1670,7 @@ exports.redirectShipment = async (req, res) => {
         model: PackageState,
         attributes: [],
         where: {
-          state_id: SHIP,
+          state_id: READY_TO_SHIP,
         },
       }],
     });
@@ -1711,6 +1722,7 @@ exports.redirectShipment = async (req, res) => {
   const IS_LIQUID = !!contentTypesMap[SPECIAL].length;
 
   let address = '';
+  let IsShippingAddress = true;
   log({ customerId });
   if (req.body.addressId) {
     address = await Address
@@ -1724,7 +1736,9 @@ exports.redirectShipment = async (req, res) => {
         .find(optionAddress);
       if (address) {
         log('redirectShipment.Ship request required address to proceed!');
-        return res.status(400).redirect('customer.address').json({ message: 'Ship request required address to proceed!' });
+        // return res.status(400).redirect('customer.address')
+        // .json({ message: 'Ship request required address to proceed!' });
+        IsShippingAddress = false;
       }
     }
   } else {
@@ -1737,7 +1751,8 @@ exports.redirectShipment = async (req, res) => {
       .find(optionAddress);
     if (!address) {
       log('redirectShipment.Ship request required address to proceed!');
-      return res.status(400).json({ message: 'Ship request required address to proceed!' });
+      // return res.status(400).json({ message: 'Ship request required address to proceed!' });
+      IsShippingAddress = false;
     }
   }
   log('redirectShipment.testing break point');
@@ -1746,7 +1761,7 @@ exports.redirectShipment = async (req, res) => {
   req.user.IS_LIQUID = IS_LIQUID;
   req.user.address = address;
 
-  const result = await this.createShipment(req, res);
+  const result = await this.createShipment(req, res, IsShippingAddress);
   return result;
 };
 

@@ -8,15 +8,17 @@ const log = debug('package');
 const db = require('../../conn/sqldb');
 
 const {
-  Package, Order, PackageItem, User, Follower,
-  Locker, Store, PackageState, Country, PackageCharge,
-  PhotoRequest,
+  Package, Order, PackageItem, User, Follower, LoyaltyHistory, PhotoRequest,
+  Locker, Store, PackageState, Country, PackageCharge, LoyaltyPoint,
 } = db;
 
 const {
+  LOYALTY_TYPE: { REWARD },
   PACKAGE_STATE_IDS: {
-    PACKAGE_ITEMS_UPLOAD_PENDING, READY_TO_SHIP,
-    STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST,
+    READY_TO_SHIP,
+    PACKAGE_ITEMS_UPLOAD_PENDING,
+    STANDARD_PHOTO_REQUEST,
+    ADVANCED_PHOTO_REQUEST,
   },
   PACKAGE_TYPES: { INCOMING },
 } = require('../../config/constants');
@@ -122,6 +124,49 @@ exports.create = async (req, res, next) => {
           Order
             .update({ package_id: id }, { where: { id: req.body.order_id } })
             .catch(err => logger.error('order', req.body, err));
+        }
+
+        const charges = {};
+        charges.id = id;
+        log('body', JSON.stringify(req.body));
+        if (req.body.is_doc === 'doc') {
+          charges.receive_mail_amount = 0.00;
+        }
+        PackageCharge
+          .create(charges);
+        if (req.body.is_featured_seller === 1) {
+          const points = 50;
+          const options = {
+            attributes: ['id', 'points', 'total_points'],
+            where: { customer_id: req.body.customer_id },
+          };
+          LoyaltyPoint
+            .find(options)
+            .then((loyaltyPoints) => {
+              let level = '';
+              if (loyaltyPoints.total_points < 1000) {
+                level = 1;
+              } else if (loyaltyPoints >= 1000 && loyaltyPoints.total < 6000) {
+                level = 2;
+              } else if (loyaltyPoints.total >= 6000 && loyaltyPoints.total < 26000) {
+                level = 3;
+              } else if (loyaltyPoints.total >= 26000) {
+                level = 4;
+              }
+              loyaltyPoints.update({
+                level,
+                points: loyaltyPoints.points + points,
+                total_points: loyaltyPoints.total_points + points,
+              });
+
+              const misclenious = {};
+              misclenious.customer_id = id;
+              misclenious.description = 'Featured Seller Shopping Reward';
+              misclenious.points = points;
+              misclenious.type = REWARD;
+              LoyaltyHistory
+                .create(misclenious);
+            });
         }
 
         return Package.updateState({

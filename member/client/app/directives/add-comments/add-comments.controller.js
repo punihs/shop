@@ -24,7 +24,7 @@ class AddcommentCtrl {
           .toaster
           .pop('success', message);
         this.submitting = false;
-        this.$state.reload();
+        this.$uibModalInstance.close();
       })
       .catch((err) => {
         this

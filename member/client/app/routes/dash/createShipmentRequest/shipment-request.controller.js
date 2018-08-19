@@ -1,10 +1,11 @@
 class shipmentRequestController {
-  constructor($http, Page, $stateParams, $location, AddAddress, toaster) {
+  constructor($http, Page, $stateParams, $location, AddAddress, toaster, $state) {
     this.AddAddress = AddAddress;
     this.$http = $http;
     this.Page = Page;
     this.address = [];
     this.shipments = [];
+    this.$state = $state;
     this.$location = $location;
     this.customer = [];
     this.charges = {};
@@ -20,6 +21,7 @@ class shipmentRequestController {
     this.MoreOption = false;
     this.standard_photo_check = 'yes';
     this.advc_photo_check = '';
+    this.IsShippingAddress = false;
     this.$onInit();
   }
   $onInit() {
@@ -32,6 +34,19 @@ class shipmentRequestController {
     modal
       .result
       .then((data) => {
+        this.IsShippingAddress = true;
+        if (data.is_default === true) {
+          this.data.address_id = data.id;
+        }
+        this.customer.Addresses.push(data);
+      });
+  }
+  onload(id) {
+    const modal = this.AddAddress.open(id);
+    modal
+      .result
+      .then((data) => {
+        this.IsShippingAddress = true;
         if (data.is_default === true) {
           this.data.address_id = data.id;
         }
@@ -55,7 +70,11 @@ class shipmentRequestController {
   getList() {
     this.$http
       .get(`/shipments/redirectShipment?packageIds=${this.$packageIds}`)
-      .then(({ data: { customer, packages, shipmentMeta, IS_LIQUID } }) => {
+      .then(({
+        data: {
+          customer, packages, shipmentMeta, IS_LIQUID, IsShippingAddress,
+        },
+      }) => {
         this.shipments = packages;
         this.customer = customer;
         this.shipmentMeta = shipmentMeta;
@@ -73,11 +92,20 @@ class shipmentRequestController {
           mark_personal_use: false,
           invoice_include: false,
         };
+        this.IsShippingAddress = IsShippingAddress;
+        if (!IsShippingAddress && customer.Addresses === 0) {
+          this
+            .toaster
+            .pop('info', 'Please add the shipping address before proceed');
+          this.onload(customer.id);
+        } else {
+          this.IsShippingAddress = true;
+        }
 
-        customer.Addresses.forEach(x => {
+        customer.Addresses.forEach((x) => {
           if (x.is_default) this.data.address_id = x.id;
         });
-        packages.forEach(x => {
+        packages.forEach((x) => {
           this.totalpackagePriceAmount += x.price_amount;
         });
 
@@ -87,13 +115,27 @@ class shipmentRequestController {
         }
         this.totalChargeAmount = this.totalAmount_from_api;
       })
-      .catch(err => {
+      .catch((err) => {
         this
           .toaster
-          .pop('danger', err.data.message); });
+          .pop('danger', err.data.message);
+      });
   }
 
   create() {
+    if (!this.IsShippingAddress) {
+      this
+        .toaster
+        .pop('info', 'Please add the shipping address before proceed');
+      return this.onload(this.customer.id);
+    }
+    if (!this.data.address_id) {
+      this
+        .toaster
+        .pop('error', 'Please select shipping address');
+      return null;
+    }
+
     if (this.submitting) return null;
     this.submitting = true;
 
@@ -109,7 +151,7 @@ class shipmentRequestController {
         this
           .toaster
           .pop('success', `#${id} Shipment Created Successfully.`, '');
-        return location.reload(true);
+        this.$state.go('dash.shipmentConfirm', { order_code: this.pkg.order_code });
       })
       .catch((err) => {
         this.submitting = false;
