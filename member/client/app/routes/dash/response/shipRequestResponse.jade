@@ -1,0 +1,82 @@
+section.ship_response.toreview
+  .container
+    .row
+      .col-md-7.m-t-xs
+        .longblock
+          h4.title Thank you for creating your Ship Request!
+          h3.success Hello there! :)
+          p We are excited to start preparing your parcel!
+          p
+            | Kindly note that you can no longer change the selection of your packages, Shipping Options and Delivery Address.
+          p
+            | Shoppre might take up to a maximum period of 24 Hours to pack your items, weigh your parcel and update your shipment totals.
+          p
+            | We usually try to get back to you with your Final Shipment Charges as soon as possible, unless during peak hours or some of your parcels which are put on hold due to its special handling requirement, and hence we might take additional time to notify you and get your approval in certain cases.
+          h4
+            | You shall be notified via email when your packages are ready to be shipped from the Shoppre facility. You can now view your shipment in the
+            a(href="{{route('shipping.queue')}}") Queue
+            | .
+          i
+            | P.S. Cancel your shipment right now if you wish to do so, before we start processing your shipment.
+          p.text-orange
+            | Please remember that once your package is ready to be shipped and your final cost is updated, KINDLY SUBMIT YOUR PAYMENT WITHIN 7 DAYS. From the 8th day, your parcel will start accumulating Storage fees of INR 100/day which you can view in your Shoppre wallet.
+          .text-center
+            a.btn.btn-shoppre(href="{{route('shipping.queue')}}", style='border-radius: 5px;margin-top: 15px;') I WILL BE AWAITING YOUR NOTIFICATION EMAIL TO SUBMIT MY PAYMENT
+          .splitbox
+            h3 Shipment Details:
+            p # {{$ctrl.shipment.order_code}}
+            hr
+            h3 Shipping Address:
+            h4 {{$ctrl.shipment.customer_name}}
+            p {{$ctrl.shipment.address}}
+            strong Phone: {{$ctrl.shipment.phone}}
+      .col-md-5.m-t-xs
+        .col-md-6.sidebarSpecial.white-border
+          .col-md-2.no-padder
+            img(src='/assets/images/dashico1.png')
+          .col-md-6
+            .h4.text-u-c
+              a(href='') Country Guides
+        .col-md-6.sidebarSpecial
+          .col-md-2.no-padder
+            img(src='/assets/images/dashico2.png')
+          .col-md-9
+            .h4.text-u-c
+              a(href='') Brands you love
+        .col-md-6.sidebarSpecial.m-t-xs.white-border
+          .col-md-2.no-padder
+            img(src='/assets/images/dashico3.png')
+          .col-md-9
+            .h4.text-u-c
+              a(href='') Shipping Calculator
+        .col-md-6.sidebarSpecial.m-t-xs
+          .col-md-2.no-padder
+            img(src='/assets/images/dashico4.png')
+          .col-md-9
+            .h4.text-u-c
+              a(href='') Personal Shopper
+        .col-md-6.sidebarSpecial.m-t-xs.white-border
+          .col-md-2.no-padder
+            img(src='/assets/images/dashico5.png')
+          .col-md-9
+            .h4.text-u-c
+              a(href='') Exchange Rates
+        .col-md-6.sidebarSpecial.m-t-xs
+          .col-md-2.no-padder
+            img(src='/assets/images/dashico6.png')
+          .col-md-9
+            .h4.text-u-c
+              a(href='') Our Services
+        .col-md-6.sidebarSpecial.m-t-xs.white-border
+          .col-md-2.no-padder
+            img(src='/assets/images/dashico7.png')
+          .col-md-9
+            .h4.text-u-c
+              a(href='') Address Book
+        .col-md-6.sidebarSpecial.m-t-xs
+          .col-md-2.no-padder
+            img(src='/assets/images/dashico8.png')
+          .col-md-9
+            .h4.text-u-c.top-margin-10
+              a(href='') Blog
+

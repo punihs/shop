@@ -1043,3 +1043,29 @@ describe('GET /api/shipments/cron/partners', () => {
       });
   });
 });
+
+describe('GET /api/shipments/115/request/shipRequestResponse', () => {
+  it('shipRequest Response', (done) => {
+    request(app)
+      .get('/api/shipments/115/request/shipRequestResponse')
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+
+describe('GET /api/shipments/115/request/response', () => {
+  it('shipRequest Response', (done) => {
+    request(app)
+      .get('/api/shipments/115/request/response')
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});

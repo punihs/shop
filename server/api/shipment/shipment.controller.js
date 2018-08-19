@@ -1853,3 +1853,19 @@ exports.response = async (req, res) => {
   return res.status(404).json({ message: 'shipment not found' });
 };
 
+exports.shipRequestResponse = async (req, res) => {
+  const { id } = req.params;
+  const shipment = await Shipment.findById(id);
+  if (shipment) {
+    const shipmentMeta = await ShipmentMeta
+      .find({
+        attributes: ['shipment_id'],
+        where: {
+          shipment_id: id,
+        },
+        limit: Number(req.query.limit) || 1,
+      });
+    return res.json({ shipment, shipmentMeta });
+  }
+  return res.status(404).json({ message: 'shipment not found' });
+};

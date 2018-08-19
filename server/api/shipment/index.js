@@ -24,6 +24,7 @@ router.get('/:id/invoice', controller.invoice);
 router.put('/:id/state', controller.state);
 router.get('/cron/partners', controller.updateShipmetStatus);
 router.get('/:id/request/response', controller.response);
+router.get('/:id/request/shipRequestResponse', controller.shipRequestResponse);
 
 module.exports = router;
 

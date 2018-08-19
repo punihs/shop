@@ -36,6 +36,12 @@ angular.module('uiGenApp')
         controller: 'PaymentResponse',
         controllerAs: '$ctrl',
       })
+      .state('dash.shipRequestResponse', {
+        url: '/115/request/shipRequestResponse',
+        templateUrl: 'app/routes/dash/response/shipRequestResponse.html',
+        controller: 'ShipRequestResponse',
+        controllerAs: '$ctrl',
+      })
       .state('dash.retryPayment', {
         url: '/request/payment/retryPayment',
         templateUrl: 'app/routes/dash/retryPayment/retryPayment.html',
