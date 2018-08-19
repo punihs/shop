@@ -49,8 +49,17 @@ class PackageLockerController {
       name: 'Return to Sender',
       value: 'return',
       price: 'INR400',
-      infoContent: 'hi',
-      description: 'Return package to sender. You might to pay shipping charges as per' +
+      infoContent: 'Once the item arrives at our facility, ' +
+      'if you feel the item is not as per your expectation or is damaged, ' +
+      'it can be exchanged/returned to the seller (as per the seller exchange/return policy). ' +
+      'The cost for returning at item is charged at INR 400*. ' +
+      'You will be responsible for all return shipping fees as well (if needed).' +
+      ' If it has to be couriered to sender’s destination by Shoppre, ' +
+      'charges as per domestic shipping rates will be considered.' +
+      ' *Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).',
+      description: '(which will be displayed under Shoppre Wallet,and you shall pay along ' +
+      'with your next shipment)' +
+      'Return package to sender. You might to pay shipping charges as per' +
       ' the Return policy of the' +
       ' seller form where you purchased',
       innerDescription: 'Please check with the Sender\'s Return Policy' +
@@ -65,7 +74,14 @@ class PackageLockerController {
       name: 'Split Package',
       value: 'split',
       price: 'INR 200 * Per New Package Created',
-      infoContent: 'hello',
+      infoContent: 'Shoppre can split your package if it contains more than one item, and if you ' +
+      'wish to separate them into multiple packages. ' +
+      'You can split your package and discard an item, ' +
+      'return it to the sender, ship it at a different time or to a different address. ' +
+      'There is a cost of INR 200 per new package* created. For eg. if you have splitted ' +
+      'your package into 3, you will be charged INR 400 .' +
+      '*Charges may be lesser for Membership Partners, ' +
+      'and Loyalty Members (Silver and above).',
       description: 'Split  contents of package separate packages',
       innerDescription: 'How would you like to split your package? Please mention ' +
       'the details in the box below:',
@@ -74,8 +90,9 @@ class PackageLockerController {
       name: 'Abandon Package',
       value: 'abandon',
       price: 'INR 0 ',
-      infoContent: 'hkhkhk',
-      description: 'Our team will disose of the package and its contents',
+      infoContent: ' Once Abandon Your Package' +
+      'shall not able to recover.',
+      description: 'Our team will dispose of the package and its contents',
       innerDescription: 'Are you sure that you wish to Abandon this Package? You ' +
       'shall not able to recover' +
       ' this package once you have asked us to discard your items.',

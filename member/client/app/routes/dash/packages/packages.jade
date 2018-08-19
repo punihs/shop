@@ -155,7 +155,7 @@ div.m-t-xl.no-margin
                                           h4.font-thin OPTIONAL SERVICES
                                           .input-group-btn.dropdown.open.full-width(uib-dropdown='', style='')
                                             button.btn.btn-default.full-width.dropdown-toggle.text-left.m-b-md(type='button', uib-dropdown-toggle='', aria-haspopup='true', aria-expanded='true')
-                                              span.text-u-c.m-r-xs Special Offers
+                                              span.text-u-c.m-r-xs Special Requests
                                               span.caret
                                             ul.list-group.list-group-lg.no-bg.auto.dropdown-menu.full-width.position-relative
                                               li.list-group-item.pointer(
@@ -200,7 +200,7 @@ div.m-t-xl.no-margin
                                         h4.font-thin.m-t-md OPTIONAL SERVICES
                                         .input-group-btn.dropdown.open.full-width(uib-dropdown='', style='')
                                           button.btn.btn-default.full-width.dropdown-toggle.text-left.m-b-md(type='button', uib-dropdown-toggle='', aria-haspopup='true', aria-expanded='true')
-                                            span.text-u-c.m-r-xs Special Offers
+                                            span.text-u-c.m-r-xs Special Requests
                                             span.caret
                                           ul.list-group.list-group-lg.no-bg.auto.dropdown-menu.full-width.position-relative
                                             li.list-group-item.pointer(
@@ -279,7 +279,7 @@ div.m-t-xl.no-margin
                                         h4.font-thin.m-t-md OPTIONAL SERVICES
                                         .input-group-btn.dropdown.open.full-width(uib-dropdown='', style='')
                                           button.btn.btn-default.full-width.dropdown-toggle.text-left.m-b-md(type='button', uib-dropdown-toggle='', aria-haspopup='true', aria-expanded='true')
-                                            span.text-u-c.m-r-xs Special Offers
+                                            span.text-u-c.m-r-xs Special Requests
                                             span.caret
                                           ul.list-group.list-group-lg.no-bg.auto.dropdown-menu.full-width.position-relative
                                             li.list-group-item.pointer(
@@ -296,6 +296,7 @@ div.m-t-xl.no-margin
                                                 )
                                                 span.m-l-xs(ng-bind="specialRequest.price")
                                                 small.text-muted.clear.text-ellipsis(ng-bind="specialRequest.description")
+
           .clearfix
           .more-options.col-md-12
             .ReadytoSend(ng-if='$ctrl.$stateParams.bucket==="READY_TO_SEND"')
@@ -307,7 +308,7 @@ div.m-t-xl.no-margin
                 a.summary-order(href="#" ,_target='blank') Click here to know more.
 
               p **
-                | ** Shoppre charges a small fee of INR 100 per package that you add to the final shipment
+                | Shoppre charges a small fee of INR 100 per package that you add to the final shipment
                 | (when you have two or more packages to consolidate).
                 | This helps you in reducing shipping charges upto 60-80%.
                 a.summary-order(href="#" _target='blank') Click here to know more.
@@ -502,7 +503,17 @@ div.m-t-xl.no-margin
         .list-group-item.text-danger.text-u-c
           span.badge.pull-right.bg-success(ng-bind='$ctrl.user.wallet_balance_amount')
           | Shoppre Wallet
-        .sidebarImage.m-t-md(ng-if='$ctrl.$stateParams.bucket!="READY_TO_SEND"')
+          span(
+          uib-tooltip = 'Shoppre can add or deduct cash from your Shoppre Wallet depending on the situation.' +
+          'For eg: Your Personal Shopper balance will be settled here in your Shoppre Wallet.' +
+          'If the amount is positive, it means that you own this much cash, and this amount will be deducted from the final charges.' +
+          'If the amount is negative, it means that this amount will be added to the final charges.'
+          tooltip-placement='right'
+          tooltip-append-to-body='true'
+          )
+           i.m-l.fa.fa-info-circle
+
+        .sidebarImage.m-t-md
           .col-md-6.sidebarSpecial.white-border
             .col-md-2.no-padder
               img(src='/assets/images/dashico1.png')
