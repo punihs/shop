@@ -12,7 +12,7 @@ ul.nav.navbar-nav.navbar-left
       i.fa.fa-list-alt.text-white
       span ORDERS
   li.nav-menu-item(ui-sref-active='active' uib-dropdown)
-    a.hv(uib-dropdown-toggle ui-sref='shipments.index({ status: "All" })')
+    a.hv(uib-dropdown-toggle ui-sref='shipments.index({ bucket: "All" })')
       i.fa.fa-list-alt.text-white
       span SHIPMENTS
   li.hide.nav-menu-item(ui-sref-active='active'): a.hv(ui-sref='loyaltypoints.rewards')

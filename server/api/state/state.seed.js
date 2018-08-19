@@ -198,7 +198,7 @@ const shipmentStates = [{
   config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
 }, {
   id: 36,
-  name: 'Payment Done',
+  name: 'Penalty Payment Done',
   config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
 }, {
   id: 37,

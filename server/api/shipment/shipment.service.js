@@ -14,8 +14,8 @@ const kvmap = (arr, key, value) => arr.reduce((nxt, x) => ({ ...nxt, [x[key]]: x
 
 exports.index = ({ params, query, user: actingUser }) => {
   log('index', { groupId: actingUser.group_id, app_id: actingUser.app_id });
-  const { status } = query;
-  const bucket = BUCKETS.SHIPMENT[actingUser.group_id];
+  const { bucket } = query;
+  const BUCKET = BUCKETS.SHIPMENT[actingUser.group_id];
   const options = {
     where: {},
     offset: Number(query.offset) || 0,
@@ -80,10 +80,10 @@ exports.index = ({ params, query, user: actingUser }) => {
     }
   }
 
-  const states = Object.keys(bucket);
+  const states = Object.keys(BUCKET);
   if (query.sid) options.include[0].where.state_id = query.sid.split(',');
-  else if (states.includes(status) && options.include && options.include.length) {
-    options.include[0].where.state_id = bucket[status];
+  else if (states.includes(bucket) && options.include && options.include.length) {
+    options.include[0].where.state_id = BUCKET[bucket];
   }
 
   return Promise
@@ -95,7 +95,7 @@ exports.index = ({ params, query, user: actingUser }) => {
       ShipmentState
         .findAll({
           attributes: [[sequelize.fn('count', 1), 'cnt'], 'state_id'],
-          where: { state_id: bucket[status] },
+          where: { state_id: BUCKET[bucket] },
           include: [{
             where: options.where,
             model: Shipment,

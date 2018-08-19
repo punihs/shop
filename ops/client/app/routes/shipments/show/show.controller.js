@@ -50,15 +50,15 @@ class shipmentsShowController {
     return time;
   }
 
-  toggleBookmark(status) {
+  toggleBookmark(bucket) {
     this
       .$http
-      .post(`/shipments/${this.$stateParams.id}/bookmarks`, { status })
+      .post(`/shipments/${this.$stateParams.id}/bookmarks`, { bucket })
       .then(() => {
-        this.data.is_bookmarked = status;
+        this.data.is_bookmarked = bucket;
         this.toaster
           .pop('success',
-            (status
+            (bucket
               ? 'Bookmarked Successfully'
               : 'Unbookmarked Successfully'
             ));

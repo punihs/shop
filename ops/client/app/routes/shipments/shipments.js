@@ -12,7 +12,7 @@ angular.module('uiGenApp')
         template: '<div ui-view></div>',
       })
       .state('shipments.index', {
-        url: '?status&sid&uid',
+        url: '?bucket&sid&uid',
         templateUrl: 'app/routes/shipments/index/index.html',
         controller: 'ShipmentsIndexController',
         controllerAs: '$ctrl',

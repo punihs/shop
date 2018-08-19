@@ -38,14 +38,14 @@ class ShipmentsIndexController {
 
     this.buckets = this.QCONFIG.SHIPMENT_STATES;
 
-    this.$stateParams.status = this.$stateParams.status || this.$location.search().status;
+    this.$stateParams.bucket = this.$stateParams.bucket || this.$location.search().bucket;
 
-    // Set default status to ALL
-    if (!this.buckets.includes(this.$stateParams.status)) {
-      this.$state.go('shipments.index', { status: 'ALL' });
+    // Set default bucket to ALL
+    if (!this.buckets.includes(this.$stateParams.bucket)) {
+      this.$state.go('shipments.index', { bucket: 'ALL' });
       return;
     }
-    this.Page.setTitle(`${this.$stateParams.status} Shipments`);
+    this.Page.setTitle(`${this.$stateParams.bucket} Shipments`);
 
     this.shipments = []; // collection of shipments
     this.ui = { lazyLoad: true, loading: false }; // ui states
@@ -126,15 +126,15 @@ class ShipmentsIndexController {
     this.ui = { lazyLoad: false, loading: true };
     this.params.q = this.xquery || '';
 
-    if (this.$stateParams.status === 'Interview') {
+    if (this.$stateParams.bucket === 'Interview') {
       this.params.interview_time = [
         this.moment().startOf('day').toISOString(),
         this.moment().startOf('day').add(1, 'months')
-        .toISOString(),
+          .toISOString(),
       ].join(',');
       this.params.fl += ',interview_time,interview_type';
     } else {
-      this.params.status = this.$stateParams.status.replace(' ', '_').toUpperCase();
+      this.params.bucket = this.$stateParams.bucket.replace(' ', '_').toUpperCase();
     }
 
     this.$http
@@ -148,7 +148,7 @@ class ShipmentsIndexController {
         }
 
         if (!shipments.length && this.$rootScope.previousState === 'access.oauth') {
-          this.$state.go('shipments.index', { status: 'ALL' });
+          this.$state.go('shipments.index', { bucket: 'ALL' });
           return;
         }
         this.shipments.push(...shipments);
