@@ -1,4 +1,4 @@
-{{#if CREATED}}
+{{#if PACKAGE_ITEMS_UPLOAD_PENDING}}
   <tr>
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
@@ -12,18 +12,251 @@
 
       </p> </td>
   </tr>
-{{else if AWAITING_VERIFICATION}}
+{{else if CUSTOMER_INPUT}}
   <tr>
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-       I would like to inform you that your package from <span class="il">{{pkg.Store.name}}</span>. You will receive your complete details once Shipping Team updates the package details.
+        We received a package for you, however, it did not include a merchant invoice, or the invoice did not show the value of the merchandise.This information is required by customs, and we
+        will need you to enter the value before we can ship your package.
+        <br>
+        <br>
+        You can find the value of your purchases on the invoice or order confirmation you received from the merchant. To enter your merchandise values:
+        <br>
+        Visit your Action Required tab
+        Select  Provide Item Values
+        Enter the price you paid for the item(s) in the field provided
+        <br>
+        <br>
+        Please note,  you will not be able to select this package for shipping until you have entered the purchase value.
+      </p> </td>
+  </tr>
+{{else if READY_TO_SHIP}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Good news! A package has stored in your locker: PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+        Your package is ready for  shipping .
+        <br>
+        <br>
+
+      </p> </td>
+  </tr>
+{{else if DAMAGED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        I would like to inform you that your package is Damaged.PackageId is  <span class="il">{{pkg.id}}</span>.
         <br>
         <br>
         Your package is shipped by <span class="il">{{pkg.Store.name}}</span> and the reference ID is {{pkg.reference_code}}.
         <br>
         <br>
 
+      </p> </td>
+  </tr>
+{{else if RETURN_REQUEST_FROM_CUSTOMER}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Customer requested for package return to sender. PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if RETURN_PICKUP_DONE}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        This mail is to inform you that the package below has successfully left the Shoppre facility.PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if SPLIT_PACKAGE}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Customer requested for Split package. PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if SPLIT_PACKAGE_PROCESSED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        This mail is to inform you that the package below has successfully splitted.PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if DISCARDED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        This mail is to inform you that the package below has successfully Discarded.PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if DISCARD_REQUESTED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Customer requested for Discard package. PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if STANDARD_PHOTO_REQUEST}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Customer requested for Starndard Photos. PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if ADVANCED_PHOTO_REQUEST}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Customer requested for Starndard Photos. PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if PS_RETURN_REQUESTED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Customer  Requested for Personal Shopper Return PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if PS_REFUND_RECIEVED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Your Personal Shopper Refund Recieved. PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if ORDER_CREATED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Customer Created Order. PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if ORDER_CANCELLED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Customer Cancelled Order. PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if PAYMENT_INITIATED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Your Payment Intiated. PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if PAYMENT_FAILED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Payment Failed Please try again, PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if PAYMENT_COMPLETED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Your Payment Completed. PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if ORDER_PLACED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Your Order Placed Successfully. PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if OUT_OF_STOCK}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Your Items Are Out-of-stock. PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if REFUNDED_TO_WALLET}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Your Package Refund Added to Wallet. PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if REFUNDED_TO_BANK_ACCOUNT}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Your Package Refund Added to Bank Account. PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if AWAITING_PACKAGE}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        We Are awaiting for your Packages. PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
       </p> </td>
   </tr>
 {{/if}}

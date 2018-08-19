@@ -21,9 +21,103 @@
           </table> </td>
       </tr>
       <tr>
-        <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+    {{#if PACKAGE_ITEMS_UPLOAD_PENDING}}
+    <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
           <span style="font:20px Arial,san-serif">Package Just Arrived</span>
         </td>
+    {{else if CUSTOMER_INPUT}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Please Input Package Values</span>
+      </td>
+    {{else if READY_TO_SHIP}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Your Package Is Read To Send</span>
+      </td>
+    {{else if DAMAGED}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Your Package Is Damaged</span>
+      </td>
+    {{else if RETURN_REQUEST_FROM_CUSTOMER}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Customer Requested For Return Package</span>
+      </td>
+    {{else if RETURN_PICKUP_DONE}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Your Package Returned Is Completed</span>
+      </td>
+    {{else if SPLIT_PACKAGE}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Customer Requested For Split Package</span>
+      </td>
+    {{else if SPLIT_PACKAGE_PROCESSED}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Your Package Split Is Completed</span>
+      </td>
+    {{else if DISCARDED}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Your Package Discarded Is Completed</span>
+      </td>
+    {{else if DISCARD_REQUESTED}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Customer Requested For Discard Package</span>
+      </td>
+    {{else if STANDARD_PHOTO_REQUEST}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Customer Requested For Standarded Photo</span>
+      </td>
+    {{else if ADVANCED_PHOTO_REQUEST}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Customer Requested For Advanced Photo</span>
+      </td>
+    {{else if PS_RETURN_REQUESTED}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Personal Shopper Return Requested</span>
+      </td>
+    {{else if PS_REFUND_RECIEVED}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Personal Shopper Refund Recieved</span>
+      </td>
+    {{else if ORDER_CREATED}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Customer Order Created</span>
+      </td>
+    {{else if ORDER_CANCELLED}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Customer Order Cancelled</span>
+      </td>
+    {{else if PAYMENT_INITIATED}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Payment Initiated</span>
+      </td>
+    {{else if PAYMENT_FAILED}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Payment Failed</span>
+      </td>
+    {{else if PAYMENT_COMPLETED}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Payment Completed</span>
+      </td>
+    {{else if ORDER_PLACED}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Order Placed</span>
+      </td>
+    {{else if OUT_OF_STOCK}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Out Of Stock</span>
+      </td>
+    {{else if REFUNDED_TO_WALLET}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Refunded To Wallet</span>
+      </td>
+    {{else if REFUNDED_TO_BANK_ACCOUNT}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Refunded To Bank Account</span>
+      </td>
+    {{else if AWAITING_PACKAGE}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Awaiting Package</span>
+      </td>
+    {{/if}}
       </tr>
       <tr>
         <td style="padding:0px 0px 5px 20px;text-align:right;width:120px">

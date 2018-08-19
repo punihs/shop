@@ -1,5 +1,5 @@
 
-const { GROUPS: { CUSTOMER, OPS } } = require('../../../../config/constants');
+const { GROUPS: { CUSTOMER } } = require('../../../../config/constants');
 
 const { CURRENT_EVENT_KEY } = require('../../../../config/environment');
 
@@ -24,19 +24,6 @@ module.exports = {
       HtmlPart: render({
         TemplateName: `${TemplateName}_${CUSTOMER}`,
         extras: ['header', 'virtualAddress', 'items', 'footer', 'signature'],
-        afterContent: ['global:cheers'],
-      }),
-    },
-  }, {
-    group_id: OPS,
-    TemplateData,
-    Template: {
-      TemplateName: `${TemplateName}_${OPS}`,
-      SubjectPart: '{{customer.name}}: {{pkg.Store.name}} order #{{pkg.reference_code}} ' +
-        'is received',
-      HtmlPart: render({
-        TemplateName: `${TemplateName}_${OPS}`,
-        extras: ['packageItems'],
         afterContent: ['global:cheers'],
       }),
     },
