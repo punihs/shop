@@ -1,0 +1,72 @@
+<tr>
+  <td colspan="2" style="width:640px"> <p style="font:18px Arial,sans-serif;color:#cc6600;border-bottom:1px solid #ccc;margin:10px 20px 3px 20px;padding:0 0 3px 0"> Package Contents in Shipment: </p> </td>
+</tr>
+<tr>
+  <td colspan="2" style="padding:16px 40px;width:640px">
+    <table width="560" cellspacing="0" cellpadding="0">
+      <tbody>
+      {{#if pkg}}
+        {{#each pkg}}
+          <tr>
+            <td align="center" style="color:#666;padding:10px 10px 0 10px;width:410px;height:115px">
+              <p style="margin:0 0 0 7px;padding:0">
+                <a href="{{ENV.URLS_MEMBER}}/packages/{{pkg.id}}?pkgId={{id}}"
+                   style="font:14px Arial,sans-serif;text-decoration:none;color:#006699"
+                   target="_blank" >
+                  {{order_code}} -
+                  Reference Code: {{reference_code}} <br>
+                  Weight: ₹{{weight}}<br>
+                  Tracking_Number: ₹{{tracking_number}}
+                  Date: {{created_at}}
+                  From: {{Store.name}}
+                </a>
+              </p>
+              <p> </p></td>
+          </tr>
+        {{/each}}
+      {{else}}
+        <tr>
+          <td align="center" valign="top" style="width:150px;height:115px">
+            <a href="{{ENV.URLS_MEMBER}}/packages/{{shipmentDetails.id}}" style="margin:0 20px 0 0" title="ItemImage" target="_blank" ><img src="https://www.activebarcode.com/images/pictos/barcode1d.png"> </a> </td>
+          <td align="center" style="color:#666;padding:10px 10px 0 10px;width:410px;height:115px">
+            <p style="margin:0 0 0 7px;padding:0">
+              <a href="{{ENV.URLS_MEMBER}}/packages/{{shipmentDetails.id}}" style="font:14px Arial,sans-serif;text-decoration:none;color:#006699" target="_blank" >
+                Shoppre Shipping Team processing your Shipment...
+              </a>
+            </p>
+            <p> </p></td>
+        </tr>
+      {{/if}}
+
+
+      </tbody>
+    </table> </td>
+</tr>
+
+<tr>
+  <td colspan="2" style="width:640px"> <p style="font:18px Arial,sans-serif;color:#cc6600;border-bottom:1px solid #ccc;margin:10px 20px 3px 20px;padding:0 0 3px 0"> Ship-to address: </p> </td>
+</tr>
+<tr>
+  <td colspan="2" style="padding:16px 40px;width:640px">
+    <table width="560" cellspacing="0" cellpadding="0">
+      <tbody>
+      <tr>
+        <br align="center" valign="top" style="width:150px;height:115px">
+        <b style=" font-size: 15px;"> Address:</b>  {{shipToAddress.line1}},  {{shipToAddress.line2}} </br>
+        <b style=" font-size: 15px;">City:</b>  {{shipToAddress.city}}</br>
+        <b style=" font-size: 15px;">State:</b>  {{shipToAddress.state}}</br>
+        <b style=" font-size: 15px;"> Country:</b>  {{shipToAddress.country}}</br>
+        <b style=" font-size: 15px;">  Pin Code: </b>  {{shipToAddress.pincode}}</br>
+        <b style=" font-size: 15px;">Phone: </b>  {{ shipToAddress.phone }}</br>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          </br>
+          </br>
+          <b> Kindly verify the address once again as wrong address can attract a very high penalty.</b>
+        </td>
+      </tr>
+      </tbody>
+    </table> </td>
+</tr>

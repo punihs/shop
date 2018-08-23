@@ -4,7 +4,7 @@ const _ = require('lodash');
 const xlsx = require('node-xlsx');
 const paytm = require('../../../server/api/paymentGateway/paytm/paytm.controller');
 const axis = require('../../../server/api/paymentGateway/axis/axis.controller');
-const paypal = require('../../../server/api/paymentGateway/paypal/paypal.controller');
+// const paypal = require('../../../server/api/paymentGateway/paypal/paypal.controller');
 
 const eventEmitter = require('../../conn/event');
 const db = require('../../conn/sqldb');

@@ -1,0 +1,259 @@
+{{#if PACKAGING_REQUESTED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Shipment Request Created Successfully.ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if INVOICE_REQUESTED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Payment Completed For Your Shipment.ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+      </p> </td>
+  </tr>
+{{else if PAYMENT_REQUESTED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Payment Requested For Your Shipment. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if PAYMENT_INITIATED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Payment Initiated  For Your Shipment.ShipmentId is  <span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if PAYMENT_COMPLETED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Payment Completed For Your Shipment. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if PAYMENT_FAILED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Payment Failed For Your Shipment.ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if PAYMENT_CONFIRMED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Payment Confirmed For Your Shipment. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if UPSTREAM_SHIPMENT_REQUEST_CREATED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        This mail is to inform you that Upstream Shipment Request Created.ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if SHIPMENT_HANDED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Your Shipment Handovered.ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if SHIPMENT_IN_TRANSIT}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Your Shipment In Transit. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if SHIPMENT_MANUAL_FOLLOW_UP}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Shipment Manual Follow Up. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if SHIPMENT_LOST}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Your Shipment Lost. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if CUSTOM_ON_HOLD}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Your Shipment On Custom Hold. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if WRONG_ADDRESS}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Wrong Address. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if SHIPMENT_REJECTED_BY_CUSTOMER}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Shipment Rejected By Customer. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if RTO_REQUESTED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Customer Requested For RTO. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if RAISE_SHIPMENT_LOST_CLAIM}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Customer Raise Shipment Lost Claim. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if PENALTY_PAYMENT_REQUESTED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Your Shipment Penalty Payment Requested, ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if RETURN_TO_ORIGIN}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Your Shipment Return To Origin. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if AMOUNT_RECEIVED_FROM_UPSTREAM}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Your Amount Received From Upstream. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if PENALTY_PAYMENT_DONE}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Your Shipment Penalty Payment Done. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if WRONG_ADDRESS_FOLLOW_UP}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Wrong Address Follow Up. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if CLAIM_PROCESSED_TO_CUSTOMER}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+       Claim Processed To Customer. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if CUSTOMER_ACKNOWLEDGEMENT_RECEIVED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Customer Acknowledgement Received . ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if SHIPMENT_DELIVERED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Your shipmentDetails Delivered. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{else if SHIPMENT_CANCELLED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Your shipmentDetails Cancelled. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        <br>
+        <br>
+      </p> </td>
+  </tr>
+{{/if}}

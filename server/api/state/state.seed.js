@@ -210,7 +210,7 @@ const shipmentStates = [{
   config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
 }, {
   id: 39,
-  name: 'Customer Acknowledgement Recieved',
+  name: 'Customer Acknowledgement Received',
   config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
 }, {
   id: 40,
