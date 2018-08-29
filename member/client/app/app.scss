@@ -723,3 +723,40 @@ li.dndPlaceholder {
 .no-border{
   border:none!important;
 }
+
+.ship-packages {
+  margin-top: 20px;
+}
+
+.subpaybtn {
+  display: block;
+  border: 1px solid #cadc88;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #424242;
+  border-radius: 5px;
+  margin: 15px 0;
+  text-transform: uppercase;
+}
+
+.order-top-left{
+  //width: 49%;
+  display: inline-block;
+  vertical-align: top;
+}
+.order-top-left h3{
+  font-size: 20px;
+  color: #5f5f5f;
+  font-weight: 700;
+  margin: 0 0 15px;
+  text-transform: uppercase;
+}
+.btn-blue{
+  background: #20c5d4;
+  color: #fff;
+}
+
+.bucket-color{
+  background-color:  #f9f2d4 !important; ;
+}

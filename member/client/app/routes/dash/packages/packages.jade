@@ -1,13 +1,25 @@
 div.m-t-xl.no-margin
   .wrapper-md.bg-white-only
     .row
-
-      .col-md-8.m-t-xs
-        .h1.m-l-md.font-thin.h3.m-b-md.text-u-c
-          | Packages in locker&nbsp;
-          strong(ng-bind='$ctrl.user.virtual_address_code')
+      .col-md-6.col-md-offset-1.m-t-xs
+        center
+          h4.subpaybtn(ng-if='$ctrl.queueCount > 0')
+            | Your shipment is ready.
+            a.summary-order(href="{{route('shipping.queue')}}")&nbsp; Submit Your Payment
+            |  Quickly in order to avoid storage fees.
+            a.tooltipkey(href='javascript:void(0)', title='Your package is now ready to be shipped and your final charges have been updated.You get a free time period of 7 DAYS to submit your payment. You will incur a storage fee of INR 100/ day for your prepared parcel from the 8th day onwards, which you can view in your Shoppre Wallet.')
+              i.fa.fa-question-circle-o
+        div.text-center
+          .order-top-left.col-md-6
+            h3 Packages in locker&nbsp;
+              strong(ng-bind='$ctrl.user.virtual_address_code')
+            a.btn.btn-blue.col-md-12(href='http://127.0.0.1:8002/incoming-order') Alert Shoppre about my incoming Packages (Optional)
+          .order-top-left.col-md-6
+            h3(style='color: hotpink;') Today's Offer For You
+            a.btn.btn-blue.col-md-12(style='background-color: hotpink', target='_blank', href='https://www.shoppre.com/campaign/ind-day/website/308?myaccount-locker') ShoppRe: Independence Day 7% Discount. Claim Offer!
+        .clearfix
+        .col-md-8.pull-right.text-right.no-padder-right.m-t-md.m-t-xs
           ul.nav.nav-pills.nav-sm.pull-right
-            //':'b-info text-info ' "s
             li.m-r-sm.pull-right(ng-if='$ctrl.queueCount')
               a.h5.font-bold.b-a.btn-info(
                 ui-sref='shipments.index({ status: "INQUEUE" })'
@@ -16,21 +28,15 @@ div.m-t-xl.no-margin
                 style='border: 1px solid red'
                 ng-bind='$ctrl.queueCount'
               )
-            li.hide.m-r-sm.pull-right: a.h5.font-bold.b-a.btn-info(
-              uib-tooltip='Alert Shoppre about my incoming packages (Optional)'
-              ui-sref='packages.create()'
-            )
-              | Inform about your purchases to Shoppre Team
-        .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
         .clearfix
         .col-md-8.pull-right.text-right.no-padder-right
-          h4.text-u-c We are preparing currently one shipment for you
+          h5.text-u-c WE’RE CURRENTLY PREPARING 1 SHIPMENT(S) FOR YOU.
         .clearfix
         .hbox.accounts.panel.panel-warning.m-t-xs
           .bg-white-only
             .nav-tabs-alt
               .bg-white-only.b-b(style='width: 100%; height: 44px;')
-                ul.nav.nav-tabs.nav-justified
+                ul.nav.nav-tabs.nav-justified.bucket-color
                   li(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active")
                     a(ui-sref='dash.packages({ bucket: bucket })')
                       span(ng-bind="$ctrl.CONFIG.PACKAGE_STATES[$index]")
@@ -46,9 +52,14 @@ div.m-t-xl.no-margin
           .full-width
             .wrapper-md.ng-scope
               .panel.panel-default
-                .panel-heading
-                  | Select Package to Ship
-                div
+                .well(ng-if="$ctrl.packages.length <= 0")
+                  p.alert.alert-danger.text-center(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'") There are currently no package to ship. Please purchase a product with shoppre locker address.
+                  p.alert.alert-danger.text-center(ng-if="$ctrl.$stateParams.bucket==='IN_REVIEW'") You currently have no packages under review by Shoppre.
+                  p.alert.alert-danger.text-center(ng-if="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'") There are currently no packages that require action on your part.
+                  p.alert.alert-danger.text-center(ng-if="$ctrl.$stateParams.bucket==='ALL'") There are currently no package received by shoppre team. Please shop with your locker address.
+                div(ng-hide="$ctrl.packages.length <= 0")
+                  .panel-heading
+                    | Select Package to Ship
                   table.table.table-bordered.m-b-none.default.footable-loaded.footable(
                   ui-jq='footable', data-filter='#filter', data-page-size='5')
                     thead
@@ -91,7 +102,8 @@ div.m-t-xl.no-margin
                         td.footable-visible
                           a(ui-sref='package.show({ id: package.id })' ng-bind='package.Store.name')
                         td.footable-visible {{package.id}}
-                          span.badge.bg-success.m-l-xs.pull-right(ng-if='package.content_type == 2') SPECIAL
+                          span.badge.bg-success.m-l-xs(ng-if='package.content_type === "2"') SPECIAL
+                          span.badge.bg-danger.m-l-xs(ng-if='package.is_damaged === true') DAMAGED
                         td.footable-visible(
                         ng-bind='$ctrl.moment(package.created_at).fromNow()'
                         uib-tooltip="{{package.created_at | date:'MMM d, y'}} IST {{package.created_at | date:'h:mm a'}}"
@@ -332,15 +344,15 @@ div.m-t-xl.no-margin
               p *
                 | Customs regulations require the purchase price for every item.
                 | Proof of value maybe requested by customs officials.
-                a.summary-order(href="#" ,_target='blank') Click here to know more.
+                a.summary-order(href="#" ,_target='blank')&nbsp; Click here to know more.
 
               p **
                 | Shoppre charges a small fee of INR 100 per package that you add to the final shipment
                 | (when you have two or more packages to consolidate).
                 | This helps you in reducing shipping charges upto 60-80%.
-                a.summary-order(href="#" _target='blank') Click here to know more.
+                a.summary-order(href="#" _target='blank')&nbsp; Click here to know more.
 
-      .col-md-4.m-t-xs
+      .col-md-4.col-md-offset-right-1.m-t-xs
         .well.copy-wrap-out
           select.pull-right.m-l(ng-model='$ctrl.store' name='store')
             option Amazon

@@ -8,7 +8,7 @@ section.ship_response
           .col-md-12
             p.confirm
               | An email confirmation of your request has been sent to
-              a.summary-order(href='javascript:void(0)') {{$ctrl.shipment.Customer.email}}
+              a.summary-order(href='javascript:void(0)')&nbsp; {{$ctrl.shipment.Customer.email}}
               | .
             p(ng-if = "$ctrl.shipment.payment_gateway_name === 'wire'")
           .col-sm-12
@@ -36,11 +36,11 @@ section.ship_response
             .cashoption
               p.info
                 | We will dispatch your shipment once your payment is confirmed. In such a case, we advise you to opt for an alternative payment method if your shipment is urgent or if you don’t want to be charged with storage cost. Please click here if you wish to
-                a.summary-order(href='{{}}') change the payment method.
+                a.summary-order(href='{{}}')&nbsp; change the payment method.
           .col-sm-6
             .splitbox
               h3 Sent to:
-              h4 {{$ctrl.shipment.full_name}}
+              h4 {{$ctrl.shipment.customer_name}}
               p {{$ctrl.shipment.address}}
               strong Phone: {{$ctrl.shipment.phone}}
           .col-sm-6
@@ -63,11 +63,11 @@ section.ship_response
             ul
               li
                 | The shipment order will be in
-                a.summary-order(href="{{route('please update your Quelink link here')}}") Queue
+                a.summary-order(href="{{route('please update your Quelink link here')}}")&nbsp; Queue
                 |  until the items LEAVE Shoppre facility.
               li
                 | You can view your shipped packages in transit in your
-                a.summary-order(href="") History
+                a.summary-order(href="")&nbsp; History
                 | .
               li
                 | We shall let you know if we haven’t received your amount (in case of wire transfer) in 2 days. If we don’t receive your amount within 7 days from the time your parcel was ready to be shipped, you will incur a storage fee of INR 100/day from the 8th day onwards. We can only dispatch your parcel from the Shopre facility upon confirmation of the payment.

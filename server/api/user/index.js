@@ -13,6 +13,7 @@ router.get('/states', authenticate(), controller.states);
 router.post('/', authenticate(), controller.create);
 router.put('/me', authenticate(), controller.update);
 router.put('/:id', authenticate(), controller.update);
+router.put('/:id/changePassword', authenticate(), controller.updateChangePassword);
 router.get('/:id', authenticate(), controller.show);
 router.put('/:id/unread', authenticate(), controller.unread);
 router.delete('/:id', authenticate(), controller.destroy);

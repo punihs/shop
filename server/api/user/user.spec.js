@@ -189,3 +189,21 @@ describe(' POST /api/users/register', () => {
   });
 });
 
+describe(' put /api/users/646/changePassword', () => {
+  it('will create user with out reffral code', (done) => {
+    request(app)
+      .put('/api/users/646/changePassword')
+      .send({
+        old_password: 'admin1234',
+        password: 'admin1234',
+        confirm_password: 'admin1234',
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});
+

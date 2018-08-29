@@ -16,7 +16,7 @@
     .col
       .w-full.m-t-xs.text-md.text-black.text-ellipsis(ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen' ng-bind='App.userinfo.name' title='{{App.userinfo.name}}')
       .w-full.m-t-xs.text-black.text-ellipsis(ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen' ng-bind='App.userinfo.email' title='{{App.userinfo.email}}')
-      .w-full.m-t-xs: a.text-xs(ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen' href='' style='color: #5585B9;' ng-href='{{App.URLS.ACCOUNTS}}/password_change') Change Password
+      .w-full.m-t-xs: a.text-xs(ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen' href='' style='color: #5585B9;' ui-sref='accounts.passwordChange({ id: App.userinfo.id })') Change Password
   .hbox
     .col.w-full.m-t-xs
       .w-full: a.text-sm.m-l-sm(style='color: #888;' ui-sref='accounts.profile' ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen;App.fullPage = false;') My Account

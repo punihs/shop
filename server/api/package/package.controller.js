@@ -108,6 +108,7 @@ exports.create = async (req, res, next) => {
   const pkg = _.pick(req.body, allowed);
   // internal user
   pkg.created_by = req.user.id;
+  pkg.package_type = INCOMING;
 
   return Locker
     .allocation({ customerId: pkg.customer_id })

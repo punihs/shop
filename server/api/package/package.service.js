@@ -2,12 +2,13 @@ const debug = require('debug');
 const sequelize = require('sequelize');
 
 const {
-  Package, Store, User, Locker, PackageState, PackageItem, PhotoRequest, State,
+  Package, Store, User, Locker, PackageState, PackageItem, PhotoRequest,
+  State, ShipmentState, Shipment,
 } = require('../../conn/sqldb');
 
 const {
   APPS, GROUPS: { CUSTOMER, OPS },
-  // PACKAGE_STATE_IDS: { STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST },
+  SHIPMENT_STATE_IDS: { PAYMENT_FAILED, PAYMENT_REQUESTED, PAYMENT_INITIATED },
   // PHOTO_REQUEST_STATES: { COMPLETED },
 } = require('./../../config/constants');
 const BUCKETS = require('./../../config/constants/buckets');
@@ -34,7 +35,7 @@ exports.index = ({ query, params, user: actingUser }) => {
 
   switch (true) {
     case (actingUser.app_id === APPS.MEMBER && actingUser.group_id === CUSTOMER): {
-      options.attributes = ['id', 'created_at', 'weight', 'price_amount', 'store_id'];
+      options.attributes = ['id', 'created_at', 'weight', 'price_amount', 'store_id', 'content_type'];
       options.where.customer_id = actingUser.id;
       options.include = [{
         where: {},
@@ -119,7 +120,14 @@ exports.index = ({ query, params, user: actingUser }) => {
       options.include[0].where.state_id = BUCKET[bucket];
     }
   }
-
+  const stateIds = [PAYMENT_FAILED, PAYMENT_REQUESTED, PAYMENT_INITIATED];
+  const CountOptions = {
+    include: [{
+      model: ShipmentState,
+      where: { state_id: stateIds },
+    }],
+  };
+  log(JSON.stringify(CountOptions));
   // console.log('status in query: ', options.include[0].where.state_id)
   // const shipmentStateModel = { ...options.include[0] };
   // shipmentStateModel.where.state_id = BUCKET.VIEW_ALL;
@@ -144,13 +152,16 @@ exports.index = ({ query, params, user: actingUser }) => {
             group: ['state_id'],
             raw: true,
           }),
+      Shipment
+        .count(CountOptions),
     ])
-    .then(([packages, total, facets]) => ({
+    .then(([packages, total, facets, queueCount]) => ({
       packages: packages
         .map(x => (x.PackageState ? ({ ...x.toJSON(), state_id: x.PackageState.state_id }) : x)),
       total,
       facets: {
         state_id: kvmap(facets, 'state_id', 'cnt'),
       },
+      queueCount,
     }));
 };

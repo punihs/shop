@@ -21,7 +21,7 @@ exports.index = (req, res, next) => {
     attributes: [
       'id', 'name', 'email', 'mobile', 'salutation', 'first_name', 'last_name', 'phone',
       'phone_code', 'country_id', 'referred_by', 'created_at', 'virtual_address_code',
-      'profile_photo_url',
+      'profile_photo_url', 'updated_at',
     ],
     include: [{
       model: Country,
@@ -47,6 +47,7 @@ exports.index = (req, res, next) => {
 
   if (req.query.sort) {
     const [field, order] = req.query.sort.split(' ');
+    log({ field, order });
     if (field && order) {
       options.order = [[field, order]];
     }
@@ -406,5 +407,21 @@ exports.verify = async (req, res) => {
         }
       });
   }
+};
+
+exports.updateChangePassword = async (req, res, next) => { // change Password
+  if (req.body.password !== req.body.confirm_password) {
+    return res.json({ message: 'Password and confirm did not match' });
+  }
+  log('id', req.params.id);
+  log('body', JSON.stringify(req.body));
+  await User
+    .findById(req.params.id, { attributes: ['id'] })
+    .then((customer) => {
+      customer.update({ password: req.body.password })
+        .catch(next);
+    });
+
+  return res.json({ message: 'Your account password has been changed. Please login to continue.' });
 };
 

@@ -45,7 +45,7 @@ describe('debit transactions', () => {
       .then(() => User
         .findById(ABHINAV, { attributes: ['wallet_balance_amount'], raw: true })
         .then((user) => {
-          assert.equal(0, user.wallet_balance_amount, 'balance should be 50');
+          assert.equal(0, user.wallet_balance_amount, 'balance should be 0');
           done();
         }))
       .catch(err => logger.error('credit', err));

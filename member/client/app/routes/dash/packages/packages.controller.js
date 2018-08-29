@@ -24,6 +24,7 @@ class PackageLockerController {
     this.allCount = '';
     this.totalItemAmount = 0;
     this.data = {};
+    this.queueCount = '';
   }
 
   startUpload(ctrl, file) {
@@ -182,8 +183,9 @@ class PackageLockerController {
   getList() {
     this.$http
       .get('/packages', { params: { bucket: this.$stateParams.bucket } })
-      .then(({ data: { packages } }) => {
+      .then(({ data: { packages, queueCount } }) => {
         this.packages.push(...packages);
+        this.queueCount = queueCount;
       });
   }
 
@@ -264,8 +266,16 @@ class PackageLockerController {
   }
 
   createShipment() {
-    // console.log(this.packages.filter(x => x.checked).map(x => x.id));
-    const packageIds = this.packages.filter(x => x.checked).map(x => x.id);
+    const specialItems = this.packages.filter(x => x.isChecked).map(x => x.content_type);
+    if (specialItems.includes('1') && specialItems.includes('2')) {
+      this
+        .toaster
+        .pop('error', ' Packages containing special items must be chosen and shipped separately ');
+      return;
+    }
+    console.log('pkg', this.packages);
+    const packageIds = this.packages.filter(x => x.isChecked).map(x => x.id);
+    console.log({ packageIds });
     this.$state.go('dash.createShipmentRequest', { packageIds });
   }
 

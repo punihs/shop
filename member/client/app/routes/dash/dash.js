@@ -31,13 +31,13 @@ angular.module('uiGenApp')
         controllerAs: '$ctrl',
       })
       .state('dash.response', {
-        url: '/request/reponse',
+        url: '/request/:shipmentId/reponse',
         templateUrl: 'app/routes/dash/response/response.html',
         controller: 'PaymentResponse',
         controllerAs: '$ctrl',
       })
       .state('dash.shipRequestResponse', {
-        url: '/115/request/shipRequestResponse',
+        url: '/request/shipRequestResponse?shipmentId',
         templateUrl: 'app/routes/dash/response/shipRequestResponse.html',
         controller: 'ShipRequestResponse',
         controllerAs: '$ctrl',

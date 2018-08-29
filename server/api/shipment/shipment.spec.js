@@ -916,17 +916,16 @@ describe('GET /api/shipments/redirectShipment', () => {
     .then(() => PackageCharge
       .create({ id: pkg.id }))
     .then(() => Package.update({
-      package_state_id: pkg.id,
+      package_state_id: stateId,
       customer_id: 646,
       content_type: 2,
       created_at: moment().add(-19, 'days'),
-    }, { where: { id: 2 } })),
+    }, { where: { id: pkg.id } })),
   ]));
   it('will redirect to shipment creation ( test case for special items ) ', (done) => {
     request(app)
-      .get('/api/shipments/redirectShipment?packageIds=3,2')
+      .get(`/api/shipments/redirectShipment?packageIds=${pkg.id}`)
       .send({
-        package_ids: [3, 2],
         repack: 0,
         sticker: 0,
         extra_packing: 0,

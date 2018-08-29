@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('./../../app');
+
 const { Package, PackageItem } = require('../../conn/sqldb');
 const auth = require('../../../logs/credentials');
 const opsAuth = require('../../../logs/ops-credentials');
@@ -18,9 +19,26 @@ describe('GET /api/packageItem', () => {
 });
 
 describe('GET /api/packageItems/:id', () => {
-  it('get packageItem 12', (done) => {
+  let pkg = '';
+  let pkgItemId = '';
+  before(() => Promise.all([
+    Package.create({})
+      .then((pack) => {
+        pkg = pack;
+      })
+      .then(() => PackageItem
+        .create({
+          package_id: pkg.id,
+          object: '20180829.jpg',
+        }))
+      .then((pack) => {
+        pkgItemId = pack;
+      }),
+  ]));
+
+  it('get packageItem ', (done) => {
     request(app)
-      .get('/api/packageItems/12')
+      .get(`/api/packageItems/${pkgItemId.id}`)
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
       .expect(200)

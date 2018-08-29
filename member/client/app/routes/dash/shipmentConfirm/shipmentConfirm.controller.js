@@ -11,7 +11,7 @@ class shipmentConfirm {
     this.shipment = [];
     this.shipmentMeta = [];
     this.payment = [];
-    this.wallet = false;
+    this.isWalletChecked = false;
     this.$order_code = this.$location.search().order_code;
     this.status = '';
     this.message = '';
@@ -61,7 +61,7 @@ class shipmentConfirm {
         this.payment = payment;
         this.promoStatus = promoStatus;
         this.couponAmount = couponAmount;
-        this.data.default_payment_gateway = payment.payment_gateway_name;
+        this.data.pg = payment.payment_gateway_name;
         packages.forEach((x) => {
           this.totalpackagePriceAmount += x.price_amount;
         });
@@ -74,21 +74,22 @@ class shipmentConfirm {
   }
 
   walletClicked() {
-    if (this.status !== 'disabled') {
-      this.selectedGateway();
-    } else {
-      this.wallet = true;
-    }
+    this.selectedGateway();
+    // if (this.status !== 'disabled') {
+    //   this.selectedGateway();
+    // } else {
+    //   this.wallet = true;
+    // }
   }
 
   selectedGateway() {
     this.sendData = {
       shipment_id: this.shipment.id,
-      wallet: this.wallet ? 1 : 0,
-      payment_gateway_name: this.data.default_payment_gateway,
+      wallet: this.isWalletChecked ? 1 : 0,
+      payment_gateway_name: this.data.pg,
     };
     const params =
-      `&payment_gateway_name=${this.data.default_payment_gateway}&wallet=${this.sendData.wallet}`;
+      `&payment_gateway_name=${this.data.pg}&wallet=${this.sendData.wallet}`;
     this.getList(params);
   }
 
@@ -97,10 +98,11 @@ class shipmentConfirm {
       this.$http
 // eslint-disable-next-line max-len
         .put(`/redemptions/apply?order_code=${this.shipment.order_code}&coupon_code=${this.couponCode}`)
-
         .then(({ data: { message } }) => {
           this.message = message;
-          this.getList();
+          const params =
+            `&payment_gateway_name=${this.data.pg}&wallet=${this.sendData.wallet}`;
+          this.getList(params);
         })
         .catch((err) => {
           this
@@ -115,20 +117,26 @@ class shipmentConfirm {
     if (this.submitting) return null;
     this.sendData = {
       shipment_id: this.shipment.id,
-      wallet: this.wallet ? 1 : 0,
-      payment_gateway_name: this.data.default_payment_gateway,
+      wallet: this.isWalletChecked ? 1 : 0,
+      payment_gateway_name: this.data.pg,
     };
+    console.log('sendData', this.sendData);
     const method = 'put';
     return this
       .$http[method]('/shipments/finalShip', this.sendData)
       .then(({ data: encryptedData }) => {
+        console.log({encryptedData});
         this.submitting = false;
-        if (this.data.default_payment_gateway === 'card') {
+        if (this.data.pg === 'card') {
           this.$window.location = encryptedData;
-        } else if (this.data.default_payment_gateway === 'paytm') {
+        } else if (this.data.payment_gateway_name === 'paytm') {
           this.$state.go('dash.paytm', { encryptedData });
-        } else if (this.data.default_payment_gateway === 'paypal') {
+        } else if (this.data.pg === 'paypal') {
           this.$window.location = encryptedData.url;
+        } else if (this.data.pg === 'cash'
+          || this.data.pg === 'wire'
+          || this.data.pg === 'wallet') {
+          this.$state.go('dash.response', { shipmentId: this.shipment.id });
         }
       })
       .catch((err) => {

@@ -1,10 +1,11 @@
 class ShipRequestResponse {
-  constructor($http, Page, $uibModal, toaster) {
+  constructor($http, Page, $uibModal, toaster, $location) {
     this.$http = $http;
     this.Page = Page;
     this.$uibModal = $uibModal;
     this.toaster = toaster;
-    this.shipmentId = 115;
+    this.$location = $location;
+    this.shipmentId = this.$location.search().shipmentId;
     this.$onInit();
   }
 
@@ -14,7 +15,7 @@ class ShipRequestResponse {
       .then(({ data: { shipment } }) => {
         this.shipment = shipment;
       })
-      .catch(err => {
+      .catch((err) => {
         this
           .toaster
           .pop('danger', err.data.message);

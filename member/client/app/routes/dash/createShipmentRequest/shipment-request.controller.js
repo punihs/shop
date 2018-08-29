@@ -101,14 +101,14 @@ class shipmentRequestController {
           gift_wrap: false,
           gift_note: false,
           giftnote_txt: false,
-          liquid: IS_LIQUID,
+          is_liquid: IS_LIQUID,
           max_weight: 0,
           invoice_taxid: false,
           mark_personal_use: false,
           invoice_include: false,
         };
         this.IsShippingAddress = IsShippingAddress;
-        if (!IsShippingAddress && customer.Addresses === 0) {
+        if (!IsShippingAddress && customer.Addresses.length === 0) {
           this
             .toaster
             .pop('info', 'Please add the shipping address before proceed');
@@ -148,7 +148,7 @@ class shipmentRequestController {
       this
         .toaster
         .pop('error', 'Please select shipping address');
-      return null;
+      // return null;
     }
 
     if (this.submitting) return null;
@@ -166,7 +166,8 @@ class shipmentRequestController {
         this
           .toaster
           .pop('success', `#${id} Shipment Created Successfully.`, '');
-        this.$state.go('dash.shipmentConfirm', { order_code: this.pkg.order_code });
+        // this.$state.go('dash.shipmentConfirm', { order_code: this.pkg.order_code });
+        this.$state.go('dash.shipRequestResponse', { shipmentId: id });
       })
       .catch((err) => {
         this.submitting = false;

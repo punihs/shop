@@ -377,7 +377,7 @@ const getAddress = (address) => {
 
   toAddress += `, ${address.city}`;
   toAddress += `, ${address.state}`;
-  toAddress += `, ${address.country}`;
+  toAddress += `, ${address.Country.name}`;
   toAddress += ` - ${address.pincode}`;
   return toAddress;
 };
@@ -402,11 +402,12 @@ const saveShipment = ({
   userId, address, toAddress, shipping,
 }) => {
   const shipment = {};
+  log({ address });
   shipment.customer_id = userId;
-  shipment.full_name = address.first_name;
+  shipment.customer_name = `${address.first_name} ${address.last_name}`;
   shipment.address = toAddress;
   shipment.country = address.country_id;
-  shipment.phone = `+${address.code}-${address.phone}`;
+  shipment.phone = `+${address.phone_code}-${address.phone}`;
   shipment.packages_count = shipping.count;
   shipment.weight = shipping.weight;
   shipment.final_weight = shipping.weight;
@@ -431,13 +432,14 @@ const saveShipment = ({
 };
 
 const saveShipmentMeta = ({ req, sR, packageIds }) => {
+  log({ sR });
   const meta = Object.assign({ shipment_id: sR.id }, req.body);
   meta.repacking_charge_amount = (req.body.repack === true) ? 100.00 : 0;
   meta.sticker_charge_amount = (req.body.sticker === true) ? 0 : 0;
   meta.sticker_charge_amount = 0;
 
-  if (packageIds.length) {
-    meta.consolid = '1';
+  if (packageIds.length > 1) {
+    meta.consolidation = '1';
     meta.consolidation_charge_amount = (packageIds.length - 1) * 100.00;
   }
 
@@ -446,50 +448,80 @@ const saveShipmentMeta = ({ req, sR, packageIds }) => {
 
   meta.extra_packing_charge_amount = (req.body.extra_packing === true) ? 500.00 : 0;
 
-  if (req.body.liquid === true) {
-    if (req.weight < 5) {
-      meta.body.liquid_charge_amount = 1392.40;
+  if (req.body.is_liquid === true) {
+    log('liquid true', JSON.stringify(req.body));
+    if (sR.weight < 5) {
+      meta.liquid_charge_amount = 1392.40;
     }
-    if (req.body.weight >= 5 && req.body.weight < 10
+    if (sR.weight >= 5 && req.body.weight < 10
     ) {
       meta.liquid_charge_amount = 3009.00;
     }
-    if (req.body.weight >= 10 && req.body.weight < 15
+    if (sR.weight >= 10 && req.body.weight < 15
     ) {
       meta.liquid_charge_amount = 5369.00;
     }
-    if (req.body.weight >= 15) {
+    if (sR.weight >= 15) {
       meta.liquid_charge_amount = 7729.00;
     }
   }
-  meta.proforma_taxid = req.body.invoice_taxid;
-  meta.proforma_personal = req.body.invoice_personal;
+  meta.invoice_taxid = req.body.invoice_taxid;
+  meta.mark_personal_use = req.body.mark_personal_use;
   meta.invoice_include = req.body.invoice_include;
   meta.max_weight = req.body.max_weight;
   meta.shipment_id = sR.id;
   log({ meta });
+  log('body JSON', JSON.stringify(req.body));
   return ShipmentMeta.create(meta);
 };
 
-const updateShipment = async ({ sR, shipmentMeta }) => {
-  let packageLevelCharges = sR.package_level_charges;
+const updateShipment = async ({ shipmentMeta, sR }) => {
+  let packageLevelCharges = sR.package_level_charges_amount;
+  log('SR1', (sR));
+  log('packageLevelCharges', (packageLevelCharges));
+  log('repacking_charge_amount', (shipmentMeta.repacking_charge_amount));
+  log('sticker_charge_amount', (shipmentMeta.sticker_charge_amount));
+  log('extra_packing_charge_amount', (shipmentMeta.extra_packing_charge_amount));
+  log('original_ship_box_charge__amount', (shipmentMeta.original_ship_box_charge__amount));
+  log('gift_wrap_charge_amount', (shipmentMeta.gift_wrap_charge_amount));
+  log('gift_note_charge_amount', (shipmentMeta.gift_note_charge_amount));
+  log('consolidation_charge_amount', (shipmentMeta.consolidation_charge_amount));
+  log('liquid_charge_amount', (shipmentMeta.liquid_charge_amount));
+  let totalPackageCharges = shipmentMeta.repacking_charge_amount || 0;
+  totalPackageCharges += shipmentMeta.sticker_charge_amount || 0;
+  totalPackageCharges += shipmentMeta.extra_packing_charge_amount || 0;
+  totalPackageCharges += shipmentMeta.original_ship_box_charge__amount || 0;
+  totalPackageCharges += shipmentMeta.gift_wrap_charge_amount || 0;
+  totalPackageCharges += shipmentMeta.gift_note_charge_amount || 0;
+  totalPackageCharges += shipmentMeta.consolidation_charge_amount || 0;
+  log('totalPackageCharges', (totalPackageCharges));
+  packageLevelCharges += totalPackageCharges;
 
-  packageLevelCharges += shipmentMeta.repacking_charge_amount + shipmentMeta.sticker_charge_amount
-    + shipmentMeta.extra_packing_charge_amount +
-    shipmentMeta.original_ship_box_charge__amount + shipmentMeta.gift_wrap_charge_amount
-    + shipmentMeta.gift_note_charge_amount + shipmentMeta.consolidation_charge_amount;
-
-  packageLevelCharges += shipmentMeta.liquid_charge_amount;
+  packageLevelCharges += shipmentMeta.liquid_charge_amount || 0;
+  log('shipmentMeta.liquid_charge_amount end', (shipmentMeta.liquid_charge_amount));
 
   const updateShip = await Shipment.findById(sR.id);
+  const shipmentUpdate = [];
 
-  let { estimated } = updateShip;
-  estimated -= sR.package_level_charges;
-  estimated += packageLevelCharges;
+  let estimatedAmount = updateShip.estimated_amount;
+  estimatedAmount -= sR.package_level_charges_amount;
+  estimatedAmount += packageLevelCharges;
+  log({ estimatedAmount });
 
-  updateShip.packageLevelCharges = packageLevelCharges;
-  updateShip.estimated = estimated;
-  return sR.update(updateShip);
+  log('sR.package_level_charges_amount', (sR.package_level_charges_amount));
+
+  shipmentUpdate.package_level_charges_amount = packageLevelCharges;
+  log('packageLevelCharges123', (packageLevelCharges));
+  shipmentUpdate.estimated_amount = estimatedAmount;
+  log('updateShip', JSON.stringify(updateShip));
+  const shipdata = await Shipment.find({ where: { id: sR.id } });
+  log('shipdata', JSON.stringify(shipdata));
+  // return sR.update(updateShip);
+  Shipment.update({
+    package_level_charges_amount: shipmentUpdate.package_level_charges_amount,
+    estimated_amount: shipmentUpdate.estimated_amount,
+  }, { where: { id: sR.id } });
+  return Shipment.findById(sR.id);
 };
 
 const updatePackages = (shipmentId, packageIds, actingUser) => {
@@ -517,20 +549,30 @@ exports.create = async (req, res, next) => {
 
     if (!packages.length) return res.status(400).json({ message: 'No Packages Found.' });
     log('addressid', req.body.address_id);
-    const address = await Address.findById(req.body.address_id);
+    const optionsAddress = {
+      attributes: ['salutation', 'first_name', 'last_name', 'line1', 'line2', 'state',
+        'city', 'pincode', 'phone_code', 'phone', 'email', 'country_id'],
+      where: { id: req.body.address_id },
+      include: [{
+        model: Country,
+        attributes: ['name'],
+      }],
+    };
+    const address = await Address.find(optionsAddress);
 
     const toAddress = await getAddress(address);
 
     const shipping = await getEstimation(packageIds, address.country_id, userId);
-    log({ shipping });
+    log('shipping', JSON.stringify(shipping));
     const sR = await saveShipment({
       userId, address, toAddress, shipping,
     });
-
+    log('sR saveShipment', JSON.stringify(sR));
     const shipmentMeta = await saveShipmentMeta({ req, sR, packageIds });
-
+    log('shipmentMeta saveShipmentMeta', JSON.stringify(shipmentMeta));
     const updateShip = await updateShipment({ shipmentMeta, sR });
     log('packageIds', packageIds);
+    log('updateShip123', updateShip);
     log('sR', sR.id);
     updatePackages(sR.id, packageIds, req.user);
 
@@ -766,6 +808,7 @@ exports.finalShipRequest = async (req, res) => {
     attributes: ['points', 'customer_Id'],
     where: { customer_Id: customerId },
   };
+
   const points = await LoyaltyPoint
     .find(options);
 
@@ -814,7 +857,7 @@ exports.finalShipRequest = async (req, res) => {
         // coupon_name = couponAppliedStatus.coupon_code;
       } else if (promo.discount_percentage) {
         const estimatedAmount = shipment.estimated_amount -
-          shipment.package_level_charges - payment.wallet;
+          shipment.package_level_charges_amount - payment.wallet;
         payment.coupon = estimatedAmount * (promo.discount_percentage / 100);
         // coupon_name = couponAppliedStatus.coupon_code;
         // promo_status = 'discount_success';
@@ -932,8 +975,8 @@ exports.finalShipRequest = async (req, res) => {
   }
   const shipments = await Shipment
     .update(shipmentSave, { where: { id: shipRequestId } });
-
-  if (shipmentSave.wallet !== 0) {
+  log('shipmentSave.wallet_amount', shipmentSave.wallet_amount);
+  if (shipmentSave.wallet_amount !== 0) {
     log('customer.transaction1', customer.wallet_balance_amount);
     await walletTransaction(shipment.wallet, customer, shipment, DEBIT);
   }
@@ -1361,7 +1404,7 @@ exports.retryPayment = async (req, res) => {
 exports.confirmShipment = async (req, res) => {
   const customerId = req.user.id;
   const orderCode = req.query.order_code;
-  const customer = User
+  const customer = await User
     .findById(customerId, {
       attributes: ['id', 'wallet_balance_amount'],
     });
@@ -1429,10 +1472,18 @@ exports.confirmShipment = async (req, res) => {
   };
 
   payment.amount = shipment.estimated_amount;
-  if (customer.wallet_balance_amount < 0 || req.query.wallet === 1) {
+  log('wallet outside', customer.wallet_balance_amount);
+  log('req.query.wallet', req.query.wallet);
+  log('customer.wallet_balance_amount', customer.wallet_balance_amount);
+  log('req.query.wallet', req.query.wallet);
+  if (customer.wallet_balance_amount < 0 || req.query.wallet === '1') {
+    log('wallet123123', customer.wallet_balance_amount);
     payment.wallet = customer.wallet_balance_amount;
     payment.amount -= payment.wallet;
   }
+
+  log('wallet outside1', customer.wallet_balance_amount);
+  log('req.query.wallet1', req.query.wallet);
 
   const optionRedemption = {
     attributes: ['id', 'coupon_code'],
@@ -1616,9 +1667,8 @@ exports.createShipment = async (req, res, IsShippingAddress) => {
   // eslint-disable-next-line no-restricted-syntax
   for (pack of packages) {
     shipmentMeta.storage_amount += pack.PackageCharge.storage_amount || 0;
-    shipmentMeta.photo_amount +=
-      pack.PackageCharge.basic_photo_amount || 0
-      + pack.PackageCharge.advanced_photo_amount || 0;
+    shipmentMeta.photo_amount += pack.PackageCharge.basic_photo_amount || 0;
+    shipmentMeta.photo_amount += pack.PackageCharge.advanced_photo_amount || 0;
     shipmentMeta.pickup_amount += pack.PackageCharge.pickup_amount || 0;
     shipmentMeta.special_handling_amount += pack.PackageCharge.special_handling_amount || 0;
     shipmentMeta.receive_mail_amount += pack.PackageCharge.receive_mail_amount || 0;

@@ -11,7 +11,7 @@ module.exports = DataTypes => ({
   sticker: DataTypes.TINYINT,
 
   sticker_charge_amount: DataTypes.DOUBLE,
-  extrapack: DataTypes.TINYINT,
+  extra_packing: DataTypes.TINYINT,
   extra_packing_charge_amount: DataTypes.DOUBLE,
   original: DataTypes.TINYINT,
   original_ship_box_charge__amount: DataTypes.DOUBLE,
@@ -29,7 +29,7 @@ module.exports = DataTypes => ({
   liquid_charge_amount: DataTypes.DOUBLE,
   overweight: DataTypes.TINYINT,
   overweight_charge_amount: DataTypes.DOUBLE,
-  proforma_taxid: DataTypes.STRING,
-  proforma_personal: DataTypes.TINYINT,
+  invoice_taxid: DataTypes.STRING,
+  mark_personal_use: DataTypes.TINYINT,
   invoice_include: DataTypes.TINYINT,
 });

@@ -1,10 +1,11 @@
 class PaymentResponse {
-  constructor($http, Page, $uibModal, toaster) {
+  constructor($http, Page, $uibModal, toaster, $stateParams) {
     this.$http = $http;
     this.Page = Page;
+    this.$stateParams = $stateParams;
     this.$uibModal = $uibModal;
     this.toaster = toaster;
-    this.shipmentId = 115;
+    this.shipmentId = this.$stateParams.shipmentId;
     this.$onInit();
   }
 
