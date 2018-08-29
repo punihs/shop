@@ -4,7 +4,18 @@
       .row
         .col-md-7
           .div-border-create
-            h2.m-n.alert.alert-info 1. DELIVERY ADDRESS </br>
+            h2.m-n.alert.alert-info 1. DELIVERY ADDRESS
+              span
+                i.fa.fa-info-circle.m-l-xs(
+                uib-popover='Please take extra care to make sure that you have entered the correct address while making an International Shipment. T' +
+                "he courier will charge an additional fee (between INR 3000 to INR 7000) to your Shoppre account if you " +
+                "update your address after the shipment has left our facility. Many couriers charge this fee after delivery, " +
+                "so you may see it charged to your account post-shipment."
+                popover-trigger="'mouseenter'"
+                popover-placement='right'
+                popover-append-to-body='true'
+                )
+            </br>
             p.div-list {{$ctrl.shipment.customer_name}} </br>
               | {{$ctrl.shipment.address}} </br>
               | PH {{$ctrl.shipment.phone}}
@@ -38,10 +49,8 @@
                       td.footable-visible
                         a(ui-sref='package.show({ id: package.id })' ng-bind='package.Store.name')
                       td.footable-visible(ng-bind='package.reference_code')
-                      td.footable-visible(
-                      ng-bind='package.price_amount'
-                      )
-                      td.footable-visible(ng-bind='package.weight')
+                      td.footable-visible ₹{{package.price_amount}}
+                      td.footable-visible {{package.weight}} KG
                     tr.footable-even(style='display: table-row;')
                       td.footable-visible(colspan='5' ng-if='$ctrl.MoreOption[$index]')
                         p(ng-if='$ctrl.standard_photo_check==="yes" || $ctrl.advc_photo_check==="yes"')
@@ -57,8 +66,8 @@
                             tr.odd(role='row')
                               td.sorting_1 {{item.name}}
                               td {{item.quantity}}
-                              td {{item.price_amount}}
-                              td {{item.price_amount * item.quantity}}
+                              td ₹{{item.price_amount}}
+                              td ₹{{item.price_amount * item.quantity}}
                   tr.footable-even.table-footer
                     td.footable-visible.footable-first-column
                     td.footable-visible
@@ -122,8 +131,21 @@
                       span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.value_amount}}
                   li
                     p
-                      | weight
+                      | Total Weight
                       span.totalvalue.pull-right {{$ctrl.shipment.weight}} KG
+                      span(
+                      uib-popover = 'All International carriers base their billable shipping rates on the greater of Actual Weight and Dimensional Weight.'+
+                      'Actual weight is the weight of the package when put on a scale.'+
+                      'Dimensional weight is based on the size of the package. It is calculated by multiplying the dimensions of the item.'+
+                      'For International Shipments:'+
+                      'Dimensional Weight = Length x Width x Height (in cm) / 5000' +
+                      'For Domestic Shipments:' +
+                      'Dimensional Weight = Length x Width x Height (in cm) / 4000'
+                      popover-trigger="'mouseenter'"
+                      popover-placement='right'
+                      popover-append-to-body='true'
+                      )
+                        i.m-l.fa.fa-info-circle
                   li
                     p
                       | Packages Count
@@ -137,6 +159,13 @@
                     p
                       | Shipping Discount
                       span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.discount_amount}}
+                      span(
+                      uib-popover = 'Apart from Country-based shipping discounts, Additional discounts may apply to Shoppre Membership Partners and to Shoppre Loyalty Members (Gold and above).'
+                      popover-trigger="'mouseenter'"
+                      popover-placement='right'
+                      popover-append-to-body='true'
+                      )
+                        i.m-l.fa.fa-info-circle
                   li(ng-if="$ctrl.wallet === 1  || $ctrl.payment.wallet < 0")
                     p
                       | Shoppre Wallet
@@ -245,12 +274,33 @@
                   p
                     | Package Level Charges
                     span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.package_level_charges_Amount}}
+                    span(
+                    uib-popover = 'Shoppre includes all of the service charges (apart from shipping charges) under Package Level Charges. The break-up is as shown above.'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
+                    )
+                      i.m-l.fa.fa-info-circle
                   p
                     | Coupon Discount
                     span.fa.fa-rupee.totalvalue.pull-right (-) {{$ctrl.payment.coupon}}
+                    span(
+                    uib-popover = 'This Discount is applicable on Basic Shipping Costs only.'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
+                    )
+                      i.m-l.fa.fa-info-circle
                   p
                     | Loyalty Rewards
                     span.fa.fa-rupee.totalvalue.pull-right (-) {{$ctrl.payment.loyalty}}
+                    span(
+                    uib-popover = 'For every 1,000 Shoppre Loyalty Points you earn, a credit of INR 100 will automatically be applied to your next shipment'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
+                    )
+                      i.m-l.fa.fa-info-circle
                   p(ng-if="$ctrl.shipment.payment_gateway_fee")
                     | Payment Gateway (PG) Fee:
                     span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.payment.payment_gateway_fee}}

@@ -6,12 +6,13 @@
           .div-border-create
             h2.m-n.alert.alert-info 1. DELIVERY ADDRESS
               span(
-              uib-tooltip = "Please take extra care to make sure that you have entered the correct address while making an International Shipment. T" +
+              uib-popover = "Please take extra care to make sure that you have entered the correct address while making an International Shipment. T" +
               "he courier will charge an additional fee (between INR 3000 to INR 7000) to your Shoppre account if you " +
               "update your address after the shipment has left our facility. Many couriers charge this fee after delivery, " +
               "so you may see it charged to your account post-shipment."
-              tooltip-placement='right'
-              tooltip-append-to-body='true'
+              popover-trigger="'mouseenter'"
+              popover-placement='right'
+              popover-append-to-body='true'
               )
                i.m-l.fa.fa-info-circle
             .col-md-8.col-lg-8.radioBox(ng-repeat='item in $ctrl.customer.Addresses')
@@ -61,10 +62,8 @@
                           td.footable-visible
                             a(ui-sref='package.show({ id: package.id })' ng-bind='shipment.Store.name')
                           td.footable-visible(ng-bind='shipment.reference_code')
-                          td.footable-visible(
-                          ng-bind='shipment.price_amount'
-                          )
-                          td.footable-visible(ng-bind='shipment.weight')
+                          td.footable-visible ₹{{shipment.price_amount}}
+                          td.footable-visible {{shipment.weight}} KG
                         tr.footable-even(style='display: table-row;')
                           td.footable-visible(colspan='5' ng-if='$ctrl.MoreOption[$index]')
                             p(ng-if='$ctrl.standard_photo_check==="yes" || $ctrl.advc_photo_check==="yes"')
@@ -81,8 +80,8 @@
                                 tr.odd(role='row')
                                   td.sorting_1 {{item.name}}
                                   td {{item.quantity}}
-                                  td {{item.price_amount}}
-                                  td {{item.price_amount * item.quantity}}
+                                  td ₹{{item.price_amount}}
+                                  td ₹{{item.price_amount * item.quantity}}
                       tr.footable-even.table-footer
                         td.footable-visible.footable-first-column
                         td.footable-visible
@@ -90,7 +89,7 @@
                         td.footable-visible ₹{{$ctrl.totalpackagePriceAmount}}
                         td.footable-visible Final Weight of Shipment to be calculated
                           span(
-                          uib-tooltip = "All International carriers base their billable shipping rates"+
+                          uib-popover = "All International carriers base their billable shipping rates"+
                           "on the greater of Actual Weight and Dimensional Weight."+
                           "Actual weight is the weight of the package when put on a"+
                           "scale."+
@@ -100,8 +99,9 @@
                           "Dimensional Weight = Length x Width x Height (in cm) / 5000"+
                           "For Domestic Shipments:"+
                           "Dimensional Weight = Length x Width x Height (in cm) / 4000"
-                          tooltip-placement='right'
-                          tooltip-append-to-body='true'
+                          popover-trigger="'mouseenter'"
+                          popover-placement='right'
+                          popover-append-to-body='true'
                           )
                             i.m-l.fa.fa-info-circle
                         td.footable-visible
@@ -127,12 +127,13 @@
             span.badge.pull-right.bg-success {{$ctrl.customer.wallet_balance_amount}}
             |     Shoppre Wallet
             span(
-            uib-tooltip = 'Shoppre can add or deduct cash from your Shoppre Wallet depending on the situation.'+
+            uib-popover = 'Shoppre can add or deduct cash from your Shoppre Wallet depending on the situation.'+
             'For eg: Your Personal Shopper balance will be settled here in your Shoppre Wallet.'+
             'If the amount is positive, it means that you own this much cash, and this amount will be deducted from the final charges.'+
             'If the amount is negative, it means that this amount will be added to the final charges.'
-            tooltip-placement='right'
-            tooltip-append-to-body='true'
+            popover-trigger="'mouseenter'"
+            popover-placement='right'
+            popover-append-to-body='true'
             )
               i.m-l.fa.fa-info-circle
           .panel.panel-info.m-t-md
@@ -250,9 +251,10 @@
                     i(ng-if='$ctrl.shipmentMeta.operationsAmount === 0')
                       span.badge.pull-right.bg-success 00
                     span(
-                    uib-tooltip = "(includes the above mentioned charges)"
-                    tooltip-placement='right'
-                    tooltip-append-to-body='true'
+                    uib-popover = "(includes the above mentioned charges)"
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
                     )
                         i.m-l.fa.fa-info-circle
                   li
@@ -262,9 +264,10 @@
                     i(ng-if='$ctrl.shipmentMeta.storage_amount === 0')
                       span.badge.pull-right.bg-success 00
                     span(
-                    uib-tooltip = "Shoppre offers FREE storage up to 20 days*. Packages stored past the free storage period will incur storage fees of INR 100/day from the 21st Day. Storage fees continue to accrue until your package is  shipped, picked-up,  discarded or returned to the sender. *No. of days may be more for Membership Partners, and Loyalty Members (Silver and above)."
-                    tooltip-placement='right'
-                    tooltip-append-to-body='true'
+                    uib-popover = "Shoppre offers FREE storage up to 20 days*. Packages stored past the free storage period will incur storage fees of INR 100/day from the 21st Day. Storage fees continue to accrue until your package is  shipped, picked-up,  discarded or returned to the sender. *No. of days may be more for Membership Partners, and Loyalty Members (Silver and above)."
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
                     )
                       i.m-l.fa.fa-info-circle
                   li
@@ -274,11 +277,12 @@
                     i(ng-if='$ctrl.shipmentMeta.photo_amount === 0')
                       span.badge.pull-right.bg-success 00
                     span(
-                    uib-tooltip = 'Basic Photos: We take upto 5 Basic photographs of all your items for a cost of INR 50*.'+
+                    uib-popover = 'Basic Photos: We take upto 5 Basic photographs of all your items for a cost of INR 50*.'+
                     'Additional Photos: You can also request upto 10 additional photos (incase you want some more details or if you want to inspect if the items are not damaged) for a cost of INR 500.'+
                     '*Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).'
-                    tooltip-placement='right'
-                    tooltip-append-to-body='true'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
                     )
                       i.m-l.fa.fa-info-circle
                   li
@@ -287,14 +291,14 @@
                       span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.consolidation_charge_amount}}
                     i(ng-if='$ctrl.shipmentMeta.consolidation_charge_amount === 0')
                       span.badge.pull-right.bg-success 00
-                      i.fa.fa-info-circle.m-l-xs(
+                    i.fa.fa-info-circle.m-l-xs(
 
-                      uib-popover='Shoppre charges a small fee of INR 100 per package (not per item) that you add to the parcel (when you have two or more packages to consolidate).' +
-                      '*Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).'
-                      popover-trigger="'mouseenter'"
-                      popover-placement='top'
-                      popover-append-to-body='true'
-                      )
+                    uib-popover='Shoppre charges a small fee of INR 100 per package (not per item) that you add to the parcel (when you have two or more packages to consolidate).' +
+                    '*Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
                   li
                     | Pick-up Service
                     i(ng-if='$ctrl.shipmentMeta.pickup_amount > 0')

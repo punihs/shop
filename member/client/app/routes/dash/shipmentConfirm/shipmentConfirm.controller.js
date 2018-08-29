@@ -19,6 +19,7 @@ class shipmentConfirm {
     this.couponAmount = '';
     this.couponCode = '';
     this.standard_photo_check = 'yes';
+    this.totalpackagePriceAmount = 0;
     this.advc_photo_check = 0;
     this.paymentGateway = [];
     this.data = {};
@@ -61,6 +62,9 @@ class shipmentConfirm {
         this.promoStatus = promoStatus;
         this.couponAmount = couponAmount;
         this.data.default_payment_gateway = payment.payment_gateway_name;
+        packages.forEach((x) => {
+          this.totalpackagePriceAmount += x.price_amount;
+        });
       })
       .catch((err) => {
         this
