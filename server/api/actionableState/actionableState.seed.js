@@ -84,7 +84,7 @@ const packageStates = ({
   group_id: OPS,
   child_id: 2,
 }, {
-  state_id: 1,
+  state_id: 2,
   group_id: OPS,
   child_id: 3,
 }, {
@@ -95,6 +95,10 @@ const packageStates = ({
   state_id: 4,
   group_id: OPS,
   child_id: 5,
+}, {
+  state_id: 3,
+  group_id: MEMBER,
+  child_id: 4,
 }, {
   state_id: 5,
   group_id: BOT,
@@ -151,6 +155,14 @@ const packageStates = ({
   state_id: 12,
   group_id: OPS,
   child_id: 5,
+}, {
+  state_id: 2,
+  group_id: OPS,
+  child_id: 54,
+}, {
+  state_id: 54,
+  group_id: MEMBER,
+  child_id: 4,
 }].map(x => ({ ...x, type: PACKAGE }));
 
 const shipmentStates = ({

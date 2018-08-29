@@ -1,11 +1,15 @@
 
 class AddAddressController {
   /*  @ngInject   */
-  constructor($uibModalInstance, $http, Session, $stateParams) {
+  constructor($uibModalInstance, $http, Session, $stateParams, addressId, type, toaster) {
     this.$uibModalInstance = $uibModalInstance;
     this.$http = $http;
     this.$stateParams = $stateParams;
+    this.toaster = toaster;
     this.Session = Session;
+    this.addressId = addressId;
+    this.type = type;
+    this.$onInit();
   }
 
   $onInit() {
@@ -43,8 +47,20 @@ class AddAddressController {
       noResults: false,
       loadingCountry: false,
     };
+    if (this.type === 'edit') {
+      this.getAddress(this.addressId);
+    }
   }
 
+  getAddress() {
+    this
+      .$http
+      .get(`/addresses/${this.addressId}`)
+      .then(({ data: address }) => {
+        this.data = address;
+        this.Country.model = address.Country.name;
+      });
+  }
   create(newAddressForm) {
     if (this.submitting) return null;
     this.submitting = true;
@@ -55,17 +71,15 @@ class AddAddressController {
     const data = Object.assign({ }, this.data);
     if (!form) return (this.submitting = false);
 
-    const { id } = this.$stateParams;
+    const id = this.addressId;
     return this.$http[id ? 'put' : 'post'](`/addresses${id ? `/${id}` : ''}`, data)
       .then(({ data: { id: aid } }) => {
         this.submitting = false;
-        this.$uibModalInstance.close(Object.assign(data, { id: aid }));
-
         this
           .toaster
-          .pop('success', `${data.city} Shipping Address Created Successfully.`, '');
-
-        return this.$state.go('accounts.address-list');
+          .pop('success', `${data.city} Shipping Address ${this.type} Successfull.`, '');
+        this.$uibModalInstance.close(Object.assign(data, { id: aid }));
+        // return this.$state.go('accounts.address-list');
       })
       .catch((err) => {
         this.submitting = false;
@@ -100,7 +114,7 @@ class AddAddress {
     this.Session = Session;
   }
 
-  open(customerId) {
+  open(addressId, type) {
     return this.$uibModal.open({
       templateUrl: 'app/directives/address/address.html',
       controller: AddAddressController,
@@ -108,7 +122,8 @@ class AddAddress {
       bindToController: 'true',
       size: 'md',
       resolve: {
-        customerId: () => customerId,
+        addressId: () => addressId,
+        type: () => type,
       },
     });
   }

@@ -51,6 +51,7 @@ exports.show = (req, res, next) => {
 
   if (req.user.group_id === CUSTOMER) {
     options.where.customer_id = req.user.id;
+    options.where.id = req.params.id;
   }
 
   return Address
@@ -94,6 +95,9 @@ exports.create = (req, res, next) => {
 
 exports.update = async (req, res) => {
   const { id } = req.params;
+  if (req.body.is_default) {
+    await Address.update({ is_default: false }, { where: { customer_id: req.user.id } });
+  }
   const status = await Address.update(_.omit(req.body, ['customer_id']), { where: { id } });
   return res.json(status);
 };

@@ -24,18 +24,33 @@ class shipmentRequestController {
     this.IsShippingAddress = false;
     this.$onInit();
   }
+
   $onInit() {
     this.Page.setTitle('Shipment Request Create');
     this.getList();
   }
 
-  open(id) {
-    const modal = this.AddAddress.open(id);
+  open() {
+    const modal = this.AddAddress.open(0, 'add');
     modal
       .result
       .then((data) => {
         this.IsShippingAddress = true;
         if (data.is_default === true) {
+          this.data.address_id = data.id;
+        }
+        this.customer.Addresses.push(data);
+      });
+  }
+
+  EditAddress(addressId) {
+    const modal = this.AddAddress.open(addressId, 'edit');
+    modal
+      .result
+      .then((data) => {
+        this.IsShippingAddress = true;
+        if (data.is_default === true) {
+          // data.id = addressId;
           this.data.address_id = data.id;
         }
         this.customer.Addresses.push(data);

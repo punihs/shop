@@ -9,7 +9,7 @@ const {
 } = require('../../config/constants');
 
 const {
-  Package,
+  Package, PackageCharge,
 } = require('../../conn/sqldb');
 
 
@@ -123,18 +123,19 @@ describe('DELETE /api/packages/1', () => {
       });
   });
 });
-describe('www: GET /api/packages/count ', () => {
-  it('return packages', (done) => {
-    request(app)
-      .get('/api/packages/count')
-      .set('Authorization', `Bearer ${wwwAuth.access_token}`)
-      .expect('Content-Type', /json/)
-      .expect(200)
-      .then(() => {
-        done();
-      });
-  });
-});
+
+// describe('www: GET /api/packages/count ', () => {
+//   it('return packages', (done) => {
+//     request(app)
+//       .get('/api/packages/count')
+//       .set('Authorization', `Bearer ${wwwAuth.access_token}`)
+//       .expect('Content-Type', /json/)
+//       .expect(200)
+//       .then(() => {
+//         done();
+//       });
+//   });
+// });
 
 describe('Destroy /api/package', () => {
   let pkg;
@@ -156,3 +157,39 @@ describe('Destroy /api/package', () => {
       });
   });
 });
+
+
+describe('PUT /api/packages/1/charges update charges', () => {
+  let pkg;
+  before((done) => {
+    Package.create({}).then((pack) => {
+      pkg = pack;
+      done();
+    });
+  });
+
+  it('PUT invoice', (done) => {
+    request(app)
+      .put(`/api/packages/${pkg.id}/invoice`)
+      .send({
+        invoice: '2018/7/71158866-3c30-4dcc-91d9-93c1b71e5f21.png',
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+
+  after((done) => {
+    PackageCharge
+      .destroy({ force: true, where: { id: pkg.id } })
+      .then(() => pkg
+        .destroy({ force: true })
+        .then(() => {
+          done();
+        }));
+  });
+});
+

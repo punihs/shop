@@ -717,7 +717,7 @@ describe('PUT /api/shipments/retryPayment?order_code=620-620-7220', () => {
       .put('/api/shipments/retryPayment?order_code=620-620-7220')
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
-      .expect(200)
+      .expect(400)
       .then(() => {
         done();
       });
@@ -726,6 +726,8 @@ describe('PUT /api/shipments/retryPayment?order_code=620-620-7220', () => {
 
 
 describe('GET /api/shipments/redirectShipment', () => {
+  let pkg = '';
+  let stateId = '';
   before(() => Promise.all([Address
     .create({
       salutation: MR,
@@ -738,22 +740,28 @@ describe('GET /api/shipments/redirectShipment', () => {
       customer_id: 646,
       is_default: true,
     })
-    .then(() => PackageState
+    .then(() => Package.create({}).then((pack) => {
+      pkg = pack;
+    }))
+    .then(() => stateId = PackageState
       .create({
-        id: 100,
-        package_id: 2,
+        package_id: pkg.id,
         state_id: 5,
         user_id: 646,
         comments: 'testing',
         status: true,
+      }).then((packageState) => {
+        stateId = packageState.id;
       }))
-    .then(() => Package.update({ package_state_id: 100, customer_id: 646 }, { where: { id: 2 } })),
+    .then(() => PackageCharge
+      .create({ id: pkg.id }))
+    .then(() => Package
+      .update({ package_state_id: stateId, customer_id: 646 }, { where: { id: pkg.id } })),
   ]));
   it('will redirect to shipment creation ( test case selected packages for shipment )', (done) => {
     request(app)
-      .get('/api/shipments/redirectShipment?packageIds=3,2')
+      .get(`/api/shipments/redirectShipment?packageIds=${pkg.id}`)
       .send({
-        package_ids: [3, 2],
         repack: 0,
         sticker: 0,
         extra_packing: 0,
@@ -774,11 +782,11 @@ describe('GET /api/shipments/redirectShipment', () => {
   after(() => Address
     .destroy({ force: true, where: { customer_id: 646 } })
     .then(() => PackageCharge
-      .destroy({ force: true, where: { id: 100 } }))
+      .destroy({ force: true, where: { id: pkg.id } }))
     .then(() => Package
-      .update({ package_state_id: 1 }, { where: { id: 2 } }))
+      .destroy({ force: true, where: { id: pkg.id } }))
     .then(() => PackageState
-      .destroy({ force: true, where: { package_id: 2 } })));
+      .destroy({ force: true, where: { package_id: pkg.id } })));
 });
 
 describe('GET /api/shipments/redirectShipment?packageIds=365214', () => {
@@ -807,6 +815,8 @@ describe('GET /api/shipments/redirectShipment?packageIds=365214', () => {
 
 
 describe('GET /api/shipments/redirectShipment', () => {
+  let pkg = '';
+  let stateId = '';
   before(() => Promise.all([Address
     .create({
       salutation: MR,
@@ -819,26 +829,31 @@ describe('GET /api/shipments/redirectShipment', () => {
       customer_id: 646,
       is_default: true,
     })
-    .then(() => PackageState
+    .then(() => Package.create({}).then((pack) => {
+      pkg = pack;
+    }))
+    .then(() => stateId = PackageState
       .create({
-        id: 100,
-        package_id: 2,
+        package_id: pkg.id,
         state_id: 5,
         user_id: 646,
         comments: 'testing',
         status: true,
+      }).then((packageState) => {
+        stateId = packageState.id;
       }))
+    .then(() => PackageCharge
+      .create({ id: pkg.id }))
     .then(() => Package.update({
-      package_state_id: 100,
+      package_state_id: stateId,
       customer_id: 646,
       created_at: moment().add(-25, 'days'),
-    }, { where: { id: 2 } })),
+    }, { where: { id: pkg.id } })),
   ]));
   it('will redirect to shipment creation  ( test case locker number of days expiry ) ', (done) => {
     request(app)
-      .get('/api/shipments/redirectShipment?packageIds=2')
+      .get(`/api/shipments/redirectShipment?packageIds=${pkg.id}`)
       .send({
-        package_ids: [2],
         repack: 0,
         sticker: 0,
         extra_packing: 0,
@@ -856,21 +871,23 @@ describe('GET /api/shipments/redirectShipment', () => {
       });
   });
 
-  after(() => Address
-    .destroy({ force: true, where: { customer_id: 646 } })
-    .then(() => PackageCharge
-      .destroy({ force: true, where: { id: 100 } }))
-    .then(() => Package
-      .update({
-        package_state_id: 1,
-        created_at: moment().add(25, 'days'),
-      }, { where: { id: 2 } }))
-    .then(() => PackageState
-      .destroy({ force: true, where: { package_id: 2 } })));
+  // after(() => Address
+  //   .destroy({ force: true, where: { customer_id: 646 } })
+  //   .then(() => PackageCharge
+  //     .destroy({ force: true, where: { id: 100 } }))
+  //   .then(() => Package
+  //     .update({
+  //       package_state_id: 1,
+  //       created_at: moment().add(25, 'days'),
+  //     }, { where: { id: 2 } }))
+  //   .then(() => PackageState
+  //     .destroy({ force: true, where: { package_id: 2 } })));
 });
 
 
 describe('GET /api/shipments/redirectShipment', () => {
+  let pkg = '';
+  let stateId = '';
   before(() => Promise.all([Address
     .create({
       salutation: MR,
@@ -883,24 +900,27 @@ describe('GET /api/shipments/redirectShipment', () => {
       customer_id: 646,
       is_default: true,
     })
-    .then(() => PackageState
+    .then(() => Package.create({}).then((pack) => {
+      pkg = pack;
+    }))
+    .then(() => stateId = PackageState
       .create({
-        id: 100,
-        package_id: 2,
+        package_id: pkg.id,
         state_id: 5,
         user_id: 646,
         comments: 'testing',
         status: true,
+      }).then((packageState) => {
+        stateId = packageState.id;
       }))
+    .then(() => PackageCharge
+      .create({ id: pkg.id }))
     .then(() => Package.update({
-      package_state_id: 100,
+      package_state_id: pkg.id,
       customer_id: 646,
       content_type: 2,
       created_at: moment().add(-19, 'days'),
-    }, { where: { id: 2 } }))
-    .then(() => PackageState.update({
-      state_id: 5,
-    }, { where: { id: 1 } })),
+    }, { where: { id: 2 } })),
   ]));
   it('will redirect to shipment creation ( test case for special items ) ', (done) => {
     request(app)
@@ -1057,10 +1077,16 @@ describe('GET /api/shipments/115/request/shipRequestResponse', () => {
   });
 });
 
-describe('GET /api/shipments/115/request/response', () => {
+describe('GET /api/shipments/:id/request/response', () => {
+  let pkg = '';
+  before(() => Promise.all([Shipment
+    .create({ customer_id: 646, payment_gateway_id: 1 }).then((pack) => {
+      pkg = pack;
+    }),
+  ]));
   it('shipRequest Response', (done) => {
     request(app)
-      .get('/api/shipments/115/request/response')
+      .get(`/api/shipments/${pkg.id}/request/response`)
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
       .expect(200)

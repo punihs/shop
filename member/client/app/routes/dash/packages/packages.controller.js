@@ -1,8 +1,9 @@
 class PackageLockerController {
-  constructor($http, Page, $uibModal, $stateParams, CONFIG, $location, $state, Session,
+  constructor($http, Page, $uibModal, $stateParams, CONFIG, $location, $state, Session, S3,
               toaster, moment) {
     this.$http = $http;
     this.Page = Page;
+    this.S3 = S3;
     this.$uibModal = $uibModal;
     this.$stateParams = $stateParams;
     this.$state = $state;
@@ -20,6 +21,11 @@ class PackageLockerController {
     this.actionRequiredCount = '';
     this.allCount = '';
     this.totalItemAmount = 0;
+    this.data = {};
+  }
+
+  startUpload(ctrl, file) {
+    ctrl.S3.upload(file, ctrl.data, ctrl);
   }
 
   $onInit() {
@@ -116,8 +122,7 @@ class PackageLockerController {
     const itemValues = this.packages[index].PackageItems;
     this.$http
       .put(`/packageItems/${id}/values`, itemValues)
-      .then(({ data: { packages } }) => {
-        console.log(packages);
+      .then(() => {
       });
     if (this.$stateParams.bucket === 'ACTION_REQUIRED') {
       this
@@ -149,6 +154,18 @@ class PackageLockerController {
       .then(({ data: { packages } }) => {
         this.packages.push(...packages);
       });
+  }
+
+  submitInvoice(id) {
+    this.$http
+      .put(`/packages/${id}/invoice`, { object: this.data.object })
+      .then(({ data: { message } }) => {
+        this
+          .toaster
+          .pop('sucess', message);
+      });
+    this.packages = [];
+    this.getList();
   }
 
 

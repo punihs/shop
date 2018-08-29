@@ -2,13 +2,13 @@ const debug = require('debug');
 const sequelize = require('sequelize');
 
 const {
-  Package, Store, User, Locker, PackageState, PackageItem, PhotoRequest,
+  Package, Store, User, Locker, PackageState, PackageItem, PhotoRequest, State,
 } = require('../../conn/sqldb');
 
 const {
   APPS, GROUPS: { CUSTOMER, OPS },
-  PACKAGE_STATE_IDS: { STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST },
-  PHOTO_REQUEST_STATES: { COMPLETED },
+  // PACKAGE_STATE_IDS: { STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST },
+  // PHOTO_REQUEST_STATES: { COMPLETED },
 } = require('./../../config/constants');
 const BUCKETS = require('./../../config/constants/buckets');
 
@@ -40,12 +40,20 @@ exports.index = ({ query, params, user: actingUser }) => {
         where: {},
         model: PackageState,
         attributes: ['id', 'state_id'],
+        include: [{
+          model: State,
+          attributes: ['id', 'name'],
+        }],
       }, {
         model: PackageItem,
         attributes: ['id', 'name', 'price_amount', 'quantity', 'total_amount'],
       }, {
         model: Store,
         attributes: ['id', 'name'],
+      }, {
+        model: PhotoRequest,
+        attributes: ['id', 'status'],
+        // where: { status: COMPLETED },
       }];
       break;
     }
@@ -136,27 +144,13 @@ exports.index = ({ query, params, user: actingUser }) => {
             group: ['state_id'],
             raw: true,
           }),
-      Package
-        .findAll({
-          attributes: ['id'],
-          include: [{
-            model: PackageState,
-            attributes: ['comments', 'id'],
-            where: { state_id: [STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST] },
-          }, {
-            model: PhotoRequest,
-            attributes: ['id'],
-            where: { status: COMPLETED },
-          }],
-        }),
     ])
-    .then(([packages, total, facets, photoRequests]) => ({
+    .then(([packages, total, facets]) => ({
       packages: packages
         .map(x => (x.PackageState ? ({ ...x.toJSON(), state_id: x.PackageState.state_id }) : x)),
       total,
       facets: {
         state_id: kvmap(facets, 'state_id', 'cnt'),
       },
-      photoRequests,
     }));
 };

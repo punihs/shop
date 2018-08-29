@@ -1,4 +1,4 @@
-class ShipRequestResponse {
+class PaymentResponse {
   constructor($http, Page, $uibModal, toaster) {
     this.$http = $http;
     this.Page = Page;
@@ -10,8 +10,9 @@ class ShipRequestResponse {
 
   $onInit() {
     this.$http
-      .get(`/shipments/${this.shipmentId}/request/shipRequestResponse`)
+      .get(`/shipments/${this.shipmentId}/request/response`)
       .then(({ data: { shipment } }) => {
+        // alert(shipment.PaymentGateway.value);
         this.shipment = shipment;
       })
       .catch(err => {
@@ -23,4 +24,4 @@ class ShipRequestResponse {
 }
 angular
   .module('uiGenApp')
-  .controller('ShipRequestResponse', ShipRequestResponse);
+  .controller('PaymentResponse', PaymentResponse);

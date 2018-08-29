@@ -18,7 +18,7 @@ const {
     READY_TO_SHIP,
     PACKAGE_ITEMS_UPLOAD_PENDING,
     STANDARD_PHOTO_REQUEST,
-    ADVANCED_PHOTO_REQUEST,
+    ADVANCED_PHOTO_REQUEST, IN_REVIEW,
   },
   PACKAGE_TYPES: { INCOMING },
 } = require('../../config/constants');
@@ -275,59 +275,59 @@ exports.unread = async (req, res) => {
   return res.json(status);
 };
 
-exports.count = (req, res, next) => {
-  const { customerId } = req.user.id;
-  const options = {
-    attributes: ['id'],
-    where: { customer_id: customerId, package_type: INCOMING },
-    include: [{
-      model: PackageState,
-      where: { state_id: 5 },
-    }],
-  };
-  const readyToShipCount = Package
-    .count(options);
-
-  const optionInReview = {
-    attributes: ['id'],
-    where: { customer_id: customerId, package_type: INCOMING },
-    include: [{
-      model: PackageState,
-      where: { state_id: 4 },
-    }],
-  };
-  const inReviewCount = Package
-    .count(optionInReview)
-    .catch(next);
-
-  const optionActionRequired = {
-    attributes: ['id'],
-    where: { customer_id: customerId, package_type: INCOMING },
-    include: [{
-      model: PackageState,
-      where: { state_id: 3 },
-    }],
-  };
-  const actionRequiredCount = Package
-    .count(optionActionRequired)
-    .catch(next);
-
-  const optionAll = {
-    attributes: ['id'],
-    where: { customer_id: customerId, package_type: INCOMING },
-    include: [{
-      model: PackageState,
-      where: { state_id: [3, 4, 5] },
-    }],
-  };
-  const allCount = Package
-    .count(optionAll)
-    .catch(next);
-
-  return res.json({
-    readyToShipCount, inReviewCount, actionRequiredCount, allCount,
-  });
-};
+// exports.count = (req, res, next) => {
+//   const { customerId } = req.user.id;
+//   const options = {
+//     attributes: ['id'],
+//     where: { customer_id: customerId, package_type: INCOMING },
+//     include: [{
+//       model: PackageState,
+//       where: { state_id: 5 },
+//     }],
+//   };
+//   const readyToShipCount = Package
+//     .count(options);
+//
+//   const optionInReview = {
+//     attributes: ['id'],
+//     where: { customer_id: customerId, package_type: INCOMING },
+//     include: [{
+//       model: PackageState,
+//       where: { state_id: 4 },
+//     }],
+//   };
+//   const inReviewCount = Package
+//     .count(optionInReview)
+//     .catch(next);
+//
+//   const optionActionRequired = {
+//     attributes: ['id'],
+//     where: { customer_id: customerId, package_type: INCOMING },
+//     include: [{
+//       model: PackageState,
+//       where: { state_id: 3 },
+//     }],
+//   };
+//   const actionRequiredCount = Package
+//     .count(optionActionRequired)
+//     .catch(next);
+//
+//   const optionAll = {
+//     attributes: ['id'],
+//     where: { customer_id: customerId, package_type: INCOMING },
+//     include: [{
+//       model: PackageState,
+//       where: { state_id: [3, 4, 5] },
+//     }],
+//   };
+//   const allCount = Package
+//     .count(optionAll)
+//     .catch(next);
+//
+//   return res.json({
+//     readyToShipCount, inReviewCount, actionRequiredCount, allCount,
+//   });
+// };
 
 exports.addNote = async (req, res) => {
   const { id } = req.params;
@@ -336,3 +336,24 @@ exports.addNote = async (req, res) => {
   return res.json({ message: 'Note updated to your package' });
 };
 
+
+exports.invoice = async (req, res, next) => {
+  const { id } = req.params;
+  const { object } = req.body;
+  const pkg = await Package
+    .findById(id, { attributes: ['id'] });
+  if (pkg) {
+    Package
+      .update({ invoice: object }, { where: { id } });
+    Package
+      .updateState({
+        db,
+        pkg,
+        actingUser: req.user,
+        nextStateId: IN_REVIEW,
+        comments: 'Cusotmer Uploaded Invoice',
+      })
+      .then(() => res.json({ message: 'Invoice updated succesfully' }))
+      .catch(next);
+  }
+};

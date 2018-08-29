@@ -16,7 +16,7 @@ describe('create transactions', () => {
     Transaction
       .create({
         customer_id: ABHINAV,
-        type: DEBIT,
+        type: CREDIT,
         amount: 50,
       })
       .then(() => User
@@ -39,7 +39,7 @@ describe('debit transactions', () => {
     Transaction
       .create({
         customer_id: ABHINAV,
-        type: CREDIT,
+        type: DEBIT,
         amount: 50,
       })
       .then(() => User
@@ -51,7 +51,7 @@ describe('debit transactions', () => {
       .catch(err => logger.error('credit', err));
   });
 
-  after(() => User.update({ wallet_balance_amount: 50 }, { where: { id: ABHINAV } }));
+  after(() => User.update({ wallet_balance_amount: 0 }, { where: { id: ABHINAV } }));
 });
 
 describe('POST /api/transactions', () => {

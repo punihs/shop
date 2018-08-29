@@ -1,0 +1,73 @@
+section.ship_response
+  .container
+    .row
+      .col-sm-12
+        .longblock
+          h4.title SHIP REQUEST CONFIRMATION
+          h3.alert.alert-success.text-center Success! You have completed your ship request.
+          .col-md-12
+            p.confirm
+              | An email confirmation of your request has been sent to
+              a.summary-order(href='javascript:void(0)') {{$ctrl.shipment.Customer.email}}
+              | .
+            p(ng-if = "$ctrl.shipment.payment_gateway_name === 'wire'")
+          .col-sm-12
+            .wireoption
+              p.info
+                | We will dispatch your shipment once your payment to the below bank account is confirmed. Kindly note that we currently
+                strong.m-l-xs DO NOT ACCEPT WESTERN UNION MONEY TRANSFERS
+                | .
+                strong
+                  | Also, it may take up to 7 business days for the amount to reflect in our account, especially in case of International Wire Transfers.
+                |  In such a case, we advise you to opt for an alternative payment method if your shipment is urgent or if you don’t want to be charged with storage cost. Please click here if you wish to
+                a.summary-order.m-r-xs.m-l-xs(href='{{}}') change the payment method
+                | .
+              .bg-light.well
+                h4 Account Name: INDIANSHOPPRE LLP
+                p Account Number: 918020022874771
+                p Branch: Bangalore
+                p IFS Code: UTIB0000009
+                p MICR Code: 560211002
+                p E-mail ID: finance@shoppre.com
+                p Address: NO. 9, M.G. ROAD, BLOCK 'A'
+                p Swift Code: AXISINBB009
+          p(ng-if = "$ctrl.shipment.PaymentGateway.value === 'cash'")
+          .col-sm-12
+            .cashoption
+              p.info
+                | We will dispatch your shipment once your payment is confirmed. In such a case, we advise you to opt for an alternative payment method if your shipment is urgent or if you don’t want to be charged with storage cost. Please click here if you wish to
+                a.summary-order(href='{{}}') change the payment method.
+          .col-sm-6
+            .splitbox
+              h3 Sent to:
+              h4 {{$ctrl.shipment.full_name}}
+              p {{$ctrl.shipment.address}}
+              strong Phone: {{$ctrl.shipment.phone}}
+          .col-sm-6
+            .splitbox
+              h3 Shipment Details:
+              p # {{$ctrl.shipment.order_code}}
+              p Estimated Weight: {{$ctrl.shipment.weight}} Kg
+              p Estimated Value of Items: INR {{$ctrl.shipment.value_amount}}
+              p
+                | Shoppre Shipping Charges: INR {{$ctrl.shipment.final_amount}}
+          .clearfix
+          .alert.alert-warning.text-center(role='alert')
+            h4
+              | AFTER your payment has been confirmed, our shipping experts will make every effort to process your shipment within 24 hours.
+            p
+              | An email with your tracking information will be sent to you as soon as your parcels have been dispatched.
+          .clearfix
+          .ship_points
+            h4 What's Next
+            ul
+              li
+                | The shipment order will be in
+                a.summary-order(href="{{route('please update your Quelink link here')}}") Queue
+                |  until the items LEAVE Shoppre facility.
+              li
+                | You can view your shipped packages in transit in your
+                a.summary-order(href="") History
+                | .
+              li
+                | We shall let you know if we haven’t received your amount (in case of wire transfer) in 2 days. If we don’t receive your amount within 7 days from the time your parcel was ready to be shipped, you will incur a storage fee of INR 100/day from the 8th day onwards. We can only dispatch your parcel from the Shopre facility upon confirmation of the payment.

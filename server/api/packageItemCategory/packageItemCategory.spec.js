@@ -26,7 +26,7 @@ describe('POST /api/packageItemCategories', () => {
       })
       .set('Authorization', `Bearer ${opsAuth.access_token}`)
       .expect('Content-Type', /json/)
-      .expect(201)
+      .expect(200)
       .then(() => {
         done();
       });

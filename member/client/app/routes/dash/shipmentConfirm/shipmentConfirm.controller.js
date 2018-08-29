@@ -95,6 +95,7 @@ class shipmentConfirm {
   applyPromoCode() {
     if (this.couponCode) {
       this.$http
+// eslint-disable-next-line max-len
         .put(`/redemptions/apply?order_code=${this.shipment.order_code}&coupon_code=${this.couponCode}`)
         .then(({ data: { message } }) => {
           this.message = message;

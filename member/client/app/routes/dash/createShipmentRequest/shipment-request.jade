@@ -24,6 +24,8 @@
                   | {{item.line1}} <BR>
                   | {{item.line2}}
                   | {{item.id}}
+                  p.pull-rightbutton(type='button', ng-click='$ctrl.EditAddress(item.id)')
+                    i.fa.fa-pencil-square-o
             .col-md-3.padding-5.m-b-md.m-t-xs
               a.btn.btn-success(ng-click="$ctrl.open()") Add Address
           div.div-border-create.clearfix
