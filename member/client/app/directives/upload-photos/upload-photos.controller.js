@@ -1,12 +1,13 @@
 class UploadphotosCtrl {
-  constructor($uibModalInstance, $http, id, $state, $scope) {
-    this.id = id;
+  constructor($uibModalInstance, $http, packageDetail, $state) {
+    this.packageDetail = packageDetail;
+    this.packagePhotos = '';
     this.$state = $state;
     this.$http = $http;
+    this.basicPhoto = true;
+    this.standardPhoto = false;
+    this.photoRequestLength = '';
     this.$uibModalInstance = $uibModalInstance;
-    $scope.myInterval = 5000;
-    $scope.noWrapSlides = false;
-    $scope.active = 0;
     this.slides = [
       { id: 1, image: 'assets/images/item-2.jpg' },
       { id: 2, image: 'assets/images/item-2.jpg' },
@@ -15,6 +16,22 @@ class UploadphotosCtrl {
       { id: 5, image: 'assets/images/item-2.jpg' },
       { id: 6, image: 'assets/images/item-2.jpg' },
     ];
+    this.$onInit();
+  }
+
+  $onInit() {
+    this.photoRequestLength = this.packageDetail.PhotoRequests.length;
+    this.packagePhotos = this.packageDetail.PhotoRequests;
+  }
+
+  showStandardPhoto() {
+    this.basicPhoto = false;
+    this.standardPhoto = true;
+  }
+
+  showBasicPhoto() {
+    this.basicPhoto = true;
+    this.standardPhoto = false;
   }
 
   cancel() {
@@ -38,10 +55,6 @@ class UploadphotosCtrl {
     this.success = false;
     this.basicRequest = false;
     this.additionalRequest = true;
-  }
-  checkPhotos() {
-    this.showAdditional = false;
-    this.photoExist = false;
   }
   requestBasic() {
     this.data = {

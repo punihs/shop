@@ -13,6 +13,8 @@ class PackageLockerController {
     this.toaster = toaster;
     this.user = Session.read('userinfo');
     this.MoreOption = false;
+    this.allChecked = false;
+    this.totalSelectedPackages = 0;
     this.selectPackage = [];
     this.packages_ids = [];
     this.$onInit();
@@ -135,6 +137,35 @@ class PackageLockerController {
     }
   }
 
+  selectAllPackages(isChecked) {
+    if (isChecked) {
+      this.packages.forEach((item, index) => {
+        this.packages[index].isChecked = true;
+      });
+      this.totalSelectedPackages = this.packages.length;
+    } else {
+      this.packages.forEach((item, index) => {
+        this.packages[index].isChecked = false;
+      });
+      this.totalSelectedPackages = 0;
+    }
+  }
+
+  selectPackages() {
+    let count = 0;
+    this.packages.forEach((item) => {
+      if (item.isChecked) {
+        count++;
+      }
+    });
+    this.totalSelectedPackages = count;
+    if (count === this.packages.length) {
+      this.allChecked = true;
+    } else {
+      this.allChecked = false;
+    }
+  }
+
   // getQueueCount() {
   //   this
   //     .$http
@@ -167,7 +198,6 @@ class PackageLockerController {
     this.packages = [];
     this.getList();
   }
-
 
   resetValues() {
   }
@@ -205,15 +235,15 @@ class PackageLockerController {
     this.$state.reload();
   }
 
-  uploadPhotos(id) {
+  uploadPhotos(packageDetail) {
     this.$uibModal.open({
       templateUrl: 'app/directives/upload-photos/upload-photos.html',
       controller: 'UploadphotosCtrl',
       controllerAs: '$ctrl',
       size: 'lg',
       resolve: {
-        id() {
-          return id;
+        packageDetail() {
+          return packageDetail;
         },
       },
     });

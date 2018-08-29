@@ -82,7 +82,7 @@ div.m-t-xl.no-margin
                         th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'" )
                           .checkbox.no-margin
                             label.i-checks
-                              input(type='checkbox', ng-model="all", value='')
+                              input(type='checkbox', ng-model="all", ng-checked='$ctrl.allChecked', ng-click='$ctrl.selectAllPackages(all)' value='')
                               i
                     tbody(ng-repeat="package in $ctrl.packages"  )
                       tr.footable-even(style='display: table-row;')
@@ -107,13 +107,13 @@ div.m-t-xl.no-margin
                           p.no-margin As required by Customs
                         td.footable-visible(ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'" ng-bind='package.weight')
                         td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'" )
-                          a(ng-click='$ctrl.uploadPhotos(package.id)')
+                          a(ng-click='$ctrl.uploadPhotos(package)')
                             u Photos
                         td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='ALL'" ng-bind='package.PackageState.State.name' )
                         td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'")
                           .checkbox.no-margin
                             label.i-checks
-                              input(type='checkbox', ng-model = 'package.checked', ng-checked="all", value='')
+                              input(type='checkbox', ng-model = 'package.isChecked', ng-change='$ctrl.selectPackages()', ng-checked='all', value='')
                               i
                       tr
                         form.form-validation(name="form" ng-submit='$ctrl.submitValue()')
@@ -325,8 +325,10 @@ div.m-t-xl.no-margin
           .clearfix
           .more-options.col-md-12
             .ReadytoSend(ng-if='$ctrl.$stateParams.bucket==="READY_TO_SEND"')
-              button.btn.btn-sm.btn-warning.m-b-xs.text-u-c.pull-right(type='submit' ng-click="$ctrl.createShipment()") Create Ship Request
+              button.btn.btn-sm.btn-warning.m-b-xs.text-u-c.pull-right(type='submit', ng-click="$ctrl.createShipment()", ng-disabled="$ctrl.totalSelectedPackages == 0 ? true : false") Create Ship Request
               .clearfix
+
+
               p *
                 | Customs regulations require the purchase price for every item.
                 | Proof of value maybe requested by customs officials.
@@ -340,7 +342,6 @@ div.m-t-xl.no-margin
 
       .col-md-4.m-t-xs
         .well.copy-wrap-out
-
           select.pull-right.m-l(ng-model='$ctrl.store' name='store')
             option Amazon
             option Flipkart

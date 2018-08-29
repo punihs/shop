@@ -47,6 +47,8 @@ class DownloadResumeCtrl {
           .pop('error', err.data.message);
         this.error = err.data;
       });
+    // returning null value for lint passing
+    return null;
   }
 
   validateForm(form) {

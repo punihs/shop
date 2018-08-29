@@ -3,7 +3,7 @@
     .h4.text-info Upload Photos
       .close(ng-click='$ctrl.cancel()') ×
 .modal-body
-  .row(ng-hide='$ctrl.showAdditional')
+  .row(ng-if='$ctrl.photoRequestLength==1 && $ctrl.packagePhotos[0].type==2')
     .col-md-3.photo-left
       i.fa.fa-camera.big-cam.m-t-md
     .col-md-9
@@ -14,9 +14,11 @@
         .panel-body
           p View low-resolution photos taken of your package when it arrived at the Shoppre to confirm package cpntents
           a.btn.btn-success.text-u-c(ng-click='$ctrl.continueBasic()') Get Now
-  .row(ng-show='$ctrl.photoExist' ng-init='$ctrl.checkPhotos()')
-    h1.text-success PHOTO ALREADY THERE
-  .row(ng-hide='$ctrl.showBasic')
+  .row(ng-if='$ctrl.photoRequestLength==1 && $ctrl.packagePhotos[0].type==1')
+    .col-md-12
+      .panel.b-a.ng-scope
+        img(src='assets/images/logo.png')
+  .row(ng-if='$ctrl.photoRequestLength==1 && $ctrl.packagePhotos[0].type==1')
     .col-md-3.photo-left
       i.fa.fa-camera.big-cam.m-t-md
     .col-md-9
@@ -27,16 +29,21 @@
         .panel-body
           p Order up 10 high-resolution photos of your content to confirm color, condition and item details
           a.btn.btn-success.text-u-c(ng-click='$ctrl.continueAdditional()') Request Now
-  .row(ng-show='$ctrl.photoList')
-    .col-md-12.text-center
-      .panel.no-margin(set-ng-animate='false')
-        div(style='height: 305px')
-          div(uib-carousel='', active='active', interval='myInterval', no-wrap='noWrapSlides')
-            div(uib-slide='', ng-repeat='slide in $ctrl.slides', index='$index')
-              img(ng-src='{{slide.image}}', style='margin:auto;')
-              .carousel-caption
-                //h4 Slide {{slide.id}}
-                //p {{slide.text}}
+  .row(ng-if='$ctrl.photoRequestLength==2')
+    .col-md-12
+      .basic-photo(ng-show='$ctrl.basicPhoto')
+        .panel.b-a.ng-scope
+          img(src='assets/images/logo.png')
+        a.btn.btn-success.text-u-c.m-l-xs(ng-click='$ctrl.showStandardPhoto()') Standard Photo
+      .advanced-photo(ng-show='$ctrl.standardPhoto')
+        .panel.b-a.ng-scope
+          img(src='assets/images/loyalty.png')
+        a.btn.btn-success.text-u-c.m-l-xs(ng-click='$ctrl.showBasicPhoto()') Basic Photo
+  .row(ng-if='$ctrl.basicRequest')
+    .panel.b-a.ng-scope($ctrl.basicPhoto)
+      img(src='assets/images/logo.png')
+    .panel.b-a.ng-scope
+      img(src='assets/images/logo.png')
   .row(ng-if='$ctrl.basicRequest')
     .panel.b-a.ng-scope
       .panel-body

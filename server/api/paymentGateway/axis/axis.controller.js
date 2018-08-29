@@ -1,6 +1,6 @@
 const debug = require('debug');
 const rp = require('request-promise');
-const _ = require('lodash');
+// const _ = require('lodash');                this lodash is not used any where so i commented
 const transaction = require('../../transaction/transaction.controller');
 
 const { TRANSACTION_TYPES: { DEBIT } } = require('../../../config/constants');

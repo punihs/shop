@@ -990,9 +990,11 @@ exports.finalShipRequest = async (req, res) => {
     // eslint-disable-next-line no-case-declarations
     case 'paypal':
       log({ message: 'payment.paypal.start' });
-      const responsePaypal = paypal.create(req, res);
-      return responsePaypal;
-    // eslint-disable-next-line no-case-declarations
+      // required for punith
+      // const responsePaypal = paypal.create(req, res);
+      // return responsePaypal;
+      // eslint-disable-next-line no-case-declarations
+      break;
     case 'paytm':
       log({ message: 'payment.paytm.start' });
       return paytm.create(req, res);

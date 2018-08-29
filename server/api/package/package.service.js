@@ -52,7 +52,7 @@ exports.index = ({ query, params, user: actingUser }) => {
         attributes: ['id', 'name'],
       }, {
         model: PhotoRequest,
-        attributes: ['id', 'status'],
+        attributes: ['id', 'status', 'type'],
         // where: { status: COMPLETED },
       }];
       break;
