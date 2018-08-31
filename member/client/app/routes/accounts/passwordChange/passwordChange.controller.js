@@ -7,8 +7,6 @@ class passwordChangeController {
     this.toaster = toaster;
     this.Page = Page;
     this.Session = Session;
-    // this.$window = $window;
-    // this.Auth = Auth;
     this.data = [];
     this.submitting = false;
     this.$http = $http;
@@ -63,24 +61,6 @@ class passwordChangeController {
           .pop('success', err.data.message);
       });
   }
-  //
-  // reset(formPasswordChange) {
-  //   this.data = {};
-  //   this.Store.model = '';
-  //   formPasswordChange.$setPristine();
-  // }
-  //
-  // cleanup() {
-  //   const { QNOTIFY_SERVER, ACCOUNTS } = this.URLS;
-  //   const { location } = this.$window;
-  //   return Promise.resolve(this.notify
-  //     ? this.$http
-  //       .delete(`${QNOTIFY_SERVER}/subscriptions/${this.notify.subscription.subscription_id}`)
-  //     : true)
-  //     .then(() => (location.href = `${ACCOUNTS}/logout`))
-  //     .catch(() => (location.href = `${ACCOUNTS}/logout`));
-  // }
-
 }
 
 angular.module('uiGenApp')
