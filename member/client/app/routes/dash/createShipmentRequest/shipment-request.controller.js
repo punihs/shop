@@ -148,7 +148,6 @@ class shipmentRequestController {
       this
         .toaster
         .pop('error', 'Please select shipping address');
-      // return null;
     }
 
     if (this.submitting) return null;
@@ -166,7 +165,6 @@ class shipmentRequestController {
         this
           .toaster
           .pop('success', `#${id} Shipment Created Successfully.`, '');
-        // this.$state.go('dash.shipmentConfirm', { order_code: this.pkg.order_code });
         this.$state.go('dash.shipRequestResponse', { shipmentId: id });
       })
       .catch((err) => {
