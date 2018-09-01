@@ -1663,8 +1663,6 @@ exports.createShipment = async (req, res, IsShippingAddress) => {
   log({ shipmentMeta });
   // let pack = '';
   log('packages123 ', JSON.stringify(packages));
-  // eslint-disable-next-line no-restricted-syntax
-  // for (pack of packages) {
   packages.forEach((pack) => {
     shipmentMeta.storage_amount += pack.PackageCharge.storage_amount || 0;
     shipmentMeta.photo_amount += pack.PackageCharge.basic_photo_amount || 0;
