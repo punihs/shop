@@ -60,6 +60,7 @@ class passwordChangeController {
           .toaster
           .pop('success', err.data.message);
       });
+    return null;
   }
 }
 

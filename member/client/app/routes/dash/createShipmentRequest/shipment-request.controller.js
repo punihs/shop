@@ -103,12 +103,12 @@ class shipmentRequestController {
           giftnote_txt: false,
           is_liquid: IS_LIQUID,
           max_weight: 0,
-          invoice_taxid: false,
+          invoice_tax_id: false,
           mark_personal_use: false,
           invoice_include: false,
         };
         this.IsShippingAddress = IsShippingAddress;
-        if (!IsShippingAddress && customer.Addresses.length === 0) {
+        if (!IsShippingAddress && !customer.Addresses.length) {
           this
             .toaster
             .pop('info', 'Please add the shipping address before proceed');

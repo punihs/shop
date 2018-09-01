@@ -20,7 +20,7 @@ describe('GET /api/packageItem', () => {
 
 describe('GET /api/packageItems/:id', () => {
   let pkg = '';
-  let pkgItemId = '';
+  let pkgItem = '';
   before(() => Promise.all([
     Package.create({})
       .then((pack) => {
@@ -32,13 +32,13 @@ describe('GET /api/packageItems/:id', () => {
           object: '20180829.jpg',
         }))
       .then((pack) => {
-        pkgItemId = pack;
+        pkgItem = pack;
       }),
   ]));
 
   it('get packageItem ', (done) => {
     request(app)
-      .get(`/api/packageItems/${pkgItemId.id}`)
+      .get(`/api/packageItems/${pkgItem.id}`)
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
       .expect(200)

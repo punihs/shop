@@ -1,5 +1,4 @@
 class JobPaymentController {
-
   constructor($uibModalInstance, $http, $log, job, awfTime, moment) {
     this.$uibModalInstance = $uibModalInstance;
     this.$http = $http;

@@ -1,11 +1,12 @@
 class ShipRequestResponse {
-  constructor($http, Page, $uibModal, toaster, $location) {
+  constructor($http, Page, $uibModal, toaster, $location, $stateParams) {
     this.$http = $http;
     this.Page = Page;
     this.$uibModal = $uibModal;
+    this.$stateParams = $stateParams;
     this.toaster = toaster;
     this.$location = $location;
-    this.shipmentId = this.$location.search().shipmentId;
+    this.shipmentId = this.$stateParams.shipmentId || this.$location.search().shipmentId;
     this.$onInit();
   }
 

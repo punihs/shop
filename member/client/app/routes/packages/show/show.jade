@@ -2,14 +2,6 @@
   .col.bg-white-only.w-md.b-r
     .wrapper-xs.m-sm(style='width: 93%;')
       .pull-right
-        //a.col.v-middle(style='width: 2em;')
-        //  i.m-t-sm.wrapper-xs.fa(
-        //  name='bookmarked'
-        //  title='Bookmark'
-        //  style="color: darksalmon;"
-        //  ng-class="$ctrl.data.is_bookmarked ? 'fa-star' : 'fa-star-o'"
-        //  ng-click="$ctrl.toggleBookmark(!$ctrl.data.is_bookmarked)"
-        //  )
         a.col.v-middle(
         ng-show='-1 !== $ctrl.editAllowedStates.indexOf($ctrl.data.state_id)'
         ui-sref="package.charges({ id: $ctrl.data.id, customerId: $ctrl.$stateParams.id })"

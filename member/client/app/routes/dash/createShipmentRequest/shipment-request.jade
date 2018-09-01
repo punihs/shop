@@ -45,9 +45,6 @@
             .full-width
               .wrapper-md.ng-scope
                 .panel.panel-default
-                  //.panel-heading
-                  //  h4
-                  //    a(href='') Add More Packages
                   div
                     table.table.table-bordered.m-b-none.default.footable-loaded.footable.table-responsive(
                     ui-jq='footable', data-filter='#filter', data-page-size='5')
@@ -159,7 +156,7 @@
                 ul.list-group.list-group-lg.m-b-none.list-unstyled
                   li
                     .checkbox(ng-click='$ctrl.updateCharges()')
-                      label.i-checks(ng-if='$ctrl.data.repack === true')
+                      label.i-checks(ng-if='$ctrl.data.repack')
                         input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.repack')
                         i
                         | Discard Shoe boxes
@@ -175,7 +172,7 @@
                       )
                   li
                     .checkbox(ng-click='$ctrl.updateCharges()')
-                      label.i-checks(ng-if='$ctrl.data.extra_packing === true')
+                      label.i-checks(ng-if='$ctrl.data.extra_packing')
                         input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.extra_packing')
                         i
                         | Add extra packing material
@@ -191,7 +188,7 @@
                       )
                   li
                     .checkbox(ng-click='$ctrl.updateCharges()')
-                      label.i-checks(ng-if='$ctrl.data.orginal_box === true')
+                      label.i-checks(ng-if='$ctrl.data.orginal_box')
                         input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.orginal_box')
                         i
                         | Ship in original boxes(do not repack)
@@ -207,7 +204,7 @@
                       )
                   li
                     .checkbox(ng-click='$ctrl.updateCharges()')
-                      label.i-checks(ng-if='$ctrl.data.gift_wrap === true')
+                      label.i-checks(ng-if='$ctrl.data.gift_wrap')
                         input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.gift_wrap')
                         i
                         | Gift Wrap
@@ -223,7 +220,7 @@
                       )
                   li
                     .checkbox(ng-click='$ctrl.updateCharges()')
-                      label.i-checks(ng-if='$ctrl.data.gift_note === true')
+                      label.i-checks(ng-if='$ctrl.data.gift_note')
                         input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.gift_note')
                         i
                         | Gift Note
@@ -258,7 +255,7 @@
                 ul.list-group.list-group-lg.m-b-none.list-unstyled
                   li
                     | Shipping Preference Charges
-                    i.span.badge.pull-right.bg-success {{$ctrl.operationsAmount === 0 ? '00' :  $ctrl.operationsAmount }}
+                    i.span.badge.pull-right.bg-success {{$ctrl.operationsAmount}}
                     span(
                     uib-popover = "(includes the above mentioned charges)"
                     popover-trigger="'mouseenter'"
@@ -268,7 +265,7 @@
                         i.m-l.fa.fa-info-circle
                   li
                     | Additional Storage Fee
-                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.storage_amount === 0 ? '00' :  $ctrl.shipmentMeta.storage_amount }}
+                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.storage_amount}}
                     span(
                     uib-popover = "Shoppre offers FREE storage up to 20 days*. Packages stored past the free storage period will incur storage fees of INR 100/day from the 21st Day. Storage fees continue to accrue until your package is  shipped, picked-up,  discarded or returned to the sender. *No. of days may be more for Membership Partners, and Loyalty Members (Silver and above)."
                     popover-trigger="'mouseenter'"
@@ -278,7 +275,7 @@
                       i.m-l.fa.fa-info-circle
                   li
                     | Photo Charges
-                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.photo_amount === 0 ? '00' :  $ctrl.shipmentMeta.photo_amount }}
+                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.photo_amount}}
                     span(
                     uib-popover = 'Basic Photos: We take upto 5 Basic photographs of all your items for a cost of INR 50*.'+
                     'Additional Photos: You can also request upto 10 additional photos (incase you want some more details or if you want to inspect if the items are not damaged) for a cost of INR 500.'+
@@ -290,7 +287,7 @@
                       i.m-l.fa.fa-info-circle
                   li
                     | Consolidation Charges
-                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.consolidation_charge_amount === 0 ? '00' :  $ctrl.shipmentMeta.consolidation_charge_amount }}
+                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.consolidation_charge_amount}}
                     i.fa.fa-info-circle.m-l-xs(
                     uib-popover='Shoppre charges a small fee of INR 100 per package (not per item) that you add to the parcel (when you have two or more packages to consolidate).' +
                     '*Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).'
@@ -300,7 +297,7 @@
                     )
                   li
                     | Pick-up Service
-                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.pickup_amount === 0 ? '00' :  $ctrl.shipmentMeta.pickup_amount }}
+                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.pickup_amount}}
                     i.fa.fa-info-circle.m-l-xs(
                     uib-popover='The service fee is as below:From Bangalore, INR 40/kg, Minimum INR 100 From any other city, INR 50/kg, Minimum INR 200' +
                     ' *Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).'
@@ -310,7 +307,7 @@
                     )
                   li
                     | Split Package
-                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.split_package_amount === 0 ? '00' :  $ctrl.shipmentMeta.split_package_amount }}
+                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.split_package_amount}}
                     i.fa.fa-info-circle.m-l-xs(
                     uib-popover='Shoppre can split your package if it contains more than one item, and if you wish to separate them into multiple packages. You can split your package and discard an item, return it to the sender, ship it at a different time or to a different address. There is a cost of INR 200 per new package* created. For eg. if you have splitted your package into 3, you will be charged INR 400 .*Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).'
                     popover-trigger="'mouseenter'"
@@ -319,7 +316,7 @@
                     )
                   li
                     | Package Special Handling Fee
-                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.special_handling_amount === 0 ? '00' :  $ctrl.shipmentMeta.special_handling_amount }}
+                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.special_handling_amount }}
                     i.fa.fa-info-circle.m-l-xs(
                     uib-popover='Any Package which requires Special Handling will be prompted via email to you.' +
                     'All liquids/ semi-liquids/ homemade food/ medicines/ ayurvedic products/ dangerous goods like nail polish, etc. will incur charges as below:' +
@@ -333,7 +330,7 @@
                     )
                   li
                     | Receive Mail
-                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.receive_mail_amount === 0 ? '00' :  $ctrl.shipmentMeta.receive_mail_amount }}
+                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.receive_mail_amount }}
                     i.fa.fa-info-circle.m-l-xs(
                     uib-popover='Shoppre charges an additional amount of INR 100 for receiving a package which is considered as a document (2 kg and below). Shipping charges of Documents slightly vary from that of Non-documents.' +
                     '*Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).'
@@ -343,7 +340,7 @@
                     )
                   li
                     | Scan Document
-                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.scan_document_amount === 0 ? '00' :  $ctrl.shipmentMeta.scan_document_amount }}
+                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.scan_document_amount}}
                     i.fa.fa-info-circle.m-l-xs(
                     uib-popover='You can scan your documents (all/some pages of your document) for a charge of INR 40.00/day (Minimum INR 100)* .* Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).'
                     popover-trigger="'mouseenter'"
@@ -352,7 +349,7 @@
                     )
                   li
                     | Address Correction
-                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.wrong_address_amount === 0 ? '00' :  $ctrl.shipmentMeta.wrong_address_amount }}
+                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.wrong_address_amount}}
                     i.fa.fa-info-circle.m-l-xs(
                     uib-popover='Incoming Packages: There is an INR 200 fee for packages that arrive at our distribution center with an incomplete address. You can avoid these fees by making sure the seller properly addresses your order. Outgoing Packages: Please take extra care to make sure that you have entered the correct address while making an International Shipment. The courier will charge an additional fee (between INR 3000 to INR 7000)* to your Shoppre account if you update your address after the shipment has left our facility. Many couriers charge this fee after delivery, so you may see it charged to your account post-shipment. '
                     popover-trigger="'mouseenter'"
@@ -361,7 +358,7 @@
                     )
                   li
                     | Special Package Clearance Fee
-                    i.span.badge.pull-right.bg-success {{$ctrl.data.is_liquid === false ? '00' : 'To Be Calculated' }}
+                    i.span.badge.pull-right.bg-success {{$ctrl.data.is_liquid}}
                     i.fa.fa-info-circle.m-l-xs(
                     uib-popover='Any Package which requires Special Handling will be prompted via email to you. All liquids/ semi-liquids/ homemade food/ medicines/ ayurvedic products/ dangerous goods like nail polish,  etc. will incur charges as below:' +
                     ' Less than 5 kg = INR 1000 per shipment*' +

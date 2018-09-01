@@ -439,7 +439,7 @@ const saveShipmentMeta = ({ req, sR, packageIds }) => {
   meta.sticker_charge_amount = 0;
 
   if (packageIds.length > 1) {
-    meta.consolidation = '1';
+    meta.consolidation = true;
     meta.consolidation_charge_amount = (packageIds.length - 1) * 100.00;
   }
 
@@ -465,7 +465,7 @@ const saveShipmentMeta = ({ req, sR, packageIds }) => {
       meta.liquid_charge_amount = 7729.00;
     }
   }
-  meta.invoice_taxid = req.body.invoice_taxid;
+  meta.invoice_tax_id = req.body.invoice_tax_id;
   meta.mark_personal_use = req.body.mark_personal_use;
   meta.invoice_include = req.body.invoice_include;
   meta.max_weight = req.body.max_weight;
@@ -516,7 +516,6 @@ const updateShipment = async ({ shipmentMeta, sR }) => {
   log('updateShip', JSON.stringify(updateShip));
   const shipdata = await Shipment.find({ where: { id: sR.id } });
   log('shipdata', JSON.stringify(shipdata));
-  // return sR.update(updateShip);
   Shipment.update({
     package_level_charges_amount: shipmentUpdate.package_level_charges_amount,
     estimated_amount: shipmentUpdate.estimated_amount,
@@ -549,7 +548,8 @@ exports.create = async (req, res, next) => {
 
     if (!packages.length) return res.status(400).json({ message: 'No Packages Found.' });
     log('addressid', req.body.address_id);
-    const optionsAddress = {
+
+    const address = await Address.find({
       attributes: ['salutation', 'first_name', 'last_name', 'line1', 'line2', 'state',
         'city', 'pincode', 'phone_code', 'phone', 'email', 'country_id'],
       where: { id: req.body.address_id },
@@ -557,8 +557,7 @@ exports.create = async (req, res, next) => {
         model: Country,
         attributes: ['name'],
       }],
-    };
-    const address = await Address.find(optionsAddress);
+    });
 
     const toAddress = await getAddress(address);
 
@@ -1662,10 +1661,11 @@ exports.createShipment = async (req, res, IsShippingAddress) => {
     scan_document_amount: 0,
   };
   log({ shipmentMeta });
-  let pack = '';
+  // let pack = '';
   log('packages123 ', JSON.stringify(packages));
   // eslint-disable-next-line no-restricted-syntax
-  for (pack of packages) {
+  // for (pack of packages) {
+  packages.forEach((pack) => {
     shipmentMeta.storage_amount += pack.PackageCharge.storage_amount || 0;
     shipmentMeta.photo_amount += pack.PackageCharge.basic_photo_amount || 0;
     shipmentMeta.photo_amount += pack.PackageCharge.advanced_photo_amount || 0;
@@ -1676,7 +1676,7 @@ exports.createShipment = async (req, res, IsShippingAddress) => {
     shipmentMeta.wrong_address_amount += pack.PackageCharge.wrong_address_amount || 0;
     shipmentMeta.scan_document_amount += pack.PackageCharge.scan_document_amount || 0;
     log('adding package charges', shipmentMeta);
-  }
+  });
   log('charges', shipmentMeta);
 
   const optionsCustomer = {
@@ -1771,7 +1771,9 @@ exports.redirectShipment = async (req, res) => {
       );
   });
 
-  const IS_LIQUID = !!contentTypesMap[SPECIAL].length;
+  let IS_LIQUID = !!contentTypesMap[SPECIAL].length;
+
+  IS_LIQUID = IS_LIQUID === true ? 0 : 'To Be Calculated';
 
   let address = '';
   let IsShippingAddress = true;

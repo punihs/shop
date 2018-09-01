@@ -80,7 +80,7 @@
           div.div-border-create.alert
             h2.m-n.alert.alert.alert-info.panel-warning 3. PAYMENT SUMMARY
             .panel-body
-              .radio(ng-repeat="paymentgateway in $ctrl.paymentGateway")
+              .radio(ng-repeat="paymentgateway in $ctrl.paymentGateways")
                 label.i-checks
                   input(ng-checked="paymentgateway.value === $ctrl.payment.payment_gateway_name ? true : false", ng-disabled='$ctr.shipment.Is_axis_banned === true ? true :  false' type='radio', name='a', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.value}}', ng-model='$ctrl.data.pg')
                   i
@@ -170,9 +170,9 @@
                     hr
                     p
                       | Basic Shipping Costs
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.estimated_amount - $ctrl.shipment.package_level_charges_Amount - $ctrl.payment.wallet}}
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.estimated_amount - $ctrl.shipment.package_level_charges_amount - $ctrl.payment.wallet}}
                   .clearfix
-          .panel.panel-info.m-t-md(ng-show="$ctrl.shipment.package_level_charges_Amount > 0")
+          .panel.panel-info.m-t-md(ng-show="$ctrl.shipment.package_level_charges_amount > 0")
             .panel-heading.font-bold.text-u-c PACKAGE LEVEL CHARGES SUMMARY
             .panel-body
               form.ng-pristine.ng-valid(role='form')
@@ -246,11 +246,11 @@
                     p
                       | Address Correction
                       span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.packageChrages.wrong_address_amount}}
-                  li(ng-if="$ctrl.shipment.package_level_charges_Amount > 0")
+                  li(ng-if="$ctrl.shipment.package_level_charges_amount > 0")
                     hr
                     p
                       | Package Level Charges :
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.package_level_charges_Amount}}
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.package_level_charges_amount}}
                   .clearfix
           .panel.panel-info.m-t-md
             .panel-heading.font-bold.text-u-c FINAL CHARGES
@@ -259,11 +259,10 @@
                 ul.list-group.list-group-lg.m-b-none.list-unstyled
                   p
                     | Basic Shipping Costs
-                    //span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.estimated_amount - $ctrl.shipment.package_level_charges_amount - $ctrl.payment.wallet}}
-                    span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.estimated_amount - $ctrl.shipment.package_level_charges_Amount - $ctrl.payment.wallet}}
+                    span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.estimated_amount - $ctrl.shipment.package_level_charges_amount - $ctrl.payment.wallet}}
                   p
                     | Package Level Charges
-                    span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.package_level_charges_Amount}}
+                    span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.package_level_charges_amount}}
                     span(
                     uib-popover = 'Shoppre includes all of the service charges (apart from shipping charges) under Package Level Charges. The break-up is as shown above.'
                     popover-trigger="'mouseenter'"
@@ -297,7 +296,7 @@
           ul.list-group.list-group-lg.m-b-none.list-unstyled.chkbox_background(ng-if="$ctrl.shipment.Customer.wallet_balance_amount && $ctrl.shipment.Customer.wallet_balance_amount < $ctrl.shipment.estimated_amount && $ctrl.shipment.Customer.wallet_balance_amount !== 0")
             li
               .checkbox
-                label.i-checks(ng-if="$ctrl.shipment.Customer.wallet_balance_amount >= 0")
+                label.i-checks(ng-if="$ctrl.shipment.Customer.wallet_balance_amount")
                   input(
                   ng-model='$ctrl.isWalletChecked'
                   type='checkbox',
@@ -316,19 +315,6 @@
                   )
                   i
                   | Shoppre Wallet
-                span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.Customer.wallet_balance_amount}}
-              //.checkbox(ng-click="$ctrl.walletClicked()" ng-if="$ctrl.shipment.Customer.wallet_balance_amount < 0")
-              //  label.i-checks
-              //    input(
-              //    ng-model="$ctrl.wallet",
-              //    type = 'checkbox',
-              //    checked,
-              //    value='1',
-              //    disabled,
-              //    ng-disabled="$ctrl.status = 'disabled'"
-              //    )
-              //    i
-              //    | Shoppre Wallet test
                 span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.Customer.wallet_balance_amount}}
           div.final-ship-charge
             h4 Final Shipping Charges *

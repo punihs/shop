@@ -29,7 +29,7 @@ module.exports = DataTypes => ({
   liquid_charge_amount: DataTypes.DOUBLE,
   overweight: DataTypes.TINYINT,
   overweight_charge_amount: DataTypes.DOUBLE,
-  invoice_taxid: DataTypes.STRING,
+  invoice_tax_id: DataTypes.STRING,
   mark_personal_use: DataTypes.TINYINT,
   invoice_include: DataTypes.TINYINT,
 });

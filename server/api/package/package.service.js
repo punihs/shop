@@ -9,7 +9,6 @@ const {
 const {
   APPS, GROUPS: { CUSTOMER, OPS },
   SHIPMENT_STATE_IDS: { PAYMENT_FAILED, PAYMENT_REQUESTED, PAYMENT_INITIATED },
-  // PHOTO_REQUEST_STATES: { COMPLETED },
 } = require('./../../config/constants');
 const BUCKETS = require('./../../config/constants/buckets');
 
@@ -121,17 +120,7 @@ exports.index = ({ query, params, user: actingUser }) => {
     }
   }
   const stateIds = [PAYMENT_FAILED, PAYMENT_REQUESTED, PAYMENT_INITIATED];
-  const CountOptions = {
-    include: [{
-      model: ShipmentState,
-      where: { state_id: stateIds },
-    }],
-  };
-  log(JSON.stringify(CountOptions));
-  // console.log('status in query: ', options.include[0].where.state_id)
-  // const shipmentStateModel = { ...options.include[0] };
-  // shipmentStateModel.where.state_id = BUCKET.VIEW_ALL;
-  // log('bucket in query: ', options.include[0].where.state_id);
+
   return Promise
     .all([
       Package
@@ -153,7 +142,12 @@ exports.index = ({ query, params, user: actingUser }) => {
             raw: true,
           }),
       Shipment
-        .count(CountOptions),
+        .count({
+          include: [{
+            model: ShipmentState,
+            where: { state_id: stateIds },
+          }],
+        }),
     ])
     .then(([packages, total, facets, queueCount]) => ({
       packages: packages

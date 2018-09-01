@@ -21,7 +21,7 @@ class shipmentConfirm {
     this.standard_photo_check = 'yes';
     this.totalpackagePriceAmount = 0;
     this.advc_photo_check = 0;
-    this.paymentGateway = [];
+    this.paymentGateways = [];
     this.data = {};
     this.$state = $state;
     this.$onInit();
@@ -46,13 +46,13 @@ class shipmentConfirm {
     url
       .then(({
         data: {
-          shipment, packages, payment, promoStatus, couponAmount, paymentGateway,
+          shipment, packages, payment, promoStatus, couponAmount, paymentGateways,
         },
       }) => {
         this.packages = [];
         this.packages = packages;
         // this.packages.push(packages);
-        this.paymentGateway = paymentGateway;
+        this.paymentGateways = paymentGateways;
         this.shipment = shipment;
         const shipmentMeta = [];
         shipmentMeta.push(shipment);
@@ -75,33 +75,28 @@ class shipmentConfirm {
 
   walletClicked() {
     this.selectedGateway();
-    // if (this.status !== 'disabled') {
-    //   this.selectedGateway();
-    // } else {
-    //   this.wallet = true;
-    // }
   }
 
   selectedGateway() {
-    this.sendData = {
+    this.params = {
       shipment_id: this.shipment.id,
       wallet: this.isWalletChecked ? 1 : 0,
       payment_gateway_name: this.data.pg,
     };
     const params =
-      `&payment_gateway_name=${this.data.pg}&wallet=${this.sendData.wallet}`;
+      `&payment_gateway_name=${this.data.pg}&wallet=${this.params.wallet}`;
     this.getList(params);
   }
 
   applyPromoCode() {
     if (this.couponCode) {
+      const querystring = `order_code=${this.shipment.order_code}&coupon_code=${this.couponCode}`;
       this.$http
-// eslint-disable-next-line max-len
-        .put(`/redemptions/apply?order_code=${this.shipment.order_code}&coupon_code=${this.couponCode}`)
+        .put(`/redemptions/apply?${querystring}`)
         .then(({ data: { message } }) => {
           this.message = message;
           const params =
-            `&payment_gateway_name=${this.data.pg}&wallet=${this.sendData.wallet}`;
+            `&payment_gateway_name=${this.data.pg}&wallet=${this.params.wallet}`;
           this.getList(params);
         })
         .catch((err) => {
@@ -115,17 +110,15 @@ class shipmentConfirm {
   }
   submitPayment() {
     if (this.submitting) return null;
-    this.sendData = {
+    this.params = {
       shipment_id: this.shipment.id,
       wallet: this.isWalletChecked ? 1 : 0,
       payment_gateway_name: this.data.pg,
     };
-    console.log('sendData', this.sendData);
     const method = 'put';
     return this
-      .$http[method]('/shipments/finalShip', this.sendData)
+      .$http[method]('/shipments/finalShip', this.params)
       .then(({ data: encryptedData }) => {
-        console.log({encryptedData});
         this.submitting = false;
         if (this.data.pg === 'card') {
           this.$window.location = encryptedData;

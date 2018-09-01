@@ -273,9 +273,7 @@ class PackageLockerController {
         .pop('error', ' Packages containing special items must be chosen and shipped separately ');
       return;
     }
-    console.log('pkg', this.packages);
     const packageIds = this.packages.filter(x => x.isChecked).map(x => x.id);
-    console.log({ packageIds });
     this.$state.go('dash.createShipmentRequest', { packageIds });
   }
 

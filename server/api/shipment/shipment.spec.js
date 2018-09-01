@@ -743,7 +743,7 @@ describe('GET /api/shipments/redirectShipment', () => {
     .then(() => Package.create({}).then((pack) => {
       pkg = pack;
     }))
-    .then(() => stateId = PackageState
+    .then(() => PackageState
       .create({
         package_id: pkg.id,
         state_id: 5,
@@ -832,7 +832,7 @@ describe('GET /api/shipments/redirectShipment', () => {
     .then(() => Package.create({}).then((pack) => {
       pkg = pack;
     }))
-    .then(() => stateId = PackageState
+    .then(() => PackageState
       .create({
         package_id: pkg.id,
         state_id: 5,
@@ -903,7 +903,7 @@ describe('GET /api/shipments/redirectShipment', () => {
     .then(() => Package.create({}).then((pack) => {
       pkg = pack;
     }))
-    .then(() => stateId = PackageState
+    .then(() => PackageState
       .create({
         package_id: pkg.id,
         state_id: 5,
@@ -978,8 +978,6 @@ describe('PUT /api/shipments/115/state', () => {
         done();
       });
   });
-  // after(() => LoyaltyPoint
-  //   .destroy({ force: true, where: { customer_id: 129 } }));
 });
 
 describe('PUT /api/shipments/116', () => {
