@@ -9,6 +9,7 @@ module.exports = {
         properties('transaction', DataTypes),
         {
           customer_id: keys('users'),
+          payment_gateway_id: keys('payment_gateways'),
         },
         timestamps(3, DataTypes),
       ), engine),

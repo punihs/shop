@@ -7,7 +7,6 @@ class PaymentAxis {
     this.$location = $location;
     this.encrypted = this.$location.search().encrypted;
     this.vpcMerchantId = this.$location.search().vpcMerchantId;
-    console.log('encrypted', this.encrypted);
     this.$onInit();
   }
 

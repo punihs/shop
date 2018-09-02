@@ -1,5 +1,5 @@
 class shipmentConfirm {
-  constructor($http, Page, $stateParams, $location, ViewPhotoService, toaster, $state, $window) {
+  constructor($http, Page, $stateParams, $location, ViewPhotoService, toaster, $state, $window, CONFIG) {
     this.ViewPhotoService = ViewPhotoService;
     this.$http = $http;
     this.Page = Page;
@@ -8,6 +8,7 @@ class shipmentConfirm {
     this.$window = $window;
     this.$stateParams = $stateParams;
     this.packages = [];
+    this.CONFIG = CONFIG;
     this.shipment = [];
     this.shipmentMeta = [];
     this.payment = [];
@@ -24,9 +25,10 @@ class shipmentConfirm {
     this.paymentGateways = [];
     this.data = {};
     this.$state = $state;
+    this.PAYMENT_GATEWAY = this.CONFIG.PAYMENT_GATEWAY;
     this.$onInit();
-    // this.walletClicked();
   }
+
   $onInit() {
     this.Page.setTitle('Shipment confirmation');
     this.getList();
@@ -51,17 +53,17 @@ class shipmentConfirm {
       }) => {
         this.packages = [];
         this.packages = packages;
-        // this.packages.push(packages);
         this.paymentGateways = paymentGateways;
         this.shipment = shipment;
         const shipmentMeta = [];
         shipmentMeta.push(shipment);
+        console.log('pg', payment.payment_gateway_id);
         this.shipmentMeta = shipmentMeta[0].ShipmentMetum;
         this.packageChrages = packages[0].PackageCharge;
         this.payment = payment;
         this.promoStatus = promoStatus;
         this.couponAmount = couponAmount;
-        this.data.pg = payment.payment_gateway_name;
+        this.data.paymentGateway = payment.payment_gateway_id;
         packages.forEach((x) => {
           this.totalpackagePriceAmount += x.price_amount;
         });
@@ -81,10 +83,10 @@ class shipmentConfirm {
     this.params = {
       shipment_id: this.shipment.id,
       wallet: this.isWalletChecked ? 1 : 0,
-      payment_gateway_name: this.data.pg,
+      payment_gateway_id: this.data.paymentGateway,
     };
     const params =
-      `&payment_gateway_name=${this.data.pg}&wallet=${this.params.wallet}`;
+      `&payment_gateway_id=${this.data.paymentGateway}&wallet=${this.sendData.wallet}`;
     this.getList(params);
   }
 
@@ -96,7 +98,7 @@ class shipmentConfirm {
         .then(({ data: { message } }) => {
           this.message = message;
           const params =
-            `&payment_gateway_name=${this.data.pg}&wallet=${this.params.wallet}`;
+            `&payment_gateway_id=${this.data.paymentGateway}&wallet=${this.sendData.wallet}`;
           this.getList(params);
         })
         .catch((err) => {
@@ -113,22 +115,22 @@ class shipmentConfirm {
     this.params = {
       shipment_id: this.shipment.id,
       wallet: this.isWalletChecked ? 1 : 0,
-      payment_gateway_name: this.data.pg,
+      payment_gateway_id: this.data.paymentGateway,
     };
     const method = 'put';
     return this
       .$http[method]('/shipments/finalShip', this.params)
       .then(({ data: encryptedData }) => {
         this.submitting = false;
-        if (this.data.pg === 'card') {
+        if (this.data.paymentGateway === this.PAYMENT_GATEWAY.CARD) {
           this.$window.location = encryptedData;
-        } else if (this.data.payment_gateway_name === 'paytm') {
+        } else if (this.data.payment_gateway_id === this.PAYMENT_GATEWAY.PAYTM) {
           this.$state.go('dash.paytm', { encryptedData });
-        } else if (this.data.pg === 'paypal') {
+        } else if (this.data.paymentGateway === this.PAYMENT_GATEWAY.PAYPAL) {
           this.$window.location = encryptedData.url;
-        } else if (this.data.pg === 'cash'
-          || this.data.pg === 'wire'
-          || this.data.pg === 'wallet') {
+        } else if (this.data.paymentGateway === this.PAYMENT_GATEWAY.CASH
+          || this.data.paymentGateway === this.PAYMENT_GATEWAY.WIRE
+          || this.data.paymentGateway === this.PAYMENT_GATEWAY.WALLET) {
           this.$state.go('dash.response', { shipmentId: this.shipment.id });
         }
       })

@@ -137,12 +137,12 @@ const constants = {
     REDEEM: '2',
   },
   PAYMENT_GATEWAY: {
-    PAYTM: 1,
-    WIRE: 2,
-    CREDITDEBITCARD: 3,
-    PAYPAL: 4,
-    WALLET: 5,
-    CASH: 6,
+    WIRE: 1,
+    CASH: 2,
+    CARD: 3,
+    PAYTM: 4,
+    PAYPAL: 5,
+    WALLET: 6,
   },
   CONTENT_TYPES: {
     REGULAR: '1',

@@ -20,5 +20,9 @@ module.exports = DataTypes => ({
     ],
   },
   description: DataTypes.STRING,
+  object_id: DataTypes.INTEGER,
+  object_name: DataTypes.STRING,
+  status: DataTypes.STRING,
+  response: DataTypes.STRING(2000),
 });
 

@@ -6,10 +6,10 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const http = require('http');
 const express = require('express');
 const socket = require('socket.io');
-const monitor = require('socket.io-monitor');
+// const monitor = require('socket.io-monitor');
 
 const socketioConfig = require('./config/socketio');
-const logger = require('./components/logger');
+// const logger = require('./components/logger');
 
 // const api = require('./conn/api');
 // api.credentials,
@@ -29,29 +29,29 @@ const socketio = socket(server, {
   // path: '/socket.io-client',
 });
 
-const { emitter } = monitor.bind(socketio, { port: 9042, host: 'localhost' });
+// const { emitter } = monitor.bind(socketio, { port: 9042, host: 'localhost' });
 
-setInterval(() => {
-  emitter
-    .getState()
-    .then((stats) => {
-      log('active sockets:', stats.sockets.length, ' active rooms:', stats.rooms.length);
-      const socketIds = stats.sockets.map(y => y.id);
-      if (socketIds.length) {
-        Promise
-          .all([
-            db.SocketSession
-              .update({ is_online: true }, { where: { socket_id: socketIds } }),
-            db.SocketSession
-              .update({ is_online: false }, { where: { socket_id: { $notIn: socketIds } } }),
-          ])
-          .then(x => log('sessions updated', x))
-          .catch(err => logger.error('socket update error', err));
-      } else {
-        db.sequelize.query('update socket_sessions set is_online=false');
-      }
-    });
-}, 10000);
+// setInterval(() => {
+//   emitter
+//     .getState()
+//     .then((stats) => {
+//       log('active sockets:', stats.sockets.length, ' active rooms:', stats.rooms.length);
+//       const socketIds = stats.sockets.map(y => y.id);
+//       if (socketIds.length) {
+//         Promise
+//           .all([
+//             db.SocketSession
+//               .update({ is_online: true }, { where: { socket_id: socketIds } }),
+//             db.SocketSession
+//               .update({ is_online: false }, { where: { socket_id: { $notIn: socketIds } } }),
+//           ])
+//           .then(x => log('sessions updated', x))
+//           .catch(err => logger.error('socket update error', err));
+//       } else {
+//         db.sequelize.query('update socket_sessions set is_online=false');
+//       }
+//     });
+// }, 10000);
 
 socketioConfig(socketio, db);
 expressConfig(app);

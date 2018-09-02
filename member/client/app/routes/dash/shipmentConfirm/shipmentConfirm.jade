@@ -80,9 +80,9 @@
           div.div-border-create.alert
             h2.m-n.alert.alert.alert-info.panel-warning 3. PAYMENT SUMMARY
             .panel-body
-              .radio(ng-repeat="paymentgateway in $ctrl.paymentGateways")
+              .radio(ng-repeat="paymentgateway in $ctrl.paymentGateway")
                 label.i-checks
-                  input(ng-checked="paymentgateway.value === $ctrl.payment.payment_gateway_name ? true : false", ng-disabled='$ctr.shipment.Is_axis_banned === true ? true :  false' type='radio', name='a', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.value}}', ng-model='$ctrl.data.pg')
+                  input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", ng-disabled='$ctr.shipment.Is_axis_banned === true ? true :  false' type='radio', name='a', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
                   i
                   | {{paymentgateway.name}} {{paymentgateway.description}}
         .col-md-4

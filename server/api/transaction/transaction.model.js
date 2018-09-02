@@ -25,8 +25,13 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
   );
+
   Transaction.associate = (db) => {
     Transaction.db = db;
+    Transaction.belongsTo(db.PaymentGateway);
+    Transaction.belongsTo(db.Shipment, {
+      foreignKey: 'object_id',
+    });
     Transaction.belongsTo(db.User, {
       foreignKey: 'customer_id',
       as: 'Customer',

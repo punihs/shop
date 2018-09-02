@@ -11,6 +11,5 @@ module.exports = DataTypes => ({
   level: DataTypes.INTEGER,
   points: DataTypes.INTEGER,
   total_points: DataTypes.INTEGER,
-  ship_request_id: DataTypes.INTEGER,
 });
 

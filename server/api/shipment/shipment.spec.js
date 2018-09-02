@@ -624,8 +624,8 @@ describe('PUT /api/shipments/finalShip', () => {
       .send({
         shipment_id: 116,
         insurance: 2,
-        wallet: 1,
-        payment_gateway_name: 'wire',
+        wallet: false,
+        payment_gateway_id: 3,
       })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
@@ -959,6 +959,7 @@ describe('GET /api/shipments/redirectShipment', () => {
       state_id: 1,
     }, { where: { id: 1 } })));
 });
+
 
 describe('PUT /api/shipments/115/state', () => {
   before(async () => LoyaltyPoint.create({
