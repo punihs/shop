@@ -5,7 +5,8 @@ div.m-t-xl.no-margin
         center
           h4.subpaybtn(ng-if='$ctrl.queueCount > 0')
             | Your shipment is ready.
-            a.summary-order(ui-sref='shipments.queue({ status: "IN_QUEUE" })')&nbsp; Submit Your Payment
+            // todo - change href
+            a.summary-order(ui-sref='shipments.index({ status: "INQUEUE" })') Submit Your Payment
             |  Quickly in order to avoid storage fees.
             a.tooltipkey(href='javascript:void(0)', title='Your package is now ready to be shipped and your final charges have been updated.You get a free time period of 7 DAYS to submit your payment. You will incur a storage fee of INR 100/ day for your prepared parcel from the 8th day onwards, which you can view in your Shoppre Wallet.')
               i.fa.fa-question-circle-o
@@ -13,7 +14,8 @@ div.m-t-xl.no-margin
           .order-top-left.col-md-6
             h3 Packages in locker&nbsp;
               strong(ng-bind='$ctrl.user.virtual_address_code')
-            a.btn.btn-blue.col-md-12(incoming.alert() Alert Shoppre about my incoming Packages (Optional)
+              // todo - change href
+            a.btn.btn-blue.col-md-12(ui-sref='shipments.index({ status: "INQUEUE" })') Alert Shoppre about my incoming Packages (Optional)
           .order-top-left.col-md-6
             // todo change this to offers
             h3(style='color: hotpink;') Coming Soon
@@ -29,9 +31,15 @@ div.m-t-xl.no-margin
                 style='border: 1px solid red'
                 ng-bind='$ctrl.queueCount'
               )
+            li.hide.m-r-sm.pull-right: a.h5.font-bold.b-a.btn-info(
+              uib-tooltip='Alert Shoppre about my incoming packages (Optional)'
+              ui-sref='packages.create()'
+            )
+              | Inform about your purchases to Shoppre Team
+        .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
         .clearfix
-        .col-md-8.pull-right.text-right.no-padder-right
-          h5.text-u-c WE’RE CURRENTLY PREPARING 1 SHIPMENT(S) FOR YOU.
+        .col-md-8.pull-right.text-right.no-padder-right(ng-if='$ctrl.queueCount')
+          h4.text-u-c We are preparing currently {{$ctrl.queueCount}} shipment for you
         .clearfix
         .hbox.accounts.panel.panel-warning.m-t-xs
           .bg-white-only

@@ -15,7 +15,7 @@ module.exports = DataTypes => ({
   first_name: DataTypes.STRING,
   last_name: DataTypes.STRING,
   line1: DataTypes.STRING,
-  line2: DataTypes.STRING,
+  line2: DataTypes.STRING(300),
   state: DataTypes.STRING,
   city: DataTypes.STRING,
   pincode: DataTypes.STRING,

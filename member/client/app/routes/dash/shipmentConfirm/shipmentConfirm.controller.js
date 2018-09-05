@@ -57,7 +57,6 @@ class shipmentConfirm {
         this.shipment = shipment;
         const shipmentMeta = [];
         shipmentMeta.push(shipment);
-        console.log('pg', payment.payment_gateway_id);
         this.shipmentMeta = shipmentMeta[0].ShipmentMetum;
         this.packageChrages = packages[0].PackageCharge;
         this.payment = payment;
@@ -86,7 +85,7 @@ class shipmentConfirm {
       payment_gateway_id: this.data.paymentGateway,
     };
     const params =
-      `&payment_gateway_id=${this.data.paymentGateway}&wallet=${this.sendData.wallet}`;
+      `&payment_gateway_id=${this.data.paymentGateway}&wallet=${this.params.wallet}`;
     this.getList(params);
   }
 
@@ -98,7 +97,7 @@ class shipmentConfirm {
         .then(({ data: { message } }) => {
           this.message = message;
           const params =
-            `&payment_gateway_id=${this.data.paymentGateway}&wallet=${this.sendData.wallet}`;
+            `&payment_gateway_id=${this.data.paymentGateway}&wallet=${this.params.wallet}`;
           this.getList(params);
         })
         .catch((err) => {

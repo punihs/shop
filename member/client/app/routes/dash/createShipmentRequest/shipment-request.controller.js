@@ -57,7 +57,7 @@ class shipmentRequestController {
       });
   }
   onload(id) {
-    const modal = this.AddAddress.open(id);
+    const modal = this.AddAddress.open(id, 'add');
     modal
       .result
       .then((data) => {
@@ -100,7 +100,7 @@ class shipmentRequestController {
           orginal_box: false,
           gift_wrap: false,
           gift_note: false,
-          giftnote_txt: false,
+          giftnote_txt: null,
           is_liquid: IS_LIQUID,
           max_weight: 0,
           invoice_tax_id: false,

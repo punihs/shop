@@ -72,7 +72,8 @@ class AddAddressController {
     if (!form) return (this.submitting = false);
 
     const id = this.addressId;
-    return this.$http[id ? 'put' : 'post'](`/addresses${id ? `/${id}` : ''}`, data)
+    return this
+      .$http[this.type === 'edit' ? 'put' : 'post'](`/addresses${id ? `/${id}` : ''}`, data)
       .then(({ data: { id: aid } }) => {
         this.submitting = false;
         this

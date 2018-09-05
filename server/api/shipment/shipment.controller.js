@@ -582,13 +582,13 @@ exports.create = async (req, res, next) => {
     log('addressid', req.body.address_id);
     const address = await Address.find({
       attributes: ['salutation', 'first_name', 'last_name', 'line1', 'line2', 'state',
-        'city', 'pincode', 'phone_code', 'phone', 'email', 'country_id'],
+        'city', 'pincode', 'phone_code', 'phone', 'country_id'],
       where: { id: req.body.address_id },
       include: [{
         model: Country,
         attributes: ['name'],
       }],
-    };
+    });
 
     const toAddress = await getAddress(address);
 
@@ -934,6 +934,7 @@ const paymentGatewayChargesMap = {
 exports.finalShipRequest = async (req, res) => {
   const customerId = req.user.id;
   const id = req.body.shipment_id;
+
   log('body', JSON.stringify(req.body));
 
   const shipment = await Shipment
@@ -996,11 +997,6 @@ exports.finalShipRequest = async (req, res) => {
     status: 'inqueue',
     payment_status: 'pending',
   });
-  const option = {
-    attributes: ['id', 'customer_id', 'estimated_amount',
-      'order_code', 'coupon_amount', 'wallet_amount', 'loyalty_amount', 'payment_gateway_fee_amount', 'final_amount', 'payment_gateway_id', 'status', 'payment_status'],
-    where: { id },
-  };
 
   log('shipment', JSON.stringify(shipment));
 
@@ -1026,19 +1022,8 @@ exports.finalShipRequest = async (req, res) => {
       { where: { id } },
     );
 
-    await updateCustomerWallet(shipment, customerId);
-    await walletTransaction(payment.final_amount, customer, shipment, DEBIT);
-  } else {
-    shipmentSave.payment_status = 'pending';
-    shipmentSave.status = 'confirmation';
-  }
-  const shipments = await Shipment
-    .update(shipmentSave, { where: { id: shipRequestId } });
-  log('shipmentSave.wallet_amount', shipmentSave.wallet_amount);
-  if (shipmentSave.wallet_amount !== 0) {
-    log('customer.transaction1', customer.wallet_balance_amount);
-    await walletTransaction(shipment.wallet, customer, shipment, DEBIT);
-  }
+  log('shipment.wallet_amount', shipment.wallet_amount);
+
 
   const notification = {};
   notification.customer_id = customerId;
@@ -1639,7 +1624,7 @@ exports.confirmShipment = async (req, res) => {
     attributes: ['id', 'name', 'description', 'value'],
     limit: 20,
   };
-  const paymentGateway = await PaymentGateway
+  const paymentGateways = await PaymentGateway
     .findAll(optionsPaymentGateway);
   log('payment gateway', JSON.stringify(payment));
   return res.json({
@@ -1649,7 +1634,7 @@ exports.confirmShipment = async (req, res) => {
     promoStatus,
     couponAmount,
     couponName,
-    paymentGateway,
+    paymentGateways,
     walletAmount: customer.wallet_balance_amount,
   });
 };
@@ -1820,7 +1805,7 @@ exports.redirectShipment = async (req, res) => {
 
   let IS_LIQUID = !!contentTypesMap[SPECIAL].length;
 
-  IS_LIQUID = IS_LIQUID === true ? 0 : 'To Be Calculated';
+  IS_LIQUID = IS_LIQUID === true ? 'To Be Calculated' : '0';
 
   let address = '';
   let IsShippingAddress = true;

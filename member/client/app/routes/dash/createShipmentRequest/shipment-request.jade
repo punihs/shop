@@ -234,7 +234,12 @@
                       popover-placement='top'
                       popover-append-to-body='true'
                       )
-                    textarea.m-b-xs.m-t-xs.form-control(type="text" ng-model="$ctrl.data.giftnote_txt" style='resize: none;' text='')
+                    textarea.m-b-xs.m-t-xs.form-control(
+                    type="text",
+                    ng-model="$ctrl.data.giftnote_txt",
+                    style='resize: none;',
+                    placeholder="Enter Gift Note"
+                    )
                   li.txt-kg
                     .col-md-2.no-padder
                         input.form-control.no-padder.text-center(type='text', placeholder='in KG' ng-model='$ctrl.data.max_weight' ng-bind="$ctrl.data.max_weight")
