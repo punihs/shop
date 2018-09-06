@@ -72,5 +72,10 @@ angular.module('uiGenApp')
         controller: 'PaymentPaytm',
         controllerAs: '$ctrl',
       })
-    ;
+      .state('dash.shipmentInvoice', {
+        url: '/:shipmentId/invoice',
+        templateUrl: 'app/routes/dash/shipmentInvoice/shipmentInvoice.html',
+        controller: 'ShipmentInvoice',
+        controllerAs: '$ctrl',
+      });
   });

@@ -756,8 +756,25 @@ exports.cancelRequest = async (req, res, next) => {
 exports.invoice = async (req, res) => {
   const { id } = req.params;
   let packages;
+  const options = {
+    where: { id },
+    include: [{
+      model: ShipmentMeta,
+    }, {
+      model: Package,
+      include: [{
+        model: PackageItem,
+        attributes: ['id', 'quantity', 'price_amount', 'total_amount', 'object', 'name'],
+      }, {
+        model: Store,
+        attributes: ['id', 'name'],
+      }, {
+        model: PackageCharge,
+      }],
+    }],
+  };
   const shipment = await Shipment
-    .find({ where: { order_code: id } });
+    .find(options);
   if (shipment) {
     packages = await Package
       .findAll({ where: { shipment_id: shipment.id } });
