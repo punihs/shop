@@ -10,8 +10,6 @@ angular.module('uiGenApp')
           QNOTIFY_SERVER: 'https://qnotify.shoppre.com/api',
           API: 'https://api.shoppre.com/api',
           API_BASE: 'https://api.shoppre.com',
-          CRUX_API: 'https://capi.shoppre.com/api',
-          PARTNER_OAUTH_API: 'https://api.shoppre.com/api/user',
           ACCOUNTS: '//accounts.shoppre.com',
           APPLY: 'https://apply.shoppre.com',
           HELP: 'https://www.shoppre.com/contact',

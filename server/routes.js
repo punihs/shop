@@ -10,7 +10,6 @@ const logger = require('./components/logger');
 const authenticate = require('./components/oauth/authenticate');
 
 // - Routers
-const login = require('./api/login');
 const orders = require('./api/order');
 const search = require('./api/search');
 const packages = require('./api/package');
@@ -29,7 +28,6 @@ const address = require('./api/address');
 const user = require('./api/user');
 const pricing = require('./api/pricing');
 const transaction = require('./api/transaction');
-const campaign = require('./api/campaign');
 const notification = require('./api/notification');
 const loyaltyHistory = require('./api/loyaltyHistory');
 const userDocument = require('./api/userDocument');
@@ -39,7 +37,6 @@ const category = require('./api/category');
 const feedback = require('./api/feedback');
 const shippingPartnerShipments = require('./api/shippingPartner/shipment');
 const health = require('./api/health');
-const seo = require('./api/seo');
 const paymentGateway = require('./api/paymentGateway');
 const paytm = require('./api/paymentGateway/paytm');
 const axis = require('./api/paymentGateway/axis');
@@ -59,7 +56,6 @@ const follower = require('./api/package/follower');
 const shipmentFollower = require('./api/shipment/follower');
 const redemption = require('./api/redemption');
 const shipmentTypes = require('./api/shipmentType');
-const schedulePickups = require('./api/schedulePickup');
 const webRoutes = require('./webRoutes');
 const minio = require('./conn/minio/minio.route');
 const cron = require('./cron');
@@ -68,8 +64,6 @@ module.exports = (app) => {
   webRoutes(app);
   app.use('/api/health', health);
   app.use('/api/minio', authenticate(), minio);
-  app.use('/api/seo', seo);
-  app.use('/api/user', login);
   app.use('/api/search', search);
   app.use(
     '/api/packages',
@@ -95,7 +89,6 @@ module.exports = (app) => {
   );
   app.use('/api/shippingPreference', authenticate(), shippingPreference);
   app.use('/api/transactions', transaction);
-  app.use('/api/campaigns', authenticate(), campaign);
   app.use('/api/notifications', authenticate(), notification);
   app.use('/api/loyaltyHistories', authenticate(), loyaltyHistory);
   app.use('/api/personalShopperPackages', authenticate(), personalShopperPackage);
@@ -129,7 +122,6 @@ module.exports = (app) => {
   app.use('/api/coupons', coupon);
   app.use('/api/emailPreferences', authenticate(), emailPreference);
   app.use('/api/emailTemplates', authenticate(), emailTemplate);
-  app.use('/api/schedulePickup', authenticate(), schedulePickups);
   app.get('/secured', authenticate(), (req, res) => res.json({ name, version }));
 
   app.get('/health', (req, res) => res.json({ name, version }));

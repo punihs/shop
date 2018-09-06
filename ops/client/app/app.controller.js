@@ -17,7 +17,7 @@ class AppController {
     vm.URLS = URLS;
     // config
     vm.app = {
-      name: 'MEMBER',
+      name: 'OPS',
       version: '0.0.1',
       settings: {
         themeID: 1,

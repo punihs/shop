@@ -33,7 +33,7 @@ const db = {
   'EmailTemplate', 'EmailLog', 'EmailTemplateAd', 'EmailPreference', 'Ad',
 
   // - Basic
-  'User', 'UserMeta', 'Group', 'Estimation', 'PasswordReset', 'Follower', 'SocketSession',
+  'User', 'UserMeta', 'Group', 'PasswordReset', 'Follower', 'SocketSession',
 
   // - Customer Account
   // Shoppre.com - Inspired by MyUS.com
@@ -50,13 +50,13 @@ const db = {
   'Shipment', 'ShipmentMeta', 'ShipmentType', 'ShipmentIssue', 'ShippingPartner', 'ShipmentState',
   'Transaction',
   // - Notifications
-  'Notification', 'Comment', 'ShipmentMail',
+  'Notification', 'Comment',
 
   // - loyalty points, coupon
   'LoyaltyPoint', 'LoyaltyHistory', 'Redemption', 'ReferCode',
 
   // - Organitation
-  'ShippingPartner', 'Link', 'ShippingRate',
+  'ShippingRate',
 
   // - Product
   'Store', 'Category', 'StoreCategory', 'StoreCategoryClub',
@@ -67,7 +67,7 @@ const db = {
   'Coupon',
 
   // - Reviews
-  'Review', 'Feedback', 'Campaign',
+  'Review', 'Feedback',
 
   // - Estomations
   'Estimation',
@@ -75,8 +75,6 @@ const db = {
   // - payment gateway
   'DirectPayment',
 
-  // - schedule pickup request
-  'SchedulePickup',
   // Shoppre Digital Inspired by Marketo.com
   // - Website - Google My Business - Hardy
   // - SEO - MOZ
@@ -101,12 +99,10 @@ const db = {
   // - shipping_partners, payment_gateways,
   // - countries, stores, cities
   // - customers, packages, package_items, shipments
-  'Product',
 
   'Log',
 
-  'Org',
-  'ObjectType', 'Keyword', 'Seo', 'Source',
+  'Source',
 
 ].forEach((model) => {
   db[model] = db.sequelize.import(`../../api/${_.camelCase(model)}/${_.camelCase(model)}.model.js`);

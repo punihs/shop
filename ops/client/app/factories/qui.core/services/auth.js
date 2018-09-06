@@ -6,9 +6,18 @@ angular.module('qui.core')
       let refreshingToken = false;
 
       authService.login = function login(credentials) {
-        const url = `${URLS.PARTNER_OAUTH_API}/login`;
+        const url = `${URLS.API_BASE}/oauth/token`;
         return $http
-          .post(url, credentials, { ignoreAuthModule: true })
+          .post(url, credentials, {
+            ignoreAuthModule: true,
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            transformRequest(obj) {
+              return Object
+                .keys(obj)
+                .map(p => `${encodeURIComponent(p)}=${encodeURIComponent(obj[p])}`)
+                .join('&');
+            },
+          })
           .then(response => Session.create('oauth', response.data))
           .catch(
             res => {
@@ -24,12 +33,21 @@ angular.module('qui.core')
           return $q.reject({ warning: 'Refresh token request already sent.' });
         }
         refreshingToken = true; // Set refresh_token reuqest tracker flag
-        const url = `${URLS.PARTNER_OAUTH_API}/refresh`;
+        const url = `${URLS.API_BASE}/oauth/token`;
         return $http
           .post(
             url,
             { refresh_token: Session.read('oauth').refresh_token },
-            { ignoreAuthModule: true }
+            {
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              transformRequest(obj) {
+                return Object
+                  .keys(obj)
+                  .map(p => `${encodeURIComponent(p)}=${encodeURIComponent(obj[p])}`)
+                  .join('&');
+              },
+              ignoreAuthModule: true,
+            }
           )
           .then(res => {
             Session.create('oauth', res.data);
@@ -42,9 +60,17 @@ angular.module('qui.core')
       };
 
       authService.logout = function logout() {
-        const url = `${URLS.PARTNER_OAUTH_API}/logout`;
+        const url = `${URLS.API_BASE}/oauth/revoke`;
         return $http
-          .post(url, { access_token: Session.getAccessToken() })
+          .post(url, { access_token: Session.getAccessToken() }, {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            transformRequest(obj) {
+              return Object
+                .keys(obj)
+                .map(p => `${encodeURIComponent(p)}=${encodeURIComponent(obj[p])}`)
+                .join('&');
+            },
+          })
           .then(
             response => {
               // Destroy Session data

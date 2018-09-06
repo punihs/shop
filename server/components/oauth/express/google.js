@@ -1,10 +1,11 @@
 const debug = require('debug');
 const rp = require('request-promise');
+const { GROUPS: { OPS, CUSTOMER } } = require('../../../config/constants');
 const env = require('../../../config/environment');
 const logger = require('../../../components/logger');
 const { User } = require('../../../conn/sqldb');
 
-const log = debug('s.components.oauthjs.express.google');
+const log = console.log //debug('s.components.oauthjs.express.google');
 
 exports.login = (req, res) => {
   const path = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&scope=${env.auth.google.scope}&access_type=offline&redirect_uri=${env.auth.google.redirect_uri}&client_id=${env.auth.google.client_id}&include_granted_scopes=true`;
@@ -36,20 +37,42 @@ exports.oauth = (req, res, next) => {
         headers: { Authorization: `Bearer ${token.access_token}` },
         json: true,
       })
-        .then(user => Promise.resolve([token, user]))
-        .then(([gToken, me]) => {
+        .then((me) => {
           const email = me.emails.filter(x => (x.type === 'account'))[0].value;
           req.body.grant_type = 'password';
           req.body = { username: email, password: env.MASTER_TOKEN };
-          log('AFTER GOOGLE LOGIN', req.body);
-          User
-            .update({
-              profile_photo_url: me.image.url,
-              google: { ...me, token: gToken },
-            }, { where: { email } })
-            .catch(err => logger.error('User me save', err, req.body));
+          log('AFTER GOOGLE LOGIN', req.body, me);
 
-          return next();
+          return User.find({ where: { email } })
+            .then((user) => {
+              if (!user) {
+                const IS_OPS = env.GSUITE_DOMAIN === email.split('@')[1];
+                const options = {
+                  email,
+                  salutation: '',
+                  first_name: me.name.givenName,
+                  last_name: me.name.familyName,
+                  profile_photo_url: me.image.url,
+                  google: { ...me, token },
+                  group_id: IS_OPS ? OPS : CUSTOMER,
+                };
+
+                if (IS_OPS) options.role_id = 2;
+
+                return User
+                  .create(options)
+                  .then(() => next());
+              }
+
+              User
+                .update({
+                  profile_photo_url: me.image.url,
+                  google: { ...me, token },
+                }, { where: { email } })
+                .catch(err => logger.error('User me save', err, req.body));
+
+              return next();
+            });
         });
     })
     .catch((err) => {
