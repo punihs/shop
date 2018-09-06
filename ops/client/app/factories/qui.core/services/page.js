@@ -1,7 +1,8 @@
 angular.module('qui.core')
   .factory('Page', (Session) => {
     let title = '';
-    let favicon = '/assets/images/logo.png';
+    let favicon = (Session.read('userinfo') ?
+      Session.read('userinfo').profile_photo_url : '/assets/images/logo.png');
     return {
       favicon: () => (favicon || 'https://www.shoppre.com/img/favicon.png'),
 
@@ -10,7 +11,7 @@ angular.module('qui.core')
       },
 
       title: function getTitle() {
-        return (Session.read('userinfo') ? `${title} - ${Session.read('userinfo').name}` : '');
+        return (Session.read('userinfo') ? `${Session.read('userinfo').name} - ${title}` : '');
       },
 
       setTitle: function setTitle(newTitle) {

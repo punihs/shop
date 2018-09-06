@@ -582,7 +582,7 @@ exports.create = async (req, res, next) => {
     log('addressid', req.body.address_id);
     const address = await Address.find({
       attributes: ['salutation', 'first_name', 'last_name', 'line1', 'line2', 'state',
-        'city', 'pincode', 'phone_code', 'phone', 'country_id'],
+        'city', 'pincode', 'phone_code', 'phone', 'email', 'country_id'],
       where: { id: req.body.address_id },
       include: [{
         model: Country,
@@ -975,7 +975,6 @@ const paymentGatewayChargesMap = {
 exports.finalShipRequest = async (req, res) => {
   const customerId = req.user.id;
   const id = req.body.shipment_id;
-
   log('body', JSON.stringify(req.body));
 
   const shipment = await Shipment

@@ -164,8 +164,8 @@ class CustomerNavController {
       'shipment.packages.index',
     ];
 
-    const name = states.includes(this.$state.current.name)
-      ? this.$state.current.name
+    const name = states.includes(this.$state.current.name) ?
+      this.$state.current.name
       : states[0];
 
     const status = this.$state.params.status || 'ALL';

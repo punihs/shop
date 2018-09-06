@@ -20,7 +20,6 @@ div.m-t-xl.no-margin
       )
         .row
           .col-md-12.col-sm-12.col-xs-12
-            .text-danger Note sign to delivery boy after successful creation.
             .col-md-7
               .row(ng-if='!$ctrl.EDIT')
                 .col-md-12
@@ -48,6 +47,7 @@ div.m-t-xl.no-margin
                     )
                       span.wrapper-xs(ng-bind='store.name')
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='!$ctrl.EDIT')
+              .text-danger(ng-if='!$ctrl.EDIT') Note: Sign to delivery boy after successful creation.
               .row
                 .col-md-12
                   .col-md-6.col-sm-5.col-xs-12.no-padder
@@ -188,7 +188,7 @@ div.m-t-xl.no-margin
                   button.m-l.btn.btn-success(ng-if="!$ctrl.EDIT && $ctrl.pkg.id")
                     span.fa.fa-forward.m-r-sm
                     span.text-white(ui-sref='customer.package.update({ id: $ctrl.$stateParams.id, packageId: $ctrl.pkg.id })') Continue Updating
-                  a.btn.btn.success(ng-click="$ctrl.open()") Create Store
+                  a.btn.btn.success(ng-if='!$ctrl.EDIT' ng-click="$ctrl.open()") Create Store
 
     .clearfix
 

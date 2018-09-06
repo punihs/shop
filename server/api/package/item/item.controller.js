@@ -7,8 +7,14 @@ const db = require('../../../conn/sqldb');
 const minio = require('../../../conn/minio');
 
 const {
-  PackageItem, PackageItemCategory,
+  PackageItem, PackageItemCategory, Package, PackageState,
 } = db;
+
+const {
+  PACKAGE_STATE_IDS: {
+    READY_TO_SHIP, ADDED_SHIPMENT,
+  },
+} = require('../../../config/constants');
 
 exports.index = (req, res, next) => {
   log('index', req.query);
@@ -63,6 +69,21 @@ exports.update = async (req, res) => {
 exports.destroy = async (req, res, next) => {
   const { id } = req.params;
   const { packageId } = req.params;
+
+  const packag = Package
+    .find({
+      attributes: ['id'],
+      where: { id: packageId },
+      include: [{
+        model: PackageState,
+        attributes: ['id'],
+        where: { state_id: [READY_TO_SHIP, ADDED_SHIPMENT] },
+      }],
+    });
+
+  if (packag) {
+    return res.status(403).json({ message: `Package Item ${id} can not delete after ready to ship` });
+  }
   await PackageItem.destroy({ where: { id, package_id: packageId } })
     .then(status => res.json({ message: `Package Item ${id} deleted sucessfully`, status }))
     .catch(next);

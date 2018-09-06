@@ -708,12 +708,6 @@ module.exports = () => [
     logo: 'logo_59a65ed81deac.jpg',
   },
   {
-    id: 119,
-    name: 'Vaaya.co.in',
-    type: 'web',
-    logo: 'logo_59a65ef9cf043.png',
-  },
-  {
     id: 120,
     name: 'Kushals.com',
     type: 'web',
@@ -874,12 +868,6 @@ module.exports = () => [
     name: 'Craftedindia.com',
     type: 'web',
     logo: 'logo_59a66e13e4612.png',
-  },
-  {
-    id: 147,
-    name: 'Perniaspopupshop.com',
-    type: 'web',
-    logo: 'logo_59a66e15c4c5b.jpg',
   },
   {
     id: 148,
@@ -1096,12 +1084,6 @@ module.exports = () => [
     name: 'Greendust.com',
     type: 'web',
     logo: 'logo_59a68a5377916.png',
-  },
-  {
-    id: 184,
-    name: 'Croma.com',
-    type: 'web',
-    logo: 'logo_59a68ab37b376.png',
   },
   {
     id: 185,
@@ -1392,12 +1374,6 @@ module.exports = () => [
     logo: 'logo_59a7bf6687591.png',
   },
   {
-    id: 233,
-    name: 'Stationeryworld.com',
-    type: 'web',
-    logo: 'logo_59a7bf6b24169.png',
-  },
-  {
     id: 234,
     name: 'Organicindiashop.com',
     type: 'web',
@@ -1446,22 +1422,10 @@ module.exports = () => [
     logo: 'logo_59a7c427b8274.png',
   },
   {
-    id: 242,
-    name: 'Amazon.in',
-    type: 'web',
-    logo: 'logo_59a7c4b1271f5.png',
-  },
-  {
     id: 243,
     name: 'Yourbookstall.com',
     type: 'web',
     logo: 'logo_59a7c4d651de0.jpg',
-  },
-  {
-    id: 244,
-    name: 'Flipkart.com',
-    type: 'web',
-    logo: 'logo_59a7c54686750.png',
   },
   {
     id: 245,
@@ -1492,12 +1456,6 @@ module.exports = () => [
     name: 'Cooliyo.com',
     type: 'web',
     logo: 'logo_59d4c1411f218.png',
-  },
-  {
-    id: 250,
-    name: 'Snapdeal.com',
-    type: 'web',
-    logo: 'logo_59a7c71f0068f.png',
   },
   {
     id: 251,
@@ -1740,12 +1698,6 @@ module.exports = () => [
     logo: 'logo_59d4c02644d5a.jpg',
   },
   {
-    id: 291,
-    name: 'Benzerworld.com',
-    type: 'web',
-    logo: 'logo_59d4c00ee1c4e.jpg',
-  },
-  {
     id: 292,
     name: 'Funkforhire.co.in',
     type: 'web',
@@ -1864,12 +1816,6 @@ module.exports = () => [
     name: 'Kidkenmontessori.com',
     type: 'web',
     logo: 'logo_59d4b91ab34e2.jpeg',
-  },
-  {
-    id: 312,
-    name: 'Greendust.com',
-    type: 'web',
-    logo: 'logo_59d4b90d86632.jpg',
   },
   {
     id: 313,
@@ -2088,12 +2034,6 @@ module.exports = () => [
     logo: 'logo_59d4a555a9471.jpg',
   },
   {
-    id: 349,
-    name: 'Giftsoflove.in',
-    type: 'web',
-    logo: 'logo_59d49eaa0a80e.png',
-  },
-  {
     id: 350,
     name: 'Archiesonline.com',
     type: 'web',
@@ -2140,12 +2080,6 @@ module.exports = () => [
     name: 'Prestogifts.com',
     type: 'web',
     logo: 'logo_59d49e3a1a8e8.jpg',
-  },
-  {
-    id: 358,
-    name: 'Printvenue.com',
-    type: 'web',
-    logo: 'logo_59d49e275e8a6.png',
   },
   {
     id: 359,
@@ -3396,12 +3330,6 @@ module.exports = () => [
     logo: 'logo_59d09d81879e9.jpg',
   },
   {
-    id: 567,
-    name: 'Pranaah',
-    type: 'fb',
-    logo: 'logo_59d21fa507e1d.png',
-  },
-  {
     id: 568,
     name: 'Anokhi',
     type: 'fb',
@@ -3412,12 +3340,6 @@ module.exports = () => [
     name: 'Jugalbandhi',
     type: 'fb',
     logo: 'logo_59d21fc500d88.png',
-  },
-  {
-    id: 570,
-    name: 'Shemy',
-    type: 'fb',
-    logo: 'logo_59d21fcfecb69.jpg',
   },
   {
     id: 571,
@@ -3432,22 +3354,10 @@ module.exports = () => [
     logo: 'logo_59d21fedad52b.jpg',
   },
   {
-    id: 573,
-    name: 'Pashmina Boutique',
-    type: 'fb',
-    logo: 'logo_59d220306f773.jpg',
-  },
-  {
     id: 574,
     name: 'Rangga',
     type: 'fb',
     logo: 'logo_59d2203ab8e9c.jpg',
-  },
-  {
-    id: 575,
-    name: 'NVY Studio',
-    type: 'fb',
-    logo: 'logo_59d35e044ab1e.jpg',
   },
   {
     id: 576,
@@ -3612,12 +3522,6 @@ module.exports = () => [
     logo: 'logo_59d225c9e1966.png',
   },
   {
-    id: 603,
-    name: 'Sia Designer Collection',
-    type: 'fb',
-    logo: 'logo_59d225bbaf108.jpg',
-  },
-  {
     id: 604,
     name: 'Summer By Priyanka Gupta',
     type: 'fb',
@@ -3700,12 +3604,6 @@ module.exports = () => [
     name: 'Namah By Parul',
     type: 'fb',
     logo: 'logo_59d22822a4ea0.jpg',
-  },
-  {
-    id: 618,
-    name: 'Keya',
-    type: 'fb',
-    logo: 'logo_59d2283c3c1e1.jpg',
   },
   {
     id: 619,
@@ -4020,22 +3918,10 @@ module.exports = () => [
     logo: 'logo_59d5fab55597d.jpg',
   },
   {
-    id: 671,
-    name: 'Bigbasket.com',
-    type: 'web',
-    logo: 'logo_59d60019a7404.png',
-  },
-  {
     id: 672,
     name: 'Leapfrog.com',
     type: 'web',
     logo: 'logo_59d604c16754b.png',
-  },
-  {
-    id: 673,
-    name: 'Posterduniya.com',
-    type: 'web',
-    logo: 'logo_59d665f698309.png',
   },
   {
     id: 674,
@@ -4204,12 +4090,6 @@ module.exports = () => [
     name: 'Cyankart',
     type: 'web',
     logo: 'logo_5ac509c13e445.jpg',
-  },
-  {
-    id: 702,
-    name: 'Bewakoof',
-    type: 'web',
-    logo: 'logo_5ac50a0153843.jpg',
   },
   {
     id: 703,

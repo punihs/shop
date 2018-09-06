@@ -4,6 +4,7 @@ const { GROUPS: { OPS, CUSTOMER } } = require('../../../config/constants');
 const env = require('../../../config/environment');
 const logger = require('../../../components/logger');
 const { User } = require('../../../conn/sqldb');
+const userCtrl = require('../../../api/user/user.controller');
 
 const log = console.log //debug('s.components.oauthjs.express.google');
 
@@ -47,12 +48,16 @@ exports.oauth = (req, res, next) => {
             .then((user) => {
               if (!user) {
                 const IS_OPS = env.GSUITE_DOMAIN === email.split('@')[1];
+                const VirtualAddressCode = userCtrl.lockerGenerate();
+
                 const options = {
                   email,
                   salutation: '',
                   first_name: me.name.givenName,
                   last_name: me.name.familyName,
                   profile_photo_url: me.image.url,
+                  virtual_address_code: VirtualAddressCode,
+                  email_verify: 'yes',
                   google: { ...me, token },
                   group_id: IS_OPS ? OPS : CUSTOMER,
                 };

@@ -148,9 +148,12 @@ class PackageShowController {
           .pop('success', message);
         return this.packageItems.splice(index, 1);
       })
-      .catch(() => {
+      .catch((err) => {
+        let message = '';
+        message = err.status === 403 ?
+          err.data.message : 'There was problem deleting package item';
         this.toaster
-          .pop('error', 'There was problem deleting package item');
+          .pop('error', message);
       });
   }
 }

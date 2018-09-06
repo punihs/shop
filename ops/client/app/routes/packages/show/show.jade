@@ -90,7 +90,7 @@
               i.fa.text-muted.fa-lg.fa-tint
             div
               a.text-muted.font-thin Content Type
-              div(ng-bind="$ctrl.data.content_type === 1 ? 'Normal' : 'Special'")
+              div(ng-bind="$ctrl.data.content_type === '1' ? 'Normal' : 'Special'")
 
           .clear.wrapper-xs
             a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
@@ -133,7 +133,7 @@
                 span(ng-bind='"₹" + charge.chargeAmount')
 
 
-        uib-tab(index='2', heading='Docs')
+        uib-tab(index='2', heading='Docs').hide
           .col-xs-12.wrapper-xs.no-padder-left(ng-if='$ctrl.document.length')
             .w-full.wrapper-xs.inline(ng-repeat='(key, file) in $ctrl.document')
               .m-b-xs.wrapper-xs.clear(ng-class="$last ?'':'b-b'")
