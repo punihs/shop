@@ -23,7 +23,7 @@ const {
   SHIPMENT_STATE_ID_NAMES,
   SHIPMENT_STATE_IDS: {
     CANCELED, DELIVERED, DISPATCHED, SHIPMENT_HANDED, PACKAGING_REQUESTED,
-    PAYMENT_FAILED, PAYMENT_REQUESTED,
+    PAYMENT_COMPLETED, PAYMENT_FAILED, PAYMENT_REQUESTED, PAYMENT_CONFIRMED,
   },
   PACKAGE_STATE_IDS: { READY_TO_SHIP },
   // LOYALTY_TYPE: {
@@ -628,14 +628,38 @@ exports.shipQueue = async (req, res) => {
   const options = {
     attributes: [
       'order_code', 'customer_name', 'address',
-      'phone', 'packages_count', 'weight', 'estimated_amount',
+      'phone', 'packages_count', 'final_weight', 'wallet_amount', 'package_level_charges_amount',
+      'coupon_amount', 'loyalty_amount', 'estimated_amount', 'created_at', 'payment_status',
+      'final_amount', 'payment_gateway_fee_amount',
     ],
-    where: { status: ['inqueue', 'inreview', 'received', 'confirmation'] },
+    include: [{
+      model: ShipmentState,
+      attributes: ['state_id'],
+      where: {
+        state_id: [PACKAGING_REQUESTED, PAYMENT_REQUESTED,
+          PAYMENT_COMPLETED, PAYMENT_FAILED, PAYMENT_CONFIRMED],
+      },
+    }, {
+      model: PaymentGateway,
+      attributes: ['id', 'name', 'value'],
+    }, {
+      model: Package,
+      attributes: ['id', 'created_at', 'weight', 'price_amount'],
+      include: [{
+        model: PackageItem,
+        attributes: ['id', 'quantity', 'price_amount', 'total_amount', 'object', 'name'],
+      }, {
+        model: Store,
+        attributes: ['id', 'name'],
+      }],
+    }],
   };
   await Shipment
-    .find(options)
-    .then(shipment =>
-      res.json({ shipment }));
+    .findAll(options)
+    .then((shipment) => {
+      log(shipment);
+      res.json({ shipment });
+    });
 };
 
 exports.count = async (req, res) => {

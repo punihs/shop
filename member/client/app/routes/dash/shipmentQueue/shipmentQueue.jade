@@ -1,0 +1,190 @@
+div.m-t-xl.no-margin
+  .wrapper-md.bg-white-only.container
+    .row
+      // - Header
+      .col-md-12.m-t-xs
+        .h1.m-l-md.font-thin.h3.m-b-md.text-u-c
+          | SHIPMENTS IN QUEUE
+        .clearfix
+            .alert.alert-warning(role='alert')
+              h5
+                | Kindly Submit your Payment within 7 DAYS after you have received Shoppre's email titled "Submit Payment | Your Shipment is packed and weighed".
+              h5
+                | From the 8th day, your parcel will start accumulating Storage fees of INR 100/day which you can view in your Shoppre wallet.
+          .full-width
+            .wrapper-md.ng-scope
+              .panel.panel-default
+                div
+                  table.table.table-bordered.m-b-none.default.footable-loaded.footable(
+                  ui-jq='footable', data-filter='#filter', data-page-size='5')
+                    thead
+                      tr
+                        th.footable-visible.footable-sortable
+                        th.footable-visible.footable-sortable
+                          | SENDING TO
+                          span.footable-sort-indicator
+                        th.footable-visible.footable-sortable(data-hide='phone,tablet')
+                          | SHIP REQUEST ID
+                          span.footable-sort-indicator
+                        th.footable-visible.footable-sortable(data-hide='phone,tablet', data-name='Date Of Birth')
+                          | REQUEST DATE
+                          span.footable-sort-indicator
+                        th.footable-visible.footable-last-column.footable-sortable
+                          | WEIGHT
+                          span.footable-sort-indicator
+                        th.footable-visible.footable-last-column.footable-sortable
+                          | PACKAGE COUNT
+                          span.footable-sort-indicator
+                        th.footable-visible.footable-last-column.footable-sortable
+                          | STATUS
+                          span.footable-sort-indicator
+                    tbody.odd(ng-repeat="shipment in $ctrl.shipments")
+                      tr.footable-even(style='display: table-row;')
+                        td.footable-visible.footable-first-column(ng-click='shipment.open = !shipment.open')
+                          i.fa.fa-sort-desc
+                        td.footable-visible {{shipment.customer_name}}
+                        td.footable-visible {{shipment.order_code}}
+                        td.footable-visible(
+                        ng-bind='$ctrl.moment(shipment.created_at).fromNow()'
+                        uib-tooltip="{{shipment.created_at | date:'MMM d, y'}} IST {{shipment.created_at | date:'h:mm a'}}"
+                        tooltip-placement='right'
+                        tooltip-append-to-body='true'
+                        )
+                        td.footable-visible {{shipment.final_weight}}
+                        td.footable-visible {{shipment.packages_count}}
+                        td.footable-visible
+                          span(ng-if="shipment.payment_status === 'failed'")
+                            a(href="") Retry Payment
+                          div
+                            div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PACKAGING_REQUESTED')
+                              p In Review
+                              p
+                                a.summary-order(href="") Cancel Shipment
+                                i.fa.fa-info-circle.m-l-xs(
+                                uib-popover='Shoppre offers a one-hour window to cancel your shipping order. Once your parcel has been prepared, you can no longer cancel your shipment. The status will change to Submit Payment.'
+                                popover-trigger="'mouseenter'"
+                                popover-placement='top'
+                                popover-append-to-body='true'
+                                )
+                            div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PAYMENT_REQUESTED')
+                              p
+                                a.summary-order(href="") Submit Payment
+                            div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PAYMENT_COMPLETED')
+                              span(ng-if="shipment.PaymentGateway.value != 'wire' && shipment.PaymentGateway.value != 'cash' && shipment.payment_status != 'success'")
+                                  p
+                                    a.summary-order(href="") Retry Payment
+                              span(ng-if="shipment.payment_status != 'success'")
+                                  p Awaiting Payment
+                                  p small It might take upto 24 Hours to reflect your payments into our account.
+                                  p
+                                    a(href="") Change Payment Method
+                            div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PAYMENT_FAILED')
+                              a.summary-order(href="") Retry Payment
+                            div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PAYMENT_CONFIRMED')
+                              p Payment Received
+                              p
+                                  a.summary-order(href="", target='_blank') Invoice
+                      tr
+                        td(colspan=8 ng-if='shipment.open')
+                          .col-sm-7
+                              h4
+                                strong Shipping Address:
+                              p
+                                strong {{shipment.customer_name}}
+                              p {{shipment.address}}
+                              p PH: {{shipment.phone}}
+
+                          div(ng-if="shipment.final_amount != 0")
+                          .col-sm-5
+                            table.table.table-bordered.default.footable-loaded.footable
+                              tr
+                                td Estimated Shipping
+                                td ₹ {{estimated = shipment.estimated_amount - shipment.package_level_charges_amount - shipment.wallet_amount}}
+                              tr
+                                td Package Level Charges
+                                td ₹ {{shipment.package_level_charges_amount}}
+                              tr(ng-if="shipment.wallet_amount != 0")
+                                td Shoppre Wallet
+                                td ₹ {{shipment.wallet_amount}}
+                                  span(ng-if ="shipment.wallet_amount < 0")
+                                    p.pull-right (Amount added)
+                                  span(ng-if="shipment.wallet_amount > 0")
+                                    p.pull-right (Amount deducted)
+                              tr(ng-if="shipment.coupon_amount > 0")
+                                td Coupon Reward
+                                td (-)₹ {{shipment.coupon_amount}}
+                              tr(ng-if="shipment.loyalty_amount > 0")
+                                td Loyalty Reward
+                                td (-)₹ {{shipment.loyalty_amount}}
+                              tr(ng-if="shipment.payment_gateway_fee_amount > 0")
+                                td Payment Gateway (PG) Fee
+                                td ₹ {{shipment.payment_gateway_fee_amount}}
+                              tr
+                                td Total Cost
+                                td ₹ {{shipment.final_amount}}
+
+                                     // - Packages
+                          table#DataTables_Table_1.table.table-bordered.m-b-none.default.footable-loaded.footable(
+                            ui-jq='footable',
+                            data-filter='#filter',
+                            data-page-size='5'
+                          )
+                            thead
+                              tr(role='row')
+                                th.footable-visible.footable-sortable
+                                th.footable-visible.footable-sortable
+                                  | FROM
+                                  span.footable-sort-indicator
+                                th.footable-visible.footable-sortable(data-hide='phone,tablet')
+                                  | PACKAGE ID
+                                  span.footable-sort-indicator
+                                th.footable-visible.footable-sortable(data-hide='phone,tablet', data-name='Date Of Birth')
+                                  | DATE RECEIVED
+                                  span.footable-sort-indicator
+                                th.footable-visible.footable-last-column.footable-sortable
+                                  | ITEM VALUES
+                                  span.footable-sort-indicator
+                                th.footable-visible.footable-last-column.footable-sortable
+                                  | WEIGHT
+                                  span.footable-sort-indicator
+                            tbody.odd(role='row' ng-repeat="package in shipment.Packages")
+                              tr.footable-even(style='display: table-row;')
+                                td.footable-visible.footable-first-column(ng-click='package.open = !package.open')
+                                  i.fa.fa-sort-desc
+                                td.footable-visible
+                                  a(ui-sref='package.show({ id: package.id })' ng-bind='package.Store.name')
+                                td.footable-visible {{package.id}}
+                                td.footable-visible(
+                                  ng-bind='$ctrl.moment(package.created_at).fromNow()'
+                                  uib-tooltip="{{package.created_at | date:'MMM d, y'}} IST {{package.created_at | date:'h:mm a'}}"
+                                  tooltip-placement='right'
+                                  tooltip-append-to-body='true'
+                                  )
+                                td.footable-visible  {{package.price_amount}}
+                                td.footable-visible  {{package.weight}}
+                              tr
+                                td(colspan=8 ng-if='package.open')
+
+                                  table#DataTables_Table_2.table.table-bordered.m-b-none.default.footable-loaded.footable(
+                                  ui-jq='footable', data-filter='#filter', data-page-size='5')
+                                    thead
+                                      tr(role='row')
+                                        th.footable-visible.footable-sortable
+                                          | PACKAGE DETAILS
+                                          span.footable-sort-indicator
+                                        th.footable-visible.footable-sortable(data-hide='phone,tablet')
+                                          | QTY
+                                          span.footable-sort-indicator
+                                        th.footable-visible.footable-sortable(data-hide='phone,tablet', data-name='Date Of Birth')
+                                          | VALUE PER UNIT(INR)
+                                          span.footable-sort-indicator
+                                        th.footable-visible.footable-last-column.footable-sortable
+                                          | TOTAL LINE VALUE(INR)
+                                          span.footable-sort-indicatorvate
+
+                                    tbody.odd(role='row' ng-repeat="packageItem in package.PackageItems")
+                                      tr.footable-even(style='display: table-row;')
+                                        td.footable-visible {{packageItem.name}}
+                                        td.footable-visible {{packageItem.quantity}}
+                                        td.footable-visible {{packageItem.price_amount}}
+                                        td.footable-visible {{packageItem.quantity * packageItem.price_amount}}
