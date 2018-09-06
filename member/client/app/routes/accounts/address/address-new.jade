@@ -162,23 +162,13 @@ div.m-t-xl.no-margin
                     | Phone / Mobile Number
                     span.text-danger *
               .row
-                .col-md-2.col-sm-2.col-xs-12
-                  label.col-xs-12.input-group
-                    select.form.form-control(
-                      ng-model='$ctrl.data.phone_code'
-                      name='phone_code'
-                      required
-                    )
-                      option(value='') Ph Code
-                      option(value='91') +91
-                      option(value='1') +1
-                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.phone_code.$dirty && newAddressForm.phone_code.$invalid') Please select Country Phone Code
-                .col-md-4.col-sm-5.col-xs-12.no-padder
+          .col-md-4.col-sm-5.col-xs-12
                   label.col-xs-12.input-group
                     input.form.form-control(
+                      ng-intl-tel-input
                       type='text'
                       name='phone'
-                      placeholder='eg. 9844717202'
+                      placeholder='eg. +919844717202'
                       ng-model='$ctrl.data.phone'
                       autofocus
                       required

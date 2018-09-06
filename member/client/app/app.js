@@ -29,9 +29,12 @@ angular.module('uiGenApp', [
   'ngSanitize',
   'ngCookies',
   'btford.socket-io',
+  'ngIntlTelInput',
 ])
 
-  .config(($urlRouterProvider, $locationProvider) => {
+  .config(($urlRouterProvider, $locationProvider, ngIntlTelInputProvider) => {
+    ngIntlTelInputProvider.set({ initialCountry: 'us' });
+
     $urlRouterProvider.when('/', '/locker');
     $urlRouterProvider.otherwise(($injector) => $injector.get('$state').go('access.404'));
 
