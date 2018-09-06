@@ -3,9 +3,13 @@ const moment = require('moment');
 const {
   PackageItem, Package, PackageItemCategory,
 } = require('../../conn/sqldb');
+const db = require('../../conn/sqldb');
 const minio = require('../../conn/minio');
 const {
   PRICE_ENTERER: { SHOPPRE },
+  PACKAGE_STATE_IDS: {
+    IN_REVIEW,
+  },
 } = require('../../config/constants');
 
 const log = debug('api-packageItem-controller');
@@ -87,6 +91,9 @@ exports.update = async (req, res) => {
 
 
 exports.values = async (req, res) => {
+  const { id } = req.params;
+  const pkg = await Package
+    .findById(id, { attributes: ['id'] });
   req.body.forEach((x) => {
     PackageItem
       .update(
@@ -98,7 +105,14 @@ exports.values = async (req, res) => {
         { where: { id: x.id } },
       );
   });
-
+  Package
+    .updateState({
+      db,
+      pkg,
+      actingUser: req.user,
+      nextStateId: IN_REVIEW,
+      comments: 'Cusotmer Confirmed Values',
+    });
   log('body', req.body);
   return res.json({ message: 'Values updated succesfully' });
 };

@@ -239,10 +239,33 @@ div.m-t-xl.no-margin
                                 p
                                   strong Option 1:
                                   | Upload merchant invoice. Your package will be placed "In Review" untill the values are verified by Shoppre.
-                                div
-                                  .h1.m-l-md.font-thin.h3
-                                    | {{$ctrl.EDIT ? 'Edit' : 'Create'}} Package Item
-
+                              span(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.CUSTOMER_INPUT')
+                                table#DataTables_Table_9.table.table-bordered.m-b-none
+                                  thead
+                                    tr(role='row')
+                                      th.sorting_asc.text-u-c(style='width: 186px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Package Details
+                                      th.sorting.text-u-c(style='width: 242px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') QTY
+                                      th.sorting.text-u-c(style='width: 241px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Value per Unit
+                                      th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending') Value
+                                  tbody
+                                    tr.odd(role='row' ng-repeat="item in package.PackageItems")
+                                      td.sorting_1 {{item.name}}
+                                      td {{item.quantity}}
+                                      td
+                                        .input-group
+                                          span.input-group-addon
+                                            i.fa.fa-money
+                                          input.form-control(type='text', ng-model= 'item.price_amount', ng-change='$ctrl.getTotalItemAmount($parent.$index)' value= '{{item.price_amount}}')
+                                      td {{item.quantity * item.price_amount}}
+                                table#DataTables_Table_6.table.table-bordered.m-b-none
+                                  tr(role='row')
+                                    td(colspan="2" ng-model= '$ctrl.data.weight[package.id]')
+                                      span Total Weight : {{package.weight}} kg
+                                    td
+                                      span Total Values Of This Package : {{ $ctrl.totalItemAmount }}
+                                    td
+                                      button.btn.btn-sm.btn-warning.m-b-xs.text-u-c.pull-right(type='submit', ng-click="$ctrl.submitValues(package.id, $index)") Confirm Package
+                              span(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.UPLOAD_INVOICE_REQUESTED')
                                 form.form.form-validation.form-horizontal.wrapper-md(
                                 name="newPackageItemForm"
                                 novalidate

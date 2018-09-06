@@ -25,6 +25,7 @@ class PackageLockerController {
     this.totalItemAmount = 0;
     this.data = {};
     this.queueCount = '';
+    this.PACKAGE_STATE_IDS = this.CONFIG.PACKAGE_STATE_IDS;
   }
 
   startUpload(ctrl, file) {
