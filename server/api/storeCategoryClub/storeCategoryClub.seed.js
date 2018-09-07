@@ -139,7 +139,7 @@ module.exports = () => [
     id: '19',
     store_category_id: '2',
     store_id: '4',
-    url: 'https:www.snapdeal.com',
+    url: 'https/:www.snapdeal.com',
     rank: '3',
     featured: null,
     info: null,
@@ -1010,7 +1010,7 @@ module.exports = () => [
   }, {
     id: '130',
     store_category_id: '5',
-    store_id: '147',
+    store_id: '116',
     url: 'https:www.perniaspopupshop.com',
     rank: '2',
     featured: null,
@@ -1066,7 +1066,7 @@ module.exports = () => [
   }, {
     id: '137',
     store_category_id: '5',
-    store_id: '119',
+    store_id: '82',
     url: 'http:www.vaaya.co.in',
     rank: '10',
     featured: null,
@@ -1778,7 +1778,7 @@ module.exports = () => [
   }, {
     id: '227',
     store_category_id: '8',
-    store_id: '184',
+    store_id: '657',
     url: 'https:www.croma.com',
     rank: '9',
     featured: null,
@@ -3114,7 +3114,7 @@ module.exports = () => [
   }, {
     id: '396',
     store_category_id: '14',
-    store_id: '671',
+    store_id: '239',
     url: 'https:www.bigbasket.com',
     rank: '18',
     featured: null,
@@ -3658,7 +3658,7 @@ module.exports = () => [
   }, {
     id: '464',
     store_category_id: '23',
-    store_id: '673',
+    store_id: '668',
     url: 'https:www.posterduniya.com',
     rank: '4',
     featured: null,
