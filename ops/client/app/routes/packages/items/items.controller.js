@@ -79,6 +79,7 @@ class PackageItemsController {
 
     if (this.EDIT) {
       this.PackageItemCategory.model = this.data.PackageItemCategory.name;
+      this.data.object_thumb = `${this.URLS.CDN}/shoppre/${this.data.object.replace('.', '-thumb.')}`;
     }
   }
 

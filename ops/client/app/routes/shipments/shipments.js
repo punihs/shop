@@ -38,9 +38,9 @@ angular.module('uiGenApp')
             };
 
             return $http
-            .get(`/shipments/${$stateParams.id}`, { params })
-            .then(({ data: pkg }) => pkg)
-            .catch(() => $state.go('access.404'));
+              .get(`/shipments/${$stateParams.id}`, { params })
+              .then(({ data: pkg }) => pkg)
+              .catch(() => $state.go('access.404'));
           },
         },
       });

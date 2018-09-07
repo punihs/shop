@@ -24,7 +24,7 @@ angular.module('uiGenApp')
         template: '<div ui-view></div>',
       })
       .state('package.show', {
-        url: '?{activeTab:int}',
+        url: '?{activeTab:int}&:profilePhotoUrl',
         templateUrl: 'app/routes/packages/show/show.html',
         controller: 'PackageShowController',
         controllerAs: '$ctrl',

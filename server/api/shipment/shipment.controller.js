@@ -55,7 +55,6 @@ const paymentGatewaysMap = {
   },
 };
 
-
 const BUCKETS = require('../../config/constants/buckets');
 
 const { ADDED_TO_SHIPMENT } = require('../../config/constants/packageStates');
@@ -961,10 +960,8 @@ const initiatePayment = (transaction, req, res) => {
   // return currentGateway.create(req, res, transaction);
   log({ message: 'payment.axis.start' });
   switch (transaction.payment_gateway_id) {
-    case CARD: const encryptedData = axis.create(req, res, transaction);
-      return encryptedData;
-    default:
-      return res.redirect('customer.locker');
+    case CARD: return axis.create(req, res, transaction);
+    default: return res.redirect('customer.locker');
   }
 };
 

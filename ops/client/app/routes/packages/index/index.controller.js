@@ -153,6 +153,8 @@ class PackagesIndexController {
           this.ui.lazyLoad = false;
           return;
         }
+        console.log('url', packages[0].Customer);
+        console.log('url', packages);
 
         if (!packages.length && this.$rootScope.previousState === 'access.oauth') {
           this.$state.go('packages.index', { bucket: 'ALL' });

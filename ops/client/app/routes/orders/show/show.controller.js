@@ -8,7 +8,6 @@ class OrderShowController {
   $onInit() {
 
   }
-
 }
 
 angular.module('uiGenApp')

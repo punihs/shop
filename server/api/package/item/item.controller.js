@@ -70,7 +70,7 @@ exports.destroy = async (req, res, next) => {
   const { id } = req.params;
   const { packageId } = req.params;
 
-  const packag = Package
+  const pkg = Package
     .find({
       attributes: ['id'],
       where: { id: packageId },
@@ -81,11 +81,23 @@ exports.destroy = async (req, res, next) => {
       }],
     });
 
-  if (packag) {
-    return res.status(403).json({ message: `Package Item ${id} can not delete after ready to ship` });
+  if (pkg) {
+    return res
+      .status(403)
+      .json({
+        message: `Package Item ${id} can not delete after ready to ship`,
+      });
   }
-  await PackageItem.destroy({ where: { id, package_id: packageId } })
-    .then(status => res.json({ message: `Package Item ${id} deleted sucessfully`, status }))
+
+  return PackageItem
+    .destroy({
+      where: {
+        id,
+        package_id: packageId,
+      },
+    })
+    .then(status => res
+      .json({ message: `Package Item ${id} deleted sucessfully`, status }))
     .catch(next);
 };
 

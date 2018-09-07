@@ -73,7 +73,7 @@ class shipmentsShowController {
     this.$q
       .all(files
         .map((file) => this
-        .$http
+          .$http
           .post(`/shipment/${this.$stateParams.id}/items`, {
             documentFile: file,
           })))

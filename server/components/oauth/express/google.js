@@ -6,7 +6,7 @@ const logger = require('../../../components/logger');
 const { User } = require('../../../conn/sqldb');
 const userCtrl = require('../../../api/user/user.controller');
 
-const log = console.log //debug('s.components.oauthjs.express.google');
+const log = debug('s.components.oauthjs.express.google');
 
 exports.login = (req, res) => {
   const path = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&scope=${env.auth.google.scope}&access_type=offline&redirect_uri=${env.auth.google.redirect_uri}&client_id=${env.auth.google.client_id}&include_granted_scopes=true`;

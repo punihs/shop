@@ -38,7 +38,7 @@ div
           td(colspan="5"): h1.text-center.text-muted No Packages
         .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='package in $ctrl.packages')
           .col-xs-3.wrapper-sm.m-t-xs
-            a(ui-sref='package.show({ id: package.id })' target="_blank") {{package.Store.name}}
+            a(ui-sref='package.show({ id: package.id, profilePhotoUrl: package.Customer.profile_photo_url })' target="_blank") {{package.Store.name}}
           .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="package.Customer.name" title="{{package.Customer.name}}")
           .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(title="{{package.Customer.virtual_address_code + ' ('+package.Customer.Locker.short_name+ ')'}}")
             span(ng-bind="package.Customer.virtual_address_code")

@@ -5,6 +5,7 @@ angular.module('uiGenApp')
     switch (window.location.host) {
       case 'ops.shoppre.com':
         vars = {
+          CDN: 'https://staging-cdn.shoppre.com',
           QNOTIFY_SERVER: 'https://qnotify.shoppre.com/api',
           API: 'https://api.shoppre.com/api',
           API_BASE: 'https://api.shoppre.com',
@@ -41,7 +42,7 @@ angular.module('uiGenApp')
       default: {
         vars = {
           BETA: true,
-          CDN: 'https://staging-cdn.shoppre.com',
+          CDN: 'http://cdn.shoppre.test',
           ADMIN: 'http://admin.shoppre.test',
           QNOTIFY_SERVER: 'http://qnotify.shoppre.test/api',
           API_BASE: 'http://localhost:5000',

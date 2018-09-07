@@ -214,7 +214,7 @@ exports.submitRegister = async (req, res) => {
       .find(options);
     if (refer) {
       const optionLoyalty = {
-        attributes: ['id', 'total_points'],
+        attributes: ['id', 'total_points', 'points'],
         where: { customer_id: customerId },
       };
       loyalPoints = 200;

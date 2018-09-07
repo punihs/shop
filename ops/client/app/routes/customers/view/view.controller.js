@@ -1,7 +1,7 @@
 class CustomerViewController {
   /* @ngInject */
   constructor(URLS, $http, Page, $stateParams, $sce, $window, QCONFIG, currentCustomer,
-              $state, $log, Session, $uibModal) {
+    $state, $log, Session, $uibModal) {
     this.URLS = URLS;
     this.$http = $http;
     this.Page = Page;
@@ -28,7 +28,6 @@ class CustomerViewController {
     this.Page.setTitle(`${this.customer.name}`);
     this.data = this.customer;
   }
-
 }
 
 
