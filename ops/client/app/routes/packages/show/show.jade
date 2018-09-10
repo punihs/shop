@@ -163,16 +163,6 @@
               multiple base-sixty-four-input
               )
 
-    //- Package Skills
-    .wrapper-xs.m-l-sm.m-t-sm.b-t(ng-if="$ctrl.data.skills.length>0")
-      .wrapper-xs.h4.text-muted Skills
-      .wrapper-xs.h6.clear
-        .wrapper-xs.pull-left.text-info-dker.r.m-t-xs.m-r-xs(
-        ng-repeat='skill in $ctrl.data.skills' style='padding: 2px;' ng-if='$ctrl.data.showAllSkill || $index < 6'
-        ) &nbsp;{{skill}}&nbsp;
-        a.pull-left(ng-click='$ctrl.data.showAllSkill = !$ctrl.data.showAllSkill')
-          span.wrapper-xs.pull-left.font-bold.h5(ng-if='$ctrl.data.showAllSkill'): span.text-info-dker – Less
-          span.wrapper-xs.pull-left.font-bold.h5(ng-if='!$ctrl.data.showAllSkill'): span.text-info-dker + More
   .col
     div
       .hbox

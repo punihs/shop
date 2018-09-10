@@ -31,29 +31,10 @@ angular.module('uiGenApp')
         controller: 'AddressNewController',
         controllerAs: '$ctrl',
       })
-      .state('billing', {
-        url: '/billing',
-        controller($state) {
-          return $state.go('accounts.billing');
-        },
-      })
-      .state('accounts.billing', {
-        url: '/billing',
-        templateUrl: 'app/routes/accounts/billing/billing.html',
-        controller: 'BillingController',
-        controllerAs: '$ctrl',
-      })
-      .state('accounts.transaction', {
-        url: '/transaction',
-        templateUrl: 'app/routes/accounts/transaction/transaction.html',
-        controller: 'TransactionController',
-        controllerAs: '$ctrl',
-      })
-
-      .state('accounts.badge', {
-        url: '/badge',
-        templateUrl: 'app/routes/accounts/badge/badge.html',
-        controller: 'BadgeController',
+      .state('accounts.documents', {
+        url: '/documents',
+        templateUrl: 'app/routes/accounts/documents/documents.html',
+        controller: 'DocumentController',
         controllerAs: '$ctrl',
       })
       .state('accounts.preferences', {
@@ -62,27 +43,10 @@ angular.module('uiGenApp')
         controller: 'preferencesController',
         controllerAs: '$ctrl',
       })
-      .state('accounts.terminated-message', {
-        url: '/terminated-message',
-        templateUrl: 'app/routes/accounts/terminated-message/terminated-message.html',
-        controller: 'TerminatedMessageCtrl',
-      })
-      .state('accounts.profile-detail', {
-        url: '/profile-detail',
-        templateUrl: 'app/routes/accounts/profile-detail/profile-detail.html',
-        controller: 'ProfileDetailController',
-        controllerAs: '$ctrl',
-      })
-      .state('accounts.empanelment', {
-        url: '/empanelment',
-        templateUrl: 'app/routes/accounts/empanelment/empanelment.html',
-        controller: 'EmpanelmentController',
-        controllerAs: '$ctrl',
-      })
-      .state('accounts.download-extension', {
-        url: '/downloadExtension',
-        templateUrl: 'app/routes/accounts/download-extension/download-extension.html',
-        controller: 'DownloadExtensionController',
+      .state('accounts.passwordChange', {
+        url: '/password',
+        templateUrl: 'app/routes/accounts/passwordChange/passwordChange.html',
+        controller: 'PasswordChangeController',
         controllerAs: '$ctrl',
       });
   });

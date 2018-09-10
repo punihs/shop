@@ -1,7 +1,7 @@
-class shipmentConfirm {
+class ShipmentConfirmController {
   constructor(
-    $http, Page, $stateParams, $location, ViewPhotoService,
-    toaster, $state, $window, CONFIG,
+    $http, Page, $stateParams, $location, ViewPhotoService, toaster, $state,
+    $window, CONFIG
   ) {
     this.ViewPhotoService = ViewPhotoService;
     this.$http = $http;
@@ -10,13 +10,19 @@ class shipmentConfirm {
     this.toaster = toaster;
     this.$window = $window;
     this.$stateParams = $stateParams;
-    this.packages = [];
+    this.$state = $state;
+    this.PAYMENT_GATEWAY = this.CONFIG.PAYMENT_GATEWAY;
     this.CONFIG = CONFIG;
+    this.$onInit();
+  }
+
+  $onInit() {
+    this.packages = [];
     this.shipment = [];
     this.shipmentMeta = [];
     this.payment = [];
     this.isWalletChecked = false;
-    this.$order_code = this.$location.search().order_code;
+    this.$order_code = this.$stateParams.order_code;
     this.status = '';
     this.message = '';
     this.promoStatus = '';
@@ -27,12 +33,6 @@ class shipmentConfirm {
     this.advc_photo_check = 0;
     this.paymentGateways = [];
     this.data = {};
-    this.$state = $state;
-    this.PAYMENT_GATEWAY = this.CONFIG.PAYMENT_GATEWAY;
-    this.$onInit();
-  }
-
-  $onInit() {
     this.Page.setTitle('Shipment confirmation');
     this.getList();
   }
@@ -112,6 +112,7 @@ class shipmentConfirm {
       this.message = 'Enter Promocode';
     }
   }
+
   submitPayment() {
     if (this.submitting) return null;
     this.params = {
@@ -147,6 +148,7 @@ class shipmentConfirm {
       });
   }
 }
+
 angular
   .module('uiGenApp')
-  .controller('shipmentConfirm', shipmentConfirm);
+  .controller('ShipmentConfirmController', ShipmentConfirmController);

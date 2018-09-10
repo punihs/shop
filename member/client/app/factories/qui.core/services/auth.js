@@ -38,16 +38,16 @@ angular.module('qui.core')
           .post(
             url,
             { refresh_token: Session.read('oauth').refresh_token },
-            {
-              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-              transformRequest(obj) {
-                return Object
+          {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            transformRequest(obj) {
+              return Object
                   .keys(obj)
                   .map(p => `${encodeURIComponent(p)}=${encodeURIComponent(obj[p])}`)
                   .join('&');
-              },
-              ignoreAuthModule: true,
-            }
+            },
+            ignoreAuthModule: true,
+          }
           )
           .then(res => {
             Session.create('oauth', res.data);

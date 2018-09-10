@@ -1,6 +1,6 @@
 
 
-class passwordChangeController {
+class PasswordChangeController {
   /* @ngInject*/
   constructor($http, toaster, Page, $stateParams, $cookies, Session) {
     this.$http = $http;
@@ -65,5 +65,5 @@ class passwordChangeController {
 }
 
 angular.module('uiGenApp')
-  .controller('passwordChangeController', passwordChangeController);
+  .controller('PasswordChangeController', PasswordChangeController);
 

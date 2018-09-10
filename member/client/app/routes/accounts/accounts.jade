@@ -4,7 +4,7 @@
       li.n-hv(style='padding-bottom: 5px;')
         a.no-hover.b-b.b-light.lter.auto(href='')
           span.pull-right
-          span.font-bold(translate='aside.nav.DASHBOARD') My Address
+          span.font-bold(translate='aside.nav.DASHBOARD') Preferences
         ul.nav.dk
           li(ui-sref-active='active')
             a(ui-sref='accounts.profile')
@@ -16,15 +16,11 @@
             a(ui-sref='accounts.preferences')
               span Shipping Preferences
           li(ui-sref-active='active')
-            a(ui-sref='accounts.billing')
+            a(ui-sref='accounts.documents')
               span Account Documents
-          li(ui-sref-active='active' ng-if='App.userinfo.admin_flag')
-            a(ui-sref='accounts.transaction')
-              span Transaction PIN
-          li(ui-sref-active='active' ng-if='App.userinfo.admin_flag')
-            a(ui-sref='accounts.badge')
-              span Badge
-              b.badge.badge-sm.bg-danger.rounded.text-u-c.m-l-sm New
+          li(ui-sref-active='active')
+            a(ui-sref='accounts.passwordChange')
+              span Change Password
       li.hide(ui-sref-active='active')
         a(ui-sref='settings')
           i.glyphicon.glyphicon-calendar.icon.text-info-dker
