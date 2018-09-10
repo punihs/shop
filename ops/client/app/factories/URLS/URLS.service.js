@@ -21,6 +21,7 @@ angular.module('uiGenApp')
         break;
       case 'staging-ops.shoppre.com':
         vars = {
+          CDN: 'https://staging-cdn.shoppre.com',
           QNOTIFY_SERVER: 'https://s-qnotify.shoppre.com/api',
           API: 'https://staging-api.shoppre.com/api',
           API_BASE: 'https://staging-api.shoppre.com',
