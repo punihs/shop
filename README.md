@@ -20,7 +20,7 @@ npm start
 ```
 
 Ports
-api 5000
+api & 5000
 accounts 5001
 ops 5002
 member 5003
@@ -51,4 +51,31 @@ sudo systemctl restart nginx
 http-server  -S -o
 npm run event:fire
 ```
+# Staging Settings
+```bash
+server {
+  listen  80;
+  server_name    staging-ops.shoppre.com;
+  return         301 https://$server_name$request_uri;
+}
 
+server {
+  listen 443 ssl;
+  server_name staging-ops.shoppre.com;
+  root /home/pulse/shoppre/ops.dist/client;
+
+  location = /socket.io/socket.io.js {
+    proxy_redirect off;
+    proxy_set_header   X-Real-IP         $remote_addr;
+    proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+    proxy_set_header   X-Forwarded-Proto $scheme;
+    proxy_set_header   Host              $http_host;
+    proxy_pass http://127.0.0.1:5000/socket.io/socket.io.js;
+
+  }
+
+  include frontend;
+}
+
+
+```

@@ -99,8 +99,8 @@
     "lint": "eslint --fix --ext .js --ignore-path .gitignore ./client/",
     "test": "grunt test",
     "build": "bower install && grunt build",
-    "staging-deploy": "rsync -avh dist/ pulse@staging-app1.shoppre.com:~/shoppre/member.dist",
-    "live-deploy": "rsync -avh dist/ pulse@35.192.38.127:~/shoppre/member.dist",
+    "staging-deploy": "rsync -avh dist/ pulse@staging-app1.shoppre.com:~/shoppre/ops.dist",
+    "live-deploy": "rsync -avh dist/ pulse@35.192.38.127:~/shoppre/ops.dist",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update",
     "validate": "npm ls"
   },
