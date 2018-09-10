@@ -2,7 +2,8 @@ const debug = require('debug');
 const sequelize = require('sequelize');
 
 const {
-  Shipment, User, Locker, ShipmentState, Address, Package, Country,
+  Shipment, User, Locker, ShipmentState, Address,
+  Package, Country, PhotoRequest,
 } = require('../../conn/sqldb');
 
 const { APPS, GROUPS: { OPS, CUSTOMER } } = require('./../../config/constants');
@@ -21,7 +22,6 @@ exports.index = ({ params, query, user: actingUser }) => {
     offset: Number(query.offset) || 0,
     limit: Number(query.limit) || 20,
   };
-
   switch (true) {
     case (actingUser.app_id === APPS.OPS && actingUser.group_id === OPS): {
       options.attributes = ['id', 'customer_id', 'created_at', 'final_amount'];
@@ -51,6 +51,9 @@ exports.index = ({ params, query, user: actingUser }) => {
       }, {
         model: Package,
         attributes: ['id'],
+      }, {
+        model: PhotoRequest,
+        attributes: ['id', 'type', 'status'],
       }, {
         model: Address,
         attibutes: ['id', 'city'],

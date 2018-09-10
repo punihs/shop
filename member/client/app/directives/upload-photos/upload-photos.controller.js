@@ -1,37 +1,71 @@
 class UploadphotosCtrl {
-  constructor($uibModalInstance, $http, packageDetail, $state) {
-    this.packageDetail = packageDetail;
+  constructor($uibModalInstance, $http, packageDetail, $state, URLS) {
+    this.photoRequets = packageDetail;
     this.packagePhotos = '';
     this.$state = $state;
     this.$http = $http;
-    this.basicPhoto = true;
-    this.standardPhoto = false;
-    this.photoRequestLength = '';
+    this.URLS = URLS;
+    this.basicPhotoRequest = true;
+    this.advancedPhotoRequest = true;
+    this.photoType = this.photoRequets.PhotoRequests.map(x => x.type);
+    this.basicPhoto = false;
+    this.advancedPhoto = false;
+
+    this.basicPhotoRequestSubmit = false;
+    this.advancedPhotoRequestSubmit = false;
+    this.advanceBasicRequest = false;
+    this.photoRequestLength = packageDetail.PhotoRequests.length;
     this.$uibModalInstance = $uibModalInstance;
-    this.slides = [
-      { id: 1, image: 'assets/images/item-2.jpg' },
-      { id: 2, image: 'assets/images/item-2.jpg' },
-      { id: 3, image: 'assets/images/item-2.jpg' },
-      { id: 4, image: 'assets/images/item-2.jpg' },
-      { id: 5, image: 'assets/images/item-2.jpg' },
-      { id: 6, image: 'assets/images/item-2.jpg' },
-    ];
+    this.slides = this.photoRequets.PackageItems;
+    this.standardId = '1';
+    this.advancedId = '2';
     this.$onInit();
   }
 
   $onInit() {
-    this.photoRequestLength = this.packageDetail.PhotoRequests.length;
-    this.packagePhotos = this.packageDetail.PhotoRequests;
+    if (this.photoRequestLength >= 1) {
+      if (this.photoType.includes(this.standardId) && this.photoType.includes(this.advancedId)) {
+        this.advanceBasicRequest = true;
+        this.basicPhotoRequest = true;
+        this.advancedPhotoRequest = true;
+        this.basicPhoto = true;
+        this.advancedPhoto = true;
+      } else if (this.photoType.includes(this.standardId) &&
+        !this.photoType.includes(this.advancedId)) {
+        this.advanceBasicRequest = false;
+        this.basicPhotoRequest = false;
+        this.advancedPhotoRequest = true;
+        this.basicPhoto = true;
+        this.advancedPhoto = false;
+      } else if (!this.photoType.includes(this.standardId) &&
+        this.photoType.includes(this.advancedId)) {
+        this.advanceBasicRequest = false;
+        this.basicPhotoRequest = true;
+        this.advancedPhotoRequest = false;
+        this.basicPhoto = false;
+        this.advancedPhoto = true;
+      }
+    }
   }
 
-  showStandardPhoto() {
-    this.basicPhoto = false;
-    this.standardPhoto = true;
+  showAdvancedPhoto() {
+    if (this.photoType.includes(this.standardId) && this.photoType.includes(this.advancedId)) {
+      this.advanceBasicRequest = true;
+      this.advancedPhotoRequest = true;
+      this.advancedPhoto = true;
+      this.basicPhotoRequest = false;
+      this.basicPhoto = false;
+    }
   }
 
   showBasicPhoto() {
-    this.basicPhoto = true;
-    this.standardPhoto = false;
+    if (this.photoType.includes(this.standardId) && this.photoType.includes(this.advancedId)) {
+      this.advanceBasicRequest = true;
+      this.advancedPhotoRequest = false;
+      this.advancedPhoto = true;
+      this.basicPhotoRequest = true;
+      this.basicPhoto = true;
+    }
   }
 
   cancel() {
@@ -43,25 +77,19 @@ class UploadphotosCtrl {
   }
 
   continueBasic() {
-    this.showAdditional = false;
-    this.showBasic = true;
-    this.success = false;
-    this.basicRequest = true;
-    this.additionalRequest = false;
+    this.basicPhotoRequestSubmit = true;
+    this.advancedPhotoRequest = false;
   }
   continueAdditional() {
-    this.showAdditional = true;
-    this.showBasic = false;
-    this.success = false;
-    this.basicRequest = false;
-    this.additionalRequest = true;
+    this.advancedPhotoRequestSubmit = true;
+    this.basicPhotoRequest = false;
   }
   requestBasic() {
     this.data = {
       type: 'basic_photo',
     };
     this.$http
-      .put(`/packages/${this.id}/photoRequests`, this.data)
+      .put(`/packages/${this.photoRequets.id}/photoRequests`, this.data)
       .then(({ data: { message } }) => {
         this.showAdditional = true;
         this.showBasic = true;
@@ -94,7 +122,7 @@ class UploadphotosCtrl {
       type: 'advanced_photo',
     };
     this.$http
-      .put(`/packages/${this.id}/photoRequests`, this.data)
+      .put(`/packages/${this.photoRequets.id}/photoRequests`, this.data)
       .then(({ data: { message } }) => {
         this
           .toaster

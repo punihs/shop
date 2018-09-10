@@ -1,5 +1,8 @@
 class shipmentConfirm {
-  constructor($http, Page, $stateParams, $location, ViewPhotoService, toaster, $state, $window, CONFIG) {
+  constructor(
+    $http, Page, $stateParams, $location, ViewPhotoService,
+    toaster, $state, $window, CONFIG,
+  ) {
     this.ViewPhotoService = ViewPhotoService;
     this.$http = $http;
     this.Page = Page;

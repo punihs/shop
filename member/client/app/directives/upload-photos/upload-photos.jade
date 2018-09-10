@@ -1,50 +1,30 @@
 .modal-header
   .modal-title
-    .h4.text-info Upload Photos
+    .h4.text-info View Photos
       .close(ng-click='$ctrl.cancel()') ×
 .modal-body
-  .row(ng-if='$ctrl.photoRequestLength==1 && $ctrl.packagePhotos[0].type==2')
-    .col-md-3.photo-left
-      i.fa.fa-camera.big-cam.m-t-md
-    .col-md-9
-      .panel.b-a.ng-scope
-        .panel-heading.b-b.b-light
-          h4.font-bold.no-margin Basic Photos
-            span INR 40
-        .panel-body
-          p View low-resolution photos taken of your package when it arrived at the Shoppre to confirm package cpntents
-          a.btn.btn-success.text-u-c(ng-click='$ctrl.continueBasic()') Get Now
-  .row(ng-if='$ctrl.photoRequestLength==1 && $ctrl.packagePhotos[0].type==1')
-    .col-md-12
-      .panel.b-a.ng-scope
-        img(src='assets/images/logo.png')
-  .row(ng-if='$ctrl.photoRequestLength==1 && $ctrl.packagePhotos[0].type==1')
-    .col-md-3.photo-left
-      i.fa.fa-camera.big-cam.m-t-md
-    .col-md-9
-      .panel.b-a.ng-scope
-        .panel-heading.b-b.b-light
-          h4.font-bold.no-margin Additional Photos
-            span INR 500
-        .panel-body
-          p Order up 10 high-resolution photos of your content to confirm color, condition and item details
-          a.btn.btn-success.text-u-c(ng-click='$ctrl.continueAdditional()') Request Now
-  .row(ng-if='$ctrl.photoRequestLength==2')
-    .col-md-12
-      .basic-photo(ng-show='$ctrl.basicPhoto')
+  .row(ng-show='$ctrl.basicPhotoRequest')
+    .col-md-12(ng-show='!$ctrl.basicPhoto')
+      .col-md-3.photo-left
+        i.fa.fa-camera.big-cam.m-t-md
+      .col-md-9
         .panel.b-a.ng-scope
-          img(src='assets/images/logo.png')
-        a.btn.btn-success.text-u-c.m-l-xs(ng-click='$ctrl.showStandardPhoto()') Standard Photo
-      .advanced-photo(ng-show='$ctrl.standardPhoto')
-        .panel.b-a.ng-scope
-          img(src='assets/images/loyalty.png')
-        a.btn.btn-success.text-u-c.m-l-xs(ng-click='$ctrl.showBasicPhoto()') Basic Photo
-  .row(ng-if='$ctrl.basicRequest')
-    .panel.b-a.ng-scope
-      img(src='assets/images/logo.png')
-    .panel.b-a.ng-scope
-      img(src='assets/images/logo.png')
-  .row(ng-if='$ctrl.basicRequest')
+          .panel-heading.b-b.b-light
+            h4.font-bold.no-margin Basic Photos
+              span INR 40
+          .panel-body
+            p View low-resolution photos taken of your package when it arrived at the Shoppre to confirm package cpntents
+            a.btn.btn-success.text-u-c(ng-click='$ctrl.continueBasic()') Get Now
+  .row.basic-photo(ng-show='$ctrl.basicPhoto')
+    .col-md-12.text-center
+      .panel.no-margin(set-ng-animate='false')
+        div(style='height: 305px')
+          div(uib-carousel='', active='active', interval='myInterval', no-wrap='noWrapSlides')
+            div(uib-slide='', ng-repeat='slide in $ctrl.slides', index='$index')
+              img.view-slide-height(ng-src='{{$ctrl.URLS.CDN}}/shoppre/{{slide.object}}', style='margin:auto;')
+              .carousel-caption
+    a.btn.btn-success.text-u-c.m-l-xs(ng-show='$ctrl.advancedPhoto && $ctrl.advanceBasicRequest', ng-click='$ctrl.showAdvancedPhoto()') Advanced Photo
+  .row(ng-if='$ctrl.basicPhotoRequestSubmit')
     .panel.b-a.ng-scope
       .panel-body
         .alert.alert-warning
@@ -55,7 +35,27 @@
             a.btn.btn-warning.text-u-c(ng-click='$ctrl.cancel()') Cancel
             a.btn.btn-success.text-u-c.m-l-xs(ng-click='$ctrl.requestBasic()') Continue
 
-  .row(ng-if='$ctrl.additionalRequest' )
+  .row(ng-show='$ctrl.advancedPhotoRequest')
+    .col-md-12(ng-show='!$ctrl.advancedPhoto')
+      .col-md-3.photo-left
+        i.fa.fa-camera.big-cam.m-t-md
+      .col-md-9
+        .panel.b-a.ng-scope
+          .panel-heading.b-b.b-light
+            h4.font-bold.no-margin Additional Photos
+              span INR 500
+          .panel-body
+            p Order up 10 high-resolution photos of your content to confirm color, condition and item details
+            a.btn.btn-success.text-u-c(ng-click='$ctrl.continueAdditional()') Request Now
+  .row.advanced-photo(ng-show='$ctrl.advancedPhoto && !$ctrl.basicPhoto')
+    .panel.no-margin(set-ng-animate='false')
+      div(style='height: 305px')
+        div(uib-carousel='', active='active', interval='myInterval', no-wrap='noWrapSlides')
+          div(uib-slide='', ng-repeat='slide in $ctrl.slides', index='$index')
+            img.view-slide-height(ng-src='{{$ctrl.URLS.CDN}}/shoppre/{{slide.object}}', style='margin:auto;')
+            .carousel-caption
+    a.btn.btn-success.text-u-c.m-l-xs(ng-show='!$ctrl.basicPhoto && $ctrl.advanceBasicRequest' ng-click='$ctrl.showBasicPhoto()') Basic Photo
+  .row(ng-if='$ctrl.advancedPhotoRequestSubmit')
     .panel.b-a.ng-scope
       .panel-body
         .alert.alert-warning
@@ -65,6 +65,15 @@
           .text-center.m-t-md
             a.btn.btn-warning.text-u-c(ng-click='$ctrl.cancel()') Cancel
             a.btn.btn-success.text-u-c.m-l-xs(ng-click='$ctrl.requestAdvanced()') Continue
-  .row
-    div.col-md-12(ng-if='$ctrl.success') Success! Your request for standard photos has been submitted.
-      | Your package is now in review by Shoppre team. You will be notified by customer service when your photos are ready to view.
+
+
+
+
+
+
+
+
+
+
+
+

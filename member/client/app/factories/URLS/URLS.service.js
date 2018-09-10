@@ -53,6 +53,7 @@ angular.module('uiGenApp')
         break;
       default: {
         vars = {
+          CDN: 'http://cdn.shoppre.test',
           BETA: true,
           ADMIN: 'http://admin.shoppre.test',
           QNOTIFY_SERVER: 'http://qnotify.shoppre.test/api',
