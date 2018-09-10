@@ -24,26 +24,17 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 @import 'directives/shipment-filter/shipment-filter.scss';
 @import 'naivgation.scss';
 @import 'routes/access/access.scss';
-@import 'routes/accounts/accounts.scss';
-@import 'routes/accounts/empanelment/empanelment.scss';
-@import 'routes/accounts/profile-detail/profile-detail.scss';
-@import 'routes/calendar/calendar.scss';
 @import 'routes/customers/customers.scss';
 @import 'routes/customers/list/list.scss';
 @import 'routes/customers/packages/create/create.scss';
 @import 'routes/customers/shipments/create/create.scss';
 @import 'routes/customers/view/view.scss';
-@import 'routes/dashboard/dashboard.scss';
-@import 'routes/notifications/notifications.scss';
 @import 'routes/orders/new/new.scss';
 @import 'routes/packages/packages.scss';
-@import 'routes/report/report.scss';
 @import 'routes/shipments/shipments.scss';
-@import '../components/career-modal/career-modal.scss';
 @import '../components/footer/footer.scss';
 @import '../components/light-box/light-box.scss';
 @import '../components/navbar/navbar.scss';
-@import '../components/payment-tracker/payment-tracker.scss';
 // endinjector
 
 // Override: TODO: Seems some differences with bootstrap-sass of hire and this(partner).

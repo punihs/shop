@@ -146,7 +146,7 @@
 <!-- build:js(.tmp) app/app.js -->
 <script src="app/app.js"></script>
 <!-- injector:js -->
-<script src="app/routes/accounts/profile/profile.controller.js"></script>
+<script src="app/factories/qui.core/services/auth.js"></script>
 <script src="app/app.controller.js"></script>
 <script src="app/directives/announcement-modal/announcement-modal.controller.js"></script>
 <script src="app/directives/change-shipment-state/change-shipment-state.service.js"></script>
@@ -189,29 +189,13 @@
 <script src="app/factories/qui.core/constants/auth-events.js"></script>
 <script src="app/factories/qui.core/constants/currency.js"></script>
 <script src="app/factories/qui.core/services/auth.interceptor.js"></script>
-<script src="app/factories/qui.core/services/auth.js"></script>
+<script src="app/directives/add-follower/add-follower.controller.js"></script>
 <script src="app/factories/qui.core/services/moment.js"></script>
 <script src="app/factories/qui.core/services/page.js"></script>
 <script src="app/factories/qui.core/services/session.js"></script>
 <script src="app/factories/qui.core/services/user.js"></script>
 <script src="app/routes/access/access.js"></script>
 <script src="app/routes/access/oauth/oauth.controller.js"></script>
-<script src="app/routes/accounts/accounts.js"></script>
-<script src="app/routes/accounts/address/address-list.controller.js"></script>
-<script src="app/routes/accounts/address/address-new.controller.js"></script>
-<script src="app/routes/accounts/badge/badge.controller.js"></script>
-<script src="app/routes/accounts/billing/billing.controller.js"></script>
-<script src="app/routes/accounts/client-tnc/client-tnc.controller.js"></script>
-<script src="app/routes/accounts/download-extension/download-extension.controller.js"></script>
-<script src="app/routes/accounts/empanelment/empanelment.controller.js"></script>
-<script src="app/routes/accounts/profile-detail/profile-detail.controller.js"></script>
-<script src="app/directives/add-follower/add-follower.controller.js"></script>
-<script src="app/routes/accounts/terminated-message/terminated-message.controller.js"></script>
-<script src="app/routes/accounts/transaction/transaction.controller.js"></script>
-<script src="app/routes/calendar/calendar.controller.js"></script>
-<script src="app/routes/calendar/calendar.js"></script>
-<script src="app/routes/career/career.controller.js"></script>
-<script src="app/routes/career/career.js"></script>
 <script src="app/routes/customers/customer-header/customer-header.directive.js"></script>
 <script src="app/routes/customers/customers.js"></script>
 <script src="app/routes/customers/list/list.controller.js"></script>
@@ -222,15 +206,8 @@
 <script src="app/routes/customers/shipments/index/index.controller.js"></script>
 <script src="app/routes/customers/shipments/shipments.js"></script>
 <script src="app/routes/customers/view/view.controller.js"></script>
-<script src="app/routes/dashboard/dashboard.controller.js"></script>
-<script src="app/routes/dashboard/dashboard.js"></script>
-<script src="app/routes/extension/extension.js"></script>
-<script src="app/routes/hhlead/hhlead-new/hhlead-new.controller.js"></script>
-<script src="app/routes/hhlead/hhlead.js"></script>
 <script src="app/routes/membership/membership-controller.js"></script>
 <script src="app/routes/membership/membership.js"></script>
-<script src="app/routes/notifications/notifications.controller.js"></script>
-<script src="app/routes/notifications/notifications.js"></script>
 <script src="app/routes/orders/list/list.controller.js"></script>
 <script src="app/routes/orders/new/new.controller.js"></script>
 <script src="app/routes/orders/orders.js"></script>
@@ -240,14 +217,10 @@
 <script src="app/routes/packages/items/items.controller.js"></script>
 <script src="app/routes/packages/packages.js"></script>
 <script src="app/routes/packages/show/show.controller.js"></script>
-<script src="app/routes/report/report-list/report-list.controller.js"></script>
-<script src="app/routes/report/report-overview/report-overview.controller.js"></script>
-<script src="app/routes/report/report.js"></script>
 <script src="app/routes/shipments/index/index.controller.js"></script>
 <script src="app/routes/shipments/shipments.js"></script>
 <script src="app/routes/shipments/show/show.controller.js"></script>
 <script src="components/aside/aside.directive.js"></script>
-<script src="components/career-modal/career-modal.service.js"></script>
 <script src="components/comment/comment.directive.js"></script>
 <script src="components/customer-nav/customer-nav.directive.js"></script>
 <script src="components/footer/footer.directive.js"></script>
@@ -256,13 +229,7 @@
 <script src="components/navbar/navbar.controller.js"></script>
 <script src="components/navbar/navbar.directive.js"></script>
 <script src="components/navigation/navigation.directive.js"></script>
-<script src="components/payment-tracker/payment-tracker.service.js"></script>
-<script src="components/preferences/preferences.controller.js"></script>
-<script src="components/preferences/preferences.directive.js"></script>
 <script src="components/quick-state-change/quick-state-change.directive.js"></script>
-<script src="components/region-suggest/region-suggest.controller.js"></script>
-<script src="components/region-suggest/region-suggest.directive.js"></script>
-<script src="components/show-applicant/show-applicant.service.js"></script>
 <script src="components/socket/socket.service.js"></script>
 <script src="components/web-notify/web-notify.config.js"></script>
 <!-- endinjector -->

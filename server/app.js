@@ -60,7 +60,7 @@ expressConfig(app);
 function startServer() {
   return new Promise((res, rej) => {
     if (env === 'test') return res();
-    return server.listen(port, ip, (err) => {
+    return server.listen(80, ip, (err) => {
       if (err) return rej(err);
       return res();
     });

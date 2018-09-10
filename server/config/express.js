@@ -15,10 +15,21 @@ const { activityLogger } = require('../components/log');
 const { apiLogger } = require('../components/log');
 const logger = require('../components/logger');
 const rateLimit = require('./ratelimit');
-const s3RegionSupport = require('./s3RegionSupport');
-
 
 module.exports = (app) => {
+  app.use((req, res, next) => {
+    const subdomain = req
+      .get('host')
+      .split('.')
+      .shift();
+
+    const fi = path
+      .join(config.root, `${subdomain}/dist/client`);
+
+    return express
+      .static(fi)(req, res, next);
+  });
+
   app.use((req, res, next) => {
     res.on('finish', () => activityLogger({ db })(req, res, next));
     next();
@@ -29,7 +40,6 @@ module.exports = (app) => {
   app.use(responseTime());
   app.use(apiLogger(db));
   app.use(helmet());
-  app.use(s3RegionSupport());
   app.use(rateLimit('api', db));
   app.use(express.static(`${config.root}/public`));
   app.use(bodyParser.json());

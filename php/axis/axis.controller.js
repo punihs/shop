@@ -26,7 +26,7 @@ const verify = (body) => {
   log('verify', body);
   return rp({
     method: 'POST',
-    url: `http://cp.shoppre.com/axis/api-success.php`,
+    url: 'http://cp.shoppre.com/axis/api-success.php',
     form: body,
   });
 };

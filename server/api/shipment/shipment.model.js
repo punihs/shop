@@ -74,7 +74,6 @@ module.exports = (sequelize, DataTypes) => {
     Shipment.belongsTo(db.Country);
     Shipment.belongsTo(db.ShippingPartner);
     Shipment.belongsTo(db.ShipmentType);
-    Shipment.hasMany(db.ShipmentIssue);
     Shipment.hasOne(db.ShipmentMeta);
     db.Country.hasMany(Shipment);
   };

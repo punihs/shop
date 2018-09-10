@@ -1,9 +1,6 @@
-
 class OAuthCtrl {
-    /* @ngInject */
-  constructor(
-      Auth, $location, $cookies, $window, $state, URLS, $rootScope, Session, toaster
-    ) {
+  /* @ngInject */
+  constructor(Auth, $location, $cookies, $window, $state, URLS, $rootScope, Session, toaster) {
     const query = $location.search();
     if (query.error) {
       this.authErr = {
@@ -29,12 +26,12 @@ class OAuthCtrl {
           // Used for updating session
           location.href = query.state
             ? `${location.origin}${query.state}`
-            : $state.href('dashboard', { absolute: true });
+            : $state.href('packages.index', { absolute: true });
         }))
-        .catch(() => {
-          const location = $window.location;
-          location.href = URLS.OAUTH;
-        });
+      .catch(() => {
+        const location = $window.location;
+        location.href = URLS.OAUTH;
+      });
   }
 }
 

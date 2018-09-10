@@ -42,14 +42,14 @@
         )
 
     ul.nav.navbar-nav.navbar-right
-      li
+      li.hide
         a.n-hv(
           uib-popover-template='"components/navbar/popover.html"'
           popover-trigger='"outsideClick"'
           popover-placement='bottom-right'
           popover-is-open='NavBar.isOpen')
           i.fa.fa-lg.fa-th.text-white.th-scale-y
-      li.nav-menu-item
+      li.hide.nav-menu-item
         a.n-hv(ui-sref='notifications', title='Notifications', href='/notifications')
           notify-count
       li

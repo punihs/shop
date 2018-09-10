@@ -2,15 +2,6 @@
   .col.bg-white-only.b-r.w-md
     ul.nav(style='overflow-y: scroll;height: 88%;overflow-x: hidden;width: 251px')
       li.wrapper-xs
-        a.no-padder.btn.btn-danger.form-control.font-bold.hover-red(
-          uib-tooltip='Create Customer'
-          tooltip-placement='right'
-          tooltip-append-to-body='true'
-          ng-href='{{$ctrl.URLS.ACCOUNTS}}/signup'
-        )
-          .m-t-xs.m-r-sm
-            span Create Customer
-      li.wrapper-xs
         input.w.form-control.rounded.m-l-xs.text-no-glow(
           ng-model='$ctrl.params.q'
           placeholder="Search User"
@@ -43,7 +34,7 @@
               span(ng-bind="group.name")
     .col-md-12.col-sm-12.col-xs-12(style='overflow-y: scroll;height: 85%;')
       .col-md-12.b-a.m-t-sm.bg-white-only(ng-if='!$ctrl.list.length && !$ctrl.ui.loading')
-        h1.text-center No Customers Found
+        h1.text-center No {{ $ctrl.$stateParams.groupId == 1 ? 'Admins' : 'Customers'}} Found
       .col-md-12.col-sm-12.col-xs-12.b-a.m-t-sm.customer-item.bg-white-only(
         ng-if='$ctrl.list.length'
         ng-repeat='customer in $ctrl.list | orderBy:$ctrl.order |  filter:query track by $index'
@@ -76,10 +67,6 @@
             | Locker Code
           .no-padder.col-sm-2.col-xs-2
             | Phone/Mobile
-          .no-padder.col-sm-2.col-xs-2
-            | Referred User
-          .no-padder.col-sm-1.col-xs-1
-            | Source
 
         .col-sm-12.m-b-sm.no-padder(style='font-weight: 500')
           .no-padder.col-sm-1.col-xs-3.text-ellipsis
@@ -103,10 +90,6 @@
             )
           .no-padder.col-sm-2.col-xs-2
             span(ui-sref='customer.view({id: customer.id})' target="_blank" ng-bind="customer.mobile")
-          .no-padder.col-sm-2.col-xs-2
-            span(ng-bind='customer.ReferredUser.first_name || "Nakul Chandra"')
-          .no-padder.col-sm-1.col-xs-1
-            span(ng-bind="customer.Source.name || 'Quora'" style='font-weight: 600;')
 
 
       .text-center.m-t-xs

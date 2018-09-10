@@ -8,7 +8,7 @@ angular.module('uiGenApp')
         template: '<div ui-view></div>',
       })
       .state('customers.list', {
-        url: '?groupId&uid&cid&js&pid&r&min&max',
+        url: '?groupId',
         templateUrl: 'app/routes/customers/list/list.html',
         controller: 'CustomersListController',
         controllerAs: '$ctrl',

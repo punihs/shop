@@ -40,7 +40,7 @@ class CustomersListController {
       return this.$state.go('customers.list', { groupId: this.GROUPS[1].id });
     }
 
-    this.Page.setTitle(`${this.$state.params.status} - Customers`);
+    this.Page.setTitle(this.$stateParams.groupId === 1 ? 'Admins' : 'Customers');
 
     this.list = [];
     this.ui = { lazyLoad: false, loading: false };

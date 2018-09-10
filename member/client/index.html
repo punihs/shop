@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="bower_components/isteven-angular-multiselect/isteven-multi-select.css" />
   <link rel="stylesheet" href="bower_components/flag-icon-css/css/flag-icon.min.css" />
   <link rel="stylesheet" href="bower_components/angular-ui-carousel/dist/ui-carousel.css" />
+  <link rel="stylesheet" href="bower_components/intl-tel-input/build/css/intlTelInput.css" />
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:css({.tmp,client}) app/app.css -->
@@ -130,12 +131,14 @@
 <script src="bower_components/angular-socket-io/socket.js"></script>
 <script src="bower_components/angular-base64-upload/src/angular-base64-upload.js"></script>
 <script src="bower_components/angular-ui-carousel/dist/ui-carousel.js"></script>
+<script src="bower_components/intl-tel-input/build/js/intlTelInput.js"></script>
+<script src="bower_components/ng-intl-tel-input/dist/ng-intl-tel-input.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 <!-- build:js(.tmp) app/app.js -->
 <script src="app/app.js"></script>
 <!-- injector:js -->
-<script src="app/routes/career/career.controller.js"></script>
+<script src="app/routes/career/career.js"></script>
 <script src="app/app.constant.js"></script>
 <script src="app/directives/add-comments/add-comments.controller.js"></script>
 <script src="app/directives/add-follower/add-follower.controller.js"></script>
@@ -203,8 +206,8 @@
 <script src="app/routes/accounts/transaction/transaction.controller.js"></script>
 <script src="app/routes/calendar/calendar.controller.js"></script>
 <script src="app/routes/calendar/calendar.js"></script>
+<script src="app/routes/career/career.controller.js"></script>
 <script src="app/app.controller.js"></script>
-<script src="app/routes/career/career.js"></script>
 <script src="app/routes/customers/customer-header/customer-header.directive.js"></script>
 <script src="app/routes/customers/customers.js"></script>
 <script src="app/routes/customers/list/list.controller.js"></script>
@@ -218,7 +221,6 @@
 <script src="app/routes/dash/packages/packages.controller.js"></script>
 <script src="app/routes/dash/payment/response.controller.js"></script>
 <script src="app/routes/dash/paypal/axis.controller.js"></script>
-<script src="app/routes/dash/paytm/paytm.controller.js"></script>
 <script src="app/routes/dash/response/response.controller.js"></script>
 <script src="app/routes/dash/response/shipRequestResponse.controller.js"></script>
 <script src="app/routes/dash/retryPayment/retryPayment.controller.js"></script>
@@ -226,6 +228,8 @@
 <script src="app/routes/dash/schedulePickup/shipment-request.controller.js"></script>
 <script src="app/routes/dash/shipmentConfirm/shipmentConfirm.controller.js"></script>
 <script src="app/routes/dash/shipmentConfirm/shipmentConfirm.js"></script>
+<script src="app/routes/dash/shipmentInvoice/shipmentInvoice.controller.js"></script>
+<script src="app/routes/dash/shipmentQueue/shipmentQueue.controller.js"></script>
 <script src="app/routes/extension/extension.js"></script>
 <script src="app/routes/hhlead/hhlead-new/hhlead-new.controller.js"></script>
 <script src="app/routes/hhlead/hhlead.js"></script>

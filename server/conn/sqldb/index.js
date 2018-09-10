@@ -25,7 +25,7 @@ const db = {
 
 [
   // - Enums
-  'Country', 'Place', 'PaymentGateway', 'Locker', 'CountryGuide',
+  'Country', 'Place', 'PaymentGateway', 'Locker',
 
   // - Tracking
   'DHLLog',
@@ -47,7 +47,7 @@ const db = {
 
   'PhotoRequest',
 
-  'Shipment', 'ShipmentMeta', 'ShipmentType', 'ShipmentIssue', 'ShippingPartner', 'ShipmentState',
+  'Shipment', 'ShipmentMeta', 'ShipmentType', 'ShippingPartner', 'ShipmentState',
   'Transaction',
   // - Notifications
   'Notification', 'Comment',
@@ -59,10 +59,8 @@ const db = {
   'ShippingRate',
 
   // - Product
-  'Store', 'Category', 'StoreCategory', 'StoreCategoryClub',
+  'Store',
 
-  // - faq
-  'FaqCategory', 'Faq',
   // - Coupon
   'Coupon',
 
@@ -74,31 +72,6 @@ const db = {
 
   // - payment gateway
   'DirectPayment',
-
-  // Shoppre Digital Inspired by Marketo.com
-  // - Website - Google My Business - Hardy
-  // - SEO - MOZ
-  // - Marketing Emails - iContact
-  // - Content Curation - Mousree, Vishwa
-  // - Digital content - blog, social media
-  // - Website Informative content - Research based work
-  // - Design - Sujith Greenpepper,
-  // - Mobile App Design - Krutika
-  // - Mobile App Development - Yogendra
-
-  // - As a Internal Employee
-  // - Seed Internal Employee login in db
-  // - Creater SEO Product
-
-  // - As a enduser
-  // - Vismaya Signup to SD
-  // - Creates a Org
-  // - Automatically signup to SEO
-  // - Vismaya Create object_types related shoppre business
-  // - services,
-  // - shipping_partners, payment_gateways,
-  // - countries, stores, cities
-  // - customers, packages, package_items, shipments
 
   'Log',
 

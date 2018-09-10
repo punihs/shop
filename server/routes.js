@@ -51,17 +51,14 @@ const userShipment = require('./api/user/shipment');
 const emailPreference = require('./api/emailPreference');
 const emailTemplate = require('./api/emailTemplate');
 const photoRequest = require('./api/package/photoRequest');
-const storeCategory = require('./api/storeCategory');
 const follower = require('./api/package/follower');
 const shipmentFollower = require('./api/shipment/follower');
 const redemption = require('./api/redemption');
 const shipmentTypes = require('./api/shipmentType');
-const webRoutes = require('./webRoutes');
 const minio = require('./conn/minio/minio.route');
 const cron = require('./cron');
 
 module.exports = (app) => {
-  webRoutes(app);
   app.use('/api/health', health);
   app.use('/api/minio', authenticate(), minio);
   app.use('/api/search', search);
@@ -77,7 +74,6 @@ module.exports = (app) => {
     follower,
   );
   app.use('/api/shippingPartners', shippingPartnerShipments);
-  app.use('/api/storeCategory', storeCategory);
   app.use('/api/addresses', authenticate(), address);
   app.use(
     '/api/shipments',

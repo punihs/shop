@@ -29,19 +29,13 @@ const constants = {};
   { name: 'payment_gateway', keyMap: false },
   { name: 'shipping_partner', keyMap: false },
   { name: 'store', keyMap: false },
-  { name: 'faqCategory', keyMap: false },
-  { name: 'faq', keyMap: false },
   { name: 'place', keyMap: false },
-  { name: 'category', keyMap: false },
   { name: 'source', keyMap: false },
   { name: 'state', keyMap: false },
   { name: 'actionable_state', keyMap: false },
   { name: 'locker', keyMap: false },
   { name: 'shipment_type', keyMap: false },
-  { name: 'country_guide', keyMap: false },
   { name: 'shipping_rate', keyMap: false },
-  { name: 'store_category', keyMap: false },
-  { name: 'store_category_club', keyMap: false },
 ]
   .forEach(({ name, keyMap = true }) => {
     const data = r(`./../../api/${_.camelCase(name)}/${_.camelCase(name)}.seed`)(constants);

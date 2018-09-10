@@ -25,7 +25,6 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Country.associate = (db) => {
-    Country.hasMany(db.CountryGuide);
     Country.hasMany(db.Review);
   };
 

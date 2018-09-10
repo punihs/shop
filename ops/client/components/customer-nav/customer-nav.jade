@@ -33,8 +33,7 @@ div(style='position: relative;')
             ng-model='$ctrl.params[$ctrl.searchType]'
             ng-change='$ctrl.search($ctrl.searchType)'
             ng-model-options='{debounce: 600}'
-            autofocus
-            //="[$ctrl.state.current.name].includes('customer.package.create')"
+            autofocus="[$ctrl.state.current.name].includes('customer.package.create')"
           )
           i.fa.fa-times-circle.pointer(
             ng-if='$ctrl.params[$ctrl.searchType]'

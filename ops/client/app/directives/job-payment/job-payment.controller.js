@@ -29,11 +29,11 @@ class JobPaymentController {
         this.additionalComments = _.without(_.pluck(internalComments,
           'internal_comment'), null);
         this.$http.get(`/jobs/${this.job.id}/clientPaymentsDesigId`)
-        .then(({ data: desigantions }) => {
-          this.jobDesignationId = desigantions;
-          this.clientPaymentDesigId = desigantions;
-        })
-        .catch(err => this.$log.error('Error while getting client payments designation id', err));
+          .then(({ data: desigantions }) => {
+            this.jobDesignationId = desigantions;
+            this.clientPaymentDesigId = desigantions;
+          })
+          .catch(err => this.$log.error('Error while getting client payments designation id', err));
       })
       .catch(err => this.$log.error('Error while getting client payments', err));
     this.active = true;
