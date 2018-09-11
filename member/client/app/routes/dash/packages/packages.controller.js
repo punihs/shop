@@ -240,8 +240,8 @@ class PackageLockerController {
 
   uploadPhotos(packageDetail) {
     this.$uibModal.open({
-      templateUrl: 'app/directives/upload-photos/upload-photos.html',
-      controller: 'UploadphotosCtrl',
+      templateUrl: 'app/directives/request-photos/request-photos.html',
+      controller: 'RequestPhotosController',
       controllerAs: '$ctrl',
       size: 'lg',
       resolve: {
@@ -275,10 +275,9 @@ class PackageLockerController {
       return;
     }
     const packageIds = this.packages.filter(x => x.isChecked).map(x => x.id);
-    this.$state.go('dash.createShipmentRequest', { packageIds });
+    this.$state
+      .go('dash.createShipmentRequest', { packageIds });
   }
-
-
 }
 
 angular

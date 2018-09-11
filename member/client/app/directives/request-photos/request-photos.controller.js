@@ -1,13 +1,13 @@
-class UploadphotosCtrl {
+class RequestPhotosController {
   constructor($uibModalInstance, $http, packageDetail, $state, URLS) {
-    this.photoRequets = packageDetail;
+    this.pkg = packageDetail;
     this.packagePhotos = '';
     this.$state = $state;
     this.$http = $http;
     this.URLS = URLS;
     this.basicPhotoRequest = true;
     this.advancedPhotoRequest = true;
-    this.photoType = this.photoRequets.PhotoRequests.map(x => x.type);
+    this.photoType = this.pkg.PhotoRequests.map(x => x.type);
     this.basicPhoto = false;
     this.advancedPhoto = false;
 
@@ -16,7 +16,7 @@ class UploadphotosCtrl {
     this.advanceBasicRequest = false;
     this.photoRequestLength = packageDetail.PhotoRequests.length;
     this.$uibModalInstance = $uibModalInstance;
-    this.slides = this.photoRequets.PackageItems;
+    this.slides = this.pkg.PackageItems;
     this.standardId = '1';
     this.advancedId = '2';
     this.$onInit();
@@ -89,7 +89,7 @@ class UploadphotosCtrl {
       type: 'basic_photo',
     };
     this.$http
-      .put(`/packages/${this.photoRequets.id}/photoRequests`, this.data)
+      .put(`/packages/${this.pkg.id}/pkg`, this.data)
       .then(({ data: { message } }) => {
         this.showAdditional = true;
         this.showBasic = true;
@@ -122,7 +122,7 @@ class UploadphotosCtrl {
       type: 'advanced_photo',
     };
     this.$http
-      .put(`/packages/${this.photoRequets.id}/photoRequests`, this.data)
+      .put(`/packages/${this.photoRequests.id}/photoRequests`, this.data)
       .then(({ data: { message } }) => {
         this
           .toaster
@@ -141,4 +141,4 @@ class UploadphotosCtrl {
 }
 
 angular.module('uiGenApp')
-  .controller('UploadphotosCtrl', UploadphotosCtrl);
+  .controller('RequestPhotosController', RequestPhotosController);

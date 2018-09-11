@@ -62,194 +62,189 @@ const verify = body => rp({
   form: body,
 });
 
+const paymentSuccess = async ({
+  shipment, customer, isRetryPayment, isWalletUsed, finalAmount, res, url,
+}) => {
+  let finalAmt = finalAmount;
+  let wallet = shipment.wallet_amount;
+  if (isWalletUsed === 1 && isRetryPayment === 1) {
+    const customerWalletAmount = customer.wallet_balance_amount;
+    finalAmt -= customerWalletAmount;
+    wallet = shipment.wallet_amount + customerWalletAmount;
+
+    // - wrong - becuase controller methods will return response
+    await transactionCtrl
+      .create(customerWalletAmount, customer.id, shipment, DEBIT);
+  }
+
+  await Shipment.update({
+    payment_gateway_fee_amount: 0,
+    final_amount: finalAmt,
+    wallet_amount: wallet,
+    payment_gateway_id: CARD,
+    payment_status: 'success',
+    admin_info: 'Payment Successful!',
+    admin_read: 'no',
+  }, {
+    where: {
+      id: shipment.id,
+    },
+  });
+
+  Shipment
+    .updateShipmentState({
+      db,
+      shipment,
+      actingUser: customer,
+      nextStateId: PAYMENT_COMPLETED,
+      comments: 'Axis payment success',
+    });
+
+  await Notification.create({
+    customer_id: customer.id,
+    action_type: 'shipment',
+    action_id: shipment.id,
+    action_description: 'Shipment Payment Successful - Axis',
+  });
+
+  const redemption = await Redemption
+    .find({
+      attributes: ['id'],
+      where: { shipment_order_code: shipment.order_code },
+    });
+  if (redemption) {
+    const promo = await Coupon
+      .find({
+        where: {
+          code: redemption.coupon_code,
+          expires_at: {
+            $gt: new Date(),
+          },
+        },
+      });
+
+    if (promo) {
+      if (promo.cashback_percentage) {
+        const totalWalletAmount = customer.wallet_balance_amount
+          + (shipment.estimated_amount * (promo.cashback_percentage / 100));
+        await User.update({
+          wallet_balance_amount: totalWalletAmount,
+        }, {
+          where: { id: customer.id },
+        });
+
+        await Redemption.update({
+          status: 'success',
+        }, {
+          where: { shipment_order_code: shipment.order_code },
+        });
+      } else if (promo.discount_percentage) {
+        await Redemption.update({
+          status: 'success',
+        }, {
+          where: { shipment_order_code: shipment.order_code },
+        });
+      }
+    }
+  }
+
+  // todo: don't delete
+  // ShopperBalance::where('customer_id', $customer_id)->update(['amount' => 0]);
+
+  return res.redirect(`${url}?message: 'success'`);
+};
+
 exports.complete = async (req, res, next) => {
   const { id } = req.params;
-  log('body', JSON.stringify(req.body));
-  log('body', (req.body));
   try {
     const transaction = await Transaction.findById(id, {
       attributes: ['id', 'payment_gateway_id', 'object_id', 'customer_id'],
     });
-    const result = await verify(req.body);
-    log(result);
 
+    const result = JSON.parse(await verify(req.body));
     await transaction.update({
       status: result.status,
       response: JSON.stringify(req.body),
     });
 
-    const customerId = transaction.customer_id;
     const customer = await User
-      .findById(customerId, {
+      .findById(transaction.customer_id, {
         attributes: ['id', 'wallet_balance_amount'],
       });
 
-    const shipRequestId = transaction.object_id;
     const isWalletUsed = transaction.is_wallet_used;
     const isRetryPayment = transaction.is_retry_payment;
 
     const shipment = await Shipment
-      .findById(shipRequestId, {
+      .findById(transaction.object_id, {
         attributes: ['id', 'final_amount', 'payment_gateway_fee_amount', 'customer_id'],
       });
-    log('shipment', JSON.stringify(shipment));
-    log('shipment.customer_id', shipment.customer_id);
-    if (!shipment && !shipment.customer_id === customerId) {
+
+    const url = `http://${URLS_MEMBER}/locker/request/${shipment.id}/reponse`;
+
+    const AUTHORISED = shipment && shipment.customer_id === customer.id;
+    if (!AUTHORISED) {
       log('Unauthorized customer transaction!');
-      return res.status(400).json({ error: 'Unauthorized customer transaction!' });
+      return res.redirect(`${url}?error=Unauthorized customer transaction!`);
     }
 
-    let finalAmount = 0;
-    log({ finalAmount });
-    log({ customerId });
+    const finalAmount = shipment.payment_gateway_fee_amount
+      ? (shipment.final_amount - shipment.payment_gateway_fee_amount)
+      : shipment.final_amount;
 
-    if (shipment && shipment.customer_id === customerId) {
-      if (shipment.payment_gateway_fee_amount) {
-        finalAmount = shipment.final_amount - shipment.payment_gateway_fee_amount;
-      } else {
-        finalAmount = shipment.final_amount;
-      }
-      log('result', JSON.stringify(result));
-      if (result) {
-        log('code', result.vpc_TxnResponseCode);
-        if (result.vpc_TxnResponseCode === '0') {
-          let wallet = shipment.wallet_amount;
-          if (isWalletUsed === 1 && isRetryPayment === 1) {
-            const customerWalletAmount = customer.wallet_balance_amount;
-            log('customer.wallet_balance_amount', customer.wallet_balance_amount);
-            finalAmount -= customerWalletAmount;
-            log('shipment.wallet_amount', shipment.wallet_amount);
-            wallet = shipment.wallet_amount + customerWalletAmount;
-            await transactionCtrl.create(customerWalletAmount, customerId, shipment, DEBIT);
-          }
-          const shipmentUpdate = {};
-          shipmentUpdate.payment_gateway_fee_amount = 0;
-          shipmentUpdate.final_amount = finalAmount;
-          shipmentUpdate.wallet_amount = wallet;
-          shipmentUpdate.payment_gateway_id = CARD;
-          shipmentUpdate.payment_status = 'success';
-          shipmentUpdate.admin_info = 'Payment Successful!';
-          shipmentUpdate.admin_read = 'no';
-          await Shipment.update(shipmentUpdate, { where: { id: shipRequestId } });
-
-          Shipment
-            .updateShipmentState({
-              db,
-              shipment,
-              actingUser: customer,
-              nextStateId: PAYMENT_COMPLETED,
-              comments: 'Axis payment success',
-            });
-          const notification = {};
-          notification.customer_id = customerId;
-          notification.action_type = 'shipment';
-          notification.action_id = shipmentUpdate.id;
-          notification.action_description = 'Shipment Payment Successful - Axis';
-          await Notification.create(notification);
-
-          const options = {
-            attributes: ['id'],
-            where: { shipment_order_code: shipmentUpdate.order_code },
-          };
-
-          const couponAppliedStatus = await Redemption
-            .find(options);
-          if (couponAppliedStatus) {
-            const optionCoupon = {
-              where: {
-                code: couponAppliedStatus.coupon_code,
-                expires_at: {
-                  $gt: new Date(),
-                },
-              },
-            };
-
-            const promo = await Coupon
-              .find(optionCoupon);
-
-            let totalWalletAmount = '';
-
-            if (promo) {
-              if (promo.cashback_percentage) {
-                totalWalletAmount = customer.wallet_balance_amount
-                  + (shipment.estimated_amount * (promo.cashback_percentage / 100));
-                await User.update({
-                  wallet_balance_amount: totalWalletAmount,
-                }, {
-                  where: { id: customerId },
-                });
-
-                await Redemption.update({
-                  status: 'success',
-                }, {
-                  where: { shipment_order_code: shipment.order_code },
-                });
-              } else if (promo.discount_percentage) {
-                await Redemption.update({
-                  status: 'success',
-                }, {
-                  where: { shipment_order_code: shipment.order_code },
-                });
-              }
-            }
-          }
-          // todo: don't delete
-          // ShopperBalance::where('customer_id', $customer_id)->update(['amount' => 0]);
-
-          return res.status(302).redirect(`http://${URLS_MEMBER}/locker/request/${shipment.id}/reponse?message: 'success'`);
-        } else if (result.vpc_TxnResponseCode === 'Aborted') {
-          await Shipment
-            .update({
-              payment_gateway_name: CARD,
-              payment_status: 'failed',
-              admin_info: 'Payment failed',
-              admin_read: 'no',
-            }, {
-              where: { id: shipRequestId },
-            });
-          Shipment
-            .updateShipmentState({
-              db,
-              shipment,
-              actingUser: customer,
-              nextStateId: PAYMENT_FAILED,
-              comments: 'Axis payment failed',
-            });
-          return res.status(200).redirect(`http://${URLS_MEMBER}/locker/request/${shipment.id}/reponse?error: 'Looks like you cancelled the payment. You can try again now or if you faced any issues in completing the payment, please contact us.'`);
-        }
-        log('Aborted');
-        await Shipment
-          .update({
-            payment_gateway_id: CARD,
-            payment_status: 'failed',
-            admin_info: 'Payment failed!',
-            admin_read: 'no',
-          }, {
-            where: { id: shipRequestId },
-          });
-        Shipment
-          .updateShipmentState({
-            db,
-            shipment,
-            actingUser: customer,
-            nextStateId: PAYMENT_FAILED,
-            comments: 'Axis payment failed',
-          });
-
-        // todo: email sending pending
-        // Mail::to($customer->email)->bcc('support@shoppre.com')
-        // ->send(new PaymentFailed($shipment));
-        return res.status(200)
-          .redirect(`${URLS_MEMBER}/locker/request/${shipment.id}/reponse?error: 'Payment transaction failed! You can try again now or if you faced any issues in completing the payment, please contact us.'`);
-      }
+    if (!result) {
+      const msg = 'Security Error! Please try again after sometime or contact us for support.';
       return res.status(200)
-        .redirect(`http://${URLS_MEMBER}/locker/request/${shipment.id}/reponse?error: 'Security Error! Please try again after sometime or contact us for support.'`);
+        .redirect(`${url}?error=${msg}`);
     }
-    return res.status(200)
-      .redirect(`http://${URLS_MEMBER}/locker/request/${shipment.id}/reponse?error: 'Unauthorized customer transaction!'`);
+
+    if (result.vpc_TxnResponseCode === '0') {
+      return paymentSuccess({
+        shipment, customer, isRetryPayment, isWalletUsed, finalAmount, res, url,
+      });
+    } else if (result.vpc_TxnResponseCode === 'Aborted') {
+      this.paymentFailed(shipment, customer);
+
+      const msg = 'Looks like you cancelled the payment. You can try again now or if you faced any issues ' +
+        'in completing the payment, please contact us.';
+
+      return res.status(200).redirect(`${url}?error=${msg}`);
+    }
+
+    this.paymentFailed(shipment, customer);
+
+    // todo: email sending pending
+    // Mail::to($customer->email)->bcc('support@shoppre.com')
+    // ->send(new PaymentFailed($shipment));
+    const msg = 'Payment transaction failed! You can try again now or if you faced any issues in ' +
+      'completing the payment, please contact us.';
+
+    return res
+      .redirect(`${url}?error=${msg}`);
   } catch (e) {
     return next(e);
   }
+};
+
+exports.paymentFailed = (shipment, customer) => {
+  Shipment
+    .update({
+      payment_gateway_id: CARD,
+      payment_status: 'failed',
+      admin_info: 'Payment failed!',
+      admin_read: 'no',
+    }, {
+      where: { id: shipment.id },
+    });
+
+  Shipment
+    .updateShipmentState({
+      db,
+      shipment,
+      actingUser: customer,
+      nextStateId: PAYMENT_FAILED,
+      comments: 'Axis payment failed',
+    });
 };
 
 exports.WalletTransaction = async (walletAmount, customerId, shipment, transactionType) => {

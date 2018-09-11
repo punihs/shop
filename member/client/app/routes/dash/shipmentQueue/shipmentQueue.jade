@@ -68,16 +68,19 @@ div.m-t-xl.no-margin
                                 )
                             div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PAYMENT_REQUESTED')
                               p
-                                a.summary-order(href="") Submit Payment
+                                a.summary-order(ui-sref='dash.shipmentConfirm({order_code: shipment.order_code})') Submit Payment
                             div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PAYMENT_COMPLETED')
                               span(ng-if="shipment.PaymentGateway.value != 'wire' && shipment.PaymentGateway.value != 'cash' && shipment.payment_status != 'success'")
-                                  p
-                                    a.summary-order(href="") Retry Payment
+                                p
+                                  a.summary-order(href="") Retry Payment
                               span(ng-if="shipment.payment_status != 'success'")
                                   p Awaiting Payment
-                                  p small It might take upto 24 Hours to reflect your payments into our account.
+                                  p It might take upto 24 Hours to reflect your payments into our account.
                                   p
-                                    a(href="") Change Payment Method
+                                    a.summary-order(href="") Change Payment Method
+                              span(ng-if="shipment.payment_status === 'success' && (shipment.PaymentGateway.value === 'card' || shipment.PaymentGateway.value === 'paypal' || shipment.PaymentGateway.value === 'paytm')")
+                                  p Awaiting Payment
+                                  p It might take upto 24 Hours to reflect your payments into our account.
                             div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PAYMENT_FAILED')
                               a.summary-order(href="") Retry Payment
                             div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PAYMENT_CONFIRMED')

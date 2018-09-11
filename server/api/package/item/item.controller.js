@@ -73,8 +73,11 @@ exports.destroy = async (req, res, next) => {
   const pkg = Package
     .find({
       attributes: ['id'],
-      where: { id: packageId },
       include: [{
+        model: PackageItem,
+        attributes: ['id'],
+        where: { id: packageId },
+      }, {
         model: PackageState,
         attributes: ['id'],
         where: { state_id: [READY_TO_SHIP, ADDED_SHIPMENT] },

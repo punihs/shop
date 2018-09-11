@@ -11,8 +11,8 @@ class ShipmentConfirmController {
     this.$window = $window;
     this.$stateParams = $stateParams;
     this.$state = $state;
-    this.PAYMENT_GATEWAY = this.CONFIG.PAYMENT_GATEWAY;
     this.CONFIG = CONFIG;
+    this.PAYMENT_GATEWAY = this.CONFIG.PAYMENT_GATEWAY;
     this.$onInit();
   }
 

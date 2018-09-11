@@ -27,7 +27,7 @@ angular.module('uiGenApp')
       .state('dash.shipmentConfirm', {
         url: '/request/confirm?order_code',
         templateUrl: 'app/routes/dash/shipmentConfirm/shipmentConfirm.html',
-        controller: 'shipmentConfirm',
+        controller: 'ShipmentConfirmController',
         controllerAs: '$ctrl',
       })
       .state('dash.response', {

@@ -25,7 +25,7 @@ div.m-t-xl.no-margin
           ul.nav.nav-pills.nav-sm.pull-right
             li.m-r-sm.pull-right(ng-if='$ctrl.queueCount')
               a.h5.font-bold.b-a.btn-info(
-                ui-sref='shipments.index({ status: "INQUEUE" })'
+                ui-sref='dash.shipmentQueue'
               ) View Queue
               span.badge.badge-lg.locker-up.pull-right-xs.text-danger(
                 style='border: 1px solid red'

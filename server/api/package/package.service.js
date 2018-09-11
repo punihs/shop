@@ -8,7 +8,10 @@ const {
 
 const {
   APPS, GROUPS: { CUSTOMER, OPS },
-  SHIPMENT_STATE_IDS: { PAYMENT_FAILED, PAYMENT_REQUESTED, PAYMENT_INITIATED },
+  SHIPMENT_STATE_IDS: {
+    PAYMENT_FAILED, PAYMENT_REQUESTED, PAYMENT_INITIATED,
+    PAYMENT_COMPLETED, PAYMENT_CONFIRMED, PACKAGING_REQUESTED,
+  },
 } = require('./../../config/constants');
 const BUCKETS = require('./../../config/constants/buckets');
 
@@ -120,7 +123,10 @@ exports.index = ({ query, params, user: actingUser }) => {
       options.include[0].where.state_id = BUCKET[bucket];
     }
   }
-  const stateIds = [PAYMENT_FAILED, PAYMENT_REQUESTED, PAYMENT_INITIATED];
+  const stateIds = [
+    PAYMENT_FAILED, PAYMENT_REQUESTED, PAYMENT_INITIATED,
+    PAYMENT_COMPLETED, PAYMENT_CONFIRMED, PACKAGING_REQUESTED,
+  ];
 
   return Promise
     .all([
