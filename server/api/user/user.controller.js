@@ -1,5 +1,8 @@
 const _ = require('lodash');
 const debug = require('debug');
+const { GROUPS: { OPS, CUSTOMER } } = require('../../config/constants');
+const env = require('../../config/environment');
+
 
 const crypto = require('crypto');
 
@@ -202,26 +205,23 @@ exports.destroy = async (req, res) => {
 };
 
 exports.submitRegister = async (req, res) => {
-  let loyalPoints = 0;
-  const customerId = req.user.id;
-  log('customer id', customerId);
+  const loyalPoints = 200;
+  let referCustomerId = '';
   if (req.body.refferal) {
-    const options = {
-      attributes: ['id', 'customer_id'],
-      where: { friend: req.body.email, code: req.body.refferal },
-    };
-    const refer = await ReferCode
-      .find(options);
-    if (refer) {
-      const optionLoyalty = {
-        attributes: ['id', 'total_points', 'points'],
-        where: { customer_id: customerId },
-      };
-      loyalPoints = 200;
+    const referCode = await ReferCode
+      .find({
+        attributes: ['id', 'customer_id'],
+        where: { friend: req.body.email, code: req.body.refferal },
+      });
+    if (referCode) {
+      referCustomerId = referCode.customer_id;
       const loyaltyUpdate = {};
 
       await LoyaltyPoint
-        .find(optionLoyalty)
+        .find({
+          attributes: ['id', 'total_points', 'points'],
+          where: { customer_id: referCode.customer_id },
+        })
         .then((loyaltyPoint) => {
           loyaltyUpdate.points = loyaltyPoint.points + loyalPoints;
           loyaltyUpdate.total_points = loyaltyPoint.total_points + loyalPoints;
@@ -240,18 +240,16 @@ exports.submitRegister = async (req, res) => {
           loyaltyPoint.update(loyaltyUpdate);
         });
 
-      // const friend = LoyaltyPoint
-      //   .find(optionLoyalty);
       log(loyalPoints);
 
       const referFriend = await User
-        .findById(refer.customer_id, {
+        .findById(referCode.customer_id, {
           attributes: ['id', 'email', 'first_name', 'last_name'],
         });
-      log(refer.customer_id);
+      log(referCode.customer_id);
 
       const loyaltyHistory = {};
-      loyaltyHistory.customer_id = refer.customer_id;
+      loyaltyHistory.customer_id = referCode.customer_id;
       loyaltyHistory.points = loyalPoints;
       loyaltyHistory.redeemed = new Date();
       loyaltyHistory.type = REWARD;
@@ -259,6 +257,7 @@ exports.submitRegister = async (req, res) => {
       await LoyaltyHistory.create(loyaltyHistory);
 
       log(referFriend);
+      // TODO
       // Mail::to($referFriend->email)->send(new ReferEarned('Congratulations! You have
       // earned 200 Shoppre Loyalty Points simply because your friend signed up with the referral
       // code that you sent!'));
@@ -275,12 +274,12 @@ exports.submitRegister = async (req, res) => {
 
   if (req.body.referrer) {
     customer.referred_customer_id = Buffer.from(req.body.referrer).toString('base64');
-    const optionUser = {
-      attributes: ['name', 'email'],
-      where: { id: customer.referred_customer_id },
-    };
     const referrer = await User
-      .find(optionUser);
+      .find({
+        attributes: ['name', 'email'],
+        where: { id: customer.referred_customer_id },
+      });
+    // TODO
     //   Mail::to($referrer->email)
     // ->send(new ReferralSuccess(['referrer' => $referrer, 'customer' => $customer]));
     log(referrer);
@@ -298,32 +297,22 @@ exports.submitRegister = async (req, res) => {
   if (req.body.referrer) {
     customer.referred_customer_id = Buffer.from(req.body.referrer).toString('base64');
 
-    const optionUser = {
-      attributes: ['name', 'email'],
-      where: { id: Buffer.from(req.body.referrer).toString('base64') },
-    };
-
     const referrer = await User
-      .find(optionUser);
+      .find({
+        attributes: ['name', 'email'],
+        where: { id: Buffer.from(req.body.referrer).toString('base64') },
+      });
+    // TODO
     //  Mail::to($referrer->email)
     // ->send(new ReferralSuccess(['referrer' => $referrer, 'customer' => $customer]));
     log(referrer);
   }
-  // let userCode = '';           // Required
-  // const option = {
-  //   attributes: ['id'],
-  //   where: { locker: code },
-  // };
-  const code = this.lockerGenerate();
-  //
-  // do {
-  //   code = this.lockerGenerate();           // Required
-  //   userCode = await User
-  //     .find(option);
-  // } while (!userCode);
 
-  customer.locker = code;
-  log(customer);
+  const code = this.lockerGenerate();
+  customer.virtual_address_code = code;
+  customer.referred_by = referCustomerId;
+  const IS_OPS = env.GSUITE_DOMAIN === req.body.email.split('@')[1];
+  customer.group_id = IS_OPS ? OPS : CUSTOMER;
   const newCustomer = await User
     .create(customer);
 
