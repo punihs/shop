@@ -19,7 +19,10 @@ div.m-t-xl.no-margin
                 li
                   .checkbox
                     label.i-checks
-                      input(type='checkbox', value='')
+                      input(
+                      ng-model='$ctrl.data.is_basic_photo'
+                      type='checkbox',
+                      )
                       i
                       | Always take standard photos of item at login
                     i.fa.fa-info-circle.m-l-xs(
@@ -32,7 +35,10 @@ div.m-t-xl.no-margin
                 li
                   .checkbox
                     label.i-checks
-                      input(type='checkbox', value='')
+                      input(
+                      ng-model='$ctrl.data.is_advanced_photo'
+                      type='checkbox',
+                      )
                       i
                       | Always take advanced photos of item at login
                     i.fa.fa-info-circle.m-l-xs(
@@ -45,7 +51,10 @@ div.m-t-xl.no-margin
                 li
                   .checkbox
                     label.i-checks
-                      input(type='checkbox', value='')
+                      input(
+                      ng-model='$ctrl.data.is_scan_document'
+                      type='checkbox',
+                      )
                       i
                       | Always scan all pages of my documents
                     i.fa.fa-info-circle.m-l-xs(
@@ -63,7 +72,10 @@ div.m-t-xl.no-margin
                 li
                   .checkbox
                     label.i-checks
-                      input(type='checkbox', value='')
+                      input(
+                      ng-model='$ctrl.data.is_repacking'
+                      type='checkbox',
+                      )
                       i
                       | Discard shoe boxes
                     i.fa.fa-info-circle.m-l-xs(
@@ -76,7 +88,10 @@ div.m-t-xl.no-margin
                 li
                   .checkbox
                     label.i-checks
-                      input(type='checkbox', value='')
+                      input(
+                      ng-model='$ctrl.data.is_extra_packing'
+                      type='checkbox',
+                      )
                       i
                       | Add extra packing material
                     i.fa.fa-info-circle.m-l-xs(
@@ -88,8 +103,11 @@ div.m-t-xl.no-margin
                     )
                 li
                   .checkbox
-                    label.i-checks
-                      input(type='checkbox', value='')
+                    Label.i-checks
+                      input(
+                      ng-model='$ctrl.data.is_original_box'
+                      type='checkbox',
+                      )
                       i
                       | Ship in original shipping boxes
                     i.fa.fa-info-circle.m-l-xs(
@@ -101,7 +119,12 @@ div.m-t-xl.no-margin
                 li
                   .form-group
                     .col-lg-1.no-padder
-                      input.form-control.no-padder.text-center(type='text', placeholder='in KG')
+                      input.form-control.no-padder.text-center(
+                      type='text',
+                      placeholder='in KG',
+                      ng-model='$ctrl.data.max_weight',
+                      name='max_weight',
+                      )
                     label.col-lg-10.control-label.m-t-xs Max weight per box/Multi-piece shipment (MPS) 1 kilogram is about 2.2046 pounds
                       i.fa.fa-info-circle.m-l-xs(
                       uib-popover='Choose this option if you would like to restrict a Maximum weight of individual boxes in a shipment. Shoppre will split your shipment into multiple boxes not exceeding this box weight limit (whenever possible), at the same cost of splitting a package (INR 200 per new package created)*\n' +
@@ -115,7 +138,10 @@ div.m-t-xl.no-margin
                 li
                   .checkbox
                     label.i-checks
-                      input(type='checkbox', value='')
+                      input(
+                      ng-model='$ctrl.data.is_gift_wrap'
+                      type='checkbox',
+                      )
                       i
                       | Gift Wrap
                     i.fa.fa-info-circle.m-l-xs(
@@ -128,7 +154,11 @@ div.m-t-xl.no-margin
                 li
                   .checkbox
                     label.i-checks
-                      input(type='checkbox', value='')
+                      input(
+                      ng-model='$ctrl.data.is_gift_note'
+                      name='is_gift_note'
+                      type='checkbox',
+                      )
                       i
                       | Gift Note
                     i.fa.fa-info-circle.m-l-xs(
@@ -147,19 +177,25 @@ div.m-t-xl.no-margin
                   .form-group
                     label.col-lg-1.control-label.m-t-xs.no-padder Tax ID
                     .col-lg-3.no-padder-left
-                      input.form-control(type='text')
+                      input.form-control(type='text', ng-model= '$ctrl.data.tax_id', name='tax_id')
                 .clearfix
                 li
                   .checkbox
                     label.i-checks
-                      input(type='checkbox', value='')
+                      input(
+                      ng-model='$ctrl.data.is_mark_personal_use'
+                      type='checkbox',
+                      )
                       i
                       | Mark items for "Personal Use Only"
                 li
                   .checkbox
                     label.i-checks
-                      input(type='checkbox', value='')
+                      input(
+                      ng-model='$ctrl.data.is_include_invoice'
+                      type='checkbox',
+                      )
                       i
                       | Please include a printed Proforma Invoice in my shipment
 
-      button.btn.btn-primary.btn-addon.btn-sm.m-l-md Update Changes
+      button.btn.btn-primary.btn-addon.btn-sm.m-l-md(ng-click="$ctrl.updatePreference()") Update Changes

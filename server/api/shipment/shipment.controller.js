@@ -631,6 +631,7 @@ exports.shipQueue = async (req, res) => {
       'coupon_amount', 'loyalty_amount', 'estimated_amount', 'created_at', 'payment_status',
       'final_amount', 'payment_gateway_fee_amount',
     ],
+    where: { customer_id: req.user.id },
     include: [{
       model: ShipmentState,
       attributes: ['state_id'],
