@@ -16,6 +16,7 @@ class PackageItemsController {
     this.$ = $;
     this.submitting = false;
     this.data = item || {};
+    this.advancedData = item;
     this.createCategory = createCategory;
     this.$onInit();
   }
@@ -26,6 +27,10 @@ class PackageItemsController {
 
   startUpload(ctrl, file) {
     ctrl.S3.upload(file, ctrl.data, ctrl);
+  }
+
+  startAdvancedUpload(ctrl, advanced_file) {
+    ctrl.S3.upload(advanced_file, ctrl.advancedData, ctrl);
   }
 
   $onInit() {
@@ -136,12 +141,17 @@ class PackageItemsController {
     const { packageItemId, id: packageId } = this.$stateParams;
     data.packageId = packageId;
 
+    if (this.advancedData.object){
+      data.object_advanced = this.advancedData.object;
+    }
+
     const allowed = [
       'name',
       'quantity',
       'price_amount',
       'total_amount',
       'object',
+      'object_advanced',
       'package_item_category_id',
     ];
 

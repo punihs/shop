@@ -35,7 +35,7 @@ div.m-t-xl.no-margin
                       )
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
               .row
-                .col-md-6.col-sm-6.col-xs-6.no-padder-right
+                .col-md-5.col-sm-5.col-xs-5.no-padder-right
                   .hbox
                     label.col
                       | Photo
@@ -71,10 +71,49 @@ div.m-t-xl.no-margin
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && !$ctrl.data.file && !newPackageItemForm.file.$invalid') Please choose file
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageItemForm.file.$invalid') Please choose supported file
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageItemForm.file.$dirty && newPackageItemForm.file.$invalid') Please choose supported file
-                .col-xs-3.wrapper-sm.m-t-xs
+                .col-xs-1.wrapper-sm.m-t-xs
                   img.pull-left.m-r(
                   ng-if='$ctrl.data.object_thumb'
                   ng-src='{{$ctrl.data.object_thumb}}'
+                  style='height: 30px;width: 30px;border-radius: 50%;'
+                  )
+                .col-md-5.col-sm-5.col-xs-5.no-padder-right
+                  .hbox
+                    label.col
+                      | Advanced Photo
+                      .btn-file-wrapper(ng-class="newPackageItemForm.advancedFile.$touched && newPackageItemForm.advancedFile.$invalid ? 'input-file-danger':''" drag-drop-toggle)
+                        .btn-file
+                          span(ng-show="(newPackageItemForm.advancedFile.$touched && newPackageItemForm.advancedFile.$valid) || $ctrl.advancedData.advancedFile")
+                            span.text-muted(ng-bind="$ctrl.advancedFile.name")
+                          p.no-margin(ng-hide="(newPackageItemForm.advancedFile.$touched && newPackageItemForm.advancedFile.$valid) || $ctrl.advancedData.advancedFile")
+                            span.text-bold Choose a file
+                            |  or Drag it here.
+                          span.file-support(ng-hide="(newPackageItemForm.advancedFile.$touched && newPackageItemForm.advancedFile.$valid) || $ctrl.advancedData.advancedFile") Supported Formats: .png, .jpeg, .jpg, .bmp'
+                          input.form-control(
+                          accept="image/*"
+                          type="file"
+                          ng-model='$ctrl.advancedFile'
+                          name='advancedFile'
+                          ngf-pattern="'.png,.jpeg,.jpg,.bmp'"
+                          ngf-max-size="15MB"
+                          ngf-max-files="1"
+                          ngf-select='$ctrl.uploadingPhotos=true;'
+                          onclick="this.value = null"
+                          ng-image-compress
+                          image="myAwesomeImage"
+                          ctrl="$ctrl"
+                          upload-fn="$ctrl.startAdvancedUpload"
+                          resize-max-height="1000"
+                          resize-max-width="1000"
+                          resize-quality="0.7"
+                          resize-type="image/jpg"
+                          )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageItemForm.advancedFile.$invalid') Please choose supported file
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageItemForm.advancedFile.$dirty && newPackageItemForm.advancedFile.$invalid') Please choose supported file
+                .col-xs-1.wrapper-sm.m-t-xs
+                  img.pull-left.m-r(
+                  ng-if='$ctrl.advancedData.object_thumb'
+                  ng-src='{{$ctrl.advancedData.object_thumb}}'
                   style='height: 30px;width: 30px;border-radius: 50%;'
                   )
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='!$ctrl.EDIT')

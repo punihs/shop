@@ -10,7 +10,6 @@ angular
         xhr.onload = () => {
           if (xhr.status === 200) {
             toaster.pop('success', 'File uploaded');
-
             Object.assign(data, { object });
             Object.assign($ctrl, { uploadingPhotos: false });
             $http
@@ -23,7 +22,6 @@ angular
               .catch(() => toaster.pop('error', 'Error while uploading file'));
           }
         };
-
         return object;
       })
       .catch(() => toaster.pop('error', 'Error while uploading file')),
