@@ -67,16 +67,16 @@ exports.update = async (req, res) => {
 };
 
 exports.destroy = async (req, res, next) => {
-  const { id } = req.params;
-  const { packageId } = req.params;
+  const { packageId, id } = req.params;
 
-  const pkg = Package
+  const pkg = await Package
     .find({
       attributes: ['id'],
+      where: { id: packageId },
       include: [{
         model: PackageItem,
         attributes: ['id'],
-        where: { id: packageId },
+        where: { id },
       }, {
         model: PackageState,
         attributes: ['id'],
