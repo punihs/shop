@@ -1,4 +1,4 @@
-class signUp {
+class SignUpController {
   constructor($http, Page, $uibModal, toaster) {
     this.$http = $http;
     this.Page = Page;
@@ -15,7 +15,7 @@ class signUp {
           .toaster
           .pop('success', data);
       })
-      .catch(err => {
+      .catch((err) => {
         this
           .toaster
           .pop('danger', err.data.message);
@@ -24,4 +24,4 @@ class signUp {
 }
 angular
   .module('uiGenApp')
-  .controller('signUp', signUp);
+  .controller('SignUpController', SignUpController);

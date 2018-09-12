@@ -7,7 +7,6 @@ angular.module('qui.core')
       favicon: () => (favicon || 'https://www.shoppre.com/img/favicon.png'),
 
       setFavicon: function setTitle(newFavicon) {
-        console.log({ newFavicon });
         favicon = newFavicon;
       },
 

@@ -1,7 +1,5 @@
 class PackageCreateController {
-  constructor(
-    Page, $state, $stateParams, $http, toaster, customer, pkg, Session, createStore,
-  ) {
+  constructor(Page, $state, $stateParams, $http, toaster, customer, pkg, Session, createStore) {
     this.Session = Session;
     this.Page = Page;
     this.$http = $http;

@@ -73,8 +73,8 @@ class PackagesIndexController {
             this.loadPackages(true);
           }, 800);
         }
-      }
-      , true,
+      },
+      true,
     );
 
     // $emit coming from directive
@@ -112,8 +112,7 @@ class PackagesIndexController {
           Object.assign(this.$stateParams, {
             sid: applied.states && applied.states.join(','),
           }),
-          { notify: false },
-        );
+          { notify: false });
         this.$onInit();
       });
   }
@@ -153,8 +152,6 @@ class PackagesIndexController {
           this.ui.lazyLoad = false;
           return;
         }
-        console.log('url', packages[0].Customer);
-        console.log('url', packages);
 
         if (!packages.length && this.$rootScope.previousState === 'access.oauth') {
           this.$state.go('packages.index', { bucket: 'ALL' });

@@ -81,7 +81,14 @@ angular.module('uiGenApp')
       .state('dash.signUp', {
         url: '/signUp',
         templateUrl: 'app/routes/dash/signUp/signUp.html',
-        controller: 'signUp',
+        controller: 'SignUpController',
         controllerAs: '$ctrl',
-      });
+      })
+      .state('dash.shipmentCancel', {
+        url: '/shipmentCancel',
+        templateUrl: 'app/routes/dash/cancell/cancel.html',
+        controller: 'ShipmentCancelController',
+        controllerAs: '$ctrl',
+      })
+    ;
   });

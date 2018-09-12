@@ -16,7 +16,7 @@ class PackageItemsController {
     this.$ = $;
     this.submitting = false;
     this.data = item || {};
-    this.advancedData = item;
+    this.advancedData = item || {};
     this.createCategory = createCategory;
     this.$onInit();
   }
@@ -29,8 +29,8 @@ class PackageItemsController {
     ctrl.S3.upload(file, ctrl.data, ctrl);
   }
 
-  startAdvancedUpload(ctrl, advanced_file) {
-    ctrl.S3.upload(advanced_file, ctrl.advancedData, ctrl);
+  startAdvancedUpload(ctrl, advancedFile) {
+    ctrl.S3.upload(advancedFile, ctrl.advancedData, ctrl);
   }
 
   $onInit() {
@@ -84,7 +84,8 @@ class PackageItemsController {
 
     if (this.EDIT) {
       this.PackageItemCategory.model = this.data.PackageItemCategory.name;
-      this.data.object_thumb = `${this.URLS.CDN}/shoppre/${this.data.object.replace('.', '-thumb.')}`;
+      const imagePath = `${this.URLS.CDN}/shoppre/${this.data.object.replace('.', '-thumb.')}`;
+      this.data.object_thumb = imagePath;
     }
   }
 
@@ -141,7 +142,7 @@ class PackageItemsController {
     const { packageItemId, id: packageId } = this.$stateParams;
     data.packageId = packageId;
 
-    if (this.advancedData.object){
+    if (this.advancedData.object) {
       data.object_advanced = this.advancedData.object;
     }
 

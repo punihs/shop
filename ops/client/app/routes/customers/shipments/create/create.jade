@@ -207,9 +207,8 @@ div.m-t-xl.no-margin
                       name='coupon_amount'
                       placeholder='eg. 200'
                       ng-model='$ctrl.data.coupon_amount'
-                      required
+                      disabled,
                       )
-                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.coupon_amount.$dirty && newShipmentForm.coupon_amount.$invalid') Please enter coupon Amount
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
               .row(ng-if='$ctrl.EDIT')
                 .col-md-12
@@ -222,9 +221,8 @@ div.m-t-xl.no-margin
                       name='loyalty_amount'
                       placeholder='eg. 1000'
                       ng-model='$ctrl.data.loyalty_amount'
-                      required
+                      disabled,
                       )
-                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.loyalty_amount.$dirty && newShipmentForm.loyalty_amount.$invalid') Please enter loyalty Amount
                   .col-md-6.col-sm-5.col-xs-12
                     label.col-xs-12.input-group
                       | Payment Gateway Fee
@@ -235,9 +233,8 @@ div.m-t-xl.no-margin
                       name='payment_gateway_fee_amount'
                       placeholder='eg. 200'
                       ng-model='$ctrl.data.payment_gateway_fee_amount'
-                      required
+                      disabled,
                       )
-                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.payment_gateway_fee_amount.$dirty && newShipmentForm.payment_gateway_fee_amount.$invalid') Please enter payment gateway fee
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
               .row(ng-if='$ctrl.EDIT')
                 .col-md-12
@@ -250,9 +247,8 @@ div.m-t-xl.no-margin
                       name='wallet_amount'
                       placeholder='eg. 1000'
                       ng-model='$ctrl.data.wallet_amount'
-                      required
+                      disabled,
                       )
-                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.wallet_amount.$dirty && newShipmentForm.wallet_amount.$invalid') Please enter wallet Amount
                   .col-md-6.col-sm-5.col-xs-12
                     label.col-xs-12.input-group
                       | Final Amount
@@ -262,7 +258,7 @@ div.m-t-xl.no-margin
                       name='final_amount'
                       placeholder='eg. 200'
                       ng-model='$ctrl.data.final_amount'
-                      required
+                      disabled,
                       )
 
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
@@ -285,10 +281,3 @@ div.m-t-xl.no-margin
                     span(ng-if='$ctrl.submitting')
                       i.fa.fa-spin.fa-circle-o-notch
                       span.text-white &nbsp;&nbsp;Submitting...
-
-
-    .clearfix
-
-//div(ng-show='$ctrl.submitting')
-//  span(ng-include="'app/routes/jobs/cv-uploading/cv-uploading.html'")
-

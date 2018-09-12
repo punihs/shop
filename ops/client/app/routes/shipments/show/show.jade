@@ -100,19 +100,44 @@
               div
                 span(ng-bind='$ctrl.moment($ctrl.data.created_at).fromNow()')
 
-        uib-tab(index='1' heading='Charges(₹)' select='$ctrl.getCharges()')
-          a.pull-right(
-          ui-sref="shipment.charges({ id: $ctrl.data.id, customerId: $ctrl.$stateParams.id })"
-          style='width: 2em;'
-          ): i.m-t-sm.wrapper-xs.fa.fa-edit(title='Edit Shipment Charges')
-          .clear.wrapper-xs(ng-if='charge.chargeAmount' ng-repeat="charge in $ctrl.charges")
-            a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
-              i.fa.text-muted.fa-lg(ng-class="$ctrl.chargesIcon[charge.key]")
-            div
-              a.text-muted.font-thin(ng-bind='charge.label')
+        uib-tab(index='1' heading='Charges(₹)')
+          .clear.wrapper-xs
+            div(ng-if='$ctrl.data.ShipmentMetum.extra_packing_charge_amount > 0')
+              a.text-muted.font-thin Extra Packing Charge
               div
-                span(ng-bind='"₹" + charge.chargeAmount')
-
+                span(ng-bind='"₹" + $ctrl.data.ShipmentMetum.extra_packing_charge_amount')
+            div(ng-if='$ctrl.data.ShipmentMetum.sticker_charge_amount > 0')
+              a.text-muted.font-thin Sticker Charge Amount
+              div
+                span(ng-bind='"₹" + $ctrl.data.ShipmentMetum.sticker_charge_amount')
+            div(ng-if='$ctrl.data.ShipmentMetum.original_ship_box_charge__amount > 0')
+              a.text-muted.font-thin Keep Original Box
+              div
+                span(ng-bind='"₹" + $ctrl.data.ShipmentMetum.original_ship_box_charge__amount')
+            div(ng-if='$ctrl.data.ShipmentMetum.consolidation_charge_amount > 0')
+              a.text-muted.font-thin Consolidation Charge
+              div
+                span(ng-bind='"₹" + $ctrl.data.ShipmentMetum.consolidation_charge_amount')
+            div(ng-if='$ctrl.data.ShipmentMetum.gift_wrap_charge_amount > 0')
+              a.text-muted.font-thin Gift Wrap Amount
+              div
+                span(ng-bind='"₹" + $ctrl.data.ShipmentMetum.gift_wrap_charge_amount')
+            div(ng-if='$ctrl.data.ShipmentMetum.gift_note_charge_amount > 0')
+              a.text-muted.font-thin Gift Note Charge amount
+              div
+                span(ng-bind='"₹" + $ctrl.data.ShipmentMetum.gift_note_charge_amount')
+            div(ng-if='$ctrl.data.ShipmentMetum.insurance_amount > 0')
+              a.text-muted.font-thin Insurence Amount
+              div
+                span(ng-bind='"₹" + $ctrl.data.ShipmentMetum.insurance_amount')
+            div(ng-if='$ctrl.data.ShipmentMetum.liquid_charge_amount > 0')
+              a.text-muted.font-thin Lilquid Charge Amount
+              div
+                span(ng-bind='"₹" + $ctrl.data.ShipmentMetum.liquid_charge_amount')
+            div(ng-if='$ctrl.data.ShipmentMetum.overweight_charge_amount > 0')
+              a.text-muted.font-thin Over Weight Charge Amount
+              div
+                span(ng-bind='"₹" + $ctrl.data.ShipmentMetum.overweight_charge_amount')
 
         uib-tab(index='2', heading='Docs')
           .col-xs-12.wrapper-xs.no-padder-left(ng-if='$ctrl.document.length')

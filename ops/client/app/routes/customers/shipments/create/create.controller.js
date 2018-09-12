@@ -79,16 +79,16 @@ class ShipmentCreateController {
       .$http[method](`/shipments${shipmentId ? `/${shipmentId}` : ''}`, _.pick(data, allowed))
       .then(({ data: shipment }) => {
         this.shipment = shipment;
-        const { id, Locker = {} } = shipment;
+        const { Locker = {} } = shipment;
         this.submitting = false;
 
         if (!this.customer.Locker) this.customer.Locker = Locker;
         this
           .toaster
-          .pop('success', `#${id} Shipment ${this.EDIT
-            ? 'Updated'
+          .pop('success', `#${shipmentId} Shipment ${this.EDIT ?
+            'Updated'
             : 'Created'} Successfully.`, '');
-        if (this.EDIT) return this.$state.go('shipment.show', { id });
+        if (this.EDIT) return this.$state.go('shipment.show', { id: shipmentId });
         return this.reset(newShipmentForm);
       })
       .catch((err) => {
