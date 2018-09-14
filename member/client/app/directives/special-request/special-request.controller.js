@@ -1,4 +1,4 @@
-class DownloadResumeCtrl {
+class SpecialRequestController {
   constructor($uibModalInstance, offer, id, value, toaster, $http, $state, $stateParams) {
     this.$uibModalInstance = $uibModalInstance;
     this.offer = offer;
@@ -7,6 +7,15 @@ class DownloadResumeCtrl {
     this.$http = $http;
     this.$state = $state;
     this.$stateParams = $stateParams;
+    this.returnToSenderPickup = true;
+    this.returnToSenderShoppre = false;
+    if (value === 'split') {
+      this.returnToSenderShoppre = true;
+    }
+    this.acceptanceCheckBox = true;
+    if (value === 'abandon') {
+      this.acceptanceCheckBox = false;
+    }
     this.data = [];
     this.id = id;
     this.data = {
@@ -18,13 +27,19 @@ class DownloadResumeCtrl {
     this.data.return_pickup = 1;
   }
 
+  changeReturnMode(checkedStatus) {
+    if (checkedStatus === 'sellerPickup') {
+      this.returnToSenderPickup = true;
+      this.returnToSenderShoppre = false;
+    } else {
+      this.returnToSenderPickup = false;
+      this.returnToSenderShoppre = true;
+    }
+  }
   cancel() {
     this.$uibModalInstance.dismiss('cancel');
   }
 
-  ok() {
-    this.$uibModalInstance.close();
-  }
   submitSpecialoffer(newOfferForm) {
     this.submitting = true;
     const form = this.validateForm(newOfferForm);
@@ -64,4 +79,4 @@ class DownloadResumeCtrl {
 }
 
 angular.module('uiGenApp')
-  .controller('DownloadResumeCtrl', DownloadResumeCtrl);
+  .controller('SpecialRequestController', SpecialRequestController);

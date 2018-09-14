@@ -58,7 +58,9 @@ class PackageLockerController {
     this.specialRequests = [{
       name: 'Return to Sender',
       value: 'return',
-      price: 'INR400',
+      price: 'INR 400',
+      acceptanceMessage: 'I understand that I will have to pay a fee ' +
+      'of INR 400 for the return, which will appear in my Shoppre Wallet.',
       infoContent: 'Once the item arrives at our facility, ' +
       'if you feel the item is not as per your expectation or is damaged, ' +
       'it can be exchanged/returned to the seller (as per the seller exchange/return policy). ' +
@@ -84,6 +86,8 @@ class PackageLockerController {
       name: 'Split Package',
       value: 'split',
       price: 'INR 200 * Per New Package Created',
+      acceptanceMessage: 'I understand that I will have to pay a fee ' +
+      'of INR 200 for the split package, which will appear in my Shoppre Wallet.',
       infoContent: 'Shoppre can split your package if it contains more than one item, and if you ' +
       'wish to separate them into multiple packages. ' +
       'You can split your package and discard an item, ' +
@@ -219,9 +223,9 @@ class PackageLockerController {
 
   openOffer(offer, id, value) {
     this.$uibModal.open({
-      templateUrl: 'app/directives/download-resume/download-resume.html',
-      controller: 'DownloadResumeCtrl',
-      controllerAs: 'DownloadResume',
+      templateUrl: 'app/directives/special-request/special-request.html',
+      controller: 'SpecialRequestController',
+      controllerAs: '$ctrl',
       size: 'lg',
       resolve: {
         id() {
