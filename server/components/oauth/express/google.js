@@ -3,7 +3,7 @@ const rp = require('request-promise');
 const { GROUPS: { OPS, CUSTOMER } } = require('../../../config/constants');
 const env = require('../../../config/environment');
 const logger = require('../../../components/logger');
-const { User, LoyaltyPoint } = require('../../../conn/sqldb');
+const { User, LoyaltyPoint, ShippingPreference } = require('../../../conn/sqldb');
 const userCtrl = require('../../../api/user/user.controller');
 
 const log = debug('s.components.oauthjs.express.google');
@@ -73,7 +73,9 @@ exports.oauth = (req, res, next) => {
                         level: 1,
                         points: 200,
                         total_points: 200,
-                      })
+                      });
+                    ShippingPreference
+                      .create({ customer_id: customer.id })
                       .catch(err => logger.error('User me save', err, req.body));
                   }).then(() => next());
               }

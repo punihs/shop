@@ -117,7 +117,7 @@ class ShipmentConfirmController {
     if (this.submitting) return null;
     this.params = {
       shipment_id: this.shipment.id,
-      wallet: this.isWalletChecked ? 1 : 0,
+      is_wallet: this.isWalletChecked ? 1 : 0,
       payment_gateway_id: this.data.paymentGateway,
     };
     const method = 'put';

@@ -1,6 +1,7 @@
 const sequelize = require('sequelize');
 const rp = require('request-promise');
 const debug = require('debug');
+const connection = require('paypal-rest-sdk');
 
 const transactionCtrl = require('../transaction/transaction.controller');
 
@@ -14,7 +15,7 @@ const db = require('../../conn/sqldb');
 const {
   TRANSACTION_TYPES: { CREDIT, DEBIT },
   PAYMENT_GATEWAY: {
-    CARD,
+    CARD, PAYPAL,
   },
   SHIPMENT_STATE_IDS: {
     PAYMENT_COMPLETED, PAYMENT_FAILED,
@@ -63,7 +64,7 @@ const verify = body => rp({
 });
 
 const paymentSuccess = async ({
-  shipment, customer, isRetryPayment, isWalletUsed, finalAmount, res, url,
+  shipment, customer, isRetryPayment, isWalletUsed, finalAmount, res, url, paymentGatewayId,
 }) => {
   let finalAmt = finalAmount;
   let wallet = shipment.wallet_amount;
@@ -78,10 +79,9 @@ const paymentSuccess = async ({
   }
 
   await Shipment.update({
-    payment_gateway_fee_amount: 0,
     final_amount: finalAmt,
     wallet_amount: wallet,
-    payment_gateway_id: CARD,
+    payment_gateway_id: paymentGatewayId,
     payment_status: 'success',
     admin_info: 'Payment Successful!',
     admin_read: 'no',
@@ -97,14 +97,14 @@ const paymentSuccess = async ({
       shipment,
       actingUser: customer,
       nextStateId: PAYMENT_COMPLETED,
-      comments: 'Axis payment success',
+      comments: 'payment success',
     });
 
   await Notification.create({
     customer_id: customer.id,
     action_type: 'shipment',
     action_id: shipment.id,
-    action_description: 'Shipment Payment Successful - Axis',
+    action_description: 'Shipment Payment Successful',
   });
 
   const redemption = await Redemption
@@ -151,85 +151,13 @@ const paymentSuccess = async ({
   // todo: don't delete
   // ShopperBalance::where('customer_id', $customer_id)->update(['amount' => 0]);
 
-  return res.redirect(`${url}?message: 'success'`);
+  return res.redirect(`${url}?message=success`);
 };
 
-exports.complete = async (req, res, next) => {
-  const { id } = req.params;
-  try {
-    const transaction = await Transaction.findById(id, {
-      attributes: ['id', 'payment_gateway_id', 'object_id', 'customer_id'],
-    });
-
-    const result = JSON.parse(await verify(req.body));
-    await transaction.update({
-      status: result.status,
-      response: JSON.stringify(req.body),
-    });
-
-    const customer = await User
-      .findById(transaction.customer_id, {
-        attributes: ['id', 'wallet_balance_amount'],
-      });
-
-    const isWalletUsed = transaction.is_wallet_used;
-    const isRetryPayment = transaction.is_retry_payment;
-
-    const shipment = await Shipment
-      .findById(transaction.object_id, {
-        attributes: ['id', 'final_amount', 'payment_gateway_fee_amount', 'customer_id'],
-      });
-
-    const url = `http://${URLS_MEMBER}/locker/request/${shipment.id}/reponse`;
-
-    const AUTHORISED = shipment && shipment.customer_id === customer.id;
-    if (!AUTHORISED) {
-      log('Unauthorized customer transaction!');
-      return res.redirect(`${url}?error=Unauthorized customer transaction!`);
-    }
-
-    const finalAmount = shipment.payment_gateway_fee_amount
-      ? (shipment.final_amount - shipment.payment_gateway_fee_amount)
-      : shipment.final_amount;
-
-    if (!result) {
-      const msg = 'Security Error! Please try again after sometime or contact us for support.';
-      return res.status(200)
-        .redirect(`${url}?error=${msg}`);
-    }
-
-    if (result.vpc_TxnResponseCode === '0') {
-      return paymentSuccess({
-        shipment, customer, isRetryPayment, isWalletUsed, finalAmount, res, url,
-      });
-    } else if (result.vpc_TxnResponseCode === 'Aborted') {
-      this.paymentFailed(shipment, customer);
-
-      const msg = 'Looks like you cancelled the payment. You can try again now or if you faced any issues ' +
-        'in completing the payment, please contact us.';
-
-      return res.status(200).redirect(`${url}?error=${msg}`);
-    }
-
-    this.paymentFailed(shipment, customer);
-
-    // todo: email sending pending
-    // Mail::to($customer->email)->bcc('support@shoppre.com')
-    // ->send(new PaymentFailed($shipment));
-    const msg = 'Payment transaction failed! You can try again now or if you faced any issues in ' +
-      'completing the payment, please contact us.';
-
-    return res
-      .redirect(`${url}?error=${msg}`);
-  } catch (e) {
-    return next(e);
-  }
-};
-
-exports.paymentFailed = (shipment, customer) => {
+exports.paymentFailed = (shipment, customer, paymentGatewayId) => {
   Shipment
     .update({
-      payment_gateway_id: CARD,
+      payment_gateway_id: paymentGatewayId,
       payment_status: 'failed',
       admin_info: 'Payment failed!',
       admin_read: 'no',
@@ -243,9 +171,149 @@ exports.paymentFailed = (shipment, customer) => {
       shipment,
       actingUser: customer,
       nextStateId: PAYMENT_FAILED,
-      comments: 'Axis payment failed',
+      comments: 'payment failed',
     });
 };
+
+exports.updateCardTransaction = async (transaction, url, shipment, customer,
+  isRetryPayment, isWalletUsed, finalAmount, req, res) => {
+  const result = JSON.parse(await verify(req.body));
+  await transaction.update({
+    status: result.status,
+    response: JSON.stringify(req.body),
+  });
+  if (!result) {
+    const msg = 'Security Error! Please try again after sometime or contact us for support.';
+    return res.status(200)
+      .redirect(`${url}?error=${msg}`);
+  }
+
+  if (result.vpc_TxnResponseCode === '0') {
+    return paymentSuccess({
+      shipment, customer, isRetryPayment, isWalletUsed, finalAmount, res, url, CARD,
+    });
+  } else if (result.vpc_TxnResponseCode === 'Aborted') {
+    this.paymentFailed(shipment, customer, CARD);
+
+    const msg = 'Looks like you cancelled the payment. You can try again now or if you faced any issues ' +
+      'in completing the payment, please contact us.';
+
+    return res.status(200).redirect(`${url}?error=${msg}`);
+  }
+
+  this.paymentFailed(shipment, customer, CARD);
+
+  // todo: email sending pending
+  // Mail::to($customer->email)->bcc('support@shoppre.com')
+  // ->send(new PaymentFailed($shipment));
+  const msg = 'Payment transaction failed! You can try again now or if you faced any issues in ' +
+    'completing the payment, please contact us.';
+
+  return res
+    .redirect(`${url}?error=${msg}`);
+};
+
+exports.updatePaypalTransaction = async (transaction, url,
+  shipment, customer, isRetryPayment, isWalletUsed, finalAmount, req, res,
+) => {
+  if (shipment && shipment.customer_id !== transaction.customer_id) {
+    return res.status(400).json({ error: 'Unauthorized customer transaction!' });
+  }
+  const amount = await this.currencyConversion(transaction.amount);
+
+  const { paymentId, payment } = this.paymentDetails(req);
+  payment.transactions[0].amount.total = amount;
+
+  return connection.payment.execute(paymentId, payment, (err, paymentStatus) => {
+    if (err) {
+      throw err;
+    } else {
+      const result = paymentStatus;
+      if (result.state === 'approved') {
+        return paymentSuccess({
+          shipment, customer, isRetryPayment, isWalletUsed, finalAmount, res, url, PAYPAL,
+        });
+      }
+      // Mail::to($customer->email)
+      // ->bcc('support@shoppre.com')->send(new PaymentFailed($shipment));
+      // this.paypalFailed(shipment, customer, url);
+      this.paymentFailed(shipment, customer, PAYPAL);
+      return res.status(200).redirect(`${url}?message=Unexpected error occurred & payment has been failed`);
+    }
+  });
+};
+
+exports.complete = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const transaction = await Transaction.findById(id, {
+      attributes: ['id', 'payment_gateway_id', 'object_id', 'customer_id', 'amount'],
+    });
+    const customer = await User
+      .findById(transaction.customer_id, {
+        attributes: ['id', 'wallet_balance_amount'],
+      });
+
+    const isWalletUsed = transaction.is_wallet_used;
+    const isRetryPayment = transaction.is_retry_payment;
+
+    const shipment = await Shipment
+      .findById(transaction.object_id, {
+        attributes: ['id', 'final_amount', 'payment_gateway_fee_amount', 'customer_id'],
+      });
+
+    const url = `${URLS_MEMBER}/locker/request/${shipment.id}/reponse`;
+
+    const AUTHORISED = shipment && shipment.customer_id === customer.id;
+    if (!AUTHORISED) {
+      log('Unauthorized customer transaction!');
+      return res.redirect(`${url}?error=Unauthorized customer transaction!`);
+    }
+
+    const finalAmount = shipment.payment_gateway_fee_amount
+      ? (shipment.final_amount - shipment.payment_gateway_fee_amount)
+      : shipment.final_amount;
+    switch (transaction.payment_gateway_id) {
+      case CARD:
+        return this.updateCardTransaction(
+          transaction, url, shipment, customer,
+          isRetryPayment, isWalletUsed, finalAmount, req, res,
+        );
+
+      case PAYPAL:
+        return this.updatePaypalTransaction(
+          transaction, url, shipment, customer,
+          isRetryPayment, isWalletUsed, finalAmount, req, res,
+        );
+
+      default: return res.status(200).redirect(`${url}?message=invalid payment gateway`);
+    }
+  } catch (e) {
+    return next(e);
+  }
+};
+
+exports.paymentDetails = (req) => {
+  const { PayerID: payerId } = req.query;
+  const { paymentId } = req.query;
+  const payment = {
+    payer_id: payerId,
+    transactions: [{
+      amount: {
+        currency: 'USD',
+        total: 0.00,
+      },
+    }],
+  };
+  return { paymentId, payment };
+};
+
+exports.currencyConversion = rupees => rp('http://free.currencyconverterapi.com/api/v3/convert?q=USD_INR&compact=ultra')
+  .then((response) => {
+    const conversion = JSON.parse(response);
+    const dollars = Math.round(rupees / conversion.USD_INR, 2);
+    return dollars;
+  });
 
 exports.WalletTransaction = async (walletAmount, customerId, shipment, transactionType) => {
   const transaction = {};
@@ -257,4 +325,3 @@ exports.WalletTransaction = async (walletAmount, customerId, shipment, transacti
   await Transaction
     .create(transaction);
 };
-

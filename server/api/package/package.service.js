@@ -150,9 +150,10 @@ exports.index = ({ query, params, user: actingUser }) => {
           }),
       Shipment
         .count({
+          where: { customer_id: actingUser.id },
           include: [{
             model: ShipmentState,
-            where: { state_id: stateIds, customer_id: actingUser.id },
+            where: { state_id: stateIds },
           }],
         }),
     ])

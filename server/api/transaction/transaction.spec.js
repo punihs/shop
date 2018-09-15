@@ -162,3 +162,17 @@ describe('GET /api/transactions/:id/complete', () => {
       });
   });
 });
+
+
+describe('GET /api/paymentGateways paypal', () => {
+  it('return paymentGateways paypal', (done) => {
+    request(app)
+      .get('/api/transactions/1/paypal/complete?status=success&paymentId=PAY-9W003752JR2628136LOMP6JA&token=EC-4UE86236NP158871C&PayerID=JWLRNV9QYUFV4')
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(() => {
+        done();
+      });
+  });
+});

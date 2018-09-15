@@ -10,22 +10,6 @@ const constants = {
     DOC: '1',
     NONDOC: '2',
   },
-  PACKAGE_STATES: {
-    ORDER_CREATED: 'order_created',
-    ORDER_CANCELLED: 'order_cancelled',
-    PAYMENT_INITIATED: 'payment_initiated',
-    PAYMENT_FAILED: 'payment_failed',
-    PROCESSING: 'processing',
-    VALUES: 'values',
-    REVIEW: 'review',
-    DELIVERED: 'delivered',
-    SHIP: 'ship',
-    INREVIEW: 'inreview',
-    RETURN: 'return',
-    RETURN_DONE: 'return_done',
-    SPLIT: 'split',
-    ABANDON: 'abandon',
-  },
   PACKAGE_STATE_IDS: {
     PACKAGE_ITEMS_UPLOAD_PENDING: 1,
     AWAITING_VERIFICATION: 2,
@@ -59,23 +43,6 @@ const constants = {
   SHIPMENT_COUPON_STATES: {
     PENDING: 'pending',
     SUCCESS: 'success',
-  },
-  SHIPMENT_STATES: {
-    INREVIEW: 'inreview',
-    INQUEUE: 'inqueue',
-    CANCELED: 'cancelled',
-    CONFIRMATION: 'confirmation',
-    DISPATCHED: 'dispatched',
-    INTRANSIT: 'intransit',
-    CUSTOM_HOLD: 'custom_hold',
-    LOST: 'lost',
-    DELIVERED: 'delivered',
-    DAMAGED: 'damaged',
-    WRONG_DELIVERY: 'wrong_delivery',
-    PAYMENT_CONFIRMED: 'payment_confirmed',
-    SHIPMENT_DELIVERED: 'Shipment_delivered',
-    SHIPMENT_CANCELLED: 'shipment_cancelled',
-    SHIPMENT_HANDED: 'shipment handed',
   },
   SHIPMENT_STATE_IDS: {
     PACKAGING_REQUESTED: 16,
@@ -148,11 +115,6 @@ const constants = {
     REGULAR: '1',
     SPECIAL: '2', // 'Liquid, Cream, Oil & Home-made food items'
   },
-  PACKAGE_CHARGES: {
-    RETURN_CHARGE: 400,
-    BASIC_PHOTO: 50.00,
-    ADVANCED_PHOTO: 300,
-  },
   OBJECT_TYPES: {
     PACKAGE: 1,
     SHIPMENT: 2,
@@ -176,13 +138,5 @@ const constants = {
     DTDC: 3,
   },
 };
-
-constants.PACKAGE_STATE_ID_NAMES = Object
-  .keys(constants.PACKAGE_STATE_IDS)
-  .reduce((nxt, key) => ({ ...nxt, [constants.SHIPMENT_STATE_IDS[key]]: key }), {});
-
-constants.SHIPMENT_STATE_ID_NAMES = Object
-  .keys(constants.SHIPMENT_STATE_IDS)
-  .reduce((nxt, key) => ({ ...nxt, [constants.SHIPMENT_STATE_IDS[key]]: key }), {});
 
 module.exports = constants;

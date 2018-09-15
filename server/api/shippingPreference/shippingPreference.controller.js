@@ -18,7 +18,7 @@ exports.update = async (req, res) => {
   const preference = req.body;
 
   const status = await ShippingPreference
-    .update(preference, { where: { id } });
+    .update(preference, { where: { customer_id: id } });
   return res.json(status);
 };
 

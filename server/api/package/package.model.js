@@ -10,9 +10,12 @@ const {
   PACKAGE_STATE_IDS: {
     PACKAGE_ITEMS_UPLOAD_PENDING, READY_TO_SHIP, RETURN_DONE, SPLIT_DONE, REVIEW, INVOICE, VALUES,
   },
-  PACKAGE_CHARGES: { RETURN_CHARGE },
   TRANSACTION_TYPES: { DEBIT },
 } = require('../../config/constants');
+
+const {
+  PACKAGE: { RETURN },
+} = require('../../config/constants/charges');
 
 const stateIdcommentMap = {
   [PACKAGE_ITEMS_UPLOAD_PENDING]: 'Package Recieved',
@@ -134,7 +137,7 @@ module.exports = (sequelize, DataTypes) => {
               .Create({
                 customer_id: customerId,
                 type: DEBIT,
-                amount: RETURN_CHARGE,
+                amount: RETURN,
                 description: `Return service fee deducted | Package ID ${pkg.id}`,
               });
 

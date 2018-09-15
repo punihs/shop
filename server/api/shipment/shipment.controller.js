@@ -4,7 +4,7 @@ const _ = require('lodash');
 const xlsx = require('node-xlsx');
 const paytm = require('../paymentGateway/paytm/paytm.controller');
 const axis = require('../paymentGateway/axis/axis.controller');
-// const paypal = require('../paymentGateway/paypal/paypal.controller');
+const paypal = require('../paymentGateway/paypal/paypal.controller');
 
 const eventEmitter = require('../../conn/event');
 const { URLS_API } = require('../../config/environment');
@@ -24,6 +24,7 @@ const {
   SHIPMENT_STATE_IDS: {
     CANCELED, DELIVERED, DISPATCHED, SHIPMENT_HANDED, PACKAGING_REQUESTED,
     PAYMENT_COMPLETED, PAYMENT_FAILED, PAYMENT_REQUESTED, PAYMENT_CONFIRMED,
+    SHIPMENT_CANCELLED,
   },
   PACKAGE_STATE_IDS: { READY_TO_SHIP },
   // LOYALTY_TYPE: {
@@ -34,10 +35,15 @@ const {
   },
 } = require('../../config/constants');
 
+const {
+  PAYMENT_GATEWAY,
+} = require('../../config/constants/charges');
+
+
 const paymentGatewaysMap = {
   [PAYTM]: paytm,
   [CARD]: axis,
-  // [PAYPAL]: paypal,
+  [PAYPAL]: paypal,
   [WALLET]: {
     create: (req, res, transaction) => {
       res.redirect(`${URLS_API}/api/transactions/${transaction.id}/complete?status=success`);
@@ -699,48 +705,59 @@ exports.history = (req, res, next) => {
 
 exports.cancelRequest = async (req, res, next) => {
   const { id: customerId } = req.user;
-  const { order_code: orderCode } = req.body;
-
+  const orderCode = req.body.order_code;
   return Shipment
     .find({
-      attributes: ['id', 'created_at'],
+      attributes: ['id', 'created_at', 'order_code'],
       where: {
         customer_id: customerId,
-        status: ['inreview', 'inqueue'],
         order_code: orderCode,
       },
+      include: [{
+        model: ShipmentState,
+        attributes: ['id'],
+        where: { state_id: PACKAGING_REQUESTED },
+      }],
     })
     .then((shipment) => {
       if (!shipment) return res.status(400).json({ message: 'requested shipment not exist' });
 
-      const creationTimeGap = moment(shipment.created_at).diff(moment(), 'hours');
+      const CANCELLATION_TIME = moment(shipment.created_at).diff(moment(), 'hours');
 
-      if (creationTimeGap > 1) {
-        const message = 'You can cancel shipment 1 hour from shipment creation. ' +
-          `creationTimeGap: ${creationTimeGap}`;
+      if (CANCELLATION_TIME > 1) {
+        const message = 'You can not cancel shipment after 1 hour from shipment creation. ' +
+          `creation Time Gap: ${CANCELLATION_TIME}`;
         return res
           .status(400)
           .json({ message });
       }
-
       return Promise
         .all([
           Shipment
-            .update({
-              status: 'canceled',
-            }, {
-              where: {
-                id: shipment.id,
-              },
+            .updateShipmentState({
+              db,
+              shipment,
+              actingUser: req.user,
+              nextStateId: SHIPMENT_CANCELLED,
+              comments: 'Shipment Cancelled By Customer',
             }),
-          Package
-            .update({
-              status: 'ship',
-            }, {
-              where: {
-                shipment_id: shipment.id,
-              },
+          db.PackageState
+            .create({
+              package_id: shipment.id,
+              user_id: req.user.id,
+              state_id: READY_TO_SHIP,
+              status: 1,
+            })
+            .then((packagestate) => {
+              db.Package
+                .update({
+                  package_state_id: packagestate.id,
+                  shipment_id: null,
+                }, {
+                  where: { shipment_id: shipment.id },
+                });
             }),
+
           Notification.create({
             customer_id: customerId,
             action_type: 'shipment',
@@ -951,6 +968,7 @@ const calculateDiscountsAndDeductions = async ({ body, customerId, shipment }) =
     amountForCashback,
   };
 };
+const { URLS_MEMBER } = require('../../config/environment');
 
 const initiatePayment = (transaction, req, res) => {
   const currentGateway = paymentGatewaysMap[transaction.payment_gateway_id];
@@ -962,12 +980,14 @@ const initiatePayment = (transaction, req, res) => {
   log({ message: 'payment.axis.start' });
   switch (transaction.payment_gateway_id) {
     case CARD: return axis.create(req, res, transaction);
-    default: return res.redirect('customer.locker');
+    case PAYPAL: return paypal.create(req, res, transaction);
+    default: return res.redirect(`${URLS_MEMBER}/shipmentQueue?message=Invalid Payment Gateway`);
   }
 };
 
 const paymentGatewayChargesMap = {
-  [CARD]: 2.5,
+  [CARD]: PAYMENT_GATEWAY.CARD,
+  [PAYPAL]: PAYMENT_GATEWAY.PAYPAL,
 };
 
 exports.finalShipRequest = async (req, res) => {
@@ -997,18 +1017,8 @@ exports.finalShipRequest = async (req, res) => {
   const finalAmountWithoutPGFee = shipment.estimated_amount - discount;
   const paymentGatewayFeeAmount = finalAmountWithoutPGFee *
     (paymentGatewayChargesMap[req.body.payment_gateway_id] / 100);
-
   const finalAmount = finalAmountWithoutPGFee + paymentGatewayFeeAmount;
-  log({ finalAmount });
-  log('payment gateway fee amount', paymentGatewayChargesMap[req.body.payment_gateway_id]);
-  log('shipment.final_amount', shipment.final_amount);
-  log({ finalAmountWithoutPGFee });
-  log({ paymentGatewayFeeAmount });
-  log({ CARD });
-  log({ finalAmountWithoutPGFee });
-  log({ discount });
-
-  if (req.body.is_wallet === 'true' && amountInWallet < shipment.final_amount) {
+  if (req.body.is_wallet === 1 && amountInWallet < shipment.final_amount) {
     await Transaction.create({
       object_name: 'shipment',
       object_id: shipment.id,
@@ -1022,21 +1032,6 @@ exports.finalShipRequest = async (req, res) => {
 
   // [WALLET]: 'success',
   // - todo: add cashback amount
-  Object.assign(shipment, {
-    cashback_amount: amountForCashback,
-    coupon_amount: amountFromFlatDiscount,
-    wallet_amount: amountFromWallet,
-    loyalty_amount: amountAgainstLoyaltyPoints,
-    // - Todo: payment gateway fee missing
-    payment_gateway_fee_amount: paymentGatewayFeeAmount,
-    final_amount: finalAmount,
-    payment_gateway_id: req.body.payment_gateway_id,
-    // todo: confirmation
-    status: 'inqueue',
-    payment_status: 'pending',
-  });
-
-  log('shipment', JSON.stringify(shipment));
 
   // - todo: cron to add cashback amount
   // await updateCustomerWallet(shipment, customerId);
@@ -1051,14 +1046,19 @@ exports.finalShipRequest = async (req, res) => {
       });
   }
 
-
   await Shipment
-    .update(
-      {
-        shipment,
-      },
-      { where: { id } },
-    );
+    .update({
+      final_amount: finalAmount,
+      cashback_amount: amountForCashback,
+      coupon_amount: amountFromFlatDiscount,
+      wallet_amount: amountFromWallet,
+      loyalty_amount: amountAgainstLoyaltyPoints,
+      payment_gateway_fee_amount: paymentGatewayFeeAmount,
+      payment_gateway_id: req.body.payment_gateway_id,
+      payment_status: 'pending',
+    }, {
+      where: { id },
+    });
 
   log('shipment.wallet_amount', shipment.wallet_amount);
 

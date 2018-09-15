@@ -89,7 +89,7 @@ class RequestPhotosController {
       type: 'basic_photo',
     };
     this.$http
-      .put(`/packages/${this.pkg.id}/pkg`, this.data)
+      .put(`/packages/${this.pkg.id}/photoRequests`, this.data)
       .then(({ data: { message } }) => {
         this.showAdditional = true;
         this.showBasic = true;
@@ -122,7 +122,7 @@ class RequestPhotosController {
       type: 'advanced_photo',
     };
     this.$http
-      .put(`/packages/${this.photoRequests.id}/photoRequests`, this.data)
+      .put(`/packages/${this.pkg.id}/photoRequests`, this.data)
       .then(({ data: { message } }) => {
         this
           .toaster

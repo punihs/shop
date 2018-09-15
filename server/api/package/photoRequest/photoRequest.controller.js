@@ -10,8 +10,11 @@ const {
   PHOTO_REQUEST_TYPES: { BASIC, ADVANCED },
   PHOTO_REQUEST_STATES: { COMPLETED },
   PACKAGE_STATE_IDS: { STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST },
-  PACKAGE_CHARGES: { BASIC_PHOTO, ADVANCED_PHOTO },
 } = require('../../../config/constants');
+
+const {
+  PACKAGE: { BASIC_PHOTO, ADVANCED_PHOTO },
+} = require('../../../config/constants/charges');
 
 exports.create = (req, res, next) => {
   log('photoRequest', req.body);

@@ -13,6 +13,7 @@ const config = {
     ip: env.IP || '0.0.0.0',
     LAMBDA_PORT: process.env.LAMBDA_PORT || 5004,
     root,
+    URLS_API: `${env.PREFIX}api.${env.DOMAIN}`,
     URLS_MEMBER: `${env.PREFIX}member.${env.DOMAIN}`,
     URLS_WWW: `${env.PREFIX}www.${env.DOMAIN}`,
     auth: {
@@ -26,6 +27,12 @@ const config = {
     paytm: {
       MID: 'INDLLP22228431438570',
       KEY: 'r&Xd973ZIk43rWzq',
+    },
+    AXIS: {
+      axis_key: env.AXIS_KEY,
+      merchant_id: env.AXIS_MERCHANT_ID,
+      secure_secret: env.AXIS_SECURE_SECRET,
+      vpc_access_code: env.AXIS_VPC_ACCESS_CODE,
     },
   },
   development: {
