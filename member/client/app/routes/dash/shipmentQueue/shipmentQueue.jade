@@ -59,7 +59,7 @@ div.m-t-xl.no-margin
                             div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PACKAGING_REQUESTED')
                               p In Review
                               p
-                                a.summary-order(href="") Cancel Shipment
+                                a.summary-order(ng-click="$ctrl.cancelShipRequest(shipment.id, $index)") Cancel Shipment
                                 i.fa.fa-info-circle.m-l-xs(
                                 uib-popover='Shoppre offers a one-hour window to cancel your shipping order. Once your parcel has been prepared, you can no longer cancel your shipment. The status will change to Submit Payment.'
                                 popover-trigger="'mouseenter'"
@@ -86,7 +86,7 @@ div.m-t-xl.no-margin
                             div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PAYMENT_CONFIRMED')
                               p Payment Received
                               p
-                                  a.summary-order(href="", target='_blank') Invoice
+                                  a.summary-order(ui-sref='dash.shipmentInvoice({shipmentId: shipment.id})', target='_blank') Invoice
                       tr
                         td(colspan=8 ng-if='shipment.open')
                           .col-sm-7

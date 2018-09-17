@@ -12,6 +12,7 @@ const {
     INQUEUE, INREVIEW, DISPATCHED, DELIVERED, CANCELED, SHIPMENT_CANCELLED,
     INTRANSIT, CUSTOM_HOLD, LOST, DAMAGED, WRONG_DELIVERY, PAYMENT_CONFIRMED, SHIPMENT_HANDED,
   },
+  PACKAGE_STATE_IDS: { READY_TO_SHIP },
 } = require('../../config/constants');
 
 const stateIdcommentMap = {
@@ -233,14 +234,33 @@ module.exports = (sequelize, DataTypes) => {
       case SHIPMENT_CANCELLED: {
         log('state changed CANCELLED', SHIPMENT_CANCELLED);
 
-        await db.PackageState
-          .then((packageState) => {
-            db.Package.update({
-              shipment_state_id: packageState.id,
-            }, {
-              where: { shipment_id: shipment.id },
-            });
+        const packages = db.Package
+          .findAll({
+            attributes: ['id'],
+            where: {
+              shipment_id: shipment.id,
+            },
           });
+
+        if (packages) {
+          packages.map((pkg) => {
+            db.Package
+              .updateState({
+                db,
+                pkg,
+                actingUser,
+                nextStateId: READY_TO_SHIP,
+              });
+          });
+        }
+
+        db.Package.update(
+          { shipment_id: null },
+          {
+            where: { shipment_id: shipment.id },
+          },
+        );
+
         // Mail::to($customer->email)->send(new ShipmentCancelled($packages, $shipRqst));
         break;
       }

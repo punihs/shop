@@ -632,7 +632,7 @@ exports.create = async (req, res, next) => {
 exports.shipQueue = async (req, res) => {
   const options = {
     attributes: [
-      'order_code', 'customer_name', 'address',
+      'id', 'order_code', 'customer_name', 'address',
       'phone', 'packages_count', 'final_weight', 'wallet_amount', 'package_level_charges_amount',
       'coupon_amount', 'loyalty_amount', 'estimated_amount', 'created_at', 'payment_status',
       'final_amount', 'payment_gateway_fee_amount',
@@ -705,13 +705,13 @@ exports.history = (req, res, next) => {
 
 exports.cancelRequest = async (req, res, next) => {
   const { id: customerId } = req.user;
-  const orderCode = req.body.order_code;
+  const { id: shipmentId } = req.params;
   return Shipment
     .find({
       attributes: ['id', 'created_at', 'order_code'],
       where: {
         customer_id: customerId,
-        order_code: orderCode,
+        id: shipmentId,
       },
       include: [{
         model: ShipmentState,
@@ -731,6 +731,7 @@ exports.cancelRequest = async (req, res, next) => {
           .status(400)
           .json({ message });
       }
+
       return Promise
         .all([
           Shipment
@@ -740,22 +741,6 @@ exports.cancelRequest = async (req, res, next) => {
               actingUser: req.user,
               nextStateId: SHIPMENT_CANCELLED,
               comments: 'Shipment Cancelled By Customer',
-            }),
-          db.PackageState
-            .create({
-              package_id: shipment.id,
-              user_id: req.user.id,
-              state_id: READY_TO_SHIP,
-              status: 1,
-            })
-            .then((packagestate) => {
-              db.Package
-                .update({
-                  package_state_id: packagestate.id,
-                  shipment_id: null,
-                }, {
-                  where: { shipment_id: shipment.id },
-                });
             }),
 
           Notification.create({
@@ -1487,7 +1472,7 @@ exports.confirmShipment = async (req, res) => {
     });
 
   const optionsShipment = {
-    attributes: ['id', 'package_level_charges_Amount', 'weight', 'pick_up_charge_amount', 'address',
+    attributes: ['id', 'package_level_charges_amount', 'weight', 'pick_up_charge_amount', 'address',
       'discount_amount', 'estimated_amount', 'packages_count', 'sub_total_amount', 'customer_name',
       'value_amount', 'phone', 'is_axis_banned_item', 'order_code', 'shipment_state_id'],
     where: {

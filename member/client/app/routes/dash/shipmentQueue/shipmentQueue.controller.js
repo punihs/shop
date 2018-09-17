@@ -21,7 +21,23 @@ class ShipmentQueue {
       .catch((err) => {
         this
           .toaster
-          .pop('danger', err.data.message);
+          .pop('error', err.data.message);
+      });
+  }
+
+  cancelShipRequest(id, index) {
+    this.$http
+      .put(`/shipments/${id}/cancel`)
+      .then(() => {
+        this.shipments.splice(index, 1);
+        this
+          .toaster
+          .pop('success', 'Shipment cancelled');
+      })
+      .catch((err) => {
+        this
+          .toaster
+          .pop('error', err.data.message);
       });
   }
 }

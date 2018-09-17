@@ -75,7 +75,7 @@ angular.module('uiGenApp')
       .state('dash.shipmentInvoice', {
         url: '/:shipmentId/invoice',
         templateUrl: 'app/routes/dash/shipmentInvoice/shipmentInvoice.html',
-        controller: 'ShipmentInvoice',
+        controller: 'ShipmentInvoiceController',
         controllerAs: '$ctrl',
       })
       .state('dash.signUp', {

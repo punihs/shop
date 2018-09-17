@@ -1,10 +1,11 @@
-class ShipmentInvoice {
-  constructor($http, Page, $uibModal, toaster) {
+class ShipmentInvoiceController {
+  constructor($http, Page, $uibModal, toaster, $stateParams) {
     this.$http = $http;
     this.Page = Page;
     this.$uibModal = $uibModal;
+    this.$stateParams = $stateParams;
     this.toaster = toaster;
-    this.shipmentId = 115;
+    this.shipmentId = this.$stateParams.shipmentId;
     this.shipment = [];
     this.Packages = [];
     this.ShipmentMetum = [];
@@ -30,7 +31,7 @@ class ShipmentInvoice {
         this.Packages.forEach((item) => {
           this.Charges.storage_amount += item.PackageCharge.storage_amount;
           this.Charges.photo_amount +=
-            item.PackageCharge.basic_photo_amount + item.PackageCharge.advanced_photo_amount;
+          item.PackageCharge.basic_photo_amount + item.PackageCharge.advanced_photo_amount;
           this.Charges.pickup_amount += item.PackageCharge.pickup_amount;
           this.Charges.handling_amount += item.PackageCharge.special_handling_amount;
           this.Charges.scan_doc_amount += item.PackageCharge.scan_document_amount;
@@ -38,13 +39,13 @@ class ShipmentInvoice {
           this.Charges.split_amount += item.PackageCharge.split_package_amount;
         });
       })
-      .catch(err => {
+      .catch((err) => {
         this
           .toaster
-          .pop('danger', err.data.message);
+          .pop('error', err.data.message);
       });
   }
 }
 angular
   .module('uiGenApp')
-  .controller('ShipmentInvoice', ShipmentInvoice);
+  .controller('ShipmentInvoiceController', ShipmentInvoiceController);
