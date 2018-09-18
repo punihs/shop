@@ -71,6 +71,7 @@ const constants = {
     CUSTOMER_ACKNOWLEDGEMENT_RECEIVED: 39,
     SHIPMENT_DELIVERED: 40,
     SHIPMENT_CANCELLED: 41,
+    SHIPMENT_DELETED: 55,
   },
   PRICE_ENTERER: {
     SHOPPRE: '1',
@@ -130,7 +131,7 @@ const constants = {
   },
   RATE_TYPES: {
     FIXED: '1',
-    MULTIPLE: '2', // 'Liquid, Cream, Oil & Home-made food items'
+    MULTIPLE: '2',
   },
   SHIPPING_PARTNERS_ID: {
     DHL: 1,

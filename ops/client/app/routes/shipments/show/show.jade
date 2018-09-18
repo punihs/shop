@@ -12,6 +12,11 @@
           )
         a.col.v-middle(
         ng-show='-1 !== $ctrl.editAllowedStates.indexOf($ctrl.data.state_id)'
+        ng-click="$ctrl.deleteShipment($ctrl.$stateParams.id)"
+        style='width: 2em;'
+        ): i.m-t-sm.wrapper-xs.fa.fa-trash(title='Delete Shipments')
+        a.col.v-middle(
+        ng-show='-1 !== $ctrl.editAllowedStates.indexOf($ctrl.data.state_id)'
         ui-sref="customer.shipment.update({ id: $ctrl.data.Customer.id, shipmentId: $ctrl.data.id })"
         style='width: 2em;'
         ): i.m-t-sm.wrapper-xs.fa.fa-edit(title='Edit Shipment')

@@ -2,8 +2,7 @@ class shipmentsShowController {
   /* @ngInject */
   constructor(
     $http, $stateParams, URLS, $sce, $state, $window, Page, Session, $q, ChangeShipmentState,
-    pkg, JobModal, ListModal, toaster
-  ) {
+    pkg, JobModal, ListModal, toaster) {
     this.Number = Number;
     this.URLS = URLS;
     this.$sce = $sce;
@@ -19,7 +18,7 @@ class shipmentsShowController {
     this.ListModal = ListModal;
     this.moment = moment;
     this.customer = pkg.Customer;
-    this.editAllowedStates = [16, 17];
+    this.editAllowedStates = [16, 17, 18, 19, 21];
     this.location = $window.location;
     this.user = Session.read('userinfo');
     this.$onInit();
@@ -66,6 +65,21 @@ class shipmentsShowController {
       .catch(() => {
         this.toaster
           .pop('error', 'There was problem loading data. Please contact ShoppRe team');
+      });
+  }
+
+  deleteShipment(shipmentid) {
+    this
+      .$http
+      .delete(`/shipments/${shipmentid}`)
+      .then(({ data: message }) => {
+        this.toaster
+          .pop('success', message);
+        this.$state.go('shipments.index');
+      })
+      .catch(() => {
+        this.toaster
+          .pop('error', 'There was problem deleting shipment');
       });
   }
 

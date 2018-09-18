@@ -12,7 +12,7 @@ const db = require('../../conn/sqldb');
 const shipper = require('../../conn/shipper');
 
 const {
-  Country, Shipment, Package, Address, PackageCharge, ShipmentMeta, Notification, ShipmentIssue,
+  Country, Shipment, Package, Address, PackageCharge, ShipmentMeta, Notification,
   PackageState, Redemption, Coupon, User, LoyaltyPoint, Transaction, Locker,
   ShipmentState, Store, ShipmentType, DHLLog,
   PackageItem, PhotoRequest, ShippingRate, PaymentGateway,
@@ -22,9 +22,14 @@ const {
   TRANSACTION_TYPES: { DEBIT },
   SHIPMENT_STATE_ID_NAMES,
   SHIPMENT_STATE_IDS: {
-    CANCELED, DELIVERED, DISPATCHED, SHIPMENT_HANDED, PACKAGING_REQUESTED,
+    SHIPMENT_HANDED, PACKAGING_REQUESTED,
     PAYMENT_COMPLETED, PAYMENT_FAILED, PAYMENT_REQUESTED, PAYMENT_CONFIRMED,
-    SHIPMENT_CANCELLED,
+    SHIPMENT_CANCELLED, UPSTREAM_SHIPMENT_REQUEST_CREATED,
+    SHIPMENT_MANUAL_FOLLOW_UP, SHIPMENT_LOST, CUSTOM_ON_HOLD, WRONG_ADDRESS,
+    RTO_REQUESTED, RAISE_SHIPMENT_LOST_CLAIM, PENALTY_PAYMENT_REQUESTED,
+    PENALTY_PAYMENT_DONE, WRONG_ADDRESS_FOLLOW_UP, CLAIM_PROCESSED_TO_CUSTOMER,
+    SHIPMENT_DELIVERED, SHIPMENT_DELETED, SHIPMENT_REJECTED_BY_CUSTOMER, RETURN_TO_ORIGIN,
+    CUSTOMER_ACKNOWLEDGEMENT_RECEIVED, AMOUNT_RECEIVED_FROM_UPSTREAM,
   },
   PACKAGE_STATE_IDS: { READY_TO_SHIP },
   // LOYALTY_TYPE: {
@@ -275,34 +280,64 @@ exports.destroy = async (req, res) => {
     .find({
       where: { id },
       include: [{
-        model: Package,
-        attributes: ['id'],
+        model: ShipmentState,
+        attributes: ['id', 'state_id'],
       }],
     });
 
-  log('shipment id', shipment.status);
-  if (![CANCELED, DELIVERED, DISPATCHED].includes(shipment.status)) {
-    return res.json({ message: `Can not delete item as it is already ${shipment.status}` });
+  if ([PAYMENT_CONFIRMED,
+    UPSTREAM_SHIPMENT_REQUEST_CREATED,
+    SHIPMENT_HANDED,
+    SHIPMENT_MANUAL_FOLLOW_UP,
+    SHIPMENT_LOST,
+    CUSTOM_ON_HOLD,
+    WRONG_ADDRESS,
+    SHIPMENT_REJECTED_BY_CUSTOMER,
+    RTO_REQUESTED,
+    RAISE_SHIPMENT_LOST_CLAIM,
+    PENALTY_PAYMENT_REQUESTED,
+    RETURN_TO_ORIGIN,
+    AMOUNT_RECEIVED_FROM_UPSTREAM,
+    PENALTY_PAYMENT_DONE,
+    WRONG_ADDRESS_FOLLOW_UP,
+    CLAIM_PROCESSED_TO_CUSTOMER,
+    CUSTOMER_ACKNOWLEDGEMENT_RECEIVED,
+    SHIPMENT_DELIVERED,
+    SHIPMENT_CANCELLED].includes(shipment.ShipmentState.state_id)) {
+    return res.json({ message: 'Can not delete shipment after payment confirm' });
   }
 
-  await Promise.all(shipment.Packages
-    .map(({ id: packageId }) => Package
+  const pkg = await Package
+    .findAll({
+      where: { shipment_id: shipment.id },
+    });
+  log('pkg id', JSON.stringify(pkg));
+
+  await Promise.all(pkg
+    .map(({ packageId }) => Package
       .updateState({
         db,
-        packageId,
+        lastStateId: null,
         nextStateId: READY_TO_SHIP,
+        pkg: { packageId, id },
         actingUser: req.user,
       })));
 
   await ShipmentMeta
     .destroy({ where: { shipment_id: id } });
 
-  await ShipmentIssue
-    .destroy({ where: { shipment_id: id } });
+  await Shipment
+    .updateShipmentState({
+      db,
+      shipment,
+      actingUser: req.user,
+      nextStateId: SHIPMENT_DELETED,
+      comments: 'Shipment Deleted By OPS',
+    });
+  await Package
+    .update({ shipment_id: null }, { where: { shipment_id: id } });
 
-  const status = await Shipment.destroy({ where: { id } });
-
-  return res.json(status);
+  return res.json({ message: 'Shipment Deleted' });
 };
 
 const calcShipping = async (countryId, weight, type) => {
