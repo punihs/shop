@@ -113,9 +113,6 @@ class PackageLockerController {
     }];
 
     this.getList();
-    // totalItemAmount = items
-    // this.getCount();
-    // this.getQueueCount();
   }
 
   getTotalItemAmount(index) {

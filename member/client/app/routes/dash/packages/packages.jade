@@ -50,7 +50,6 @@ div.m-t-xl.no-margin
                   li(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active")
                     a(ui-sref='dash.packages({ bucket: bucket })')
                       span(ng-bind="$ctrl.CONFIG.PACKAGE_STATES[$index]")
-                      span.badge.bg-warning.pull-right.no-margin.m-t-xs 16
           .full-width
             .wrapper-md.ng-scope
               .panel.panel-default
@@ -164,28 +163,28 @@ div.m-t-xl.no-margin
                                           li.m-r-xs.pull-right.ng-scope
                                             a.h5.font-bold.b-a.btn-addon.btn-success.imp(ng-click="$ctrl.resetValues($index)")
                                               span Reset Values
-                                    tr
-                                      td(colspan=8)
-                                          h4.font-thin OPTIONAL SERVICES
-                                          .input-group-btn.dropdown.open.full-width(uib-dropdown='', style='')
-                                            button.btn.btn-default.full-width.dropdown-toggle.text-left.m-b-md(type='button', uib-dropdown-toggle='', aria-haspopup='true', aria-expanded='true')
-                                              span.text-u-c.m-r-xs Special Requests
-                                              span.caret
-                                            ul.list-group.list-group-lg.no-bg.auto.dropdown-menu.full-width.position-relative
-                                              li.list-group-item.pointer(
-                                              ng-click='$ctrl.openOffer(specialRequest, package.id, specialRequest.value)'
-                                              ng-repeat='specialRequest in $ctrl.specialRequests'
+                                  tr
+                                    td(colspan=4)
+                                      h4.font-thin OPTIONAL SERVICES
+                                      .input-group-btn.dropdown.open.full-width(uib-dropdown='', style='')
+                                        button.btn.btn-default.full-width.dropdown-toggle.text-left.m-b-md(type='button', uib-dropdown-toggle='', aria-haspopup='true', aria-expanded='true')
+                                          span.text-u-c.m-r-xs Special Requests
+                                          span.caret
+                                        ul.list-group.list-group-lg.no-bg.auto.dropdown-menu.position-relative
+                                          li.list-group-item.pointer(
+                                          ng-click='$ctrl.openOffer(specialRequest, package.id, specialRequest.value)'
+                                          ng-repeat='specialRequest in $ctrl.specialRequests'
+                                          )
+                                            span.clear
+                                              span.font-bold(ng-bind="specialRequest.name")
+                                              i.fa.fa-info-circle.m-l-xs(
+                                              uib-popover='{{specialRequest.infoContent}}'
+                                              popover-trigger="'mouseenter'"
+                                              popover-placement='top'
+                                              popover-append-to-body='true'
                                               )
-                                                span.clear
-                                                  span.font-bold(ng-bind="specialRequest.name")
-                                                  i.fa.fa-info-circle.m-l-xs(
-                                                  uib-popover='{{specialRequest.infoContent}}'
-                                                  popover-trigger="'mouseenter'"
-                                                  popover-placement='top'
-                                                  popover-append-to-body='true'
-                                                  )
-                                                  span.m-l-xs(ng-bind="specialRequest.price")
-                                                  small.text-muted.clear.text-ellipsis(ng-bind="specialRequest.description")
+                                              span.m-l-xs(ng-bind="specialRequest.price")
+                                              small.text-muted.clear.text-ellipsis(ng-bind="specialRequest.description")
                             td(colspan=8 ng-if='$ctrl.$stateParams.bucket==="IN_REVIEW" && $ctrl.MoreOption[$index]')
                               button.btn.btn-md.btn-info.m-t-xs.m-b-xs(ng-click='$ctrl.uploadPhotos(package.id)') Photos
                               table#DataTables_Table_3.table.table-bordered.m-b-none

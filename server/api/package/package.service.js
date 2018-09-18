@@ -50,7 +50,7 @@ exports.index = ({ query, params, user: actingUser }) => {
       }, {
         model: PackageItem,
         attributes: ['id', 'name', 'price_amount',
-          'quantity', 'total_amount', 'object'],
+          'quantity', 'total_amount', 'object', 'object_advanced'],
       }, {
         model: Store,
         attributes: ['id', 'name'],

@@ -7,7 +7,6 @@ angular
   ])
   .constant('MODULE_VERSION', '0.0.1');
 // this configs to initiated using provider
-
 angular.module('uiGenApp', [
   'qui.core',
   'ngAnimate',
@@ -37,5 +36,5 @@ angular.module('uiGenApp', [
     $locationProvider.html5Mode(true);
   })
   .constant('RENAMED_STATES', {
-  });
+  })
 

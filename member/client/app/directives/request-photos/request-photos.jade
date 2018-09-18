@@ -3,28 +3,28 @@
     .h4.text-info View Photos
       .close(ng-click='$ctrl.cancel()') ×
 .modal-body
-  .row(ng-show='$ctrl.basicPhotoRequest')
-    .col-md-12(ng-show='!$ctrl.basicPhoto')
+  .row(ng-show='$ctrl.standardPhotoRequest')
+    .col-md-12(ng-show='!$ctrl.standardPhoto')
       .col-md-3.photo-left
         i.fa.fa-camera.big-cam.m-t-md
       .col-md-9
         .panel.b-a.ng-scope
           .panel-heading.b-b.b-light
-            h4.font-bold.no-margin Basic Photos
-              span INR 40
+            h4.font-bold.no-margin Standard Photos
+              span INR 50
           .panel-body
             p View low-resolution photos taken of your package when it arrived at the Shoppre to confirm package cpntents
-            a.btn.btn-success.text-u-c(ng-click='$ctrl.continueBasic()') Get Now
-  .row.basic-photo(ng-show='$ctrl.basicPhoto')
+            a.btn.btn-success.text-u-c(ng-click='$ctrl.continueStandard()') Get Now
+  .row.standard-photo(ng-show='$ctrl.standardPhoto')
     .col-md-12.text-center
       .panel.no-margin(set-ng-animate='false')
         div(style='height: 305px')
           div(uib-carousel='', active='active', interval='myInterval', no-wrap='noWrapSlides')
-            div(uib-slide='', ng-repeat='slide in $ctrl.slides', index='$index')
+            div(uib-slide='', ng-repeat='slide in $ctrl.slidesStandardObject', index='$index')
               img.view-slide-height(ng-src='{{$ctrl.URLS.CDN}}/shoppre/{{slide.object}}', style='margin:auto;')
               .carousel-caption
-    a.btn.btn-success.text-u-c.m-l-xs(ng-show='$ctrl.advancedPhoto && $ctrl.advanceBasicRequest', ng-click='$ctrl.showAdvancedPhoto()') Advanced Photo
-  .row(ng-if='$ctrl.basicPhotoRequestSubmit')
+    a.btn.btn-success.text-u-c.m-l-xs(ng-show='$ctrl.advancedPhoto && $ctrl.advanceStandardRequest', ng-click='$ctrl.showAdvancedPhoto()') Advanced Photo
+  .row(ng-if='$ctrl.standardPhotoRequestSubmit')
     .panel.b-a.ng-scope
       .panel-body
         .alert.alert-warning
@@ -33,7 +33,12 @@
             | Will be charged INR-50.00 Do you wish to continue?
           .text-center.m-t-md
             a.btn.btn-warning.text-u-c(ng-click='$ctrl.cancel()') Cancel
-            a.btn.btn-success.text-u-c.m-l-xs(ng-click='$ctrl.requestBasic()') Continue
+            a.btn.btn-success.text-u-c.m-l-xs(ng-click='$ctrl.requestStandard()') Continue
+  .row(ng-show='$ctrl.standardAlreadyRequested')
+    .panel.b-a.ng-scope.text-center
+      .panel-body
+        .alert.alert-warning
+          | Already Requested for Standard photo
 
   .row(ng-show='$ctrl.advancedPhotoRequest')
     .col-md-12(ng-show='!$ctrl.advancedPhoto')
@@ -47,14 +52,14 @@
           .panel-body
             p Order up 10 high-resolution photos of your content to confirm color, condition and item details
             a.btn.btn-success.text-u-c(ng-click='$ctrl.continueAdditional()') Request Now
-  .row.advanced-photo(ng-show='$ctrl.advancedPhoto && !$ctrl.basicPhoto')
+  .row.advanced-photo(ng-show='$ctrl.advancedPhoto && !$ctrl.standardPhoto')
     .panel.no-margin(set-ng-animate='false')
       div(style='height: 305px')
         div(uib-carousel='', active='active', interval='myInterval', no-wrap='noWrapSlides')
-          div(uib-slide='', ng-repeat='slide in $ctrl.slides', index='$index')
-            img.view-slide-height(ng-src='{{$ctrl.URLS.CDN}}/shoppre/{{slide.object}}', style='margin:auto;')
+          div(uib-slide='', ng-repeat='slide in $ctrl.slidesAdvancedObject', index='$index')
+            img.view-slide-height(ng-src='{{$ctrl.URLS.CDN}}/shoppre/{{slide.object_advanced}}', style='margin:auto;')
             .carousel-caption
-    a.btn.btn-success.text-u-c.m-l-xs(ng-show='!$ctrl.basicPhoto && $ctrl.advanceBasicRequest' ng-click='$ctrl.showBasicPhoto()') Basic Photo
+    a.btn.btn-success.text-u-c.m-l-xs(ng-show='!$ctrl.standardPhoto && $ctrl.advanceStandardRequest' ng-click='$ctrl.showStandardPhoto()') Standard Photo
   .row(ng-if='$ctrl.advancedPhotoRequestSubmit')
     .panel.b-a.ng-scope
       .panel-body
@@ -65,5 +70,10 @@
           .text-center.m-t-md
             a.btn.btn-warning.text-u-c(ng-click='$ctrl.cancel()') Cancel
             a.btn.btn-success.text-u-c.m-l-xs(ng-click='$ctrl.requestAdvanced()') Continue
+  .row(ng-show='$ctrl.advancedAlreadyRequested')
+    .panel.b-a.ng-scope.text-center
+      .panel-body
+        .alert.alert-warning
+          | Already Requested for Advanced photo
 
 

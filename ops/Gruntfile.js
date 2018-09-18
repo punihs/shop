@@ -1,6 +1,8 @@
 // Generated on 2016-02-12 using generator-angular-fullstack 3.3.0
 'use strict';
-
+const path = require('path');
+const root = path.normalize(`${__dirname}/..`);
+console.log({ root })
 module.exports = function (grunt) {
   var localConfig;
   try {
@@ -34,6 +36,7 @@ module.exports = function (grunt) {
       client: require('./bower.json').appPath || 'client',
       server: 'server',
       dist: 'dist',
+      root,
     },
     express: {
       options: {
@@ -318,45 +321,18 @@ module.exports = function (grunt) {
     // `server/config/environment/shared.js`
     ngconstant: {
       options: {
+        name: 'uiGenApp.constants',
+        dest: '<%= yeoman.client %>/app/app.constant.js',
         deps: [],
         wrap: true,
-        configPath: '<%= yeoman.server %>/config/environment/',
+        configPath: '<%= yeoman.root %>/server/config/environment/shared',
       },
       app: {
-        options: {
-          name: 'uiGenApp.constants',
-          dest: '<%= yeoman.client %>/app/app.constant.js',
+        constants() {
+          return {
+            appConfig: require(grunt.config.get('ngconstant.options.configPath')),
+          };
         },
-        //constants: function() {
-        //  return {
-        //    QCONFIG: require('./' + grunt.config.get('ngconstant.options.configPath') + 'shared')
-        //  };
-        //}
-      },
-      serve: {
-        options: {
-          name: 'uiGenApp.config',
-          dest: '<%= yeoman.client %>/app/urls.constant.js',
-        },
-        //constants: function() {
-        //  return {
-        //    URLS: require('./' + grunt.config.get('ngconstant.options.configPath') + 'angular/development'),
-        //    ENV: 'development'
-        //  };
-        //}
-      },
-      dist: {
-        options: {
-          name: 'uiGenApp.config',
-          dest: '<%= yeoman.client %>/app/urls.constant.js',
-        },
-        //constants: function() {
-        //  return {
-        //    URLS: require('./' + grunt.config.get('ngconstant.options.configPath') + 'angular/production'),
-        //    ENV: 'production'
-        //  };
-        //}
-
       },
     },
 
@@ -464,6 +440,7 @@ module.exports = function (grunt) {
     concurrent: {
       pre: [
         'injector:sass',
+        'ngconstant',
       ],
       server: [
         'newer:babel:client',

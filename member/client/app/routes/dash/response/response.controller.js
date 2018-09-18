@@ -1,11 +1,14 @@
 class PaymentResponse {
-  constructor($http, Page, $uibModal, toaster, $stateParams) {
+  constructor($http, Page, $uibModal, toaster, $stateParams, CONFIG) {
     this.$http = $http;
     this.Page = Page;
+    this.CONFIG = CONFIG;
     this.$stateParams = $stateParams;
     this.$uibModal = $uibModal;
     this.toaster = toaster;
     this.shipmentId = this.$stateParams.shipmentId;
+    this.paymentGatewayCashID = this.CONFIG.PAYMENT_GATEWAY.CASH;
+    this.paymentGatewayWireID = this.CONFIG.PAYMENT_GATEWAY.WIRE;
     this.$onInit();
   }
 
@@ -13,13 +16,12 @@ class PaymentResponse {
     this.$http
       .get(`/shipments/${this.shipmentId}/request/response`)
       .then(({ data: { shipment } }) => {
-        // alert(shipment.PaymentGateway.value);
         this.shipment = shipment;
       })
       .catch(err => {
         this
           .toaster
-          .pop('danger', err.data.message);
+          .pop('error', err.data.message);
       });
   }
 }

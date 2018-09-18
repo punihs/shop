@@ -21,7 +21,7 @@ exports.create = (req, res, next) => {
   const customerId = req.user.id;
   const { id: packageId } = req.params;
   const { type } = req.body;
-  const IS_BASIC_PHOTO = type === 'basic_photo';
+  const IS_BASIC_PHOTO = type === 'standard_photo';
 
   const CHARGE = IS_BASIC_PHOTO ? BASIC_PHOTO : ADVANCED_PHOTO;
   const REVEW_TEXT = IS_BASIC_PHOTO ? 'Basic' : 'Advanced';
@@ -41,13 +41,20 @@ exports.create = (req, res, next) => {
       if (!pkg) return res.status(400).json({ message: 'Package not found.' });
 
       // Todo: picking only one item
+      const photoRequest = await PhotoRequest
+        .find({
+          attributes: ['id'],
+          where: {
+            package_id: packageId,
+            type: IS_BASIC_PHOTO ? BASIC : ADVANCED,
+          },
+        });
+      log('JSON', JSON.stringify(photoRequest));
+      if (photoRequest) {
+        return res.json({ message: `Already ${REVEW_TEXT} photo requested` });
+      }
       const packageItem = await PackageItem
-        .find({ attributes: ['object'] }, { where: { package_id: pkg.id } });
-
-      status = packageItem.object === null
-        ? 'pending'
-        : 'completed';
-
+        .find({ attributes: ['object', 'object_advanced'] }, { where: { package_id: pkg.id } });
       await PhotoRequest.create({
         package_id: packageId,
         type: IS_BASIC_PHOTO ? BASIC : ADVANCED,
@@ -55,16 +62,23 @@ exports.create = (req, res, next) => {
         charge_amount: CHARGE,
       });
 
+      if (!IS_BASIC_PHOTO) {
+        status = packageItem.object_advanced === null
+          ? 'pending'
+          : 'completed';
+      } else {
+        status = 'completed';
+      }
+
       await PackageCharge
         .upsert({ id: packageId, [`${type}_amount`]: CHARGE });
-
       await Notification.create({
         customer_id: customerId,
         action_type: 'package',
         action_id: packageId,
         action_description: `Requested for ${REVEW_TEXT} Photos  - Order# ${packageId}`,
       });
-
+      log({ status });
       if (status === 'completed') {
         return res
           .json({
@@ -73,16 +87,19 @@ exports.create = (req, res, next) => {
             photos: pkg.object,
           });
       }
-
+      log('pkg', JSON.stringify(pkg));
       // - status === 'pending'
       const photoStatus = type === 'basic_photo' ? STANDARD_PHOTO_REQUEST : ADVANCED_PHOTO_REQUEST;
       const photoComments = type === 'basic_photo' ? 'Standard' : 'Advanced';
       log({ photoStatus });
       await pkg
-        .update({
-          status: 'review',
-          review: `Requested for ${REVEW_TEXT} Photos`,
-        });
+        .update(
+          {
+            status: 'review',
+            review: `Requested for ${REVEW_TEXT} Photos`,
+          },
+          { where: { id: pkg.id } },
+        );
       const packId = {
         id: packageId,
       };

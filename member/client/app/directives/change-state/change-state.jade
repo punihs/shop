@@ -9,45 +9,7 @@ form.form-validation(name="form" ng-submit='$ctrl.ok()')
       strong {{$ctrl.states[$ctrl.stateId].config.state_id}}
       select.form.form-control(ng-model='$ctrl.data.state_id' ng-disabled='$ctrl.states[$ctrl.stateId].Childs.length===1' ng-if='$ctrl.stateId !== 12')
         option(ng-repeat='state in $ctrl.states[$ctrl.stateId].Childs' ng-value='state.state_id' ng-selected='$first') {{$ctrl.states[state.state_id].action}}
-      //- Customized Selction of states for Interview Confirm
-      div: .btn-group.text-center(ng-init="$ctrl.data.state_id = $ctrl.package._root_.is_drive ? 8 : 5" ng-if='$ctrl.stateId === 12')
-        label.w-xs.btn.btn-sm.btn-success(ng-model='$ctrl.data.state_id', uib-btn-radio="5" ng-disabled='$ctrl.package._root_.is_drive')
-          i.fa.fa-check.text-active
-          | Telephonic
-        label.w-xs.btn.btn-sm.btn-primary(ng-model='$ctrl.data.state_id', uib-btn-radio="8")
-          i.fa.fa-check.text-active
-          | Personal
-        label.w-xs.btn.btn-sm.btn-info(ng-model='$ctrl.data.state_id', uib-btn-radio="17" ng-disabled='$ctrl.package._root_.is_drive')
-          i.fa.fa-check.text-active
-          | Video
-    label.input-group(ng-if='$ctrl.states[$ctrl.stateId].config.scheduled_on')
-      strong {{$ctrl.states[$ctrl.stateId].config.scheduled_on}}
-      .input-group
-        input.form.form-control(
-          type='text' uib-datepicker-popup='dd-MMMM-yyyy'
-          ng-model='$ctrl.exData.scheduled_on_date'
-          ng-change='$ctrl.setScheduledOn()'
-          is-open='$ctrl.ui.scheduledOn'
-          close-text='Close'
-          ng-click='$ctrl.ui.scheduledOn = true'
-          required='$ctrl.stateId !== 19'
-          ng-model-options='{debounce: 300}'
-        )
-    label.input-group(ng-if='$ctrl.states[$ctrl.stateId].config.scheduled_on' ng-show='$ctrl.stateId === 12')
-      strong Time
-      .input-group
-        div.w-sm(
-          ng-model='$ctrl.exData.scheduled_on_time'
-          uib-timepicker ng-change='$ctrl.setScheduledOn()'
-          hour-step='1'
-          minute-step='15'
-          show-meridian='true'
-          ng-model-options='{debounce: 300}'
-        )
-    label.input-group(ng-if='$ctrl.states[$ctrl.stateId].config.suggested_join_date')
-      strong {{$ctrl.states[$ctrl.stateId].config.suggested_join_date}}
-      .input-group
-        input.form.form-control(type='text' uib-datepicker-popup='dd-MMMM-yyyy' ng-model='$ctrl.data.suggested_join_date' is-open='$ctrl.ui.suggestedJoinDate' close-text='Close' ng-click='$ctrl.ui.suggestedJoinDate = true' required)
+
 
     label.input-group(ng-if='$ctrl.states[$ctrl.stateId].config.currency')
       strong {{$ctrl.states[$ctrl.stateId].config.currency}}

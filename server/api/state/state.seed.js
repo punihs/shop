@@ -104,12 +104,12 @@ const packageStates = [{
   config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
 }, {
   id: 52,
-  name: 'Standard Photo request', // -review php
+  name: 'Standard Photo Request',
   config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
 }, {
   id: 53,
-  name: 'Advanced Photo request', // -review php
-  config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
+  name: 'Advanced Photo Request',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
 }, {
   id: 54,
   name: 'Upload Invoice Requested', // -review php
@@ -223,6 +223,10 @@ const shipmentStates = [{
 }, {
   id: 41,
   name: 'Shipment Cancelled',
+  config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 55,
+  name: 'Shipment Deleted',
   config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
 }].map(x => ({ ...x, type: SHIPMENT }));
 

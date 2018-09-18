@@ -1,70 +1,143 @@
 class RequestPhotosController {
-  constructor($uibModalInstance, $http, packageDetail, $state, URLS) {
+  constructor($uibModalInstance, $http, packageDetail, $state, URLS, toaster, $window) {
     this.pkg = packageDetail;
     this.packagePhotos = '';
     this.$state = $state;
+    this.$window = $window;
     this.$http = $http;
     this.URLS = URLS;
-    this.basicPhotoRequest = true;
-    this.advancedPhotoRequest = true;
-    this.photoType = this.pkg.PhotoRequests.map(x => x.type);
-    this.basicPhoto = false;
-    this.advancedPhoto = false;
-
-    this.basicPhotoRequestSubmit = false;
-    this.advancedPhotoRequestSubmit = false;
-    this.advanceBasicRequest = false;
-    this.photoRequestLength = packageDetail.PhotoRequests.length;
-    this.$uibModalInstance = $uibModalInstance;
-    this.slides = this.pkg.PackageItems;
+    this.toaster = toaster;
     this.standardId = '1';
     this.advancedId = '2';
+    this.photoRequestLength = packageDetail.PhotoRequests.length;
+    this.standardPhotoRequest = true;
+    this.advancedPhotoRequest = true;
+    this.photoTypeStandard = this.pkg.PhotoRequests.map(x => x.type === this.standardId);
+    this.photoTypeAdvanced = this.pkg.PhotoRequests.map(x => x.type === this.advancedId);
+
+    this.standardExits = false;
+    this.advancedExits = false;
+    if (this.photoTypeStandard.includes(true)) {
+      this.standardExits = true;
+    }
+    if (this.photoTypeAdvanced.includes(true)) {
+      this.advancedExits = true;
+    }
+
+    this.standardPhoto = false;
+    this.advancedPhoto = false;
+
+    this.standardPhotoRequestSubmit = false;
+    this.advancedPhotoRequestSubmit = false;
+    this.advanceStandardRequest = false;
+    this.$uibModalInstance = $uibModalInstance;
+    this.slides = this.pkg.PackageItems;
+    this.slidesAdvancedObject = this.pkg.PackageItems
+      .filter(x => x.object_advanced);
+
+    this.slidesStandardObject = this.pkg.PackageItems
+      .filter(x => x.object);
+    if (this.slidesStandardObject.length) {
+      this.slidesStandard = true;
+    } else {
+      this.slidesStandard = false;
+    }
+    if (this.slidesAdvancedObject.length) {
+      this.slidesAdvanced = true;
+    } else {
+      this.slidesAdvanced = false;
+    }
+
+    this.standardRequested = null;
+    this.advancedRequested = null;
+
     this.$onInit();
   }
 
   $onInit() {
-    if (this.photoRequestLength >= 1) {
-      if (this.photoType.includes(this.standardId) && this.photoType.includes(this.advancedId)) {
-        this.advanceBasicRequest = true;
-        this.basicPhotoRequest = true;
-        this.advancedPhotoRequest = true;
-        this.basicPhoto = true;
-        this.advancedPhoto = true;
-      } else if (this.photoType.includes(this.standardId) &&
-        !this.photoType.includes(this.advancedId)) {
-        this.advanceBasicRequest = false;
-        this.basicPhotoRequest = false;
-        this.advancedPhotoRequest = true;
-        this.basicPhoto = true;
-        this.advancedPhoto = false;
-      } else if (!this.photoType.includes(this.standardId) &&
-        this.photoType.includes(this.advancedId)) {
-        this.advanceBasicRequest = false;
-        this.basicPhotoRequest = true;
-        this.advancedPhotoRequest = false;
-        this.basicPhoto = false;
-        this.advancedPhoto = true;
+    if (this.photoRequestLength || this.slides.length) {
+      if ((this.standardExits && this.advancedExits) ||
+        (this.standardRequested && this.advancedRequested)) {
+        this.displayBoth();
+      } else if ((this.standardExits &&
+          !this.advancedExits) ||
+        (this.standardRequested && !this.advancedRequested)) {
+        this.displayStandard();
+      } else if ((!this.standardExits &&
+          this.advancedExits) ||
+        (!this.standardRequested && this.advancedRequested)) {
+        this.displayAdvanced();
       }
+    }
+  }
+  displayBoth() {
+    if (this.slidesAdvanced && this.slidesStandard) {
+      this.advanceStandardRequest = true;
+      this.standardPhotoRequest = true;
+      this.advancedPhotoRequest = true;
+      this.standardPhoto = true;
+      this.advancedPhoto = true;
+    } else if (!this.slidesAdvanced && this.slidesStandard) {
+      this.displayStandard(false);
+      this.advancedAlreadyRequested = true;
+    } else if (this.slidesAdvanced && !this.slidesStandard) {
+      this.displayAdvanced(false);
+      this.standardAlreadyRequested = true;
+    } else if (this.slidesAdvanced === false && this.slidesStandard === false) {
+      this.standardAlreadyRequested = true;
+      this.advancedAlreadyRequested = true;
+      this.standardPhotoRequest = false;
+      this.advancedPhotoRequest = false;
+      this.standardPhoto = false;
+      this.advancedPhoto = false;
+    }
+  }
+
+  displayStandard(standardAlreadyRequested) {
+    if (this.slidesStandard) {
+      this.advanceStandardRequest = false;
+      this.standardPhotoRequest = false;
+      this.advancedPhotoRequest = true;
+      this.standardPhoto = true;
+      this.advancedPhoto = false;
+      this.standardAlreadyRequested = standardAlreadyRequested;
+    } else {
+      this.standardAlreadyRequested = true;
+    }
+  }
+
+  displayAdvanced(advancedAlreadyRequested) {
+    if (this.slidesAdvanced) {
+      this.advanceStandardRequest = false;
+      this.standardPhotoRequest = true;
+      this.advancedPhotoRequest = false;
+      this.standardPhoto = false;
+      this.advancedPhoto = true;
+      this.advancedAlreadyRequested = advancedAlreadyRequested;
+    } else {
+      this.advancedAlreadyRequested = true;
     }
   }
 
   showAdvancedPhoto() {
-    if (this.photoType.includes(this.standardId) && this.photoType.includes(this.advancedId)) {
-      this.advanceBasicRequest = true;
+    if ((this.standardExits && this.advancedExits) ||
+      (this.standardRequested && this.advancedRequested)) {
+      this.advanceStandardRequest = true;
       this.advancedPhotoRequest = true;
       this.advancedPhoto = true;
-      this.basicPhotoRequest = false;
-      this.basicPhoto = false;
+      this.standardPhotoRequest = false;
+      this.standardPhoto = false;
     }
   }
 
-  showBasicPhoto() {
-    if (this.photoType.includes(this.standardId) && this.photoType.includes(this.advancedId)) {
-      this.advanceBasicRequest = true;
+  showStandardPhoto() {
+    if ((this.standardExits && this.advancedExits) ||
+      (this.standardRequested && this.advancedRequested)) {
+      this.advanceStandardRequest = true;
       this.advancedPhotoRequest = false;
       this.advancedPhoto = true;
-      this.basicPhotoRequest = true;
-      this.basicPhoto = true;
+      this.standardPhotoRequest = true;
+      this.standardPhoto = true;
     }
   }
 
@@ -76,32 +149,44 @@ class RequestPhotosController {
     this.$uibModalInstance.close();
   }
 
-  continueBasic() {
-    this.basicPhotoRequestSubmit = true;
+  continueStandard() {
+    this.standardPhotoRequestSubmit = true;
     this.advancedPhotoRequest = false;
   }
   continueAdditional() {
     this.advancedPhotoRequestSubmit = true;
-    this.basicPhotoRequest = false;
+    this.standardPhotoRequest = false;
   }
-  requestBasic() {
+  requestStandard() {
     this.data = {
-      type: 'basic_photo',
+      type: 'standard_photo',
     };
     this.$http
       .put(`/packages/${this.pkg.id}/photoRequests`, this.data)
-      .then(({ data: { message } }) => {
+      .then(() => {
         this.showAdditional = true;
-        this.showBasic = true;
+        this.showStandard = true;
         this.success = true;
-        this.basicRequest = false;
+        this.standardRequest = false;
         this.additionalRequest = false;
         this.photoList = true;
         this
           .toaster
-          .pop('success', message);
+          .pop('success', 'Standard Photo Requested');
         this.submitting = false;
-        this.$state.reload();
+        this.standardPhotoRequestSubmit = false;
+        this.standardRequested = true;
+        if ((this.standardRequested && this.advancedRequested) &&
+            (this.slidesAdvanced && this.slidesStandard)) {
+          this.displayBoth();
+        } else if (this.standardRequested && !this.advancedRequested && (this.slidesStandard)) {
+          this.displayStandard();
+        } else if (!this.standardRequested && this.advancedRequested && (this.slidesAdvanced)) {
+          this.displayAdvanced();
+        } else {
+          return this.$window.location.reload(true);
+        }
+        this.standardPhotoRequestSubmit = false;
       })
       .catch((err) => {
         this
@@ -113,9 +198,9 @@ class RequestPhotosController {
   }
   requestAdvanced() {
     this.showAdditional = true;
-    this.showBasic = true;
+    this.showStandard = true;
     this.success = true;
-    this.basicRequest = false;
+    this.standardRequest = false;
     this.additionalRequest = false;
     this.photoList = true;
     this.data = {
@@ -123,12 +208,26 @@ class RequestPhotosController {
     };
     this.$http
       .put(`/packages/${this.pkg.id}/photoRequests`, this.data)
-      .then(({ data: { message } }) => {
+      .then(() => {
         this
           .toaster
-          .pop('success', message);
+          .pop('success', 'Advanced Photo Requested');
         this.submitting = false;
-        this.$state.reload();
+        this.advancedRequested = true;
+
+        if ((this.standardRequested && this.advancedRequested) &&
+          (this.slidesAdvanced && this.slidesStandard)) {
+          this.displayBoth();
+        } else if (this.standardRequested && !this.advancedRequested && (this.slidesStandard)) {
+          this.displayStandard();
+        } else if (!this.standardRequested && this.advancedRequested && (this.slidesAdvanced)) {
+          this.displayAdvanced();
+        } else {
+          return this.$window.location.reload(true);
+        }
+
+
+        this.advancedPhotoRequestSubmit = false;
       })
       .catch((err) => {
         this
