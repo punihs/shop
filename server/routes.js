@@ -99,14 +99,14 @@ module.exports = (app) => {
   app.use('/api/pricing', pricing);
   app.use('/api/packageItems', authenticate(), packageItem);
   app.use('/api/packageItemCategories', authenticate(), packageItemCategory);
+  app.use('/api/users/public', userPublic);
   app.use(
     '/api/users',
-    authenticate(),
     user,
+    authenticate(),
     userPackage,
     userShipment,
   );
-  app.use('/api/users/public', userPublic);
   app.use('/api/faqs', faqCategory);
   app.use('/api/crons', cron);
   app.use('/api/places', place);

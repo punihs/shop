@@ -212,7 +212,7 @@ exports.submitRegister = async (req, res, next) => {
       const referCode = await ReferCode
         .find({
           attributes: ['id', 'customer_id'],
-          where: {friend: req.body.email, code: req.body.refferal},
+          where: { friend: req.body.email, code: req.body.refferal },
         });
       if (referCode) {
         referCustomerId = referCode.customer_id;
@@ -267,7 +267,7 @@ exports.submitRegister = async (req, res, next) => {
         // 200 Shoppre Loyalty Points simply because you signed up with the referral code that your
         // friend sent!'));
       } else {
-        res.json({message: 'You may entered an invalid refferal code. Try with another or proceed without.'});
+        res.json({ message: 'You may entered an invalid refferal code. Try with another or proceed without.' });
       }
     }
 
@@ -311,7 +311,6 @@ exports.submitRegister = async (req, res, next) => {
     const code = req.body.lockerCode ? req.body.lockerCode : this.lockerGenerate();
     // const code = this.lockerGenerate();
     customer.virtual_address_code = code;
-    console.log({ referCustomerId });
     customer.referred_by = referCustomerId === null ? referCustomerId : null;
     const IS_OPS = env.GSUITE_DOMAIN === req.body.email.split('@')[1];
     customer.group_id = IS_OPS ? OPS : CUSTOMER;
@@ -339,10 +338,12 @@ exports.submitRegister = async (req, res, next) => {
 
     await this.sendEmailVerification(req.body.email);
 
-    return res.json({
-      message: `You need to confirm your account.
+    return res
+      .status(201)
+      .json({
+        message: `You need to confirm your account.
     We have sent you an activation code, please check your email.`,
-    });
+      });
   } catch (e) {
     next(e);
   }

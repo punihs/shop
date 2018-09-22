@@ -7,6 +7,7 @@ const db = require('../../conn/sqldb');
 
 const router = express.Router();
 
+router.post('/register', rateLimit('auth', db), controller.submitRegister);
 router.get('/', authenticate(), controller.index);
 router.get('/me', authenticate(), controller.me);
 router.get('/states', authenticate(), controller.states);
@@ -19,7 +20,5 @@ router.put('/:id/unread', authenticate(), controller.unread);
 router.delete('/:id', authenticate(), controller.destroy);
 router.post('/register', rateLimit('auth', db), controller.submitRegister);
 router.post('/verify', controller.verify);
-//-todo public api for php
-router.post('/register', rateLimit('auth', db), controller.submitRegister);
 
 module.exports = router;
