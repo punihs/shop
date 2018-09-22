@@ -204,143 +204,148 @@ exports.destroy = async (req, res) => {
   return res.json(status);
 };
 
-exports.submitRegister = async (req, res) => {
-  const loyalPoints = 200;
-  let referCustomerId = '';
-  if (req.body.refferal) {
-    const referCode = await ReferCode
-      .find({
-        attributes: ['id', 'customer_id'],
-        where: { friend: req.body.email, code: req.body.refferal },
-      });
-    if (referCode) {
-      referCustomerId = referCode.customer_id;
-      const loyaltyUpdate = {};
-
-      await LoyaltyPoint
+exports.submitRegister = async (req, res, next) => {
+  try {
+    const loyalPoints = 200;
+    let referCustomerId = '';
+    if (req.body.refferal) {
+      const referCode = await ReferCode
         .find({
-          attributes: ['id', 'total_points', 'points'],
-          where: { customer_id: referCode.customer_id },
-        })
-        .then((loyaltyPoint) => {
-          loyaltyUpdate.points = loyaltyPoint.points + loyalPoints;
-          loyaltyUpdate.total_points = loyaltyPoint.total_points + loyalPoints;
-
-          if (loyaltyPoint.total_points < 1000) {
-            loyaltyUpdate.level = 1;
-          } else if (loyaltyPoint.total_points >= 1000 &&
-            loyaltyPoint.total_points < 6000) {
-            loyaltyUpdate.level = 2;
-          } else if (loyaltyPoint.total_points >= 6000 &&
-            loyaltyPoint.total_points < 26000) {
-            loyaltyUpdate.level = 3;
-          } else if (loyaltyPoint.total_points >= 26000) {
-            loyaltyUpdate.level = 4;
-          }
-          loyaltyPoint.update(loyaltyUpdate);
+          attributes: ['id', 'customer_id'],
+          where: {friend: req.body.email, code: req.body.refferal},
         });
+      if (referCode) {
+        referCustomerId = referCode.customer_id;
+        const loyaltyUpdate = {};
 
-      log(loyalPoints);
+        await LoyaltyPoint
+          .find({
+            attributes: ['id', 'total_points', 'points'],
+            where: { customer_id: referCode.customer_id },
+          })
+          .then((loyaltyPoint) => {
+            loyaltyUpdate.points = loyaltyPoint.points + loyalPoints;
+            loyaltyUpdate.total_points = loyaltyPoint.total_points + loyalPoints;
 
-      const referFriend = await User
-        .findById(referCode.customer_id, {
-          attributes: ['id', 'email', 'first_name', 'last_name'],
-        });
-      log(referCode.customer_id);
+            if (loyaltyPoint.total_points < 1000) {
+              loyaltyUpdate.level = 1;
+            } else if (loyaltyPoint.total_points >= 1000 &&
+              loyaltyPoint.total_points < 6000) {
+              loyaltyUpdate.level = 2;
+            } else if (loyaltyPoint.total_points >= 6000 &&
+              loyaltyPoint.total_points < 26000) {
+              loyaltyUpdate.level = 3;
+            } else if (loyaltyPoint.total_points >= 26000) {
+              loyaltyUpdate.level = 4;
+            }
+            loyaltyPoint.update(loyaltyUpdate);
+          });
 
-      const loyaltyHistory = {};
-      loyaltyHistory.customer_id = referCode.customer_id;
-      loyaltyHistory.points = loyalPoints;
-      loyaltyHistory.redeemed = new Date();
-      loyaltyHistory.type = REWARD;
-      loyaltyHistory.description = 'Your friend signed up with the referral code that you sent';
-      await LoyaltyHistory.create(loyaltyHistory);
+        log(loyalPoints);
 
-      log(referFriend);
-      // TODO
-      // Mail::to($referFriend->email)->send(new ReferEarned('Congratulations! You have
-      // earned 200 Shoppre Loyalty Points simply because your friend signed up with the referral
-      // code that you sent!'));
+        const referFriend = await User
+          .findById(referCode.customer_id, {
+            attributes: ['id', 'email', 'first_name', 'last_name'],
+          });
+        log(referCode.customer_id);
 
-      // Mail::to($request->email)->send(new ReferEarned('Congratulations! You have earned
-      // 200 Shoppre Loyalty Points simply because you signed up with the referral code that your
-      // friend sent!'));
-    } else {
-      res.json({ message: 'You may entered an invalid refferal code. Try with another or proceed without.' });
+        const loyaltyHistory = {};
+        loyaltyHistory.customer_id = referCode.customer_id;
+        loyaltyHistory.points = loyalPoints;
+        loyaltyHistory.redeemed = new Date();
+        loyaltyHistory.type = REWARD;
+        loyaltyHistory.description = 'Your friend signed up with the referral code that you sent';
+        await LoyaltyHistory.create(loyaltyHistory);
+
+        log(referFriend);
+        // TODO
+        // Mail::to($referFriend->email)->send(new ReferEarned('Congratulations! You have
+        // earned 200 Shoppre Loyalty Points simply because your friend signed up with the referral
+        // code that you sent!'));
+
+        // Mail::to($request->email)->send(new ReferEarned('Congratulations! You have earned
+        // 200 Shoppre Loyalty Points simply because you signed up with the referral code that your
+        // friend sent!'));
+      } else {
+        res.json({message: 'You may entered an invalid refferal code. Try with another or proceed without.'});
+      }
     }
-  }
 
-  const customer = {};
+    const customer = {};
 
-  if (req.body.referrer) {
-    customer.referred_customer_id = Buffer.from(req.body.referrer).toString('base64');
-    const referrer = await User
-      .find({
-        attributes: ['name', 'email'],
-        where: { id: customer.referred_customer_id },
-      });
-    // TODO
-    //   Mail::to($referrer->email)
-    // ->send(new ReferralSuccess(['referrer' => $referrer, 'customer' => $customer]));
-    log(referrer);
-  }
+    if (req.body.referrer) {
+      customer.referred_customer_id = Buffer.from(req.body.referrer).toString('base64');
+      const referrer = await User
+        .find({
+          attributes: ['name', 'email'],
+          where: { id: customer.referred_customer_id },
+        });
+      // TODO
+      //   Mail::to($referrer->email)
+      // ->send(new ReferralSuccess(['referrer' => $referrer, 'customer' => $customer]));
+      log(referrer);
+    }
 
-  let name = '';
-  if (req.body.title) {
-    name += `${req.body.title}  '. '`;
-  }
-  name += `${req.body.firstname}  ' ' ${req.body.lastname}`;
+    let name = '';
+    if (req.body.salutation) {
+      name += `${req.body.title}  '. '`;
+    }
+    name += `${req.body.firstname}  ' ' ${req.body.lastname}`;
 
-  customer.name = name;
-  customer.email = req.body.email;
-  customer.password = req.body.password;
-  if (req.body.referrer) {
-    customer.referred_customer_id = Buffer.from(req.body.referrer).toString('base64');
+    customer.name = name;
+    customer.email = req.body.email;
+    customer.password = req.body.password;
+    if (req.body.referrer) {
+      customer.referred_customer_id = Buffer.from(req.body.referrer).toString('base64');
 
-    const referrer = await User
-      .find({
-        attributes: ['name', 'email'],
-        where: { id: Buffer.from(req.body.referrer).toString('base64') },
-      });
-    // TODO
-    //  Mail::to($referrer->email)
-    // ->send(new ReferralSuccess(['referrer' => $referrer, 'customer' => $customer]));
-    log(referrer);
-  }
+      const referrer = await User
+        .find({
+          attributes: ['name', 'email'],
+          where: { id: Buffer.from(req.body.referrer).toString('base64') },
+        });
+      // TODO
+      //  Mail::to($referrer->email)
+      // ->send(new ReferralSuccess(['referrer' => $referrer, 'customer' => $customer]));
+      log(referrer);
+    }
+    const code = req.body.lockerCode ? req.body.lockerCode : this.lockerGenerate();
+    // const code = this.lockerGenerate();
+    customer.virtual_address_code = code;
+    console.log({ referCustomerId });
+    customer.referred_by = referCustomerId === null ? referCustomerId : null;
+    const IS_OPS = env.GSUITE_DOMAIN === req.body.email.split('@')[1];
+    customer.group_id = IS_OPS ? OPS : CUSTOMER;
+    const newCustomer = await User
+      .create(customer);
 
-  const code = this.lockerGenerate();
-  customer.virtual_address_code = code;
-  customer.referred_by = referCustomerId;
-  const IS_OPS = env.GSUITE_DOMAIN === req.body.email.split('@')[1];
-  customer.group_id = IS_OPS ? OPS : CUSTOMER;
-  const newCustomer = await User
-    .create(customer);
+    const loyaltyPoint = {};
+    loyaltyPoint.customer_id = newCustomer.id;
+    loyaltyPoint.level = 1;
+    loyaltyPoint.points = loyalPoints;
+    loyaltyPoint.total_points = loyalPoints;
+    await LoyaltyPoint.create(loyaltyPoint);
 
-  const loyaltyPoint = {};
-  loyaltyPoint.customer_id = newCustomer.id;
-  loyaltyPoint.level = 1;
-  loyaltyPoint.points = loyalPoints;
-  loyaltyPoint.total_points = loyalPoints;
-  await LoyaltyPoint.create(loyaltyPoint);
+    const loyaltyHistory = {};
+    loyaltyHistory.customer_id = newCustomer.id;
+    loyaltyHistory.points = loyalPoints;
+    loyaltyHistory.redeemed = new Date();
+    loyaltyHistory.type = REWARD;
+    loyaltyHistory.description = 'Signed up with the referral code that your friend sent';
+    await LoyaltyHistory.create(loyaltyHistory);
 
-  const loyaltyHistory = {};
-  loyaltyHistory.customer_id = newCustomer.id;
-  loyaltyHistory.points = loyalPoints;
-  loyaltyHistory.redeemed = new Date();
-  loyaltyHistory.type = REWARD;
-  loyaltyHistory.description = 'Signed up with the referral code that your friend sent';
-  await LoyaltyHistory.create(loyaltyHistory);
+    const shippingPreference = {};
+    shippingPreference.customer_id = newCustomer.id;
+    await ShippingPreference.create(shippingPreference);
 
-  const shippingPreference = {};
-  shippingPreference.customer_id = newCustomer.id;
-  await ShippingPreference.create(shippingPreference);
+    await this.sendEmailVerification(req.body.email);
 
-  await this.sendEmailVerification(req.body.email);
-
-  return res.json({
-    message: `You need to confirm your account.
+    return res.json({
+      message: `You need to confirm your account.
     We have sent you an activation code, please check your email.`,
-  });
+    });
+  } catch (e) {
+    next(e);
+  }
 };
 
 exports.lockerGenerate = () => {
@@ -413,4 +418,3 @@ exports.updateChangePassword = async (req, res, next) => { // change Password
 
   return res.json({ message: 'Your account password has been changed. Please login to continue.' });
 };
-

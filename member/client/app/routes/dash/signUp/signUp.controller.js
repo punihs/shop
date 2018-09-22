@@ -9,7 +9,7 @@ class SignUpController {
 
   signup() {
     this.$http
-      .post('/users/register', this.data)
+      .post('/users/public/register', this.data)
       .then(({ data: { data } }) => {
         this
           .toaster

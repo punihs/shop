@@ -26,6 +26,7 @@ const shipmentPackage = require('./api/shipment/package');
 const personalShopperPackage = require('./api/personalShopperPackage');
 const address = require('./api/address');
 const user = require('./api/user');
+const userPublic = require('./api/user');
 const pricing = require('./api/pricing');
 const transaction = require('./api/transaction');
 const notification = require('./api/notification');
@@ -105,6 +106,7 @@ module.exports = (app) => {
     userPackage,
     userShipment,
   );
+  app.use('/api/users/public', userPublic);
   app.use('/api/faqs', faqCategory);
   app.use('/api/crons', cron);
   app.use('/api/places', place);

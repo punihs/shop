@@ -19,5 +19,7 @@ router.put('/:id/unread', authenticate(), controller.unread);
 router.delete('/:id', authenticate(), controller.destroy);
 router.post('/register', rateLimit('auth', db), controller.submitRegister);
 router.post('/verify', controller.verify);
+//-todo public api for php
+router.post('/register', rateLimit('auth', db), controller.submitRegister);
 
 module.exports = router;
