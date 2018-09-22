@@ -3,6 +3,7 @@ const authorise = require('./authorise');
 const authenticate = require('./../authenticate');
 const oAuth = require('./../');
 const directLogin = require('./directLogin');
+const loginAs = require('./loginAs');
 const { oauth, login } = require('./google');
 const db = require('./../../../conn/sqldb');
 
@@ -26,14 +27,15 @@ module.exports = (a, routes, rateLimit) => {
       .then(s => res.json(s))
       .catch(next);
   });
-  app.all('/api/oauth/token', rateLimit, app.oauth.grant());
 
-  // app.use(app.oauth.authorise('main'));
-
+  app.post('/api/authorise', rateLimit, loginAs, authenticate(), app.oauth.authCodeGrant((req, callback) => {
+    if (req.body.allow !== 'true') return callback(null, false);
+    return callback(null, true, req.user);
+  }));
   // OAuth Authorise from Third party applications
   app.get('/authorise', rateLimit, authorise);
 
-  app.post('/authorise', rateLimit, authenticate(), app.oauth.authCodeGrant((req, callback) => {
+  app.post('/authorise', rateLimit, loginAs, authenticate(), app.oauth.authCodeGrant((req, callback) => {
     if (req.body.allow !== 'true') return callback(null, false);
     return callback(null, true, req.user);
   }));

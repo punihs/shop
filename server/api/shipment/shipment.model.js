@@ -243,15 +243,13 @@ module.exports = (sequelize, DataTypes) => {
           });
 
         if (packages) {
-          packages.map((pkg) => {
-            db.Package
-              .updateState({
-                db,
-                pkg,
-                actingUser,
-                nextStateId: READY_TO_SHIP,
-              });
-          });
+          packages.map(pkg => db.Package
+            .updateState({
+              db,
+              pkg,
+              actingUser,
+              nextStateId: READY_TO_SHIP,
+            }));
         }
 
         db.Package.update(

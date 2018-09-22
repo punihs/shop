@@ -50,6 +50,8 @@
             ui-sref='customer.view({id: customer.id})'
             target="_blank"
           )
+          span
+            a(ng-click='$ctrl.LoginAs.init(customer.email);') Login
           span.m-b-xs.m-t-xs.pull-right.wrapper-xs.m-r-sm.text-sm
             span.pointer.padder(
               ng-if='customer.Shipments.length'

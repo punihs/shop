@@ -2,7 +2,7 @@ class CustomersListController {
   /* @ngInject */
   constructor(
     $http, $state, $rootScope, $window, $location, $timeout, $stateParams, $filter,
-    $uibModal, toaster, QCONFIG, Session, Prototype, ListModal, Page, URLS
+    $uibModal, toaster, QCONFIG, Session, Prototype, ListModal, Page, URLS, LoginAs,
   ) {
     this.URLS = URLS;
     this.Page = Page;
@@ -21,6 +21,7 @@ class CustomersListController {
     this.Session = Session;
     this.Prototype = Prototype;
     this.ListModal = ListModal;
+    this.LoginAs = LoginAs;
 
     this.sorts = [
       { id: 1, name: 'Default', key: '-' },

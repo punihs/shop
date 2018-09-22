@@ -53,5 +53,6 @@ module.exports = (req, res, next) => {
       req.headers.authorization = `Basic ${base64}`;
       req.body.grant_type = grantType;
       return next();
-    });
+    })
+    .catch(next);
 };
