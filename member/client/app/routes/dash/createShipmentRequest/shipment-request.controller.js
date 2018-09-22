@@ -155,7 +155,7 @@ class shipmentRequestController {
 
     const ids = this.$packageIds;
     const method = 'post';
-
+    this.data.is_liquid = this.data.is_liquid === 'To Be Calculated' ? true : false;
     return this
       .$http[method](`/shipments${ids ? `?package_ids=${ids}` : ''}`, this.data)
       .then(({ data: shipment }) => {

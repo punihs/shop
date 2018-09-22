@@ -185,10 +185,10 @@
                   p
                     | Additional Storage Fee
                     span.fa.fa-rupee.totalvalue.pull-right {{package.PackageCharge.storage_amount}}
-                li(ng-if="package.PackageCharge.basic_photo_amount > 0")
+                li(ng-if="package.PackageCharge.standard_photo_amount > 0")
                   p
                     | Photo Charges
-                    span.fa.fa-rupee.totalvalue.pull-right {{package.PackageCharge.basic_photo_amount + package.PackageCharge.advanced_photo_amount}}
+                    span.fa.fa-rupee.totalvalue.pull-right {{package.PackageCharge.standard_photo_amount + package.PackageCharge.advanced_photo_amount}}
                 li(ng-if="package.PackageCharge.pickup_amount > 0")
                   p
                     | Pick-up Service

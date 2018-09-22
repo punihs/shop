@@ -13,7 +13,7 @@ const {
 } = require('../../../config/constants');
 
 const {
-  PACKAGE: { BASIC_PHOTO, ADVANCED_PHOTO },
+  PACKAGE: { STANDARD_PHOTO, ADVANCED_PHOTO },
 } = require('../../../config/constants/charges');
 
 exports.create = (req, res, next) => {
@@ -23,7 +23,7 @@ exports.create = (req, res, next) => {
   const { type } = req.body;
   const IS_BASIC_PHOTO = type === 'standard_photo';
 
-  const CHARGE = IS_BASIC_PHOTO ? BASIC_PHOTO : ADVANCED_PHOTO;
+  const CHARGE = IS_BASIC_PHOTO ? STANDARD_PHOTO : ADVANCED_PHOTO;
   const REVEW_TEXT = IS_BASIC_PHOTO ? 'Basic' : 'Advanced';
   let status = '';
 
@@ -61,6 +61,14 @@ exports.create = (req, res, next) => {
         status: COMPLETED,
         charge_amount: CHARGE,
       });
+      await PackageCharge
+        .upsert({ id: packageId, [`${type}_amount`]: CHARGE });
+      await Notification.create({
+        customer_id: customerId,
+        action_type: 'package',
+        action_id: packageId,
+        action_description: `Requested for ${REVEW_TEXT} Photos  - Order# ${packageId}`,
+      });
 
       if (!IS_BASIC_PHOTO) {
         status = packageItem.object_advanced === null
@@ -70,14 +78,6 @@ exports.create = (req, res, next) => {
         status = 'completed';
       }
 
-      await PackageCharge
-        .upsert({ id: packageId, [`${type}_amount`]: CHARGE });
-      await Notification.create({
-        customer_id: customerId,
-        action_type: 'package',
-        action_id: packageId,
-        action_description: `Requested for ${REVEW_TEXT} Photos  - Order# ${packageId}`,
-      });
       log({ status });
       if (status === 'completed') {
         return res
@@ -89,8 +89,8 @@ exports.create = (req, res, next) => {
       }
       log('pkg', JSON.stringify(pkg));
       // - status === 'pending'
-      const photoStatus = type === 'basic_photo' ? STANDARD_PHOTO_REQUEST : ADVANCED_PHOTO_REQUEST;
-      const photoComments = type === 'basic_photo' ? 'Standard' : 'Advanced';
+      const photoStatus = type === 'standard_photo' ? STANDARD_PHOTO_REQUEST : ADVANCED_PHOTO_REQUEST;
+      const photoComments = type === 'standard_photo' ? 'Standard' : 'Advanced';
       log({ photoStatus });
       await pkg
         .update(

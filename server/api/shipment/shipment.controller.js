@@ -376,7 +376,7 @@ const getEstimation = async (packageIds, countryId, userId) => {
   const packages = await Package.findAll({
     include: [{
       attributes: ['storage_amount', 'wrong_address_amount', 'special_handling_amount', 'receive_mail_amount',
-        'pickup_amount', 'basic_photo_amount', 'advanced_photo_amount', 'split_package_amount',
+        'pickup_amount', 'standard_photo_amount', 'advanced_photo_amount', 'split_package_amount',
         'scan_document_amount'],
       model: PackageCharge,
     }],
@@ -414,7 +414,7 @@ const getEstimation = async (packageIds, countryId, userId) => {
 
     const keys = [
       'storage_amount', 'wrong_address_amount', 'special_handling_amount', 'receive_mail_amount',
-      'pickup_amount', 'basic_photo_amount', 'advanced_photo_amount', 'split_package_amount',
+      'pickup_amount', 'standard_photo_amount', 'advanced_photo_amount', 'split_package_amount',
       'scan_document_amount',
     ];
     let type = '';
@@ -1370,7 +1370,7 @@ exports.retryPayment = async (req, res) => {
       attributes: ['name', 'quantity', 'price_amount'],
     }, {
       model: PackageCharge,
-      attributes: ['storage_amount', 'receive_mail_amount', 'pickup_amount', 'basic_photo_amount', 'scan_document_amount',
+      attributes: ['storage_amount', 'receive_mail_amount', 'pickup_amount', 'standard_photo_amount', 'scan_document_amount',
         'wrong_address_amount', 'special_handling_amount', 'advanced_photo_amount', 'split_package_amount'],
     }, {
       model: Store,
@@ -1549,7 +1549,7 @@ exports.confirmShipment = async (req, res) => {
       attributes: ['name', 'quantity', 'price_amount'],
     }, {
       model: PackageCharge,
-      attributes: ['storage_amount', 'receive_mail_amount', 'pickup_amount', 'basic_photo_amount', 'scan_document_amount',
+      attributes: ['storage_amount', 'receive_mail_amount', 'pickup_amount', 'standard_photo_amount', 'scan_document_amount',
         'wrong_address_amount', 'special_handling_amount', 'advanced_photo_amount', 'split_package_amount'],
     }, {
       model: Store,
@@ -1716,7 +1716,7 @@ exports.createShipment = async (req, res, IsShippingAddress) => {
     include: [{
       model: PackageCharge,
       attributes: ['storage_amount', 'wrong_address_amount', 'special_handling_amount',
-        'receive_mail_amount', 'pickup_amount', 'basic_photo_amount',
+        'receive_mail_amount', 'pickup_amount', 'standard_photo_amount',
         'advanced_photo_amount', 'split_package_amount', 'scan_document_amount'],
     }, {
       model: Store,
@@ -1756,8 +1756,9 @@ exports.createShipment = async (req, res, IsShippingAddress) => {
   log({ shipmentMeta });
   log('packages123 ', JSON.stringify(packages));
   packages.forEach((pack) => {
+    log('pack', JSON.stringify(pack));
     shipmentMeta.storage_amount += pack.PackageCharge.storage_amount || 0;
-    shipmentMeta.photo_amount += pack.PackageCharge.basic_photo_amount || 0;
+    shipmentMeta.photo_amount += pack.PackageCharge.standard_photo_amount || 0;
     shipmentMeta.photo_amount += pack.PackageCharge.advanced_photo_amount || 0;
     shipmentMeta.pickup_amount += pack.PackageCharge.pickup_amount || 0;
     shipmentMeta.special_handling_amount += pack.PackageCharge.special_handling_amount || 0;

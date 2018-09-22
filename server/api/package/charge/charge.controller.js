@@ -7,7 +7,7 @@ exports.show = (req, res, next) => {
   const options = {
     attributes: [
       'storage_amount', 'wrong_address_amount', 'special_handling_amount', 'receive_mail_amount',
-      'pickup_amount', 'basic_photo_amount', 'advanced_photo_amount', 'scan_document_amount',
+      'pickup_amount', 'standard_photo_amount', 'advanced_photo_amount', 'scan_document_amount',
       'split_package_amount',
     ],
   };

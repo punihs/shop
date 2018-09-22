@@ -31,7 +31,7 @@ class ShipmentInvoiceController {
         this.Packages.forEach((item) => {
           this.Charges.storage_amount += item.PackageCharge.storage_amount;
           this.Charges.photo_amount +=
-          item.PackageCharge.basic_photo_amount + item.PackageCharge.advanced_photo_amount;
+          item.PackageCharge.standard_photo_amount + item.PackageCharge.advanced_photo_amount;
           this.Charges.pickup_amount += item.PackageCharge.pickup_amount;
           this.Charges.handling_amount += item.PackageCharge.special_handling_amount;
           this.Charges.scan_doc_amount += item.PackageCharge.scan_document_amount;

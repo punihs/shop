@@ -5,7 +5,7 @@ const {
 } = require('../../../conn/sqldb');
 const auth = require('../../../../logs/credentials');
 
-describe('POST /api/packages/:id/photoRequests basic_photo', () => {
+describe('POST /api/packages/:id/photoRequests standard_photo', () => {
   let pkg;
   before((done) => {
     Package
@@ -24,7 +24,7 @@ describe('POST /api/packages/:id/photoRequests basic_photo', () => {
     request(app)
       .put(`/api/packages/${pkg.id}/photoRequests`)
       .send({
-        type: 'basic_photo',
+        type: 'standard_photo',
       })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)

@@ -6,7 +6,7 @@ module.exports = {
   },
   PACKAGE: {
     RETURN: 400,
-    BASIC_PHOTO: 50,
+    STANDARD_PHOTO: 50,
     ADVANCED_PHOTO: 500,
   },
 };

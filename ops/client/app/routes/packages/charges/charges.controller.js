@@ -23,7 +23,7 @@ class PackageChargesController {
       'special_handling_amount',
       'receive_mail_amount',
       'pickup_amount',
-      'basic_photo_amount',
+      'standard_photo_amount',
       'advanced_photo_amount',
       'scan_document_amount',
       'split_package_amount',

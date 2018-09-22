@@ -36,7 +36,7 @@ describe('PUT /api/packages/1/charges update charges', () => {
         special_handling_amount: 0.00,
         receive_mail_amount: 0.00,
         pickup_amount: 0.00,
-        basic_photo_amount: 10.00,
+        standard_photo_amount: 10.00,
         advanced_photo_amount: 10.00,
         scan_document_amount: 0.00,
         split_package_amount: 0.00,
