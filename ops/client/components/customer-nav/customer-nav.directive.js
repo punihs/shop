@@ -151,26 +151,16 @@ class CustomerNavController {
       });
   }
 
-  getLink(customerId) {
-    const states = [
-      'customer.shipments.index',
-      'customer.packages.index',
-      'customer.package.update',
-      'customer.view',
-      'customer.orders.list',
-      'customer.orders.new',
-      'customer.packages.new',
-      'shipment.view',
-      'shipment.packages.index',
-    ];
-
-    const name = states.includes(this.$state.current.name) ?
-      this.$state.current.name
-      : states[0];
+  getLink(customerId, type) { console.log(type)
+    const map = {
+      customers: 'customer.view',
+      shipments: 'customer.shipments.index',
+      packages: 'customer.packages.index',
+    };
 
     const status = this.$state.params.status || 'ALL';
 
-    return this.$state.href(name, { id: customerId, status });
+    return this.$state.href(map[type], { id: customerId, status });
   }
 }
 

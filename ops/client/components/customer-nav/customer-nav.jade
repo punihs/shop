@@ -47,7 +47,7 @@ div(style='position: relative;')
   br
   br
   br
-  .w-md.nav-job.bg-light.b-r.bg-white-only(style='top: 9.3em;' ng-class='{"m-t-xl": $ctrl.isAdmin}')
+  .w-md.nav-job.bg-light.b-r.bg-white-only(style='top: 7.3em;' ng-class='{"m-t-xl": $ctrl.isAdmin}')
     .w-md(
       style='position: relative;  overflow-y: auto; overflow-x: hidden; height: 100%; width: 249px;'
       when-scrolled='$ctrl.getList()'
@@ -78,7 +78,7 @@ div(style='position: relative;')
               span.text-sm.text-danger(ng-bind='customer.error')
 
             a.text-ellipsis(
-              ng-href='{{$ctrl.getLink(customer.id)}}'
+              ng-href='{{$ctrl.getLink(customer.id, type)}}'
               style='padding:8px 10px 8px 20px'
               ng-class='{\
                 "font-bold text-primary": customer.id == $ctrl.$state.params.id,\
