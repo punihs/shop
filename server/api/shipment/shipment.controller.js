@@ -2014,3 +2014,15 @@ exports.shipRequestResponse = async (req, res) => {
   }
   return res.status(404).json({ message: 'shipment not found' });
 };
+
+exports.trackingUpdate = async (req, res, next) => {
+  try {
+    const shipment = req.body;
+    shipment.dispatch_date = moment();
+    const { id } = req.params;
+    const status = await Shipment.update(shipment, { where: { id } });
+    return res.json(status);
+  } catch (e) {
+    return next(e);
+  }
+};

@@ -12,6 +12,7 @@ class ShipmentCreateController {
     this.Number = Number;
     this.$ = $;
     this.submitting = false;
+    this.submittingTracking = false;
     this.data = shipment || {};
     this.$onInit();
   }
@@ -50,6 +51,44 @@ class ShipmentCreateController {
       }
     });
     return form.$valid;
+  }
+
+  trackingUpdate(trackingForm) {
+    if (this.submittingTracking) return null;
+    this.submittingTracking = true;
+    this.clickUpload = true;
+    const form = this.validateForm(trackingForm);
+
+    const data = Object.assign({ }, this.data);
+    if (!form) return (this.submittingTracking = false);
+
+    const allowed = [
+      'shipping_carrier', 'number_of_packages', 'weight_by_shipping_partner', 'tracking_code',
+      'tracking_url',
+    ];
+    const { shipmentId, id: customerId } = this.$stateParams;
+    data.customer_id = customerId;
+    const method = 'put';
+    return this
+      .$http[method](`/shipments/${shipmentId}/tracking`, _.pick(data, allowed))
+      .then(({ data: shipment }) => {
+        this.shipment = shipment;
+        const { Locker = {} } = shipment;
+        this.submittingTracking = false;
+
+        if (!this.customer.Locker) this.customer.Locker = Locker;
+        this
+          .toaster
+          .pop('success', 'Shipment Tracking Updated');
+      })
+      .catch((err) => {
+        this.submitting = false;
+        this
+          .toaster
+          .pop('error', 'There was problem while updating Tracking');
+
+        this.error = err.data;
+      });
   }
 
   create(newShipmentForm) {
@@ -101,7 +140,7 @@ class ShipmentCreateController {
 
         this
           .toaster
-          .pop('error', 'There was problem creating shipment. Please contact Shoppre team.');
+          .pop('error', 'There was problem updating shipment.');
 
         this.error = err.data;
       });

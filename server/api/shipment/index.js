@@ -25,6 +25,7 @@ router.put('/:id/state', controller.state);
 router.get('/cron/partners', controller.updateShipmetStatus);
 router.get('/:id/request/response', controller.response);
 router.get('/:id/request/shipRequestResponse', controller.shipRequestResponse);
+router.put('/:id/tracking', controller.trackingUpdate);
 
 module.exports = router;
 

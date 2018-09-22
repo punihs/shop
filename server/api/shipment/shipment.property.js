@@ -36,6 +36,7 @@ module.exports = DataTypes => ({
   is_missed: DataTypes.BOOLEAN,
   // - ShippingPartner
   tracking_code: DataTypes.STRING,
+  tracking_url: DataTypes.STRING,
   pick_up_charge_amount: DataTypes.INTEGER,
   number_of_packages: DataTypes.INTEGER,
   weight_by_shipping_partner: DataTypes.DOUBLE,

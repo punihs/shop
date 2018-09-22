@@ -52,7 +52,9 @@ angular.module('uiGenApp')
               'value_amount', 'sub_total_amount', 'discount_amount',
               'package_level_charges_amount', 'pick_up_charge_amount', 'estimated_amount',
               'loyalty_amount', 'payment_gateway_fee_amount', 'wallet_amount',
-              'final_amount', 'coupon_amount',
+              'final_amount', 'coupon_amount', 'tracking_code',
+              'tracking_url', 'number_of_packages', 'weight_by_shipping_partner',
+              'shipping_carrier', 'dispatch_date',
             ].join(',');
 
             return $http

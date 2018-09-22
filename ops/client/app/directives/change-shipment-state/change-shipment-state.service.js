@@ -1,11 +1,12 @@
 
 class ChangeShipmentStateController {
   /*  @ngInject   */
-  constructor($uibModalInstance, $http, shpmt, Session, stateId, moment, customerId) {
+  constructor($uibModalInstance, $http, shipment, Session, stateId, moment, customerId, toaster) {
     this.$uibModalInstance = $uibModalInstance;
     this.$http = $http;
-    this.shpmt = shpmt;
+    this.shipment = shipment;
     this.Session = Session;
+    this.toaster = toaster;
     this.stateId = stateId;
     this.moment = moment;
     this.customerId = customerId;
@@ -26,7 +27,7 @@ class ChangeShipmentStateController {
       case 2: {
         this.preChecksDone = false;
         this.$http
-          .get(`/shipments/${this.shpmt.id}/items`)
+          .get(`/shipments/${this.shipment.id}/items`)
           .then(({ data: packageItems }) => {
             this.packageItems = packageItems;
           });
@@ -41,7 +42,7 @@ class ChangeShipmentStateController {
     this.submitting = true;
     this
       .$http
-      .put(`/shipments/${this.shpmt.id}/state`, this.data)
+      .put(`/shipments/${this.shipment.id}/state`, this.data)
       .then(() => {
         this.$uibModalInstance.close(this.data);
         this.submitting = false;
@@ -50,6 +51,9 @@ class ChangeShipmentStateController {
       .catch((response) => {
         this.submitting = false;
         this.changeStateError = response.error;
+        this
+          .toaster
+          .pop('success', response.data.message);
       });
   }
 }
@@ -65,7 +69,7 @@ class ChangeShipmentStateService {
     this.states = this.Session.read('shipment-states');
   }
 
-  open(shpmt, stateId, customerId) {
+  open(shipment, stateId, customerId) {
     const modalInstance = this.$uibModal.open({
       templateUrl: 'app/directives/change-shipment-state/change-shipment-state.html',
       controller: ChangeShipmentStateController,
@@ -73,7 +77,7 @@ class ChangeShipmentStateService {
       bindToController: 'true',
       size: 'md',
       resolve: {
-        shpmt: () => shpmt,
+        shipment: () => shipment,
         stateId: () => stateId,
         customerId: () => customerId,
       },
@@ -82,8 +86,8 @@ class ChangeShipmentStateService {
     modalInstance
       .result
       .then((data) => {
-        this.shpmt.state_id = data.state_id;
-        this.shpmt.state_name = this.states[data.state_id].action;
+        this.shipment.state_id = data.state_id;
+        this.shipment.state_name = this.states[data.state_id].action;
       });
   }
 }

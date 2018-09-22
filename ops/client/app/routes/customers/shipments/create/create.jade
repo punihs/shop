@@ -274,10 +274,117 @@ div.m-t-xl.no-margin
                       )
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
               .row
+                h4(ng-bind="$ctrl.error.message" style="color:red;")
+                button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting || (!$ctrl.submitting && !newShipmentForm.$dirty)")
+                  span.fa.fa-forward.m-r-sm
+                  span.text-white(ng-if='!$ctrl.submitting') {{$ctrl.EDIT ? '' : 'Quick ' }} Update
+                  span(ng-if='$ctrl.submitting')
+                    i.fa.fa-spin.fa-circle-o-notch
+                    span.text-white &nbsp;&nbsp;Submitting...
+    .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+    br
+    br
+    .wrapper-md.bg-white-only
+      .h1.m-l-md.font-thin.h3
+        | Update Shipment Tracking.
+      div
+        br
+        form.form.form-validation.form-horizontal.wrapper-md(
+        name="trackingForm"
+        novalidate
+        ng-submit='$ctrl.trackingUpdate(trackingForm)'
+        autocomplete='off'
+        )
+          .row
+            .col-md-12.col-sm-12.col-xs-12
+              .col-md-7
+                .row(ng-if='$ctrl.EDIT')
+                  .col-md-12
+                    .col-md-6.col-sm-5.col-xs-12.no-padder
+                      label.col-xs-12.input-group
+                        | Carrier
+                        span.text-danger *
+                        input.form.form-control(
+                        type='text'
+                        name='shipping_carrier'
+                        placeholder='eg. DHL'
+                        ng-model='$ctrl.data.shipping_carrier'
+                        required
+                        )
+                        span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && trackingForm.shipping_carrier.$dirty && trackingForm.shipping_carrier.$invalid') Please enter shipping Carrier
+                    .col-md-6.col-sm-5.col-xs-12
+                      label.col-xs-12.input-group
+                        | No Of Boxes
+                        span.text-danger *
+                        input.form.form-control(
+                        type='number'
+                        name='phone'
+                        placeholder='eg. 2'
+                        ng-model='$ctrl.data.number_of_packages'
+                        required
+                        )
+                        span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && trackingForm.number_of_packages.$dirty && trackingForm.number_of_packages.$invalid') Please enter number of packages
+                .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
+
+                .row(ng-if='$ctrl.EDIT')
+                  .col-md-12
+                    .col-md-6.col-sm-5.col-xs-12.no-padder
+                      label.col-xs-12.input-group
+                        | Package weight
+                        span.text-danger *
+                        input.form.form-control(
+                        type='number'
+                        name='weight_by_shipping_partner'
+                        placeholder='eg. 2'
+                        ng-model='$ctrl.data.weight_by_shipping_partner'
+                        required
+                        )
+                        span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && trackingForm.weight_by_shipping_partner.$dirty && trackingForm.weight_by_shipping_partner.$invalid') Please enter Weight
+                    .col-md-6.col-sm-5.col-xs-12
+                      label.col-xs-12.input-group
+                        | Tracking Code
+                        span.text-danger *
+                        input.form.form-control(
+                        type='text'
+                        name='phone'
+                        placeholder='eg. 3203915982'
+                        ng-model='$ctrl.data.tracking_code'
+                        required
+                        )
+                        span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && trackingForm.tracking_code.$dirty && trackingForm.tracking_code.$invalid') Please Enter Tracking Code
+                .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
+                .row
+                  .col-md-12
+                    .col-md-6.col-sm-5.col-xs-12.no-padder
+                      label.col-xs-12.input-group
+                        | Tracking URL
+                        span.text-danger *
+                        input.form.form-control(
+                        type='text'
+                        name='tracking_url'
+                        placeholder='eg. dhl.co.in/en/express/tracking.html'
+                        ng-model='$ctrl.data.tracking_url'
+                        required
+                        )
+                        span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && trackingForm.tracking_url.$dirty && trackingForm.tracking_url.$invalid') Please enter Tracking URL
+                    .col-md-6.col-sm-5.col-xs-12
+                      label.col-xs-12.input-group
+                        | Dispatch Date
+                        span.text-danger *
+                        input.form.form-control(
+                        type='text'
+                        name='dispatch_date'
+                        placeholder='eg. 2018-08-12'
+                        ng-model='$ctrl.data.dispatch_date'
+                        disabled
+                        )
+                .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
+
+                .row
                   h4(ng-bind="$ctrl.error.message" style="color:red;")
-                  button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting || (!$ctrl.submitting && !newShipmentForm.$dirty)")
+                  button.btn.btn-success(type='submit' ng-disabled="$ctrl.submittingTracking || (!$ctrl.submittingTracking && !trackingForm.$dirty)")
                     span.fa.fa-forward.m-r-sm
-                    span.text-white(ng-if='!$ctrl.submitting') {{$ctrl.EDIT ? '' : 'Quick ' }} Update
-                    span(ng-if='$ctrl.submitting')
+                    span.text-white(ng-if='!$ctrl.submitting') Update Tracking
+                    span(ng-if='$ctrl.submittingTracking')
                       i.fa.fa-spin.fa-circle-o-notch
                       span.text-white &nbsp;&nbsp;Submitting...
