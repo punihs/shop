@@ -1,11 +1,12 @@
 const { ShippingPreference } = require('./../../conn/sqldb');
 
 exports.show = async (req, res) => {
+  const customerId = req.params.id;
   const options = {
     attributes: ['id', 'is_basic_photo', 'is_advanced_photo', 'is_scan_document', 'is_repacking',
       'is_sticker', 'is_extra_packing', 'is_original_box', 'is_mark_personal_use',
       'is_gift_wrap', 'is_gift_note', 'max_weight', 'is_include_invoice', 'tax_id'],
-    where: { customer_id: req.user.id },
+    where: { customer_id: customerId },
   };
   const preference = await ShippingPreference
     .findAll(options);

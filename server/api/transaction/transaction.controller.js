@@ -27,7 +27,7 @@ const { URLS_MEMBER } = require('../../config/environment');
 
 exports.index = (req, res, next) => {
   const options = {
-    attributes: ['id', 'customer_id', 'amount', 'description'],
+    attributes: ['id', 'customer_id', 'amount', 'description', 'created_at'],
     limit: Number(req.query.limit) || 20,
   };
   if (req.query.customer_id) options.where = { customer_id: req.query.customer_id };
@@ -41,20 +41,65 @@ exports.index = (req, res, next) => {
 exports.create = async (req, res, next) => {
   const transaction = req.body;
   const customerId = req.body.customer_id;
+  transaction.type = transaction.amount < 0 ? DEBIT : CREDIT;
+
+  transaction.customer_id = customerId;
+  await Transaction
+    .create(transaction)
+    .then(({ id }) => res.json({ id }))
+    .catch(next);
+};
+
+exports.update = async (req, res) => {
+  const { id } = req.params;
+  const transaction = req.body;
+
+  const customerId = req.body.customer_id;
+  const { amount } = req.body;
+  let { type } = req.body;
   const option = {
     attributes: ['wallet_balance_amount'],
     where: { id: customerId },
   };
-  await Transaction
-    .create(transaction);
-  const { type, amount } = transaction;
+  const historyTran = await Transaction
+    .find({
+      attributes: ['amount'],
+      where: { id },
+    });
+  const status = await Transaction.update(transaction, { where: { id } });
+  await User
+    .update({
+      wallet_balance_amount: sequelize
+        .literal(`wallet_balance_amount - ${historyTran.amount}`),
+    }, option);
+  type = transaction.amount < 0 ? DEBIT : CREDIT;
   await User
     .update({
       wallet_balance_amount: sequelize
         .literal(`wallet_balance_amount ${type === CREDIT ? '+' : '-'} ${amount}`),
-    }, option)
-    .then(({ id }) => res.json({ id }))
-    .catch(next);
+    }, option);
+  return res.json(status);
+};
+
+exports.destroy = async (req, res) => {
+  const { id } = req.params;
+  const customerId = req.query.customer_id;
+  const { amount } = req.query;
+  const { type } = req.query;
+  const option = {
+    attributes: ['wallet_balance_amount'],
+    where: { id: customerId },
+  };
+  const status = await Transaction.destroy({
+    paranoid: true,
+    where: { id },
+  });
+  await User
+    .update({
+      wallet_balance_amount: sequelize
+        .literal(`wallet_balance_amount ${type === CREDIT ? '+' : '-'} ${amount}`),
+    }, option);
+  return res.json(status);
 };
 
 const verify = body => rp({

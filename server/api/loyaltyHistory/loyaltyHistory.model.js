@@ -3,7 +3,7 @@ const properties = require('./loyaltyHistory.property');
 module.exports = (sequelize, DataTypes) => {
   const LoyaltyHistory = sequelize.define('LoyaltyHistory', properties(DataTypes), {
     tableName: 'loyalty_history',
-    timestamps: false,
+    timestamps: true,
     underscored: true,
     paranoid: true,
   });

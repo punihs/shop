@@ -11,7 +11,7 @@ class preferencesController {
     this.Page.setTitle('Shipment Preferences');
 
     this.$http
-      .get(`/shippingPreference/${this.Session.read('userinfo').id}`, this.data)
+      .get(`/shippingPreference/${this.Session.read('userinfo').id}`)
       .then(({ data: { preference } }) => {
         this.data = preference[0];
       });

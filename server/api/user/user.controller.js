@@ -24,7 +24,7 @@ exports.index = (req, res, next) => {
     attributes: [
       'id', 'name', 'email', 'mobile', 'salutation', 'first_name', 'last_name', 'phone',
       'phone_code', 'country_id', 'referred_by', 'created_at', 'virtual_address_code',
-      'profile_photo_url', 'updated_at',
+      'profile_photo_url', 'updated_at', 'email_verify',
     ],
     include: [{
       model: Country,
@@ -83,7 +83,7 @@ exports.me = (req, res, next) => {
     attributes: [
       'id', 'salutation', 'first_name', 'last_name', 'email', 'alternate_email', 'group_id',
       'phone_code', 'phone', 'secondary_phone_code', 'secondary_phone', 'profile_photo_url',
-      'virtual_address_code', 'wallet_balance_amount',
+      'virtual_address_code', 'wallet_balance_amount', 'email_verify',
     ],
     limit: Number(req.query.limit) || 20,
   };
@@ -167,7 +167,7 @@ exports.show = (req, res, next) => {
         ? req.query.fl.split(',')
         : [
           'id', 'name', 'first_name', 'last_name', 'salutation', 'virtual_address_code',
-          'mobile', 'email', 'phone', 'phone_code',
+          'mobile', 'email', 'phone', 'phone_code', 'email_verify', 'wallet_balance_amount',
         ],
       include: [{
         model: Country,

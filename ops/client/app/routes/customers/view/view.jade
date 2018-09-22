@@ -1,28 +1,460 @@
-div.bg-white-only#CustomerView
-  customer-header.bg-white-only.w-full.b-b(customer="$ctrl.data" style='position: fixed;z-index: 6;height: 40px;')
-  directive-header(
-    options="$ctrl"
-    page="{$ctrl:true}"
-    buttons="{\
-        buckets: true,\
-        create: true,\
-        viewPackages: true,\
-      }"
-    App="App"
-  )
+div.m-t-xl.no-margin
+  .hbox
+    .wrapper-md.bg-white-only
+      div
+        .h1.m-l-md.font-thin.h3
+          b CUSTOMER PROFILE
+      hr.no-margin-bottom
+      form.form.form-validation.form-horizontal.wrapper-md(
+      name="profileForm"
+      novalidate
+      ng-submit='$ctrl.update(profileForm)'
+      )
+        .row
+          .col-md-12.col-sm-12.col-xs-12.no-padder
+            .col-md-11
 
-  .hbox.hbox-auto-xs.hbox-auto-sm
-    .col.clearfix.wrapper-md
+              .row
+                .col-md-12.col-sm-12.col-xs-12
+                  h4
+                    strong PRIMARY ACCOUNT HOLDER NAME
 
-      //- Customer top cover container
-      .m-t-xxl.m-b-md(style='height: 5px;')
-      .wrapper-xs.text-center
-        .hbox.q-jd-alert.text-left
-          .col.v-middle.w-xs.text-center
-            i.fa.fa-warning.fa-2x.text-warning-dker
-          .col
-            span
-              li
-                | Coming
-                strong &nbsp;soon
+              .row
+                .col-md-2.col-sm-2.col-xs-12
+                  label.col-xs-12.input-group
+                    | Salutation
+                    select.form.form-control(
+                    ng-model='$ctrl.data.salutation'
+                    name='salutation'
+                    required
+                    )
+                      option(value='') Salutation
+                      option Mr
+                      option Ms
+                      option Mrs
+                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.salutation.$dirty && profileForm.salutation.$invalid') Please select Salutation
 
+                .col-md-2.col-sm-2.col-xs-12.no-padder
+                  label.col-xs-12.input-group
+                    | First Name
+                    input.form.form-control(
+                    type='text'
+                    name='first_name'
+                    placeholder='eg. Aditya'
+                    ng-model='$ctrl.data.first_name' q-text-maxlength="60"
+                    autofocus
+                    required
+                    )
+                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.first_name.$dirty && profileForm.first_name.$invalid') Please enter First Name
+                .col-md-2.col-sm-2.col-xs-12.no-padder-right
+                  label.col-xs-12.input-group
+                    | Last Name
+                    input.form.form-control(
+                    type='text'
+                    name='last_name'
+                    placeholder='eg. Sharma'
+                    ng-model='$ctrl.data.last_name'
+                    q-text-maxlength='60'
+                    autofocus
+                    required
+                    )
+                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.last_name.$dirty && profileForm.last_name.$invalid') Please enter Last Name
+
+              .row
+                .col-md-12.col-sm-12.col-xs-12
+                  h4
+                    strong EMAIL ADDRESS
+
+              .row
+                .col-md-3.col-sm-2.col-xs-12.no-padder-right
+                  label.col-xs-12.input-group
+                    | Email
+                    input.form.form-control(
+                    type='email'
+                    name='email'
+                    placeholder='eg. adithya@gmail.com'
+                    ng-model='$ctrl.data.email'
+                    q-text-maxlength="60"
+                    autofocus
+                    required
+                    )
+                    span.wrapper-xs.text-xs.text-danger(
+                    ng-show='$ctrl.clickUpload && profileForm.email.$dirty && profileForm.email.$invalid'
+                    ) Please enter Email
+                .col-md-3.col-sm-2.col-xs-12.no-padder-right
+                  label.col-xs-12.input-group
+                    | Alternate Email
+                    input.form.form-control(
+                    type='email'
+                    name='alternate_email'
+                    placeholder='eg. alt_adithya@gmail.com'
+                    ng-model='$ctrl.data.alternate_email'
+                    q-text-maxlength="60"
+                    )
+                    span.wrapper-xs.text-xs.text-danger(
+                    ng-show='$ctrl.clickUpload && profileForm.alternate_email.$dirty && profileForm.alternate_email.$invalid'
+                    ) Please enter Alternate Email
+              .row
+                .col-md-12.col-sm-12.col-xs-12
+                  h4
+                    strong PHONE NUMBERS
+              .row
+                .col-md-7.col-sm-7.col-xs-12
+                  label.col-xs-12.input-group
+                    | Primary Phone / Mobile Number
+              .row
+                .col-md-2.col-sm-2.col-xs-12
+                  label.col-xs-12.input-group
+                    select.form.form-control(
+                    ng-model='$ctrl.data.phone_code'
+                    name='phone_code'
+                    required
+                    )
+                      option(value='') Ph Code
+                      option(value='91') +91
+                      option(value='1') +1
+                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.phone_code.$dirty && profileForm.phone_code.$invalid') Please select Country Phone Code
+                .col-md-4.col-sm-5.col-xs-12.no-padder
+                  label.col-xs-12.input-group
+                    input.form.form-control(
+                    type='text'
+                    name='phone'
+                    placeholder='eg. 9844717202'
+                    ng-model='$ctrl.data.phone'
+                    q-text-maxlength="60"
+                    required
+                    )
+                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.phone.$dirty && profileForm.phone.$invalid') Please enter Phone/Mobile Number
+
+              .row
+                .col-md-7.col-sm-7.col-xs-12
+                  label.col-xs-12.input-group
+                    | Secondary Phone / Mobile Number
+              .row
+                .col-md-2.col-sm-2.col-xs-12
+                  label.col-xs-12.input-group
+                    select.form.form-control(
+                    ng-model='$ctrl.data.secondary_phone_code'
+                    name='secondary_phone_co de'
+                    )
+                      option(value='') Ph Code
+                      option(value='91') +91
+                      option(value='1') +1
+                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.secondary_phone_code.$dirty && profileForm.secondary_phone_code.$invalid') Please select Country Phone Code
+                .col-md-4.col-sm-5.col-xs-12.no-padder
+                  label.col-xs-12.input-group
+                    input.form.form-control(
+                    type='text'
+                    name='secondary_phone'
+                    placeholder='eg. 9844717202'
+                    ng-model='$ctrl.data.secondary_phone'
+                    q-text-maxlength="60"
+                    )
+                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.secondary_phone.$dirty && profileForm.secondary_phone.$invalid') Please enter Phone/Mobile Number
+              .row
+                .col-md-7.col-sm-7.col-xs-12
+                  h4
+                    b EMAIL ADDRESS VERIFIED?
+              .row
+                .col-md-2.col-sm-2.col-xs-12.no-padder
+                  .col-xs-12: ul.nav
+                    li.inline: label.i-checks.i-checks-sm
+                      input(
+                      type="radio"
+                      ng-model="$ctrl.data.email_verify"
+                      value='yes'
+                      )
+                      i
+                      .hide
+                      | Yes
+                      .fa.fa-info-circle.m-l-xs(
+                      uib-popover='Email Verified'
+                      popover-trigger="'mouseenter'"
+                      popover-placement='bottom'
+                      popover-append-to-body='true'
+                      )
+                    li.inline.m-l: label.i-checks.i-checks-sm
+                      input(
+                      type="radio"
+                      ng-model="$ctrl.data.email_verify"
+                      value='no'
+                      )
+                      i
+                      .hide
+                      | No
+                      .fa.fa-info-circle.m-l-xs(
+                      uib-popover='Email Not Yet Verified'
+                      popover-trigger="'mouseenter'"
+                      popover-placement='bottom'
+                      popover-append-to-body='true'
+                      )
+              .row
+                .col-md-6.col-xs-12
+                  h4(ng-bind="$ctrl.error.message" style="color:red;")
+                  button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitProfile")
+                    span.fa.fa-forward.m-r-sm
+                    span.text-white(ng-if='!$ctrl.submitProfile') Save Changes
+                    span(ng-if='$ctrl.submitProfile')
+                      i.fa.fa-spin.fa-circle-o-notch
+                      span.text-white &nbsp;&nbsp;SubmittingProfile...
+      div
+        .h1.m-l-md.font-thin.h3
+          b ADDRESS BOOK
+
+      hr
+      .well.m-t.m-l.bg-light.hover-wrap(ng-repeat='address in $ctrl.addresses' ng-class='address.is_default ? "dker": "lt"')
+        .row
+          .col-md-12
+            h4
+              span.h4.font-thin(ng-bind='(address.city ? address.city.toUpperCase() : "") + " ADDRESS"')
+              span.flag-icon.m-l-xs(
+              ng-class='"flag-icon-"+ address.Country.iso2.toLowerCase()'
+              )
+              strong(ng-bind='address.first_name + " " + address.last_name')
+
+            p
+              span.block(ng-bind='address.line1')
+              span.block(ng-bind='address.line2')
+              span.block(ng-bind='address.city + ", " + address.state')
+              span.block(ng-bind='address.Country.name + " - " + address.pincode')
+              span.block(
+              ng-if='address.phone'
+              ng-bind='"+" + (address.phone_code ? address.phone_code + "-" : "") + address.phone'
+              )
+              span.label.pull-left.padding-5.m-t-xs.bg-primary(ng-if='address.is_default') DEFAULT SHIPPING ADDRESS
+      div
+        .h1.m-l-md.font-thin.h3
+          b SHIPPING PREFERENCES
+      hr
+      .well.m-t.m-l.bg-light.hover-wrap
+        .row
+          .col-md-8
+            .panel.no-border
+              .panel-heading.wrapper.b-b.b-light
+                h4.font-bold LOG IN OPTIONS
+                br
+                ul.list-group.list-group-lg.m-b-none.list-unstyled.ship-prefer
+                  li
+                    .fa.fa-check(ng-if='$ctrl.shippingPreference.is_basic_photo')
+                    .fa.fa-times(ng-if='!$ctrl.shippingPreference.is_basic_photo')
+                    span Always take standard photos of item at login
+                  li
+                    .fa.fa-check(ng-if='$ctrl.shippingPreference.is_advanced_photo')
+                    .fa.fa-times(ng-if='!$ctrl.shippingPreference.is_advanced_photo')
+                    span Always take advanced photos of item at login
+                  li
+                    .fa.fa-check(ng-if='$ctrl.shippingPreference.is_scan_document')
+                    .fa.fa-times(ng-if='!$ctrl.shippingPreference.is_scan_document')
+                    span Always scan all pages of my documents
+        .row
+          .col-md-8
+            .panel.no-border
+              .panel-heading.wrapper.b-b.b-light
+                h4.font-bold PACKING OPTIONS
+                br
+                ul.list-group.list-group-lg.m-b-none.list-unstyled.ship-prefer
+                  li
+                    .fa.fa-check(ng-if='$ctrl.shippingPreference.is_repacking')
+                    .fa.fa-times(ng-if='!$ctrl.shippingPreference.is_repacking')
+                    span Discard shoe boxes
+                  li
+                    .fa.fa-check(ng-if='$ctrl.shippingPreference.is_extra_packing')
+                    .fa.fa-times(ng-if='!$ctrl.shippingPreference.is_extra_packing')
+                    span Add extra packing material
+                  li
+                    .fa.fa-check(ng-if='$ctrl.shippingPreference.is_original_box')
+                    .fa.fa-times(ng-if='!$ctrl.shippingPreference.is_original_box')
+                    span Ship in original shipping boxes
+                  li
+                    .fa.fa-check(ng-if='$ctrl.shippingPreference.is_gift_wrap')
+                    .fa.fa-times(ng-if='!$ctrl.shippingPreference.is_gift_wrap')
+                    span Gift Wrap
+                  li
+                    .fa.fa-check(ng-if='$ctrl.shippingPreference.is_gift_note')
+                    .fa.fa-times(ng-if='!$ctrl.shippingPreference.is_gift_note')
+                    span Gift Note
+                  li
+                    .form-group
+                      .col-lg-1.no-padder
+                        input.form-control.no-padder.text-center(type='text', disabled , ng-model='$ctrl.shippingPreference.max_weight')
+                      label.col-lg-10.control-label.m-t-xs Max weight per box/Multi-piece shipment (MPS) 1 kilogram is about 2.2046 pounds
+                  .clearfix
+        .row
+          .col-md-8
+            .panel.no-border
+              .panel-heading.wrapper.b-b.b-light
+                h4.font-bold PERFORMA INVOICE OPTIONS
+                br
+                ul.list-group.list-group-lg.m-b-none.list-unstyled.ship-prefer
+                  li
+                    .fa.fa-check(ng-if='$ctrl.shippingPreference.is_mark_personal_use')
+                    .fa.fa-times(ng-if='!$ctrl.shippingPreference.is_mark_personal_use')
+                    span Mark items for "Personal Use Only"
+                  li
+                    .fa.fa-check(ng-if='$ctrl.shippingPreference.is_include_invoice')
+                    .fa.fa-times(ng-if='!$ctrl.shippingPreference.is_include_invoice')
+                    span Please include a printed Proforma Invoice in my shipment
+                  li
+                    .form-group
+                      label.col-lg-1.control-label.m-t-xs.no-padder Tax ID
+                      .col-lg-3.no-padder-left
+                        input.form-control(type='text', disabled , ng-model='$ctrl.shippingPreference.tax_id')
+                  .clearfix
+
+      div
+        .h1.m-l-md.font-thin.h3
+          b Wallet Balance: {{$ctrl.data.wallet_balance_amount}}
+
+      hr
+      form.form.form-validation.form-horizontal.wrapper-md(
+      name="walletForm"
+      novalidate
+      ng-submit='$ctrl.postWallet(walletForm)'
+      )
+        .well.m-t.m-l.bg-light.hover-wrap
+          .row
+            .col-md-12.col-sm-12.col-xs-12
+              h4
+                strong Wallet Transactions
+
+          .row
+            .col-md-4.col-sm-2.col-xs-12
+              label.col-xs-12.input-group
+                | Description
+                span.text-danger *
+                input.form.form-control(
+                type='text'
+                name='description'
+                placeholder='eg. for feedback'
+                ng-model='$ctrl.data.description'
+                required
+                )
+                span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && wallet.description.$dirty && wallet.description.$invalid') Please enter description
+
+            .col-md-4.col-sm-2.col-xs-12
+              label.col-xs-12.input-group
+                | Amount
+                span.text-danger *
+                input.form.form-control(
+                type='number'
+                name='amount'
+                placeholder='eg. 2'
+                ng-model='$ctrl.data.amount'
+                required
+                )
+                span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && wallet.amount.$dirty && wallet.amount.$invalid') Please enter amount
+
+            .col-md-2.col-sm-2.col-xs-12.save
+              h4(ng-bind="$ctrl.error.message" style="color:red;")
+              button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitWallet")
+                span.fa.fa-forward.m-r-sm
+                span.text-white(ng-if='!$ctrl.submitWallet') Save Changes
+                span(ng-if='$ctrl.submitWallet')
+                  i.fa.fa-spin.fa-circle-o-notch
+                  span.text-white &nbsp;&nbsp;submittingWallet...
+          .row
+            .col-md-12.no-padder-right
+              table.table.m-b-none
+                thead
+                  tr
+                    th.col-xs-3 Date
+                    th.col-xs-3 Description
+                    th.col-xs-3 Amount
+                    th.col-xs-1 Delete
+                    th.col-xs-2 Edit
+
+              .col-xs-12(style='padding: 10px;')
+                .col-xs-12(ng-show='$ctrl.transactions.length === 0')
+                  td(colspan="5")
+                    h2.text-center.text-muted No Wallet Transaction Details
+
+                .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='transaction in $ctrl.transactions' )
+                  .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs {{ transaction.created_at | date:'MMM d, y' }} IST {{ transaction.created_at | date:'h:mm a' }}
+                  .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='transaction.description')
+                  .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='transaction.amount')
+                  .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-trash(ng-click="$ctrl.deleteWalletTransaction($ctrl.$stateParams.id, transaction.id, transaction.amount, transaction.type, $index)")
+                  .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-edit(ng-click="$ctrl.editWalletTransaction($ctrl.$stateParams.id, transaction.id, transaction.amount, transaction.description, $index)")
+      div
+        .h1.m-l-md.font-thin.h3
+          b Miscellaneous Rewards
+
+      hr
+      form.form.form-validation.form-horizontal.wrapper-md(
+      name="LoyaltyForm"
+      novalidate
+      ng-submit='$ctrl.postLoyalty(LoyaltyForm)'
+      )
+        .well.m-t.m-l.bg-light.hover-wrap
+          .row
+            .col-md-12.col-sm-12.col-xs-12
+              h5
+                p Add miscellaneous loyalty points to this profile.
+                p Points to Redeem : {{ $ctrl.loyaltyPoints.points }}
+                p Total Points: {{ $ctrl.loyaltyPoints.total_points }}
+                  span(ng-if='$ctrl.loyaltyPoints.total_points < 1000')
+                    |   ( BRONZE SHIPPR )
+                  span(ng-if='$ctrl.loyaltyPoints.total_points >= 1000 && $ctrl.loyaltyPoints.total_points < 6000')
+                    |   ( SILVER SHIPPR )
+                  span(ng-if='$ctrl.loyaltyPoints.total_points >= 6000 && $ctrl.loyaltyPoints.total_points < 26000')
+                    |   ( GOLD SHIPPR )
+                  span(ng-if='$ctrl.loyaltyPoints.total_points >= 26000')
+                    |   ( PLATINUM SHIPPR )
+          .row
+            .col-md-4.col-sm-2.col-xs-12
+              label.col-xs-12.input-group
+                | Reason/Information
+                span.text-danger *
+                input.form.form-control(
+                type='text'
+                name='description'
+                placeholder='eg. for feedback'
+                ng-model='$ctrl.data.description'
+                required
+                )
+                span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && LoyaltyForm.description.$dirty && LoyaltyForm.description.$invalid') Please enter description
+
+            .col-md-4.col-sm-2.col-xs-12
+              label.col-xs-12.input-group
+                | Reward Points
+                span.text-danger *
+                input.form.form-control(
+                type='number'
+                name='points'
+                placeholder='eg. 2'
+                ng-model='$ctrl.data.points'
+                required
+                )
+                span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && LoyaltyForm.points.$dirty && LoyaltyForm.points.$invalid') Please enter points
+
+            .col-md-2.col-sm-2.col-xs-12.save
+              h4(ng-bind="$ctrl.error.message" style="color:red;")
+              button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitLoyalty")
+                span.fa.fa-forward.m-r-sm
+                span.text-white(ng-if='!$ctrl.submitLoyalty') Save Changes
+                span(ng-if='$ctrl.submitLoyalty')
+                  i.fa.fa-spin.fa-circle-o-notch
+                  span.text-white &nbsp;&nbsp;SubmittingLoyalty...
+          .row
+            .col-md-12.no-padder-right
+              table.table.m-b-none
+                thead
+                  tr
+                    th.col-xs-3 Date
+                    th.col-xs-3 Reason/Information
+                    th.col-xs-3 Reward Points
+                    th.col-xs-1 Delete
+                    th.col-xs-2 Edit
+
+              .col-xs-12(style='padding: 10px;')
+                .col-xs-12(ng-show='$ctrl.loyaltyHistories.length === 0')
+                  td(colspan="5")
+                    h2.text-center.text-muted No Loyatly Rewards Details
+
+                .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='loyaltyHistory in $ctrl.loyaltyHistories')
+                  .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs {{ loyaltyHistory.created_at | date:'MMM d, y' }} IST {{ loyaltyHistory.created_at | date:'h:mm a' }}
+                  .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='loyaltyHistory.description')
+                  .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='loyaltyHistory.points')
+                  .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-trash(ng-click="$ctrl.deleteLoyaltyPoints($ctrl.$stateParams.id, loyaltyHistory.id, loyaltyHistory.points, $index)")
+                  .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-edit(ng-click="$ctrl.editLoyaltyPoints($ctrl.$stateParams.id, loyaltyHistory.id, loyaltyHistory.points, loyaltyHistory.description, $index)")
+
+.clearfix
