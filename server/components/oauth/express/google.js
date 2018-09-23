@@ -1,10 +1,9 @@
 const debug = require('debug');
 const rp = require('request-promise');
-const { GROUPS: { OPS, CUSTOMER } } = require('../../../config/constants');
 const env = require('../../../config/environment');
 const logger = require('../../../components/logger');
-const { User, LoyaltyPoint, ShippingPreference } = require('../../../conn/sqldb');
-const userCtrl = require('../../../api/user/user.controller');
+const userService = require('../../../api/user/user.service');
+const { User } = require('../../../conn/sqldb');
 
 const log = debug('s.components.oauthjs.express.google');
 
@@ -44,48 +43,25 @@ exports.oauth = (req, res, next) => {
           req.body = { username: email, password: env.MASTER_TOKEN };
           log('AFTER GOOGLE LOGIN', req.body, me);
 
-          return User.find({ where: { email } })
-            .then((user) => {
-              if (!user) {
-                const IS_OPS = env.GSUITE_DOMAIN === email.split('@')[1];
-                const VirtualAddressCode = userCtrl.lockerGenerate();
-
-                const options = {
-                  email,
-                  salutation: '',
-                  first_name: me.name.givenName,
-                  last_name: me.name.familyName,
-                  profile_photo_url: me.image.url,
-                  virtual_address_code: VirtualAddressCode,
-                  email_verify: 'yes',
-                  google: { ...me, token },
-                  group_id: IS_OPS ? OPS : CUSTOMER,
-                };
-
-                if (IS_OPS) options.role_id = 2;
-
-                return User
-                  .create(options)
-                  .then((customer) => {
-                    LoyaltyPoint
-                      .create({
-                        customer_id: customer.id,
-                        level: 1,
-                        points: 200,
-                        total_points: 200,
-                      });
-                    ShippingPreference
-                      .create({ customer_id: customer.id })
-                      .catch(err => logger.error('User me save', err, req.body));
-                  }).then(() => next());
+          return userService
+            .signup({
+              body: {
+                email,
+                salutation: '',
+                first_name: me.name.givenName,
+                last_name: me.name.familyName,
+              },
+            })
+            .then((result) => {
+              if (result.code === 409) {
+                User
+                  .update({
+                    profile_photo_url: me.image.url,
+                    email_verify: 'yes',
+                    google: { ...me, token },
+                  }, { where: { email } })
+                  .catch(err => logger.error('User me save', err, req.body));
               }
-
-              User
-                .update({
-                  profile_photo_url: me.image.url,
-                  google: { ...me, token },
-                }, { where: { email } })
-                .catch(err => logger.error('User me save', err, req.body));
 
               return next();
             });

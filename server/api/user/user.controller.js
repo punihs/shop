@@ -1,16 +1,11 @@
 const _ = require('lodash');
 const debug = require('debug');
 
-const { GROUPS: { OPS, CUSTOMER } } = require('../../config/constants');
-const env = require('../../config/environment');
-const hookshot = require('./user.hookshot');
-const { generateVirtualAddressCode } = require('../../components/util');
-const { encrypt } = require('../../components/crypto');
-
 const {
   User, State, ActionableState, GroupState, Shipment, Country, Package,
   Locker,
 } = require('../../conn/sqldb');
+const service = require('./user.service');
 
 const log = debug('s.user.controller');
 const {
@@ -147,15 +142,6 @@ exports.states = (req, res, next) => {
     .catch(next);
 };
 
-exports.create = async (req, res) => {
-  const saved = await User.create({
-    ...req.body,
-    virtual_address_code: generateVirtualAddressCode(),
-  });
-
-  return res.json(saved);
-};
-
 exports.show = (req, res, next) => {
   const { id } = req.params;
   log('show', id);
@@ -201,55 +187,22 @@ exports.destroy = async (req, res) => {
   });
   return res.json(status);
 };
+const messagesMap = {
+  201: `You need to confirm your account.
+        We have sent you an activation code, please check your email.`,
+  409: 'Duplicate',
+};
 
-const checkDuplicate = email => User.find({
-  attributes: ['id'],
-  where: { email },
-  raw: true,
-});
-
-exports.register = async (req, res) => {
-  const {
-    salutation,
-    first_name,
-    last_name,
-    email: e,
-    mobile,
-    password,
-    virtual_addess_code: virtualAddressCode,
-    hooks,
-  } = req.body;
-
-  const email = e.trim();
-  // - Todo: Email Validation
-
-  const exists = await checkDuplicate(email);
-  if (exists) return res.status(409).json({ id: exists.id, message: 'Duplicate' });
-
-  const IS_OPS = env.GSUITE_DOMAIN === email.trim().split('@')[1];
-
-  // - Saving Customer Details
-  const customer = await User.create({
-    salutation,
-    first_name,
-    last_name,
-    password,
-    email,
-    mobile,
-    virtual_address_code: virtualAddressCode || generateVirtualAddressCode(),
-    group_id: IS_OPS ? OPS : CUSTOMER,
-    email_token: await encrypt(email),
-  }, { hooks });
-
-  // - Sending Verification Email via Hook
-  await hookshot.signup(customer);
-
-  return res
-    .status(201)
-    .json({
-      message: `You need to confirm your account.
-      We have sent you an activation code, please check your email.`,
-    });
+exports.register = async (req, res, next) => {
+  log('register');
+  return service
+    .signup({ body: req.body })
+    .then(status => res
+      .status(status.code)
+      .json({
+        message: messagesMap[status.code],
+      }))
+    .catch(next);
 };
 
 exports.verify = async (req, res) => {
