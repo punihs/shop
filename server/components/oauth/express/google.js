@@ -50,6 +50,7 @@ exports.oauth = (req, res, next) => {
                 salutation: '',
                 first_name: me.name.givenName,
                 last_name: me.name.familyName,
+                hooks: false
               },
             })
             .then((result) => {
