@@ -152,7 +152,7 @@ describe('member POST /api/users/register', () => {
         mobile: '+919844717202',
         password: 'admin1234',
         virtual_address_code: 'SHPR78-221',
-        hooks: false,
+        hooks: true,
       })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
