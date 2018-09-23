@@ -18,7 +18,7 @@ router.put('/:id/changePassword', authenticate(), controller.updateChangePasswor
 router.get('/:id', authenticate(), controller.show);
 router.put('/:id/unread', authenticate(), controller.unread);
 router.delete('/:id', authenticate(), controller.destroy);
-router.post('/register', rateLimit('auth', db), controller.submitRegister);
+router.post('/register', rateLimit('auth', db), controller.register);
 router.post('/verify', controller.verify);
 
 module.exports = router;

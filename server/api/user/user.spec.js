@@ -145,15 +145,14 @@ describe('member POST /api/users/register', () => {
     request(app)
       .post('/api/users/register')
       .send({
-        _token: '2yVT9voBawG19WrPu9aD8QtCDyoysCoqVUxBSJui',
-        referrer: '',
-        title: 'Mr',
-        firstname: 'punith',
-        lastname: 'HS',
-        email: 'punith@shoppre.com',
-        password: 'Punith897097',
-        password_confirmation: 'Punith897097',
-        refferal: 'AY447594',
+        salutation: 'Mr',
+        last_name: 'v',
+        first_name: 'Manjesh',
+        email: 'manjeshpv+2@gmail.com',
+        mobile: '+919844717202',
+        password: 'admin1234',
+        virtual_address_code: 'SHPR78-221',
+        hooks: false,
       })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
