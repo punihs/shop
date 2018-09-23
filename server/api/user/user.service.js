@@ -19,7 +19,7 @@ exports.signup = async ({ body }) => {
     email: e,
     mobile,
     password,
-    virtual_addess_code: virtualAddressCode,
+    virtual_address_code: virtualAddressCode,
     hooks,
   } = body;
 
