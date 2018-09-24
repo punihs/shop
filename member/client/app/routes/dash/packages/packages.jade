@@ -1,8 +1,7 @@
-div.m-t-xl.no-margin
+div.no-margin
   .wrapper-md.bg-white-only
     .container-fluid
-      .row
-      .col-md-7.m-t-xs
+      .col-md-8.m-t-xs
         center
           h4.subpaybtn(ng-if='$ctrl.queueCount > 0')
             | Your shipment is ready.
@@ -11,12 +10,14 @@ div.m-t-xl.no-margin
             |  Quickly in order to avoid storage fees.
             a.tooltipkey(href='javascript:void(0)', title='Your package is now ready to be shipped and your final charges have been updated.You get a free time period of 7 DAYS to submit your payment. You will incur a storage fee of INR 100/ day for your prepared parcel from the 8th day onwards, which you can view in your Shoppre Wallet.')
               i.fa.fa-question-circle-o
-        div.text-center
+        div
           .order-top-left.col-md-6.no-padding-right
             h3 Packages in locker&nbsp;
               strong(ng-bind='$ctrl.user.virtual_address_code')
               // todo - change href
-            a.btn.btn-blue.col-md-12(ui-sref='shipments.index({ status: "INQUEUE" })') Alert Shoppre about my incoming Packages (Optional)
+            a.btn.btn-primary(
+              ng-href='{{$ctrl.URLS.PREFIX}}myaccount.{{$ctrl.URLS.DOMAIN}}/incoming-order'
+            ) Alert Shoppre about my incoming Packages (Optional)
           // todo required to display offers
           //.order-top-left.col-md-6.no-padding-right
           //  h3(style='color: hotpink;') Coming Soon
@@ -34,7 +35,7 @@ div.m-t-xl.no-margin
               )
             li.hide.m-r-sm.pull-right: a.h5.font-bold.b-a.btn-info(
               uib-tooltip='Alert Shoppre about my incoming packages (Optional)'
-              ui-sref='packages.create()'
+              ng-href='{{$ctrl.URLS.PREFIX}}myaccount.{{$ctrl.URLS.DOMAIN}}/incoming-order'
             )
               | Inform about your purchases to Shoppre Team
         .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
@@ -361,22 +362,27 @@ div.m-t-xl.no-margin
           .clearfix
           .more-options.col-md-12
             .ReadytoSend(ng-if='$ctrl.$stateParams.bucket==="READY_TO_SEND"')
-              button.btn.btn-sm.btn-warning.m-b-xs.text-u-c.pull-right(type='submit', ng-click="$ctrl.createShipment()", ng-disabled="$ctrl.totalSelectedPackages == 0 ? true : false") Create Ship Request
+              button.btn.btn-sm.btn-primary.m-b-xs.text-u-c.pull-right(
+                type='submit',
+                ng-click="$ctrl.createShipment()"
+                ng-disabled="$ctrl.totalSelectedPackages == 0 ? true : false"
+              ) Create Ship Request
               .clearfix
 
 
               p *
                 | Customs regulations require the purchase price for every item.
                 | Proof of value maybe requested by customs officials.
-                a.summary-order(href="#" ,_target='blank')&nbsp; Click here to know more.
+                a.summary-order(href="{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/faq" ,_target='blank')&nbsp; Click here to know more.
 
               p **
                 | Shoppre charges a small fee of INR 100 per package that you add to the final shipment
                 | (when you have two or more packages to consolidate).
                 | This helps you in reducing shipping charges upto 60-80%.
-                a.summary-order(href="#" _target='blank')&nbsp; Click here to know more.
+                a.summary-order(href="{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/faq" _target='blank')&nbsp; Click here to know more.
 
-      .col-md-5.m-t-xs
+      // - Right Sidebar
+      .col-md-4.m-t-xs
         .well.copy-wrap-out
           select.pull-right.m-l(ng-model='$ctrl.store' name='store')
             option Amazon
@@ -581,25 +587,25 @@ div.m-t-xl.no-margin
               img(src='/assets/images/dashico1.png')
             .col-md-6
               .h4.text-u-c
-                a(href='') Country Guides
+                a(ng-href='{{$ctrl.URLS.PREFIX}}myaccount.{{$ctrl.URLS.DOMAIN}}/country-guide') Country Guides
           .col-md-6.sidebarSpecial
             .col-md-2.no-padder
               img(src='/assets/images/dashico2.png')
             .col-md-9
               .h4.text-u-c
-                a(href='') Brands you love
+                a(ng-href='{{$ctrl.URLS.PREFIX}}myaccount.{{$ctrl.URLS.DOMAIN}}/browse-categories') Brands you love
           .col-md-6.sidebarSpecial.m-t-xs.white-border
             .col-md-2.no-padder
               img(src='/assets/images/dashico3.png')
             .col-md-9
               .h4.text-u-c
-                a(href='') Shipping Calculator
+                a(ng-href='{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/pricing') Shipping Calculator
           .col-md-6.sidebarSpecial.m-t-xs
             .col-md-2.no-padder
               img(src='/assets/images/dashico4.png')
             .col-md-9
               .h4.text-u-c
-                a(href='') Personal Shopper
+                a(ng-href='{{$ctrl.URLS.PREFIX}}myaccount.{{$ctrl.URLS.DOMAIN}}/personal-shopper') Personal Shopper
           .col-md-6.sidebarSpecial.m-t-xs.white-border
             .col-md-2.no-padder
               img(src='/assets/images/dashico5.png')
@@ -609,17 +615,20 @@ div.m-t-xl.no-margin
             .col-md-2.no-padder
               img(src='/assets/images/dashico6.png')
             .col-md-9
-              .h4.text-u-c Our Services
+              .h4.text-u-c
+                a(ng-href='{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/services') Our Services
           .col-md-6.sidebarSpecial.m-t-xs.white-border
             .col-md-2.no-padder
               img(src='/assets/images/dashico7.png')
             .col-md-9
-              .h4.text-u-c Address Book
+              .h4.text-u-c
+                a(ng-href='{{$ctrl.URLS.PREFIX}}myaccount.{{$ctrl.URLS.DOMAIN}}/address') Address Book
           .col-md-6.sidebarSpecial.m-t-xs
             .col-md-2.no-padder
               img(src='/assets/images/dashico8.png')
             .col-md-9
-              .h4.text-u-c.top-margin-10  Blog
+              .h4.text-u-c.top-margin-10
+                a(ng-href='{{$ctrl.URLS.PREFIX}}blog.{{$ctrl.URLS.DOMAIN}}') Blog
 
 
 

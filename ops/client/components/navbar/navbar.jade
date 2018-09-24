@@ -1,12 +1,15 @@
 .app-header.navbar
   //- navbar header
   .navbar-header(class='{{App.app.settings.navbarHeaderColor}}')
-    button.pull-right.visible-xs.dk(ng-click='App.app.settings.mobileHeader = !App.app.settings.mobileHeader' ng-if='App.$state.current.name !== "extension"')
+    button.pull-right.visible-xs.dk(
+      ng-click='App.app.settings.mobileHeader = !App.app.settings.mobileHeader'
+      ng-if='App.$state.current.name !== "extension"'
+    )
       i.fa.fa-cog
     button.pull-right.visible-xs.dk(ng-click='App.hideExt()' ng-if='App.$state.current.name === "extension"')
       i.fa.fa-times
     //- brand
-    a.navbar-brand.text-lt(style='line-height: 44px;width: 258px;background: #4173A9;' ng-class="{'company-logo' : App.app.settings.isAdmin, 'consultant-logo': !App.app.settings.isAdmin}" ui-sref='{{App.$state.current.name !== "extension" ? "dashboard" : ""}}')
+    a.navbar-brand.text-lt.bg-dark(style='line-height: 44px;width: 258px;' ng-class="{'company-logo' : App.app.settings.isAdmin, 'consultant-logo': !App.app.settings.isAdmin}" ui-sref='{{App.$state.current.name !== "extension" ? "dashboard" : ""}}')
       img.pull-left(style='    width: 30px;margin-top: 5px;' src='assets/images/logo.png', alt='{{App.app.name}}')
       span(style='margin-left: -122px;font-weight: 400;font-size: 18px;' title='{{App.app.name}}') {{App.app.name}}
   //- navbar collapse
@@ -29,7 +32,7 @@
         span.input-group-btn.b-white(style='width: 1%', ng-class='{"b-b": NavBar.isSearchOpen}', ng-click='NavBar.isSearchOpen=!NavBar.isSearchOpen;NavBar.ui.setfocus();')
           a.btn.btn-xs
             i.fa.fa-search
-        input.search.input-sm.no-border.bg-info.text-white.text-md.b-b.b-white(
+        input.search.input-sm.no-border.text-white.text-md.b-b.b-white(
           ng-class="{'search-animate': NavBar.isSearchOpen, 'company-header': App.app.settings.isAdmin}"
           type='text'
           ng-model='App.Applicants.searchText'

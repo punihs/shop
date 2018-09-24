@@ -40,6 +40,11 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 .btn-success:hover {
   color: $brand-light;
 }
+
+navbar {
+  background-image: url(https://myaccount.shoppre.com/img/top-bar.jpg) !important;
+}
+
 .invisible{visibility: hidden}
 .height-21{height:21.5em;}
 

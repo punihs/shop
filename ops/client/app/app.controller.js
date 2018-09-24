@@ -21,7 +21,7 @@ class AppController {
       version: '0.0.1',
       settings: {
         themeID: 1,
-        navbarHeaderColor: 'bg-primary dk',
+        // navbarHeaderColor: 'bg-primary dk',
         navbarCollapseColor: 'bg-info',
         asideColor: 'bg-info bg-gd-dk',
         headerFixed: true,

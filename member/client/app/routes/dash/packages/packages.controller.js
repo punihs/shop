@@ -1,6 +1,8 @@
 class PackageLockerController {
-  constructor($http, Page, $uibModal, $stateParams, CONFIG, $location, $state, Session, S3,
-              toaster, moment) {
+  constructor(
+    $http, Page, $uibModal, $stateParams, CONFIG, $location, $state, Session, S3,
+    toaster, moment, URLS
+  ) {
     this.$http = $http;
     this.Page = Page;
     this.S3 = S3;
@@ -11,32 +13,37 @@ class PackageLockerController {
     this.$location = $location;
     this.moment = moment;
     this.toaster = toaster;
-    this.user = Session.read('userinfo');
+    this.Session = Session;
+    this.URLS = URLS;
+
+    this.$onInit();
+  }
+
+  $onInit() {
     this.MoreOption = false;
     this.allChecked = false;
+
+    this.store = 'Amazon';
+
+    this.totalItemAmount = 0;
     this.totalSelectedPackages = 0;
-    this.selectPackage = [];
-    this.packages_ids = [];
-    this.$onInit();
+
     this.readyToShipCount = '';
     this.inReviewCount = '';
     this.actionRequiredCount = '';
     this.allCount = '';
-    this.totalItemAmount = 0;
-    this.data = {};
     this.queueCount = '';
+
+    this.data = {};
+
+    this.selectPackage = [];
+    this.packages_ids = [];
+
+    this.user = this.Session.read('userinfo');
     this.PACKAGE_STATE_IDS = this.CONFIG.PACKAGE_STATE_IDS;
-  }
-
-  startUpload(ctrl, file) {
-    ctrl.S3.upload(file, ctrl.data, ctrl);
-  }
-
-  $onInit() {
     this.buckets = this.CONFIG.PACKAGE_STATES.map(x => x.replace(/ /g, '_').toUpperCase());
 
-    this.$stateParams.bucket = this.$stateParams.bucket || this.$location.search().bucket;
-    this.store = 'Amazon';
+
     // Set default bucket to ALL
     if (!this.buckets.includes(this.$stateParams.bucket)) {
       this.$state.go('dash.packages', { bucket: this.buckets[0] });
@@ -55,6 +62,11 @@ class PackageLockerController {
 
     this.Page.setTitle('Locker');
 
+    this.getList();
+    this.loadMessages();
+  }
+
+  loadMessages() {
     this.specialRequests = [{
       name: 'Return to Sender',
       value: 'return',
@@ -81,8 +93,7 @@ class PackageLockerController {
       '(please mention the full address with Pincode - charges as per domestic shipment)' +
       ' or if the sender' +
       ' will pick up your items from Shoppre.',
-    },
-    {
+    }, {
       name: 'Split Package',
       value: 'split',
       price: 'INR 200 * Per New Package Created',
@@ -99,8 +110,7 @@ class PackageLockerController {
       description: 'Split  contents of package separate packages',
       innerDescription: 'How would you like to split your package? Please mention ' +
       'the details in the box below:',
-    },
-    {
+    }, {
       name: 'Abandon Package',
       value: 'abandon',
       price: 'INR 0 ',
@@ -111,9 +121,12 @@ class PackageLockerController {
       'shall not able to recover' +
       ' this package once you have asked us to discard your items.',
     }];
-
-    this.getList();
   }
+
+  startUpload(ctrl, file) {
+    ctrl.S3.upload(file, ctrl.data, ctrl);
+  }
+
 
   getTotalItemAmount(index) {
     let total = 0;

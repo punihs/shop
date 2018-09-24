@@ -8,30 +8,30 @@ angular
   .constant('MODULE_VERSION', '0.0.1');
 // this configs to initiated using provider
 const MEMBER = 2;
-angular.module('uiGenApp', [
-  'uiGenApp.constants',
-  'qui.core',
-  'ngAnimate',
-  'ui.router',
-  'ui.bootstrap',
-  'mwl.calendar',
-  'chart.js',
-  'ngFileUpload',
-  'angular-loading-bar',
-  'easypiechart',
-  'scrollable-table',
-  'naif.base64',
-  'rzModule',
-  'toaster',
-  'ngclipboard',
-  'isteven-multi-select',
-  'dndLists',
-  'ngSanitize',
-  'ngCookies',
-  'btford.socket-io',
-  'ngIntlTelInput',
-])
-
+angular
+  .module('uiGenApp', [
+    'uiGenApp.constants',
+    'qui.core',
+    'ngAnimate',
+    'ui.router',
+    'ui.bootstrap',
+    'mwl.calendar',
+    'chart.js',
+    'ngFileUpload',
+    'angular-loading-bar',
+    'easypiechart',
+    'scrollable-table',
+    'naif.base64',
+    'rzModule',
+    'toaster',
+    'ngclipboard',
+    'isteven-multi-select',
+    'dndLists',
+    'ngSanitize',
+    'ngCookies',
+    'btford.socket-io',
+    'ngIntlTelInput',
+  ])
   .config(($urlRouterProvider, $locationProvider, ngIntlTelInputProvider) => {
     ngIntlTelInputProvider.set({ initialCountry: 'us' });
 

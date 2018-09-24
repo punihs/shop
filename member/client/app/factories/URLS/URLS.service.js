@@ -2,9 +2,15 @@
 angular.module('uiGenApp')
   .factory('URLS', () => {
     let vars;
+    const { host, protocol } = window.location;
+    const PREFIX = `${protocol}//${host.substr(0, host.indexOf('-') + 1)}`;
+    let DOMAIN = `${host.substr(host.indexOf('.') + 1)}`;
+
     switch (window.location.host) {
       case 'member.shoppre.com':
         vars = {
+          DOMAIN,
+          PREFIX,
           BETA: false,
           ADMIN: 'https://admin.shoppre.com',
           QNOTIFY_SERVER: 'https://qnotify.shoppre.com/api',
@@ -28,12 +34,11 @@ angular.module('uiGenApp')
         break;
       case 'staging-member.shoppre.com':
         vars = {
-          BETA: true,
-          ADMIN: 'https://staging-admin.shoppre.com',
+          DOMAIN,
+          PREFIX,
           QNOTIFY_SERVER: 'https://s-qnotify.shoppre.com/api',
           API: 'https://staging-api.shoppre.com/api',
           API_BASE: 'https://staging-api.shoppre.com',
-          CRUX_API: 'https://s-capi.shoppre.com/api',
           PARTNER_OAUTH_API: 'https://staging-api.shoppre.com/api/user',
           ACCOUNTS: '//staging-accounts.shoppre.com',
           APPLY: 'https://staging-apply.shoppre.com',
@@ -53,6 +58,8 @@ angular.module('uiGenApp')
         break;
       default: {
         vars = {
+          DOMAIN,
+          PREFIX,
           CDN: 'http://cdn.shoppre.test',
           BETA: true,
           ADMIN: 'http://admin.shoppre.test',
@@ -70,7 +77,6 @@ angular.module('uiGenApp')
           CHAT_SERVER: 'http://chat.shoppre.test',
           CHAT_APP: 'http://comet.shoppre.test',
           SEARCH: 'http://search.shoppre.test',
-          STACKTRACEJS: false,
           BADGE: 'https://staging-www.shoppre.com/embed/badges',
           MICROSITE: 'http://www.shoppre.test',
           CHROME_EXTENSION: 'https://chrome.google.com/webstore/detail/' +
