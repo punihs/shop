@@ -13,6 +13,7 @@ const checkDuplicate = email => User.find({
 
 exports.signup = async ({ body }) => {
   const {
+    id,
     salutation,
     first_name,
     last_name,
@@ -41,6 +42,7 @@ exports.signup = async ({ body }) => {
       return encrypt(email)
         .then(token => User
           .create({
+            id,
             salutation,
             first_name,
             last_name,
