@@ -100,7 +100,7 @@ class shipmentRequestController {
           orginal_box: false,
           gift_wrap: false,
           gift_note: false,
-          giftnote_txt: null,
+          gift_note_text: null,
           is_liquid: IS_LIQUID,
           max_weight: 0,
           invoice_tax_id: false,

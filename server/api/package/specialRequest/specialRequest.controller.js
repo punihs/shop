@@ -62,7 +62,7 @@ exports.split = async (req, res) => {
   const packages = await Package
     .find(options);
   if (packages) {
-    splitMsg = req.body.message;
+    splitMsg = req.body.message2;
   }
   // sending mail is pending here
   await Package.update(

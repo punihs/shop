@@ -17,8 +17,8 @@ const {
   PACKAGE_STATE_IDS: {
     READY_TO_SHIP,
     PACKAGE_ITEMS_UPLOAD_PENDING,
-    STANDARD_PHOTO_REQUEST,
-    ADVANCED_PHOTO_REQUEST, IN_REVIEW,
+    STANDARD_PHOTO_REQUEST, DAMAGED,
+    ADVANCED_PHOTO_REQUEST, IN_REVIEW, AWAITING_VERIFICATION,
   },
   PACKAGE_TYPES: { INCOMING },
 } = require('../../config/constants');
@@ -185,8 +185,17 @@ exports.state = async (req, res, next) => {
   const pkg = await Package
     .findById(req.params.id);
 
-  log({ pkg });
-  if (req.body.state_id === READY_TO_SHIP) {
+  if ([AWAITING_VERIFICATION, DAMAGED].includes(req.body.state_id)) {
+    const packageItemCount = await PackageItem.count({
+      where: { package_id: req.params.id },
+    });
+
+    if (!packageItemCount) {
+      return res.status(400).json({ message: 'Package items is empty!' });
+    }
+  }
+
+  if ([READY_TO_SHIP].includes(req.body.state_id)) {
     const photoRequest = Package.find({
       attributes: ['id'],
       where: { id: req.params.id },
@@ -195,18 +204,9 @@ exports.state = async (req, res, next) => {
         where: { state_id: [STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST] },
       }],
     });
+
     if (!photoRequest) {
       return res.status(400).json({ message: 'Please check and update the Photo Request Status !' });
-    }
-
-    const packageItemCount = await PackageItem.count({
-      where: { package_id: req.params.id },
-    });
-    log('count', JSON.stringify(packageItemCount));
-    log('pkg', pkg.total_quantity);
-
-    if (packageItemCount <= 0) {
-      return res.status(400).json({ message: 'please check your item count !' });
     }
   }
 

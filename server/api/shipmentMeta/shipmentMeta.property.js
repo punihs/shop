@@ -22,7 +22,7 @@ module.exports = DataTypes => ({
   gift_wrap_charge_amount: DataTypes.DOUBLE,
   gift_note: DataTypes.TINYINT,
   gift_note_charge_amount: DataTypes.DOUBLE,
-  giftnote_txt: DataTypes.STRING,
+  gift_note_text: DataTypes.STRING,
   insurance: DataTypes.TINYINT,
   insurance_amount: DataTypes.DOUBLE,
   is_liquid: DataTypes.TINYINT,

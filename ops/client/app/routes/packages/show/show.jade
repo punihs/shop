@@ -107,6 +107,22 @@
               div
                 span(ng-bind='$ctrl.data.price_amount')
 
+          .clear.wrapper-xs(ng-if='$ctrl.data.splitting_directions')
+            a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
+              i.fa.fa-comment.text-muted.fa-lg
+            div.text-danger
+              a.text-muted.font-thin Split Message
+              div
+                span(ng-bind='$ctrl.data.splitting_directions')
+
+          .clear.wrapper-xs(ng-if='$ctrl.data.return_send')
+            a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
+              i.fa.fa-comment.text-muted.fa-lg
+            div.text-danger
+              a.text-muted.font-thin Return to Sender
+              div
+                span(ng-bind='$ctrl.data.return_send')
+
           .clear.wrapper-xs(
           uib-tooltip="{{$ctrl.data.created_at | date:'MMM d, y'}} IST {{$ctrl.data.created_at | date:'h:mm a'}}"
           tooltip-placement='right'

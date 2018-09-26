@@ -32,7 +32,7 @@ angular.module('uiGenApp')
           pkg($http, $stateParams, $state) {
             const fl = [
               'id', 'customer_id', 'reference_code', 'created_at', 'weight', 'price_amount',
-              'is_doc', 'content_type',
+              'is_doc', 'content_type', 'splitting_directions', 'return_send', 'comments',
             ];
 
             const params = {

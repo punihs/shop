@@ -93,6 +93,14 @@
               div
                 span(ng-bind='$ctrl.data.price_amount')
 
+          .clear.wrapper-xs(ng-if='$ctrl.data.ShipmentMetum.gift_note_text')
+            a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
+              i.fa.fa-gift.text-muted.fa-lg
+            div.text-danger
+              a.text-muted.font-thin Gift Note
+              div
+                span(ng-bind='$ctrl.data.ShipmentMetum.gift_note_text')
+
           .clear.wrapper-xs(
           uib-tooltip="{{$ctrl.data.created_at | date:'MMM d, y'}} IST {{$ctrl.data.created_at | date:'h:mm a'}}"
           tooltip-placement='right'
