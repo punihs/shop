@@ -82,10 +82,7 @@ class PackageLockerController {
       'charges as per domestic shipping rates will be considered.' +
       ' *Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).',
       description: '(which will be displayed under Shoppre Wallet,and you shall pay along ' +
-      'with your next shipment)' +
-      'Return package to sender. You might to pay shipping charges as per' +
-      ' the Return policy of the' +
-      ' seller form where you purchased',
+      'with your next shipment)',
       innerDescription: 'Please check with the Sender\'s Return Policy' +
       ' before you ask us to return' +
       ' your items. You can mention in the box below if you would like us to send' +

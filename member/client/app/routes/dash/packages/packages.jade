@@ -185,7 +185,7 @@ div.no-margin
                                               popover-append-to-body='true'
                                               )
                                               span.m-l-xs(ng-bind="specialRequest.price")
-                                              small.text-muted.clear.text-ellipsis(ng-bind="specialRequest.description")
+                                              p.text-muted.clear.text-ellipsis(ng-bind="specialRequest.description")
                             td(colspan=8 ng-if='$ctrl.$stateParams.bucket==="IN_REVIEW" && $ctrl.MoreOption[$index]')
                               button.btn.btn-md.btn-info.m-t-xs.m-b-xs(ng-click='$ctrl.uploadPhotos(package.id)') Photos
                               table#DataTables_Table_3.table.table-bordered.m-b-none
@@ -230,7 +230,7 @@ div.no-margin
                                                 popover-append-to-body='true'
                                                 )
                                                 span.m-l-xs(ng-bind="specialRequest.price")
-                                                small.text-muted.clear.text-ellipsis(ng-bind="specialRequest.description")
+                                                p.text-muted.clear.text-ellipsis(ng-bind="specialRequest.description")
                             td(colspan=8 ng-if='$ctrl.$stateParams.bucket==="ACTION_REQUIRED" && $ctrl.MoreOption[$index]')
                               h5.font-bold How to provide item values:
                                 p
@@ -357,7 +357,7 @@ div.no-margin
                                                 popover-append-to-body='true'
                                                 )
                                                 span.m-l-xs(ng-bind="specialRequest.price")
-                                                small.text-muted.clear.text-ellipsis(ng-bind="specialRequest.description")
+                                                p.text-muted.clear.text-ellipsis(ng-bind="specialRequest.description")
 
           .clearfix
           .more-options.col-md-12
@@ -479,9 +479,10 @@ div.no-margin
                   span.text-muted Address Type:&nbsp;
                   span Home
                   span(
-                    uib-tooltip = "If you select HOME, Amazon delivers from morning 7AM to 9PM. Shoppre Facility is Open 24/7"
-                    tooltip-placement='right'
-                    tooltip-append-to-body='true'
+                    uib-popover = "If you select HOME, Amazon delivers from morning 7AM to 9PM. Shoppre Facility is Open 24/7"
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
                   )
                     i.m-l.fa.fa-info-circle
 
@@ -572,12 +573,13 @@ div.no-margin
           span.badge.pull-right.bg-success(ng-bind='$ctrl.user.wallet_balance_amount')
           | Shoppre Wallet
           span(
-          uib-tooltip = 'Shoppre can add or deduct cash from your Shoppre Wallet depending on the situation.' +
+          uib-popover = 'Shoppre can add or deduct cash from your Shoppre Wallet depending on the situation.' +
           'For eg: Your Personal Shopper balance will be settled here in your Shoppre Wallet.' +
           'If the amount is positive, it means that you own this much cash, and this amount will be deducted from the final charges.' +
           'If the amount is negative, it means that this amount will be added to the final charges.'
-          tooltip-placement='right'
-          tooltip-append-to-body='true'
+          popover-placement='right'
+          popover-trigger="'mouseenter'"
+          popover-append-to-body='true'
           )
            i.m-l.fa.fa-info-circle
 
@@ -610,7 +612,8 @@ div.no-margin
             .col-md-2.no-padder
               img(src='/assets/images/dashico5.png')
             .col-md-9
-              .h4.text-u-c Exchange Rates
+              .h4.text-u-c
+                a(ng-href='') Exchange Rates
           .col-md-6.sidebarSpecial.m-t-xs
             .col-md-2.no-padder
               img(src='/assets/images/dashico6.png')
