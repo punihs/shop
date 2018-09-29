@@ -61,7 +61,7 @@ exports.create = async (req, res, next) => {
 exports.show = (req, res, next) => {
   PackageItem
     .find({
-      attributes: ['id', 'quantity', 'price_amount', 'total_amount', 'object', 'name'],
+      attributes: ['id', 'quantity', 'price_amount', 'total_amount', 'object', 'object_advanced', 'name'],
       where: { id: req.params.id },
       include: [{
         model: Package,

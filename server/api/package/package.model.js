@@ -8,22 +8,19 @@ const notification = require('./package.notification');
 
 const {
   PACKAGE_STATE_IDS: {
-    PACKAGE_ITEMS_UPLOAD_PENDING, READY_TO_SHIP, RETURN_DONE, SPLIT_DONE, REVIEW, INVOICE, VALUES,
+    PACKAGE_ITEMS_UPLOAD_PENDING, READY_TO_SHIP,
+    SPLIT_PACKAGE_PROCESSED, INVOICE,
   },
-  TRANSACTION_TYPES: { DEBIT },
 } = require('../../config/constants');
 
 const {
-  PACKAGE: { RETURN },
+  PACKAGE: { SPLIT_PACKAGE },
 } = require('../../config/constants/charges');
 
 const stateIdcommentMap = {
   [PACKAGE_ITEMS_UPLOAD_PENDING]: 'Package Recieved',
-  [VALUES]: 'Package waiting for customer input value action',
   [INVOICE]: 'Package under review for customer invoice upload',
-  [REVIEW]: 'Package is under shoppre review',
-  [SPLIT_DONE]: 'Package Splitted!', // email sending is pending
-  [RETURN_DONE]: 'Package Returned to Sender!', // email sending is pending
+  [SPLIT_PACKAGE_PROCESSED]: 'Package Splitted!', // email sending is pending
 };
 
 module.exports = (sequelize, DataTypes) => {
@@ -117,30 +114,12 @@ module.exports = (sequelize, DataTypes) => {
             // }
             break;
           }
-          case VALUES: {
-            pkg.getPackageItems()
-              .then(packageItems => notification
-                .stateChange({
-                  db,
-                  lastStateId,
-                  nextStateId,
-                  pkg,
-                  actingUser,
-                  packageItems,
-                }))
-              .catch(err => logger.error('statechange notification', nextStateId, pkg, err));
-            break;
-          }
-          case RETURN_DONE: {
-            const customerId = actingUser.id;
-            db.Transaction
-              .Create({
-                customer_id: customerId,
-                type: DEBIT,
-                amount: RETURN,
-                description: `Return service fee deducted | Package ID ${pkg.id}`,
-              });
-
+          case SPLIT_PACKAGE_PROCESSED: {
+            db.PackageCharge
+              .update(
+                { split_package_amount: SPLIT_PACKAGE },
+                { where: { id: pkg.id } },
+              );
             break;
           }
           default: {

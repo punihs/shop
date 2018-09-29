@@ -73,8 +73,8 @@ div.m-t-xl.no-margin
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageItemForm.file.$dirty && newPackageItemForm.file.$invalid') Please choose supported file
                 .col-xs-1.wrapper-sm.m-t-xs
                   img.pull-left.m-r(
-                  ng-if='$ctrl.data.object_thumb'
-                  ng-src='{{$ctrl.data.object_thumb}}'
+                  ng-if='$ctrl.data.object'
+                  ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.object.replace(".", "-thumb.")}}'
                   style='height: 30px;width: 30px;border-radius: 50%;'
                   )
                 .col-md-5.col-sm-5.col-xs-5.no-padder-right
@@ -112,8 +112,8 @@ div.m-t-xl.no-margin
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageItemForm.advancedFile.$dirty && newPackageItemForm.advancedFile.$invalid') Please choose supported file
                 .col-xs-1.wrapper-sm.m-t-xs
                   img.pull-left.m-r(
-                  ng-if='$ctrl.advancedData.object_thumb'
-                  ng-src='{{$ctrl.advancedData.object_thumb}}'
+                  ng-if='$ctrl.advancedData.object_advanced'
+                  ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.advancedData.object_advanced.replace(".", "-thumb.")}}'
                   style='height: 30px;width: 30px;border-radius: 50%;'
                   )
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='!$ctrl.EDIT')
@@ -131,7 +131,7 @@ div.m-t-xl.no-margin
                 .col-md-12
                   .col-md-6.col-sm-5.col-xs-12.no-padder
                     label.col-xs-12.input-group
-                      | Package Category
+                      | Package Category {{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.advancedData.object_advanced.replace(".", "-thumb.")}}
                       span.text-danger *
                       input.form.form-control(
                       type='text'
@@ -156,7 +156,7 @@ div.m-t-xl.no-margin
 
                   .col-md-6.col-sm-5.col-xs-12
                     label.col-xs-12.input-group
-                      | Name
+                      | Name {{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.object_thumb}}
                       span.text-danger *
                       input.form.form-control(
                       type='text'

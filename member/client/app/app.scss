@@ -997,3 +997,26 @@ li.dndPlaceholder {
   margin-top: 28px;
 }
 //signup
+
+.search-box {
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 40px;
+  font-size: 16px;
+  background-color: white;
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  padding: 1px 32px 6px 25px;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+  margin-top: 7px;
+}
+.nav-serach-icon {
+  position: absolute;
+  margin-left: 12px;
+  margin-top: 14px;
+}
+
+.search-box input {
+  transition: width -4.6s ease-in-out;
+}
