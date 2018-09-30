@@ -154,7 +154,7 @@ div.no-margin
                                       p.m-t-md
                                         | **Values shown are obtained from the merchant invoices, when available. Researched values based on current market prices have been provided above for any items that arrived without invoices. The values should be updated to reflect the actual price paid for each item, and must be confirmed.
                                       p.m-t-xs
-                                        button.no-padder.btn-link.text-warning.m-r-xs(ng-click='$ctrl.AddCommnet(package.id)') Add your notes
+                                        button.no-padder.btn-link.text-warning.m-r-xs(ng-click='$ctrl.open(package.id, $index)') Add your notes
                                         | to the package, this is for your use only, Shoppre will not review this area.
                                       .col-sm-5.pull-right.right-pad-0
                                         ul.nav.nav-pills.nav-sm.package-submit-ul
@@ -164,6 +164,10 @@ div.no-margin
                                           li.m-r-xs.pull-right.ng-scope
                                             a.h5.font-bold.b-a.btn-addon.btn-success.imp(ng-click="$ctrl.resetValues($index)")
                                               span Reset Values
+                                  tr(ng-if ='package.notes')
+                                    td(colspan=8 )
+                                      .alert.alert-warning(role='alert')
+                                        h6.font-bold(ng-bind="package.notes")
                                   tr
                                     td(colspan=4)
                                       h4.font-thin OPTIONAL SERVICES
@@ -207,8 +211,12 @@ div.no-margin
                                       p.m-t-md
                                         | **Values shown are obtained from the merchant invoices, when available. Researched values based on current market prices have been provided above for any items that arrived without invoices. The values should be updated to reflect the actual price paid for each item, and must be confirmed.
                                       p.m-t-xs
-                                        button.no-padder.btn-link.text-warning.m-r-xs(ng-click='$ctrl.AddCommnet(package.id)') Add your notes
+                                        button.no-padder.btn-link.text-warning.m-r-xs(ng-click='$ctrl.open(package.id, $index)') Add your notes
                                         | to the package, this is for your use only, Shoppre will not review this area.
+                                  tr(ng-if ='package.notes')
+                                    td(colspan=8 )
+                                      .alert.alert-warning(role='alert')
+                                        h6.font-bold(ng-bind="package.notes")
                                   tr
                                     td(colspan=8)
                                         h4.font-thin.m-t-md OPTIONAL SERVICES
@@ -334,8 +342,12 @@ div.no-margin
                                       p.m-t-md
                                         | **Values shown are obtained from the merchant invoices, when available. Researched values based on current market prices have been provided above for any items that arrived without invoices. The values should be updated to reflect the actual price paid for each item, and must be confirmed.
                                       p.m-t-xs
-                                        button.no-padder.btn-link.text-warning.m-r-xs(ng-click='$ctrl.AddCommnet(package.id)') Add your notes
+                                        button.no-padder.btn-link.text-warning.m-r-xs(ng-click='$ctrl.open(package.id, $index)') Add your notes
                                         |  to the package, this is for your use only, Shoppre will not review this area.
+                                  tr(ng-if ='package.notes')
+                                    td(colspan=8 )
+                                      .alert.alert-warning(role='alert')
+                                        h6.font-bold(ng-bind="package.notes")
                                   tr
                                     td(colspan=8)
                                         h4.font-thin.m-t-md OPTIONAL SERVICES

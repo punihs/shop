@@ -1,7 +1,7 @@
 class PackageLockerController {
   constructor(
     $http, Page, $uibModal, $stateParams, CONFIG, $location, $state, Session, S3,
-    toaster, moment, URLS
+    toaster, moment, URLS, AddComment,
   ) {
     this.$http = $http;
     this.Page = Page;
@@ -15,6 +15,7 @@ class PackageLockerController {
     this.toaster = toaster;
     this.Session = Session;
     this.URLS = URLS;
+    this.AddComment = AddComment;
 
     this.$onInit();
   }
@@ -263,18 +264,13 @@ class PackageLockerController {
     });
   }
 
-  AddCommnet(id) {
-    this.$uibModal.open({
-      templateUrl: 'app/directives/add-comments/add-comments.html',
-      controller: 'AddcommentCtrl',
-      controllerAs: '$ctrl',
-      size: 'md',
-      resolve: {
-        id() {
-          return id;
-        },
-      },
-    });
+  open(id, index) {
+    const modal = this.AddComment.open(id);
+    modal
+      .result
+      .then((data) => {
+        this.packages[index].notes = data;
+      });
   }
 
   createShipment() {

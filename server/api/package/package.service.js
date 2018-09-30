@@ -37,7 +37,7 @@ exports.index = ({ query, params, user: actingUser }) => {
 
   switch (true) {
     case (actingUser.app_id === APPS.MEMBER && actingUser.group_id === CUSTOMER): {
-      options.attributes = ['id', 'created_at', 'weight', 'price_amount', 'store_id', 'content_type'];
+      options.attributes = ['id', 'created_at', 'weight', 'price_amount', 'store_id', 'content_type', 'notes'];
       options.where.customer_id = actingUser.id;
       options.include = [{
         where: {},

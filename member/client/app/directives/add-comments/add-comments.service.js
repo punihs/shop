@@ -24,7 +24,7 @@ class AddcommentCtrl {
           .toaster
           .pop('success', message);
         this.submitting = false;
-        this.$uibModalInstance.close();
+        this.$uibModalInstance.close(Object.assign(this.data.notes));
       })
       .catch((err) => {
         this
@@ -35,6 +35,25 @@ class AddcommentCtrl {
       });
   }
 }
+class AddComment {
+  constructor($uibModal, Session) {
+    this.$uibModal = $uibModal;
+    this.Session = Session;
+  }
+
+  open(id) {
+    return this.$uibModal.open({
+      templateUrl: 'app/directives/add-comments/add-comments.html',
+      controller: AddcommentCtrl,
+      controllerAs: '$ctrl',
+      bindToController: 'true',
+      size: 'md',
+      resolve: {
+        id: () => id,
+      },
+    });
+  }
+}
 
 angular.module('uiGenApp')
-  .controller('AddcommentCtrl', AddcommentCtrl);
+  .service('AddComment', AddComment);
