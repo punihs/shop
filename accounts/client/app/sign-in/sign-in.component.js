@@ -17,7 +17,7 @@ export class SignInController {
   }
 
   $onInit() {
-    this.user = { username: 'tech.shoppre@gmail.com', password: 'admin1234' };
+    this.user = { username: '', password: '' };
     if(this.$state.params.code) return this.signin({ form: { $valid: true }, code: this.$state.params.code });
     if(this.OAuth.isAuthenticated() && this.$state.current.name === 'authorise') return this.authorise();
 

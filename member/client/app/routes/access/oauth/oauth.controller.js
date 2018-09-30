@@ -15,6 +15,7 @@ class OAuthCtrl {
     }
 
     if (!query.code) toaster.pop('error', 'Authorization code missing');
+    Session.destroy();
     return Auth
       .login({ code: query.code })
       .then(() => Auth

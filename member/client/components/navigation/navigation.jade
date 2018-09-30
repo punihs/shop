@@ -6,31 +6,31 @@ ul.nav.navbar-nav.navbar-left
     span DASHBOARD
 
   li.nav-menu-item(ui-sref-active='active' uib-dropdown)
-    a.hv(uib-dropdown-toggle ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/personal-shopper')
+    a.hv( target='_blank' ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/personal-shopper')
       i.fa.fa-list-alt.text-white
       span PERSONAL SHOPPER
 
   li.nav-menu-item(ui-sref-active='active' uib-dropdown)
-    a.hv(uib-dropdown-toggle ng-href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/schedule-pickup?uid={{App.userinfo.id}}')
+    a.hv(ng-href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/schedule-pickup?uid={{App.userinfo.id}}')
       i.fa.fa-list-alt.text-white
       span SCHEDULE PICKUP
 
   li.nav-menu-item(ui-sref-active='active' uib-dropdown)
-    a.hv(uib-dropdown-toggle ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/shipping/history')
+    a.hv(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/shipping/history')
       i.fa.fa-list-alt.text-white
       span SHIPMENT HISTORY
 
   li.nav-menu-item(ui-sref-active='active' uib-dropdown)
-    a.hv(uib-dropdown-toggle ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/favorite-stores')
+    a.hv(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/favorite-stores')
       i.fa.fa-list-alt.text-white
       span MY FAVOURITE STORE
 
   li.nav-menu-item(ui-sref-active='active' uib-dropdown)
-    a.hv(uib-dropdown-toggle ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/loyalty-points')
+    a.hv(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/loyalty-points')
       i.fa.fa-list-alt.text-white
       span MY LOYALTY POINTS
 
   li.nav-menu-item(ui-sref-active='active' uib-dropdown)
-    a.hv(uib-dropdown-toggle ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/refer-a-friend')
+    a.hv(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/refer-a-friend')
       i.fa.fa-list-alt.text-white
       span REFER A FRIEND

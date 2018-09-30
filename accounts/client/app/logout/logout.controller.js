@@ -13,13 +13,13 @@ class LogoutController {
       .logout()
       .then(() => {
         const { location } = this.$window;
-        const next = this.$stateParams.continue || '/home';
+        const next = this.$stateParams.continue || '/sign-in';
         location.href = next.slice(0, 1) === '/'
         ? `${location.origin}${next}`
         : next;
         return this.$rootScope.$broadcast(this.AUTH_EVENTS.logoutSuccess);
       }, () => {
-        const next = this.$stateParams.continue || '/home';
+        const next = this.$stateParams.continue || '/sign-in';
         location.href = next.slice(0, 1) === '/'
         ? `${location.origin}${next}`
         : next;
