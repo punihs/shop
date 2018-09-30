@@ -187,7 +187,7 @@ div.m-t-xl.no-margin
                       span.text-white &nbsp;&nbsp;Submitting...
                   button.m-l.btn.btn-success(ng-if="!$ctrl.EDIT && $ctrl.pkg.id")
                     span.fa.fa-forward.m-r-sm
-                    span.text-white(ui-sref='customer.package.update({ id: $ctrl.$stateParams.id, packageId: $ctrl.pkg.id })') Continue Updating
+                    span.text-white(ng-show = '$ctrl.data.store_id', ui-sref='customer.package.update({ id: $ctrl.$stateParams.id, packageId: $ctrl.pkg.id })') Continue Updating
                   a.btn.btn.success(ng-if='!$ctrl.EDIT' ng-click="$ctrl.open()") Create Store
 
     .clearfix

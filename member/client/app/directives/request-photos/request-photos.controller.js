@@ -80,12 +80,14 @@ class RequestPhotosController {
     } else if (!this.slidesAdvanced && this.slidesStandard) {
       this.displayStandard(false);
       this.advancedAlreadyRequested = true;
+      this.advancedPhotoRequest = false;
     } else if (this.slidesAdvanced && !this.slidesStandard) {
       this.displayAdvanced(false);
       this.standardAlreadyRequested = true;
     } else if (this.slidesAdvanced === false && this.slidesStandard === false) {
       this.standardAlreadyRequested = true;
       this.advancedAlreadyRequested = true;
+      this.advancedPhotoRequest = false;
       this.standardPhotoRequest = false;
       this.advancedPhotoRequest = false;
       this.standardPhoto = false;

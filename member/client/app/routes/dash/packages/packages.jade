@@ -191,7 +191,7 @@ div.no-margin
                                               span.m-l-xs(ng-bind="specialRequest.price")
                                               p.text-muted.clear.text-ellipsis(ng-bind="specialRequest.description")
                             td(colspan=8 ng-if='$ctrl.$stateParams.bucket==="IN_REVIEW" && $ctrl.MoreOption[$index]')
-                              button.btn.btn-md.btn-info.m-t-xs.m-b-xs(ng-click='$ctrl.uploadPhotos(package.id)') Photos
+                              button.btn.btn-md.btn-info.m-t-xs.m-b-xs(ng-click='$ctrl.uploadPhotos(package)') Photos
                               table#DataTables_Table_3.table.table-bordered.m-b-none
                                 thead
                                   tr(role='row')

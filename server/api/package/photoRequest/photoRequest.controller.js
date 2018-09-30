@@ -53,16 +53,23 @@ exports.create = (req, res, next) => {
       if (photoRequest) {
         return res.json({ message: `Already ${REVEW_TEXT} photo requested` });
       }
+
       const packageItem = await PackageItem
-        .find({ attributes: ['object', 'object_advanced'] }, { where: { package_id: pkg.id } });
+        .find({
+          attributes: ['object', 'object_advanced'],
+          where: { package_id: packageId },
+        });
+
       await PhotoRequest.create({
         package_id: packageId,
         type: IS_BASIC_PHOTO ? BASIC : ADVANCED,
         status: COMPLETED,
         charge_amount: CHARGE,
       });
+
       await PackageCharge
         .upsert({ id: packageId, [`${type}_amount`]: CHARGE });
+
       await Notification.create({
         customer_id: customerId,
         action_type: 'package',
@@ -71,7 +78,7 @@ exports.create = (req, res, next) => {
       });
 
       if (!IS_BASIC_PHOTO) {
-        status = packageItem.object_advanced === null
+        status = !packageItem.object_advanced
           ? 'pending'
           : 'completed';
       } else {
