@@ -37,7 +37,8 @@ exports.index = ({ query, params, user: actingUser }) => {
 
   switch (true) {
     case (actingUser.app_id === APPS.MEMBER && actingUser.group_id === CUSTOMER): {
-      options.attributes = ['id', 'created_at', 'weight', 'price_amount', 'store_id', 'content_type', 'reference_code', 'notes'];
+      options.attributes = ['id', 'created_at', 'weight', 'price_amount',
+        'store_id', 'content_type', 'invoice_code', 'notes'];
       options.where.customer_id = actingUser.id;
       options.include = [{
         where: {},
@@ -63,7 +64,7 @@ exports.index = ({ query, params, user: actingUser }) => {
     }
     case (actingUser.app_id === APPS.OPS && actingUser.group_id === OPS): {
       if (IS_CUSTOMER_PAGE) options.where.customer_id = params.customerId;
-      options.attributes = ['id', 'customer_id', 'created_at', 'weight', 'price_amount', 'store_id', 'reference_code',
+      options.attributes = ['id', 'customer_id', 'created_at', 'weight', 'price_amount', 'store_id', 'invoice_code',
         'content_type', 'updated_at'];
       options.include = [{
         where: {},
