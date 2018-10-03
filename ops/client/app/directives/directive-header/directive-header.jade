@@ -18,7 +18,7 @@ div.directive-header
       li(ng-repeat='bucket in options.buckets' ui-sref-active="active" ng-show="buttons.buckets")
         a(
           ui-sref='customer.packages.index({ id: options.customer.id, bucket: bucket })'
-          ng-bind="status"
+          ng-bind="bucket"
         )
 
 

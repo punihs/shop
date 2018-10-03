@@ -4,6 +4,16 @@ div.m-t-xl.no-margin
       div
         .h1.m-l-md.font-thin.h3
           b CUSTOMER PROFILE
+          .pull-right
+            .a.h4.btn.btn-success(
+            ui-sref='customer.packages.create'
+            uib-popover="for {{$ctrl.data.virtual_address_code}} - {{$ctrl.data.first_name}}"
+            popover-trigger="'mouseenter'"
+            popover-placement='bottom'
+            popover-append-to-body='true'
+            )
+              span.fa.fa-forward.m-r-sm
+              span.text-white Add Package
       hr.no-margin-bottom
       form.form.form-validation.form-horizontal.wrapper-md(
       name="profileForm"

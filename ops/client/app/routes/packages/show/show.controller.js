@@ -20,7 +20,7 @@ class PackageShowController {
     this.ListModal = ListModal;
     this.moment = moment;
     this.customer = pkg.Customer;
-    this.editAllowedStates = [1, 2, 3];
+    this.editAllowedStates = [1, 2];
     this.location = $window.location;
     this.user = Session.read('userinfo');
     this.$onInit();

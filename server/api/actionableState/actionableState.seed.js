@@ -169,7 +169,7 @@ const packageStates = ({
   child_id: 5,
 }, {
   state_id: 54,
-  group_id: OPS,
+  group_id: MEMBER,
   child_id: 4,
 }].map(x => ({ ...x, type: PACKAGE }));
 

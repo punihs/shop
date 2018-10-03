@@ -17,7 +17,7 @@ class CustomersPackagesIndexController {
     this.sorts = [
       { id: 1, name: 'Default', key: '-' },
       { id: 1, name: 'Update Date', key: 'updated_on DESC' },
-      { id: 2, name: 'Upload Date', key: 'created_on DESC' },
+      { id: 2, name: 'Created Date', key: 'created_on DESC' },
       { id: 3, name: 'Name', key: 'first_name DESC' },
     ];
 
@@ -32,13 +32,14 @@ class CustomersPackagesIndexController {
 
     this.customer = this.customer || {};
     this.Page.setTitle(`${this.customer.name ? `${this.customer.name} - ` : ''} ${
-      this.$stateParams.status ? this.$stateParams.status : ''} Packages`); // set page title
+      this.$stateParams.bucket ? this.$stateParams.bucket : ''} Packages`); // set page title
 
     // Set default status to ALL
-    if (!this.buckets.includes(this.$stateParams.status)) {
+    if (!this.buckets.includes(this.$stateParams.bucket)) {
       this.$state.go('customer.packages.index', { bucket: 'TASKS' });
       return;
     }
+
     this.packages = []; // collection of packages
     this.ui = { lazyLoad: true, loading: false }; // ui states
     this.params = {
@@ -46,6 +47,7 @@ class CustomersPackagesIndexController {
       offset: 0,
       limit: 15,
       fl: 'id,name',
+      bucket: this.$stateParams.bucket.replace(' ', '_').toUpperCase(),
       sid: this.$stateParams.sid || '',
     }; // GET query params
 
