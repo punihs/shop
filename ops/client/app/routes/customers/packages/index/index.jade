@@ -45,9 +45,9 @@ div
                   .col-xs-4.text-ellipsis
                     i.fa.fa-cubes(style='margin:0 2px;')
                     | {{package.PackageItems.length || 0}}
-                  .col-xs-4.text-ellipsis(ng-show='package.reference_code')
+                  .col-xs-4.text-ellipsis(ng-show='package.invoice_code')
                     i.fa.fa-barcode
-                    span.m-l-sm {{package.reference_code}}
+                    span.m-l-sm {{package.invoice_code}}
                   .col-xs-4.text-ellipsis(ng-show='package.price_amount')
                     i.fa.fa-inr
                     |  Rs. {{package.price_amount}}

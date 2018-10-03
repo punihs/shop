@@ -44,7 +44,7 @@ section.ship_response.m-t-md.m-b-md
             tr.item(ng-repeat="package in $ctrl.Packages")
               td.invoice-from-width
                 strong {{package.Store.name}}
-                |  -   {{package.reference_code}}F
+                |  -   {{package.invoice_code}}F
               td.invoice-packid-width {{package.id}}
               td.invoice-total-width INR {{package.price_amount}}
               td {{package.weight}} Kg

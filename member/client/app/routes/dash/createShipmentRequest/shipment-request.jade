@@ -69,7 +69,7 @@
                             i.fa.fa-sort-desc
                           td.footable-visible
                             a(ui-sref='package.show({ id: package.id })' ng-bind='shipment.Store.name')
-                          td.footable-visible(ng-bind='shipment.reference_code')
+                          td.footable-visible(ng-bind='shipment.invoice_code')
                           td.footable-visible ₹{{shipment.price_amount}}
                           td.footable-visible {{shipment.weight}} KG
                         tr.footable-even(style='display: table-row;')

@@ -18,7 +18,7 @@ describe('POST /api/packages', () => {
         type: 1,
         customer_id: 646,
         store_id: 1,
-        reference_code: 'FLIP123',
+        invoice_code: 'FLIP123',
         weight: 1,
         price_amount: 100,
         content_type: REGULAR,

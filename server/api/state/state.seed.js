@@ -114,6 +114,18 @@ const packageStates = [{
   id: 54,
   name: 'Upload Invoice Requested', // -review php
   config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 56,
+  name: 'Delivery Rescheduled', // -review php
+  config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 57,
+  name: 'Payment Confirmed',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 58,
+  name: 'Payment Confirmation on Hold',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
 }].map(x => ({ ...x, type: PACKAGE }));
 
 const shipmentStates = [{

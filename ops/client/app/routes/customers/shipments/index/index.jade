@@ -62,9 +62,9 @@ div
                   .col-xs-4.text-ellipsis
                     i.fa.fa-cubes(style='margin:0 2px;')
                     | {{shipment.ShipmentItems.length || 0}}
-                  .col-xs-4.text-ellipsis(ng-show='shipment.reference_code')
+                  .col-xs-4.text-ellipsis(ng-show='shipment.invoice_code')
                     i.fa.fa-barcode
-                    span.m-l-sm {{shipment.reference_code}}
+                    span.m-l-sm {{shipment.invoice_code}}
                   .col-xs-4.text-ellipsis(ng-show='shipment.price_amount')
                     i.fa.fa-inr
                     |  Rs. {{shipment.price_amount}}

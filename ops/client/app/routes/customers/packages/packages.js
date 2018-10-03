@@ -47,7 +47,7 @@ angular.module('uiGenApp')
             .catch(() => toaster.pop('error', 'Error loading customer')),
           pkg: ($http, $stateParams, toaster) => {
             const fl = [
-              'id', 'customer_id', 'reference_code', 'created_at',
+              'id', 'customer_id', 'invoice_code', 'created_at',
               'weight', 'is_doc', 'price_amount', 'content_type',
             ].join(',');
 

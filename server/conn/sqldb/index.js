@@ -39,8 +39,6 @@ const db = {
   // Shoppre.com - Inspired by MyUS.com
   'Address', 'UserDocument', 'ShippingPreference', 'VirtualAddress',
 
-  'Order',
-
   'Package', 'PackageCharge', 'PackageState', 'State', 'ActionableState', 'GroupState',
   'PackageItem',
   'PackageItemCategory',

@@ -134,7 +134,7 @@ class PackageCreateController {
     const allowed = [
       'is_doc',
       'store_id',
-      'reference_code',
+      'invoice_code',
       'virtual_address_code',
       'weight',
       'price_amount',

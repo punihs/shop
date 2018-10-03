@@ -64,12 +64,12 @@
     .wrapper-xs.m-l-sm.m-t-sm.b-t
       uib-tabset(active='activeTab')
         uib-tab(index='0' heading='Info')
-          .clear.wrapper-xs(ng-if='$ctrl.data.reference_code')
+          .clear.wrapper-xs(ng-if='$ctrl.data.invoice_code')
             a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
               i.fa.fa-barcode.text-muted.fa-lg
             div
-              a.text-xs.text-muted Reference Code
-              div(ng-bind='$ctrl.data.reference_code')
+              a.text-xs.text-muted Invoice Code
+              div(ng-bind='$ctrl.data.invoice_code')
 
           .clear.wrapper-xs(ng-if='$ctrl.data.weight')
             a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm

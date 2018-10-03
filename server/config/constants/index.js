@@ -133,8 +133,8 @@ const constants = {
   },
   PACKAGE_TYPES: {
     INCOMING: '1',
-    PERSONAL_SHOPPER: '2',
-    COD: '3',
+    COD: '2',
+    PERSONAL_SHOPPER: '3',
   },
   RATE_TYPES: {
     FIXED: '1',

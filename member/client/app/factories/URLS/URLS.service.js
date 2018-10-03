@@ -11,21 +11,16 @@ angular.module('uiGenApp')
         vars = {
           DOMAIN,
           PREFIX,
-          BETA: false,
+          CDN: 'https://cdn.shoppre.com',
           ADMIN: 'https://admin.shoppre.com',
           QNOTIFY_SERVER: 'https://qnotify.shoppre.com/api',
           API: 'https://api.shoppre.com/api',
           API_BASE: 'https://api.shoppre.com',
           ACCOUNTS: '//accounts.shoppre.com',
-          APPLY: 'https://apply.shoppre.com',
           HELP: 'https://www.shoppre.com/contact',
           OAUTH: '//accounts.shoppre.com/authorise?client_id=member&response_type=code&' +
           'redirect_uri=https://member.shoppre.com/access/oauth',
           PDF_JS: 'https://pdfviewer.shoppre.com/web/viewer.html',
-          CHAT_SERVER: 'https://chat.shoppre.com',
-          CHAT_APP: 'https://comet.shoppre.com',
-          SEARCH: 'https://search.shoppre.com',
-          STACKTRACEJS: false,
           BADGE: 'https://www.shoppre.com/embed/badges',
           MICROSITE: 'https://www.shoppre.com',
           CHROME_EXTENSION: 'https://chrome.google.com/webstore/detail/' +
@@ -36,6 +31,7 @@ angular.module('uiGenApp')
         vars = {
           DOMAIN,
           PREFIX,
+          CDN: 'https://staging-cdn.shoppre.com',
           QNOTIFY_SERVER: 'https://s-qnotify.shoppre.com/api',
           API: 'https://staging-api.shoppre.com/api',
           API_BASE: 'https://staging-api.shoppre.com',

@@ -23,7 +23,7 @@ const OPS = {
 
 const pkg = {
   id: 1,
-  reference_code: 'AMZ123',
+  invoice_code: 'AMZ123',
   Store: {
     name: 'Amazon',
   },

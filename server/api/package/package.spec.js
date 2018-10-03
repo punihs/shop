@@ -75,7 +75,7 @@ describe('POST /api/packages', () => {
         type: 1,
         customer_id: 646,
         store_id: 1,
-        reference_code: 'FLIP123',
+        invoice_code: 'FLIP123',
         weight: 1,
         price_amount: 100,
         content_type: REGULAR,
@@ -95,7 +95,7 @@ describe('POST /api/packages update meta', () => {
       .put('/api/packages/1')
       .send({
         seller: 'Amazon.in',
-        reference_code: '123',
+        invoice_code: '123',
         is_doc: true,
         price_amount: 2000,
         weight: 2,

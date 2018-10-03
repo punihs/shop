@@ -85,9 +85,11 @@ class PackageItemsController {
     if (this.EDIT) {
       this.PackageItemCategory.model = this.data.PackageItemCategory.name;
       const imagePath = `${this.URLS.CDN}/shoppre/${this.data.object.replace('.', '-thumb.')}`;
-      const imagePathAdvanced = `${this.URLS.CDN}/shoppre/${this.advancedData.object_advanced.replace('.', '-thumb.')}`;
       this.data.object_thumb = imagePath;
-      this.advancedData.object_thumb = imagePathAdvanced;
+      if (this.advancedData.object_advanced) {
+        const imagePathAdvanced = `${this.URLS.CDN}/shoppre/${this.advancedData.object_advanced.replace('.', '-thumb.')}`;
+        this.advancedData.object_thumb = imagePathAdvanced;
+      }
     }
   }
 

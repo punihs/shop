@@ -1360,7 +1360,7 @@ exports.retryPayment = async (req, res) => {
 
   const optionPackage = {
     attributes: ['id', 'price_amount', 'weight',
-      'reference_code', 'store_id'],
+      'invoice_code', 'store_id'],
     where: {
       customer_id: customerId,
       shipment_id: shipment.id,
@@ -1539,7 +1539,7 @@ exports.confirmShipment = async (req, res) => {
 
   const optionsPackage = {
     attributes: ['id', 'price_amount', 'weight',
-      'reference_code', 'store_id'],
+      'invoice_code', 'store_id'],
     where: {
       customer_id: customerId,
       shipment_id: shipment.id,
@@ -1711,7 +1711,7 @@ exports.createShipment = async (req, res, IsShippingAddress) => {
   const { packageIds } = req.query;
   const { IS_LIQUID } = req.user;
   const optionPackage = {
-    attributes: ['id', 'weight', 'reference_code', 'price_amount'],
+    attributes: ['id', 'weight', 'invoice_code', 'price_amount'],
     where: { customer_id: customerId, id: packageIds.split(',') },
     include: [{
       model: PackageCharge,

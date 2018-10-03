@@ -20,7 +20,7 @@ module.exports = {
     TemplateData,
     Template: {
       TemplateName: `${TemplateName}_${CUSTOMER}`,
-      SubjectPart: 'Your {{pkg.Store.name}} order #{{pkg.reference_code}} is received',
+      SubjectPart: 'Your {{pkg.Store.name}} order #{{pkg.invoice_code}} is received',
       HtmlPart: render({
         TemplateName: `${TemplateName}_${CUSTOMER}`,
         extras: ['header', 'virtualAddress', 'items', 'footer', 'signature'],

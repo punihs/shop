@@ -2,14 +2,17 @@ const _ = require('lodash');
 const debug = require('debug');
 
 const {
-  User, State, ActionableState, GroupState, Shipment, Country, Package,
+  User, State, ActionableState, GroupState, Shipment, Country, Package, PackageState,
   Locker,
 } = require('../../conn/sqldb');
 const service = require('./user.service');
 
 const log = debug('s.user.controller');
+
 const {
   STATE_TYPES,
+  PACKAGE_STATE_IDS: { PACKAGE_ITEMS_UPLOAD_PENDING },
+  PACKAGE_TYPES: { INCOMING },
 } = require('../../config/constants');
 
 exports.index = (req, res, next) => {
@@ -145,23 +148,40 @@ exports.states = (req, res, next) => {
 exports.show = (req, res, next) => {
   const { id } = req.params;
   log('show', id);
-  return User
-    .findById(Number(id), {
-      attributes: req.query.fl
-        ? req.query.fl.split(',')
-        : [
-          'id', 'name', 'first_name', 'last_name', 'salutation', 'virtual_address_code',
-          'mobile', 'email', 'phone', 'phone_code', 'email_verify', 'wallet_balance_amount',
-        ],
-      include: [{
-        model: Country,
-        attributes: ['id', 'name', 'iso2'],
-      }, {
-        model: Locker,
-        attributes: ['id', 'name', 'short_name', 'allocated_at'],
-      }],
+
+  return Promise
+    .all([
+      User
+        .findById(Number(id), {
+          attributes: req.query.fl
+            ? req.query.fl.split(',')
+            : [
+              'id', 'name', 'first_name', 'last_name', 'salutation', 'virtual_address_code',
+              'mobile', 'email', 'phone', 'phone_code', 'email_verify', 'wallet_balance_amount',
+            ],
+          include: [{
+            model: Country,
+            attributes: ['id', 'name', 'iso2'],
+          }, {
+            model: Locker,
+            attributes: ['id', 'name', 'short_name', 'allocated_at'],
+          }],
+        }),
+      Package
+        .count({
+          include: [{
+            model: PackageState,
+            where: { state_id: PACKAGE_ITEMS_UPLOAD_PENDING },
+          }],
+          where: {
+            customer_id: req.params.id,
+            package_type: INCOMING,
+          },
+        }),
+    ])
+    .then(([user, packageCount]) => {
+      res.json({ ...user.toJSON(), packageCount });
     })
-    .then(users => res.json(users))
     .catch(next);
 };
 

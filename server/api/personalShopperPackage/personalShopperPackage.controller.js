@@ -85,12 +85,12 @@ exports.create = async (req, res, next) => {
       referenceNumber = `P${customerId}${parseInt((Math.random() * (1000 - 100)) + 100, 10)}`;
 
       personalShopper = Package
-        .find({ where: { reference_code: referenceNumber } });
+        .find({ where: { invoice_code: referenceNumber } });
     }
 
     while (personalShopper.length);
 
-    personalShopperPackage.reference_code = referenceNumber;
+    personalShopperPackage.invoice_code = referenceNumber;
     personalShopperPackage.total_quantity = req.body.quantity;
     totalPrice = req.body.quantity * price;
     personalShopperPackage.price_amount = totalPrice;
@@ -330,11 +330,11 @@ exports.updateOrder = async (req, res) => {
 
           // eslint-disable-next-line no-await-in-loop
           personalShopper = await Package
-            .find({ where: { reference_code: referenceNumber } });
+            .find({ where: { invoice_code: referenceNumber } });
         }
 
         while (personalShopper);
-        personalShopperPackage.reference_code = referenceNumber;
+        personalShopperPackage.invoice_code = referenceNumber;
         personalShopperPackage.total_quantity = req.body.quantity;
         totalPrice = req.body.quantity * price;
         personalShopperPackage.price_amount = totalPrice;
@@ -556,7 +556,7 @@ exports.submitPayment = async (req, res) => {
         where: {
           customer_id: customerId,
           status: 'pending',
-          reference_code: req.body.hdn_reference_code,
+          invoice_code: req.body.hdn_reference_code,
           payment_status: 'pending',
           package_type: PERSONAL_SHOPPER,
         },
@@ -647,11 +647,11 @@ exports.orderPayChange = async (req, res) => {
   let personalShopperItemCartCount = '';
   let shopperPackages = '';
   let shopPackage = '';
-  if (req.body.reference_code) {
+  if (req.body.invoice_code) {
     shopPackage = await Package
       .find({
         where: {
-          reference_code: req.body.reference_code,
+          invoice_code: req.body.invoice_code,
         },
         limit: Number(req.query.limit) || 1,
       });
@@ -670,7 +670,7 @@ exports.orderPayChange = async (req, res) => {
       .find({
         where: {
           customer_id: customerId,
-          reference_code: req.body.reference_code,
+          invoice_code: req.body.invoice_code,
         },
       });
   } else {
@@ -678,7 +678,7 @@ exports.orderPayChange = async (req, res) => {
       .find({
         where: {
           customer_id: customerId,
-          reference_code: req.body.reference_code,
+          invoice_code: req.body.invoice_code,
           package_type: PERSONAL_SHOPPER,
         },
       });
@@ -716,7 +716,7 @@ exports.shopperResponse = async (req, res) => {
       notification.customer_id = customerId;
       notification.action_type = 'shopper';
       notification.action_id = orderId;
-      notification.action_description = `Personal Shopper request submitted - Packages#  ${personalShop.reference_code}`;
+      notification.action_description = `Personal Shopper request submitted - Packages#  ${personalShop.invoice_code}`;
       // eslint-disable-next-line no-await-in-loop
       await Notification
         .create(notification);
@@ -800,13 +800,13 @@ exports.shopperHistory = async (req, res, next) => {
 
 exports.cancelShopper = async (req, res) => {
   const customerId = req.user.id;
-  const referenceNumber = req.body.reference_code;
+  const referenceNumber = req.body.invoice_code;
 
   const personalShopPackage = await Package
     .find({
       where: {
         customer_id: customerId,
-        reference_code: referenceNumber,
+        invoice_code: referenceNumber,
         package_type: PERSONAL_SHOPPER,
       },
       limit: Number(req.query.limit) || 1,
@@ -844,7 +844,7 @@ exports.cancelShopper = async (req, res) => {
 
 exports.orderInvoice = async (req, res) => {
   const customerId = req.user.id;
-  const referenceNumber = req.body.reference_code;
+  const referenceNumber = req.body.invoice_code;
 
   const customer = await User
     .find({ where: { id: customerId } });
@@ -853,7 +853,7 @@ exports.orderInvoice = async (req, res) => {
     .findAll({
       where: {
         customer_id: customerId,
-        reference_code: referenceNumber,
+        invoice_code: referenceNumber,
         package_type: PERSONAL_SHOPPER,
       },
       limit: Number(req.query.limit) || 1,

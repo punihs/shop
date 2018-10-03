@@ -156,7 +156,7 @@ describe('POST /api/personalShopperPackages/submitOptions', () => {
 });
 
 describe('POST /api/personalShopperPackages/submitPayment', () => {
-  before(async () => Package.update({ status: 'pending', payment_status: 'pending' }, { where: { reference_code: 'P646873' } }));
+  before(async () => Package.update({ status: 'pending', payment_status: 'pending' }, { where: { invoice_code: 'P646873' } }));
 
   it('submit Payment personalShopperPackages', (done) => {
     request(app)
@@ -179,7 +179,7 @@ describe('GET /api/personalShopperPackages/orderPayChange', () => {
     request(app)
       .get('/api/personalShopperPackages/orderPayChange')
       .send({
-        reference_code: 'P646873',
+        invoice_code: 'P646873',
       })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
@@ -247,7 +247,7 @@ describe('GET /api/personalShopperPackages/orderInvoice', () => {
     request(app)
       .get('/api/personalShopperPackages/orderInvoice')
       .send({
-        reference_code: 'P646873',
+        invoice_code: 'P646873',
       })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
@@ -364,7 +364,7 @@ describe('GET /api/personalShopperPackages/cancelShopper', () => {
     request(app)
       .get('/api/personalShopperPackages/cancelShopper')
       .send({
-        reference_code: 'P646873',
+        invoice_code: 'P646873',
       })
       .set('Authorization', `Bearer ${auth.access_token}`)
       .expect('Content-Type', /json/)
