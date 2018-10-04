@@ -71,9 +71,9 @@ class AddAddressController {
     const data = Object.assign({ }, this.data);
     if (!form) return (this.submitting = false);
 
-    const id = this.addressId;
+    const editId = this.type === 'add' ? '' : this.addressId;
     return this
-      .$http[this.type === 'edit' ? 'put' : 'post'](`/addresses${id ? `/${id}` : ''}`, data)
+      .$http[this.type === 'edit' ? 'put' : 'post'](`/addresses${editId}`, data)
       .then(({ data: { id: aid } }) => {
         this.submitting = false;
         this

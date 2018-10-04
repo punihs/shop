@@ -162,18 +162,11 @@ div.m-t-xl.no-margin
                     | Phone / Mobile Number
                     span.text-danger *
               .row
-          .col-md-4.col-sm-5.col-xs-12
-                  label.col-xs-12.input-group
-                    input.form.form-control(
-                      ng-intl-tel-input
-                      type='text'
-                      name='phone'
-                      placeholder='eg. +919844717202'
-                      ng-model='$ctrl.data.phone'
-                      autofocus
-                      required
-                    )
-                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.phone.$dirty && newAddressForm.phone.$invalid') Please enter Phone/Mobile Number
+                .col-md-4.col-sm-5.col-xs-12
+                  input#tel.form-control(type='text', name='phone', ng-model='$ctrl.data.phone', ng-intl-tel-input='')
+                  span.help-block(ng-show='newAddressForm.phone.$pristine && newAddressForm.phone.$untouched') Please type a telephone number
+                  span.help-block(ng-show='newAddressForm.phone.$invalid && newAddressForm.phone.$touched') Invalid :(
+                  span.help-block(ng-show='newAddressForm.phone.$valid && newAddressForm.phone.$touched') Valid :)
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
               .row
                 .col-xs-12: ul.nav
@@ -186,18 +179,18 @@ div.m-t-xl.no-margin
                     .hide
                     | Set this as Default Shipping Address.
 
-            .row
-              .col-md-8
-                .text-danger.font-bold(ng-if="newAddressForm.salary.$error.max") Please check Current CTC
-                .text-danger.font-bold(ng-if="newAddressForm.file.$error.maxSize") Please select file less than 5MB
-              .col-md-6.col-xs-12
-                h4(ng-bind="$ctrl.error.message" style="color:red;")
-                button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting")
-                  span.fa.fa-forward.m-r-sm
-                  span.text-white(ng-if='!$ctrl.submitting') Save New Shipping Address
-                  span(ng-if='$ctrl.submitting')
-                    i.fa.fa-spin.fa-circle-o-notch
-                    span.text-white &nbsp;&nbsp;Submitting...
+              .row
+                .col-md-8
+                  .text-danger.font-bold(ng-if="newAddressForm.salary.$error.max") Please check Current CTC
+                  .text-danger.font-bold(ng-if="newAddressForm.file.$error.maxSize") Please select file less than 5MB
+                .col-md-6.col-xs-12
+                  h4(ng-bind="$ctrl.error.message" style="color:red;")
+                  button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting")
+                    span.fa.fa-forward.m-r-sm
+                    span.text-white(ng-if='!$ctrl.submitting') Save New Shipping Address
+                    span(ng-if='$ctrl.submitting')
+                      i.fa.fa-spin.fa-circle-o-notch
+                      span.text-white &nbsp;&nbsp;Submitting...
 
     .clearfix
 

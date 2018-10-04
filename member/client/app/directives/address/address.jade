@@ -183,11 +183,7 @@ div.m-t-xl.no-margin
                   .hide
                   | Set this as Default Shipping Address.
 
-
             .row
-              .col-md-8
-                .text-danger.font-bold(ng-if="newAddressForm.salary.$error.max") Please check Current CTC
-                .text-danger.font-bold(ng-if="newAddressForm.file.$error.maxSize") Please select file less than 5MB
               .col-md-6.col-xs-12
                 h4(ng-bind="$ctrl.error.message" style="color:red;")
                 button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting")
