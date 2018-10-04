@@ -67,7 +67,7 @@ describe('ops GET /api/packages', () => {
 });
 
 
-describe('POST /api/packages', () => {
+describe('1 POST /api/packages', () => {
   it('save packages', (done) => {
     request(app)
       .post('/api/packages')

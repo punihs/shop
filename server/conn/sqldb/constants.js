@@ -24,6 +24,7 @@ const constants = {};
 [
   { name: 'country' },
   { name: 'group' },
+  { name: 'user' },
   { name: 'app', keyMap: false },
   { name: 'package_item_category' },
   { name: 'payment_gateway', keyMap: false },

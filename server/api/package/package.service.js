@@ -162,14 +162,45 @@ exports.index = ({ query, params, user: actingUser }) => {
             where: { state_id: stateIds },
           }],
         }),
+      Package
+        .findAll({
+          attributes: ['id', 'package_state_id'],
+          where: {
+            customer_id: actingUser.id,
+          },
+        })
+        .then(packages => PackageState
+          .findAll({
+            attributes: [[sequelize.fn('count', 1), 'cnt'], 'state_id'],
+            where: {
+              id: packages.map(x => x.package_state_id),
+            },
+            group: ['state_id'],
+            raw: true,
+          }))
+        .then((packageStateGroups) => {
+          // converting array to map for speedup
+          const stateIdCountMap = kvmap(packageStateGroups, 'state_id', 'cnt');
+
+          // grouping based on buckets
+          const facets = Object
+            .keys(BUCKET)
+            .reduce((nxt, buck) => {
+              const aggregate = BUCKET[buck]
+                .reduce((nxty, stateId) => (nxty + (stateIdCountMap[stateId] || 0)), 0);
+
+              return { ...nxt, [buck]: aggregate };
+            }, {});
+          return facets;
+        }),
+
     ])
-    .then(([packages, total, facets, queueCount]) => ({
+    .then(([packages, total, facets, queueCount, newfacets]) => ({
       packages: packages
         .map(x => (x.PackageState ? ({ ...x.toJSON(), state_id: x.PackageState.state_id }) : x)),
       total,
-      facets: {
-        state_id: kvmap(facets, 'state_id', 'cnt'),
-      },
+      facets: newfacets,
+      oldfacets: facets,
       queueCount,
     }));
 };
