@@ -151,7 +151,7 @@ class CustomerNavController {
       });
   }
 
-  getLink(customerId, type) { console.log(type)
+  getLink(customerId, type) {
     const map = {
       customers: 'customer.view',
       shipments: 'customer.shipments.index',

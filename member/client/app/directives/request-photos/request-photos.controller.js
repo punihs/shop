@@ -186,7 +186,7 @@ class RequestPhotosController {
         } else if (!this.standardRequested && this.advancedRequested && (this.slidesAdvanced)) {
           this.displayAdvanced();
         } else {
-          return this.$window.location.reload(true);
+          this.$window.location.reload(true);
         }
         this.standardPhotoRequestSubmit = false;
       })
@@ -225,10 +225,8 @@ class RequestPhotosController {
         } else if (!this.standardRequested && this.advancedRequested && (this.slidesAdvanced)) {
           this.displayAdvanced();
         } else {
-          return this.$window.location.reload(true);
+          this.$window.location.reload(true);
         }
-
-
         this.advancedPhotoRequestSubmit = false;
       })
       .catch((err) => {

@@ -1,8 +1,7 @@
 class PackageLockerController {
   constructor(
     $http, Page, $uibModal, $stateParams, CONFIG, $location, $state, Session, S3,
-    toaster, moment, URLS, AddComment,
-  ) {
+    toaster, moment, URLS, AddComment) {
     this.$http = $http;
     this.Page = Page;
     this.S3 = S3;

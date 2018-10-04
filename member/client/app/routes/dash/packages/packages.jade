@@ -16,7 +16,7 @@ div.no-margin
               strong(ng-bind='$ctrl.user.virtual_address_code')
               // todo - change href
             a.btn.btn-primary(
-              ng-href='{{$ctrl.URLS.PREFIX}}myaccount.{{$ctrl.URLS.DOMAIN}}/incoming-order'
+              ui-sref='orders.new'
             ) Alert Shoppre about my incoming Packages (Optional)
           // todo required to display offers
           //.order-top-left.col-md-6.no-padding-right

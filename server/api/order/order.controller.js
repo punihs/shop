@@ -3,7 +3,7 @@ const _ = require('lodash');
 const Ajv = require('ajv');
 
 const { orderCreate } = require('./order.schema');
-const { Package, Store } = require('./../../conn/sqldb');
+const { Package, Store, db } = require('./../../conn/sqldb');
 const minio = require('./../../conn/minio');
 const {
   GROUPS: {
@@ -12,6 +12,7 @@ const {
   PACKAGE_TYPES: {
     INCOMING,
   },
+  PACKAGE_STATE_IDS: { PACKAGE_ITEMS_UPLOAD_PENDING },
 } = require('./../../config/constants');
 
 const log = debug('s.order.controller');
@@ -77,19 +78,30 @@ exports.create = async (req, res, next) => {
         log('create', ajv.errorsText());
         return res.status(400).json({ message: ajv.errorsText() });
       }
+
       const order = req.body;
       order.created_by = req.user.id;
+      order.package_type = INCOMING;
+      order.invoice = order.object;
 
-      if (req.query.type === 'INCOMING') {
-        order.package_type = INCOMING;
-      }
       if (!IS_OPS) order.customer_id = req.user.id;
 
-      const pkg = await Package.create(order);
-      const { id } = pkg;
-      return res
-        .status(201)
-        .json({ id });
+      return Package
+        .create(order)
+        .then((pkg) => {
+          Package.updateState({
+            db,
+            lastStateId: null,
+            nextStateId: PACKAGE_ITEMS_UPLOAD_PENDING,
+            pkg: { ...pkg.toJSON(), ...pkg.id },
+            actingUser: req.user,
+          });
+
+          const { id } = pkg;
+          return res
+            .status(201)
+            .json({ id });
+        });
     }
     default: return next();
   }
