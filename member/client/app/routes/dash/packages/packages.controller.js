@@ -143,6 +143,9 @@ class PackageLockerController {
       this
         .toaster
         .pop('sucess', 'Package values Updated');
+      this.packages.splice(this.packages.findIndex(l => (l.id === id)), 1);
+      this.facets.ACTION_REQUIRED -= 1;
+      this.facets.IN_REVIEW += 1;
     } else {
       this
         .toaster
@@ -179,15 +182,6 @@ class PackageLockerController {
     }
   }
 
-  // getQueueCount() {
-  //   this
-  //     .$http
-  //     .get('/shipments/count?bucket=IN_QUEUE')
-  //     .then(({ data: count }) => {
-  //       this.queueCount = count;
-  //     });
-  // }
-
   copied() {
     this.toaster.pop('info', 'Copied');
   }
@@ -199,7 +193,7 @@ class PackageLockerController {
         this.master.push(...packages);
         this.queueCount = queueCount;
         this.packages = angular.copy(this.master);
-        this.facets.push(facets);
+        this.facets = facets;
       });
   }
 

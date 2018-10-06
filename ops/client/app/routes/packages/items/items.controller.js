@@ -91,6 +91,7 @@ class PackageItemsController {
         this.advancedData.object_thumb = imagePathAdvanced;
       }
     }
+    this.file = 'Nothing';
   }
 
   reset(newPackageItemForm) {
@@ -134,11 +135,11 @@ class PackageItemsController {
         .toaster
         .pop('error', 'Category not found');
     }
+
     if (this.submitting) return null;
 
     this.submitting = true;
     this.clickUpload = true;
-
     const form = this.validateForm(newPackageItemForm);
 
     const data = Object.assign({ }, this.data);
@@ -146,7 +147,7 @@ class PackageItemsController {
     const { packageItemId, id: packageId } = this.$stateParams;
     data.packageId = packageId;
 
-    if (this.advancedData.object) {
+    if (this.advancedData.object_advanced) {
       data.object_advanced = this.advancedData.object;
     }
 

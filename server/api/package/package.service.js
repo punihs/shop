@@ -31,6 +31,7 @@ exports.index = ({ query, params, user: actingUser }) => {
   const { bucket } = query;
   const options = {
     where: {},
+    order: [['created_at', 'desc']],
     offset: Number(query.offset) || 0,
     limit: Number(query.limit) || 20,
   };

@@ -19,7 +19,6 @@ module.exports = DataTypes => ({
   state: DataTypes.STRING,
   city: DataTypes.STRING,
   pincode: DataTypes.STRING,
-  phone_code: DataTypes.STRING,
   phone: DataTypes.STRING,
   is_default: DataTypes.BOOLEAN,
   email: {

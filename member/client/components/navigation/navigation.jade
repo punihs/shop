@@ -14,23 +14,19 @@ ul.nav.navbar-nav.navbar-left
     a.hv(ng-href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/schedule-pickup?uid={{App.userinfo.id}}')
       i.fa.fa-list-alt.text-white
       span SCHEDULE PICKUP
-
   li.nav-menu-item(ui-sref-active='active' uib-dropdown)
-    a.hv(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/shipping/history')
-      i.fa.fa-list-alt.text-white
-      span SHIPMENT HISTORY
+      a.hv.custom-dropdown-toggle(uib-dropdown-toggle ng-class='{"hv": $ctrl.getPositionState()}')
+        i.fa.fa-list-alt.text-white
+        span MORE
+        b.text-xs.utf8-caret ▼
+      ul.dropdown-menu.navbar-dropdown-menu(uib-dropdown-menu='', role='menu', aria-labelledby='single-button' style='height: auto !important;top: auto !important;left: auto !important;')
+        li(role='menu')
+          a.hv(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/shipping/history') SHIPMENT HISTORY
+        li(role='menu')
+          a.hv(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/favorite-stores') MY FAVOURITE STORE
+        li(role='menu')
+          a.hv(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/loyalty-points') MY LOYALTY POINTS
+        li(role='menu')
+          a.hv(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/refer-a-friend') REFER A FRIEND
 
-  li.nav-menu-item(ui-sref-active='active' uib-dropdown)
-    a.hv(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/favorite-stores')
-      i.fa.fa-list-alt.text-white
-      span MY FAVOURITE STORE
 
-  li.nav-menu-item(ui-sref-active='active' uib-dropdown)
-    a.hv(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/loyalty-points')
-      i.fa.fa-list-alt.text-white
-      span MY LOYALTY POINTS
-
-  li.nav-menu-item(ui-sref-active='active' uib-dropdown)
-    a.hv(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/refer-a-friend')
-      i.fa.fa-list-alt.text-white
-      span REFER A FRIEND
