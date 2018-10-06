@@ -3,7 +3,8 @@ const _ = require('lodash');
 const Ajv = require('ajv');
 
 const { orderCreate } = require('./order.schema');
-const { Package, Store, db } = require('./../../conn/sqldb');
+const { Package, Store } = require('./../../conn/sqldb');
+const db = require('../../conn/sqldb');
 const minio = require('./../../conn/minio');
 const {
   GROUPS: {
@@ -79,25 +80,25 @@ exports.create = async (req, res, next) => {
         return res.status(400).json({ message: ajv.errorsText() });
       }
 
-      const order = req.body;
-      order.created_by = req.user.id;
-      order.package_type = INCOMING;
-      order.invoice = order.object;
+      const pkg = req.body;
+      pkg.created_by = req.user.id;
+      pkg.package_type = INCOMING;
+      pkg.invoice = pkg.object;
 
-      if (!IS_OPS) order.customer_id = req.user.id;
+      if (!IS_OPS) pkg.customer_id = req.user.id;
 
       return Package
-        .create(order)
-        .then((pkg) => {
+        .create(pkg)
+        .then((pack) => {
           Package.updateState({
             db,
             lastStateId: null,
             nextStateId: PACKAGE_ITEMS_UPLOAD_PENDING,
-            pkg: { ...pkg.toJSON(), ...pkg.id },
+            pkg: { ...pack.toJSON(), ...pack.id },
             actingUser: req.user,
           });
 
-          const { id } = pkg;
+          const { id } = pack;
           return res
             .status(201)
             .json({ id });

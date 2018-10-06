@@ -1,5 +1,5 @@
 
-class OrderNewController {
+class PackageNewController {
   constructor(
     Page, $state, $stateParams, $http, toaster, Upload, S3, URLS
   ) {
@@ -9,16 +9,18 @@ class OrderNewController {
     this.$stateParams = $stateParams;
     this.toaster = toaster;
     this.Number = Number;
-    this.submitting = false;
     this.Upload = Upload;
-    this.data = {};
     this.S3 = S3;
     this.URLS = URLS;
-    this.$onInit();
+
+    return this.onInit();
   }
 
-  $onInit() {
-    this.Page.setTitle('Create Order');
+  onInit() {
+    this.submitting = false;
+    this.showSuccess = false;
+    this.data = {};
+    this.Page.setTitle('Alert Shoppre about Incoming Package');
 
     this.Stores = {
       select: ($item) => {
@@ -67,25 +69,27 @@ class OrderNewController {
         form[f].$setDirty();
       }
     });
+
     return form.$valid;
   }
 
-  reset(newOrderForm) {
+  reset(newPackageForm) {
     this.data = {};
-    newOrderForm.$setPristine();
+    newPackageForm.$setPristine();
     this.Stores.model = '';
     this.focus('store_id');
   }
 
-  create(newOrderForm) {
+  create(newPackageForm) {
     if (this.submitting) return null;
     this.submitting = true;
     this.clickUpload = true;
 
-    const form = this.validateForm(newOrderForm);
+    const form = this.validateForm(newPackageForm);
 
     const data = Object.assign({ }, this.data);
     if (!form) return (this.submitting = false);
+
     return this.$http
       .post('/orders', data)
       .then(() => {
@@ -93,8 +97,9 @@ class OrderNewController {
         this
           .toaster
           .pop('success', 'Order Created Successfully.', '');
-
-        this.reset(newOrderForm);
+        this.showSuccess = true;
+        this.reset(newPackageForm);
+        this.showSuccess = true;
       })
       .catch((err) => {
         this.submitting = false;
@@ -104,4 +109,4 @@ class OrderNewController {
 }
 
 angular.module('uiGenApp')
-  .controller('OrderNewController', OrderNewController);
+  .controller('PackageNewController', PackageNewController);

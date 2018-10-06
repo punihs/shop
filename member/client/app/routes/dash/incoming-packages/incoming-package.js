@@ -1,16 +1,15 @@
 angular.module('uiGenApp')
   .config(($stateProvider) => {
     $stateProvider
-    // /jobs/:jobId/orders/new
-      .state('orders', {
+      .state('incoming-packages', {
         abstract: true,
         url: '/orders',
         template: '<div ui-view></div>',
       })
-      .state('orders.new', {
+      .state('incoming-packages.new', {
         url: '/new',
-        templateUrl: 'app/routes/dash/orders/new/new.html',
-        controller: 'OrderNewController',
+        templateUrl: 'app/routes/dash/incoming-packages/new/new.html',
+        controller: 'PackageNewController',
         controllerAs: '$ctrl',
       });
   });
