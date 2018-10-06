@@ -16,7 +16,7 @@ class PackageLockerController {
     this.URLS = URLS;
     this.AddComment = AddComment;
 
-    this.$onInit();
+    return this.$onInit();
   }
 
   $onInit() {
@@ -33,7 +33,7 @@ class PackageLockerController {
     this.actionRequiredCount = '';
     this.allCount = '';
     this.queueCount = '';
-
+    this.facets = [];
     this.data = {};
 
     this.selectPackage = [];
@@ -43,7 +43,6 @@ class PackageLockerController {
     this.PACKAGE_STATE_IDS = this.CONFIG.PACKAGE_STATE_IDS;
     this.buckets = this.CONFIG.PACKAGE_STATES.map(x => x.replace(/ /g, '_').toUpperCase());
 
-
     // Set default bucket to ALL
     if (!this.buckets.includes(this.$stateParams.bucket)) {
       this.$state.go('dash.packages', { bucket: this.buckets[0] });
@@ -52,6 +51,7 @@ class PackageLockerController {
     this.Page.setTitle(`${this.$stateParams.bucket} Packages`);
 
     this.packages = []; // collection of packages
+    this.master = []; // Master is for reset values to original values
     this.ui = { lazyLoad: true, loading: false }; // ui states
     this.xquery = '';
     this.params = {
@@ -195,9 +195,11 @@ class PackageLockerController {
   getList() {
     this.$http
       .get('/packages', { params: { bucket: this.$stateParams.bucket } })
-      .then(({ data: { packages, queueCount } }) => {
-        this.packages.push(...packages);
+      .then(({ data: { packages, facets, queueCount } }) => {
+        this.master.push(...packages);
         this.queueCount = queueCount;
+        this.packages = angular.copy(this.master);
+        this.facets.push(facets);
       });
   }
 
@@ -214,19 +216,8 @@ class PackageLockerController {
   }
 
   resetValues() {
+    this.packages = angular.copy(this.master);
   }
-
-  // getCount() {
-  //   this.$http
-  //     .get('/packages/646/count')
-  //     .then(({ data: { readyToShipCount, inReviewCount, actionRequiredCount, allCount } }) => {
-  //       console.log(readyToShipCount, inReviewCount, actionRequiredCount, allCount);
-  //       this.readyToShipCount = readyToShipCount;
-  //       this.inReviewCount = inReviewCount;
-  //       this.actionRequiredCount = actionRequiredCount;
-  //       this.allCount = allCount;
-  //     });
-  // }
 
   openOffer(offer, id, value) {
     this.$uibModal.open({

@@ -56,7 +56,8 @@ div.directive-header
           popover-placement='bottom'
           popover-append-to-body='true'
         )
-          span Add Package
+          span(ng-if='options.customer.packageCount') View Incoming Packages
+          span(ng-if='!options.customer.packageCount') Add Package
           i.pull-right(ng-bind='options.customer.packageCount' style='line-height:29px;width:30px;height:30px;font-style:normal')
 
 

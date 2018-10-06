@@ -51,6 +51,10 @@ div.no-margin
                   li(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active")
                     a(ui-sref='dash.packages({ bucket: bucket })')
                       span(ng-bind="$ctrl.CONFIG.PACKAGE_STATES[$index]")
+                      span.badge.bg-warning.pull-right.no-margin.m-t-xs(ng-show='$index === 0') {{$ctrl.facets.READY_TO_SEND}}
+                      span.badge.bg-warning.pull-right.no-margin.m-t-xs(ng-show='$index === 1') {{$ctrl.facets.IN_REVIEW}}
+                      span.badge.bg-warning.pull-right.no-margin.m-t-xs(ng-show='$index === 2') {{$ctrl.facets.ACTION_REQUIRED}}
+                      span.badge.bg-warning.pull-right.no-margin.m-t-xs(ng-show='$index === 3') {{$ctrl.facets.ALL}}
           .full-width
             .wrapper-md.ng-scope
               .panel.panel-default
@@ -191,7 +195,7 @@ div.no-margin
                                               span.m-l-xs(ng-bind="specialRequest.price")
                                               p.text-muted.clear.text-ellipsis(ng-bind="specialRequest.description")
                             td(colspan=8 ng-if='$ctrl.$stateParams.bucket==="IN_REVIEW" && $ctrl.MoreOption[$index]')
-                              button.btn.btn-md.btn-info.m-t-xs.m-b-xs(ng-click='$ctrl.uploadPhotos(package)') Photos
+                              button.btn.btn-md.btn-info.m-t-xs.m-b-xs(ng-click='$ctrl.uploadPhotos(package)', ng-show='package.PackageItems.length') Photos
                               table#DataTables_Table_3.table.table-bordered.m-b-none
                                 thead
                                   tr(role='row')
