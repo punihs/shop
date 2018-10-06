@@ -3,7 +3,7 @@ div.no-margin
     .container-fluid
       .col-md-8.m-t-xs
         center
-          h4.subpaybtn(ng-if='$ctrl.queueCount > 0')
+          h4.subpaybtn(ng-show = '$ctrl.isPaymentSubmit')
             | Your shipment is ready.
             // todo - change href
             a.summary-order(ui-sref='dash.shipmentQueue')&nbsp; Submit Your Payment &nbsp;

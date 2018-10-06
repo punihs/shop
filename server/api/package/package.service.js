@@ -163,6 +163,14 @@ exports.index = ({ query, params, user: actingUser }) => {
             where: { state_id: stateIds },
           }],
         }),
+      Shipment
+        .count({
+          where: { customer_id: actingUser.id },
+          include: [{
+            model: ShipmentState,
+            where: { state_id: [PAYMENT_REQUESTED, PAYMENT_INITIATED] },
+          }],
+        }),
       Package
         .findAll({
           attributes: ['id', 'package_state_id'],
@@ -196,12 +204,13 @@ exports.index = ({ query, params, user: actingUser }) => {
         }),
 
     ])
-    .then(([packages, total, facets, queueCount, newfacets]) => ({
+    .then(([packages, total, facets, queueCount, paymentCount, newfacets]) => ({
       packages: packages
         .map(x => (x.PackageState ? ({ ...x.toJSON(), state_id: x.PackageState.state_id }) : x)),
       total,
       facets: newfacets,
       oldfacets: facets,
       queueCount,
+      paymentCount,
     }));
 };

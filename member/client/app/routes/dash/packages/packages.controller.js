@@ -20,6 +20,7 @@ class PackageLockerController {
   }
 
   $onInit() {
+    this.isPaymentSubmit = false;
     this.MoreOption = false;
     this.allChecked = false;
 
@@ -189,9 +190,10 @@ class PackageLockerController {
   getList() {
     this.$http
       .get('/packages', { params: { bucket: this.$stateParams.bucket } })
-      .then(({ data: { packages, facets, queueCount } }) => {
+      .then(({ data: { packages, facets, queueCount, paymentCount  } }) => {
         this.master.push(...packages);
         this.queueCount = queueCount;
+        this.isPaymentSubmit = !!paymentCount;
         this.packages = angular.copy(this.master);
         this.facets = facets;
       });
