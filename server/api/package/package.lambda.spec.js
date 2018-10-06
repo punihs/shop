@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('./../../../lambda/app');
-const { CREATED } = require('./emails/state-change/state-change.data');
+const { PACKAGE_ITEMS_UPLOAD_PENDING } = require('./emails/state-change/state-change.data');
 
 describe('POST /api/packages/notifications', () => {
   it('send emails', (done) => {
@@ -11,7 +11,7 @@ describe('POST /api/packages/notifications', () => {
         after: 1,
         object: 'package',
         event: 'stateChange',
-        ...CREATED,
+        ...PACKAGE_ITEMS_UPLOAD_PENDING,
       })
       .expect(200)
       .then(() => {

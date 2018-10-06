@@ -18,14 +18,10 @@ class LogoutController {
   }
 
   cleanup() {
-    const { QNOTIFY_SERVER, ACCOUNTS } = this.URLS;
+    const { ACCOUNTS } = this.URLS;
     const { location } = this.$window;
-    return Promise.resolve(this.notify
-      ? this.$http
-      .delete(`${QNOTIFY_SERVER}/subscriptions/${this.notify.subscription.subscription_id}`)
-      : true)
-      .then(() => (location.href = `${ACCOUNTS}/logout`))
-      .catch(() => (location.href = `${ACCOUNTS}/logout`));
+    OneSignal.setSubscription(false);
+    return  setTimeout(() => (location.href = `${ACCOUNTS}/logout`), 2000)
   }
 }
 

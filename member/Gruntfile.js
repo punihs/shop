@@ -348,10 +348,9 @@ module.exports = function (grunt) {
             'assets/images/{,*/}*.{webp}',
             'assets/fonts/**/*',
             'index.html',
-            'extension.html',
             'manifest.json',
-            'sw.js',
-            'manifest.json',
+            'OneSignalSDKUpdaterWorker.js',
+            'OneSignalSDKWorker.js',
           ],
         }, {
           expand: true,

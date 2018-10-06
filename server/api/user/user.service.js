@@ -15,8 +15,8 @@ exports.signup = async ({ body }) => {
   const {
     id,
     salutation,
-    first_name,
-    last_name,
+    first_name: firstName,
+    last_name: lastName,
     email: e,
     mobile,
     password,
@@ -44,8 +44,8 @@ exports.signup = async ({ body }) => {
           .create({
             id,
             salutation,
-            first_name,
-            last_name,
+            first_name: firstName,
+            last_name: lastName,
             password,
             email,
             mobile,

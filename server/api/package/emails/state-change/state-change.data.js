@@ -16,6 +16,7 @@ const packageItems = [{
 }];
 
 const OPS = {
+  id: 1,
   first_name: 'Saneel',
   last_name: 'E S',
   email: 'support@shoppre.com',
@@ -30,10 +31,11 @@ const pkg = {
 };
 
 const customer = {
+  id: 237,
   name: 'Mr. Abhinav Mishra',
   first_name: 'Abhinav',
   virtual_address_code: 'SHPR12-182',
-  email: 'support@shoppre.com',
+  email: 'tech.shoppre@shoppre.com',
 };
 
 const ENV = viewConfig;

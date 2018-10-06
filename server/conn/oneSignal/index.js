@@ -22,7 +22,7 @@ module.exports = {
     // - Set the Target users
     notification.setFilters([{
       field: 'tag',
-      key: 'userId',
+      key: 'key',
       relation: 'exists',
       value: userId,
     }]);

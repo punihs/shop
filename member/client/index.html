@@ -46,6 +46,23 @@
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
   </script>
   <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+  <script>
+    if(localStorage.userinfo) {
+      var OneSignal = window.OneSignal || [];
+      OneSignal.push(function() {
+        OneSignal.sendTag("key",JSON.parse(localStorage.userinfo).id);
+        OneSignal.init({
+          appId: "b7792635-0674-4e60-bef9-66d31b818a92",
+          allowLocalhostAsSecureOrigin: true,
+          autoRegister: true,
+          notifyButton: {
+            enable: false,
+          },
+        });
+      });
+    }
+  </script>
 </head>
 <body>
 <!--[if lt IE 7]>
@@ -141,7 +158,6 @@
 <script src="bower_components/angular-base64-upload/src/angular-base64-upload.js"></script>
 <script src="bower_components/angular-ui-carousel/dist/ui-carousel.js"></script>
 <script src="bower_components/intl-tel-input/build/js/intlTelInput.js"></script>
-<script src="bower_components/intl-tel-input/build/js/utils.js"></script>
 <script src="bower_components/ng-intl-tel-input/dist/ng-intl-tel-input.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
@@ -200,6 +216,8 @@
 <script src="app/routes/dash/createShipmentRequest/shipment-request.controller.js"></script>
 <script src="app/routes/dash/createShipmentRequest/shipment-request.js"></script>
 <script src="app/routes/dash/dash.js"></script>
+<script src="app/routes/dash/orders/new/new.controller.js"></script>
+<script src="app/routes/dash/orders/orders.js"></script>
 <script src="app/routes/dash/incoming-packages/incoming-package.js"></script>
 <script src="app/routes/dash/incoming-packages/new/new.controller.js"></script>
 <script src="app/routes/dash/packages/packages.controller.js"></script>
@@ -229,7 +247,6 @@
 <script src="components/navigation/navigation.directive.js"></script>
 <script src="components/shipment-nav/shipment-nav.directive.js"></script>
 <script src="components/socket/socket.service.js"></script>
-<script src="components/web-notify/web-notify.config.js"></script>
 <!-- endinjector -->
 <!-- endbuild -->
 </body>

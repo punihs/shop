@@ -2,12 +2,13 @@
   "name": "Shoppre Membership",
   "short_name": "member_shoppre",
   "icons": [{
-    "src": "assets/images/quezx-logo.cbe564e6.svg",
-    "sizes": "192x192",
-    "type": "image/svg+xml"
-  }],
-  "start_url": "/",
-  "display": "standalone",
-  "gcm_sender_id": "569763436942",
-  "gcm_user_visible_only": true
+    "src": "assets/images/quezx-logo.cbe564e6.svg",	
+    "sizes": "192x192",	
+    "type": "image/svg+xml"	
+  }],	
+  "start_url": "/",	
+  "display": "standalone",	
+  "gcm_sender_id": "482941778795",
+  "gcm_sender_id_comment": "Do not change the GCM Sender ID",
+  "gcm_user_visible_only": true	
 }

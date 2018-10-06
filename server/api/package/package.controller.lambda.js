@@ -37,12 +37,12 @@ exports.notifications = (req, res) => {
           actingUser,
         }),
       }],
-      // onesignal: [{
-      //   userId: customer.id,
-      //   msg: {
-      //     title: `Your shipment arrived from ${store}`,
-      //   },
-      // }],
+      oneSignal: [{
+        userId: customer.id,
+        msg: {
+          title: `Your shipment arrived from ${pkg.Store.name}`,
+        },
+      }],
     });
   res.status(200).end();
 };

@@ -36,7 +36,7 @@
     "ssh-copy-id": "ssh-copy-id pulse@staging-app1.shoppre.com",
     "tunnel": "ssh -R 5557:localhost:5557 pulse@staging-app1.shoppre.com",
     "clear-bucket": "node server/conn/minio/remove-bucket",
-    "onsignal:ui": "http-server -S",
+    "onsignal:ui": "cd test-onesignal && http-server -S -p 5003",
     "validate": "npm ls",
     "s3sync": "ssh pulse@10.0.0.200 'cd  /home/pulse/SFS/s3.ap-south-1.amazonaws.test/cdn && git pull'"
   },
