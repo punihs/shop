@@ -9,7 +9,7 @@ const db = require('../../conn/sqldb');
 
 const {
   Package, Order, PackageItem, User, Follower, LoyaltyHistory, PhotoRequest,
-  Locker, Store, PackageState, Country, PackageCharge, LoyaltyPoint,
+  Locker, Store, PackageState, Country, PackageCharge, LoyaltyPoint, Notification,
 } = db;
 
 const {
@@ -360,7 +360,7 @@ exports.invoice = async (req, res, next) => {
   const { id } = req.params;
   const { object } = req.body;
   const pkg = await Package
-    .findById(id, { attributes: ['id'] });
+    .findById(id, { attributes: ['id', 'customer_id'] });
   if (pkg) {
     Package
       .update({ invoice: object }, { where: { id } });
@@ -371,6 +371,13 @@ exports.invoice = async (req, res, next) => {
         actingUser: req.user,
         nextStateId: IN_REVIEW,
         comments: 'Cusotmer Uploaded Invoice',
+      });
+    Notification
+      .create({
+        customer_id: pkg.customer_id,
+        action_type: 'Package',
+        action_id: pkg.id,
+        action_description: `Customer Uploaded Package Invoice - Order#  ${pkg.id}`,
       })
       .then(() => res.json({ message: 'Invoice updated succesfully' }))
       .catch(next);

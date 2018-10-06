@@ -1,7 +1,7 @@
 const debug = require('debug');
 const moment = require('moment');
 const {
-  PackageItem, Package, PackageItemCategory,
+  PackageItem, Package, PackageItemCategory, Notification,
 } = require('../../conn/sqldb');
 const db = require('../../conn/sqldb');
 const minio = require('../../conn/minio');
@@ -93,7 +93,7 @@ exports.update = async (req, res) => {
 exports.values = async (req, res) => {
   const { id } = req.params;
   const pkg = await Package
-    .findById(id, { attributes: ['id'] });
+    .findById(id, { attributes: ['id', 'customer_id'] });
   req.body.forEach((x) => {
     PackageItem
       .update(
@@ -104,6 +104,13 @@ exports.values = async (req, res) => {
         },
         { where: { id: x.id } },
       );
+    Notification
+      .create({
+        customer_id: pkg.customer_id,
+        action_type: 'Package',
+        action_id: pkg.id,
+        action_description: `Customer submitted Package Item Values - Order#  ${pkg.id}`,
+      });
   });
   Package
     .updateState({
