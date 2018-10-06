@@ -2,15 +2,114 @@ div.m-t-xl.no-margin
   .hbox
     .wrapper-md.bg-white-only.pull-left
       h1.m-l-md.font-thin.h3.no-margin
-        span ACCOUNT DOCUMENTS
+        strong ACCOUNT DOCUMENTS
       hr
       p.no-margin Please upload any documents requested by Shoppre to validate your account (For example, your photo identification, etc.).
         | Please do not upload invoices here. Seller invoices can be uploaded to your packages in My Locker.
-        input.btn.btn-addon.btn-success.ng-click-active.m-t-md.m-b-md(type='file', multiple='')
+      form.form.form-validation.form-horizontal.wrapper-md(
+      name="documentForm"
+      novalidate
+      ng-submit='$ctrl.create(documentForm)'
+      autocomplete='off'
+      )
+        .row
+          .col-md-4.col-sm-2.col-xs-12
+            label.col-xs-12.input-group
+              | Document Description
+              span.text-danger *
+              input.form.form-control(
+              type='text'
+              name='description'
+              placeholder='eg. for feedback'
+              ng-model='$ctrl.data.description'
+              required
+              )
+              span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && documentForm.description.$dirty && documentForm.description.$invalid') Please enter document description
+        .row
+          .col-md-4.col-sm-5.col-xs-5.no-padder-right
+            .hbox
+              label.col
+                | Document File
+                span.text-danger *
+                .btn-file-wrapper(ng-class="documentForm.file.$touched && documentForm.file.$invalid ? 'input-file-danger':''" drag-drop-toggle)
+                  .btn-file
+                    span(ng-show="(documentForm.file.$touched && documentForm.file.$valid) || $ctrl.data.file")
+                      span.text-muted(ng-bind="$ctrl.file.name")
+                    p.no-margin(ng-hide="(documentForm.file.$touched && documentForm.file.$valid) || $ctrl.data.file")
+                    span.file-support(ng-hide="(documentForm.file.$touched && documentForm.file.$valid) || $ctrl.data.file") Supported Formats: .png, .jpeg, .jpg, .bmp'
+                    input.form-control(
+                    accept="image/*"
+                    type="file"
+                    ng-model='$ctrl.file'
+                    name='file'
+                    ngf-pattern="'.png,.jpeg,.jpg,.bmp'"
+                    ngf-max-size="15MB"
+                    ngf-max-files="1"
+                    ngf-select='$ctrl.uploadingDocument=true;'
+                    onclick="this.value = null"
+                    ng-image-compress
+                    image="myAwesomeImage"
+                    ctrl="$ctrl"
+                    upload-fn="$ctrl.startUpload"
+                    resize-max-height="1000"
+                    resize-max-width="1000"
+                    resize-quality="0.7"
+                    resize-type="image/jpg"
+                    required
+                    )
+                span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && !$ctrl.data.file && !documentForm.file.$invalid') Please choose file
+                span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && documentForm.file.$invalid') Please choose supported file
+                span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && documentForm.file.$dirty && documentForm.file.$invalid') Please choose supported file
+          .col-xs-1.wrapper-sm.m-t-xs
+            .clearfix
+            img.pull-left.m-r(
+            ng-if='$ctrl.data.object'
+            ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.object}}'
+            style='height: 30px;width: 30px;border-radius: 50%;'
+            )
         p.text-warning.no-margin Is this secure?
-        p.no-margin
-          | Yes, all uploaded documents are held in our secure server, and are only available for viewing when you are signed in to your account.
-        .clearfix
-        button.btn.btn-info.pull-right.m-b-md(type='submit') Save Chanegs
+          p.no-margin
+            | Yes, all uploaded documents are held in our secure server, and are only available for viewing when you are signed in to your account.
+          .clearfix
+        .row
+          .col-md-6.col-xs-12
+            h4(ng-bind="$ctrl.error.message" style="color:red;")
+            button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting")
+              span.fa.fa-forward.m-r-sm
+              span.text-white(ng-if='!$ctrl.submitting') Save Changes
+              span(ng-if='$ctrl.submitting')
+                i.fa.fa-spin.fa-circle-o-notch
+                span.text-white &nbsp;&nbsp;Submitting...
+        br
+      h1.m-l-md.font-thin.h3.no-margin
+        strong SUBMITTED DOCUMENTS LIST
+      hr
+      .row
+        .col-md-12.no-padder-right
+          table.table.m-b-none
+            thead
+              tr
+                th.col-xs-1 ID
+                th.col-xs-2 DATE
+                th.col-xs-3 DESCRIPTION
+                th.col-xs-5 DOCUMENT
+                th.col-xs-1 DELETE
 
+          .col-xs-12(style='padding: 10px;')
+            .col-xs-12(ng-show='$ctrl.userDocuments.length === 0')
+              td(colspan="5")
+                h2.text-center.text-muted No Document Details
+
+            .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='userDocument in $ctrl.userDocuments' )
+              .col-xs-1.wrapper-sm.m-t-xs(ng-bind='userDocument.id')
+              .col-xs-2.wrapper-sm.m-t-xs {{ userDocument.created_at | date:'MMM d, y' }} IST {{ userDocument.created_at | date:'h:mm a' }}
+              .col-xs-3.wrapper-sm.m-t-xs(ng-bind='userDocument.description')
+              .col-xs-5.wrapper-sm.m-t-xs
+                .clearfix
+                img.pull-left.m-r(
+                ng-if='userDocument.object'
+                ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + userDocument.object}}'
+                style='height: 100px;width: 200px;'
+                )
+              .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-trash.text-danger(ng-click="$ctrl.deleteDocument(userDocument.id, $index)")
 

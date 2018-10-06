@@ -4,7 +4,7 @@ const logger = require('./../../components/logger');
 
 exports.index = (req, res, next) => {
   const options = {
-    attributes: ['id', 'customer_id'],
+    attributes: ['id', 'customer_id', 'object', 'created_at', 'description'],
     limit: Number(req.query.limit) || 20,
   };
   if (req.query.customer_id) options.where = { customer_id: req.user.id };
