@@ -22,16 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       mobile: {
         type: DataTypes.VIRTUAL,
         get() {
-          let phoneCode = '';
-          let phone = '';
-
-          phoneCode = this.getDataValue('phone_code') ?
-            `+${this.getDataValue('phone_code')}` : '';
-
-          phone = this.getDataValue('phone') ?
-            `+${this.getDataValue('phone')}` : '';
-
-          return `${phoneCode}${phone}`;
+          return this.getDataValue('phone');
         },
       },
     }, properties(DataTypes)), {

@@ -13,7 +13,7 @@ exports.index = (req, res, next) => {
       ? req.query.fl.split(',')
       : [
         'id', 'customer_id', 'country_id', 'first_name', 'last_name', 'salutation',
-        'line1', 'line2', 'state', 'city', 'pincode', 'phone_code', 'phone', 'is_default',
+        'line1', 'line2', 'state', 'city', 'pincode', 'phone', 'is_default',
       ],
     where: {},
     include: [{
@@ -40,7 +40,7 @@ exports.show = (req, res, next) => {
       ? req.query.fl.split(',')
       : [
         'id', 'customer_id', 'country_id', 'first_name', 'last_name', 'salutation',
-        'line1', 'line2', 'state', 'city', 'pincode', 'phone_code', 'phone', 'is_default',
+        'line1', 'line2', 'state', 'city', 'pincode', 'phone', 'is_default',
       ],
     where: { },
     include: [{

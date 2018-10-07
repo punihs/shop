@@ -33,7 +33,12 @@ angular
     'ngIntlTelInput',
   ])
   .config(($urlRouterProvider, $locationProvider, ngIntlTelInputProvider) => {
-    ngIntlTelInputProvider.set({ initialCountry: 'us' });
+    ngIntlTelInputProvider.set({
+      initialCountry: 'us',
+      autoHideDialCode: true,
+      nationalMode: false,
+      utilsScript: '/bower_components/intl-tel-input/build/js/utils.js',
+    });
 
     $urlRouterProvider.when('/', '/locker');
     $urlRouterProvider.otherwise(($injector) => $injector.get('$state').go('access.404'));

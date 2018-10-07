@@ -13,15 +13,6 @@ module.exports = (sequelize, DataTypes) => {
         return `${salutation} ${firstName} ${lastName}`;
       },
     },
-    mobile: {
-      type: DataTypes.VIRTUAL,
-      get() {
-        const phoneCode = this.getDataValue('phone_code');
-        const phone = this.getDataValue('phone');
-
-        return `+${phoneCode}-${phone}`;
-      },
-    },
   }, {
     tableName: 'addresses',
     timestamps: false,

@@ -10,11 +10,15 @@ class AddressListController {
 
   $onInit() {
     this.Page.setTitle('Address Book');
+
+    this.ui = { lazyLoad: true, loading: false }; // ui states
+    this.addresses = [];
+
     this
       .$http
       .get('/addresses')
-      .then(({ data }) => {
-        this.addresses = data;
+      .then(({ data: addresses }) => {
+        this.addresses.push(...addresses);
         this.socket.syncUpdates('address', this.addresses);
       });
   }

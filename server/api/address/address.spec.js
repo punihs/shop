@@ -44,8 +44,7 @@ describe('error POST /api/addresses ', () => {
         state: 'Maharashtra',
         country_id: '99',
         pincode: '400079',
-        phone_code: '91',
-        phone: '9844717202',
+        phone: '919844717202',
         is_default: true,
         customer_id: 646,
       })
@@ -72,7 +71,6 @@ describe('POST /api/addresses', () => {
         state: 'Maharashtra',
         country_id: '99',
         pincode: '400079',
-        phone_code: '91',
         phone: '9844717202',
         is_default: '1',
         customer_id: 646,

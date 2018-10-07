@@ -39,10 +39,8 @@ module.exports = DataTypes => ({
   },
   profile_photo_url: DataTypes.STRING,
 
-  phone_code: DataTypes.STRING,
   phone: DataTypes.STRING,
 
-  secondary_phone_code: DataTypes.STRING,
   secondary_phone: DataTypes.STRING,
 
   wallet_balance_amount: {
