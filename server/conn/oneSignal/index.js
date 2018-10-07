@@ -1,33 +1,35 @@
-const OneSignal = require('onesignal-node');
-const bluebird = require('bluebird');
-
-const connection = new OneSignal.Client({
-  userAuthKey: 'MjlmNmM0MTEtZjAzNS00OTE5LTg2MDctZWRiZjU0MGZlYjkw',
-  app: {
-    appAuthKey: 'NDA5OTgwMGEtMmFhMS00NzY5LWIxZTEtYjA0ODMzYmE3ZjM5',
-    appId: 'b7792635-0674-4e60-bef9-66d31b818a92',
-  },
-});
-bluebird.promisifyAll(Object.getPrototypeOf(connection));
+const rp = require('request-promise');
 
 module.exports = {
-  connection,
   send({ userId, msg }) {
-    const notification = new OneSignal.Notification({
-      contents: {
-        en: msg.title,
+    const options = {
+      method: 'POST',
+      headers: {
+        Authorization: 'Basic NDA5OTgwMGEtMmFhMS00NzY5LWIxZTEtYjA0ODMzYmE3ZjM5',
       },
-    });
 
-    // - Set the Target users
-    notification.setFilters([{
-      field: 'tag',
-      key: 'key',
-      relation: 'exists',
-      value: userId,
-    }]);
+      uri: 'https://onesignal.com/api/v1/notifications',
+      json: true,
+      body: {
+        // https://documentation.onesignal.com/v5.0/reference#section-appearance
+        app_id: 'b7792635-0674-4e60-bef9-66d31b818a92',
+        headings: { en: 'shoppre.com' },
+        contents: { en: msg.title },
+        filters: [
+          {
+            field: 'tag', key: 'key', relation: 'exists', value: userId,
+          },
+        ],
+        data: {
+          abc: '123',
+        },
+        // url which opens when user clicks on notification
+        url: 'http://shoppre.com',
+      },
+    };
 
-    // - send this notification to All Users except Inactive ones
-    return connection.sendNotificationAsync(notification);
+
+    return rp.post(options).then(response => response)
+      .catch(err => err);
   },
 };

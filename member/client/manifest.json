@@ -1,4 +1,5 @@
 {
+
   "name": "Shoppre Membership",
   "short_name": "member_shoppre",
   "icons": [{
@@ -12,3 +13,4 @@
   "gcm_sender_id_comment": "Do not change the GCM Sender ID",
   "gcm_user_visible_only": true	
 }
+
