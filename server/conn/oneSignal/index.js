@@ -1,7 +1,7 @@
 const rp = require('request-promise');
 
 module.exports = {
-  send({ userId, msg }) {
+  send({ userId, msg, target }) {
     const options = {
       method: 'POST',
       headers: {
@@ -24,7 +24,7 @@ module.exports = {
           abc: '123',
         },
         // url which opens when user clicks on notification
-        url: 'http://shoppre.com',
+        url: target.url,
       },
     };
 

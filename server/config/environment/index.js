@@ -17,6 +17,8 @@ const config = {
     URLS_API: `${env.PREFIX}api.${env.DOMAIN}`,
     URLS_MEMBER: `${env.PREFIX}member.${env.DOMAIN}`,
     URLS_WWW: `${env.PREFIX}www.${env.DOMAIN}`,
+    PREFIX: `${env.PREFIX}`,
+    DOMAIN: `${env.DOMAIN}`,
     auth: {
       google: {
         scope: 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.email',

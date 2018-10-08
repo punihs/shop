@@ -1,4 +1,5 @@
 const event = require('../../emails/lib/events');
+const { PREFIX, DOMAIN } = require('../../config/environment');
 
 exports.notifications = (req, res) => {
   const {
@@ -41,6 +42,9 @@ exports.notifications = (req, res) => {
         userId: customer.id,
         msg: {
           title: `Your shipment arrived from ${pkg.Store.name}`,
+        },
+        target: {
+          url: `${PREFIX}member.${DOMAIN}/locker?bucket=IN_REVIEW`,
         },
       }],
     });
