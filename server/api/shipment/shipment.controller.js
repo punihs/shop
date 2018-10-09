@@ -140,7 +140,7 @@ exports.show = async (req, res, next) => {
         as: 'Customer',
         attributes: [
           'id', 'name', 'first_name', 'last_name', 'salutation', 'virtual_address_code',
-          'mobile', 'phone', 'phone_code',
+          'phone',
         ],
         include: [{
           model: Country,
@@ -155,7 +155,7 @@ exports.show = async (req, res, next) => {
       }, {
         model: Address,
         attributes: [
-          'id', 'city', 'name', 'salutation', 'first_name', 'last_name', 'mobile', 'phone_code',
+          'id', 'city', 'name', 'salutation', 'first_name', 'last_name',
           'phone',
         ],
       }],

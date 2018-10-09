@@ -18,7 +18,7 @@ const {
 exports.index = (req, res, next) => {
   const options = {
     attributes: [
-      'id', 'name', 'email', 'mobile', 'salutation', 'first_name', 'last_name', 'phone',
+      'id', 'name', 'email', 'salutation', 'first_name', 'last_name', 'phone',
       'country_id', 'referred_by', 'created_at', 'virtual_address_code',
       'profile_photo_url', 'updated_at', 'email_verify',
     ],
@@ -157,7 +157,7 @@ exports.show = (req, res, next) => {
             ? req.query.fl.split(',')
             : [
               'id', 'name', 'first_name', 'last_name', 'salutation', 'virtual_address_code',
-              'phone', 'email', 'phone', 'email_verify', 'wallet_balance_amount',
+              'phone', 'email', 'email_verify', 'wallet_balance_amount',
             ],
           include: [{
             model: Country,

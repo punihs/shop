@@ -75,7 +75,7 @@ exports.show = async (req, res, next) => {
         as: 'Customer',
         attributes: [
           'id', 'name', 'first_name', 'last_name', 'salutation', 'virtual_address_code',
-          'mobile', 'email', 'phone', 'phone_code',
+          'email', 'phone',
         ],
         include: [{
           model: Country,

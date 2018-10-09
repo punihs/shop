@@ -24,10 +24,10 @@
   span &nbsp;&nbsp;
   a(ng-href='mailto:{{$ctrl.customer.email}}')
     span.m-l-xs(ng-bind='$ctrl.customer.email')
-.pull-left.wrapper-sm.no-padder-top(title='Mobile/Phone' ng-if='$ctrl.customer.mobile')
+.pull-left.wrapper-sm.no-padder-top(title='Mobile/Phone' ng-if='$ctrl.customer.phone')
   i.fa.fa-phone
-  a(ng-href='tel:{{$ctrl.customer.mobile}}')
-    span.m-l-xs(ng-bind='$ctrl.customer.mobile')
+  a(ng-href='tel:{{$ctrl.customer.phone}}')
+    span.m-l-xs(ng-bind='$ctrl.customer.phone')
 uib-progressbar.w-full.bg-light.dker.progress-striped.active.m-t-xl(
   ng-init='max=20;elapsed=$ctrl.moment().diff($ctrl.moment($ctrl.customer.Locker.allocated_at), "days")'
   ng-if='$ctrl.customer.Locker'
