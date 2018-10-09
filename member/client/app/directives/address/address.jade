@@ -149,29 +149,13 @@ div.m-t-xl.no-margin
                   | Phone / Mobile Number
                   span.text-danger *
             .row
-              .col-md-2.col-sm-2.col-xs-12
-                label.col-xs-12.input-group
-                  select.form.form-control.right-pad-0(
-                  ng-model='$ctrl.data.phone_code'
-                  name='phone_code'
-                  required
-                  )
-                    option(value='') Code
-                    option(value='91') +91
-                    option(value='1') +1
-                  span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.phone_code.$dirty && newAddressForm.phone_code.$invalid') Please select Country Phone Code
-              .col-md-4.col-sm-5.col-xs-12.no-padder
-                label.col-xs-12.input-group
-                  input.form.form-control(
-                  type='text'
-                  name='phone'
-                  placeholder='eg. 9844717202'
-                  ng-model='$ctrl.data.phone'
-                  autofocus
-                  required
-                  )
-                  span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.phone.$dirty && newAddressForm.phone.$invalid') Please enter Phone/Mobile Number
+              .col-md-4.col-sm-5.col-xs-12
+                input#tel.form-control(type='text', name='phone', ng-model='$ctrl.data.phone', ng-intl-tel-input='')
+                span.help-block(ng-show='newAddressForm.phone.$pristine && newAddressForm.phone.$untouched') Please type a telephone number
+                span.help-block(ng-show='newAddressForm.phone.$invalid && newAddressForm.phone.$touched') Invalid :(
+                span.help-block(ng-show='newAddressForm.phone.$valid && newAddressForm.phone.$touched') Valid :)
             .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+
             .row
               .col-xs-12: ul.nav
                 li: label.i-checks.i-checks-sm
