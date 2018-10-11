@@ -28,7 +28,6 @@ angular.module('uiGenApp', [
   'ngCookies',
   'btford.socket-io',
 ])
-
   .config(($urlRouterProvider, $locationProvider) => {
     $urlRouterProvider.when('/', '/packages');
     $urlRouterProvider.otherwise(($injector) => $injector.get('$state').go('access.404'));
@@ -36,5 +35,5 @@ angular.module('uiGenApp', [
     $locationProvider.html5Mode(true);
   })
   .constant('RENAMED_STATES', {
-  })
+  });
 
