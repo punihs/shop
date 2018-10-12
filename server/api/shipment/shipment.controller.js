@@ -622,7 +622,7 @@ exports.create = async (req, res, next) => {
     log('addressid', req.body.address_id);
     const address = await Address.find({
       attributes: ['salutation', 'first_name', 'last_name', 'line1', 'line2', 'state',
-        'city', 'pincode', 'phone_code', 'phone', 'email', 'country_id'],
+        'city', 'pincode', 'phone', 'email', 'country_id'],
       where: { id: req.body.address_id },
       include: [{
         model: Country,
@@ -1634,22 +1634,23 @@ exports.confirmShipment = async (req, res) => {
       promoStatus = 'promo_expired';
     }
   }
-  const option = {
-    attributes: ['points'],
-    where: { customer_id: customerId },
-  };
-  const points = await LoyaltyPoint
-    .find(option);
-
-  let rewards = 0;
-  let loyaltyPoints = points.points;
-  while (loyaltyPoints >= 1000) {
-    rewards += 100;
-    loyaltyPoints -= 1000;
-  }
-
-  payment.loyalty = rewards;
-  payment.amount -= payment.loyalty;
+  // - todo Loyalty required for next iteration.
+  // const option = {
+  //   attributes: ['points'],
+  //   where: { customer_id: customerId },
+  // };
+  // const points = await LoyaltyPoint
+  //   .find(option);
+  //
+  // let rewards = 0;
+  // let loyaltyPoints = points.points;
+  // while (loyaltyPoints >= 1000) {
+  //   rewards += 100;
+  //   loyaltyPoints -= 1000;
+  // }
+  //
+  // payment.loyalty = rewards;
+  payment.amount -= payment.loyalty || 0;
   switch (Number(req.query.payment_gateway_id)) {
     case CARD:
       payment.payment_gateway_id = CARD;
