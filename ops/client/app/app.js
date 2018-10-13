@@ -27,6 +27,7 @@ angular.module('uiGenApp', [
   'ngSanitize',
   'ngCookies',
   'btford.socket-io',
+  'fps.hotkeys',
   'ngIntlTelInput',
 ])
 
