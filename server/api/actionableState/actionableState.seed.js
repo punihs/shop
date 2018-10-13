@@ -93,6 +93,10 @@ const packageStates = ({
   child_id: 1,
 }, {
   state_id: 42,
+  group_id: MEMBER,
+  child_id: 59,
+}, {
+  state_id: 59,
   group_id: OPS,
   child_id: 1,
 }, {

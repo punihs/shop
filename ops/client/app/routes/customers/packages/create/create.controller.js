@@ -16,6 +16,7 @@ class PackageCreateController {
   }
 
   $onInit() {
+    this.customer.create = this.$stateParams.create;
     this.focus('store_id');
     this.EDIT = !!this.$stateParams.packageId && this.$stateParams.packageId !== '';
     this.quickMode = this.EDIT ? false : (this.Session.read('quickMode') || true);

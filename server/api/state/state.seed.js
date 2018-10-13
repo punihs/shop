@@ -126,6 +126,10 @@ const packageStates = [{
   id: 58,
   name: 'Payment Confirmation on Hold',
   config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 59,
+  name: 'Incoming Package',
+  config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
 }].map(x => ({ ...x, type: PACKAGE }));
 
 const shipmentStates = [{

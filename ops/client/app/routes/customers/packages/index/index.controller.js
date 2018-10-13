@@ -29,8 +29,8 @@ class CustomersPackagesIndexController {
 
   $onInit() {
     this.buckets = this.QCONFIG.PACKAGE_STATES;
-
     this.customer = this.customer || {};
+    this.customer.create = this.$stateParams.create;
     this.Page.setTitle(`${this.customer.name ? `${this.customer.name} - ` : ''} ${
       this.$stateParams.bucket ? this.$stateParams.bucket : ''} Packages`); // set page title
 

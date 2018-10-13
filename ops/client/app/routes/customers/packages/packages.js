@@ -8,7 +8,7 @@ angular.module('uiGenApp')
         template: '<div ui-view></div>',
       })
       .state('customer.packages.index', {
-        url: '?bucket&sid&uid',
+        url: '?bucket&sid&uid&create',
         templateUrl: 'app/routes/customers/packages/index/index.html',
         controller: 'CustomersPackagesIndexController',
         controllerAs: '$ctrl',
@@ -19,7 +19,7 @@ angular.module('uiGenApp')
         },
       })
       .state('customer.packages.create', {
-        url: '/create',
+        url: '/create?create',
         templateUrl: 'app/routes/customers/packages/create/create.html',
         controller: 'PackageCreateController',
         controllerAs: '$ctrl',

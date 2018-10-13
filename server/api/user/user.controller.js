@@ -11,7 +11,7 @@ const log = debug('s.user.controller');
 
 const {
   STATE_TYPES,
-  PACKAGE_STATE_IDS: { PACKAGE_ITEMS_UPLOAD_PENDING },
+  PACKAGE_STATE_IDS: { INCOMING_PACKAGE },
   PACKAGE_TYPES: { INCOMING },
 } = require('../../config/constants');
 
@@ -171,7 +171,7 @@ exports.show = (req, res, next) => {
         .count({
           include: [{
             model: PackageState,
-            where: { state_id: PACKAGE_ITEMS_UPLOAD_PENDING },
+            where: { state_id: INCOMING_PACKAGE },
           }],
           where: {
             customer_id: req.params.id,

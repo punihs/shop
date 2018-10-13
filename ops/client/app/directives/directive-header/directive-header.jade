@@ -48,17 +48,27 @@ div.directive-header
         popover-append-to-body='true'
         )
           span  Add Package Items
-      li.m-r-xs.pull-right(ng-if='buttons.create')
+      li.m-r-xs.pull-right(ng-if='!options.customer.create && options.customer.packageCount')
         a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
-          ui-sref='customer.packages.create({ customer_id: options.customer.id })'
-          uib-popover="for {{options.customer.virtual_address_code}} - {{options.customer.name}}"
+          ui-sref='customer.packages.index({ customer_id: options.customer.id, bucket: "TASKS", create: true })'
+          uib-popover="for {{options.customer.virtual_address_code}} - {{options.customer}}"
           popover-trigger="'mouseenter'"
           popover-placement='bottom'
           popover-append-to-body='true'
         )
-          span(ng-if='options.customer.packageCount') View Incoming Packages
-          span(ng-if='!options.customer.packageCount') Add Package
+          span View Incoming Packages
           i.pull-right(ng-bind='options.customer.packageCount' style='line-height:29px;width:30px;height:30px;font-style:normal')
+
+      li.m-r-xs.pull-right(ng-if='options.customer.create || !options.customer.packageCount')
+        a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
+        ui-sref='customer.packages.create({ customer_id: options.customer.id, create: false })'
+        uib-popover="for {{options.customer.virtual_address_code}} - {{options.customer.name}}"
+        popover-trigger="'mouseenter'"
+        popover-placement='bottom'
+        popover-append-to-body='true'
+        )
+          span Add Package
+          //i.pull-right(ng-bind='options.customer.packageCount' style='line-height:29px;width:30px;height:30px;font-style:normal')
 
 
 

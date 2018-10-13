@@ -13,7 +13,7 @@ const {
   PACKAGE_TYPES: {
     INCOMING,
   },
-  PACKAGE_STATE_IDS: { PACKAGE_ITEMS_UPLOAD_PENDING },
+  PACKAGE_STATE_IDS: { INCOMING_PACKAGE },
 } = require('./../../config/constants');
 
 const log = debug('s.order.controller');
@@ -93,7 +93,7 @@ exports.create = async (req, res, next) => {
           Package.updateState({
             db,
             lastStateId: null,
-            nextStateId: PACKAGE_ITEMS_UPLOAD_PENDING,
+            nextStateId: INCOMING_PACKAGE,
             pkg: { ...pack.toJSON(), ...pack.id },
             actingUser: req.user,
           });
