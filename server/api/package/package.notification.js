@@ -1,6 +1,7 @@
 const debug = require('debug');
 
 const hookshot = require('../../conn/hookshot');
+const viewConfig = require('../../emails/config');
 
 const log = debug('s-api-package-notification');
 
@@ -22,13 +23,14 @@ exports.stateChange = async ({
     const headers = {};
     hookshot
       .trigger('package:stateChange', {
-        before: lastStateId,
-        after: nextStateId,
         object: 'package',
         event: 'stateChange',
+        before: lastStateId,
+        after: nextStateId,
         actingUser,
         pkg: { ...pkg, Store: store },
         customer,
+        ENV: viewConfig,
       }, headers);
   });
 

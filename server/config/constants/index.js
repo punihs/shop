@@ -147,4 +147,11 @@ const constants = {
   },
 };
 
+constants.PACKAGE_STATE_ID_NAMES_MAP = Object
+  .keys(constants.PACKAGE_STATE_IDS)
+  .reduce((nxt, stateName) => ({
+    ...nxt,
+    [constants.PACKAGE_STATE_IDS[stateName]]: stateName,
+  }), {});
+
 module.exports = constants;

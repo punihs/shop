@@ -26,7 +26,7 @@ exports.cmd = (e) => {
             const email = {
               Source: EMAIL_SOURCE || 'notifications@cp.shoppre.com',
               Destination: {
-                ToAddresses: [EMAIL_TO || 'vismaya@shoppre.com'],
+                ToAddresses: [EMAIL_TO || 'tech.shoppre@gmail.com'],
               },
               Template: TemplateName,
               TemplateData: JSON.stringify(TemplateData),
