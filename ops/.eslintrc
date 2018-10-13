@@ -13,7 +13,8 @@
     "moment": true,
     "io": true,
     "_": true,
-    "String": true
+    "String": true,
+    "confirm": true
   }
 
 }

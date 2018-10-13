@@ -112,55 +112,23 @@ div.m-t-xl.no-margin
                 .col-md-7.col-sm-7.col-xs-12
                   label.col-xs-12.input-group
                     | Primary Phone / Mobile Number
+                    span.text-danger *
               .row
-                .col-md-2.col-sm-2.col-xs-12
-                  label.col-xs-12.input-group
-                    select.form.form-control(
-                    ng-model='$ctrl.data.phone_code'
-                    name='phone_code'
-                    required
-                    )
-                      option(value='') Ph Code
-                      option(value='91') +91
-                      option(value='1') +1
-                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.phone_code.$dirty && profileForm.phone_code.$invalid') Please select Country Phone Code
-                .col-md-4.col-sm-5.col-xs-12.no-padder
-                  label.col-xs-12.input-group
-                    input.form.form-control(
-                    type='text'
-                    name='phone'
-                    placeholder='eg. 9844717202'
-                    ng-model='$ctrl.data.phone'
-                    q-text-maxlength="60"
-                    required
-                    )
-                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.phone.$dirty && profileForm.phone.$invalid') Please enter Phone/Mobile Number
-
+                .col-md-4.col-sm-5.col-xs-12
+                  input#tel.form-control(type='text', name='phone', ng-model='$ctrl.data.phone', ng-intl-tel-input='')
+                  span.help-block(ng-show='profileForm.phone.$pristine && profileForm.phone.$untouched') Please type a telephone number
+                  span.help-block(ng-show='profileForm.phone.$invalid && profileForm.phone.$touched') Invalid :(
+                  span.help-block(ng-show='profileForm.phone.$valid && profileForm.phone.$touched') Valid :)
               .row
                 .col-md-7.col-sm-7.col-xs-12
                   label.col-xs-12.input-group
                     | Secondary Phone / Mobile Number
               .row
-                .col-md-2.col-sm-2.col-xs-12
-                  label.col-xs-12.input-group
-                    select.form.form-control(
-                    ng-model='$ctrl.data.secondary_phone_code'
-                    name='secondary_phone_co de'
-                    )
-                      option(value='') Ph Code
-                      option(value='91') +91
-                      option(value='1') +1
-                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.secondary_phone_code.$dirty && profileForm.secondary_phone_code.$invalid') Please select Country Phone Code
-                .col-md-4.col-sm-5.col-xs-12.no-padder
-                  label.col-xs-12.input-group
-                    input.form.form-control(
-                    type='text'
-                    name='secondary_phone'
-                    placeholder='eg. 9844717202'
-                    ng-model='$ctrl.data.secondary_phone'
-                    q-text-maxlength="60"
-                    )
-                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.secondary_phone.$dirty && profileForm.secondary_phone.$invalid') Please enter Phone/Mobile Number
+                .col-md-4.col-sm-5.col-xs-12
+                  input#tel1.form-control(type='text', name='secondary_phone', ng-model='$ctrl.data.secondary_phone', ng-intl-tel-input='')
+                  span.help-block(ng-show='profileForm.secondary_phone.$pristine && profileForm.secondary_phone.$untouched') Please type a telephone number
+                  span.help-block(ng-show='profileForm.secondary_phone.$invalid && profileForm.secondary_phone.$touched') Invalid :(
+                  span.help-block(ng-show='profileForm.secondary_phone.$valid && profileForm.secondary_phone.$touched') Valid :)
               .row
                 .col-md-7.col-sm-7.col-xs-12
                   h4
@@ -229,7 +197,7 @@ div.m-t-xl.no-margin
               span.block(ng-bind='address.Country.name + " - " + address.pincode')
               span.block(
               ng-if='address.phone'
-              ng-bind='"+" + (address.phone_code ? address.phone_code + "-" : "") + address.phone'
+              ng-bind='address.phone'
               )
               span.label.pull-left.padding-5.m-t-xs.bg-primary(ng-if='address.is_default') DEFAULT SHIPPING ADDRESS
       div
