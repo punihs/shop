@@ -30,7 +30,6 @@ angular.module('uiGenApp', [
   'fps.hotkeys',
   'ngIntlTelInput',
 ])
-
   .config(($urlRouterProvider, $locationProvider, ngIntlTelInputProvider) => {
     ngIntlTelInputProvider.set({
       initialCountry: 'us',
@@ -44,5 +43,5 @@ angular.module('uiGenApp', [
     $locationProvider.html5Mode(true);
   })
   .constant('RENAMED_STATES', {
-  })
+  });
 

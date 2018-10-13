@@ -48,6 +48,7 @@ module.exports = function (config) {
       'client/bower_components/angular-ui-carousel/dist/ui-carousel.js',
       'client/bower_components/intl-tel-input/build/js/intlTelInput.js',
       'client/bower_components/ng-intl-tel-input/dist/ng-intl-tel-input.js',
+      'client/bower_components/angular-hotkeys-light/angular-hotkeys-light.js',
       'client/bower_components/ui-select/dist/select.js',
       // endbower
       'client/app/app.js',

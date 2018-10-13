@@ -31,6 +31,7 @@ angular
     'ngCookies',
     'btford.socket-io',
     'ngIntlTelInput',
+    'fps.hotkeys',
   ])
   .config(($urlRouterProvider, $locationProvider, ngIntlTelInputProvider) => {
     ngIntlTelInputProvider.set({
