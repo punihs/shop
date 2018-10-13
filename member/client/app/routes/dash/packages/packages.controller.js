@@ -151,6 +151,9 @@ class PackageLockerController {
       this
         .toaster
         .pop('sucess', 'Changed Package Values in Ready to Send');
+      this.packages.splice(this.packages.findIndex(l => (l.id === id)), 1);
+      this.facets.READY_TO_SEND -= 1;
+      this.facets.IN_REVIEW += 1;
     }
   }
 
