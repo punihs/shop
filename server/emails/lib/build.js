@@ -17,15 +17,15 @@ exports.cmd = (e) => {
 
   const { Meta, instances } = required(`${emailBaseDir}/${template}/${template}`);
   return Promise.all(instances.map((x) => {
-    const { Template } = x;
+    const { Template, group_id: groupId } = x;
 
     // make entry if doesnt exists in qurac email_templates
     EmailTemplate
       .findOrCreate({
-        where: { name: templateFullName },
+        where: { name: `${templateFullName}_${groupId}` },
         defaults: {
           // Todo: create table: email_template_groups
-          group_id: Template.group_id,
+          group_id: groupId,
           description: Meta.description,
         },
       })

@@ -1,12 +1,14 @@
 const event = require('../../emails/lib/events');
 const { PREFIX, DOMAIN } = require('../../config/environment');
+const { PACKAGE_STATE_ID_NAMES_MAP } = require('../../config/constants');
 
 exports.notifications = (req, res) => {
   const {
-    nextStateId,
+    after: nextStateId,
     actingUser,
     customer,
     pkg,
+    ENV,
   } = req.body;
 
   event
@@ -17,25 +19,14 @@ exports.notifications = (req, res) => {
         Destination: {
           ToAddresses: [customer.email],
         },
-        Template: 'package_state-change',
+        Template: 'package_state-change_2',
         TemplateData: JSON.stringify({
           nextStateId,
+          [PACKAGE_STATE_ID_NAMES_MAP[nextStateId]]: true,
           pkg: { ...pkg },
           customer,
           actingUser,
-        }),
-      }, {
-        Source: `"${actingUser.first_name} from Shoppre" <${actingUser.email}>`,
-        ReplyToAddresses: ['support@shoppre.com'],
-        Destination: {
-          ToAddresses: [customer.email],
-        },
-        Template: 'package_state-change',
-        TemplateData: JSON.stringify({
-          nextStateId,
-          pkg,
-          customer,
-          actingUser,
+          ENV,
         }),
       }],
       oneSignal: [{

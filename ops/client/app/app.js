@@ -27,8 +27,16 @@ angular.module('uiGenApp', [
   'ngSanitize',
   'ngCookies',
   'btford.socket-io',
+  'fps.hotkeys',
+  'ngIntlTelInput',
 ])
-  .config(($urlRouterProvider, $locationProvider) => {
+  .config(($urlRouterProvider, $locationProvider, ngIntlTelInputProvider) => {
+    ngIntlTelInputProvider.set({
+      initialCountry: 'us',
+      autoHideDialCode: true,
+      nationalMode: false,
+      utilsScript: '/bower_components/intl-tel-input/build/js/utils.js',
+    });
     $urlRouterProvider.when('/', '/packages');
     $urlRouterProvider.otherwise(($injector) => $injector.get('$state').go('access.404'));
 
