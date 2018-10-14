@@ -29,15 +29,6 @@ exports.notifications = (req, res) => {
           ENV,
         }),
       }],
-      oneSignal: [{
-        userId: customer.id,
-        msg: {
-          title: `Your shipment arrived from ${pkg.Store.name}`,
-        },
-        target: {
-          url: `${PREFIX}member.${DOMAIN}/locker?bucket=IN_REVIEW`,
-        },
-      }],
     });
   res.status(200).end();
 };
