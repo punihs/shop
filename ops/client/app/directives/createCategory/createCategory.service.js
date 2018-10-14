@@ -19,10 +19,10 @@ class createCategoryController {
       this
         .$http
         .post('/packageItemCategories', { name: this.PackageItemCategory.name })
-        .then(({ data: { name } }) => {
+        .then(({ data: { message } }) => {
           this
             .toaster
-            .pop('success', `${name} Category created successfully`, '');
+            .pop('success', message);
         });
       this.$uibModalInstance.close();
     }

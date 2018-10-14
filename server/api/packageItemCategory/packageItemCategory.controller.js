@@ -17,11 +17,20 @@ exports.index = (req, res, next) => {
 exports.create = async (req, res, next) => {
   const ItemCategory = req.body;
   ItemCategory.created_by = ItemCategory.user_id;
-  PackageItemCategory
-    .create(ItemCategory)
-    .then(itemCategory =>
-      res.json({ package_item_category_id: itemCategory.id, name: itemCategory.name }))
-    .catch(next);
+
+  const packageItemCategory = await PackageItemCategory.find({
+    attributes: ['id'],
+    where: { name: ItemCategory.name },
+  });
+  if (packageItemCategory) {
+    res.status(200).json({ message: `Category  ${ItemCategory.name} is Already exists` });
+  } else {
+    PackageItemCategory
+      .create(ItemCategory)
+      .then(itemCategory =>
+        res.json({ package_item_category_id: itemCategory.id, message: `Category  ${ItemCategory.name} is created` }))
+      .catch(next);
+  }
 };
 
 exports.destroy = async (req, res) => {
