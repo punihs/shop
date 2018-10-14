@@ -90,8 +90,8 @@ class PackageItemsController {
         const imagePathAdvanced = `${this.URLS.CDN}/shoppre/${this.advancedData.object_advanced.replace('.', '-thumb.')}`;
         this.advancedData.object_thumb = imagePathAdvanced;
       }
+      this.file = 'Nothing';
     }
-    this.file = 'Nothing';
   }
 
   reset(newPackageItemForm) {
