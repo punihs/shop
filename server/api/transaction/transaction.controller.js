@@ -220,8 +220,14 @@ exports.paymentFailed = (shipment, customer, paymentGatewayId) => {
     });
 };
 
-exports.updateCardTransaction = async (transaction, url, shipment, customer,
+exports.updateCardTransaction = async (transaction, url, failedURL, shipment, customer,
   isRetryPayment, isWalletUsed, finalAmount, req, res) => {
+  if (req.query.error) {
+    this.paymentFailed(shipment, customer, CARD);
+    const msg = 'Looks like you cancelled the payment. You can try again now or if you ' +
+      'faced any issues in completing the payment, please contact us.';
+    return res.status(200).redirect(`${failedURL}?error='failed'&message=${msg}`);
+  }
   const result = JSON.parse(await verify(req.body));
   await transaction.update({
     status: result.status,
@@ -229,8 +235,7 @@ exports.updateCardTransaction = async (transaction, url, shipment, customer,
   });
   if (!result) {
     const msg = 'Security Error! Please try again after sometime or contact us for support.';
-    return res.status(200)
-      .redirect(`${url}?error=${msg}`);
+    return res.status(200).redirect(`${failedURL}?error='failed'&message=${msg}`);
   }
 
   if (result.vpc_TxnResponseCode === '0') {
@@ -243,7 +248,7 @@ exports.updateCardTransaction = async (transaction, url, shipment, customer,
     const msg = 'Looks like you cancelled the payment. You can try again now or if you faced any issues ' +
       'in completing the payment, please contact us.';
 
-    return res.status(200).redirect(`${url}?error=${msg}`);
+    return res.status(200).redirect(`${failedURL}?error='failed'&message=${msg}`);
   }
 
   this.paymentFailed(shipment, customer, CARD);
@@ -254,13 +259,16 @@ exports.updateCardTransaction = async (transaction, url, shipment, customer,
   const msg = 'Payment transaction failed! You can try again now or if you faced any issues in ' +
     'completing the payment, please contact us.';
 
-  return res
-    .redirect(`${url}?error=${msg}`);
+  return res.status(200).redirect(`${failedURL}?error='failed'&message=${msg}`);
 };
 
-exports.updatePaypalTransaction = async (transaction, url,
+exports.updatePaypalTransaction = async (transaction, url, failedURL,
   shipment, customer, isRetryPayment, isWalletUsed, finalAmount, req, res,
 ) => {
+  if (req.query.status === 'failed') {
+    this.paymentFailed(shipment, customer, PAYPAL);
+    return res.status(200).redirect(`${failedURL}?error='failed'&message=Unexpected error occurred and payment has been failed`);
+  }
   if (shipment && shipment.customer_id !== transaction.customer_id) {
     return res.status(400).json({ error: 'Unauthorized customer transaction!' });
   }
@@ -283,13 +291,15 @@ exports.updatePaypalTransaction = async (transaction, url,
       // ->bcc('support@shoppre.com')->send(new PaymentFailed($shipment));
       // this.paypalFailed(shipment, customer, url);
       this.paymentFailed(shipment, customer, PAYPAL);
-      return res.status(200).redirect(`${url}?message=Unexpected error occurred & payment has been failed`);
+      return res.status(200).redirect(`${failedURL}?message=Unexpected error occurred and payment has been failed`);
     }
   });
 };
 
 exports.complete = async (req, res, next) => {
   const { id } = req.params;
+  console.log('error', JSON.stringify(req.query));
+  console.log('id', id);
   try {
     const transaction = await Transaction.findById(id, {
       attributes: ['id', 'payment_gateway_id', 'object_id', 'customer_id', 'amount'],
@@ -308,6 +318,7 @@ exports.complete = async (req, res, next) => {
       });
 
     const url = `${URLS_MEMBER}/locker/request/${shipment.id}/reponse`;
+    const failedURL = `${URLS_MEMBER}/locker/shipmentQueue`;
 
     const AUTHORISED = shipment && shipment.customer_id === customer.id;
     if (!AUTHORISED) {
@@ -321,13 +332,13 @@ exports.complete = async (req, res, next) => {
     switch (transaction.payment_gateway_id) {
       case CARD:
         return this.updateCardTransaction(
-          transaction, url, shipment, customer,
+          transaction, url, failedURL, shipment, customer,
           isRetryPayment, isWalletUsed, finalAmount, req, res,
         );
 
       case PAYPAL:
         return this.updatePaypalTransaction(
-          transaction, url, shipment, customer,
+          transaction, url, failedURL, shipment, customer,
           isRetryPayment, isWalletUsed, finalAmount, req, res,
         );
 

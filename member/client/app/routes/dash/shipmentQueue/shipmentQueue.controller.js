@@ -1,13 +1,15 @@
 class ShipmentQueue {
-  constructor($http, Page, $uibModal, toaster, moment, CONFIG) {
+  constructor($http, Page, $uibModal, toaster, moment, CONFIG, $location) {
     this.$http = $http;
     this.Page = Page;
     this.$uibModal = $uibModal;
     this.moment = moment;
     this.toaster = toaster;
+    this.$location = $location;
     this.Number = Number;
     this.shipments = [];
     this.CONFIG = CONFIG;
+    this.error = this.$location.search().error;
     this.$onInit();
   }
 
@@ -23,6 +25,10 @@ class ShipmentQueue {
           .toaster
           .pop('error', err.data.message);
       });
+
+    if (this.error) {
+      this.message = this.$location.search().message;
+    }
   }
 
   cancelShipRequest(id, index) {

@@ -1,5 +1,5 @@
 
-exports.orderCreate = {
+exports.packageCreate = {
   title: 'Package',
   type: 'object',
   properties: {

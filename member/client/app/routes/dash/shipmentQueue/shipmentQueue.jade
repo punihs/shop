@@ -11,6 +11,8 @@ div.m-t-xl.no-margin
                 | Kindly Submit your Payment within 7 DAYS after you have received Shoppre's email titled "Submit Payment | Your Shipment is packed and weighed".
               h5
                 | From the 8th day, your parcel will start accumulating Storage fees of INR 100/day which you can view in your Shoppre wallet.
+            .alert.alert-warning(role='alert', ng-show='$ctrl.error')
+              h4.text-danger {{$ctrl.message}}
           .full-width
             .wrapper-md.ng-scope
               .panel.panel-default
@@ -72,17 +74,17 @@ div.m-t-xl.no-margin
                             div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PAYMENT_COMPLETED')
                               span(ng-if="shipment.PaymentGateway.value != 'wire' && shipment.PaymentGateway.value != 'cash' && shipment.payment_status != 'success'")
                                 p
-                                  a.summary-order(href="") Retry Payment
+                                  a.summary-order(ui-sref='dash.shipmentConfirm({order_code: shipment.order_code})') Retry Payment
                               span(ng-if="shipment.payment_status != 'success'")
                                   p Awaiting Payment
                                   p It might take upto 24 Hours to reflect your payments into our account.
                                   p
-                                    a.summary-order(href="") Change Payment Method
+                                    a.summary-order(ui-sref='dash.shipmentConfirm({order_code: shipment.order_code})') Change Payment Method
                               span(ng-if="shipment.payment_status === 'success' && (shipment.PaymentGateway.value === 'card' || shipment.PaymentGateway.value === 'paypal' || shipment.PaymentGateway.value === 'paytm')")
                                   p Awaiting Payment
                                   p It might take upto 24 Hours to reflect your payments into our account.
                             div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PAYMENT_FAILED')
-                              a.summary-order(href="") Retry Payment
+                              a.summary-order(ui-sref='dash.shipmentConfirm({order_code: shipment.order_code})') Retry Payment
                             div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PAYMENT_CONFIRMED')
                               p Payment Received
                               p

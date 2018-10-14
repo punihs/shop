@@ -927,16 +927,18 @@ const calculateDiscountsAndDeductions = async ({ body, customerId, shipment }) =
       where: { id: customerId },
     });
 
-  const loyaltyPoint = await LoyaltyPoint
-    .find({
-      attributes: ['points', 'customer_Id'],
-      where: { customer_Id: customerId },
-    });
+  // todo - required after layalty points added
+  // const loyaltyPoint = await LoyaltyPoint
+  //   .find({
+  //     attributes: ['points', 'customer_Id'],
+  //     where: { customer_Id: customerId },
+  //   });
 
-  const availableLoyaltyPoints = loyaltyPoint.points || 0;
-  const remaining = availableLoyaltyPoints % MINIMUM_POINTS_TO_REDEEM;
-  const usableLoyalty = availableLoyaltyPoints - remaining;
-  const amountAgainstLoyaltyPoints = usableLoyalty * REDEEM_RATE;
+  // const availableLoyaltyPoints = loyaltyPoint.points || 0;
+  // const remaining = availableLoyaltyPoints % MINIMUM_POINTS_TO_REDEEM;
+  // const usableLoyalty = availableLoyaltyPoints - remaining;
+  // const amountAgainstLoyaltyPoints = usableLoyalty * REDEEM_RATE;
+  const amountAgainstLoyaltyPoints = 0;
 
   let amountFromWallet = 0;
   if (body.is_wallet === 'true') {
@@ -1526,7 +1528,7 @@ exports.confirmShipment = async (req, res) => {
     }, {
       model: ShipmentState,
       attributes: ['id', 'shipment_id'],
-      where: { state_id: PAYMENT_REQUESTED },
+      where: { state_id: [PAYMENT_REQUESTED, PAYMENT_FAILED] },
     }],
   };
 
