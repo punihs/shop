@@ -91,7 +91,7 @@ class PackageNewController {
     if (!form) return (this.submitting = false);
 
     return this.$http
-      .post('/orders', data)
+      .post('/packages', data)
       .then(() => {
         this.submitting = false;
         this

@@ -122,6 +122,12 @@ module.exports = (sequelize, DataTypes) => {
               );
             break;
           }
+          case PACKAGE_ITEMS_UPLOAD_PENDING: {
+            log({ PACKAGE_ITEMS_UPLOAD_PENDING });
+            db.Locker
+              .allocation({ customerId: pkg.customer_id });
+            break;
+          }
           default: {
             log('state changed default');
           }

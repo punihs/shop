@@ -1,14 +1,16 @@
 const _ = require('lodash');
 const debug = require('debug');
+const Ajv = require('ajv');
 // const moment = require('moment');
 // const xlsx = require('node-xlsx');
 
 const log = debug('package');
 
 const db = require('../../conn/sqldb');
+const { packageCreate } = require('./package.schema');
 
 const {
-  Package, Order, PackageItem, User, Follower, LoyaltyHistory, PhotoRequest,
+  Package, PackageItem, User, Follower, LoyaltyHistory, PhotoRequest,
   Locker, Store, PackageState, Country, PackageCharge, LoyaltyPoint, Notification,
 } = db;
 
@@ -16,11 +18,11 @@ const {
   LOYALTY_TYPE: { REWARD },
   PACKAGE_STATE_IDS: {
     READY_TO_SHIP,
-    PACKAGE_ITEMS_UPLOAD_PENDING,
+    PACKAGE_ITEMS_UPLOAD_PENDING, INCOMING_PACKAGE,
     STANDARD_PHOTO_REQUEST, DAMAGED,
     ADVANCED_PHOTO_REQUEST, IN_REVIEW, AWAITING_VERIFICATION,
   },
-  GROUPS: { OPS },
+  GROUPS: { OPS, CUSTOMER },
   PACKAGE_TYPES: { INCOMING },
 } = require('../../config/constants');
 const logger = require('../../components/logger');
@@ -113,87 +115,111 @@ exports.create = async (req, res, next) => {
       pkg.created_by = req.user.id;
       pkg.package_type = INCOMING;
 
-      return Locker
-        .allocation({ customerId: pkg.customer_id })
-        .then(locker => Package.create(pkg)
-          .then(({ id }) => {
-            // - Linking package to Incoming Order
-            if (req.body.order_id) {
-              Order.update({
-                package_id: id,
-                ops_edited: req.body.ops_edited,
-              }, {
-                where: {
-                  order_id: req.body.order_id,
-                },
-              });
-            }
+      return Package.create(pkg)
+        .then(({ id }) => {
+          const fs = [req.user.id, req.body.customer_id]
+            .map(followerId => ({ user_id: followerId, object_id: id }));
 
-            const fs = [req.user.id, req.body.customer_id]
-              .map(followerId => ({ user_id: followerId, object_id: id }));
+          Follower
+            .bulkCreate(fs)
+            .catch(err => logger.error('follower creation', req.user, req.body, err));
 
-            Follower
-              .bulkCreate(fs)
-              .catch(err => logger.error('follower creation', req.user, req.body, err));
+          const charges = {};
+          charges.id = id;
+          log('body', JSON.stringify(req.body));
+          if (req.body.is_doc === true) {
+            charges.receive_mail_amount = 0.00;
+          }
 
-            if (req.body.order_id) {
-              Order
-                .update({ package_id: id }, { where: { id: req.body.order_id } })
-                .catch(err => logger.error('order', req.body, err));
-            }
+          PackageCharge
+            .create(charges);
 
-            const charges = {};
-            charges.id = id;
-            log('body', JSON.stringify(req.body));
-            if (req.body.is_doc === 'doc') {
-              charges.receive_mail_amount = 0.00;
-            }
-            PackageCharge
-              .create(charges);
-            if (req.body.is_featured_seller === 1) {
-              const points = 50;
-              const options = {
-                attributes: ['id', 'points', 'total_points'],
-                where: { customer_id: req.body.customer_id },
-              };
-              LoyaltyPoint
-                .find(options)
-                .then((loyaltyPoints) => {
-                  let level = '';
-                  if (loyaltyPoints.total_points < 1000) {
-                    level = 1;
-                  } else if (loyaltyPoints >= 1000 && loyaltyPoints.total < 6000) {
-                    level = 2;
-                  } else if (loyaltyPoints.total >= 6000 && loyaltyPoints.total < 26000) {
-                    level = 3;
-                  } else if (loyaltyPoints.total >= 26000) {
-                    level = 4;
-                  }
-                  loyaltyPoints.update({
-                    level,
-                    points: loyaltyPoints.points + points,
-                    total_points: loyaltyPoints.total_points + points,
-                  });
-
-                  const misclenious = {};
-                  misclenious.customer_id = id;
-                  misclenious.description = 'Featured Seller Shopping Reward';
-                  misclenious.points = points;
-                  misclenious.type = REWARD;
-                  LoyaltyHistory
-                    .create(misclenious);
+          if (req.body.is_featured_seller === 1) {
+            const points = 50;
+            const options = {
+              attributes: ['id', 'points', 'total_points'],
+              where: { customer_id: req.body.customer_id },
+            };
+            LoyaltyPoint
+              .find(options)
+              .then((loyaltyPoints) => {
+                let level = '';
+                if (loyaltyPoints.total_points < 1000) {
+                  level = 1;
+                } else if (loyaltyPoints >= 1000 && loyaltyPoints.total < 6000) {
+                  level = 2;
+                } else if (loyaltyPoints.total >= 6000 && loyaltyPoints.total < 26000) {
+                  level = 3;
+                } else if (loyaltyPoints.total >= 26000) {
+                  level = 4;
+                }
+                loyaltyPoints.update({
+                  level,
+                  points: loyaltyPoints.points + points,
+                  total_points: loyaltyPoints.total_points + points,
                 });
-            }
 
-            return Package.updateState({
-              db,
-              lastStateId: null,
-              nextStateId: PACKAGE_ITEMS_UPLOAD_PENDING,
-              pkg: { ...pkg, id },
-              actingUser: req.user,
-            }).then(() => res.status(201).json({ id, Locker: locker }));
-          }))
+                const misclenious = {};
+                misclenious.customer_id = id;
+                misclenious.description = 'Featured Seller Shopping Reward';
+                misclenious.points = points;
+                misclenious.type = REWARD;
+                LoyaltyHistory
+                  .create(misclenious);
+              });
+          }
+
+          return Package.updateState({
+            db,
+            lastStateId: null,
+            nextStateId: PACKAGE_ITEMS_UPLOAD_PENDING,
+            pkg: { ...pkg, id },
+            actingUser: req.user,
+          }).then(() => res.status(201).json({ id }));
+        })
         .catch(next);
+    }
+    case CUSTOMER: {
+      const IS_OPS = req.user.group_id === OPS;
+      const ajv = new Ajv();
+      ajv.addSchema(packageCreate, 'PackageCreate');
+      const valid = ajv.validate('PackageCreate', req.body);
+
+      if (!valid) {
+        log('create', ajv.errorsText());
+        return res.status(400).json({ message: ajv.errorsText() });
+      }
+
+      const pkg = req.body;
+      pkg.created_by = req.user.id;
+      pkg.package_type = INCOMING;
+      pkg.invoice = pkg.object;
+
+      if (!IS_OPS) pkg.customer_id = req.user.id;
+
+      return Package
+        .create(pkg)
+        .then((pack) => {
+          const { id } = pack;
+          const charges = {};
+          charges.id = id;
+          charges.receive_mail_amount = 0.00;
+
+          db.PackageCharge
+            .create(charges);
+
+          Package.updateState({
+            db,
+            lastStateId: null,
+            nextStateId: INCOMING_PACKAGE,
+            pkg: { ...pack.toJSON(), ...pack.id },
+            actingUser: req.user,
+          });
+
+          return res
+            .status(201)
+            .json({ id });
+        });
     }
     default: return next();
   }

@@ -89,6 +89,31 @@ describe('1 POST /api/packages', () => {
   });
 });
 
+describe('Packages', () => {
+  it('save package by customer', (done) => {
+    request(app)
+      .post('/api/packages')
+      .send({
+        customer_id: 646,
+        store_id: 1,
+        name: 'Chalo Chappals',
+        tracking_number: 'DELHIVERY123',
+        invoice_code: 'INV123',
+        comments: 'Items recieved in good condition',
+        invoice_file: {
+          filename: 'x.txt',
+          base64: 'aGVsbG8=',
+        },
+      })
+      .set('Authorization', `Bearer ${auth.access_token}`)
+      .expect('Content-Type', /json/)
+      .expect(201)
+      .then(() => {
+        done();
+      });
+  });
+});
+
 describe('POST /api/packages update meta', () => {
   it('update packages', (done) => {
     request(app)

@@ -10,7 +10,6 @@ const logger = require('./components/logger');
 const authenticate = require('./components/oauth/authenticate');
 
 // - Routers
-const orders = require('./api/order');
 const search = require('./api/search');
 const packages = require('./api/package');
 const packageComment = require('./api/package/comment');
@@ -95,7 +94,6 @@ module.exports = (app) => {
   app.use('/api/categories', category);
   app.use('/api/feedbacks', feedback);
   app.use('/api/redemptions', authenticate(), redemption);
-  app.use('/api/orders', authenticate(), orders);
   app.use('/api/pricing', pricing);
   app.use('/api/packageItems', authenticate(), packageItem);
   app.use('/api/packageItemCategories', authenticate(), packageItemCategory);
