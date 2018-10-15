@@ -118,7 +118,7 @@ exports.values = async (req, res) => {
       pkg,
       actingUser: req.user,
       nextStateId: IN_REVIEW,
-      comments: 'Cusotmer Confirmed Values',
+      comments: 'Cusotmer Updated/reset the value',
     });
   log('body', req.body);
   return res.json({ message: 'Values updated succesfully' });

@@ -108,7 +108,7 @@ const packageStates = ({
   group_id: OPS,
   child_id: 3,
 }, {
-  state_id: 1,
+  state_id: 2,
   group_id: OPS,
   child_id: 6,
 }, {
@@ -177,6 +177,10 @@ const packageStates = ({
   child_id: 5,
 }, {
   state_id: 2,
+  group_id: OPS,
+  child_id: 54,
+}, {
+  state_id: 4,
   group_id: OPS,
   child_id: 54,
 }, {

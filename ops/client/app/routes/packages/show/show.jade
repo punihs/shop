@@ -149,7 +149,7 @@
                 span(ng-bind='"₹" + charge.chargeAmount')
 
 
-        uib-tab(index='2', heading='Docs').hide
+        uib-tab(index='2', heading='Docs')
           .col-xs-12.wrapper-xs.no-padder-left(ng-if='$ctrl.document.length')
             .w-full.wrapper-xs.inline(ng-repeat='(key, file) in $ctrl.document')
               .m-b-xs.wrapper-xs.clear(ng-class="$last ?'':'b-b'")
@@ -157,7 +157,7 @@
                 a.text-ellipsis.w.m-l-xs.inline(ng-bind='file.filename' ng-href="{{file.link}}" target='_blank')
                 a.pull-right
                   i.fa.fa-close(ng-click='$ctrl.deleteDocument(file.id, key)')
-          .col-xs-12.wrapper-xs
+          .col-xs-12.wrapper-xs.hide
             label.text-center.m-t-sm.w-full.b-a.bg-light.wrapper-xs(for="uploadCV")
               .w-full(for="uploadCV")
                 i.fa.fa-plus.m-r-sm
@@ -178,7 +178,13 @@
               ng-change='$ctrl.uploadFiles($ctrl.documentfile)'
               multiple base-sixty-four-input
               )
-
+          div(ng-show= '$ctrl.data.invoice')
+            h4 Customer invoice
+            a(href ='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.invoice}}' target = '_blank')
+              img.pull-left.m-r(
+              ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.invoice}}'
+              style='height: 80px;width: 80px;'
+              )
   .col
     div
       .hbox
@@ -236,8 +242,6 @@
                         popover-append-to-body='true'
                         )
                           span  Start Adding Items
-
-
                 .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='packageItem in $ctrl.packageItems')
                   .col-xs-2.wrapper-sm.m-t-xs
                     img.pull-left.m-r(
