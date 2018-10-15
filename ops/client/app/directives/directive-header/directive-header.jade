@@ -8,19 +8,11 @@ div.directive-header
     ul.nav.nav-pills.nav-sm.m-t-xs(
       ng-if='page.customerPackages'
     )
-      li: label.i-checks.i-checks-sm.m-t-xs.m-b-none.m-l-md(ng-show="buttons.buckets")
-        input(
-          type='checkbox'
-          ng-click='options.setChecked(options.checkAll)'
-          ng-model='options.checkAll'
-        )
-        i.m-r-none(ng-if='options.packages.length > 0')
       li(ng-repeat='bucket in options.buckets' ui-sref-active="active" ng-show="buttons.buckets")
         a(
           ui-sref='customer.packages.index({ id: options.customer.id, bucket: bucket })'
           ng-bind="bucket"
         )
-
 
   div(style='position: fixed;right: 5px;z-index: 9;margin-top: 7px;')
     ul.nav.nav-pills.nav-sm

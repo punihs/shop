@@ -29,9 +29,18 @@ exports.index = ({ query, params, user: actingUser }) => {
   log({ BUCKET });
   log({ actingUser });
   const { bucket } = query;
+  let orderSort = '';
+  if (query.sort) {
+    const [field, order] = query.sort.split(' ');
+    log({ field, order });
+    if (field && order) {
+      orderSort = [[field, order]];
+    }
+  }
+
   const options = {
     where: {},
-    order: [['created_at', 'desc']],
+    order: orderSort,
     offset: Number(query.offset) || 0,
     limit: Number(query.limit) || 20,
   };

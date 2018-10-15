@@ -35,11 +35,13 @@ div
             .col-xs-12.col-md-8.no-padder
               .tl-content.m-none.padder.w-full.w-auto-xs
                 .m-b-sm
-                  label.i-checks.i-checks-sm.m-b-none
-                    input(type='checkbox' ng-model='package.checked')
+                  label.sm.m-b-none
                     i
-                  a(ui-sref='package.show({ id: package.id})' target="_blank")
-                    strong.text-primary-lt  {{package.Store.name}}
+                    strong.text-primary-lt PackageID - {{package.id}}
+                  .col-xs-4.text-ellipsis
+                    i
+                    a(ui-sref='package.show({ id: package.id})' target="_blank")
+                      strong.text-primary-lt  {{package.Store.name}}
 
                 .panel-body.pull-in.b-t.wrapper-xs
                   .col-xs-4.text-ellipsis

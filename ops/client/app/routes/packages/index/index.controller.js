@@ -22,8 +22,8 @@ class PackagesIndexController {
     this.Session = Session;
     this.sorts = [
       { id: 1, name: 'Default', key: '-' },
-      { id: 1, name: 'Update Date', key: 'updated_on DESC' },
-      { id: 2, name: 'Upload Date', key: 'created_on DESC' },
+      { id: 1, name: 'Update Date', key: 'updated_at DESC' },
+      { id: 2, name: 'Created Date', key: 'created_at DESC' },
     ];
     this.ExcelDownload = ExcelDownload;
     this.states = this.Session.read('states');
@@ -168,11 +168,6 @@ class PackagesIndexController {
 
         // increment offset for next loading of results
         this.params.offset = this.params.offset + this.params.limit;
-
-        if (facets) {
-          this.facets.stateIds = Object.keys(facets.state_id)
-            .filter(key => Number(facets.state_id[key])).map(Number);
-        }
       })
       .catch(() => {
         if (!!refresh) this.packages = [];
