@@ -25,4 +25,29 @@ angular
         return object;
       })
       .catch(() => toaster.pop('error', 'Error while uploading file')),
+
+    uploadAdvanced: (file, advancedData, $ctrl) => $http
+      .get('/minio/presignedUrl', { params: { filename: file.name } })
+      .then(({ data: { object, url } }) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', url, true);
+        xhr.send(file);
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            toaster.pop('success', 'File uploaded');
+            Object.assign(advancedData, { object_advanced: object});
+            Object.assign($ctrl, { uploadingPhotos: false });
+            $http
+              .post('/minio/thumb', { object })
+              .then(() => {
+                const objectThumb = `${URLS.CDN}/shoppre/${advancedData.object_advanced.replace('.', '-thumb.')}`;
+                toaster.pop('success', 'Conversion done');
+                Object.assign(advancedData, { object_advanced_thumb: objectThumb });
+              })
+              .catch(() => toaster.pop('error', 'Error while uploading file'));
+          }
+        };
+        return object;
+      })
+      .catch(() => toaster.pop('error', 'Error while uploading file')),
   }));

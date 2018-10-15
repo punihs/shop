@@ -30,7 +30,7 @@ class PackageItemsController {
   }
 
   startAdvancedUpload(ctrl, advancedFile) {
-    ctrl.S3.upload(advancedFile, ctrl.advancedData, ctrl);
+    ctrl.S3.uploadAdvanced(advancedFile, ctrl.advancedData, ctrl);
   }
 
   $onInit() {
@@ -84,10 +84,10 @@ class PackageItemsController {
 
     if (this.EDIT) {
       this.PackageItemCategory.model = this.data.PackageItemCategory.name;
-      const imagePath = `${this.URLS.CDN}/shoppre/${this.data.object.replace('.', '-thumb.')}`;
+      const imagePath = `${this.URLS.CDN}/shoppre/${this.data.object}`;
       this.data.object_thumb = imagePath;
       if (this.advancedData.object_advanced) {
-        const imagePathAdvanced = `${this.URLS.CDN}/shoppre/${this.advancedData.object_advanced.replace('.', '-thumb.')}`;
+        const imagePathAdvanced = `${this.URLS.CDN}/shoppre/${this.advancedData.object_advanced}`;
         this.advancedData.object_thumb = imagePathAdvanced;
       }
       this.file = 'Nothing';
@@ -148,7 +148,7 @@ class PackageItemsController {
     data.packageId = packageId;
 
     if (this.advancedData.object_advanced) {
-      data.object_advanced = this.advancedData.object;
+      data.object_advanced = this.advancedData.object_advanced;
     }
 
     const allowed = [

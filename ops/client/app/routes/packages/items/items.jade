@@ -74,7 +74,7 @@ div.m-t-xl.no-margin
                 .col-xs-1.wrapper-sm.m-t-xs
                   img.pull-left.m-r(
                   ng-if='$ctrl.data.object'
-                  ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.object.replace(".", "-thumb.")}}'
+                  ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.object}}'
                   style='height: 30px;width: 30px;border-radius: 50%;'
                   )
                 .col-md-5.col-sm-5.col-xs-5.no-padder-right
@@ -113,7 +113,7 @@ div.m-t-xl.no-margin
                 .col-xs-1.wrapper-sm.m-t-xs
                   img.pull-left.m-r(
                   ng-if='$ctrl.advancedData.object_advanced'
-                  ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.advancedData.object_advanced.replace(".", "-thumb.")}}'
+                  ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.advancedData.object_advanced}}'
                   style='height: 30px;width: 30px;border-radius: 50%;'
                   )
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='!$ctrl.EDIT')
@@ -209,11 +209,7 @@ div.m-t-xl.no-margin
                       placeholder='eg. 900'
                       ng-model='$ctrl.data.total_amount'
                       disabled
-                      required
                       )
-                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageItemForm.total_amount.$dirty && newPackageItemForm.total_amount.$invalid') Please enter total_amount
-
-
               .row
                 .col-md-8
                   .text-danger.font-bold(ng-if="newPackageItemForm.file.$error.maxSize") Please select file less than 5MB
