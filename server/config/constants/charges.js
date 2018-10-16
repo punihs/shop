@@ -3,6 +3,7 @@ module.exports = {
     CARD: 2.5,
     PAYPAL: 10,
     PAYTM: 3,
+    WIRE: 0,
   },
   PACKAGE: {
     RETURN: 400,

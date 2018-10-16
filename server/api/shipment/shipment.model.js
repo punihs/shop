@@ -102,57 +102,60 @@ module.exports = (sequelize, DataTypes) => {
       .create(options);
     switch (nextStateId) {
       case PAYMENT_CONFIRMED: {
-        const optionsLoyalty = {
-          attributes: ['id', 'total_points', 'points', 'level'],
-          where: { customer_Id: shipment.customer_id },
-        };
-        const loyaltyId = await db.LoyaltyPoint
-          .find(optionsLoyalty);
-        log('loyaltyId', loyaltyId);
-        const loyalty = {};
-        let points = {};
-        log('level', loyaltyId.level);
-        if (loyaltyId.shipment_id !== 1) {
-          if (loyaltyId.level === 1) {
-            points = ((5 / 100) * shipment.final_amount);
-          } else if (loyaltyId.level === 2) {
-            points = ((8 / 100) * shipment.final_amount);
-          } else if (loyaltyId.level === 3) {
-            points = ((10 / 100) * shipment.final_amount);
-          } else if (loyaltyId.level === 4) {
-            points = ((12 / 100) * shipment.final_amount);
-          }
-          log('final amount', shipment.final_amount);
-          log('level', loyaltyId.level);
-          loyalty.points = loyaltyId.points + points;
-          loyalty.total_points = loyaltyId.points + points;
+        // - todo required for next iteration
 
-          if (loyaltyId.total_points < 1000) {
-            loyaltyId.level = 1;
-          } else if (loyaltyId.total_points >= 1000 && loyaltyId.total_points < 6000) {
-            loyalty.level = 2;
-          } else if (loyaltyId.total >= 6000 && loyaltyId.total < 26000) {
-            loyalty.level = 3;
-          } else if (loyaltyId.total >= 26000) {
-            loyalty.level = 4;
-          }
-          loyalty.shipment_id = shipment.id;
-          log({ loyalty });
-          await db.LoyaltyPoint.update(loyalty, { where: { id: loyaltyId.id } });
-
-          const misclenious = {};
-          misclenious.customer_id = shipment.customer_id;
-          misclenious.description = 'Shipping Reward';
-          misclenious.points = points;
-          misclenious.type = REWARD;
-          await db.LoyaltyHistory.create(misclenious);
-        }
+        // const optionsLoyalty = {
+        //   attributes: ['id', 'total_points', 'points', 'level'],
+        //   where: { customer_Id: shipment.customer_id },
+        // };
+        // const loyaltyId = await db.LoyaltyPoint
+        //   .find(optionsLoyalty);
+        // log('loyaltyId', loyaltyId);
+        // const loyalty = {};
+        // let points = {};
+        // log('level', loyaltyId.level);
+        // if (loyaltyId.shipment_id !== 1) {
+        //   if (loyaltyId.level === 1) {
+        //     points = ((5 / 100) * shipment.final_amount);
+        //   } else if (loyaltyId.level === 2) {
+        //     points = ((8 / 100) * shipment.final_amount);
+        //   } else if (loyaltyId.level === 3) {
+        //     points = ((10 / 100) * shipment.final_amount);
+        //   } else if (loyaltyId.level === 4) {
+        //     points = ((12 / 100) * shipment.final_amount);
+        //   }
+        //   log('final amount', shipment.final_amount);
+        //   log('level', loyaltyId.level);
+        //   loyalty.points = loyaltyId.points + points;
+        //   loyalty.total_points = loyaltyId.points + points;
+        //
+        //   if (loyaltyId.total_points < 1000) {
+        //     loyaltyId.level = 1;
+        //   } else if (loyaltyId.total_points >= 1000 && loyaltyId.total_points < 6000) {
+        //     loyalty.level = 2;
+        //   } else if (loyaltyId.total >= 6000 && loyaltyId.total < 26000) {
+        //     loyalty.level = 3;
+        //   } else if (loyaltyId.total >= 26000) {
+        //     loyalty.level = 4;
+        //   }
+        //   loyalty.shipment_id = shipment.id;
+        //   log({ loyalty });
+        //   await db.LoyaltyPoint.update(loyalty, { where: { id: loyaltyId.id } });
+        //
+        //   const misclenious = {};
+        //   misclenious.customer_id = shipment.customer_id;
+        //   misclenious.description = 'Shipping Reward';
+        //   misclenious.points = points;
+        //   misclenious.type = REWARD;
+        //   await db.LoyaltyHistory.create(misclenious);
+        // }
         if (!shipment.tracking) {
           const tracking = {};
           tracking.dispatch_date = moment();
           tracking.number_of_packages = shipment.packages_count;
           tracking.weight_by_shipping_partner = shipment.weight;
           tracking.value_by_shipping_partner = shipment.value_amount;
+          tracking.payment_status = 'success';
           await db.Shipment.update(tracking, { where: { id: shipment.id } });
         }
 

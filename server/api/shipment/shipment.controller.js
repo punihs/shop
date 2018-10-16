@@ -201,17 +201,19 @@ exports.unread = async (req, res) => {
 exports.update = async (req, res) => {
   const { id } = req.params;
 
-  const optionsMeta = {
-    attributes: ['liquid_charge_amount', 'overweight_charge_amount', 'is_liquid'],
-    where: { shipment_id: id },
-  };
-
-  const shipmentMeta = await ShipmentMeta
-    .find(optionsMeta);
+  const shipmentMeta = await Shipment
+    .find({
+      attributes: ['package_level_charges_amount'],
+      where: { id },
+      include: [{
+        model: ShipmentMeta,
+        attributes: ['liquid_charge_amount', 'overweight_charge_amount', 'is_liquid'],
+      }],
+    });
   const updateShipment = req.body;
   const updateMeta = {};
 
-  let packageLevelCharges = '';
+  let packageLevelCharges = shipmentMeta.package_level_charges_amount;
   log('liquid', shipmentMeta.is_liquid);
   if (shipmentMeta.is_liquid === '1') {
     packageLevelCharges -= shipmentMeta.liquid_charge_amount || 0;
@@ -1011,12 +1013,13 @@ const initiatePayment = (transaction, req, res) => {
 const paymentGatewayChargesMap = {
   [CARD]: PAYMENT_GATEWAY.CARD,
   [PAYPAL]: PAYMENT_GATEWAY.PAYPAL,
-  [WIRE]: 0,
+  [WIRE]: PAYMENT_GATEWAY.WIRE,
   [CASH]: 0,
   [WALLET]: 0,
+  [PAYTM]: PAYMENT_GATEWAY.PAYTM,
 };
 
-exports.finalShipRequest = async (req, res, next) => {
+exports.finalShipRequest = async (req, res) => {
   const customerId = req.user.id;
   const id = req.body.shipment_id;
   log('body', JSON.stringify(req.body));
@@ -1113,20 +1116,18 @@ exports.finalShipRequest = async (req, res, next) => {
     customer_id: req.user.id,
   });
 
-  switch (req.body.payment_gateway_id) {
-    case WIRE: {
-      const customer = await User
-        .findById(transaction.customer_id, {
-          attributes: ['id', 'wallet_balance_amount'],
-        });
-      const url = `${URLS_MEMBER}/locker/request/${shipment.id}/reponse`;
-      console.log('wallet', req.body.payment_gateway_id);
-      return transactionController.success(
-        shipment, customer, 0, req.body.is_wallet,
-        shipment.final_amount, res, url, req.body.payment_gateway_id,
-      );
-    }
-    default: next();
+  if (req.body.payment_gateway_id === WIRE ||
+    req.body.payment_gateway_id === CASH ||
+    req.body.payment_gateway_id === WALLET) {
+    const customer = await User
+      .findById(transaction.customer_id, {
+        attributes: ['id', 'wallet_balance_amount'],
+      });
+    const url = `${URLS_MEMBER}/locker/request/${shipment.id}/reponse`;
+    return transactionController.success(
+      shipment, customer, 0, req.body.is_wallet,
+      shipment.final_amount, res, url, req.body.payment_gateway_id,
+    );
   }
   return initiatePayment(transaction, req, res);
 };
@@ -1575,6 +1576,9 @@ exports.confirmShipment = async (req, res) => {
     }, {
       model: Store,
       attributes: ['name'],
+    }, {
+      model: PhotoRequest,
+      attributes: ['id', 'type', 'status'],
     }],
   };
   const packages = await Package
@@ -1585,7 +1589,7 @@ exports.confirmShipment = async (req, res) => {
     coupon: 0,
     loyalty: 0,
     amount: 0,
-    payment_gateway_id: WIRE,
+    payment_gateway_id: CARD,
     payment_gateway_fee: 0,
   };
 
@@ -1675,6 +1679,9 @@ exports.confirmShipment = async (req, res) => {
   switch (Number(req.query.payment_gateway_id)) {
     case CARD:
       payment.payment_gateway_id = CARD;
+      payment.payment_gateway_fee = payment.amount *
+        (paymentGatewayChargesMap[CARD] / 100);
+      payment.amount += payment.payment_gateway_fee;
       break;
     case WIRE:
       payment.payment_gateway_id = WIRE;
@@ -1687,12 +1694,14 @@ exports.confirmShipment = async (req, res) => {
       break;
     case PAYPAL:
       payment.payment_gateway_id = PAYPAL;
-      payment.payment_gateway_fee = (10 / 100) * payment.amount;
+      payment.payment_gateway_fee = payment.amount *
+        (paymentGatewayChargesMap[PAYPAL] / 100);
       payment.amount += payment.payment_gateway_fee;
       break;
     case PAYTM:
       payment.payment_gateway_id = PAYTM;
-      payment.payment_gateway_fee = (3 / 100) * payment.amount;
+      payment.payment_gateway_fee = payment.amount *
+        (paymentGatewayChargesMap[PAYTM] / 100);
       payment.amount += payment.payment_gateway_fee;
       break;
     default:
@@ -1745,10 +1754,7 @@ exports.createShipment = async (req, res, IsShippingAddress) => {
       attributes: ['name'],
     }, {
       model: PackageItem,
-      attributes: ['name', 'quantity', 'price_amount'],
-    }, {
-      model: PhotoRequest,
-      attributes: ['status', 'package_id'],
+      attributes: ['name', 'quantity', 'price_amount', 'object', 'object_advanced'],
     }],
   };
 

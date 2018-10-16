@@ -15,7 +15,7 @@ const db = require('../../conn/sqldb');
 const {
   TRANSACTION_TYPES: { CREDIT, DEBIT },
   PAYMENT_GATEWAY: {
-    CARD, PAYPAL,
+    CARD, PAYPAL, CASH, WIRE,
   },
   SHIPMENT_STATE_IDS: {
     PAYMENT_COMPLETED, PAYMENT_FAILED,
@@ -122,13 +122,19 @@ exports.success = async (
     await transactionCtrl
       .create(customerWalletAmount, customer.id, shipment, DEBIT);
   }
+  let paymentStatus = '';
+  if (paymentGatewayId === CASH || paymentGatewayId === WIRE) {
+    paymentStatus = 'pending';
+  } else {
+    paymentStatus = 'success';
+  }
 
   await Shipment.update({
     final_amount: finalAmt,
     wallet_amount: wallet,
     payment_gateway_id: paymentGatewayId,
-    payment_status: 'success',
-    admin_info: 'Payment Successful!',
+    payment_status: paymentStatus,
+    admin_info: `Payment ${paymentStatus}!`,
     admin_read: 'no',
   }, {
     where: {
@@ -142,15 +148,16 @@ exports.success = async (
       shipment,
       actingUser: customer,
       nextStateId: PAYMENT_COMPLETED,
-      comments: 'payment success',
+      comments: `Payment ${paymentStatus}!`,
     });
-
-  await Notification.create({
-    customer_id: customer.id,
-    action_type: 'shipment',
-    action_id: shipment.id,
-    action_description: 'Shipment Payment Successful',
-  });
+  if (paymentGatewayId !== CASH || paymentGatewayId !== WIRE) {
+    await Notification.create({
+      customer_id: customer.id,
+      action_type: 'shipment',
+      action_id: shipment.id,
+      action_description: `Shipment Payment ${paymentStatus}!`,
+    });
+  }
 
   const redemption = await Redemption
     .find({

@@ -83,6 +83,9 @@ div.m-t-xl.no-margin
                               span(ng-if="shipment.payment_status === 'success' && (shipment.PaymentGateway.value === 'card' || shipment.PaymentGateway.value === 'paypal' || shipment.PaymentGateway.value === 'paytm')")
                                   p Awaiting Payment
                                   p It might take upto 24 Hours to reflect your payments into our account.
+                              span(ng-if="shipment.payment_status === 'success' && (shipment.PaymentGateway.value === 'wallet')")
+                                  p Awaiting Payment
+                                  p It might take upto 24 Hours to confirm your payment from our team.
                             div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PAYMENT_FAILED')
                               a.summary-order(ui-sref='dash.shipmentConfirm({order_code: shipment.order_code})') Retry Payment
                             div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PAYMENT_CONFIRMED')

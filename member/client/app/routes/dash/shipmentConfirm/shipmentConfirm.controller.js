@@ -37,8 +37,18 @@ class ShipmentConfirmController {
     this.getList();
   }
 
-  openPhoto(id) {
-    this.ViewPhotoService.open(id);
+  uploadPhotos(packageDetail) {
+    this.$uibModal.open({
+      templateUrl: 'app/directives/request-photos/request-photos.html',
+      controller: 'RequestPhotosController',
+      controllerAs: '$ctrl',
+      size: 'lg',
+      resolve: {
+        packageDetail() {
+          return packageDetail;
+        },
+      },
+    });
   }
 
   getList(params) {
@@ -56,6 +66,7 @@ class ShipmentConfirmController {
       }) => {
         this.packages = [];
         this.packages = packages;
+
         this.paymentGateways = paymentGateways;
         this.shipment = shipment;
         const shipmentMeta = [];
