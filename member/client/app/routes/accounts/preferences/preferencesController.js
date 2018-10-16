@@ -9,10 +9,11 @@ class preferencesController {
   }
   $onInit() {
     this.Page.setTitle('Shipment Preferences');
-
+    this.defaultAddress = {};
     this.$http
       .get(`/shippingPreference/${this.Session.read('userinfo').id}`)
       .then(({ data: { preference } }) => {
+        this.defaultAddress = preference[0].User.Addresses[0];
         this.data = preference[0];
       });
   }

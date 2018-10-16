@@ -9,7 +9,27 @@ div.m-t-xl.no-margin
           .panel.no-border
             .panel-heading.wrapper.b-b.b-light
               h5.font-bold DEFAULT SHIPPING ADDRESS
-              a.text-info(ui-sref='accounts.address-new') + Add A Shipping Address
+              a.text-info(ui-sref='accounts.address-new', ng-if='$ctrl.defaultAddress == ""') + Add A Shipping Address
+              .well.m-t.m-l.bg-light.col-md-4.hover-wrap.no-margin-left(ng-class='dker', ng-if='$ctrl.defaultAddress != ""')
+                .row
+                  .col-xs-12
+                    h4
+                      span.h4.font-thin(ng-bind='($ctrl.defaultAddress.city ? $ctrl.defaultAddress.city.toUpperCase() : "") + " Address"')
+                      span.flag-icon.m-l-xs(
+                      ng-class='"flag-icon-"+ $ctrl.defaultAddress.Country.iso2.toLowerCase()'
+                      )
+                    strong(ng-bind='$ctrl.defaultAddress.first_name + " " + $ctrl.defaultAddress.last_name')
+
+                    p
+                      small.block(ng-bind='$ctrl.defaultAddress.line1')
+                      small.block(ng-bind='$ctrl.defaultAddress.line2')
+                      small.block(ng-bind='$ctrl.defaultAddress.city + ", " + $ctrl.defaultAddress.state')
+                      small.block(ng-bind='$ctrl.defaultAddress.Country.name + " - " + $ctrl.defaultAddress.pincode')
+                      small.block(
+                      ng-if='$ctrl.defaultAddress.phone'
+                      ng-bind='$ctrl.defaultAddress.phone'
+                      )
+                      span.label.pull-left.padding-5.m-t-xs.bg-primary DEFAULT SHIPPING ADDRESS
       .row
         .col-md-8
           .panel.no-border

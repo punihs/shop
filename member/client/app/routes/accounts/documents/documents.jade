@@ -67,10 +67,12 @@ div.m-t-xl.no-margin
             ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.object}}'
             style='height: 30px;width: 30px;border-radius: 50%;'
             )
-        p.text-warning.no-margin Is this secure?
-          p.no-margin
-            | Yes, all uploaded documents are held in our secure server, and are only available for viewing when you are signed in to your account.
-          .clearfix
+        br
+        b
+          p.text-warning.no-margin Is this secure?
+        p.no-margin
+          | Yes, all uploaded documents are held in our secure server, and are only available for viewing when you are signed in to your account.
+        .clearfix
         .row
           .col-md-6.col-xs-12
             h4(ng-bind="$ctrl.error.message" style="color:red;")

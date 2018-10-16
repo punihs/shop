@@ -67,6 +67,7 @@ class DocumentController {
           description: data.description,
         };
         this.userDocuments.push(document);
+        this.data = {};
         this
           .toaster
           .pop('success', 'Document Uploaded Successfully.', '');
