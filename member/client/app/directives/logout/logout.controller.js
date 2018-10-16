@@ -14,7 +14,7 @@ class LogoutController {
     this.notify = this.Session.read('notify');
 
     return this.$http
-      .delete(`/notificationSubscriptions/${playerId}`)
+      .delete(`/notificationSubscriptions/${this.Session.read('oneSignalPlayerId')}`)
       .then(() => this.Auth
         .logout())
       .then(() => this.cleanup(), () => this.cleanup())

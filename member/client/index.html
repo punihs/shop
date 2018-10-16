@@ -60,27 +60,6 @@
   </script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
-  <script>
-    let playerId;
-    if(localStorage.userinfo) {
-      var OneSignal = window.OneSignal || [];
-      OneSignal.push(function() {
-        OneSignal.sendTag("key", JSON.parse(localStorage.userinfo).id);
-        OneSignal.init({
-          appId: "b7792635-0674-4e60-bef9-66d31b818a92",
-          allowLocalhostAsSecureOrigin: true,
-          autoRegister: true,
-          notifyButton: {
-            enable: false,
-          },
-        });
-
-        OneSignal.getUserId(function(pid) {
-          playerId = pid;
-        });
-      });
-    }
-  </script>
 </head>
 <body>
 <!--[if lt IE 7]>

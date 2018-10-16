@@ -1,6 +1,6 @@
 class AppController {
   constructor($window, $state, $rootScope, URLS,
-              $http, $stateParams, Session, Page, playerId) {
+              $http, $stateParams, Session, Page) {
     this.$window = $window;
     this.$state = $state;
     this.$rootScope = $rootScope;
@@ -9,7 +9,6 @@ class AppController {
     this.$stateParams = $stateParams;
     this.Session = Session;
     this.Page = Page;
-    this.playerId = playerId;
 
     this.$onInit();
   }
@@ -35,13 +34,28 @@ class AppController {
       },
     };
 
-    if (this.Session.isAuthenticated() &&
-      !this.Session.read('oneSignalPlayerId') && playerId) {
-      this
-        .$http
-        .post('/notificationSubscriptions', {
-          player_id: this.playerId,
-        }).then(() => this.Session.create('oneSignalPlayerId', playerId));
+    if (this.Session.isAuthenticated()) {
+      const OneSignal = window.OneSignal || [];
+      OneSignal.push(() => {
+        OneSignal.sendTag('key', this.userinfo.id);
+        OneSignal.init({
+          appId: 'b7792635-0674-4e60-bef9-66d31b818a92',
+          allowLocalhostAsSecureOrigin: true,
+          autoRegister: true,
+          notifyButton: {
+            enable: false,
+          },
+        });
+        if (!this.Session.read('oneSignalPlayerId')) {
+          OneSignal.getUserId((pid) => {
+            this
+              .$http
+              .post('/notificationSubscriptions', {
+                player_id: pid,
+              }).then(() => this.Session.create('oneSignalPlayerId', pid));
+          });
+        }
+      });
     }
 
     // keeps track of state change and hides sidebar view for mobile

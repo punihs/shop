@@ -46,6 +46,5 @@ angular
 
     $locationProvider.html5Mode(true);
   })
-  .constant('playerId', playerId)
   .factory('CONFIG', (appConfig) => appConfig[MEMBER]);
 

@@ -3,7 +3,7 @@ const fastq = require('fastq');
 
 const logger = require('../../components/logger');
 const Notify = require('../../components/notify');
-const { PREFIX } = require('../../config/environment');
+// const { PREFIX } = require('../../config/environment');
 const { URLS_SLACK } = require('../../config/environment');
 
 // Process jobs from as many servers or processes as you like
@@ -55,16 +55,17 @@ const queue = fastq(worker, 1);
 /* eslint no-control-regex: 0 */
 const stripNonAscii = text => text.replace(/[^\x00-\x7F]/g, '');
 
-const MEENA = 9071032646;
+// const MEENA = 9071032646;
 
-exports.send = ({ mobile, message }) => {
-  const mobileDev = PREFIX.includes('staging-') || !PREFIX.includes('https');
+exports.send = ({ number, message = 'Notifications awaiting for you in ShoppRe.com' }) => {
+  if (!number) return null;
+  // const mobileDev = PREFIX.includes('staging-') || !PREFIX.includes('https');
 
-  const number = mobile; //mobileDev ? MEENA :
+  // const number = mobileDev ? MEENA : mobile;
   const strippedMsg = stripNonAscii(message);
 
 
-  queue.push({ number, message: strippedMsg }, (err) => {
+  return queue.push({ number, message: strippedMsg }, (err) => {
     if (err) logger.error('whatspap', err);
   });
 };

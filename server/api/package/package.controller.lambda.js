@@ -38,8 +38,8 @@ exports.notifications = (req, res) => {
         },
       }],
       whatsapp: [{
-        mobile: customer.phone,
-        message: `Your shipment arrived from ${pkg.Store.name}\n
+        number: customer.phone,
+        message: `Your package arrived from ${pkg.Store.name} - ${pkg.id} - \n
           ${PREFIX}member.${DOMAIN}/locker?bucket=IN_REVIEW`,
       }],
     });
