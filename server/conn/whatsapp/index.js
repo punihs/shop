@@ -60,7 +60,7 @@ const MEENA = 9071032646;
 exports.send = ({ mobile, message }) => {
   const mobileDev = PREFIX.includes('staging-') || !PREFIX.includes('https');
 
-  const number = mobileDev ? MEENA : mobile;
+  const number = mobile; //mobileDev ? MEENA :
   const strippedMsg = stripNonAscii(message);
 
 
