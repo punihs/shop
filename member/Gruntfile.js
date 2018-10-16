@@ -351,6 +351,7 @@ module.exports = function (grunt) {
             'manifest.json',
             'OneSignalSDKUpdaterWorker.js',
             'OneSignalSDKWorker.js',
+            'sw.js',
           ],
         }, {
           expand: true,

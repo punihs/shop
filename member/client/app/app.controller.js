@@ -1,6 +1,6 @@
 class AppController {
   constructor($window, $state, $rootScope, URLS,
-              $http, $stateParams, Session, Page) {
+              $http, $stateParams, Session, Page, playerId) {
     this.$window = $window;
     this.$state = $state;
     this.$rootScope = $rootScope;
@@ -9,6 +9,7 @@ class AppController {
     this.$stateParams = $stateParams;
     this.Session = Session;
     this.Page = Page;
+    this.playerId = playerId;
 
     this.$onInit();
   }
@@ -33,6 +34,15 @@ class AppController {
         mobileHeader: false, // flag to show header Nav and Search in mobile view
       },
     };
+
+    if (this.Session.isAuthenticated() &&
+      !this.Session.read('oneSignalPlayerId') && playerId) {
+      this
+        .$http
+        .post('/notificationSubscriptions', {
+          player_id: this.playerId,
+        }).then(() => this.Session.create('oneSignalPlayerId', playerId));
+    }
 
     // keeps track of state change and hides sidebar view for mobile
     this.$rootScope.$on('$stateChangeStart', (ev, to, toParams, from) => {

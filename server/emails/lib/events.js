@@ -1,6 +1,7 @@
 const debug = require('debug');
 const oneSignal = require('../../conn/oneSignal/index');
 const ses = require('../../conn/email/ses');
+const whatsapp = require('../../conn/whatsapp');
 
 const { CURRENT_EVENT } = require('../../config/environment/index');
 
@@ -8,6 +9,7 @@ const reqr = require;
 const providers = {
   ses,
   oneSignal,
+  whatsapp,
 };
 
 const templateFullName = CURRENT_EVENT || 'package_state-change';

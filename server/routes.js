@@ -29,6 +29,7 @@ const userPublic = require('./api/user');
 const pricing = require('./api/pricing');
 const transaction = require('./api/transaction');
 const notification = require('./api/notification');
+const notificationSubscription = require('./api/notificationSubscription');
 const loyaltyHistory = require('./api/loyaltyHistory');
 const userDocument = require('./api/userDocument');
 const country = require('./api/country');
@@ -86,6 +87,7 @@ module.exports = (app) => {
   app.use('/api/shippingPreference', authenticate(), shippingPreference);
   app.use('/api/transactions', transaction);
   app.use('/api/notifications', authenticate(), notification);
+  app.use('/api/notificationSubscriptions', authenticate(), notificationSubscription);
   app.use('/api/loyaltyHistories', authenticate(), loyaltyHistory);
   app.use('/api/personalShopperPackages', authenticate(), personalShopperPackage);
   app.use('/api/userDocuments', authenticate(), userDocument);

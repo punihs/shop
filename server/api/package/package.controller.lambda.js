@@ -29,6 +29,19 @@ exports.notifications = (req, res) => {
           ENV,
         }),
       }],
+      oneSignal: [{
+        userId: customer.id,
+        msg: {
+          title: `Your shipment arrived from ${pkg.Store.name}`,
+          body: 'just now',
+          link: `${PREFIX}member.${DOMAIN}/locker?bucket=IN_REVIEW`,
+        },
+      }],
+      whatsapp: [{
+        mobile: customer.phone,
+        message: `Your shipment arrived from ${pkg.Store.name}\n
+          ${PREFIX}member.${DOMAIN}/locker?bucket=IN_REVIEW`,
+      }],
     });
   res.status(200).end();
 };

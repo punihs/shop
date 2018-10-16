@@ -31,11 +31,12 @@ const pkg = {
 };
 
 const customer = {
-  id: 237,
+  id: 646,
   name: 'Mr. Abhinav Mishra',
   first_name: 'Abhinav',
   virtual_address_code: 'SHPR12-182',
   email: 'tech.shoppre@shoppre.com',
+  phone: 9071032646,
 };
 
 const ENV = viewConfig;

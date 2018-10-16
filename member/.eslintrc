@@ -14,7 +14,8 @@
     "io": true,
     "_": true,
     "String": true,
-    "confirm": true
+    "confirm": true,
+    "playerId": true
   }
 
 }

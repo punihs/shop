@@ -73,7 +73,7 @@ const db = {
 
   'Log',
 
-  'Source',
+  'Source', 'NotificationSubscription',
 
 ].forEach((model) => {
   db[model] = db.sequelize.import(`../../api/${_.camelCase(model)}/${_.camelCase(model)}.model.js`);

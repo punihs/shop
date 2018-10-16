@@ -46,7 +46,6 @@ angular
 
     $locationProvider.html5Mode(true);
   })
-  .constant('RENAMED_STATES', {
-  })
+  .constant('playerId', playerId)
   .factory('CONFIG', (appConfig) => appConfig[MEMBER]);
 

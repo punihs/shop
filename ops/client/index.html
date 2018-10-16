@@ -47,6 +47,19 @@
       });
     });
   </script>
+  <script type="text/javascript">
+
+    if (navigator.serviceWorker) {
+
+      navigator.serviceWorker.register('./sw.js')
+        .then(function (registration) {
+          return fetch(window.location.href);
+        })
+        .then(console.info)
+        .catch(console.warn);
+
+    }
+  </script>
   <!-- Hotjar Tracking Code for https://staging-ops.shoppre.com -->
   <script>
     (function(h,o,t,j,a,r){

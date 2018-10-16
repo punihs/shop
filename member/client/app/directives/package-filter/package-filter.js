@@ -1,12 +1,11 @@
 class PackageFilterController {
   /* @ngInject */
-  constructor($uibModalInstance, $scope, $filter, Session, all, RENAMED_STATES) {
+  constructor($uibModalInstance, $scope, $filter, Session, all) {
     this.$uibModalInstance = $uibModalInstance;
     this.$scope = $scope;
     this.$filter = $filter;
     this.Session = Session;
     this.all = all;
-    this.RENAMED_STATES = RENAMED_STATES;
   }
 
   $onInit() {

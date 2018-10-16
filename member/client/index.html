@@ -45,13 +45,27 @@
       a.appendChild(r);
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
   </script>
+  <script type="text/javascript">
+
+    if (navigator.serviceWorker) {
+
+      navigator.serviceWorker.register('./sw.js')
+        .then(function (registration) {
+          return fetch(window.location.href);
+        })
+        .then(console.info)
+        .catch(console.warn);
+
+    }
+  </script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
   <script>
+    let playerId;
     if(localStorage.userinfo) {
       var OneSignal = window.OneSignal || [];
       OneSignal.push(function() {
-        OneSignal.sendTag("key",JSON.parse(localStorage.userinfo).id);
+        OneSignal.sendTag("key", JSON.parse(localStorage.userinfo).id);
         OneSignal.init({
           appId: "b7792635-0674-4e60-bef9-66d31b818a92",
           allowLocalhostAsSecureOrigin: true,
@@ -59,6 +73,10 @@
           notifyButton: {
             enable: false,
           },
+        });
+
+        OneSignal.getUserId(function(pid) {
+          playerId = pid;
         });
       });
     }
@@ -77,7 +95,6 @@
     'app-aside-dock':App.app.settings.asideDock,
     'container':App.app.settings.container      }" class="app">
   <!--<header>-->
-  <banner class="banner"></banner>
   <navbar></navbar> <!--<div ng-include="'html/blocks/header.html'" class="app-header navbar"></div>-->
   <!--</header>-->
   <content>
@@ -86,7 +103,6 @@
       <a href="" ui-toggle-class="off-screen" data-target=".app-aside" class="off-screen-toggle hide"></a>
       <div>
         <toaster-container  toaster-options="{'position-class': 'toast-bottom-right'}"></toaster-container>
-        <announcement></announcement>
         <div class="hbox">
           <div ng-if="App.showShipmentSideBar()" class="col w-md">
             <!--<div class="wrapper b-b bg">-->
@@ -115,7 +131,7 @@
 
   ga('create', 'UA-52116787-4', 'auto');
   if(localStorage.userinfo) {
-    user = JSON.parse(localStorage.userinfo)
+    user = JSON.parse(localStorage.userinfo);
     ga('set', 'userId', user.id);
   }
   ga('send', 'pageview');
