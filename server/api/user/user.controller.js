@@ -157,7 +157,8 @@ exports.show = (req, res, next) => {
             ? req.query.fl.split(',')
             : [
               'id', 'name', 'first_name', 'last_name', 'salutation', 'virtual_address_code',
-              'phone', 'email', 'email_verify', 'wallet_balance_amount', 'secondary_phone',
+              'phone', 'email', 'email_verify', 'wallet_balance_amount',
+              'secondary_phone', 'alternate_email',
             ],
           include: [{
             model: Country,

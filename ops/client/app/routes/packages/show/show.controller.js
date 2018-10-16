@@ -2,7 +2,7 @@ class PackageShowController {
   /* @ngInject */
   constructor(
     $http, $stateParams, URLS, $sce, $state, $window, Page, Session, $q, ChangeState,
-    pkg, JobModal, ListModal, toaster, $scope
+    pkg, JobModal, ListModal, toaster, $scope, ViewPhotoService
   ) {
     this.Number = Number;
     this.$scope = $scope;
@@ -18,6 +18,7 @@ class PackageShowController {
     this.ChangeState = ChangeState;
     this.data = pkg;
     this.ListModal = ListModal;
+    this.ViewPhotoService = ViewPhotoService;
     this.moment = moment;
     this.customer = pkg.Customer;
     this.editAllowedStates = [1, 2];
@@ -44,6 +45,10 @@ class PackageShowController {
       .$http
       .get(`/packages/${this.$stateParams.id}/items`)
       .then(({ data: packageItems }) => (this.packageItems.push(...packageItems)));
+  }
+
+  openPhoto(photo) {
+    this.ViewPhotoService.open(photo);
   }
 
   setMessage(description) {

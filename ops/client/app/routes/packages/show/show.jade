@@ -248,6 +248,7 @@
 
                       ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + packageItem.object.replace(".", "-thumb.")}}'
                       style='height: 30px;width: 30px;border-radius: 50%;'
+                      ng-click='$ctrl.openPhoto(packageItem.object)'
                     )
                     a(ui-sref='package.item.edit({ id: $ctrl.$stateParams.id , packageItemId: packageItem.id })' target="_blank") {{packageItem.name}}
                   .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='packageItem.PackageItemCategory.name')
