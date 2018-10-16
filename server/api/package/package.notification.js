@@ -12,7 +12,7 @@ exports.stateChange = async ({
     User
       .findById(pkg.customer_id, {
         attributes: [
-          'name', 'salutation', 'first_name', 'last_name', 'email', 'virtual_address_code', 'phone',
+          'id', 'name', 'salutation', 'first_name', 'last_name', 'email', 'virtual_address_code', 'phone',
         ],
       }),
     Store
