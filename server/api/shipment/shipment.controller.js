@@ -5,6 +5,7 @@ const xlsx = require('node-xlsx');
 const paytm = require('../paymentGateway/paytm/paytm.controller');
 const axis = require('../paymentGateway/axis/axis.controller');
 const paypal = require('../paymentGateway/paypal/paypal.controller');
+const transactionController = require('../transaction/transaction.controller');
 
 const eventEmitter = require('../../conn/event');
 const { URLS_API } = require('../../config/environment');
@@ -13,7 +14,7 @@ const shipper = require('../../conn/shipper');
 
 const {
   Country, Shipment, Package, Address, PackageCharge, ShipmentMeta, Notification,
-  PackageState, Redemption, Coupon, User, LoyaltyPoint, Transaction, Locker,
+  PackageState, Redemption, Coupon, User, Transaction, Locker,
   ShipmentState, Store, ShipmentType, DHLLog,
   PackageItem, PhotoRequest, ShippingRate, PaymentGateway,
 } = db;
@@ -1010,9 +1011,12 @@ const initiatePayment = (transaction, req, res) => {
 const paymentGatewayChargesMap = {
   [CARD]: PAYMENT_GATEWAY.CARD,
   [PAYPAL]: PAYMENT_GATEWAY.PAYPAL,
+  [WIRE]: 0,
+  [CASH]: 0,
+  [WALLET]: 0,
 };
 
-exports.finalShipRequest = async (req, res) => {
+exports.finalShipRequest = async (req, res, next) => {
   const customerId = req.user.id;
   const id = req.body.shipment_id;
   log('body', JSON.stringify(req.body));
@@ -1108,7 +1112,22 @@ exports.finalShipRequest = async (req, res) => {
     amount: shipment.final_amount,
     customer_id: req.user.id,
   });
-  log({ transaction });
+
+  switch (req.body.payment_gateway_id) {
+    case WIRE: {
+      const customer = await User
+        .findById(transaction.customer_id, {
+          attributes: ['id', 'wallet_balance_amount'],
+        });
+      const url = `${URLS_MEMBER}/locker/request/${shipment.id}/reponse`;
+      console.log('wallet', req.body.payment_gateway_id);
+      return transactionController.success(
+        shipment, customer, 0, req.body.is_wallet,
+        shipment.final_amount, res, url, req.body.payment_gateway_id,
+      );
+    }
+    default: next();
+  }
   return initiatePayment(transaction, req, res);
 };
 

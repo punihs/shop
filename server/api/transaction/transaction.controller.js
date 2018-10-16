@@ -108,9 +108,9 @@ const verify = body => rp({
   form: body,
 });
 
-const paymentSuccess = async ({
-  shipment, customer, isRetryPayment, isWalletUsed, finalAmount, res, url, paymentGatewayId,
-}) => {
+exports.success = async (
+  shipment, customer, isRetryPayment,
+  isWalletUsed, finalAmount, res, url, paymentGatewayId) => {
   let finalAmt = finalAmount;
   let wallet = shipment.wallet_amount;
   if (isWalletUsed === 1 && isRetryPayment === 1) {
@@ -195,8 +195,19 @@ const paymentSuccess = async ({
 
   // todo: don't delete
   // ShopperBalance::where('customer_id', $customer_id)->update(['amount' => 0]);
+  if (paymentGatewayId === PAYPAL || paymentGatewayId === CARD) {
+    return res.status(200).redirect(`${url}?message=success`);
+  }
+  return res.status(200).json(`${url}?message=success`);
+};
 
-  return res.redirect(`${url}?message=success`);
+const paymentSuccess = async ({
+  shipment, customer, isRetryPayment, isWalletUsed, finalAmount, res, url, paymentGatewayId,
+}) => {
+  this.success(
+    shipment, customer, isRetryPayment,
+    isWalletUsed, finalAmount, res, url, paymentGatewayId,
+  );
 };
 
 exports.paymentFailed = (shipment, customer, paymentGatewayId) => {
@@ -266,7 +277,7 @@ exports.updatePaypalTransaction = async (transaction, url, failedURL,
   shipment, customer, isRetryPayment, isWalletUsed, finalAmount, req, res,
 ) => {
   if (req.query.status === 'failed') {
-    this.paymentFailed(shipment, customer, PAYPAL);
+    this.paymentFailed(shipment, customer, transaction.payment_gateway_id);
     return res.status(200).redirect(`${failedURL}?error='failed'&message=Unexpected error occurred and payment has been failed`);
   }
   if (shipment && shipment.customer_id !== transaction.customer_id) {
@@ -284,7 +295,14 @@ exports.updatePaypalTransaction = async (transaction, url, failedURL,
       const result = paymentStatus;
       if (result.state === 'approved') {
         return paymentSuccess({
-          shipment, customer, isRetryPayment, isWalletUsed, finalAmount, res, url, PAYPAL,
+          shipment,
+          customer,
+          isRetryPayment,
+          isWalletUsed,
+          finalAmount,
+          res,
+          url,
+          paymentGatewayId: transaction.payment_gateway_id,
         });
       }
       // Mail::to($customer->email)
@@ -298,8 +316,6 @@ exports.updatePaypalTransaction = async (transaction, url, failedURL,
 
 exports.complete = async (req, res, next) => {
   const { id } = req.params;
-  console.log('error', JSON.stringify(req.query));
-  console.log('id', id);
   try {
     const transaction = await Transaction.findById(id, {
       attributes: ['id', 'payment_gateway_id', 'object_id', 'customer_id', 'amount'],
