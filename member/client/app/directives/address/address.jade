@@ -1,6 +1,6 @@
 .modal-header
   .modal-title
-    .h4.text-info Add Address
+    .h4.text-info.text-uppercase {{$ctrl.type}} Address
       .close(ng-click='$ctrl.$uibModalInstance.dismiss("close")') ×
 div.m-t-xl.no-margin
   .hbox
@@ -70,13 +70,11 @@ div.m-t-xl.no-margin
               .col-md-6.col-sm-5.col-xs-12
                 label.col-xs-12.input-group
                   | Line 2
-                  span.text-danger *
                   input.form.form-control(
                   type='text'
                   name='line2'
                   placeholder='eg. 5th Ave'
                   ng-model='$ctrl.data.line2'
-                  required
                   )
                   span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.line2.$dirty && newAddressForm.line2.$invalid') Please enter Line 2
 
@@ -111,13 +109,11 @@ div.m-t-xl.no-margin
               .col-md-6.col-sm-5.col-xs-12.right-pad-0
                 label.col-xs-12.input-group
                   | Pincode/Zip Code
-                  span.text-danger *
                   input.form.form-control(
                   type='text'
                   name='pincode'
                   placeholder='eg. 94114'
                   ng-model='$ctrl.data.pincode'
-                  required
                   )
                   span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.pincode.$dirty && newAddressForm.pincode.$invalid') Please enter Pincode/Zip Code
               .col-md-6.col-sm-5.col-xs-12
@@ -151,7 +147,7 @@ div.m-t-xl.no-margin
             .row
               .col-md-4.col-sm-5.col-xs-12
                 input#tel.form-control(type='text', name='phone', ng-model='$ctrl.data.phone', ng-intl-tel-input='')
-                span.help-block(ng-show='newAddressForm.phone.$pristine && newAddressForm.phone.$untouched') Please type a telephone number
+                span.help-block(ng-show='newAddressForm.phone.$pristine && newAddressForm.phone.$touched') Please type a telephone number
                 span.help-block(ng-show='newAddressForm.phone.$invalid && newAddressForm.phone.$touched') Invalid :(
                 span.help-block(ng-show='newAddressForm.phone.$valid && newAddressForm.phone.$touched') Valid :)
             .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')

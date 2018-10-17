@@ -15,19 +15,24 @@
               popover-append-to-body='true'
               )
                i.m-l.fa.fa-info-circle
-            .col-md-8.col-lg-8.radioBox(ng-repeat='item in $ctrl.customer.Addresses')
+            .col-md-2.padding-10.pull-right
+              a.btn.btn-success(ng-click='$ctrl.open()') Add Address
+            .col-md-10.col-lg-8.radioBox(ng-repeat='item in $ctrl.customer.Addresses')
               .radio
                 label.i-checks
                   input(type='radio', name='a', ng-value='item.id' ng-model='$ctrl.data.address_id' )
                   i
-                  | {{item.first_name}} {{item.last_name}}
-                  | {{item.line1}} <BR>
+                  b {{item.first_name}} {{item.last_name}} &nbsp; &nbsp; &nbsp;
+                  | {{item.phone}}
+                 span(type='button', ng-click='$ctrl.EditAddress(item.id, $index)')
+                  i.fa.fa-pencil-square-o.m-l-md
+                  br
+                  i
+                  | {{item.line1}},
                   | {{item.line2}}
-                  | {{item.id}}
-                  p.pull-rightbutton(type='button', ng-click='$ctrl.EditAddress(item.id)')
-                    i.fa.fa-pencil-square-o
-            .col-md-3.padding-5.m-b-md.m-t-xs
-              a.btn.btn-success(ng-click="$ctrl.open()") Add Address
+                  | {{item.city}},
+                  | {{item.state}},
+                  | {{item.pincode}}
           div.div-border-create.clearfix
             h2.m-n.alert.alert.alert-info.panel-warning 2. SHIPMENT SUMMARY
               .clearfix
@@ -153,6 +158,7 @@
               ng-submit='$ctrl.create()'
               autocomplete='off'
               )
+                p PACKING OPTIONS
                 ul.list-group.list-group-lg.m-b-none.list-unstyled
                   li
                     .checkbox(ng-click='$ctrl.updateCharges()')
@@ -253,6 +259,39 @@
                         popover-append-to-body='true'
                         )
                   .clearfix
+                br
+                p  PROFORMA INVOICE OPTIONS
+                ul.list-group.list-group-lg.m-b-none.list-unstyled
+                  li
+                    .checkbox(ng-click='$ctrl.updateCharges()')
+                      label.i-checks(ng-if='$ctrl.data.mark_personal_use')
+                        input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.mark_personal_use')
+                        i
+                        | Mark items for personal use only
+                      label.i-checks(ng-if='$ctrl.data.mark_personal_use === false')
+                        input(type='checkbox',  checked='false' value='' ng-model='$ctrl.data.mark_personal_use')
+                        i
+                        | Mark items for personal use only
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover='We repack all the necessary items (items which arrive at our facility in big boxes) for FREE of cost (except Shoe Boxes which we do not discard). Discarding shoe boxes before your shipment is packed can help reduce the dimensional weight of your shipment in some cases. A charge of INR 100 per shipment will be incurred to discard shoe boxes)'
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+                  li
+                    .checkbox(ng-click='$ctrl.updateCharges()')
+                      label.i-checks(ng-if='$ctrl.data.invoice_include')
+                        input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.invoice_include')
+                        i
+                        | Please include a printed proforma invoice with in my shipment
+                      label.i-checks(ng-if='$ctrl.data.invoice_include === false')
+                        input(type='checkbox',  checked='false' value='' ng-model='$ctrl.data.invoice_include')
+                        i
+                        | Please include a printed proforma invoice with in my shipment
+                  li
+                    label.pull-left   TAX ID: &nbsp; &nbsp;
+                    .pull-left
+                      input.form-control.no-padder(type='text', placeholder='' ng-model='$ctrl.data.invoice_tax_id' ng-bind="$ctrl.data.invoice_tax_id")
           .panel.panel-info.m-t-md
             .panel-heading.font-bold.text-u-c PACKAGE LEVEL CHARGES SUMMARY
             .panel-body

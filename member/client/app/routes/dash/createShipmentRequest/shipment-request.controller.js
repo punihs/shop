@@ -43,7 +43,7 @@ class shipmentRequestController {
       });
   }
 
-  EditAddress(addressId) {
+  EditAddress(addressId, index) {
     const modal = this.AddAddress.open(addressId, 'edit');
     modal
       .result
@@ -51,9 +51,9 @@ class shipmentRequestController {
         this.IsShippingAddress = true;
         if (data.is_default === true) {
           // data.id = addressId;
-          this.data.address_id = data.id;
+          this.data.address_id = addressId;
         }
-        this.customer.Addresses.push(data);
+        Object.assign(this.customer.Addresses[index], data);
       });
   }
   onload(id) {
@@ -103,7 +103,7 @@ class shipmentRequestController {
           gift_note_text: null,
           is_liquid: IS_LIQUID,
           max_weight: 0,
-          invoice_tax_id: false,
+          invoice_tax_id: null,
           mark_personal_use: false,
           invoice_include: false,
         };

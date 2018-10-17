@@ -446,6 +446,7 @@ const getEstimation = async (packageIds, countryId, userId) => {
 
 const getAddress = (address) => {
   log('getAddress', address.toJSON());
+
   let toAddress = address.line1;
   if (address.line2) toAddress += `, ${address.line2}`;
 
@@ -480,7 +481,8 @@ const saveShipment = ({
   shipment.customer_id = userId;
   shipment.customer_name = `${address.first_name} ${address.last_name}`;
   shipment.address = toAddress;
-  shipment.country = address.country_id;
+  shipment.address_id = address.id;
+  shipment.country_id = address.country_id;
   shipment.phone = address.phone;
   shipment.packages_count = shipping.count;
   shipment.weight = shipping.weight;
@@ -1806,7 +1808,7 @@ exports.createShipment = async (req, res, IsShippingAddress) => {
     include: [{
       model: Address,
       attributes: ['id', 'salutation', 'first_name',
-        'last_name', 'line1', 'line2', 'state', 'customer_id', 'is_default'],
+        'last_name', 'line1', 'line2', 'state', 'customer_id', 'is_default', 'city', 'pincode', 'phone'],
     }],
     limit: Number(req.query.limit) || 20,
   };
