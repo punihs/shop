@@ -447,7 +447,7 @@ const getEstimation = async (packageIds, countryId, userId) => {
 const getAddress = (address) => {
   log('getAddress', address.toJSON());
   let toAddress = address.line1;
-  if (address.line2) toAddress = `, ${address.line2}`;
+  if (address.line2) toAddress += `, ${address.line2}`;
 
   toAddress += `, ${address.city}`;
   toAddress += `, ${address.state}`;
@@ -920,8 +920,9 @@ const walletTransaction = async (walletAmount, customer, shipment, type) => {
 //     break;
 //   default: break;
 // }
-const MINIMUM_POINTS_TO_REDEEM = 1000;
-const REDEEM_RATE = 0.1;
+// - todo required for layalty points redeem
+// const MINIMUM_POINTS_TO_REDEEM = 1000;
+// const REDEEM_RATE = 0.1;
 
 const calculateDiscountsAndDeductions = async ({ body, customerId, shipment }) => {
   const customer = await User

@@ -99,8 +99,8 @@ exports.destroy = async (req, res, next) => {
         package_id: packageId,
       },
     })
-    .then(status => res
-      .json({ message: `Package Item ${id} deleted sucessfully`, status }))
+    .then(() => res
+      .json({ message: `${id} Package Item deleted sucessfully` }))
     .catch(next);
 };
 

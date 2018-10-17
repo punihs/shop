@@ -149,7 +149,7 @@ class PackageShowController {
     this
       .$http
       .delete(`/packages/${packageid}/item/${itemId}/delete`)
-      .then(({ data: message }) => {
+      .then(({ data: { message } }) => {
         this.toaster
           .pop('success', message);
         return this.packageItems.splice(index, 1);
