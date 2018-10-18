@@ -116,7 +116,7 @@ div.m-t-xl.no-margin
               .row
                 .col-md-4.col-sm-5.col-xs-12
                   input#tel.form-control(type='text', name='phone', ng-model='$ctrl.data.phone', ng-intl-tel-input='')
-                  span.help-block(ng-show='profileForm.phone.$pristine && profileForm.phone.$untouched') Please type a telephone number
+                  span.help-block(ng-show='profileForm.phone.$pristine && profileForm.phone.$touched') Please type a telephone number
                   span.help-block(ng-show='profileForm.phone.$invalid && profileForm.phone.$touched') Invalid :(
                   span.help-block(ng-show='profileForm.phone.$valid && profileForm.phone.$touched') Valid :)
 
@@ -127,7 +127,7 @@ div.m-t-xl.no-margin
               .row
                 .col-md-4.col-sm-5.col-xs-12
                   input#tel1.form-control(type='text', name='secondary_phone', ng-model='$ctrl.data.secondary_phone', ng-intl-tel-input='')
-                  span.help-block(ng-show='profileForm.secondary_phone.$pristine && profileForm.secondary_phone.$untouched') Please type a telephone number
+                  span.help-block(ng-show='profileForm.secondary_phone.$pristine && profileForm.secondary_phone.$touched') Please type a telephone number
                   span.help-block(ng-show='profileForm.secondary_phone.$invalid && profileForm.secondary_phone.$touched') Invalid :(
                   span.help-block(ng-show='profileForm.secondary_phone.$valid && profileForm.secondary_phone.$touched') Valid :)
 

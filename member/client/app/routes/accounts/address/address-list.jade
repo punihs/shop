@@ -34,7 +34,7 @@ div.m-t-xl.no-margin
         .row
           .col-xs-12
             h4
-              span.h4.font-thin(ng-bind='(address.city ? address.city.toUpperCase() : "") + " Address"')
+              span.font-thin(ng-bind='(address.city ? address.city.toUpperCase() : "") + " Address"')
               span.flag-icon.m-l-xs(
                 ng-class='"flag-icon-"+ address.Country.iso2.toLowerCase()'
               )
@@ -54,7 +54,7 @@ div.m-t-xl.no-margin
                 ng-bind='address.phone'
               )
               span.label.pull-left.padding-5.m-t-xs.bg-primary(ng-if='address.is_default') DEFAULT SHIPPING ADDRESS
-              button.pull-right.m-t-xxs.btn-xs.btn-info.display-on-hover(ng-click='$ctrl.destroy(address, $index)')
+              button.pull-right.m-t-xxs.btn-xs.btn-info(ng-click='$ctrl.destroy(address, $index)')
                 i.fa.fa-trash-o
 
       .clearfix
