@@ -11,7 +11,10 @@ module.exports = DataTypes => ({
   name: DataTypes.STRING,
   quantity: DataTypes.INTEGER,
   price_amount: DataTypes.DOUBLE,
-  total_amount: DataTypes.DOUBLE,
+  total_amount: {
+    type: DataTypes.DOUBLE,
+    defaultValue: 0,
+  },
   object: DataTypes.STRING,
   object_advanced: DataTypes.STRING,
   object_invoice: DataTypes.STRING,
