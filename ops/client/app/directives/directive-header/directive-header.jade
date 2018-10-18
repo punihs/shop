@@ -43,7 +43,7 @@ div.directive-header
       li.m-r-xs.pull-right(ng-if='!options.customer.create && options.customer.packageCount')
         a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
           ui-sref='customer.packages.index({ customer_id: options.customer.id, bucket: "TASKS", create: true })'
-          uib-popover="for {{options.customer.virtual_address_code}} - {{options.customer}}"
+          uib-popover="for {{options.customer.virtual_address_code}} - {{options.customer.name}}"
           popover-trigger="'mouseenter'"
           popover-placement='bottom'
           popover-append-to-body='true'

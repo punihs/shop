@@ -84,13 +84,13 @@ class PackageNewController {
     if (this.submitting) return null;
     this.submitting = true;
     this.clickUpload = true;
+    if (this.Stores.noResults === true) this.data.store_id = null;
 
     const form = this.validateForm(newPackageForm);
 
     const data = Object.assign({ }, this.data);
     Object.assign(data, { store_name: this.Stores.model });
     if (!form) return (this.submitting = false);
-
     return this.$http
       .post('/packages', data)
       .then(() => {
