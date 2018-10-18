@@ -14,6 +14,7 @@ module.exports = DataTypes => ({
   total_amount: DataTypes.DOUBLE,
   object: DataTypes.STRING,
   object_advanced: DataTypes.STRING,
+  object_invoice: DataTypes.STRING,
   price_entered_by: {
     type: DataTypes.ENUM,
     values: [SHOPPRE, CUSTOMER],

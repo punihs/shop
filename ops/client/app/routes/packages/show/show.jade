@@ -178,11 +178,18 @@
               ng-change='$ctrl.uploadFiles($ctrl.documentfile)'
               multiple base-sixty-four-input
               )
-          div(ng-show= '$ctrl.data.invoice')
+          div.col-md-6(ng-show= '$ctrl.data.invoice')
             h4 Customer invoice
             a(href ='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.invoice}}' target = '_blank')
               img.pull-left.m-r(
               ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.invoice}}'
+              style='height: 80px;width: 80px;'
+              )
+          div.col-md-6(ng-repeat='packageItem in $ctrl.packageItems')
+            h4 Ops invoice {{packageItem.id}}
+            a(ng-if='packageItem.object_invoice', href ='{{$ctrl.URLS.CDN + "/shoppre/" + packageItem.object_invoice}}' target = '_blank')
+              img.pull-left.m-r(
+              ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + packageItem.object_invoice}}'
               style='height: 80px;width: 80px;'
               )
   .col

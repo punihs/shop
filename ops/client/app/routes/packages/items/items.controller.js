@@ -16,7 +16,6 @@ class PackageItemsController {
     this.$ = $;
     this.submitting = false;
     this.data = item || {};
-    this.advancedData = item || {};
     this.createCategory = createCategory;
     this.$onInit();
   }
@@ -30,7 +29,11 @@ class PackageItemsController {
   }
 
   startAdvancedUpload(ctrl, advancedFile) {
-    ctrl.S3.uploadAdvanced(advancedFile, ctrl.advancedData, ctrl);
+    ctrl.S3.uploadAdvanced(advancedFile, ctrl.data, ctrl);
+  }
+
+  startInvoiceUpload(ctrl, invoiceFile) {
+    ctrl.S3.uploadInvoice(invoiceFile, ctrl.data, ctrl);
   }
 
   $onInit() {
@@ -86,9 +89,13 @@ class PackageItemsController {
       this.PackageItemCategory.model = this.data.PackageItemCategory.name;
       const imagePath = `${this.URLS.CDN}/shoppre/${this.data.object}`;
       this.data.object_thumb = imagePath;
-      if (this.advancedData.object_advanced) {
-        const imagePathAdvanced = `${this.URLS.CDN}/shoppre/${this.advancedData.object_advanced}`;
-        this.advancedData.object_thumb = imagePathAdvanced;
+      if (this.data.object_advanced) {
+        const imagePathAdvanced = `${this.URLS.CDN}/shoppre/${this.data.object_advanced}`;
+        this.data.object_thumb = imagePathAdvanced;
+      }
+      if (this.data.object_invoice) {
+        const invoicePath = `${this.URLS.CDN}/shoppre/${this.data.object_invoice}`;
+        this.data.object_thumb = invoicePath;
       }
       this.file = 'Nothing';
     }
@@ -146,11 +153,6 @@ class PackageItemsController {
     if (!form) return (this.submitting = false);
     const { packageItemId, id: packageId } = this.$stateParams;
     data.packageId = packageId;
-
-    if (this.advancedData.object_advanced) {
-      data.object_advanced = this.advancedData.object_advanced;
-    }
-
     const allowed = [
       'name',
       'quantity',
@@ -158,6 +160,7 @@ class PackageItemsController {
       'total_amount',
       'object',
       'object_advanced',
+      'object_invoice',
       'package_item_category_id',
     ];
 
