@@ -9,15 +9,12 @@ angular
         xhr.send(file);
         xhr.onload = () => {
           if (xhr.status === 200) {
-            toaster.pop('success', 'File uploaded');
-
             Object.assign(data, { object });
             Object.assign($ctrl, { uploadingPhotos: false });
             $http
               .post('/minio/thumb', { object })
               .then(() => {
                 const objectThumb = `${URLS.CDN}/shoppre/${data.object.replace('.', '-thumb.')}`;
-                toaster.pop('success', 'Conversion done');
                 Object.assign(data, { object_thumb: objectThumb });
               })
               .catch(() => toaster.pop('error', 'Error while uploading file'));
@@ -27,4 +24,5 @@ angular
         return object;
       })
       .catch(() => toaster.pop('error', 'Error while uploading file')),
+
   }));

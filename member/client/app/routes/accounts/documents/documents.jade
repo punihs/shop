@@ -36,37 +36,23 @@ div.m-t-xl.no-margin
                     span(ng-show="(documentForm.file.$touched && documentForm.file.$valid) || $ctrl.data.file")
                       span.text-muted(ng-bind="$ctrl.file.name")
                     p.no-margin(ng-hide="(documentForm.file.$touched && documentForm.file.$valid) || $ctrl.data.file")
-                    span.file-support(ng-hide="(documentForm.file.$touched && documentForm.file.$valid) || $ctrl.data.file") Supported Formats: .png, .jpeg, .jpg, .bmp'
+                    span.file-support(ng-hide="(documentForm.file.$touched && documentForm.file.$valid) || $ctrl.data.file") Supported Formats: .png, .jpeg, .jpg, .bmp, .pdf'
                     input.form-control(
-                    accept="image/*"
                     type="file"
                     ng-model='$ctrl.file'
                     name='file'
-                    ngf-pattern="'.png,.jpeg,.jpg,.bmp'"
+                    ngf-pattern="'.png,.jpeg,.jpg,.bmp,.pdf'"
                     ngf-max-size="15MB"
                     ngf-max-files="1"
-                    ngf-select='$ctrl.uploadingDocument=true;'
+                    ngf-select='$ctrl.uploadFile($ctrl.file)'
                     onclick="this.value = null"
-                    ng-image-compress
-                    image="myAwesomeImage"
                     ctrl="$ctrl"
-                    upload-fn="$ctrl.startUpload"
-                    resize-max-height="1000"
-                    resize-max-width="1000"
-                    resize-quality="0.7"
-                    resize-type="image/jpg"
                     required
                     )
                 span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && !$ctrl.data.file && !documentForm.file.$invalid') Please choose file
                 span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && documentForm.file.$invalid') Please choose supported file
                 span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && documentForm.file.$dirty && documentForm.file.$invalid') Please choose supported file
-          .col-xs-1.wrapper-sm.m-t-xs
-            .clearfix
-            img.pull-left.m-r(
-            ng-if='$ctrl.data.object'
-            ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.object}}'
-            style='height: 30px;width: 30px;border-radius: 50%;'
-            )
+
         br
         b
           p.text-warning.no-margin Is this secure?
@@ -108,10 +94,10 @@ div.m-t-xl.no-margin
               .col-xs-3.wrapper-sm.m-t-xs(ng-bind='userDocument.description')
               .col-xs-5.wrapper-sm.m-t-xs
                 .clearfix
-                img.pull-left.m-r(
-                ng-if='userDocument.object'
-                ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + userDocument.object}}'
-                style='height: 100px;width: 200px;'
-                )
+                  a.pull-left.m-r.txt-underline(
+                  ng-if='userDocument.object'
+                  ng-href='{{$ctrl.URLS.CDN + "/shoppre/" + userDocument.object}}'
+                  target='_blank'
+                  ) View Document
               .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-trash.text-danger(ng-click="$ctrl.deleteDocument(userDocument.id, $index)")
 

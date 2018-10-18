@@ -16,13 +16,29 @@ class DocumentController {
     this.Number = Number;
     this.submitting = false;
     this.data = {};
-    this.userDocuments = {};
+    this.userDocuments = [];
     this.Page.setTitle('Document  Details - My Account');
     this.getUserDocuments();
   }
 
-  startUpload(ctrl, file) {
-    ctrl.S3.upload(file, ctrl.data, ctrl);
+  uploadFile(file) {
+    this.$http
+      .get('/minio/presignedUrl', { params: { filename: file.name } })
+      .then(({ data: { object, url } }) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', url, true);
+        xhr.send(file);
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            this.toaster.pop('success', 'File uploaded');
+            this.data.object = object;
+            this.uploadingPhotos = false;
+          }
+        };
+
+        return object;
+      })
+      .catch(() => this.toaster.pop('error', 'Error while uploading file'))
   }
 
   getUserDocuments() {
