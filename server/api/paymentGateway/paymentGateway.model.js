@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'payment_gateways',
     timestamps: true,
     underscored: true,
+    paranoid: true,
   });
   return PaymentGateway;
 };

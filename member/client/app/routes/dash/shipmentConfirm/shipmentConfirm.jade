@@ -297,29 +297,30 @@
                   p(ng-if="$ctrl.shipment.payment_gateway_fee")
                     | Payment Gateway (PG) Fee:
                     span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.payment.payment_gateway_fee | number: 2 }}
-          ul.list-group.list-group-lg.m-b-none.list-unstyled.chkbox_background(ng-if="$ctrl.shipment.Customer.wallet_balance_amount && $ctrl.shipment.Customer.wallet_balance_amount < $ctrl.shipment.estimated_amount && $ctrl.shipment.Customer.wallet_balance_amount !== 0")
-            li
-              .checkbox
-                label.i-checks(ng-if="$ctrl.shipment.Customer.wallet_balance_amount")
-                  input(
-                  ng-model='$ctrl.isWalletChecked'
-                  type='checkbox',
-                  ng-change="$ctrl.walletClicked()",
-                  ng-checked ="$ctrl.isWalletChecked"
-                  )
-                  i
-                  | Shoppre Wallet
-                label.i-checks(ng-if="$ctrl.shipment.Customer.wallet_balance_amount < 0")
-                  input(
-                  ng-model='$ctrl.isWalletChecked'
-                  type='checkbox',
-                  ng-change="$ctrl.walletClicked()",
-                  ng-checked='true'
-                  ng-disabled="$ctrl.status = 'disabled'"
-                  )
-                  i
-                  | Shoppre Wallet
-                span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.Customer.wallet_balance_amount| number : 2}}
+          // - todo wallet option required after implementation
+          //ul.list-group.list-group-lg.m-b-none.list-unstyled.chkbox_background(ng-if="$ctrl.shipment.Customer.wallet_balance_amount && $ctrl.shipment.Customer.wallet_balance_amount < $ctrl.shipment.estimated_amount && $ctrl.shipment.Customer.wallet_balance_amount !== 0")
+          //  li
+          //    .checkbox
+          //      label.i-checks(ng-if="$ctrl.shipment.Customer.wallet_balance_amount")
+          //        input(
+          //        ng-model='$ctrl.isWalletChecked'
+          //        type='checkbox',
+          //        ng-change="$ctrl.walletClicked()",
+          //        ng-checked ="$ctrl.isWalletChecked"
+          //        )
+          //        i
+          //        | Shoppre Wallet
+          //      label.i-checks(ng-if="$ctrl.shipment.Customer.wallet_balance_amount < 0")
+          //        input(
+          //        ng-model='$ctrl.isWalletChecked'
+          //        type='checkbox',
+          //        ng-change="$ctrl.walletClicked()",
+          //        ng-checked='true'
+          //        ng-disabled="$ctrl.status = 'disabled'"
+          //        )
+          //        i
+          //        | Shoppre Wallet
+          //      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.Customer.wallet_balance_amount| number : 2}}
           div.final-ship-charge
             h4 Final Shipping Charges *
               h4.fa.fa-rupee {{$ctrl.payment.amount| number : 2}}

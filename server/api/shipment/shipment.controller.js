@@ -1601,6 +1601,8 @@ exports.confirmShipment = async (req, res) => {
   if (customer.wallet_balance_amount < 0 || req.query.wallet === '1') {
     log('wallet123123', customer.wallet_balance_amount);
     payment.wallet = customer.wallet_balance_amount;
+    // - todo need to remove zero after wallet implementation
+    payment.wallet = 0;
     payment.amount -= payment.wallet;
   }
 

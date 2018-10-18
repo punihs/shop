@@ -77,6 +77,7 @@ class ShipmentConfirmController {
         this.promoStatus = promoStatus;
         this.couponAmount = couponAmount;
         this.data.paymentGateway = payment.payment_gateway_id;
+        this.totalpackagePriceAmount = 0;
         packages.forEach((x) => {
           this.totalpackagePriceAmount += x.price_amount;
         });
