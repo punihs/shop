@@ -31,8 +31,9 @@ div
           tr
             th.col-xs-1 ID
             th.col-xs-2 Store
-            th.col-xs-3 Name
-            th.col-xs-3 Locker
+            th.col-xs-2 Name
+            th.col-xs-2 Locker
+            th.col-xs-2 Received
             th.col-xs-2 Status
       .col-xs-12(style='padding: 10px;')
         .col-xs-12(ng-show='$ctrl.packages.length === 0 && !$ctrl.ui.loading')
@@ -41,10 +42,11 @@ div
           .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="package.id" title="{{package.id}}")
           .col-xs-2.wrapper-sm.m-t-xs
             a(ui-sref='package.show({ id: package.id, profilePhotoUrl: package.Customer.profile_photo_url })' target="_blank") {{package.Store.name}}
-          .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="package.Customer.name" title="{{package.Customer.name}}")
-          .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(title="{{package.Customer.virtual_address_code + ' ('+package.Customer.Locker.short_name+ ')'}}")
+          .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="package.Customer.name" title="{{package.Customer.name}}")
+          .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(title="{{package.Customer.virtual_address_code + ' ('+package.Customer.Locker.short_name+ ')'}}")
             span(ng-bind="package.Customer.virtual_address_code")
-            span.text-small.text-muted(ng-bind="' ('+package.Customer.Locker.short_name+ ')'")
+          .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs
+            span(ng-bind="package.created_at | date:'M/d/yy h:mm a'" title="{{package.totalDays}} days" ng-class="package.totalDays > 20 ? 'text-danger' : 'text-success'")
           .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-class='{"col-xs-3": !$ctrl.isAdmin}'): .w-full(uib-dropdown='' uib-keyboard-nav='' dropdown-append-to-body)
             button.text-ellipsis.btn.bg-white-only(class='b-{{App.states[package.state_id].config.color || "gray"}} text-{{App.states[package.state_id].config.color || "gray"}}' uib-dropdown-toggle=''
             style='text-align:left;padding: 2px 8px;width:auto'

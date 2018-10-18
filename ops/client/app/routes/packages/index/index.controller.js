@@ -33,6 +33,7 @@ class PackagesIndexController {
 
   $onInit() {
     this.facets = {};
+    this.todayDate = '';
     this.initializing = true;
     this.timeout = this.$timeout(() => {});
 
@@ -158,6 +159,12 @@ class PackagesIndexController {
           return;
         }
         this.packages.push(...packages);
+        this.todayDate = new Date();
+        this.packages.map(packageData => {
+          const packageDate = new Date(packageData.created_at);
+          packageData.totalDays = Math.ceil((Math.abs(this.todayDate.getTime() - packageDate.getTime()))/(1000 * 3600 * 24));
+          return packageData;
+        });
 
         this.total = total;
         // data has been loaded
