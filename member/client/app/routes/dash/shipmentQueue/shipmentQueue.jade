@@ -6,6 +6,16 @@ div.m-t-xl.no-margin
         .h1.m-l-md.font-thin.h3.m-b-md.text-u-c
           | SHIPMENTS IN QUEUE
         .clearfix
+            div
+            .alert.alert-warning(role='alert', ng-if='$ctrl.inreview')
+              h5
+                b Shoppre &nbsp;
+                | team members are currently preparing your shipment(s). No action is required on your part, &nbsp;
+                | and you will be notified when your shipment(s) &nbsp;
+                b is packed and weighed. &nbsp;
+                | Past shipments
+                | can be viewed in your &nbsp;
+                a(ui-sref="dash.history") History
             .alert.alert-warning(role='alert')
               h5
                 | Kindly Submit your Payment within 7 DAYS after you have received Shoppre's email titled "Submit Payment | Your Shipment is packed and weighed".
@@ -57,7 +67,7 @@ div.m-t-xl.no-margin
                         td.footable-visible
                           div
                             div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PACKAGING_REQUESTED')
-                              p In Review
+                              p(ng-init= '$ctrl.inreview = true') In Review
                               p
                                 a.summary-order(ng-click="$ctrl.cancelShipRequest(shipment.id, $index)") Cancel Shipment
                                 i.fa.fa-info-circle.m-l-xs(

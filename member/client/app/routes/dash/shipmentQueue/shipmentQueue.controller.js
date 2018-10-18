@@ -14,6 +14,7 @@ class ShipmentQueue {
   }
 
   $onInit() {
+    this.inreview = false;
     this.SHIPMENT_STATE_IDS = this.CONFIG.SHIPMENT_STATE_IDS;
     this.$http
       .get('/shipments/queue')

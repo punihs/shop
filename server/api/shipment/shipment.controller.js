@@ -699,6 +699,7 @@ exports.shipQueue = async (req, res) => {
         attributes: ['id', 'name'],
       }],
     }],
+    order: [['updated_at', 'desc']],
   };
   await Shipment
     .findAll(options)
