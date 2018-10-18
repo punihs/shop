@@ -74,12 +74,12 @@ class AddAddressController {
     const editId = this.type === 'add' ? '' : this.addressId;
     return this
       .$http[this.type === 'edit' ? 'put' : 'post'](`/addresses/${editId}`, data)
-      .then(({ data: { id: aid } }) => {
+      .then(() => {
         this.submitting = false;
         this
           .toaster
           .pop('success', `${data.city} Shipping Address ${this.type} Successfull.`, '');
-        this.$uibModalInstance.close(Object.assign(data, { id: aid }));
+        this.$uibModalInstance.close(Object.assign(data, { id: this.addressId }));
         // return this.$state.go('accounts.address-list');
       })
       .catch((err) => {

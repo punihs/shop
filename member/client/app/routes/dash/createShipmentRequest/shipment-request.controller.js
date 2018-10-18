@@ -51,7 +51,7 @@ class shipmentRequestController {
         this.IsShippingAddress = true;
         if (data.is_default === true) {
           // data.id = addressId;
-          this.data.address_id = addressId;
+          this.data.address_id = data.id;
         }
         Object.assign(this.customer.Addresses[index], data);
       });
