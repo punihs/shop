@@ -15,6 +15,7 @@ const worker = (job, done) => {
     json: true,
   }).then(() => done(null))
     .catch((err) => {
+      done();
       const { response } = err;
       switch (response.statusCode) {
         case 500: {
