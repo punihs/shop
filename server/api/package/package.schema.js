@@ -11,5 +11,4 @@ exports.packageCreate = {
       type: 'number',
     },
   },
-  required: ['store_id'],
 };

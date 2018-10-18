@@ -88,6 +88,7 @@ class PackageNewController {
     const form = this.validateForm(newPackageForm);
 
     const data = Object.assign({ }, this.data);
+    Object.assign(data, { store_name: this.Stores.model });
     if (!form) return (this.submitting = false);
 
     return this.$http

@@ -214,6 +214,7 @@ exports.create = async (req, res, next) => {
             nextStateId: INCOMING_PACKAGE,
             pkg: { ...pack.toJSON(), ...pack.id },
             actingUser: req.user,
+            comments: `Submitted Incoming Alert From ${req.body.store_name}`,
           });
 
           return res

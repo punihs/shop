@@ -33,7 +33,9 @@ class PackageShowController {
     this.packageItemsAdditionAllowedStateIds = [1];
     this.states = this.Session.read('states');
     this.user = this.Session.read('userinfo');
-    this.Page.setTitle(this.data.Store.name);
+    this.data.Store ?
+      this.Page.setTitle(this.data.Store.name) :
+      this.Page.setTitle(this.data.store_name);
     this.Page.setFavicon(`${this.$stateParams.profilePhotoUrl}`);
     this.packageItems = [];
     this.charges = null;

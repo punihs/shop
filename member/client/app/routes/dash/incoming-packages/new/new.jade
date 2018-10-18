@@ -35,21 +35,6 @@ div.m-t-xl.no-margin.bg-white-only
                   .alert.alert-success(ng-show='$ctrl.showSuccess')
                     h4.panel-title.text-center.font-thin.h5
                       | Your order has been submitted to shoppre package collection centre. We will update you once your package receive our facility.
-              .row
-                .col-md-8.col-sm-12.col-xs-12.col-md-offset-2.no-padder-right
-                  label.col-xs-12.input-group
-                    | Product Name
-                    span.text-danger *
-                    input.form.form-control(
-                      type='text'
-                      name="name"
-                      placeholder='eg. Saree'
-                      ng-model='$ctrl.data.name'
-                      value='saree'
-                      autofocus
-                      required
-                    )
-                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.name.$dirty && newPackageForm.name.$invalid') Please enter Product Name
 
               .row
                 .col-md-8.col-sm-12.col-xs-12.col-md-offset-2.no-padder-right
@@ -71,10 +56,6 @@ div.m-t-xl.no-margin.bg-white-only
                     )
                     span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.store_id.$dirty && newPackageForm.store_id.$invalid') Please select current location
                     i.fa.fa-refresh.fa-spin(ng-show='$ctrl.Stores.loadingStores')
-                    div(ng-show='$ctrl.Stores.noResults')
-                      i.fa.fa-remove
-                      |  No Results Found
-
                     span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.store_id.$dirty && newPackageForm.store_id.$invalid') Please enter Store Name
 
               .row

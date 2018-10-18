@@ -19,7 +19,7 @@ module.exports = DataTypes => ({
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
-  name: DataTypes.STRING,
+  store_name: DataTypes.STRING,
   tracking_code: DataTypes.STRING,
   invoice_code: DataTypes.STRING,
   comments: DataTypes.STRING,
