@@ -11,7 +11,17 @@ div.m-t-xl.no-margin
       div
         .h1.m-l-md.font-thin.h3
           | {{$ctrl.EDIT ? 'Edit' : 'Create'}} Shipment
-
+      div
+        ul.nav.nav-pills.nav-sm.pull-right
+          li.m-r-xs.pull-right
+            a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
+            ui-sref='shipment.show({ id: $ctrl.data.id })'
+            popover-trigger="'mouseenter'"
+            popover-placement='bottom'
+            popover-append-to-body='true'
+            )
+              span.fa.fa-backward
+              span  Go Back
       form.form.form-validation.form-horizontal.wrapper-md(
         name="newShipmentForm"
         novalidate

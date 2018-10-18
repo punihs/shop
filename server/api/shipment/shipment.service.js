@@ -21,6 +21,7 @@ exports.index = ({ params, query, user: actingUser }) => {
     where: {},
     offset: Number(query.offset) || 0,
     limit: Number(query.limit) || 20,
+    order: [['updated_at', 'desc']],
   };
   switch (true) {
     case (actingUser.app_id === APPS.OPS && actingUser.group_id === OPS): {

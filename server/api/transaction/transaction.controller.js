@@ -258,7 +258,14 @@ exports.updateCardTransaction = async (transaction, url, failedURL, shipment, cu
 
   if (result.vpc_TxnResponseCode === '0') {
     return paymentSuccess({
-      shipment, customer, isRetryPayment, isWalletUsed, finalAmount, res, url, CARD,
+      shipment,
+      customer,
+      isRetryPayment,
+      isWalletUsed,
+      finalAmount,
+      res,
+      url,
+      paymentGatewayId: transaction.payment_gateway_id,
     });
   } else if (result.vpc_TxnResponseCode === 'Aborted') {
     this.paymentFailed(shipment, customer, CARD);
