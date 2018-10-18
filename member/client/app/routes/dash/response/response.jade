@@ -60,11 +60,11 @@ section.ship_response
             ul
               li
                 | The shipment order will be in
-                a.summary-order(href="{{route('please update your Quelink link here')}}")&nbsp; Queue
+                a.summary-order(ui-sref='dash.shipmentQueue')&nbsp; Queue
                 |  until the items LEAVE Shoppre facility.
               li
                 | You can view your shipped packages in transit in your
-                a.summary-order(href="")&nbsp; History
+                a.summary-order(href="dash.history")&nbsp; History
                 | .
               li
                 | We shall let you know if we haven’t received your amount (in case of wire transfer) in 2 days. If we don’t receive your amount within 7 days from the time your parcel was ready to be shipped, you will incur a storage fee of INR 100/day from the 8th day onwards. We can only dispatch your parcel from the Shopre facility upon confirmation of the payment.

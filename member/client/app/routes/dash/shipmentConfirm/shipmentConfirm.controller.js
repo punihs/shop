@@ -125,6 +125,11 @@ class ShipmentConfirmController {
   }
 
   submitPayment() {
+    if (!this.data.paymentGateway) {
+      this
+        .toaster
+        .pop('error', 'Select payment Gateway');
+    }
     if (this.submitting) return null;
     this.params = {
       shipment_id: this.shipment.id,

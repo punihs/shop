@@ -55,8 +55,6 @@ div.m-t-xl.no-margin
                         td.footable-visible {{shipment.final_weight}}
                         td.footable-visible {{shipment.packages_count}}
                         td.footable-visible
-                          span(ng-if="shipment.payment_status === 'failed'")
-                            a(href="") Retry Payment
                           div
                             div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PACKAGING_REQUESTED')
                               p In Review

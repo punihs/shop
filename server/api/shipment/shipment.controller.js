@@ -1708,7 +1708,7 @@ exports.confirmShipment = async (req, res) => {
       payment.amount += payment.payment_gateway_fee;
       break;
     default:
-      payment.payment_gateway_id = WIRE;
+      payment.payment_gateway_id = null;
       break;
   }
 
