@@ -239,8 +239,9 @@
                   td(colspan="5")
                     h1.text-center.text-muted No Items in Shipment
                 .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='packageItems in $ctrl.data.Packages')
-                  .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='packageItems.Store.name')
-                  .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(title="{{packageItems.id}}" ng-bind="packageItems.id + 'pc'")
+                  .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs
+                    a(ui-sref='package.show({ id: packageItems.id })', target="_blank", ng-bind='packageItems.Store.name')
+                  .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(title="{{packageItems.id}}" ng-bind="packageItems.id")
                   .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="'₹' + packageItems.price_amount" title="{{packageItems.price_amount}}")
                   .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="packageItems.weight" title="{{packageItems.weight}}")
 
