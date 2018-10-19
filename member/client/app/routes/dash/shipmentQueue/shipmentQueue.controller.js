@@ -18,8 +18,8 @@ class ShipmentQueue {
     this.SHIPMENT_STATE_IDS = this.CONFIG.SHIPMENT_STATE_IDS;
     this.$http
       .get('/shipments/queue')
-      .then(({ data: { shipments } }) => {
-        shipments.forEach(x => this.shipments.push(x));
+      .then(({ data: { shipment } }) => {
+        shipment.forEach(x => this.shipments.push(x));
         this.todayDate = new Date();
         this.shipments.map(shipment => {
           const shipmentDate = new Date(shipment.created_at);

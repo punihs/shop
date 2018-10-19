@@ -1,10 +1,10 @@
 class ShipmentHistoryController {
   constructor(
-    $http, Page, $stateParams, CONFIG, $state, Session,
+    $http, Page, $stateParams, moment, CONFIG, $state, Session,
     toaster, URLS) {
     this.$http = $http;
     this.Page = Page;
-    this.$stateParams = $stateParams;
+    this.moment = moment;
     this.CONFIG = CONFIG;
     this.toaster = toaster;
     this.Session = Session;
