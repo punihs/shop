@@ -846,8 +846,14 @@ li.dndPlaceholder {
   text-decoration: underline;
 }
 
+.iti-flag {background-image: url("/assets/flags.png");}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .iti-flag {background-image: url("/assets/flags@2x.png");}
+}
+
 .bucket-color{
-  background-color:  #f9f2d4 !important; ;
+  background-color:  #f9f2d4 !important;
 }
 
 //signup
