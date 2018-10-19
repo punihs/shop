@@ -469,7 +469,7 @@ const getPackages = (userId, packageIds) => Package
       attributes: ['id', 'package_id'],
       model: PackageState,
       where: {
-        state_id: READY_TO_SHIP,
+        state_id: [READY_TO_SHIP, DAMAGED],
       },
     }],
   });

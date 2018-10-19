@@ -225,7 +225,7 @@
                   li(ng-if="$ctrl.packageChrages.advanced_photo_amount > 0 || $ctrl.packageChrages.standard_photo_amount > 0")
                     p
                       | Photo Charges
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.packageChrages.standard_photo_amount + $ctrl.packageChrages.advanced_photo_amount}}
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.packageChrages.standard_photo_amount + $ctrl.packageChrages.advanced_photo_amount| number : 2}}
                   li(ng-if="$ctrl.packageChrages.pickup_amount > 0")
                     p
                       | Pick-up Service
@@ -263,7 +263,7 @@
                 ul.list-group.list-group-lg.m-b-none.list-unstyled
                   p
                     | Basic Shipping Costs
-                    span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.estimated_amount - $ctrl.shipment.package_level_charges_amount - $ctrl.payment.wallet}}
+                    span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.estimated_amount - $ctrl.shipment.package_level_charges_amount - $ctrl.payment.wallet| number : 2}}
                   p
                     | Package Level Charges
                     span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.package_level_charges_amount| number : 2}}

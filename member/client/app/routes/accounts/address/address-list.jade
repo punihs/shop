@@ -48,7 +48,11 @@ div.m-t-xl.no-margin
               small.block(ng-bind='address.line1')
               small.block(ng-bind='address.line2')
               small.block(ng-bind='address.city + ", " + address.state')
-              small.block(ng-bind='address.Country.name + " - " + address.pincode')
+              small(ng-bind='address.Country.name + " - " ')
+              span(
+                ng-if='address.pincode'
+                ng-bind='address.pincode'
+              )
               small.block(
                 ng-if='address.phone'
                 ng-bind='address.phone'
