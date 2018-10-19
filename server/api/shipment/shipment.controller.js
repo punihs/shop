@@ -1811,7 +1811,11 @@ exports.createShipment = async (req, res, IsShippingAddress) => {
     include: [{
       model: Address,
       attributes: ['id', 'salutation', 'first_name',
-        'last_name', 'line1', 'line2', 'state', 'customer_id', 'is_default', 'city', 'pincode', 'phone'],
+        'last_name', 'line1', 'line2', 'state', 'customer_id', 'is_default', 'city', 'pincode', 'phone', 'country_id'],
+      include: [{
+        model: Country,
+        attributes: ['name'],
+      }],
     }],
     limit: Number(req.query.limit) || 20,
   };
