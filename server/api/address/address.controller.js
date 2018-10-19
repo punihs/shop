@@ -26,6 +26,8 @@ exports.index = (req, res, next) => {
 
   if (req.user.group_id === CUSTOMER) {
     options.where.customer_id = req.user.id;
+  } else if (req.query.id) {
+    options.where.customer_id = req.query.id;
   }
 
   return Address

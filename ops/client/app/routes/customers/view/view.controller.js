@@ -33,7 +33,7 @@ class CustomerViewController {
     this.Page.setTitle('Address Book');
     this
       .$http
-      .get('/addresses')
+      .get(`/addresses?id=${this.id}`)
       .then(({ data }) => {
         this.addresses = data;
         this.socket.syncUpdates('address', this.addresses);
