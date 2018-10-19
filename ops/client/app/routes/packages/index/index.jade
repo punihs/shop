@@ -34,7 +34,7 @@ div
             th.col-xs-2 Name
             th.col-xs-2 Locker
             th.col-xs-2 Received
-            th.col-xs-2 Status
+            th.col-xs-3 Status
       .col-xs-12(style='padding: 10px;')
         .col-xs-12(ng-show='$ctrl.packages.length === 0 && !$ctrl.ui.loading')
           td(colspan="5"): h1.text-center.text-muted No Packages
@@ -48,7 +48,7 @@ div
             span(ng-bind="package.Customer.virtual_address_code")
           .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs
             span(ng-bind="package.created_at | date:'M/d/yy h:mm a'" title="{{package.totalDays}} days" ng-class="package.totalDays > 20 ? 'text-danger' : 'text-success'")
-          .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-class='{"col-xs-3": !$ctrl.isAdmin}'): .w-full(uib-dropdown='' uib-keyboard-nav='' dropdown-append-to-body)
+          .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-class='{"col-xs-3": !$ctrl.isAdmin}'): .w-full(uib-dropdown='' uib-keyboard-nav='' dropdown-append-to-body)
             button.text-ellipsis.btn.bg-white-only(class='b-{{App.states[package.state_id].config.color || "gray"}} text-{{App.states[package.state_id].config.color || "gray"}}' uib-dropdown-toggle=''
             style='text-align:left;padding: 2px 8px;width:auto'
             ng-disabled='App.states[package.state_id].Actions.length===0 || (package.state_id === 43 && !!$ctrl.prescreen)'

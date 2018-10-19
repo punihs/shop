@@ -18,8 +18,8 @@ class shipmentsShowController {
     this.ListModal = ListModal;
     this.moment = moment;
     this.customer = pkg.Customer;
-    // - todo required
-    //this.editAllowedStates = [16, 17, 18, 19, 21];
+    this.editAllowedStates = [16, 17, 18, 19, 21, 22, 23, 24];
+    this.deleteAllowedStates = [16, 17, 18, 19, 21];
     this.location = $window.location;
     this.user = Session.read('userinfo');
     this.$onInit();
@@ -70,7 +70,11 @@ class shipmentsShowController {
   }
 
   deleteShipment(shipmentid) {
-    this
+    const c = confirm;
+    const ok = c('Are you sure? Deleting Your Shipment');
+    if (!ok) return null;
+
+    return this
       .$http
       .delete(`/shipments/${shipmentid}`)
       .then(({ data: message }) => {

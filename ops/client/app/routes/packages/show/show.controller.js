@@ -133,10 +133,14 @@ class PackageShowController {
   }
 
   deletePackage(packageid) {
-    this
+    const c = confirm;
+    const ok = c('Are you sure? Deleting Your Package');
+    if (!ok) return null;
+
+    return this
       .$http
       .delete(`/packages/${packageid}`)
-      .then(({ data: message }) => {
+      .then(({ data: { message } }) => {
         this.toaster
           .pop('success', message);
         this.$state.go('packages.index');
@@ -148,7 +152,11 @@ class PackageShowController {
   }
 
   deletePackageItem(packageid, itemId, index) {
-    this
+    const c = confirm;
+    const ok = c('Are you sure? Deleting Your Package Item');
+    if (!ok) return null;
+
+    return this
       .$http
       .delete(`/packages/${packageid}/item/${itemId}/delete`)
       .then(({ data: { message } }) => {
