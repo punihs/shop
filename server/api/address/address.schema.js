@@ -7,8 +7,8 @@ const createAddress = {
     },
   },
   required: [
-    'salutation', 'first_name', 'last_name', 'line1', 'line2', 'city', 'state', 'country_id',
-    'pincode', 'phone',
+    'salutation', 'first_name', 'last_name', 'line1', 'city', 'state', 'country_id',
+    'phone',
   ],
 };
 
