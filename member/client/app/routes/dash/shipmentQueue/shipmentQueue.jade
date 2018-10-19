@@ -100,6 +100,8 @@ div.m-t-xl.no-margin
                               p Payment Received
                               p
                                   a.summary-order(ui-sref='dash.shipmentInvoice({shipmentId: shipment.id})', target='_blank') Invoice
+                            div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.UPSTREAM_SHIPMENT_REQUEST_CREATED')
+                              p Shipment Ready For Dispatch
                       tr
                         td(colspan=8 ng-if='shipment.open')
                           .col-sm-7

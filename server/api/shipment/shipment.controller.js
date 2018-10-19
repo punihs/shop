@@ -683,7 +683,7 @@ exports.shipQueue = async (req, res) => {
       attributes: ['state_id'],
       where: {
         state_id: [PACKAGING_REQUESTED, PAYMENT_REQUESTED,
-          PAYMENT_COMPLETED, PAYMENT_FAILED, PAYMENT_CONFIRMED],
+          PAYMENT_COMPLETED, PAYMENT_FAILED, PAYMENT_CONFIRMED, UPSTREAM_SHIPMENT_REQUEST_CREATED],
       },
     }, {
       model: PaymentGateway,
