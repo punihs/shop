@@ -10,6 +10,7 @@ module.exports = () => [
   }, {
     id: 3,
     name: 'Debit/Credit',
+    description: '(2.5% Extra Payment Gateway Charge)',
     value: 'card',
   }, {
     id: 4,
