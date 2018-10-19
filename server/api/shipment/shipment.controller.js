@@ -1144,7 +1144,7 @@ exports.finalShipRequest = async (req, res) => {
     object_name: 'shipment',
     object_id: shipment.id,
     payment_gateway_id: req.body.payment_gateway_id,
-    amount: shipment.final_amount,
+    amount: finalAmount,
     customer_id: req.user.id,
   });
 
@@ -1158,7 +1158,7 @@ exports.finalShipRequest = async (req, res) => {
     const url = `${URLS_MEMBER}/locker/request/${shipment.id}/reponse`;
     return transactionController.success(
       shipment, customer, 0, req.body.is_wallet,
-      shipment.final_amount, res, url, req.body.payment_gateway_id,
+      finalAmount, res, url, req.body.payment_gateway_id,
     );
   }
   return initiatePayment(transaction, req, res);
