@@ -4,8 +4,6 @@ div
     div.m-t-xl(style='position: fixed;right: 5px;z-index: 9;padding-top: 2px;')
       ul.nav.nav-pills.nav-sm.m-t-xs
         li.m-r-xs.pull-right: a(ng-if='$ctrl.packages.length') {{$ctrl.packages.length}} of {{$ctrl.total}} Packages(s)
-        li.m-r-xs.pull-right.pointer(title='Export' ng-click='$ctrl.ExcelDownload.download($ctrl.params, $ctrl.$stateParams.customerId);'): button.btn.btn-sm.bg-white-only.b-gray: span.fa.fa-file-excel-o
-        li.m-r-xs.pull-right.pointer(title='Filter' ng-click='App.openCandidateFilter()'): button.btn.btn-sm.bg-white-only.b-gray: span.fa.fa-filter
         li.pull-right.col.pointer.m-r-xs
           uib-dropdown
             button.btn.btn-sm.bg-white-only.b-gray(type='button', uib-dropdown-toggle='', aria-haspopup='true', aria-expanded='false')
@@ -37,7 +35,8 @@ div
                 .m-b-sm
                   label.sm.m-b-none
                     i
-                    strong.text-primary-lt PackageID - {{package.id}}
+                    a(ui-sref='package.show({ id: package.id})' target="_blank")
+                      strong.text-primary-lt  PackageID - {{package.id}}
                   .col-xs-4.text-ellipsis
                     i
                     a(ui-sref='package.show({ id: package.id})' target="_blank")

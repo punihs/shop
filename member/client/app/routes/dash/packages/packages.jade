@@ -123,7 +123,7 @@ div.no-margin
                         td.footable-visible.text-center(ng-if="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'")
                           p.no-margin Provide Item Values
                           p.no-margin As required by Customs
-                        td.footable-visible(ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'"){{package.weight | number : 2}}
+                        td.footable-visible(ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'"){{package.weight | number : 2}} KG
                         td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'" )
                           a(ng-click='$ctrl.uploadPhotos(package)')
                             u Photos
