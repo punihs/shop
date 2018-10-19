@@ -32,6 +32,7 @@ const {
     SHIPMENT_DELIVERED, SHIPMENT_DELETED, SHIPMENT_REJECTED_BY_CUSTOMER, RETURN_TO_ORIGIN,
     CUSTOMER_ACKNOWLEDGEMENT_RECEIVED, AMOUNT_RECEIVED_FROM_UPSTREAM,
   },
+  SHIPMENT_HISTORY,
   PACKAGE_STATE_IDS: { READY_TO_SHIP, DAMAGED },
   // LOYALTY_TYPE: {
   //   REDEEM,
@@ -726,22 +727,44 @@ exports.count = async (req, res) => {
     .then(count => res.json(count));
 };
 
-exports.history = (req, res, next) => {
+exports.history = (req, res) => {
   const options = {
     attributes: [
-      'order_code', 'customer_name', 'address', 'status', 'tracking_code',
-      'dispatch_date', 'shipping_carrier', 'phone', 'packages_count', 'weight',
-      'estimated_amount', 'created_at', 'final_amount',
+      'id', 'order_code', 'customer_name', 'address',
+      'phone', 'packages_count', 'final_weight', 'wallet_amount', 'package_level_charges_amount',
+      'coupon_amount', 'loyalty_amount', 'estimated_amount', 'created_at', 'payment_status',
+      'final_amount', 'payment_gateway_fee_amount',
     ],
-    where: {
-      status: ['dispatched', 'delivered', 'canceled', 'refunded'],
-    },
+    where: { customer_id: req.user.id },
+    include: [{
+      model: ShipmentState,
+      attributes: ['state_id'],
+      where: {
+        state_id: SHIPMENT_HISTORY,
+      },
+    }, {
+      model: PaymentGateway,
+      attributes: ['id', 'name', 'value'],
+    }, {
+      model: Package,
+      attributes: ['id', 'created_at', 'weight', 'price_amount'],
+      include: [{
+        model: PackageItem,
+        attributes: ['id', 'quantity', 'price_amount', 'total_amount', 'object', 'name'],
+      }, {
+        model: Store,
+        attributes: ['id', 'name'],
+      }],
+    }],
+    order: [['updated_at', 'desc']],
   };
 
-  return Shipment
+  Shipment
     .findAll(options)
-    .then(shipments => res.json(shipments))
-    .catch(next);
+    .then((shipment) => {
+      log(shipment);
+      res.json({ shipment });
+    });
 };
 
 exports.cancelRequest = async (req, res, next) => {
@@ -1954,11 +1977,10 @@ exports.state = async (req, res, next) => Shipment
     log({ shipment });
     if (SHIPMENT_HANDED === req.body.state_id) {
       if (!shipment.dispatch_date || !shipment.shipping_carrier || !shipment.number_of_packages ||
-        !shipment.weight_by_shipping_partner ||
-        !shipment.value_by_shipping_partner || !shipment.tracking_code) {
+        !shipment.weight_by_shipping_partner || !shipment.tracking_code) {
         log('You must update Shipment Tracking Information to send dispatch notification!');
-        return res.json({
-          error: 'You must update Shipment Tracking Information to send dispatch notification!',
+        return res.status(400).json({
+          message: 'You must update Shipment Tracking Information to send dispatch notification!',
         });
       }
     }

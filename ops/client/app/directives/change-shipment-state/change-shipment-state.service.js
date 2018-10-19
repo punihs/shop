@@ -53,7 +53,7 @@ class ChangeShipmentStateController {
         this.changeStateError = response.error;
         this
           .toaster
-          .pop('success', response.data.message);
+          .pop('error', response.data.message);
       });
   }
 }

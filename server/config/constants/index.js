@@ -81,6 +81,7 @@ const constants = {
     SHIPMENT_CANCELLED: 41,
     SHIPMENT_DELETED: 55,
   },
+  SHIPMENT_HISTORY: [24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 55],
   PRICE_ENTERER: {
     SHOPPRE: '1',
     CUSTOMER: '2',

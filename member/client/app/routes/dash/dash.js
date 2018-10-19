@@ -90,5 +90,10 @@ angular.module('uiGenApp')
         controller: 'ShipmentCancelController',
         controllerAs: '$ctrl',
       })
-    ;
+      .state('dash.shipmentHistory', {
+        url: '/shipmentHistory',
+        templateUrl: 'app/routes/dash/shipmentHistory/shipmentHistory.html',
+        controller: 'ShipmentHistoryController',
+        controllerAs: '$ctrl',
+      });
   });
