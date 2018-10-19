@@ -253,6 +253,14 @@ exports.state = async (req, res, next) => {
     if (!photoRequest) {
       return res.status(400).json({ message: 'Please check and update the Photo Request Status !' });
     }
+
+    if (!pkg.weight) {
+      return res.status(400).json({ message: 'Please update weight of the package' });
+    }
+
+    if (!pkg.price_amount) {
+      return res.status(400).json({ message: 'Please update package value' });
+    }
   }
 
   return Package

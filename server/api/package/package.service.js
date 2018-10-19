@@ -35,6 +35,8 @@ exports.index = ({ query, params, user: actingUser }) => {
     log({ field, order });
     if (field && order) {
       orderSort = [[field, order]];
+    } else {
+      orderSort = [['id', 'desc']];
     }
   } else {
     orderSort = [['id', 'desc']];
