@@ -1,7 +1,6 @@
 class NavbarController {
-  constructor($rootScope, $http, $state, $timeout, $q, Auth, URLS, Session, Hotkeys) {
+  constructor($rootScope, $http, $state, $timeout, $q, Auth, URLS, Session) {
     this.$http = $http;
-    this.hotkeys = Hotkeys;
     this.$timeout = $timeout;
     this.Auth = Auth;
     this.URLS = URLS;
@@ -17,15 +16,6 @@ class NavbarController {
     if (!this.user) return;
     this.userInitial = this.user.first_name.substr(0, 1);
     this.ui = { count: 0 };
-    // Create simple hotkey object
-    const hotkey = this.hotkeys.createHotkey({
-      key: 'shift+f',
-      callback: () => {
-        $("#txtSearch").focus();
-      },
-    });
-    // Register the hotkey object
-    this.hotkeys.registerHotkey(hotkey);
   }
 }
 

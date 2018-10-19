@@ -2,12 +2,11 @@
 class CustomerNavController {
   /* @ngInject */
   constructor(
-    $http, $state, $scope, $timeout, Session, Prototype, toaster, Hotkeys
+    $http, $state, $scope, $timeout, Session, Prototype, toaster
   ) {
     this.toaster = toaster;
     this.$http = $http;
     this.$state = $state;
-    this.hotkeys = Hotkeys;
     this.$scope = $scope;
     this.$timeout = $timeout;
     this.Session = Session;
@@ -26,16 +25,6 @@ class CustomerNavController {
     this.reset();
     this.getList(true);
     this.refreshList = this.getList.bind(this);
-    // Create simple hotkey object
-    const hotkey = this.hotkeys.createHotkey({
-      key: 'shift+f',
-      callback: () => {
-        $("#txtSearch").focus();
-      },
-    });
-
-    // Register the hotkey object
-    this.hotkeys.registerHotkey(hotkey);
   }
 
   reset(fromSearch) {
