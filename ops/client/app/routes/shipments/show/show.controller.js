@@ -78,7 +78,7 @@ class shipmentsShowController {
     return this
       .$http
       .delete(`/shipments/${shipmentid}`)
-      .then(({ data: message }) => {
+      .then(({ data: { message } }) => {
         this.toaster
           .pop('success', message);
         this.$state.go('shipments.index');

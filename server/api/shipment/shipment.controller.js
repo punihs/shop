@@ -6,6 +6,7 @@ const paytm = require('../paymentGateway/paytm/paytm.controller');
 const axis = require('../paymentGateway/axis/axis.controller');
 const paypal = require('../paymentGateway/paypal/paypal.controller');
 const transactionController = require('../transaction/transaction.controller');
+const logger = require('../../components/logger');
 
 const eventEmitter = require('../../conn/event');
 const { URLS_API } = require('../../config/environment');
@@ -278,70 +279,74 @@ exports.metaUpdate = async (req, res) => {
 };
 
 exports.destroy = async (req, res) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  const shipment = await Shipment
-    .find({
-      where: { id },
-      include: [{
-        model: ShipmentState,
-        attributes: ['id', 'state_id'],
-      }],
-    });
+    const shipment = await Shipment
+      .find({
+        where: { id },
+        include: [{
+          model: ShipmentState,
+          attributes: ['id', 'state_id'],
+        }],
+      });
 
-  if ([PAYMENT_CONFIRMED,
-    UPSTREAM_SHIPMENT_REQUEST_CREATED,
-    SHIPMENT_HANDED,
-    SHIPMENT_MANUAL_FOLLOW_UP,
-    SHIPMENT_LOST,
-    CUSTOM_ON_HOLD,
-    WRONG_ADDRESS,
-    SHIPMENT_REJECTED_BY_CUSTOMER,
-    RTO_REQUESTED,
-    RAISE_SHIPMENT_LOST_CLAIM,
-    PENALTY_PAYMENT_REQUESTED,
-    RETURN_TO_ORIGIN,
-    AMOUNT_RECEIVED_FROM_UPSTREAM,
-    PENALTY_PAYMENT_DONE,
-    WRONG_ADDRESS_FOLLOW_UP,
-    CLAIM_PROCESSED_TO_CUSTOMER,
-    CUSTOMER_ACKNOWLEDGEMENT_RECEIVED,
-    SHIPMENT_DELIVERED,
-    SHIPMENT_CANCELLED].includes(shipment.ShipmentState.state_id)) {
-    return res.json({ message: 'Can not delete shipment after payment confirm' });
-  }
+    if ([PAYMENT_CONFIRMED,
+      UPSTREAM_SHIPMENT_REQUEST_CREATED,
+      SHIPMENT_HANDED,
+      SHIPMENT_MANUAL_FOLLOW_UP,
+      SHIPMENT_LOST,
+      CUSTOM_ON_HOLD,
+      WRONG_ADDRESS,
+      SHIPMENT_REJECTED_BY_CUSTOMER,
+      RTO_REQUESTED,
+      RAISE_SHIPMENT_LOST_CLAIM,
+      PENALTY_PAYMENT_REQUESTED,
+      RETURN_TO_ORIGIN,
+      AMOUNT_RECEIVED_FROM_UPSTREAM,
+      PENALTY_PAYMENT_DONE,
+      WRONG_ADDRESS_FOLLOW_UP,
+      CLAIM_PROCESSED_TO_CUSTOMER,
+      CUSTOMER_ACKNOWLEDGEMENT_RECEIVED,
+      SHIPMENT_DELIVERED,
+      SHIPMENT_CANCELLED].includes(shipment.ShipmentState.state_id)) {
+      return res.json({ message: 'Can not delete shipment after payment confirm' });
+    }
 
-  const pkg = await Package
-    .findAll({
-      where: { shipment_id: shipment.id },
-    });
-  log('pkg id', JSON.stringify(pkg));
+    const pkg = await Package
+      .findAll({
+        where: { shipment_id: shipment.id },
+      });
+    log('pkg id', JSON.stringify(pkg));
 
-  await Promise.all(pkg
-    .map(({ packageId }) => Package
-      .updateState({
+    await Promise.all(pkg
+      .map(({ packageId }) => Package
+        .updateState({
+          db,
+          lastStateId: null,
+          nextStateId: READY_TO_SHIP,
+          pkg: { packageId, id },
+          actingUser: req.user,
+        })));
+
+    await ShipmentMeta
+      .destroy({ where: { shipment_id: id } });
+
+    await Shipment
+      .updateShipmentState({
         db,
-        lastStateId: null,
-        nextStateId: READY_TO_SHIP,
-        pkg: { packageId, id },
+        shipment,
         actingUser: req.user,
-      })));
+        nextStateId: SHIPMENT_DELETED,
+        comments: 'Shipment Deleted By OPS',
+      });
+    await Package
+      .update({ shipment_id: null }, { where: { shipment_id: id } });
 
-  await ShipmentMeta
-    .destroy({ where: { shipment_id: id } });
-
-  await Shipment
-    .updateShipmentState({
-      db,
-      shipment,
-      actingUser: req.user,
-      nextStateId: SHIPMENT_DELETED,
-      comments: 'Shipment Deleted By OPS',
-    });
-  await Package
-    .update({ shipment_id: null }, { where: { shipment_id: id } });
-
-  return res.json({ message: 'Shipment Deleted' });
+    return res.json({ message: 'Shipment Deleted' });
+  } catch (e) {
+    return logger.error('error shipment deletion', e);
+  }
 };
 
 const calcShipping = async (countryId, weight, type) => {
