@@ -71,7 +71,7 @@ div.no-margin
                     thead
                       tr
                         th.footable-visible.footable-sortable
-                          | ----
+                          | Details
                         th.footable-visible.footable-sortable
                           | From
                           span.footable-sort-indicator
@@ -107,23 +107,23 @@ div.no-margin
                           i.fa.fa-sort-desc
                         td.footable-visible
                           a(ui-sref='package.show({ id: package.id })' ng-bind='package.Store.name')
+                          br
+                          span.text-info {{package.invoice_code}}
                         td.footable-visible {{package.id}}
                           span.badge.bg-success.m-l-xs(ng-if='package.content_type === "2"') SPECIAL
                           span.badge.bg-danger.m-l-xs(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.DAMAGED') DAMAGED
                         td.footable-visible(
-                        ng-bind='$ctrl.moment(package.created_at).fromNow()'
-                        uib-tooltip="{{package.created_at | date:'MMM d, y'}} IST {{package.created_at | date:'h:mm a'}}"
+                        uib-tooltip="{{$ctrl.moment(package.created_at).fromNow()}} IST {{package.created_at | date:'h:mm a'}}"
                         tooltip-placement='right'
                         tooltip-append-to-body='true'
-                        )
+                        ) {{package.created_at | date:'MMM d, y'}}
                         td.footable-visible(
-                        ng-bind='package.price_amount'
                         ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'"
-                        )
+                        ) {{package.price_amount | number : 2}}
                         td.footable-visible.text-center(ng-if="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'")
                           p.no-margin Provide Item Values
                           p.no-margin As required by Customs
-                        td.footable-visible(ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'" ng-bind='package.weight')
+                        td.footable-visible(ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'"){{package.weight | number : 2}}
                         td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'" )
                           a(ng-click='$ctrl.uploadPhotos(package)')
                             u Photos

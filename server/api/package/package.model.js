@@ -8,18 +8,18 @@ const notification = require('./package.notification');
 
 const {
   PACKAGE_STATE_IDS: {
-    PACKAGE_ITEMS_UPLOAD_PENDING, READY_TO_SHIP,
-    SPLIT_PACKAGE_PROCESSED, INVOICE,
+    PACKAGE_ITEMS_UPLOAD_PENDING, READY_TO_SHIP, RETURN_PICKUP_DONE,
+    SPLIT_PACKAGE_PROCESSED,
   },
+  TRANSACTION_TYPES: { DEBIT },
 } = require('../../config/constants');
 
 const {
-  PACKAGE: { SPLIT_PACKAGE },
+  PACKAGE: { SPLIT_PACKAGE, RETURN },
 } = require('../../config/constants/charges');
 
 const stateIdcommentMap = {
   [PACKAGE_ITEMS_UPLOAD_PENDING]: 'Package Recieved',
-  [INVOICE]: 'Package under review for customer invoice upload',
   [SPLIT_PACKAGE_PROCESSED]: 'Package Splitted!', // email sending is pending
 };
 
@@ -126,6 +126,16 @@ module.exports = (sequelize, DataTypes) => {
             log({ PACKAGE_ITEMS_UPLOAD_PENDING });
             db.Locker
               .allocation({ customerId: pkg.customer_id });
+            break;
+          }
+          case RETURN_PICKUP_DONE: {
+            const transaction = {};
+            const customerId = actingUser.id;
+            transaction.type = DEBIT;
+            transaction.customer_id = customerId;
+            transaction.amount = RETURN;
+            db.Transaction
+              .create(transaction);
             break;
           }
           default: {

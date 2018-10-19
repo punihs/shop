@@ -32,7 +32,7 @@ const {
     SHIPMENT_DELIVERED, SHIPMENT_DELETED, SHIPMENT_REJECTED_BY_CUSTOMER, RETURN_TO_ORIGIN,
     CUSTOMER_ACKNOWLEDGEMENT_RECEIVED, AMOUNT_RECEIVED_FROM_UPSTREAM,
   },
-  PACKAGE_STATE_IDS: { READY_TO_SHIP },
+  PACKAGE_STATE_IDS: { READY_TO_SHIP, DAMAGED },
   // LOYALTY_TYPE: {
   //   REDEEM,
   // },
@@ -1847,7 +1847,7 @@ exports.redirectShipment = async (req, res) => {
         model: PackageState,
         attributes: [],
         where: {
-          state_id: READY_TO_SHIP,
+          state_id: [READY_TO_SHIP, DAMAGED],
         },
       }],
     });
