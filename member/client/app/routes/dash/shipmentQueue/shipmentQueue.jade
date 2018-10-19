@@ -68,7 +68,7 @@ div.m-t-xl.no-margin
                           div
                             div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PACKAGING_REQUESTED')
                               p(ng-init= '$ctrl.inreview = true') In Review
-                              p
+                              p(ng-if='shipment.totalHours <= 1')
                                 a.summary-order(ng-click="$ctrl.cancelShipRequest(shipment.id, $index)") Cancel Shipment
                                 i.fa.fa-info-circle.m-l-xs(
                                 uib-popover='Shoppre offers a one-hour window to cancel your shipping order. Once your parcel has been prepared, you can no longer cancel your shipment. The status will change to Submit Payment.'
