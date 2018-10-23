@@ -319,15 +319,15 @@ exports.destroy = async (req, res) => {
       });
     log('pkg id', JSON.stringify(pkg));
 
-    await Promise.all(pkg
-      .map(({ packageId }) => Package
+    await pkg
+      .map(packageId => Package
         .updateState({
           db,
           lastStateId: null,
           nextStateId: READY_TO_SHIP,
-          pkg: { packageId, id },
+          pkg: packageId,
           actingUser: req.user,
-        })));
+        }));
 
     await ShipmentMeta
       .destroy({ where: { shipment_id: id } });
