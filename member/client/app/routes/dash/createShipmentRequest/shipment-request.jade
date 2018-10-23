@@ -29,11 +29,17 @@
                   br
                   i
                   | {{item.line1}},
-                  | {{item.line2}}
+                  span(
+                    ng-if='item.line2'
+                    ng-bind='item.line2 + " , "'
+                  )
                   | {{item.city}},
                   | {{item.state}},
-                  | {{item.pincode}}
-                  strong - {{item.Country.name}}
+                  | {{item.Country.name}}
+                  span(
+                     ng-if='item.pincode'
+                     ng-bind='" - " + item.pincode'
+                  )
           div.div-border-create.clearfix
             h2.m-n.alert.alert.alert-info.panel-warning 2. SHIPMENT SUMMARY
               .clearfix

@@ -459,7 +459,7 @@ const getAddress = (address) => {
   toAddress += `, ${address.city}`;
   toAddress += `, ${address.state}`;
   toAddress += `, ${address.Country.name}`;
-  toAddress += ` - ${address.pincode}`;
+  if (address.pincode) toAddress += `, ${address.pincode}`;
   return toAddress;
 };
 

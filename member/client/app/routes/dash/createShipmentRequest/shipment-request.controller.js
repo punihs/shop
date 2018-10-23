@@ -56,18 +56,6 @@ class shipmentRequestController {
         Object.assign(this.customer.Addresses[index], data);
       });
   }
-  onload(id) {
-    const modal = this.AddAddress.open(id, 'add');
-    modal
-      .result
-      .then((data) => {
-        this.IsShippingAddress = true;
-        if (data.is_default === true) {
-          this.data.address_id = data.id;
-        }
-        this.customer.Addresses.push(data);
-      });
-  }
 
   updateCharges() {
     const extrapackAmount = (this.data.extra_packing === true) ? 500 : 0;
@@ -112,7 +100,7 @@ class shipmentRequestController {
           this
             .toaster
             .pop('info', 'Please add the shipping address before proceed');
-          this.onload(customer.id);
+          this.open(customer.id);
         } else {
           this.IsShippingAddress = true;
         }
@@ -142,12 +130,13 @@ class shipmentRequestController {
       this
         .toaster
         .pop('info', 'Please add the shipping address before proceed');
-      return this.onload(this.customer.id);
+      return this.open(this.customer.id);
     }
     if (!this.data.address_id) {
       this
         .toaster
         .pop('error', 'Please select shipping address');
+      return;
     }
 
     if (this.submitting) return null;

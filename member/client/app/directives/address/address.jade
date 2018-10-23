@@ -145,9 +145,9 @@ div.m-t-xl.no-margin
             .row
               .col-md-4.col-sm-5.col-xs-12
                 input#tel.form-control(type='text', name='phone', ng-model='$ctrl.data.phone', ng-intl-tel-input='')
-                span.help-block(ng-show='newAddressForm.phone.$pristine && newAddressForm.phone.$touched') Please type a telephone number
-                span.help-block(ng-show='newAddressForm.phone.$invalid && newAddressForm.phone.$touched') Invalid :(
-                span.help-block(ng-show='newAddressForm.phone.$valid && newAddressForm.phone.$touched') Valid :)
+                span.help-block.text-danger(ng-show='newAddressForm.phone.$pristine && newAddressForm.phone.$touched') Please type a telephone number
+                span.help-block.text-danger(ng-show='newAddressForm.phone.$invalid && newAddressForm.phone.$touched') Invalid :(
+                span.help-block.text-success(ng-show='newAddressForm.phone.$valid && newAddressForm.phone.$touched') Valid :)
             .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
 
             .row
