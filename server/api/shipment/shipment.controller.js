@@ -551,6 +551,7 @@ const saveShipmentMeta = ({ req, sR, packageIds }) => {
   meta.invoice_tax_id = req.body.invoice_tax_id;
   meta.mark_personal_use = req.body.mark_personal_use;
   meta.invoice_include = req.body.invoice_include;
+  meta.original_ship_box_charge__amount = 0;
   meta.max_weight = req.body.max_weight;
   meta.shipment_id = sR.id;
   log({ meta });

@@ -85,7 +85,7 @@ class shipmentRequestController {
           repack: false,
           sticker: false,
           extra_packing: false,
-          orginal_box: false,
+          original: false,
           gift_wrap: false,
           gift_note: false,
           gift_note_text: null,

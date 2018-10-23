@@ -118,7 +118,11 @@
               i.fa.fa-gift.text-muted.fa-lg
             div.text-danger.m-t
               a.text-danger.font-thin Items Are For Personal Use
-
+          .clear.wrapper-xs(ng-if='$ctrl.data.ShipmentMetum.original')
+            a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
+              i.fa.fa-gift.text-muted.fa-lg
+            div.text-danger.m-t
+              a.text-danger.font-thin Keep in original box
           .clear.wrapper-xs(ng-if='$ctrl.data.ShipmentMetum.invoice_tax_id')
             a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
               i.fa.fa-gift.text-muted.fa-lg

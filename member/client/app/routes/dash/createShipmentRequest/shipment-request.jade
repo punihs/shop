@@ -201,12 +201,12 @@
                       )
                   li
                     .checkbox(ng-click='$ctrl.updateCharges()')
-                      label.i-checks(ng-if='$ctrl.data.orginal_box')
-                        input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.orginal_box')
+                      label.i-checks(ng-if='$ctrl.data.original')
+                        input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.original')
                         i
                         | Ship in original boxes(do not repack)
-                      label.i-checks(ng-if='$ctrl.data.orginal_box === false')
-                        input(type='checkbox',  value='' ng-model='$ctrl.data.orginal_box')
+                      label.i-checks(ng-if='$ctrl.data.original === false')
+                        input(type='checkbox',  value='' ng-model='$ctrl.data.original')
                         i
                         | Ship in original boxes(do not repack)
                       i.fa.fa-info-circle.m-l-xs(
@@ -298,7 +298,7 @@
                   li
                     label.pull-left   TAX ID: &nbsp; &nbsp;
                     .pull-left
-                      input.form-control.no-padder(type='text', placeholder='' ng-model='$ctrl.data.invoice_tax_id' ng-bind="$ctrl.data.invoice_tax_id")
+                      input(type='text', ng-model='$ctrl.data.invoice_tax_id', ng-bind='$ctrl.data.invoice_tax_id')
           .panel.panel-info.m-t-md
             .panel-heading.font-bold.text-u-c PACKAGE LEVEL CHARGES SUMMARY
             .panel-body
