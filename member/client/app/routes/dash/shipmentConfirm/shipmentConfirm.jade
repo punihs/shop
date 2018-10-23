@@ -88,7 +88,15 @@
                 label.i-checks(ng-show = 'paymentgateway.value !== "wallet"')
                   input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", ng-disabled='$ctrl.shipment.is_axis_banned_item && paymentgateway.value === "card" ' type='radio', name='a', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
                   i
-                  | {{paymentgateway.name}} {{paymentgateway.description}}
+                  | {{paymentgateway.name}}
+                  b(ng-hide='$ctrl.shipment.is_axis_banned_item && paymentgateway.value === "card" ') {{paymentgateway.description}}
+                i.fa.fa-info-circle.m-l-xs(
+                ng-show='$ctrl.shipment.is_axis_banned_item && paymentgateway.value === "card" '
+                uib-popover='You cannot use this payment gateway for this shipment - Read FAQ to know more \n'
+                popover-trigger="'mouseenter'"
+                popover-placement='right'
+                popover-append-to-body='true'
+                )
         .col-md-4
           .row
             .col-sm-12
