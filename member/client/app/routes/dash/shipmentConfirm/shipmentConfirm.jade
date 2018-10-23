@@ -86,7 +86,7 @@
                   i
                   | {{paymentgateway.name}} {{paymentgateway.description}} (₹{{$ctrl.shipment.Customer.wallet_balance_amount | number : 2}})
                 label.i-checks(ng-show = 'paymentgateway.value !== "wallet"')
-                  input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", ng-disabled='$ctr.shipment.Is_axis_banned === true ? true :  false' type='radio', name='a', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
+                  input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", ng-disabled='$ctrl.shipment.is_axis_banned_item && paymentgateway.value === "card" ' type='radio', name='a', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
                   i
                   | {{paymentgateway.name}} {{paymentgateway.description}}
         .col-md-4

@@ -54,7 +54,7 @@ angular.module('uiGenApp')
               'loyalty_amount', 'payment_gateway_fee_amount', 'wallet_amount',
               'final_amount', 'coupon_amount', 'tracking_code',
               'tracking_url', 'number_of_packages', 'weight_by_shipping_partner',
-              'shipping_carrier', 'dispatch_date',
+              'shipping_carrier', 'dispatch_date', 'is_axis_banned_item',
             ].join(',');
 
             return $http

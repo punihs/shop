@@ -282,6 +282,37 @@ div.m-t-xl.no-margin
                       name='shipment_type_id'
                       ng-options='shipmentType.id as shipmentType.name for shipmentType in $ctrl.shipmentTypes'
                       )
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Is Axis Banned Items
+                      .fa.fa-info-circle.m-l-xs(
+                      uib-popover='Axis Banned Items are Alcohol,organs or other body parts,Adult goods and services,Bulk marketing tools,Drugs,Tobacco,Weapons,Wholesale currency,Traffic devices,financial products,Government IDs,Illegal goodsCopyrighted software, Copyrighted media,Copyright unlocking devices etc.'
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+                    .col-xs-12: ul.nav
+                      li.inline: label.i-checks.i-checks-sm
+                        input(
+                        type="radio"
+                        ng-model="$ctrl.data.is_axis_banned_item"
+                        value=0
+                        required
+                        )
+                        i
+                        .hide
+                        | No
+                      li.inline.m-l: label.i-checks.i-checks-sm
+                        input(
+                        type="radio"
+                        ng-model="$ctrl.data.is_axis_banned_item"
+                        value=1
+                        required
+                        )
+                        i
+                        .hide
+                        | Yes
+                        span.wrapper-xs.text-xs.text-danger(ng-show='newShipmentForm.is_axis_banned_item.$dirty && newShipmentForm.is_axis_banned_item.$invalid') Please enter Estimated Amount
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
               .row
                 h4(ng-bind="$ctrl.error.message" style="color:red;")

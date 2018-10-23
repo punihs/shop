@@ -108,7 +108,7 @@ class ShipmentCreateController {
       'customer_name', 'phone', 'address', 'packages_count', 'final_weight',
       'weight', 'volumetric_weight', 'value_amount', 'sub_total_amount', 'discount_amount',
       'package_level_charges_amount', 'pick_up_charge_amount',
-      'estimated_amount', 'coupon_amount', 'loyalty_amount',
+      'estimated_amount', 'coupon_amount', 'loyalty_amount', 'is_axis_banned_item',
       'payment_gateway_fee_amount', 'wallet_amount', 'final_amount', 'shipment_type_id',
 
     ];
