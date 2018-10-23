@@ -26,7 +26,7 @@ module.exports = {
         5, 6,
       ],
       IN_REVIEW: [
-        1, 2, 4, 12, 52, 53, 15,
+        1, 2, 4, 12, 52, 53, 15, 11,
       ],
       ACTION_REQUIRED: [ // - === TASKS
         3, 54,
@@ -48,7 +48,7 @@ module.exports = {
   SHIPMENT: {
     [OPS]: {
       IN_REVIEW: [
-        16, 15, 20, 22, 23, 24, 25, 26, 27,
+        16, 15, 20, 22, 23, 25, 26, 27,
       ],
       IN_QUEUE: [
         17, 18, 19, 21,

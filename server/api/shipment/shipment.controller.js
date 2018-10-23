@@ -738,10 +738,19 @@ exports.history = (req, res) => {
       'id', 'order_code', 'customer_name', 'address',
       'phone', 'packages_count', 'final_weight', 'wallet_amount', 'package_level_charges_amount',
       'coupon_amount', 'loyalty_amount', 'estimated_amount', 'created_at', 'payment_status',
-      'final_amount', 'payment_gateway_fee_amount',
+      'final_amount', 'payment_gateway_fee_amount', 'tracking_code', 'tracking_url',
+      'number_of_packages', 'weight_by_shipping_partner', 'value_by_shipping_partner', 'shipping_carrier',
     ],
     where: { customer_id: req.user.id },
     include: [{
+      model: User,
+      as: 'Customer',
+      attributes: ['id'],
+      include: [{
+        model: Country,
+        attributes: ['iso2'],
+      }],
+    }, {
       model: ShipmentState,
       attributes: ['state_id'],
       where: {
@@ -1580,7 +1589,7 @@ exports.confirmShipment = async (req, res) => {
     }, {
       model: ShipmentState,
       attributes: ['id', 'shipment_id'],
-      where: { state_id: [PAYMENT_REQUESTED, PAYMENT_FAILED] },
+      where: { state_id: [PAYMENT_REQUESTED, PAYMENT_FAILED, PAYMENT_COMPLETED] },
     }],
   };
 

@@ -73,7 +73,7 @@ class PackageLockerController {
       value: 'return',
       price: 'INR 400',
       acceptanceMessage: 'I understand that I will have to pay a fee ' +
-      'of INR 400 for the return, which will appear in my Shoppre Wallet.',
+      'of INR 400 for the return.',
       infoContent: 'Once the item arrives at our facility, ' +
       'if you feel the item is not as per your expectation or is damaged, ' +
       'it can be exchanged/returned to the seller (as per the seller exchange/return policy). ' +
@@ -96,7 +96,7 @@ class PackageLockerController {
       value: 'split',
       price: 'INR 200 * Per New Package Created',
       acceptanceMessage: 'I understand that I will have to pay a fee ' +
-      'of INR 200 for the split package, which will appear in my Shoppre Wallet.',
+      'of INR 200 for the split package.',
       infoContent: 'Shoppre can split your package if it contains more than one item, and if you ' +
       'wish to separate them into multiple packages. ' +
       'You can split your package and discard an item, ' +
@@ -211,6 +211,9 @@ class PackageLockerController {
           .pop('sucess', message);
       });
     this.packages = [];
+    this.packages.splice(this.packages.findIndex(l => (l.id === id)), 1);
+    this.facets.ACTION_REQUIRED -= 1;
+    this.facets.IN_REVIEW += 1;
     this.getList();
   }
 

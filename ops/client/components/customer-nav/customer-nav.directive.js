@@ -158,7 +158,7 @@ class CustomerNavController {
       packages: 'customer.packages.index',
     };
 
-    const status = this.$state.params.status || 'ALL';
+    const status = this.$state.params.bucket || 'ALL';
 
     return this.$state.href(map[type], { id: customerId, status });
   }

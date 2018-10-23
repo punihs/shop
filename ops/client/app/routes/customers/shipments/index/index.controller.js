@@ -31,11 +31,11 @@ class CustomersShipmentsIndexController {
 
     this.customer = this.customer || {};
     this.Page.setTitle(`${this.customer.name ? `${this.customer.name} - ` : ''} ${
-      this.$stateParams.status ? this.$stateParams.status : ''} Shipments`); // set page title
+      this.$stateParams.bucket ? this.$stateParams.bucket : ''} Shipments`); // set page title
 
     // Set default status to ALL
-    if (!this.buckets.includes(this.$stateParams.status)) {
-      this.$state.go('customer.shipments.index', { status: 'TASKS' });
+    if (!this.buckets.includes(this.$stateParams.bucket)) {
+      this.$state.go('customer.shipments.index', { bucket: 'IN_REVIEW' });
       return;
     }
     this.shipments = []; // collection of shipments

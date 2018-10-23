@@ -260,8 +260,9 @@
                     a(ui-sref='package.item.edit({ id: $ctrl.$stateParams.id , packageItemId: packageItem.id })' target="_blank") {{packageItem.name}}
                   .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='packageItem.PackageItemCategory.name')
                   .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(title="{{packageItem.quantity}}" ng-bind="packageItem.quantity")
-                  .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="'₹' + packageItem.price_amount" title="{{packageItem.price_amount}}")
-                  .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="'₹' + packageItem.total_amount" title="{{packageItem.total_amount}}")
+                  .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(title="{{packageItem.price_amount}}") ₹{{packageItem.price_amount | number: 2}}
+                  .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(title="{{packageItem.total_amount}}") ₹{{packageItem.total_amount | number: 2}}
+
                   .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-trash(ng-click="$ctrl.deletePackageItem($ctrl.$stateParams.id, packageItem.id, $index)")
 
 

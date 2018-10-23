@@ -20,34 +20,38 @@ div.m-t-xl.no-margin
                         | SENDING TO
                         span.footable-sort-indicator
                       th.footable-visible.footable-sortable(data-hide='phone,tablet')
-                        | SHIP REQUEST ID
+                        | DESCRIPTION
                         span.footable-sort-indicator
                       th.footable-visible.footable-sortable(data-hide='phone,tablet', data-name='Date Of Birth')
                         | REQUEST DATE
                         span.footable-sort-indicator
                       th.footable-visible.footable-last-column.footable-sortable
-                        | WEIGHT
-                        span.footable-sort-indicator
-                      th.footable-visible.footable-last-column.footable-sortable
-                        | PACKAGE COUNT
+                        | Charges
                         span.footable-sort-indicator
                       th.footable-visible.footable-last-column.footable-sortable
                         | STATUS
+                        span.footable-sort-indicator
+                      th.footable-visible.footable-last-column.footable-sortable
+                        | INVOICE
                         span.footable-sort-indicator
                   tbody.odd(ng-repeat="shipment in $ctrl.shipments")
                     tr.footable-even(style='display: table-row;')
                       td.footable-visible.footable-first-column(ng-click='shipment.open = !shipment.open')
                         i.fa.fa-sort-desc
                       td.footable-visible {{shipment.customer_name}}
-                      td.footable-visible {{shipment.order_code}}
+                      td.footable-visible(ng-show='shipment.ShipmentState.state_id != $ctrl.SHIPMENT_STATE_IDS.SHIPMENT_CANCELLED')
+                        | Shipped {{shipment.number_of_packages}} Parcel(s) via: {{shipment.shipping_carrier}} to {{shipment.Customer.Country.iso2}} {{shipment.weight_by_shipping_partner}} Kg Tracking#
+                        a(href='{{shipment.tracking_url}}', target="_blank")
+                          span.summary-order &nbsp;{{shipment.tracking_code}}
+                      td.footable-visible(ng-show='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.SHIPMENT_CANCELLED')
+                        | Canceled
                       td.footable-visible(
-                      ng-bind='$ctrl.moment(shipment.created_at).fromNow()'
+                      ng-bind='shipment.created_at | date:"MMM d, y"'
                       uib-tooltip="{{shipment.created_at | date:'MMM d, y'}} IST {{shipment.created_at | date:'h:mm a'}}"
                       tooltip-placement='right'
                       tooltip-append-to-body='true'
                       )
-                      td.footable-visible {{shipment.final_weight}}
-                      td.footable-visible {{shipment.packages_count}}
+                      td.footable-visible {{shipment.final_amount | number: 2}}
                       td.footable-visible
                         div
                           div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.SHIPMENT_HANDED')
@@ -86,6 +90,10 @@ div.m-t-xl.no-margin
                             p Delivered
                           div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.SHIPMENT_CANCELLED')
                             p Cancelled
+                      td.footable-visible(ng-show='shipment.ShipmentState.state_id != $ctrl.SHIPMENT_STATE_IDS.SHIPMENT_CANCELLED')
+                        a.summary-order(ui-sref='dash.shipmentInvoice({shipmentId: shipment.id})', target='_blank') {{shipment.order_code}}
+                      td.footable-visible(ng-show='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.SHIPMENT_CANCELLED')
+                        | ---
                     tr
                       td(colspan=8 ng-if='shipment.open')
                         .col-sm-7

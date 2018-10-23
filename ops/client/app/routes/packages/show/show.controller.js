@@ -21,7 +21,7 @@ class PackageShowController {
     this.ViewPhotoService = ViewPhotoService;
     this.moment = moment;
     this.customer = pkg.Customer;
-    this.editAllowedStates = [1, 2];
+    this.editAllowedStates = [1, 2, 5];
     this.location = $window.location;
     this.user = Session.read('userinfo');
     this.$onInit();
