@@ -10,9 +10,9 @@ const {
   TRANSACTION_TYPES: { CREDIT },
   SHIPMENT_STATE_IDS: {
     INQUEUE, INREVIEW, DISPATCHED, DELIVERED, CANCELED, SHIPMENT_CANCELLED,
-    INTRANSIT, CUSTOM_HOLD, LOST, DAMAGED, WRONG_DELIVERY, PAYMENT_CONFIRMED, SHIPMENT_HANDED,
+    INTRANSIT, CUSTOM_HOLD, LOST, WRONG_DELIVERY, PAYMENT_CONFIRMED, SHIPMENT_HANDED,
   },
-  PACKAGE_STATE_IDS: { READY_TO_SHIP },
+  PACKAGE_STATE_IDS: { READY_TO_SHIP, DAMAGED },
 } = require('../../config/constants');
 
 const stateIdcommentMap = {
@@ -245,14 +245,30 @@ module.exports = (sequelize, DataTypes) => {
             },
           });
 
+        let packageState = null;
         if (packages) {
-          packages.map(pkg => db.Package
-            .updateState({
-              db,
-              pkg,
-              actingUser,
-              nextStateId: READY_TO_SHIP,
-            }));
+          packages.map((pkg) => {
+            db.PackageState
+              .findAll({
+                attributes: ['id'],
+                where: { state_id: READY_TO_SHIP, package_id: pkg.id },
+              })
+              .then((packageStates) => {
+                if (packageStates.length > 0) {
+                  packageState = READY_TO_SHIP;
+                } else {
+                  packageState = DAMAGED;
+                }
+
+                db.Package
+                  .updateState({
+                    db,
+                    pkg,
+                    actingUser,
+                    nextStateId: packageState,
+                  });
+              });
+          });
         }
 
         db.Package.update(
