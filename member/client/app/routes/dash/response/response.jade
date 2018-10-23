@@ -19,7 +19,7 @@ section.ship_response
                 strong
                   | Also, it may take up to 7 business days for the amount to reflect in our account, especially in case of International Wire Transfers.
                 |  In such a case, we advise you to opt for an alternative payment method if your shipment is urgent or if you don’t want to be charged with storage cost. Please click here if you wish to
-                a.summary-order.m-r-xs.m-l-xs(ui-sref='dash.shipmentConfirm({order_code: shipment.order_code})') change the payment method
+                a.summary-order.m-r-xs.m-l-xs(ui-sref='dash.shipmentConfirm({order_code: $ctrl.shipment.order_code})')&nbsp; change the payment method
                 | .
               .bg-light.well
                 h4 Account Name: INDIANSHOPPRE LLP
@@ -33,7 +33,7 @@ section.ship_response
           .col-sm-12(ng-show = "$ctrl.shipment.PaymentGateway.id === $ctrl.paymentGatewayCashID")
               p.info
                 | We will dispatch your shipment once your payment is confirmed. In such a case, we advise you to opt for an alternative payment method if your shipment is urgent or if you don’t want to be charged with storage cost. Please click here if you wish to
-                a.summary-order(ui-sref='dash.shipmentConfirm({order_code: shipment.order_code})')&nbsp; change the payment method.
+                a.summary-order(ui-sref='dash.shipmentConfirm({order_code: $ctrl.shipment.order_code})')&nbsp; change the payment method.
           .col-sm-6
             .splitbox
               h3 Sent to:
@@ -64,7 +64,7 @@ section.ship_response
                 |  until the items LEAVE Shoppre facility.
               li
                 | You can view your shipped packages in transit in your
-                a.summary-order(href="dash.shipmentHistory")&nbsp; History
+                a.summary-order(ui-sref="dash.shipmentHistory")&nbsp; History
                 | .
               li
                 | We shall let you know if we haven’t received your amount (in case of wire transfer) in 2 days. If we don’t receive your amount within 7 days from the time your parcel was ready to be shipped, you will incur a storage fee of INR 100/day from the 8th day onwards. We can only dispatch your parcel from the Shopre facility upon confirmation of the payment.
