@@ -216,24 +216,16 @@ exports.update = async (req, res) => {
   const updateMeta = {};
 
   let packageLevelCharges = shipmentMeta.package_level_charges_amount;
-  log('liquid', shipmentMeta.is_liquid);
-  if (shipmentMeta.is_liquid === '1') {
-    packageLevelCharges -= shipmentMeta.liquid_charge_amount || 0;
+  log('liquid', shipmentMeta);
+
+  if (shipmentMeta.ShipmentMetum.is_liquid === 1) {
+    packageLevelCharges -= shipmentMeta.ShipmentMetum.liquid_charge_amount || 0;
     log('weight', req.body.weight);
     log({ packageLevelCharges });
-    if (req.body.weight < 5) {
-      updateMeta.liquid_charge_amount = 1392.40;
-    } else if (req.body.weight >= 5 && req.body.weight < 10) {
-      updateMeta.liquid_charge_amount = 3009.00;
-    } else if (req.body.weight >= 10 && req.body.weight < 15) {
-      updateMeta.liquid_charge_amount = 5369.00;
-    }
-    if (req.body.weight >= 15) {
-      updateMeta.liquid_charge_amount = 7729.00;
-    }
+    updateMeta.liquid_charge_amount = req.body.liquid_charge_amount;
   }
-  if (shipmentMeta.overweight === '1') {
-    packageLevelCharges -= shipmentMeta.overweight_charge_amount || 0;
+  if (shipmentMeta.ShipmentMetum.overweight === '1') {
+    packageLevelCharges -= shipmentMeta.ShipmentMetum.overweight_charge_amount || 0;
     if (req.body.weight > 30) {
       updateMeta.overweight_charge_amount = 2500.00;
     } else {
@@ -247,7 +239,7 @@ exports.update = async (req, res) => {
     updateMeta.overweight = '0';
     updateMeta.overweight_charge_amount = 0;
   }
-  log(JSON.stringify(updateMeta));
+  log('updateMeta', JSON.stringify(updateMeta));
   await ShipmentMeta.update(updateMeta, { where: { shipment_id: id } });
   packageLevelCharges = Number(packageLevelCharges);
   packageLevelCharges += Number(updateMeta.liquid_charge_amount) || 0;
