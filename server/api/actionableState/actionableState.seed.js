@@ -116,6 +116,10 @@ const packageStates = ({
   group_id: OPS,
   child_id: 5,
 }, {
+  state_id: 6,
+  group_id: OPS,
+  child_id: 5,
+}, {
   state_id: 3,
   group_id: MEMBER,
   child_id: 4,

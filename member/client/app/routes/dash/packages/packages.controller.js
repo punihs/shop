@@ -191,14 +191,29 @@ class PackageLockerController {
   }
 
   getList() {
+    let packageIds = null;
     this.$http
       .get('/packages', { params: { bucket: this.$stateParams.bucket } })
-      .then(({ data: { packages, facets, queueCount, paymentCount  } }) => {
+      .then(({ data: { packages, facets, queueCount, paymentCount } }) => {
+        packageIds = packages.map((x) => {
+          return x.id;
+        });
         this.master.push(...packages);
         this.queueCount = queueCount;
         this.isPaymentSubmit = !!paymentCount;
         this.packages = angular.copy(this.master);
         this.facets = facets;
+
+        this.$http
+          .get(`/packages/items/damaged?packageIds=${packageIds}`)
+          .then(({ data: { packageStates } }) => {
+            const damagedIds = packageStates.map(x => x.package_id);
+            this.packages.map((x) => {
+              if (damagedIds.includes(x.id)) {
+                x.damaged = true;
+              }
+            });
+          });
       });
   }
 

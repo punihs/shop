@@ -6,7 +6,6 @@ const notification = require('./shipment.notification');
 
 const log = debug('s.api.shipment.controller');
 const {
-  LOYALTY_TYPE: { REWARD },
   TRANSACTION_TYPES: { CREDIT },
   SHIPMENT_STATE_IDS: {
     INQUEUE, INREVIEW, DISPATCHED, DELIVERED, CANCELED, SHIPMENT_CANCELLED,
@@ -245,30 +244,14 @@ module.exports = (sequelize, DataTypes) => {
             },
           });
 
-        let packageState = null;
         if (packages) {
-          packages.map((pkg) => {
-            db.PackageState
-              .findAll({
-                attributes: ['id'],
-                where: { state_id: READY_TO_SHIP, package_id: pkg.id },
-              })
-              .then((packageStates) => {
-                if (packageStates.length > 0) {
-                  packageState = READY_TO_SHIP;
-                } else {
-                  packageState = DAMAGED;
-                }
-
-                db.Package
-                  .updateState({
-                    db,
-                    pkg,
-                    actingUser,
-                    nextStateId: packageState,
-                  });
-              });
-          });
+          packages.map(pkg => db.Package
+            .updateState({
+              db,
+              pkg,
+              actingUser,
+              nextStateId: READY_TO_SHIP,
+            }));
         }
 
         db.Package.update(

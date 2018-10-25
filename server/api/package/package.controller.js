@@ -418,3 +418,14 @@ exports.invoice = async (req, res, next) => {
       .catch(next);
   }
 };
+
+exports.damaged = async (req, res) => {
+  const { packageIds } = req.query;
+  // packageIds.then(packages=> {
+  await PackageState
+    .findAll({
+      attributes: ['id', 'package_id'],
+      where: { package_id: packageIds.split(','), state_id: DAMAGED },
+    }).then(packageStates =>
+      res.json({ packageStates }));
+};

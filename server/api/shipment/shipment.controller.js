@@ -34,7 +34,7 @@ const {
     CUSTOMER_ACKNOWLEDGEMENT_RECEIVED, AMOUNT_RECEIVED_FROM_UPSTREAM,
   },
   SHIPMENT_HISTORY,
-  PACKAGE_STATE_IDS: { READY_TO_SHIP, DAMAGED },
+  PACKAGE_STATE_IDS: { READY_TO_SHIP },
   // LOYALTY_TYPE: {
   //   REDEEM,
   // },
@@ -474,7 +474,7 @@ const getPackages = (userId, packageIds) => Package
       attributes: ['id', 'package_id'],
       model: PackageState,
       where: {
-        state_id: [READY_TO_SHIP, DAMAGED],
+        state_id: [READY_TO_SHIP],
       },
     }],
   });
@@ -1889,7 +1889,7 @@ exports.redirectShipment = async (req, res) => {
         model: PackageState,
         attributes: [],
         where: {
-          state_id: [READY_TO_SHIP, DAMAGED],
+          state_id: [READY_TO_SHIP],
         },
       }],
     });

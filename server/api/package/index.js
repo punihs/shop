@@ -17,5 +17,6 @@ router.post('/:id/unread', autheticate(), controller.unread);
 router.put('/:id', autheticate(), controller.update);
 router.delete('/:id', autheticate(), controller.destroy);
 router.put('/:id/invoice', autheticate(), controller.invoice);
+router.get('/items/damaged', autheticate(), controller.damaged);
 module.exports = router;
 
