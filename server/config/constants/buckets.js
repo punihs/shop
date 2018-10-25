@@ -23,10 +23,10 @@ module.exports = {
     },
     [CUSTOMER]: {
       READY_TO_SEND: [
-        5, 6,
+        5,
       ],
       IN_REVIEW: [
-        1, 2, 4, 12, 52, 53, 15, 11,
+        1, 2, 4, 6, 12, 52, 53, 15, 11,
       ],
       ACTION_REQUIRED: [ // - === TASKS
         3, 54,
