@@ -24,7 +24,7 @@ class ShipmentsIndexController {
       { id: 1, name: 'Default', key: '-' },
       { id: 1, name: 'Update Date', key: 'updated_at DESC' },
       { id: 2, name: 'Created Date', key: 'created_at DESC' },
-      { id: 3, name: 'Name', key: 'first_name DESC' },
+      { id: 3, name: 'Name', key: 'customer_name DESC' },
     ];
     this.ExcelDownload = ExcelDownload;
     this.states = this.Session.read('shipment-states');

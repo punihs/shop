@@ -3,7 +3,7 @@ const sequelize = require('sequelize');
 
 const {
   Shipment, User, Locker, ShipmentState, Address,
-  Package, Country, PhotoRequest,
+  Package, Country, PhotoRequest, State, PaymentGateway,
 } = require('../../conn/sqldb');
 
 const { APPS, GROUPS: { OPS, CUSTOMER } } = require('./../../config/constants');
@@ -17,19 +17,46 @@ exports.index = ({ params, query, user: actingUser }) => {
   log('index', { groupId: actingUser.group_id, app_id: actingUser.app_id });
   const { bucket } = query;
   const BUCKET = BUCKETS.SHIPMENT[actingUser.group_id];
+  let orderSort = '';
+  if (query.sort) {
+    const [field, order] = query.sort.split(' ');
+    log({ field, order });
+    if (field && order) {
+      orderSort = [[field, order]];
+    } else {
+      orderSort = [['id', 'desc']];
+    }
+  } else {
+    orderSort = [['id', 'desc']];
+  }
+
   const options = {
     where: {},
+    order: orderSort,
     offset: Number(query.offset) || 0,
     limit: Number(query.limit) || 20,
-    order: [['updated_at', 'desc']],
   };
   switch (true) {
     case (actingUser.app_id === APPS.OPS && actingUser.group_id === OPS): {
-      options.attributes = ['id', 'customer_id', 'created_at', 'final_amount'];
+      options.attributes = ['id', 'customer_id', 'created_at', 'final_amount', 'final_weight', 'updated_at',
+        'country_id', 'payment_gateway_id', 'tracking_code', 'shipping_carrier', 'tracking_url', 'customer_name'];
       options.include = [{
         where: {},
         model: ShipmentState,
-        attributes: ['id', 'state_id'],
+        attributes: ['id', 'state_id', 'created_at'],
+        include: [{
+          model: State,
+          attributes: ['id', 'name'],
+        }],
+      }, {
+        model: Package,
+        attributes: ['id'],
+      }, {
+        model: PaymentGateway,
+        attributes: ['id', 'value'],
+      }, {
+        model: Country,
+        attributes: ['id', 'name'],
       }, {
         model: User,
         as: 'Customer',
@@ -57,7 +84,7 @@ exports.index = ({ params, query, user: actingUser }) => {
         attributes: ['id', 'type', 'status'],
       }, {
         model: Address,
-        attibutes: ['id', 'city'],
+        attributes: ['id', 'city'],
       }, {
         model: Country,
         attributes: ['id', 'name', 'iso2', 'iso3'],
