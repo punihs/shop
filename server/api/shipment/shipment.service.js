@@ -16,6 +16,7 @@ const kvmap = (arr, key, value) => arr.reduce((nxt, x) => ({ ...nxt, [x[key]]: x
 exports.index = ({ params, query, user: actingUser }) => {
   log('index', { groupId: actingUser.group_id, app_id: actingUser.app_id });
   const { bucket } = query;
+  const IS_CUSTOMER_PAGE = !!params.customerId;
   const BUCKET = BUCKETS.SHIPMENT[actingUser.group_id];
   let orderSort = '';
   if (query.sort) {
@@ -38,6 +39,7 @@ exports.index = ({ params, query, user: actingUser }) => {
   };
   switch (true) {
     case (actingUser.app_id === APPS.OPS && actingUser.group_id === OPS): {
+      if (IS_CUSTOMER_PAGE) options.where.customer_id = params.customerId;
       options.attributes = ['id', 'customer_id', 'created_at', 'final_amount', 'final_weight', 'updated_at',
         'country_id', 'payment_gateway_id', 'tracking_code', 'shipping_carrier', 'tracking_url', 'customer_name'];
       options.include = [{
