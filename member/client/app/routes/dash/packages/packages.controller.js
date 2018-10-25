@@ -201,18 +201,19 @@ class PackageLockerController {
         this.master.push(...packages);
         this.queueCount = queueCount;
         this.isPaymentSubmit = !!paymentCount;
-        this.packages = angular.copy(this.master);
+
         this.facets = facets;
 
         this.$http
           .get(`/packages/items/damaged?packageIds=${packageIds}`)
           .then(({ data: { packageStates } }) => {
             const damagedIds = packageStates.map(x => x.package_id);
-            this.packages.map((x) => {
+            this.master.map((x) => {
               if (damagedIds.includes(x.id)) {
                 x.damaged = true;
               }
             });
+            this.packages = angular.copy(this.master);
           });
       });
   }
