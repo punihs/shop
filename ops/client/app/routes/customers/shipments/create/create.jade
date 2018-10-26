@@ -11,7 +11,7 @@ div.m-t-xl.no-margin
       div
         .h1.m-l-md.font-thin.h3
           | {{$ctrl.EDIT ? 'Edit' : 'Create'}} Shipment
-      div
+      div.back-button-shipment
         ul.nav.nav-pills.nav-sm.pull-right
           li.m-r-xs.pull-right
             a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
@@ -21,7 +21,7 @@ div.m-t-xl.no-margin
             popover-append-to-body='true'
             )
               span.fa.fa-backward
-              span  Go Back
+              span(style='botom: 0')  Go Back
       form.form.form-validation.form-horizontal.wrapper-md(
         name="newShipmentForm"
         novalidate
@@ -201,6 +201,7 @@ div.m-t-xl.no-margin
                       | Special charges amount
                       span.text-danger *
                       input.form.form-control(
+                      ng-init= '$ctrl.data.ShipmentMetum.liquid_charge_amount = $ctrl.data.ShipmentMetum.liquid_charge_amount ? $ctrl.data.ShipmentMetum.liquid_charge_amount: 0'
                       type='number'
                       name='liquid_charge_amount'
                       placeholder='eg. 1000'
