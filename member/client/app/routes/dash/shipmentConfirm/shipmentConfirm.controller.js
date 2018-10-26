@@ -1,6 +1,6 @@
 class ShipmentConfirmController {
   constructor(
-    $http, Page, $stateParams, $location, ViewPhotoService, toaster, $state,
+    $http, Page, $stateParams, $location, ViewPhotoService, toaster, $state, $uibModal,
     $window, CONFIG
   ) {
     this.ViewPhotoService = ViewPhotoService;
@@ -11,6 +11,7 @@ class ShipmentConfirmController {
     this.$window = $window;
     this.$stateParams = $stateParams;
     this.$state = $state;
+    this.$uibModal = $uibModal;
     this.CONFIG = CONFIG;
     this.PAYMENT_GATEWAY = this.CONFIG.PAYMENT_GATEWAY;
     this.$onInit();

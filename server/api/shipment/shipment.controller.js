@@ -739,6 +739,19 @@ exports.history = (req, res) => {
     ],
     where: { customer_id: req.user.id },
     include: [{
+      model: Package,
+      attributes: ['id', 'created_at', 'weight', 'price_amount'],
+      include: [{
+        model: PackageItem,
+        attributes: ['name', 'quantity', 'price_amount', 'object_advanced', 'object'],
+      }, {
+        model: PhotoRequest,
+        attributes: ['id', 'type'],
+      }, {
+        model: Store,
+        attributes: ['id', 'name'],
+      }],
+    }, {
       model: User,
       as: 'Customer',
       attributes: ['id'],
@@ -755,16 +768,6 @@ exports.history = (req, res) => {
     }, {
       model: PaymentGateway,
       attributes: ['id', 'name', 'value'],
-    }, {
-      model: Package,
-      attributes: ['id', 'created_at', 'weight', 'price_amount'],
-      include: [{
-        model: PackageItem,
-        attributes: ['id', 'quantity', 'price_amount', 'total_amount', 'object', 'name'],
-      }, {
-        model: Store,
-        attributes: ['id', 'name'],
-      }],
     }],
     order: [['updated_at', 'desc']],
   };
@@ -1605,7 +1608,7 @@ exports.confirmShipment = async (req, res) => {
     },
     include: [{
       model: PackageItem,
-      attributes: ['name', 'quantity', 'price_amount'],
+      attributes: ['name', 'quantity', 'price_amount', 'object_advanced', 'object'],
     }, {
       model: PackageCharge,
       attributes: ['storage_amount', 'receive_mail_amount', 'pickup_amount', 'standard_photo_amount', 'scan_document_amount',

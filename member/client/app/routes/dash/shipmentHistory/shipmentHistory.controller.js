@@ -1,6 +1,6 @@
 class ShipmentHistoryController {
   constructor(
-    $http, Page, $stateParams, moment, CONFIG, $state, Session,
+    $http, Page, $stateParams, moment, CONFIG, $state, Session, $uibModal,
     toaster, URLS) {
     this.$http = $http;
     this.Page = Page;
@@ -9,6 +9,7 @@ class ShipmentHistoryController {
     this.toaster = toaster;
     this.Session = Session;
     this.URLS = URLS;
+    this.$uibModal = $uibModal;
 
     return this.$onInit();
   }
@@ -32,6 +33,21 @@ class ShipmentHistoryController {
           .pop('error', err.data.message);
       });
   }
+
+  uploadPhotos(packageDetail) {
+    this.$uibModal.open({
+      templateUrl: 'app/directives/request-photos/request-photos.html',
+      controller: 'RequestPhotosController',
+      controllerAs: '$ctrl',
+      size: 'lg',
+      resolve: {
+        packageDetail() {
+          return packageDetail;
+        },
+      },
+    });
+  }
+
 }
 
 angular

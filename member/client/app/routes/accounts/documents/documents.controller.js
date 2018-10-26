@@ -38,7 +38,7 @@ class DocumentController {
 
         return object;
       })
-      .catch(() => this.toaster.pop('error', 'Error while uploading file'))
+      .catch(() => this.toaster.pop('error', 'Error while uploading file'));
   }
 
   getUserDocuments() {

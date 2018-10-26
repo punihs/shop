@@ -53,7 +53,7 @@
                       td.footable-visible {{package.weight | number :2}} KG
                     tr.footable-even(style='display: table-row;')
                       td.footable-visible(colspan='5' ng-if='$ctrl.MoreOption[$index]')
-                        p(ng-if='$ctrl.standard_photo_check==="yes" || $ctrl.advc_photo_check==="yes"')
+                        p(ng-show='package.PhotoRequests.length > 0')
                           button(ng-click='$ctrl.uploadPhotos(package)') Photos
                         table#DataTables_Table_4.table.table-bordered.m-b-none
                           thead
