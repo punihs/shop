@@ -34,6 +34,7 @@ class PackagesIndexController {
   $onInit() {
     this.facets = {};
     this.todayDate = '';
+    this.packageStateId = this.QCONFIG.PACKAGE_STATE_IDS;
     this.initializing = true;
     this.timeout = this.$timeout(() => {});
 

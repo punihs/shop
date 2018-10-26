@@ -64,7 +64,10 @@ div
             .col-xs-12.col-md-2.no-padder
               .m-none.wrapper-lg.w-full.w-auto-xs
                 .clearfix
-                  span.pull-right.padder.m-t-xxs  {{package.created_at | date: 'h:mm a'}} &nbsp;
+                  span(ng-if='package.state_id !== $ctrl.packageStateId.ADDED_SHIPMENT', title="{{package.totalDays}} days" ng-class="package.totalDays > 20 ? 'text-danger' : 'text-success'")
+                    .pull-right.padder.m-t-xxs  {{package.created_at | date:'MMM d, y'}} IST {{package.created_at | date:'h:mm a'}}
+                  span.text-success(ng-if='package.state_id === $ctrl.packageStateId.ADDED_SHIPMENT', title="{{package.totalDays}} days")
+                    .pull-right.padder.m-t-xxs {{package.created_at | date:'MMM d, y'}} IST {{package.created_at | date:'h:mm a'}}
                   span.pull-right.m-b.m-t
 
             .col-xs-12.col-md-2.no-padder

@@ -26,31 +26,47 @@ div
       table.table.m-b-none
         thead
           tr
-            th.col-xs-3 Customer Name
-            th.col-xs-3 Final Amount
-            th.col-xs-3 Locker
-            th.col-xs-2 Status
+            th.col-xs-2 Customer Name
+            th.col-xs-1 Shipment ID
+            th.col-xs-1 Weight
+            th.col-xs-1 Final Amount
+            th.col-xs-2 Created Date
+            th.col-xs-2 Locker
+            th.col-xs-3 Status
       .col-xs-12(style='padding: 10px;')
         .col-xs-12(ng-show='$ctrl.shipments.length === 0 && !$ctrl.ui.loading')
           td(colspan="5"): h1.text-center.text-muted No Shipments
         .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='shipment in $ctrl.shipments')
-          .col-xs-3.wrapper-sm.m-t-xs
+          .col-xs-2.wrapper-sm.m-t-xs
             img.pull-left(
               ng-if='shipment.Customer.profile_photo_url'
               ng-src='{{shipment.Customer.profile_photo_url}}'
               style='height: 30px;width: 30px;border-radius: 50%;'
             )
             a.m-l(ui-sref='shipment.show({ id: shipment.id })'  target="_blank") {{shipment.Customer.name}}
-          .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(
+          .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs(
+            ng-bind="shipment.id"
+            title="{{shipment.id}}"
+          )
+          .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs(
+            ng-bind="shipment.final_weight + 'Kg'"
+            title="{{shipment.final_weight}}"
+          )
+          .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs(
             ng-bind="'₹'+shipment.final_amount"
             title="{{shipment.final_amount}}"
           )
-          .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(
+          .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs
+            span(ng-if='shipment.state_id === $ctrl.shipmentStateId.PAYMENT_REQUESTED', title="{{shipment.totalDays}} days" ng-class="shipment.totalDays > 7 ? 'text-danger' : 'text-success'")
+              |  {{shipment.created_at | date:'MMM d, y'}} IST {{shipment.created_at | date:'h:mm a'}}
+            span.text-success(ng-if='shipment.state_id !== $ctrl.shipmentStateId.PAYMENT_REQUESTED', title="{{shipment.totalDays}} days" )
+              |  {{shipment.created_at | date:'MMM d, y'}} IST {{shipment.created_at | date:'h:mm a'}}
+          .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(
             title="{{shipment.Customer.virtual_address_code + ' ('+shipment.Customer.Locker.short_name+ ')'}}"
           )
             span(ng-bind="shipment.Customer.virtual_address_code")
             span.text-small.text-muted(ng-bind="' ('+shipment.Customer.Locker.short_name+ ')'")
-          .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs: .w-full(
+          .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs: .w-full(
             uib-dropdown=''
             uib-keyboard-nav=''
             dropdown-append-to-body
@@ -75,6 +91,13 @@ div
                   ng-click='$ctrl.ChangeShipmentState.open(shipment, state.state_id, shipment._root_.id)'
                   ng-bind='::App.shipmentStates[state.state_id].action'
                 )
+            span.pull-right.no-padder(
+            ng-if='shipment.updated_at'
+            uib-tooltip = "{{shipment.updated_at | date:'MMM d, y'}} IST {{shipment.updated_at | date:'h:mm a'}}"
+            tooltip-placement='bottom-center'
+            tooltip-append-to-body='true'
+            )
+              span(ng-bind='$ctrl.moment(shipment.updated_at).fromNow()')
 
         .col-xs-12.text-center
           a.btn.active.m-t-xs(ng-if="$ctrl.ui.loading")

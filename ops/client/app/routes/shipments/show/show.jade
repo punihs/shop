@@ -71,12 +71,12 @@
     .wrapper-xs.m-l-sm.m-t-sm.b-t
       uib-tabset(active='activeTab')
         uib-tab(index='0' heading='Info')
-          .clear.wrapper-xs(ng-if='$ctrl.data.weight')
+          .clear.wrapper-xs(ng-if='$ctrl.data.final_weight')
             a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
               i.fa.fa-balance-scale.text-muted.fa-lg
             div
               a.text-muted.font-thin Weight
-              div(ng-bind='$ctrl.data.weight')
+              div(ng-bind='$ctrl.data.final_weight')
 
           .clear.wrapper-xs
             a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
@@ -84,6 +84,20 @@
             div
               a.text-muted.font-thin Package Count
               div(ng-bind='$ctrl.data.packages_count ||0')
+
+          .clear.wrapper-xs(ng-if='$ctrl.data.address')
+            a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
+              i.fa.fa-map-signs.text-muted.fa-lg
+            div
+              a.text-muted.font-thin Destination Address
+              div.text-center(ng-bind='$ctrl.data.address')
+
+          .clear.wrapper-xs(ng-if='$ctrl.data.payment_gateway_id')
+            a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
+              i.fa.fa-money.text-muted.fa-lg
+            div
+              a.text-muted.font-thin Payment Mode
+              div(ng-bind='$ctrl.data.PaymentGateway.value')
 
           .clear.wrapper-xs(ng-if='$ctrl.data.price_amount')
             a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm

@@ -143,7 +143,7 @@ exports.show = async (req, res, next) => {
         as: 'Customer',
         attributes: [
           'id', 'name', 'first_name', 'last_name', 'salutation', 'virtual_address_code',
-          'phone',
+          'phone', 'email',
         ],
         include: [{
           model: Country,
@@ -155,6 +155,9 @@ exports.show = async (req, res, next) => {
       }, {
         model: Country,
         attributes: ['id', 'name', 'iso2', 'iso3'],
+      }, {
+        model: PaymentGateway,
+        attributes: ['id', 'value'],
       }, {
         model: Address,
         attributes: [

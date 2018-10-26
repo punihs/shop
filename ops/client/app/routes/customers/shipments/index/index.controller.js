@@ -14,7 +14,6 @@ class CustomersShipmentsIndexController {
     this.moment = moment;
     this.Session = Session;
     this.Prototype = Prototype;
-    this.paymentRequestState = 18;
     this.sorts = [
       { id: 1, name: 'Default', key: '-' },
       { id: 1, name: 'Update Date', key: 'updated_at DESC' },
@@ -29,6 +28,7 @@ class CustomersShipmentsIndexController {
 
   $onInit() {
     this.todayDate = '';
+    this.shipmentStateId = this.QCONFIG.SHIPMENT_STATE_IDS;
     this.buckets = this.QCONFIG.SHIPMENT_STATES;
     this.states = this.Session.read('shipment-states');
 

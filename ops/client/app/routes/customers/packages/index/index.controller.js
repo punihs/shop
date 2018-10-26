@@ -27,7 +27,9 @@ class CustomersPackagesIndexController {
   }
 
   $onInit() {
+    this.todayDate = '';
     this.buckets = this.QCONFIG.PACKAGE_STATES;
+    this.packageStateId = this.QCONFIG.PACKAGE_STATE_IDS;
     this.customer = this.customer || {};
     this.customer.create = this.$stateParams.create;
     this.Page.setTitle(`${this.customer.name ? `${this.customer.name} - ` : ''} ${
@@ -75,6 +77,14 @@ class CustomersPackagesIndexController {
       .get(`/users/${this.$stateParams.id}/packages`, { params: this.params })
       .then(({ data: { packages: result, total } }) => {
         this.packages.push(...result);
+        this.todayDate = new Date();
+        this.packages.map(packageData => {
+          const packages = packageData;
+          const packageDate = new Date(packages.created_at);
+          packages.totalDays = Math.ceil((Math.abs(this.todayDate.getTime() -
+            packageDate.getTime())) / (1000 * 3600 * 24));
+          return packages;
+        });
 
         this.total = total;
         // data has been loaded

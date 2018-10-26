@@ -47,7 +47,10 @@ div
           .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(title="{{package.Customer.virtual_address_code + ' ('+package.Customer.Locker.short_name+ ')'}}")
             span(ng-bind="package.Customer.virtual_address_code")
           .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs
-            span(ng-bind="package.created_at | date:'M/d/yy h:mm a'" title="{{package.totalDays}} days" ng-class="package.totalDays > 20 ? 'text-danger' : 'text-success'")
+            span(ng-if='package.state_id !== $ctrl.packageStateId.ADDED_SHIPMENT', title="{{package.totalDays}} days" ng-class="package.totalDays > 20 ? 'text-danger' : 'text-success'")
+              | {{package.created_at | date:'MMM d, y'}} IST {{package.created_at | date:'h:mm a'}}
+            span.text-success(ng-if='package.state_id === $ctrl.packageStateId.ADDED_SHIPMENT', title="{{package.totalDays}} days")
+              | {{package.created_at | date:'MMM d, y'}} IST {{package.created_at | date:'h:mm a'}}
           .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-class='{"col-xs-3": !$ctrl.isAdmin}'): .w-full(uib-dropdown='' uib-keyboard-nav='' dropdown-append-to-body)
             button.text-ellipsis.btn.bg-white-only(class='b-{{App.states[package.state_id].config.color || "gray"}} text-{{App.states[package.state_id].config.color || "gray"}}' uib-dropdown-toggle=''
             style='text-align:left;padding: 2px 8px;width:auto'

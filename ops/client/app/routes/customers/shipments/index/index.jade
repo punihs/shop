@@ -65,10 +65,10 @@ div
             .col-xs-12.col-md-2.no-padder
               .m-none.wrapper-lg.w-full.w-auto-xs
                 .clearfix
-                  span(ng-if='shipment.state_id === $ctrl.paymentRequestState', title="{{shipment.totalDays}} days" ng-class="shipment.totalDays > 7 ? 'text-danger' : 'text-success'")
+                  span(ng-if='shipment.state_id === $ctrl.shipmentStateId.PAYMENT_REQUESTED', title="{{shipment.totalDays}} days" ng-class="shipment.totalDays > 7 ? 'text-danger' : 'text-success'")
                    .pull-right.padder.m-t-xxs  {{shipment.created_at | date:'MMM d, y'}} IST {{shipment.created_at | date:'h:mm a'}} &nbsp;
                   span.pull-right.m-b.m-t
-                  span.text-success(ng-if='shipment.state_id !== $ctrl.paymentRequestState', title="{{shipment.totalDays}} days" )
+                  span.text-success(ng-if='shipment.state_id !== $ctrl.shipmentStateId.PAYMENT_REQUESTED', title="{{shipment.totalDays}} days" )
                    .pull-right.padder.m-t-xxs  {{shipment.created_at | date:'MMM d, y'}} IST {{shipment.created_at | date:'h:mm a'}} &nbsp;
                   span.pull-right.m-b.m-t
 

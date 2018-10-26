@@ -3,7 +3,7 @@ class ShipmentsIndexController {
   constructor(
     QCONFIG, $scope, $stateParams, $location, $state, Prototype,
     $rootScope, $timeout, $window, $http, moment, $uibModal, Session, ExcelDownload,
-    ChangeShipmentState, Page, ShipmentFilter
+    ChangeShipmentState, Page, ShipmentFilter,
   ) {
     this.Page = Page;
     this.QCONFIG = QCONFIG;
@@ -33,6 +33,8 @@ class ShipmentsIndexController {
   }
 
   $onInit() {
+    this.todayDate = '';
+    this.shipmentStateId = this.QCONFIG.SHIPMENT_STATE_IDS;
     this.facets = {};
     this.initializing = true;
     this.timeout = this.$timeout(() => {});
@@ -153,6 +155,14 @@ class ShipmentsIndexController {
           return;
         }
         this.shipments.push(...shipments);
+        this.todayDate = new Date();
+        this.shipments.map(shipmentData => {
+          const shipment = shipmentData;
+          const shipmentDate = new Date(shipment.ShipmentState.created_at);
+          shipment.totalDays = Math.ceil((Math.abs(this.todayDate.getTime() -
+            shipmentDate.getTime())) / (1000 * 3600 * 24));
+          return shipment;
+        });
 
         this.total = total;
         // data has been loaded
