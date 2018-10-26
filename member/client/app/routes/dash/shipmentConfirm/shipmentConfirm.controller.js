@@ -29,9 +29,7 @@ class ShipmentConfirmController {
     this.promoStatus = '';
     this.couponAmount = '';
     this.couponCode = '';
-    this.standard_photo_check = 'yes';
     this.totalpackagePriceAmount = 0;
-    this.advc_photo_check = 0;
     this.paymentGateways = [];
     this.data = {};
     this.Page.setTitle('Shipment confirmation');
