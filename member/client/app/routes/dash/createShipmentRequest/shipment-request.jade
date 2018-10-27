@@ -67,7 +67,7 @@
                             | From
                             span.footable-sort-indicator
                           th.footable-visible.footable-sortable(data-hide='phone,tablet')
-                            | Reference Code
+                            | Package Id
                             span.footable-sort-indicator
                           th.footable-visible.footable-sortable(data-hide='phone,tablet', data-name='Date Of Birth')
                             | Total Value
@@ -81,7 +81,7 @@
                             i.fa.fa-sort-desc
                           td.footable-visible
                             a(ui-sref='package.show({ id: package.id })' ng-bind='shipment.Store.name')
-                          td.footable-visible(ng-bind='shipment.invoice_code')
+                          td.footable-visible(ng-bind='shipment.id')
                           td.footable-visible ₹{{shipment.price_amount}}
                           td.footable-visible {{shipment.weight}} KG
                         tr.footable-even(style='display: table-row;')
@@ -255,7 +255,7 @@
                     )
                   li.txt-kg
                     .col-md-2.no-padder
-                        input.form-control.no-padder.text-center(type='text', placeholder='in KG' ng-model='$ctrl.data.max_weight' ng-bind="$ctrl.data.max_weight")
+                        input.form-control.no-padder.text-center(type='text', placeholder='in KG' ng-model='$ctrl.data.max_weight')
                       label.col-md-10.control-label.text-left Max weight per package (in KG)
                         i.fa.fa-info-circle.m-l-xs(
                         uib-popover='Choose this option if you would like to restrict a Maximum weight of individual boxes in a shipment. Shoppre will split your shipment into multiple boxes not exceeding this box weight limit (whenever possible), at the same cost of splitting a package (INR 200 per new package created)*.' +
@@ -298,7 +298,7 @@
                   li
                     label.pull-left   TAX ID: &nbsp; &nbsp;
                     .pull-left
-                      input(type='text', ng-model='$ctrl.data.invoice_tax_id', ng-bind='$ctrl.data.invoice_tax_id')
+                      input(type='text', ng-model='$ctrl.data.invoice_tax_id')
           .panel.panel-info.m-t-md
             .panel-heading.font-bold.text-u-c PACKAGE LEVEL CHARGES SUMMARY
             .panel-body

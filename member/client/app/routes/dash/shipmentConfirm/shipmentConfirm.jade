@@ -220,44 +220,44 @@
                   li(ng-if="$ctrl.shipmentMeta.liquid_charge_amount > 0")
                     p
                       | Special Package Clearance Fee
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipmentMeta.liquid_charge_amount}}
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipmentMeta.liquid_charge_amount| number : 2}}
                   li(ng-if="$ctrl.shipmentMeta.overweight_charge_amount > 0")
                     p
                       | Overweight Clearance Fee
                       span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipmentMeta.overweight_charge_amount| number : 2}}
-                ul.list-group.list-group-lg.m-b-none.list-unstyled(ng-repeat="package in $ctrl.packages")
-                  li(ng-if="$ctrl.packageChrages.storage_amount > 0")
+                ul.list-group.list-group-lg.m-b-none.list-unstyled
+                  li(ng-if="$ctrl.data.storage_amount > 0")
                     p
                       | Additional Storage Fee
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.packageChrages.storage_amount| number : 2}}
-                  li(ng-if="$ctrl.packageChrages.advanced_photo_amount > 0 || $ctrl.packageChrages.standard_photo_amount > 0")
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.storage_amount | number: 2}}
+                  li(ng-if="$ctrl.data.photo_amount")
                     p
                       | Photo Charges
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.packageChrages.standard_photo_amount + $ctrl.packageChrages.advanced_photo_amount| number : 2}}
-                  li(ng-if="$ctrl.packageChrages.pickup_amount > 0")
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.photo_amount| number : 2}}
+                  li(ng-if="$ctrl.data.pickup_amount > 0")
                     p
                       | Pick-up Service
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.packageChrages.pickup_amount| number : 2}}
-                  li(ng-if="$ctrl.packageChrages.split_package_amount > 0")
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.pickup_amount| number : 2}}
+                  li(ng-if="$ctrl.data.split_package_amount > 0")
                     p
                       | Split Package
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.packageChrages.split_package_amount| number : 2}}
-                  li(ng-if="$ctrl.packageChrages.special_handling_amount > 0")
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.split_package_amount| number : 2}}
+                  li(ng-if="$ctrl.data.special_handling_amount > 0")
                     p
                       | Special Handling Fee
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.packageChrages.special_handling_amount| number : 2}}
-                  li(ng-if="$ctrl.packageChrages.receive_mail_amount > 0")
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.special_handling_amount| number : 2}}
+                  li(ng-if="$ctrl.data.receive_mail_amount > 0")
                     p
                       | Special Handling Fee
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.packageChrages.receive_mail_amount| number : 2}}
-                  li(ng-if="$ctrl.packageChrages.scan_document_amount > 0")
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.receive_mail_amount| number : 2}}
+                  li(ng-if="$ctrl.data.scan_document_amount > 0")
                     p
                       | Scan Document
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.packageChrages.scan_document_amount| number : 2}}
-                  li(ng-if="$ctrl.packageChrages.wrong_address_amount > 0")
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.scan_document_amount| number : 2}}
+                  li(ng-if="$ctrl.data.wrong_address_amount > 0")
                     p
                       | Address Correction
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.packageChrages.wrong_address_amount| number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.wrong_address_amount| number : 2}}
                   li(ng-if="$ctrl.shipment.package_level_charges_amount > 0")
                     hr
                     p

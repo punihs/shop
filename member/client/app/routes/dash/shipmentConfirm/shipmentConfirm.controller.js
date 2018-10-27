@@ -31,7 +31,16 @@ class ShipmentConfirmController {
     this.couponCode = '';
     this.totalpackagePriceAmount = 0;
     this.paymentGateways = [];
-    this.data = {};
+    this.data = {
+      storage_amount: 0,
+      photo_amount: 0,
+      pickup_amount: 0,
+      split_package_amount: 0,
+      special_handling_amount: 0,
+      receive_mail_amount: 0,
+      scan_document_amount: 0,
+      wrong_address_amount: 0,
+    };
     this.Page.setTitle('Shipment confirmation');
     this.getList();
   }
@@ -71,14 +80,22 @@ class ShipmentConfirmController {
         const shipmentMeta = [];
         shipmentMeta.push(shipment);
         this.shipmentMeta = shipmentMeta[0].ShipmentMetum;
-        this.packageChrages = packages[0].PackageCharge;
+        this.packageCharges = packages;
         this.payment = payment;
         this.promoStatus = promoStatus;
         this.couponAmount = couponAmount;
         this.data.paymentGateway = payment.payment_gateway_id;
         this.totalpackagePriceAmount = 0;
-        packages.forEach((x) => {
+        packages.map((x) => {
           this.totalpackagePriceAmount += x.price_amount;
+          this.data.photo_amount += x.PackageCharge.advanced_photo_amount || 0 + x.PackageCharge.standard_photo_amount ||0;
+          this.data.storage_amount += x.PackageCharge.storage_amount || 0;
+          this.data.pickup_amount += x.PackageCharge.pickup_amount || 0;
+          this.data.split_package_amount += x.PackageCharge.split_package_amount || 0;
+          this.data.special_handling_amount += x.PackageCharge.special_handling_amount || 0;
+          this.data.receive_mail_amount += x.PackageCharge.receive_mail_amount || 0;
+          this.data.scan_document_amount += x.PackageCharge.scan_document_amount || 0;
+          this.data.wrong_address_amount += x.PackageCharge.wrong_address_amount || 0;
         });
       })
       .catch((err) => {
