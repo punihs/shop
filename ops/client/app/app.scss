@@ -574,3 +574,9 @@ li.dndPlaceholder {
   right: 28px;
   position: fixed;
 }
+
+.iti-flag {background-image: url("/assets/flags.png");}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .iti-flag {background-image: url("/assets/flags@2x.png");}
+}
