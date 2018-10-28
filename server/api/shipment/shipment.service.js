@@ -179,7 +179,7 @@ exports.show = async (req, res, next) => {
     });
 
   const optionsShipment = {
-    attributes: ['id', 'package_level_charges_amount', 'weight', 'pick_up_charge_amount', 'address',
+    attributes: ['id', 'package_level_charges_amount', 'weight', 'final_weight', 'pick_up_charge_amount', 'address',
       'discount_amount', 'estimated_amount', 'packages_count', 'sub_total_amount', 'customer_name',
       'value_amount', 'phone', 'is_axis_banned_item', 'order_code', 'shipment_state_id'],
     where: {

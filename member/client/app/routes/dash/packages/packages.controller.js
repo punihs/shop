@@ -225,6 +225,7 @@ class PackageLockerController {
         this.packages.splice(this.packages.findIndex(l => (l.id === id)), 1);
         this.facets.ACTION_REQUIRED -= 1;
         this.facets.IN_REVIEW += 1;
+        this.data.object_thumb = null;
         this
           .toaster
           .pop('sucess', message);
