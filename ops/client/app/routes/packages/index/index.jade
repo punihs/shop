@@ -43,6 +43,8 @@ div
             a(ui-sref='package.show({ id: package.id, profilePhotoUrl: package.Customer.profile_photo_url })' target="_blank") {{package.id}}
           .col-xs-2.wrapper-sm.m-t-xs
             a(ui-sref='package.show({ id: package.id, profilePhotoUrl: package.Customer.profile_photo_url })' target="_blank") {{package.Store.name}}
+              span.badge.bg-success.m-l-xs(ng-if='package.content_type === "2"') SPECIAL
+              span.badge.bg-danger.m-l-xs(ng-if='package.damaged') DAMAGED
           .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="package.Customer.name" title="{{package.Customer.name}}")
           .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(title="{{package.Customer.virtual_address_code + ' ('+package.Customer.Locker.short_name+ ')'}}")
             span(ng-bind="package.Customer.virtual_address_code")

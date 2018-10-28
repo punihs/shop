@@ -133,6 +133,7 @@ class PackagesIndexController {
     if (!this.ui.lazyLoad) return; // if no more packages to get
     this.ui = { lazyLoad: false, loading: true };
     this.params.q = this.xquery || '';
+    let packageIds = null;
 
     if (this.$stateParams.bucket === 'Interview') {
       this.params.interview_time = [
@@ -154,12 +155,27 @@ class PackagesIndexController {
           this.ui.lazyLoad = false;
           return;
         }
+        packageIds = packages.map((x) => {
+          return x.id;
+        });
+
+        this.$http
+          .get(`/packages/items/damaged?packageIds=${packageIds}`)
+          .then(({ data: { packageStates } }) => {
+            const damagedIds = packageStates.map(x => x.package_id);
+            packages.map((x) => {
+              if (damagedIds.includes(x.id)) {
+                x.damaged = true;
+              }
+            });
+          });
 
         if (!packages.length && this.$rootScope.previousState === 'access.oauth') {
           this.$state.go('packages.index', { bucket: 'ALL' });
           return;
         }
         this.packages.push(...packages);
+        console.log('this.packages', this.packages);
         this.todayDate = new Date();
         this.packages.map(packageData => {
           const packageDate = new Date(packageData.created_at);
