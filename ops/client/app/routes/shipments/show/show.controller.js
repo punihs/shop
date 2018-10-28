@@ -18,7 +18,7 @@ class shipmentsShowController {
     this.ListModal = ListModal;
     this.moment = moment;
     this.customer = pkg.Customer;
-    //- todo -required
+    // - todo -required
     // this.editAllowedStates = [16, 17, 18, 19, 21, 22, 23, 24];
     this.deleteAllowedStates = [16, 17, 18, 19, 21];
     this.location = $window.location;

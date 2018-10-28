@@ -222,15 +222,13 @@ class PackageLockerController {
     this.$http
       .put(`/packages/${id}/invoice`, { object: this.data.object })
       .then(({ data: { message } }) => {
+        this.packages.splice(this.packages.findIndex(l => (l.id === id)), 1);
+        this.facets.ACTION_REQUIRED -= 1;
+        this.facets.IN_REVIEW += 1;
         this
           .toaster
           .pop('sucess', message);
       });
-    this.packages = [];
-    this.packages.splice(this.packages.findIndex(l => (l.id === id)), 1);
-    this.facets.ACTION_REQUIRED -= 1;
-    this.facets.IN_REVIEW += 1;
-    this.getList();
   }
 
   resetValues() {

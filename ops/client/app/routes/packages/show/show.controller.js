@@ -24,7 +24,6 @@ class PackageShowController {
     this.editAllowedStates = [1, 2, 5];
     this.location = $window.location;
     this.user = Session.read('userinfo');
-    console.log('data', this.data);
     this.$onInit();
   }
 

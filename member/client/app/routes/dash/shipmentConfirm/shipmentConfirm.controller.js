@@ -88,7 +88,7 @@ class ShipmentConfirmController {
         this.totalpackagePriceAmount = 0;
         packages.map((x) => {
           this.totalpackagePriceAmount += x.price_amount;
-          this.data.photo_amount += x.PackageCharge.advanced_photo_amount || 0 + x.PackageCharge.standard_photo_amount ||0;
+          this.data.photo_amount += x.PackageCharge.advanced_photo_amount || 0 + x.PackageCharge.standard_photo_amount || 0;
           this.data.storage_amount += x.PackageCharge.storage_amount || 0;
           this.data.pickup_amount += x.PackageCharge.pickup_amount || 0;
           this.data.split_package_amount += x.PackageCharge.split_package_amount || 0;
