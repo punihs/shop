@@ -123,7 +123,8 @@ exports.show = async (req, res, next) => {
     .findById(req.params.id, {
       attributes: req.query.fl
         ? req.query.fl.split(',')
-        : ['id', 'customer_id', 'created_at', 'weight', 'packages_count'],
+        : ['id', 'customer_id', 'created_at', 'weight', 'final_weight', 'packages_count',
+          'pick_up_charge_amount', 'payment_gateway_fee_amount', 'final_amount'],
       include: [{
         model: ShipmentState,
         attributes: ['id', 'state_id'],

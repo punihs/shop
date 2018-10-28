@@ -152,7 +152,7 @@ module.exports = (sequelize, DataTypes) => {
           const tracking = {};
           tracking.dispatch_date = moment();
           tracking.number_of_packages = shipment.packages_count;
-          tracking.weight_by_shipping_partner = shipment.weight;
+          tracking.weight_by_shipping_partner = shipment.final_weight;
           tracking.value_by_shipping_partner = shipment.value_amount;
           tracking.payment_status = 'success';
           await db.Shipment.update(tracking, { where: { id: shipment.id } });

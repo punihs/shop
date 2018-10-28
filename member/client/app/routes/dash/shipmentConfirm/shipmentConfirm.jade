@@ -73,7 +73,7 @@
                     td.footable-visible
                     td.footable-visible Shipment Totals
                     td.footable-visible ₹{{$ctrl.totalpackagePriceAmount | number : 2}}
-                    td.footable-visible {{$ctrl.shipment.weight | number :2}} KG
+                    td.footable-visible {{$ctrl.shipment.final_weight | number :2}} KG
                     td.footable-visible
           .clearfix
           // todo - check this payment gateway with PHP code
@@ -133,7 +133,7 @@
                   li
                     p
                       | Total Weight
-                      span.totalvalue.pull-right {{$ctrl.shipment.weight | number :2}} KG
+                      span.totalvalue.pull-right {{$ctrl.shipment.final_weight | number :2}} KG
                       span(
                       uib-popover = 'All International carriers base their billable shipping rates on the greater of Actual Weight and Dimensional Weight.'+
                       'Actual weight is the weight of the package when put on a scale.'+
