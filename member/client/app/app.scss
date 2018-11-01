@@ -21,12 +21,12 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 @import 'directives/directive-header/directive-header.scss';
 @import 'directives/package-filter/package-filter.scss';
 @import 'directives/shipment-filter/shipment-filter.scss';
-@import 'naivgation.scss';
 @import 'routes/access/access.scss';
-@import 'routes/accounts/accounts.scss';
-@import 'routes/dash/incoming-packages/new/new.scss';
+@import 'routes/packages/create/create.scss';
+@import 'routes/users/users.scss';
 @import '../components/footer/footer.scss';
 @import '../components/navbar/navbar.scss';
+@import '../components/navigation/naivgation.scss';
 // endinjector
 
 // Override: TODO: Seems some differences with bootstrap-sass of hire and this(partner).

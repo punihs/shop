@@ -96,64 +96,64 @@ describe('POST /api/personalShopperPackages', () => {
   });
 });
 
-describe('1 PUT /api/personalShopperPackages', () => {
-  it('update personalShopperPackages', (done) => {
-    request(app)
-      .put('/api/personalShopperPackages')
-      .send({
-        id: 2,
-        store_id: 1,
-        store_type: 'Online Store',
-        quantity: 1,
-        url: 'https://www.flipkart.com',
-        code: '5684',
-        name: ' T Shirt',
-        color: ' Red Color',
-        size: 'L',
-        price_amount: 5000,
-        note: 'Please purchase only medium size',
-        if_item_unavailable: 'cancel',
-      })
-      .set('Authorization', `Bearer ${auth.access_token}`)
-      .expect('Content-Type', /json/)
-      .expect(200)
-      .then(() => {
-        done();
-      });
-  });
-});
+// describe('1 PUT /api/personalShopperPackages', () => {
+//   it('update personalShopperPackages', (done) => {
+//     request(app)
+//       .put('/api/personalShopperPackages')
+//       .send({
+//         id: 2,
+//         store_id: 1,
+//         store_type: 'Online Store',
+//         quantity: 1,
+//         url: 'https://www.flipkart.com',
+//         code: '5684',
+//         name: ' T Shirt',
+//         color: ' Red Color',
+//         size: 'L',
+//         price_amount: 5000,
+//         note: 'Please purchase only medium size',
+//         if_item_unavailable: 'cancel',
+//       })
+//       .set('Authorization', `Bearer ${auth.access_token}`)
+//       .expect('Content-Type', /json/)
+//       .expect(200)
+//       .then(() => {
+//         done();
+//       });
+//   });
+// });
 
-describe('POST /api/personalShopperPackages/submitOptions', () => {
-  it('submitOptions personalShopperPackages', (done) => {
-    request(app)
-      .post('/api/personalShopperPackages/submitOptions')
-      .send([
-        {
-          id: 2,
-          sales_tax: 50,
-          delivery_charge: 50,
-          promo_code: 'MYNTRA100',
-          promo_info: '100 RUPEES OFF',
-          if_promo_unavailable: 'proceed_without',
-          instruction: 'Nothing',
-        }, {
-          id: 2,
-          sales_tax: 50,
-          delivery_charge: 100,
-          promo_code: 'MYNTRA100',
-          promo_info: '100 RUPEES OFF',
-          if_promo_unavailable: 'proceed_without',
-          instruction: 'Nothing',
-        },
-      ])
-      .set('Authorization', `Bearer ${auth.access_token}`)
-      .expect('Content-Type', /json/)
-      .expect(200)
-      .then(() => {
-        done();
-      });
-  });
-});
+// describe('POST /api/personalShopperPackages/submitOptions', () => {
+//   it('submitOptions personalShopperPackages', (done) => {
+//     request(app)
+//       .post('/api/personalShopperPackages/submitOptions')
+//       .send([
+//         {
+//           id: 2,
+//           sales_tax: 50,
+//           delivery_charge: 50,
+//           promo_code: 'MYNTRA100',
+//           promo_info: '100 RUPEES OFF',
+//           if_promo_unavailable: 'proceed_without',
+//           instruction: 'Nothing',
+//         }, {
+//           id: 2,
+//           sales_tax: 50,
+//           delivery_charge: 100,
+//           promo_code: 'MYNTRA100',
+//           promo_info: '100 RUPEES OFF',
+//           if_promo_unavailable: 'proceed_without',
+//           instruction: 'Nothing',
+//         },
+//       ])
+//       .set('Authorization', `Bearer ${auth.access_token}`)
+//       .expect('Content-Type', /json/)
+//       .expect(200)
+//       .then(() => {
+//         done();
+//       });
+//   });
+// });
 
 describe('POST /api/personalShopperPackages/submitPayment', () => {
   before(async () => Package.update({ status: 'pending', payment_status: 'pending' }, { where: { invoice_code: 'P646873' } }));
@@ -375,18 +375,18 @@ describe('GET /api/personalShopperPackages/cancelShopper', () => {
   });
 });
 
-describe('DELETE /api/personalShopperPackages', () => {
-  it('delete personalShopperItems', (done) => {
-    request(app)
-      .delete('/api/personalShopperPackages/2/request')
-      .set('Authorization', `Bearer ${auth.access_token}`)
-      .expect('Content-Type', /json/)
-      .expect(200)
-      .then(() => {
-        done();
-      });
-  });
-});
+// describe('DELETE /api/personalShopperPackages', () => {
+//   it('delete personalShopperItems', (done) => {
+//     request(app)
+//       .delete('/api/personalShopperPackages/2/request')
+//       .set('Authorization', `Bearer ${auth.access_token}`)
+//       .expect('Content-Type', /json/)
+//       .expect(200)
+//       .then(() => {
+//         done();
+//       });
+//   });
+// });
 
 describe('DELETE /api/personalShopperPackages', () => {
   it('delete personalShopperPackages', (done) => {

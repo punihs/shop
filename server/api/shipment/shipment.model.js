@@ -2,14 +2,15 @@ const moment = require('moment');
 const properties = require('./shipment.property');
 const debug = require('debug');
 const logger = require('../../components/logger');
-const notification = require('./shipment.notification');
+const hookshot = require('./shipment.hookshot');
 
 const log = debug('s.api.shipment.controller');
 const {
-  TRANSACTION_TYPES: { CREDIT },
+  // TRANSACTION_TYPES: { CREDIT },
   SHIPMENT_STATE_IDS: {
     INQUEUE, INREVIEW, DISPATCHED, DELIVERED, CANCELED, SHIPMENT_CANCELLED,
-    INTRANSIT, CUSTOM_HOLD, LOST, WRONG_DELIVERY, PAYMENT_CONFIRMED, SHIPMENT_HANDED,
+    INTRANSIT, CUSTOM_HOLD, LOST, WRONG_DELIVERY, PAYMENT_CONFIRMED,
+    // SHIPMENT_HANDED,
   },
   PACKAGE_STATE_IDS: { READY_TO_SHIP, DAMAGED },
 } = require('../../config/constants');
@@ -51,7 +52,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'shipment_type_id',
     });
 
-    Shipment.belongsTo(db.PaymentGateway);
     Shipment.belongsTo(db.Place, {
       foreignKey: 'destination_city_id',
     });
@@ -159,7 +159,7 @@ module.exports = (sequelize, DataTypes) => {
         }
 
         shipment.getPackages()
-          .then(packageItems => notification
+          .then(packageItems => hookshot
             .stateChange({
               db,
               nextStateId,
@@ -171,68 +171,69 @@ module.exports = (sequelize, DataTypes) => {
 
         break;
       }
-      case SHIPMENT_HANDED: {
-        log('state changed - shipment handed to partner', SHIPMENT_HANDED);
-        if (shipment.tracking_code) {
-          // - Todo:  add this code before creating state
-          // const tracking = shipment.tracking_code;
-          // if (!shipment.dispatch_date || !shipment.shipping_carrier
-          // || !shipment.number_of_packages ||
-          //   !shipment.weight_by_shipping_partner ||
-          //   !shipment.value_by_shipping_partner || !shipment.tracking_code) {
-          //   return res.json({ error:
-          // 'You must update Shipment Tracking Information to send dispatch notification!' });
-          // }
-          // $shpmnt->shipping_status = 'dispatched';
+      // case SHIPMENT_HANDED: {
+      // log('state changed - shipment handed to partner', SHIPMENT_HANDED);
+      // if (shipment.tracking_code) {
+      // - Todo:  add this code before creating state
+      // const tracking = shipment.tracking_code;
+      // if (!shipment.dispatch_date || !shipment.shipping_carrier
+      // || !shipment.number_of_packages ||
+      //   !shipment.weight_by_shipping_partner ||
+      //   !shipment.value_by_shipping_partner || !shipment.tracking_code) {
+      //   return res.json({ error:
+      // 'You must update Shipment Tracking Information to send dispatch notification!' });
+      // }
+      // $shpmnt->shipping_status = 'dispatched';
 
-          const couponAppliedStatus = await db.Redemption
-            .update({ status: 'success' }, { where: { shipment_order_code: shipment.order_code } });
+      // const couponAppliedStatus = await db.Redemption
+      //   .update({ status: 'success' }, { where: { shipment_order_code: shipment.order_code } });
+      //
+      // let promo = '';
+      // if (couponAppliedStatus) {
+      //   promo = await db.Coupon
+      //     .find(
+      //       { attributes: ['id', 'cashback_percentage', 'max_cashback_amount'] },
+      //       { where: { code: couponAppliedStatus.coupon_code } },
+      //     );
+      //
+      //   if (promo) {
+      //     // const optionCashBack = {
+      //     //   attributes: ['wallet_balance_amount'],
+      //     //   where: { id: actingUser.id },
+      //     // }
+      //     if (promo.cashback_percentage) {
+      //       // await db.User(optionCashBack)
+      //       //   .then(total_wallet_amount => {
+      //       const cashbackAmount =
+      //           shipment.estimated_amount * (promo.cashback_percentage / 100);
+      //       const maxCouponAmount = promo.max_cashback_amount || 0;
+      //       let totalCashbackAmount = 0;
+      //       if (cashbackAmount <= maxCouponAmount) {
+      //         totalCashbackAmount = cashbackAmount;
+      //       } else {
+      //         totalCashbackAmount = maxCouponAmount;
+      //       }
+      //       const transaction = {};
+      //       transaction.customer_id = actingUser.customer_id;
+      //       transaction.amount = totalCashbackAmount;
+      //       transaction.type = CREDIT;
+      //       transaction.description =
+      // `Wallet transactions for coupon code | Shipment ID  ${shipment.order_code}`;
+      //       // });
+      //     }
+      //   }
+      // }
+      // if(!in_array('ship_dispatched', $shipmails)){
+      //   $this->mailerShipping($shipRqst->id, 'ship_dispatched');
+      // }
+      // } else {
+      // return redirect()->back()->with('error',
+      // 'You must update Shipment Tracking Information to send dispatch notification!');
+      // }
 
-          let promo = '';
-          if (couponAppliedStatus) {
-            promo = await db.Coupon
-              .find(
-                { attributes: ['id', 'cashback_percentage', 'max_cashback_amount'] },
-                { where: { code: couponAppliedStatus.coupon_code } },
-              );
 
-            if (promo) {
-              // const optionCashBack = {
-              //   attributes: ['wallet_balance_amount'],
-              //   where: { id: actingUser.id },
-              // }
-              if (promo.cashback_percentage) {
-                // await db.User(optionCashBack)
-                //   .then(total_wallet_amount => {
-                const cashbackAmount =
-                    shipment.estimated_amount * (promo.cashback_percentage / 100);
-                const maxCouponAmount = promo.max_cashback_amount || 0;
-                let totalCashbackAmount = 0;
-                if (cashbackAmount <= maxCouponAmount) {
-                  totalCashbackAmount = cashbackAmount;
-                } else {
-                  totalCashbackAmount = maxCouponAmount;
-                }
-                const transaction = {};
-                transaction.customer_id = actingUser.customer_id;
-                transaction.amount = totalCashbackAmount;
-                transaction.type = CREDIT;
-                transaction.description = `Wallet transactions for coupon code | Shipment ID  ${shipment.order_code}`;
-                // });
-              }
-            }
-            // }
-            // if(!in_array('ship_dispatched', $shipmails)){
-            //   $this->mailerShipping($shipRqst->id, 'ship_dispatched');
-          }
-        } else {
-        // return redirect()->back()->with('error',
-          // 'You must update Shipment Tracking Information to send dispatch notification!');
-        }
-
-
-        break;
-      }
+      //   break;
+      // }
       case SHIPMENT_CANCELLED: {
         log('state changed CANCELLED', SHIPMENT_CANCELLED);
 
@@ -286,7 +287,7 @@ module.exports = (sequelize, DataTypes) => {
       }
       case INQUEUE: {
         shipment.getPackages()
-          .then(packages => notification
+          .then(packages => hookshot
             .stateChange({
               db,
               nextStateId,

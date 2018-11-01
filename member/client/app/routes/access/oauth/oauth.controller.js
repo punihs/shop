@@ -30,7 +30,7 @@ class OAuthCtrl {
           // Used for updating session
           location.href = query.state
             ? `${location.origin}${query.state}`
-            : $state.href('dash.packages', { absolute: true });
+            : $state.href('packages.index', { absolute: true });
         }))
         .catch(() => {
           const location = $window.location;

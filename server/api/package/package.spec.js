@@ -2,7 +2,7 @@ const request = require('supertest');
 const app = require('./../../app');
 const auth = require('../../../logs/credentials');
 const opsAuth = require('../../../logs/ops-credentials');
-const wwwAuth = require('../../../logs/www-credentials');
+// const wwwAuth = require('../../../logs/www-credentials');
 
 const {
   CONTENT_TYPES: { REGULAR, SPECIAL },
@@ -25,18 +25,18 @@ describe('public: GET /api/packages', () => {
   });
 });
 
-describe('www: GET /api/packages ', () => {
-  it('return packages', (done) => {
-    request(app)
-      .get('/api/packages')
-      .set('Authorization', `Bearer ${wwwAuth.access_token}`)
-      .expect('Content-Type', /json/)
-      .expect(200)
-      .then(() => {
-        done();
-      });
-  });
-});
+// describe('www: GET /api/packages ', () => {
+//   it('return packages', (done) => {
+//     request(app)
+//       .get('/api/packages')
+//       .set('Authorization', `Bearer ${wwwAuth.access_token}`)
+//       .expect('Content-Type', /json/)
+//       .expect(200)
+//       .then(() => {
+//         done();
+//       });
+//   });
+// });
 
 const abhinavAuth = auth;
 

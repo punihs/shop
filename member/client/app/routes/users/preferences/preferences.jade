@@ -1,0 +1,224 @@
+div.m-t-xl.no-margin
+  .wrapper-md.bg-white-only
+    div
+      .h1.m-l-md.font-thin.h3.m-b-md
+        | Shipment Preferences
+      .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+      .row
+        .col-md-8
+          .panel.no-border
+            .panel-heading.wrapper.b-b.b-light
+              h5.font-bold DEFAULT SHIPPING ADDRESS
+              a.text-info(ui-sref='users.address-new', ng-if='$ctrl.defaultAddress == ""') + Add A Shipping Address
+              .well.m-t.m-l.bg-light.col-md-4.hover-wrap.no-margin-left(ng-class='dker', ng-if='$ctrl.defaultAddress != ""')
+                .row
+                  .col-xs-12
+                    h4
+                      span.h4.font-thin(ng-bind='($ctrl.defaultAddress.city ? $ctrl.defaultAddress.city.toUpperCase() : "") + " Address"')
+                      span.flag-icon.m-l-xs(
+                      ng-class='"flag-icon-"+ $ctrl.defaultAddress.Country.iso2.toLowerCase()'
+                      )
+                    strong(ng-bind='$ctrl.defaultAddress.first_name + " " + $ctrl.defaultAddress.last_name')
+
+                    p
+                      small.block(ng-bind='$ctrl.defaultAddress.line1')
+                      small.block(ng-bind='$ctrl.defaultAddress.line2')
+                      small.block(ng-bind='$ctrl.defaultAddress.city + ", " + $ctrl.defaultAddress.state')
+                      small.block(ng-bind='$ctrl.defaultAddress.Country.name + " - " + $ctrl.defaultAddress.pincode')
+                      small.block(
+                      ng-if='$ctrl.defaultAddress.phone'
+                      ng-bind='$ctrl.defaultAddress.phone'
+                      )
+                      span.label.pull-left.padding-5.m-t-xs.bg-primary DEFAULT SHIPPING ADDRESS
+
+      // Todo Need to show this code in next iteration
+
+      .row.hide
+        .col-md-8
+          .panel.no-border
+            .panel-heading.wrapper.b-b.b-light
+              h5.font-bold LOG IN OPTIONS
+              ul.list-group.list-group-lg.m-b-none.list-unstyled
+                li
+                  .checkbox
+                    label.i-checks
+                      input(
+                      ng-model='$ctrl.data.is_basic_photo'
+                      type='checkbox',
+                      )
+                      i
+                      | Always take standard photos of item at login
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover='We take upto 5 Basic photographs of all your items which you can view immediately for a cost of INR 100\n' +
+                    '                    Charges may be lesser for Membership Partners, and Loyalty Members'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
+                    )
+                li
+                  .checkbox
+                    label.i-checks
+                      input(
+                      ng-model='$ctrl.data.is_advanced_photo'
+                      type='checkbox',
+                      )
+                      i
+                      | Always take advanced photos of item at login
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover='You can also request upto 10 Additional Photos incase you want some more details or if you want to inspect if the items are not damaged for a cost of INR 500*. This might take upto a maximum period of 48 hours, and until then your package will be in review.\n' +
+                    '                    Charges may be lesser for Membership Partners, and Loyalty Members Silver and above'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
+                    )
+                li
+                  .checkbox
+                    label.i-checks
+                      input(
+                      ng-model='$ctrl.data.is_scan_document'
+                      type='checkbox',
+                      )
+                      i
+                      | Always scan all pages of my documents
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover='You can scan your documents (all/some pages of your document) for a charge of INR 40.00/day (Minimum INR 100) *Charges may be lesser for Membership Partners, and Loyalty Members (Silver and abov'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
+                    )
+      .row
+        .col-md-8
+          .panel.no-border
+            .panel-heading.wrapper.b-b.b-light
+              h5.font-bold PACKING OPTIONS
+              ul.list-group.list-group-lg.m-b-none.list-unstyled
+                li
+                  .checkbox
+                    label.i-checks
+                      input(
+                      ng-model='$ctrl.data.is_repacking'
+                      type='checkbox',
+                      )
+                      i
+                      | Discard shoe boxes
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover='We take upto 5 Basic photographs of all your items which you can view immediately for a cost of INR 100\n' +
+                    '                    Charges may be lesser for Membership Partners, and Loyalty Members'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
+                    )
+                li
+                  .checkbox
+                    label.i-checks
+                      input(
+                      ng-model='$ctrl.data.is_extra_packing'
+                      type='checkbox',
+                      )
+                      i
+                      | Add extra packing material
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover='You can also request upto 10 Additional Photos incase you want some more details or if you want to inspect if the items are not damaged for a cost of INR 500*. This might take upto a maximum period of 48 hours, and until then your package will be in review.\n' +
+                    '                    Charges may be lesser for Membership Partners, and Loyalty Members Silver and above'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
+                    )
+                li
+                  .checkbox
+                    Label.i-checks
+                      input(
+                      ng-model='$ctrl.data.is_original_box'
+                      type='checkbox',
+                      )
+                      i
+                      | Ship in original shipping boxes
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover='You can scan your documents (all/some pages of your document) for a charge of INR 40.00/day (Minimum INR 100) *Charges may be lesser for Membership Partners, and Loyalty Members (Silver and abov'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
+                    )
+                li
+                  .form-group
+                    .col-lg-1.no-padder
+                      input.form-control.no-padder.text-center(
+                      type='text',
+                      placeholder='in KG',
+                      ng-model='$ctrl.data.max_weight',
+                      name='max_weight',
+                      )
+                    label.col-lg-10.control-label.m-t-xs Max weight per box/Multi-piece shipment (MPS) 1 kilogram is about 2.2046 pounds
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover='Choose this option if you would like to restrict a Maximum weight of individual boxes in a shipment. Shoppre will split your shipment into multiple boxes not exceeding this box weight limit (whenever possible), at the same cost of splitting a package (INR 200 per new package created)*\n' +
+                      'Please note that a shipment which weighs more than 30kg will be considered as a commercial shipment and will incur a custom clearance cost of INR 2500.\n' +
+                      '*Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).'
+                      popover-trigger="'mouseenter'"
+                      popover-placement='right'
+                      popover-append-to-body='true'
+                      )
+                  .clearfix
+                li
+                  .checkbox
+                    label.i-checks
+                      input(
+                      ng-model='$ctrl.data.is_gift_wrap'
+                      type='checkbox',
+                      )
+                      i
+                      | Gift Wrap
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover='We can gift wrap your items at a cost of INR 100/- per package*. However, please note that the gift wrapped item will be placed in another box before it is being shipped and that box cannot be wrapped\n' +
+                    'Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
+                    )
+                li
+                  .checkbox
+                    label.i-checks
+                      input(
+                      ng-model='$ctrl.data.is_gift_note'
+                      name='is_gift_note'
+                      type='checkbox',
+                      )
+                      i
+                      | Gift Note
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover=' We can write a gift note and place it inside your package at a cost of INR 50/- per package *Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
+                    )
+      .row
+        .col-md-8
+          .panel.no-border
+            .panel-heading.wrapper.b-b.b-light
+              h5.font-bold PERFORMA INVOICE OPTIONS
+              ul.list-group.list-group-lg.m-b-none.list-unstyled
+                li
+                  .form-group
+                    label.col-lg-1.control-label.m-t-xs.no-padder Tax ID
+                    .col-lg-3.no-padder-left
+                      input.form-control(type='text', ng-model= '$ctrl.data.tax_id', name='tax_id')
+                .clearfix
+                li
+                  .checkbox
+                    label.i-checks
+                      input(
+                      ng-model='$ctrl.data.is_mark_personal_use'
+                      type='checkbox',
+                      )
+                      i
+                      | Mark items for "Personal Use Only"
+                li
+                  .checkbox
+                    label.i-checks
+                      input(
+                      ng-model='$ctrl.data.is_include_invoice'
+                      type='checkbox',
+                      )
+                      i
+                      | Please include a printed Proforma Invoice in my shipment
+
+      button.btn.btn-primary.btn-addon.btn-sm.m-l-md(ng-click="$ctrl.updatePreference()") Update Changes

@@ -40,7 +40,9 @@ angular
             $http
               .post('/minio/thumb', { object })
               .then(() => {
-                const objectThumb = `${URLS.CDN}/shoppre/${data.object_advanced.replace('.', '-thumb.')}`;
+                const objectThumb = `${URLS.CDN}/shoppre/${data
+                  .object_advanced
+                  .replace('.', '-thumb.')}`;
                 toaster.pop('success', 'Conversion done');
                 Object.assign(data, { object_advanced_thumb: objectThumb });
               })
@@ -65,7 +67,9 @@ angular
             $http
               .post('/minio/thumb', { object })
               .then(() => {
-                const objectThumb = `${URLS.CDN}/shoppre/${data.object_invoice.replace('.', '-thumb.')}`;
+                const objectThumb = `${URLS.CDN}/shoppre/${data
+                  .object_invoice
+                  .replace('.', '-thumb.')}`;
                 toaster.pop('success', 'Conversion done');
                 Object.assign(data, { object_invoice_thumb: objectThumb });
               })

@@ -23,7 +23,7 @@ class ShipmentNavController {
 
   $onInit() {
     this.reset();
-    this.getList(true);
+    // this.getList(true);
     this.refreshList = this.getList.bind(this);
   }
 

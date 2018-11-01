@@ -1,10 +1,9 @@
 class CustomerViewController {
-  constructor($http, Page, $uibModal, toaster, socket, $state, $stateParams, URLS, moment) {
+  constructor($http, Page, $uibModal, toaster, $state, $stateParams, URLS, moment) {
     this.$http = $http;
     this.Page = Page;
     this.$uibModal = $uibModal;
     this.toaster = toaster;
-    this.socket = socket;
     this.$state = $state;
     this.moment = moment;
     this.$stateParams = $stateParams;
@@ -36,7 +35,6 @@ class CustomerViewController {
       .get(`/addresses?id=${this.id}`)
       .then(({ data }) => {
         this.addresses = data;
-        this.socket.syncUpdates('address', this.addresses);
       });
     this.Page.setTitle('Customer Profile');
 
@@ -83,8 +81,8 @@ class CustomerViewController {
     ];
     const method = this.editWallet ? 'put' : 'post';
     return this
-      .$http
-      [method](`/transactions${this.editWallet ? `/${this.editWalletId}` : ''}`, _.pick(data, allowed))
+      .$http[method](`/transactions${this.editWallet ? `/${this.editWalletId}` : ''}`,
+        _.pick(data, allowed))
       .then(() => {
         if (method === 'post') {
           const walletTransaction = {
@@ -136,8 +134,8 @@ class CustomerViewController {
     ];
     const method = this.editLoyalty ? 'put' : 'post';
     return this
-      .$http
-      [method](`/loyaltyHistories${this.editLoyalty ? `/${this.editLoyaltyId}` : ''}`, _.pick(data, allowed))
+      .$http[method](`/loyaltyHistories${this.editLoyalty ? `/${this.editLoyaltyId}` : ''}`,
+        _.pick(data, allowed))
       .then(() => {
         if (method === 'post') {
           const loyaltypoints = {

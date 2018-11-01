@@ -3,8 +3,8 @@ const sequelize = require('sequelize');
 
 const {
   Shipment, User, Locker, ShipmentState, Address, ShipmentMeta,
-  Package, Country, PhotoRequest, State, PaymentGateway,
-  PackageItem, PackageCharge, Store, Redemption, Coupon,
+  Package, Country, PhotoRequest, State,
+  PackageItem, PackageCharge, Store,
 } = require('../../conn/sqldb');
 
 const {
@@ -12,14 +12,7 @@ const {
   SHIPMENT_STATE_IDS: {
     PAYMENT_COMPLETED, PAYMENT_FAILED, PAYMENT_REQUESTED,
   },
-  PAYMENT_GATEWAY: {
-    WIRE, WALLET, CASH, PAYTM, CARD, PAYPAL,
-  },
 } = require('./../../config/constants');
-
-const {
-  PAYMENT_GATEWAY,
-} = require('../../config/constants/charges');
 
 const log = debug('s-api-shipment-service');
 const BUCKETS = require('./../../config/constants/buckets');
@@ -66,10 +59,12 @@ exports.index = ({ params, query, user: actingUser }) => {
       }, {
         model: Package,
         attributes: ['id'],
-      }, {
-        model: PaymentGateway,
-        attributes: ['id', 'value'],
-      }, {
+      },
+      //   {
+      //   model: PaymentGateway,
+      //   attributes: ['id', 'value'],
+      // }
+      {
         model: Country,
         attributes: ['id', 'name'],
       }, {
@@ -94,9 +89,6 @@ exports.index = ({ params, query, user: actingUser }) => {
       }, {
         model: Package,
         attributes: ['id'],
-      }, {
-        model: PhotoRequest,
-        attributes: ['id', 'type', 'status'],
       }, {
         model: Address,
         attributes: ['id', 'city'],
@@ -161,26 +153,14 @@ exports.index = ({ params, query, user: actingUser }) => {
     }));
 };
 
-const paymentGatewayChargesMap = {
-  [CARD]: PAYMENT_GATEWAY.CARD,
-  [PAYPAL]: PAYMENT_GATEWAY.PAYPAL,
-  [WIRE]: PAYMENT_GATEWAY.WIRE,
-  [CASH]: 0,
-  [WALLET]: 0,
-  [PAYTM]: PAYMENT_GATEWAY.PAYTM,
-};
 
-exports.show = async (req, res, next) => {
+exports.show = async (req, res) => {
   const customerId = req.user.id;
-  const orderCode = req.query.order_code;
-  const customer = await User
-    .findById(customerId, {
-      attributes: ['id', 'wallet_balance_amount'],
-    });
+  const { orderCode } = req.params;
 
   const optionsShipment = {
     attributes: ['id', 'package_level_charges_amount', 'weight', 'final_weight', 'pick_up_charge_amount', 'address',
-      'discount_amount', 'estimated_amount', 'packages_count', 'sub_total_amount', 'customer_name',
+      'discount_amount', 'estimated_amount', 'packages_count', 'sub_total_amount', 'customer_name', 'customer_id',
       'value_amount', 'phone', 'is_axis_banned_item', 'order_code', 'shipment_state_id'],
     where: {
       customer_id: customerId,
@@ -234,148 +214,21 @@ exports.show = async (req, res, next) => {
   const packages = await Package
     .findAll(optionsPackage);
 
+  // const amount = shipment.estimated_amount;
+  const estimated = shipment.estimated_amount;
+  // const estimated = shipment.estimated_amount - shipment.package_level_charges_amount;
+  const paymentGatewayId = req.query.payment_gateway_id ?
+    Number(req.query.payment_gateway_id) : null;
+
   const payment = {
-    wallet: 0,
-    coupon: 0,
-    loyalty: 0,
-    amount: 0,
-    payment_gateway_id: CARD,
-    payment_gateway_fee: 0,
+    amount: estimated,
+    payment_gateway_id: paymentGatewayId,
   };
 
-  payment.amount = shipment.estimated_amount;
-  if (customer.wallet_balance_amount < 0 || req.query.wallet === '1') {
-    log('wallet123123', customer.wallet_balance_amount);
-    payment.wallet = customer.wallet_balance_amount;
-    // - todo need to remove zero after wallet implementation
-    payment.wallet = 0;
-    payment.amount -= payment.wallet;
-  }
-
-  log('wallet outside1', customer.wallet_balance_amount);
-  log('req.query.wallet1', req.query.wallet);
-
-  const optionRedemption = {
-    attributes: ['id', 'coupon_code'],
-    where: { shipment_order_code: orderCode },
-  };
-  const couponAppliedStatus = await Redemption
-    .find(optionRedemption);
-
-  let promoStatus = '';
-  let couponAmount = 0;
-  let couponName = '';
-
-  if (couponAppliedStatus) {
-    const option = {
-      attributes: ['max_cashback_amount', 'cashback_percentage', 'discount_percentage'],
-      where: {
-        code: couponAppliedStatus.coupon_code,
-        expires_at: {
-          $gt: new Date(),
-        },
-      },
-    };
-
-    const promo = await Coupon
-      .find(option);
-
-    if (promo) {
-      if (promo.cashback_percentage) {
-        promoStatus = 'cashback_success';
-        const estimated = shipment.estimated_amount -
-          shipment.package_level_charges_amount - payment.wallet;
-        const totalCouponAmount = estimated * (promo.cashback_percentage / 100);
-        const maxCouponAmount = promo.max_cashback_amount;
-        if (totalCouponAmount <= maxCouponAmount) {
-          couponAmount = totalCouponAmount;
-        } else {
-          couponAmount = maxCouponAmount;
-        }
-        couponName = couponAppliedStatus.coupon_code;
-      } else if (promo.discount_percentage) {
-        const estimated = shipment.estimated_amount -
-          shipment.package_level_charges_amount - payment.wallet;
-        const discountAmount = estimated * (promo.discount_percentage / 100);
-        const maxCouponAmount = promo.max_cashback_amount;
-        if (discountAmount <= maxCouponAmount) {
-          payment.coupon = discountAmount;
-        } else {
-          payment.coupon = maxCouponAmount;
-        }
-        couponName = couponAppliedStatus.coupon_code;
-        promoStatus = 'discount_success';
-      }
-      payment.amount -= payment.coupon;
-    } else {
-      promoStatus = 'promo_expired';
-    }
-  }
-  // - todo Loyalty required for next iteration.
-  // const option = {
-  //   attributes: ['points'],
-  //   where: { customer_id: customerId },
-  // };
-  // const points = await LoyaltyPoint
-  //   .find(option);
-  //
-  // let rewards = 0;
-  // let loyaltyPoints = points.points;
-  // while (loyaltyPoints >= 1000) {
-  //   rewards += 100;
-  //   loyaltyPoints -= 1000;
-  // }
-  //
-  // payment.loyalty = rewards;
-  payment.amount -= payment.loyalty || 0;
-  switch (Number(req.query.payment_gateway_id)) {
-    case CARD:
-      payment.payment_gateway_id = CARD;
-      payment.payment_gateway_fee = payment.amount *
-        (paymentGatewayChargesMap[CARD] / 100);
-      payment.amount += payment.payment_gateway_fee;
-      break;
-    case WIRE:
-      payment.payment_gateway_id = WIRE;
-      break;
-    case CASH:
-      payment.payment_gateway_id = CASH;
-      break;
-    case WALLET:
-      payment.payment_gateway_id = WALLET;
-      break;
-    case PAYPAL:
-      payment.payment_gateway_id = PAYPAL;
-      payment.payment_gateway_fee = payment.amount *
-        (paymentGatewayChargesMap[PAYPAL] / 100);
-      payment.amount += payment.payment_gateway_fee;
-      break;
-    case PAYTM:
-      payment.payment_gateway_id = PAYTM;
-      payment.payment_gateway_fee = payment.amount *
-        (paymentGatewayChargesMap[PAYTM] / 100);
-      payment.amount += payment.payment_gateway_fee;
-      break;
-    default:
-      payment.payment_gateway_id = null;
-      break;
-  }
-
-  const optionsPaymentGateway = {
-    attributes: ['id', 'name', 'description', 'value'],
-    limit: 20,
-  };
-  const paymentGateways = await PaymentGateway
-    .findAll(optionsPaymentGateway);
-  log('payment gateway', JSON.stringify(payment));
   return res.json({
     shipment,
     packages,
     payment,
-    promoStatus,
-    couponAmount,
-    couponName,
-    paymentGateways,
-    walletAmount: customer.wallet_balance_amount,
   });
+  // getWallet({ estimated });
 };

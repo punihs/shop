@@ -8,4 +8,5 @@ module.exports = DataTypes => ({
   },
   socket_id: DataTypes.STRING,
   is_online: DataTypes.BOOLEAN,
+  access_token_id: DataTypes.INTEGER,
 });

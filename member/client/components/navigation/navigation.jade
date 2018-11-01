@@ -1,7 +1,7 @@
 //- list
 ul.nav.navbar-nav.navbar-left
   li.hidden-folded.padder.m-t.m-b-sm.text-muted.text-xs Navigation
-  li.nav-menu-item(ui-sref-active='active'): a.hv(ui-sref='dash.packages')
+  li.nav-menu-item(ui-sref-active='active'): a.hv(ui-sref='packages.index')
     i.fa.fa-dashboard.text-white
     span DASHBOARD
 
@@ -21,7 +21,7 @@ ul.nav.navbar-nav.navbar-left
         b.text-xs.utf8-caret ▼
       ul.dropdown-menu.navbar-dropdown-menu(uib-dropdown-menu='', role='menu', aria-labelledby='single-button' style='height: auto !important;top: auto !important;left: auto !important;')
         li(role='menu')
-          a.hv(ui-sref='dash.shipmentHistory') SHIPMENT HISTORY
+          a.hv(ui-sref='shipRequests.history') SHIPMENT HISTORY
         li(role='menu')
           a.hv(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/favorite-stores') MY FAVOURITE STORE
         li(role='menu')

@@ -1,0 +1,21 @@
+pipeline:
+  build:
+    image: node:8.11
+    commands:
+      - chmod +x ./scripts/githubStatusCheck/before.sh
+      - ./scripts/githubStatusCheck/before.sh
+      - pwd
+      - ls
+      - git log --oneline -n 5
+      - npm -v
+      - node -v
+      - npm install
+      - cp .env.sample .env
+      - npm run clear-db
+      - npm run migrate
+      - npm run login
+      - npm test
+      - node ./scripts/githubStatusCheck/after.js "$DRONE_COMMIT"
+      - COVERALLS_REPO_TOKEN=WDamv9hmwlD9xelfrA9TBSZkwVglMXQ3n
+      - npm run coverage
+      - npx semantic-release

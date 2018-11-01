@@ -1,0 +1,141 @@
+section.ship_response.m-t-md.m-b-md
+  .container.invoice-background
+    .row
+      .invoice-box
+        table(cellpadding='0', cellspacing='0')
+          tbody
+            tr.top
+              td(colspan='4')
+                table
+                  tbody
+                    tr
+                      td.title
+                        img(src='/assets/images/wordmark.png', style='width:100%; max-width:300px;')
+
+                      td
+                          p Invoice Number :# {{$ctrl.shipment.id}}
+                          p Order Number : # {{$ctrl.shipment.order_code}}
+                          p Date: {{$ctrl.shipment.updated_at | date: 'dd/MM/yyyy'}}
+            tr.information
+              td(colspan='4')
+                table
+                  tbody
+                    tr
+                      td(width='50%')
+                        h4
+                          b SHIPPED TO
+                        strong  {{$ctrl.shipment.customer_name}}
+                        p       {{$ctrl.shipment.address}}
+                        p       PH: {{$ctrl.shipment.phone}}
+                      td(width='50%')
+                        h4
+                          b YOUR SHOPPRE ADDRESS
+                        strong  {{$ctrl.shipment.Customer.first_name}} {{$ctrl.shipment.Customer.last_name}}
+                        p  #181, 1st Floor,
+                        p  2nd Cross Rd, 1st Block Koramangala,
+                        p  Bengaluru, Karnataka 560034
+                        p  Phone : +91 80 4094 4077
+                        p  Email : support@shoppre.com
+            tr.heading
+              td.invoice-from-width From
+              td.invoice-packid-width Package ID
+              td.invoice-total-width Total Value
+              td Weight
+            tr.item(ng-repeat="package in $ctrl.Packages")
+              td.invoice-from-width
+                strong {{package.Store.name}}
+                |  -   {{package.invoice_code}}F
+              td.invoice-packid-width {{package.id}}
+              td.invoice-total-width INR {{package.price_amount}}
+              td {{package.weight}} Kg
+            tr.item
+              td(colspan='2')
+              td Estimated Shipping :
+              td
+                | INR {{$ctrl.shipment.estimated_amount-$ctrl.shipment.package_level_charges_amount-$ctrl.shipment.pick_up_charge_amount | number: 2}}
+            tr.item(ng-if="$ctrl.Charges.storage_amount > 0")
+              td(colspan='2')
+              td Additional Storage Fee :
+              td INR {{$ctrl.Charges.storage_amount | number: 2}}
+            tr.item(ng-if="$ctrl.Charges.photo_amount > 0")
+              td(colspan='2')
+              td Photo Charges :
+              td INR {{$ctrl.Charges.photo_amount | number: 2}}
+            tr.item(ng-if="$ctrl.shipment.pick_up_charge > 0")
+              td(colspan='2')
+              td Pick-up Service :
+              td INR {{$ctrl.shipment.pick_up_charge_amount}}
+            tr.item(ng-if="$ctrl.Charges.handling_amount > 0")
+              td(colspan='2')
+              td Special Handling Fee :
+              td INR {{$ctrl.Charges.handling_amount| number: 2}}
+            tr.item(ng-if="$ctrl.Charges.scan_doc_amount > 0")
+              td(colspan='2')
+              td Receive Mail :
+              td INR {{$ctrl.Charges.scan_doc_amount| number: 2}}
+            tr.item(ng-if="$ctrl.Charges.wrong_address_amount > 0")
+              td(colspan='2')
+              td Address Correction :
+              td INR {{$ctrl.Charges.wrong_address_amount}}
+            tr.item(ng-if="$ctrl.Charges.split_amount > 0")
+              td(colspan='2')
+              td Split Package :
+              td INR {{$ctrl.Charges.split_amount| number: 2}}
+            tr(ng-if="$ctrl.shipment.ShipmentMetum")
+                tr.item(ng-if="$ctrl.shipment.ShipmentMetum.repacking_charge_amount > 0")
+                  td(colspan='2')
+                  td Discard shoe boxes :
+                  td INR {{$ctrl.shipment.ShipmentMetum.repacking_charge_amount | number: 2}}
+                tr.item(ng-if="$ctrl.shipment.ShipmentMetum.sticker_charge_amount > 0")
+                  td(colspan='2')
+                  td Fragile stickers :
+                  td INR {{$ctrl.shipment.ShipmentMetum.sticker_charge_amount | number: 2}}
+                tr.item(ng-if="$ctrl.shipment.ShipmentMetum.extra_packing_charge_amount > 0")
+                  td(colspan='2')
+                  td Extra packing material :
+                  td INR {{$ctrl.shipment.ShipmentMetum.extra_packing_charge_amount| number: 2}}
+                tr.item(ng-if="$ctrl.shipment.ShipmentMetum.original_ship_box_charge__amount > 0")
+                  td(colspan='2')
+                  td Ship in original boxes :
+                  td INR {{$ctrl.shipment.ShipmentMetum.original_ship_box_charge__amount| number: 2}}
+                tr.item(ng-if="$ctrl.shipment.ShipmentMetum.gift_wrap_charge_amount > 0")
+                  td(colspan='2')
+                  td Gift wrap :
+                  td INR {{$ctrl.shipment.ShipmentMetum.gift_wrap_charge_amount| number: 2}}
+                tr.item(ng-if="$ctrl.shipment.ShipmentMetum.gift_note_charge_amount > 0")
+                  td(colspan='2')
+                  td Gift note :
+                  td INR {{$ctrl.shipment.ShipmentMetum.gift_note_charge_amount| number: 2}}
+                tr.item(ng-if="$ctrl.shipment.ShipmentMetum.consolidation_charge_amount > 0")
+                  td(colspan='2')
+                  td Package consolidation :
+                  td INR {{$ctrl.shipment.ShipmentMetum.consolidation_charge_amount| number: 2}}
+                tr.item(ng-if="$ctrl.shipment.ShipmentMetum.liquid_charge_amount > 0")
+                  td(colspan='2')
+                  td Liquid Clearance Charge :
+                  td INR {{$ctrl.shipment.ShipmentMetum.liquid_charge_amount| number: 2}}
+            tr.item(ng-if="$ctrl.shipment.coupon_amount > 0")
+              td(colspan='2')
+              td Coupon Discount :
+              td (-) INR {{$ctrl.shipment.coupon_amount| number: 2}}
+            tr.item(ng-if="$ctrl.shipment.loyalty_amount > 0")
+              td(colspan='2')
+              td Loyalty Reward :
+              td (-) INR {{$ctrl.shipment.loyalty_amount| number: 2}}
+            tr.item(ng-if="$ctrl.shipment.wallet_amount != 0")
+              td(colspan='2')
+              td Wallet Amount :
+              td.pull-left INR {{$ctrl.shipment.wallet_amount| number: 2}}
+                span(ng-if="$ctrl.shipment.wallet_amount < 0")
+                  p.pull-right (Amount added)
+                span(ng-if="$ctrl.shipment.wallet_amount > 0")
+                  p.pull-right (Amount deducted)
+            tr.item(ng-if="$ctrl.shipment.payment_gateway_fee_amount > 0")
+              td(colspan='2')
+              td Payment Gateway Fee :
+              td INR {{$ctrl.shipment.payment_gateway_fee_amount| number: 2}}
+            tr.total
+              td(colspan='2')
+              td(colspan='') Total Cost :
+              td INR {{$ctrl.shipment.final_amount| number: 2}}
+

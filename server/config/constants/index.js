@@ -94,10 +94,6 @@ const constants = {
     PENDING: '1',
     COMPLETED: '2',
   },
-  TRANSACTION_TYPES: {
-    CREDIT: '1',
-    DEBIT: '2',
-  },
   APPS: {
     ACCOUNTS: 1,
     OPS: 2,
@@ -108,18 +104,6 @@ const constants = {
     MR: 'Mr',
     MS: 'Ms',
     MRS: 'Mrs',
-  },
-  LOYALTY_TYPE: {
-    REWARD: '1',
-    REDEEM: '2',
-  },
-  PAYMENT_GATEWAY: {
-    WIRE: 1,
-    CASH: 2,
-    CARD: 3,
-    PAYTM: 4,
-    PAYPAL: 5,
-    WALLET: 6,
   },
   CONTENT_TYPES: {
     REGULAR: '1',
@@ -146,6 +130,14 @@ const constants = {
     DHL: 1,
     FEDEX: 2,
     DTDC: 3,
+  },
+  PAYMENT_GATEWAY: {
+    WIRE: 1,
+    CASH: 2,
+    CARD: 3,
+    PAYTM: 4,
+    PAYPAL: 5,
+    WALLET: 6,
   },
 };
 

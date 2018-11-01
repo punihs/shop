@@ -1,5 +1,5 @@
 const rp = require('request-promise');
-const { Country, CountryGuide, Review } = require('../../conn/sqldb');
+const { Country } = require('../../conn/sqldb');
 
 exports.index = (req, res, next) => {
   const options = {
@@ -26,17 +26,6 @@ exports.show = (req, res, next) => {
         'id', 'name', 'slug', 'iso2', 'iso3', 'currency_code', 'capital_city',
         'discount_percentage', 'is_shipping_available',
       ],
-      include: [{
-        model: CountryGuide,
-        attributes: ['id'],
-      }, {
-        model: Review,
-        attributes: ['id'],
-        where: {
-          approved_by: 1,
-        },
-        limit: 20,
-      }],
       where: { slug },
       raw: true,
     })

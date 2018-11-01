@@ -1,6 +1,6 @@
 const debug = require('debug');
 const {
-  TRANSACTION_TYPES: { CREDIT },
+  // TRANSACTION_TYPES: { CREDIT },
   PACKAGE_TYPES: {
     PERSONAL_SHOPPER,
   },
@@ -11,7 +11,7 @@ const logger = require('./../../components/logger');
 
 const log = debug('s.personalShopperPackage.controller');
 const {
-  Package, PackageItem, Notification, User, Transaction,
+  Package, PackageItem, Notification, User,
 } = require('./../../conn/sqldb');
 
 exports.orderForm = (req, res, next) => {
@@ -933,7 +933,6 @@ exports.updateShopOrder = async (req, res, next) => {
   const personalShop = {};
   personalShop.amount_paid = req.body.amount_paid;
   const totalWalletAmount = customer.wallet_balance_amount;
-  const transactions = {};
 
   // eslint-disable-next-line default-case
   switch (req.body.status) {
@@ -954,12 +953,13 @@ exports.updateShopOrder = async (req, res, next) => {
         personalShopPackage.sales_tax + personalShopPackage.delivery_charge;
       const walletAdded = customerPaidToWebsite - personalShop.amount_paid;
       customer.wallet_balance_amount = totalWalletAmount + walletAdded;
-      transactions.description = 'personal shopper ';
-      transactions.amount = walletAdded;
-      transactions.customer_id = customer.id;
-      transactions.type = CREDIT;
-      await Transaction
-        .create(transactions);
+
+      // transactions.description = 'personal shopper ';
+      // transactions.amount = walletAdded;
+      // transactions.customer_id = customer.id;
+      // transactions.type = CREDIT;
+      // await Transaction
+      //   .create(transactions);
       break;
     // eslint-disable-next-line no-case-declarations
     case 'canceled':

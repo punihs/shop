@@ -6,6 +6,7 @@ module.exports = DataTypes => ({
     allowNull: false,
     unique: true,
   },
+  transaction_id: DataTypes.INTEGER,
   order_code: DataTypes.STRING,
   customer_name: DataTypes.STRING,
   address: DataTypes.STRING,

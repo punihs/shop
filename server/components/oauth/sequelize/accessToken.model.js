@@ -38,6 +38,9 @@ module.exports = function AccessTokenModel(sequelize, DataTypes) {
     },
     scope: DataTypes.STRING(256),
     user_type: DataTypes.STRING,
+    app_id: DataTypes.INTEGER,
+    session_id: DataTypes.INTEGER,
+    auth_id: DataTypes.INTEGER,
   }, {
     tableName: 'access_tokens',
     timestamps: false,
@@ -47,19 +50,6 @@ module.exports = function AccessTokenModel(sequelize, DataTypes) {
     },
   });
 
-  AccessToken.associate = function associate(db) {
-    AccessToken.belongsTo(db.App, {
-      foreignKey: 'app_id',
-    });
-
-    AccessToken.belongsTo(db.Session, {
-      foreignKey: 'session_id',
-    });
-
-    AccessToken.belongsTo(db.User, {
-      foreignKey: 'user_id',
-    });
-  };
 
   return AccessToken;
 };

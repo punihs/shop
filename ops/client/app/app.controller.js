@@ -1,11 +1,12 @@
 class AppController {
   constructor(
     $window, $uibModal, $state, $rootScope, URLS,
-    $http, $stateParams, Session, Page, socket
+    $http, $stateParams, Session, Page,
+    // socket
   ) {
     const vm = this;
     this.Page = Page;
-    this.socket = socket;
+    // this.socket = socket;
     vm.$stateParams = $stateParams;
     vm.Session = Session;
 

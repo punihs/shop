@@ -1,0 +1,657 @@
+div.no-margin
+  .wrapper-md.bg-white-only
+    .container-fluid
+      .col-md-8.m-t-xs
+        center
+          h4.subpaybtn(ng-show = '$ctrl.isPaymentSubmit')
+            | Your shipment is ready.
+            // todo - change href
+            a.summary-order(ui-sref='shipRequests.index')&nbsp; Submit Your Payment &nbsp;
+            |  Quickly in order to avoid storage fees.
+            a.tooltipkey(href='javascript:void(0)', title='Your package is now ready to be shipped and your final charges have been updated.You get a free time period of 7 DAYS to submit your payment. You will incur a storage fee of INR 100/ day for your prepared parcel from the 8th day onwards, which you can view in your Shoppre Wallet.')
+              i.fa.fa-question-circle-o
+        div
+          .order-top-left.col-md-6.no-padding-right
+            h3 Packages in locker&nbsp;
+              strong(ng-bind='$ctrl.user.virtual_address_code')
+              // todo - change href
+            a.btn.btn-primary(
+              ui-sref='packages.create'
+            ) Alert Shoppre about my incoming Packages (Optional)
+          // todo required to display offers
+          //.order-top-left.col-md-6.no-padding-right
+          //  h3(style='color: hotpink;') Coming Soon
+          //  a.btn.btn-blue.col-md-12(style='background-color: hotpink', target='_blank', href='https://www.shoppre.com/campaign/ind-day/website/308?myaccount-locker') ShoppRe: Independence Day 7% Discount. Claim Offer!
+        .clearfix
+        .col-md-8.pull-right.text-right.no-padder-right.m-t-md.m-t-xs
+          ul.nav.nav-pills.nav-sm.pull-right
+            li.m-r-sm.pull-right(ng-if='$ctrl.queueCount')
+              a.h5.font-bold.b-a.btn-info(
+                ui-sref='shipRequests.index'
+              ) View Queue
+              span.badge.badge-lg.locker-up.pull-right-xs.text-danger(
+                style='border: 1px solid red'
+                ng-bind='$ctrl.queueCount'
+              )
+            li.hide.m-r-sm.pull-right: a.h5.font-bold.b-a.btn-info(
+              uib-tooltip='Alert Shoppre about my incoming packages (Optional)'
+              ng-href='{{$ctrl.URLS.PREFIX}}myaccount.{{$ctrl.URLS.DOMAIN}}/incoming-order'
+            )
+              | Inform about your purchases to Shoppre Team
+        .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+        .clearfix
+        .col-md-8.pull-right.text-right.no-padder-right(ng-if='$ctrl.queueCount')
+          h4.text-u-c We are preparing currently {{$ctrl.queueCount}} shipment for you
+        .clearfix
+        .hbox.accounts.panel.panel-warning.m-t-xs
+          .bg-white-only
+            .nav-tabs-alt
+              .bg-white-only.b-b(style='width: 100%; height: 44px;')
+                ul.nav.nav-tabs.nav-justified.bucket-color
+                  li(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active")
+                    a(ui-sref='packages.index({ bucket: bucket })')
+                      span(ng-bind="$ctrl.CONFIG.PACKAGE_STATES[$index]")
+                      span.badge.bg-warning.pull-right.no-margin.m-t-xs(ng-show='$index === 0') {{$ctrl.facets.READY_TO_SEND}}
+                      span.badge.bg-warning.pull-right.no-margin.m-t-xs(ng-show='$index === 1') {{$ctrl.facets.IN_REVIEW}}
+                      span.badge.bg-warning.pull-right.no-margin.m-t-xs(ng-show='$index === 2') {{$ctrl.facets.ACTION_REQUIRED}}
+                      span.badge.bg-warning.pull-right.no-margin.m-t-xs(ng-show='$index === 3') {{$ctrl.facets.ALL}}
+          .full-width
+            .wrapper-md.ng-scope
+              .panel.panel-default
+                .well(ng-if="!$ctrl.packages.length")
+                  p.alert.alert-danger.text-center(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'") There are currently no package to ship. Please purchase a product with shoppre locker address.
+                  p.alert.alert-danger.text-center(ng-if="$ctrl.$stateParams.bucket==='IN_REVIEW'") You currently have no packages under review by Shoppre.
+                  p.alert.alert-danger.text-center(ng-if="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'") There are currently no packages that require action on your part.
+                  p.alert.alert-danger.text-center(ng-if="$ctrl.$stateParams.bucket==='ALL'") There are currently no package received by shoppre team. Please shop with your locker address.
+                div(ng-hide="!$ctrl.packages.length")
+                  .panel-heading
+                    | Select Package to Ship
+                  table.table.table-bordered.m-b-none.default.footable-loaded.footable(
+                  ui-jq='footable', data-filter='#filter', data-page-size='5')
+                    thead
+                      tr
+                        th.footable-visible.footable-sortable
+                          | Details
+                        th.footable-visible.footable-sortable
+                          | From
+                          span.footable-sort-indicator
+                        th.footable-visible.footable-sortable(data-hide='phone,tablet')
+                          | Package ID
+                          span.footable-sort-indicator
+                        th.footable-visible.footable-sortable(data-hide='phone,tablet', data-name='Date Of Birth')
+                          | Date Recieved
+                          span.footable-sort-indicator
+                        th.footable-visible.footable-last-column.footable-sortable.bg-warning.text-u-c(ng-if="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'")
+                          | ACTION REQUIRED
+                          span.footable-sort-indicator
+                        th.footable-visible.footable-last-column.footable-sortable(ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'")
+                          | Item Values
+                          span.footable-sort-indicator
+                        th.footable-visible.footable-last-column.footable-sortable(ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'")
+                          | Weight
+                          span.footable-sort-indicator
+                        th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'")
+                          | Photos
+                          span.footable-sort-indicator
+                        th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.bucket==='ALL'")
+                          | Status
+                          span.footable-sort-indicator
+                        th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'" )
+                          .checkbox.no-margin
+                            label.i-checks
+                              input(type='checkbox', ng-model="all", ng-checked='$ctrl.allChecked', ng-click='$ctrl.selectAllPackages(all)' value='')
+                              i
+                    tbody(ng-repeat="package in $ctrl.packages"  )
+                      tr.footable-even(style='display: table-row;')
+                        td.footable-visible.footable-first-column(ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]')
+                          i.fa.fa-sort-desc
+                        td.footable-visible
+                          a(ui-sref='package.show({ id: package.id })' ng-bind='package.Store.name')
+                          br
+                          span.text-info {{package.invoice_code}}
+                        td.footable-visible {{package.id}}
+                          span.badge.bg-success.m-l-xs(ng-if='package.content_type === "2"') SPECIAL
+                          span.badge.bg-danger.m-l-xs(ng-if='package.damaged') DAMAGED
+                        td.footable-visible(
+                        uib-tooltip="{{$ctrl.moment(package.created_at).fromNow()}} IST {{package.created_at | date:'h:mm a'}}"
+                        tooltip-placement='right'
+                        tooltip-append-to-body='true'
+                        ) {{package.created_at | date:'MMM d, y'}}
+                        td.footable-visible(
+                        ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'"
+                        ) {{package.price_amount | number : 2}}
+                        td.footable-visible.text-center(ng-if="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'")
+                          p.no-margin Provide Item Values
+                          p.no-margin As required by Customs
+                        td.footable-visible(ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'"){{package.weight | number : 2}} KG
+                        td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'" )
+                          a(ng-click='$ctrl.viewPhotos($index, package)')
+                            u Photos
+                        td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='ALL'" ng-bind='package.PackageState.State.name' )
+                        td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'")
+                          .checkbox.no-margin
+                            label.i-checks
+                              input(type='checkbox', ng-model = 'package.isChecked', ng-change='$ctrl.selectPackages()', ng-checked='all', value='')
+                              i
+                      tr
+                        form.form-validation(name="form" ng-submit='$ctrl.submitValue()')
+                            td(colspan=8 ng-if='$ctrl.$stateParams.bucket==="READY_TO_SEND" && $ctrl.MoreOption[$index]')
+                              table#DataTables_Table_1.table.table-bordered.m-b-none
+                                thead
+                                  tr(role='row')
+                                    th.sorting_asc.text-u-c(style='width: 186px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Package Details
+                                    th.sorting.text-u-c(style='width: 242px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') QTY
+                                    th.sorting.text-u-c(style='width: 241px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Value per Unit
+                                    th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending')  Total Value
+                                tbody
+                                  tr.odd(role='row' ng-repeat="item in package.PackageItems")
+                                    td {{item.name}}
+                                    td {{item.quantity}}
+                                    td
+                                      .input-group
+                                        span.input-group-addon
+                                          i.fa.fa-money
+                                        input.form-control(type='text', id='{{item.id}}' ng-model= 'item.price_amount', value= '{{item.price_amount}}')
+                                    td  {{item.quantity * item.price_amount}}
+                                  tr
+                                    td(colspan=8)
+                                      p.m-t-md
+                                        | **Values shown are obtained from the merchant invoices, when available. Researched values based on current market prices have been provided above for any items that arrived without invoices. The values should be updated to reflect the actual price paid for each item, and must be confirmed.
+                                      p.m-t-xs
+                                        button.no-padder.btn-link.text-warning.m-r-xs(ng-click='$ctrl.open(package.id, $index)') Add your notes
+                                        | to the package, this is for your use only, Shoppre will not review this area.
+                                      .col-sm-5.pull-right.right-pad-0
+                                        ul.nav.nav-pills.nav-sm.package-submit-ul
+                                          li.m-r-xs.pull-right.ng-scope
+                                            a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(ng-click="$ctrl.submitValues(package.id, $index)")
+                                              span Submit Item Values
+                                          li.m-r-xs.pull-right.ng-scope
+                                            a.h5.font-bold.b-a.btn-addon.btn-success.imp(ng-click="$ctrl.resetValues($index)")
+                                              span Reset Values
+                                  tr(ng-if ='package.notes')
+                                    td(colspan=8 )
+                                      .alert.alert-warning(role='alert')
+                                        h6.font-bold(ng-bind="package.notes")
+                                  tr
+                                    td(colspan=4)
+                                      h4.font-thin OPTIONAL SERVICES
+                                      .input-group-btn.dropdown.open.full-width(uib-dropdown='', style='')
+                                        button.btn.btn-default.full-width.dropdown-toggle.text-left.m-b-md(type='button', uib-dropdown-toggle='', aria-haspopup='true', aria-expanded='true')
+                                          span.text-u-c.m-r-xs Special Requests
+                                          span.caret
+                                        ul.list-group.list-group-lg.no-bg.auto.dropdown-menu.position-relative
+                                          li.list-group-item.pointer(
+                                          ng-click='$ctrl.openOffer(specialRequest, package.id, specialRequest.value)'
+                                          ng-repeat='specialRequest in $ctrl.specialRequests'
+                                          )
+                                            span.clear
+                                              span.font-bold(ng-bind="specialRequest.name")
+                                              i.fa.fa-info-circle.m-l-xs(
+                                              uib-popover='{{specialRequest.infoContent}}'
+                                              popover-trigger="'mouseenter'"
+                                              popover-placement='top'
+                                              popover-append-to-body='true'
+                                              )
+                                              span.m-l-xs(ng-bind="specialRequest.price")
+                                              p.text-muted.clear.text-ellipsis(ng-bind="specialRequest.description")
+                            td(colspan=8 ng-if='$ctrl.$stateParams.bucket==="IN_REVIEW" && $ctrl.MoreOption[$index]')
+                              button.btn.btn-md.btn-info.m-t-xs.m-b-xs(ng-click='$ctrl.viewPhotos($index, package)', ng-show='package.PackageItems.length') Photos
+                              table#DataTables_Table_3.table.table-bordered.m-b-none
+                                thead
+                                  tr(role='row')
+                                    th.sorting_asc.text-u-c(style='width: 186px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Package Details
+                                    th.sorting.text-u-c(style='width: 242px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') QTY
+                                    th.sorting.text-u-c(style='width: 241px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Value per Unit
+                                    th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending') Value
+                                tbody
+                                  tr.odd(role='row' ng-repeat="item in package.PackageItems")
+                                    td.sorting_1 {{item.name}}
+                                    td {{item.quantity}}
+                                    td {{item.price_amount}}
+                                    td {{item.total_amount}}
+                              table#DataTables_Table_4.table.table-bordered.m-b-none
+                                  tr
+                                    td(colspan=8)
+                                      p.m-t-md
+                                        | **Values shown are obtained from the merchant invoices, when available. Researched values based on current market prices have been provided above for any items that arrived without invoices. The values should be updated to reflect the actual price paid for each item, and must be confirmed.
+                                      p.m-t-xs
+                                        button.no-padder.btn-link.text-warning.m-r-xs(ng-click='$ctrl.open(package.id, $index)') Add your notes
+                                        | to the package, this is for your use only, Shoppre will not review this area.
+                                  tr(ng-if ='package.notes')
+                                    td(colspan=8 )
+                                      .alert.alert-warning(role='alert')
+                                        h6.font-bold(ng-bind="package.notes")
+                                  tr
+                                    td(colspan=8)
+                                        h4.font-thin.m-t-md OPTIONAL SERVICES
+                                        .input-group-btn.dropdown.open.full-width(uib-dropdown='', style='')
+                                          button.btn.btn-default.full-width.dropdown-toggle.text-left.m-b-md(type='button', uib-dropdown-toggle='', aria-haspopup='true', aria-expanded='true')
+                                            span.text-u-c.m-r-xs Special Requests
+                                            span.caret
+                                          ul.list-group.list-group-lg.no-bg.auto.dropdown-menu.full-width.position-relative
+                                            li.list-group-item.pointer(
+                                            ng-click='$ctrl.openOffer(specialRequest, package.id, specialRequest.value)'
+                                            ng-repeat='specialRequest in $ctrl.specialRequests'
+                                            )
+                                              span.clear
+                                                span.font-bold(ng-bind="specialRequest.name")
+                                                i.fa.fa-info-circle.m-l-xs(
+                                                uib-popover='{{specialRequest.infoContent}}'
+                                                popover-trigger="'mouseenter'"
+                                                popover-placement='top'
+                                                popover-append-to-body='true'
+                                                )
+                                                span.m-l-xs(ng-bind="specialRequest.price")
+                                                p.text-muted.clear.text-ellipsis(ng-bind="specialRequest.description")
+                            td(colspan=8 ng-if='$ctrl.$stateParams.bucket==="ACTION_REQUIRED" && $ctrl.MoreOption[$index]')
+                              h5.font-bold How to provide item values:
+                                p
+                                  strong Option 1:
+                                  | Enter the values of each item. If the values are accepted, you will be able to ship right away.
+                                  | If the values are declined, a merchant invoice will be required.
+                                p
+                                  strong Option 1:
+                                  | Upload merchant invoice. Your package will be placed "In Review" untill the values are verified by Shoppre.
+                              span(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.CUSTOMER_INPUT')
+                                table#DataTables_Table_9.table.table-bordered.m-b-none
+                                  thead
+                                    tr(role='row')
+                                      th.sorting_asc.text-u-c(style='width: 186px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Package Details
+                                      th.sorting.text-u-c(style='width: 242px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') QTY
+                                      th.sorting.text-u-c(style='width: 241px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Value per Unit
+                                      th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending') Value
+                                  tbody
+                                    tr.odd(role='row' ng-repeat="item in package.PackageItems")
+                                      td.sorting_1 {{item.name}}
+                                      td {{item.quantity}}
+                                      td
+                                        .input-group
+                                          span.input-group-addon
+                                            i.fa.fa-money
+                                          input.form-control(type='text', ng-model= 'item.price_amount', ng-change='$ctrl.getTotalItemAmount($parent.$index)' value= '{{item.price_amount}}')
+                                      td {{item.quantity * item.price_amount}}
+                                table#DataTables_Table_6.table.table-bordered.m-b-none
+                                  tr(role='row')
+                                    td(colspan="2" ng-model= '$ctrl.data.weight[package.id]')
+                                      span Total Weight : {{package.weight}} kg
+                                    td
+                                      span Total Values Of This Package : {{ $ctrl.totalItemAmount }}
+                                    td
+                                      button.btn.btn-sm.btn-warning.m-b-xs.text-u-c.pull-right(type='submit', ng-click="$ctrl.submitValues(package.id, $index)") Confirm Package
+                              span(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.UPLOAD_INVOICE_REQUESTED')
+                                form.form.form-validation.form-horizontal.wrapper-md(
+                                name="newPackageItemForm"
+                                novalidate
+                                autocomplete='off'
+                                )
+                                  .hbox
+                                    label.col
+                                      | Photo
+                                      span.text-danger *
+                                      .btn-file-wrapper(ng-class="newPackageItemForm.file.$touched && newPackageItemForm.file.$invalid ? 'input-file-danger':''" drag-drop-toggle)
+                                        .btn-file
+                                          span(ng-show="(newPackageItemForm.file.$touched && newPackageItemForm.file.$valid) || $ctrl.data.file")
+                                            span.text-muted(ng-bind="$ctrl.file.name")
+                                          p.no-margin(ng-hide="(newPackageItemForm.file.$touched && newPackageItemForm.file.$valid) || $ctrl.data.file")
+                                            span.text-bold Choose a file
+                                            |  or Drag it here.
+                                          span.file-support(ng-hide="(newPackageItemForm.file.$touched && newPackageItemForm.file.$valid) || $ctrl.data.file") Supported Formats: .png, .jpeg, .jpg, .bmp'
+                                          input.form-control(
+                                          accept="image/*"
+                                          type="file"
+                                          ng-model='$ctrl.file'
+                                          name='file'
+                                          ngf-pattern="'.png,.jpeg,.jpg,.bmp'"
+                                          ngf-max-size="15MB"
+                                          ngf-max-files="1"
+                                          ngf-select='$ctrl.uploadingPhotos=true;'
+                                          onclick="this.value = null"
+                                          ng-image-compress
+                                          image="myAwesomeImage"
+                                          ctrl="$ctrl"
+                                          upload-fn="$ctrl.startUpload"
+                                          resize-max-height="1000"
+                                          resize-max-width="1000"
+                                          resize-quality="0.7"
+                                          resize-type="image/jpg"
+                                          required
+                                          )
+                                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && !$ctrl.data.file && !newPackageItemForm.file.$invalid') Please choose file
+                                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageItemForm.file.$invalid') Please choose supported file
+                                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageItemForm.file.$dirty && newPackageItemForm.file.$invalid') Please choose supported file
+                                .col-xs-3.wrapper-sm.m-t-xs
+                                  img.pull-left.m-r(
+                                  ng-if='$ctrl.data.object_thumb'
+                                  ng-src='{{$ctrl.data.object_thumb}}'
+                                  style='height: 30px;width: 30px;border-radius: 50%;'
+                                  )
+                                  button.btn.btn-sm.btn-warning.m-b-xs.text-u-c.pull-right(ng-click="$ctrl.submitInvoice(package.id)") Confirm Package
+                            td(colspan=8 ng-if='$ctrl.$stateParams.bucket==="ALL" && $ctrl.MoreOption[$index]')
+                              table#DataTables_Table_7.table.table-bordered.m-b-none
+                                thead
+                                  tr(role='row')
+                                    th.sorting_asc.text-u-c(style='width: 186px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Package Details
+                                    th.sorting.text-u-c(style='width: 242px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') QTY
+                                    th.sorting.text-u-c(style='width: 241px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Value per Unit
+                                    th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending') Value
+                                tbody
+                                  tr.odd(role='row' ng-repeat="item in package.PackageItems")
+                                    td.sorting_1 {{item.name}}
+                                    td {{item.quantity}}
+                                    td {{item.price_amount}}
+                                    td {{item.total_amount}}
+                              table#DataTables_Table_8.table.table-bordered.m-b-none
+                                  tr
+                                    td(colspan=8)
+                                      p.m-t-md
+                                        | **Values shown are obtained from the merchant invoices, when available. Researched values based on current market prices have been provided above for any items that arrived without invoices. The values should be updated to reflect the actual price paid for each item, and must be confirmed.
+                                      p.m-t-xs
+                                        button.no-padder.btn-link.text-warning.m-r-xs(ng-click='$ctrl.open(package.id, $index)') Add your notes
+                                        |  to the package, this is for your use only, Shoppre will not review this area.
+                                  tr(ng-if ='package.notes')
+                                    td(colspan=8 )
+                                      .alert.alert-warning(role='alert')
+                                        h6.font-bold(ng-bind="package.notes")
+                                  tr
+                                    td(colspan=8)
+                                        h4.font-thin.m-t-md OPTIONAL SERVICES
+                                        .input-group-btn.dropdown.open.full-width(uib-dropdown='', style='')
+                                          button.btn.btn-default.full-width.dropdown-toggle.text-left.m-b-md(type='button', uib-dropdown-toggle='', aria-haspopup='true', aria-expanded='true')
+                                            span.text-u-c.m-r-xs Special Requests
+                                            span.caret
+                                          ul.list-group.list-group-lg.no-bg.auto.dropdown-menu.full-width.position-relative
+                                            li.list-group-item.pointer(
+                                            ng-click='$ctrl.openOffer(specialRequest, package.id, specialRequest.value)'
+                                            ng-repeat='specialRequest in $ctrl.specialRequests'
+                                            )
+                                              span.clear
+                                                span.font-bold(ng-bind="specialRequest.name")
+                                                i.fa.fa-info-circle.m-l-xs(
+                                                uib-popover='{{specialRequest.infoContent}}'
+                                                popover-trigger="'mouseenter'"
+                                                popover-placement='top'
+                                                popover-append-to-body='true'
+                                                )
+                                                span.m-l-xs(ng-bind="specialRequest.price")
+                                                p.text-muted.clear.text-ellipsis(ng-bind="specialRequest.description")
+
+          .clearfix
+          .more-options.col-md-12
+            .ReadytoSend(ng-if='$ctrl.$stateParams.bucket==="READY_TO_SEND"')
+              button.btn.btn-sm.btn-primary.m-b-xs.text-u-c.pull-right(
+                type='submit',
+                ng-click="$ctrl.createShipment()"
+                ng-disabled="$ctrl.totalSelectedPackages == 0 ? true : false"
+              ) Create Ship Request
+              .clearfix
+
+
+              p *
+                | Customs regulations require the purchase price for every item.
+                | Proof of value maybe requested by customs officials.
+                a.summary-order(href="{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/faq" ,_target='blank')&nbsp; Click here to know more.
+
+              p **
+                | Shoppre charges a small fee of INR 100 per package that you add to the final shipment
+                | (when you have two or more packages to consolidate).
+                | This helps you in reducing shipping charges upto 60-80%.
+                a.summary-order(href="{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/faq" _target='blank')&nbsp; Click here to know more.
+
+      // - Right Sidebar
+      .col-md-4.m-t-xs
+        .well.copy-wrap-out
+          select.pull-right.m-l(ng-model='$ctrl.store' name='store')
+            option Amazon
+            option Flipkart
+          span.m-l-xs.copy-button-out.text-primary.pointer.pull-right(
+            ngclipboard='',
+            data-clipboard-target='#virtual'
+            ng-click='$ctrl.copied()'
+          ) Copy Virtual Address
+          div(ng-if='$ctrl.store === "Amazon"')
+            #virtual
+              h4.copy-wrap
+                span#name(ng-bind='$ctrl.user.name')
+                span.m-l-xs.copy-button.text-primary.pointer(
+                ngclipboard='',
+                data-clipboard-target='#name'
+                ng-click='$ctrl.copied()'
+                ) copy
+              p
+                span.copy-wrap
+                  span.text-muted Mobile Number:&nbsp;
+                  span#phone
+                    span 8040944077
+                  span.m-l-xs.copy-button.text-primary.pointer(
+                  ngclipboard='',
+                  data-clipboard-target='#phone'
+                  ng-click='$ctrl.copied()'
+                  ) copy
+                span.copy-wrap
+                  span.text-muted Pincode:&nbsp;
+                  span#pincode
+                    span 560034
+                  span.m-l-xs.copy-button.text-primary.pointer(
+                  ngclipboard='',
+                  data-clipboard-target='#pincode'
+                  ng-click='$ctrl.copied()'
+                  ) copy
+                span.copy-wrap
+                  span.text-muted Address Line 1:&nbsp;
+                  span#addressline1
+                    strong(ng-bind=' $ctrl.user.virtual_address_code')
+                    span , #181, 1st Floor, 2nd Cross Rd
+                  span.m-l-xs.copy-button.text-primary.pointer(
+                  ngclipboard='',
+                  data-clipboard-target='#addressline1'
+                  ng-click='$ctrl.copied()'
+                  ) copy
+                span.copy-wrap
+                  span.text-muted Address Line 2:&nbsp;
+                  span#addressline2
+                    span 7th Main, Koramangala 1st Block
+                  span.m-l-xs.copy-button.text-primary.pointer(
+                  ngclipboard='',
+                  data-clipboard-target='#addressline2'
+                  ng-click='$ctrl.copied()'
+                  ) copy
+                span.copy-wrap
+                  span.text-muted Landmark:&nbsp;
+                  span#landmark
+                    span Near Seema English Nursery School
+                  span.m-l-xs.copy-button.text-primary.pointer(
+                  ngclipboard='',
+                  data-clipboard-target='#landmark'
+                  ng-click='$ctrl.copied()'
+                  ) copy
+                span.copy-wrap
+                  span.text-muted City:&nbsp;
+                  span#city
+                    span Bengaluru
+                  span.m-l-xs.copy-button.text-primary.pointer(
+                  ngclipboard='',
+                  data-clipboard-target='#city'
+                  ng-click='$ctrl.copied()'
+                  ) copy
+                span.copy-wrap
+                  span.text-muted State/Province:&nbsp;
+                  span#state
+                    span Karnataka
+                  span.m-l-xs.copy-button.text-primary.pointer(
+                  ngclipboard='',
+                  data-clipboard-target='#state'
+                  ng-click='$ctrl.copied()'
+                  ) copy
+                span.copy-wrap
+                  span.text-muted Email:&nbsp;
+                  span#email
+                    span(ng-bind='$ctrl.user.email')
+                  span.m-l-xs.copy-button.text-primary.pointer(
+                  ngclipboard='',
+                  data-clipboard-target='#email'
+                  ng-click='$ctrl.copied()'
+                  ) copy
+                span.copy-wrap
+                  span.text-muted Address Type:&nbsp;
+                  span Home
+                  span(
+                    uib-popover = "If you select HOME, Amazon delivers from morning 7AM to 9PM. Shoppre Facility is Open 24/7"
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
+                  )
+                    i.m-l.fa.fa-info-circle
+
+          div(ng-if='$ctrl.store !== "Amazon"')
+            #virtual
+              h4.copy-wrap
+                span#name(ng-bind='$ctrl.user.name')
+                span.m-l-xs.copy-button.text-primary.pointer(
+                  ngclipboard='',
+                  data-clipboard-target='#name'
+                  ng-click='$ctrl.copied()'
+                ) copy
+              p
+                span.copy-wrap
+                  span.text-muted Address Line 1:
+                  span#addressline1
+                    strong(ng-bind='" " + $ctrl.user.virtual_address_code')
+                    span , #181, 1st Floor, 2nd Cross Rd
+                  span.m-l-xs.copy-button.text-primary.pointer(
+                    ngclipboard='',
+                    data-clipboard-target='#addressline1'
+                    ng-click='$ctrl.copied()'
+                  ) copy
+                span.copy-wrap
+                  span.text-muted Address Line 2:
+                  span#addressline2
+                    span &nbsp;7th Main, Koramangala 1st Block
+                  span.m-l-xs.copy-button.text-primary.pointer(
+                  ngclipboard='',
+                  data-clipboard-target='#addressline2'
+                  ng-click='$ctrl.copied()'
+                  ) copy
+                span.copy-wrap
+                  span.text-muted City:
+                  span#city
+                    span &nbsp;Bengaluru
+                  span.m-l-xs.copy-button.text-primary.pointer(
+                  ngclipboard='',
+                  data-clipboard-target='#city'
+                  ng-click='$ctrl.copied()'
+                  ) copy
+                span.copy-wrap
+                  span.text-muted State/Province:
+                  span#state
+                    span &nbsp;Karnataka
+                  span.m-l-xs.copy-button.text-primary.pointer(
+                  ngclipboard='',
+                  data-clipboard-target='#state'
+                  ng-click='$ctrl.copied()'
+                  ) copy
+                span.copy-wrap
+                  span.text-muted Pincode:
+                  span#pincode
+                    span &nbsp;560034
+                  span.m-l-xs.copy-button.text-primary.pointer(
+                  ngclipboard='',
+                  data-clipboard-target='#pincode'
+                  ng-click='$ctrl.copied()'
+                  ) copy
+                span.copy-wrap
+                  span.text-muted Phone:
+                  span#phone
+                    span &nbsp;080 4094 4077
+                  span.m-l-xs.copy-button.text-primary.pointer(
+                  ngclipboard='',
+                  data-clipboard-target='#phone'
+                  ng-click='$ctrl.copied()'
+                  ) copy
+                span.copy-wrap
+                  span.text-muted Email:
+                  span#email
+                    span(ng-bind='" " + $ctrl.user.email')
+                  span.m-l-xs.copy-button.text-primary.pointer(
+                  ngclipboard='',
+                  data-clipboard-target='#phone'
+                  ng-click='$ctrl.copied()'
+                  ) copy
+                span.copy-wrap
+                  span.text-muted Landmark:
+                  span#landmark
+                    span &nbsp;Near Seema English Nursery School
+                  span.m-l-xs.copy-button.text-primary.pointer(
+                  ngclipboard='',
+                  data-clipboard-target='#landmark'
+                  ng-click='$ctrl.copied()'
+                  ) copy
+        //.list-group-item.text-danger.text-u-c
+        //  span.badge.pull-right.bg-success(ng-bind='$ctrl.user.wallet_balance_amount')
+        //  | Shoppre Wallet
+        //  span(
+        //  uib-popover = 'Shoppre can add or deduct cash from your Shoppre Wallet depending on the situation.' +
+        //  'For eg: Your Personal Shopper balance will be settled here in your Shoppre Wallet.' +
+        //  'If the amount is positive, it means that you own this much cash, and this amount will be deducted from the final charges.' +
+        //  'If the amount is negative, it means that this amount will be added to the final charges.'
+        //  popover-placement='right'
+        //  popover-trigger="'mouseenter'"
+        //  popover-append-to-body='true'
+        //  )
+           i.m-l.fa.fa-info-circle
+
+        .sidebarImage.m-t-md
+          .col-md-6.sidebarSpecial.white-border
+            .col-md-2.no-padder
+              img(src='/assets/images/dashico1.png')
+            .col-md-6
+              .h4.text-u-c
+                a(ng-href='{{$ctrl.URLS.PREFIX}}myaccount.{{$ctrl.URLS.DOMAIN}}/country-guide') Country Guides
+          .col-md-6.sidebarSpecial
+            .col-md-2.no-padder
+              img(src='/assets/images/dashico2.png')
+            .col-md-9
+              .h4.text-u-c
+                a(ng-href='{{$ctrl.URLS.PREFIX}}myaccount.{{$ctrl.URLS.DOMAIN}}/browse-categories') Brands you love
+          .col-md-6.sidebarSpecial.m-t-xs.white-border
+            .col-md-2.no-padder
+              img(src='/assets/images/dashico3.png')
+            .col-md-9
+              .h4.text-u-c
+                a(ng-href='{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/pricing') Shipping Calculator
+          .col-md-6.sidebarSpecial.m-t-xs
+            .col-md-2.no-padder
+              img(src='/assets/images/dashico4.png')
+            .col-md-9
+              .h4.text-u-c
+                a(ng-href='{{$ctrl.URLS.PREFIX}}myaccount.{{$ctrl.URLS.DOMAIN}}/personal-shopper') Personal Shopper
+          .col-md-6.sidebarSpecial.m-t-xs.white-border
+            .col-md-2.no-padder
+              img(src='/assets/images/dashico5.png')
+            .col-md-9
+              .h4.text-u-c
+                a(ng-href='') Exchange Rates
+          .col-md-6.sidebarSpecial.m-t-xs
+            .col-md-2.no-padder
+              img(src='/assets/images/dashico6.png')
+            .col-md-9
+              .h4.text-u-c
+                a(ng-href='{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/services') Our Services
+          .col-md-6.sidebarSpecial.m-t-xs.white-border
+            .col-md-2.no-padder
+              img(src='/assets/images/dashico7.png')
+            .col-md-9
+              .h4.text-u-c
+                a(ng-href='{{$ctrl.URLS.PREFIX}}myaccount.{{$ctrl.URLS.DOMAIN}}/address') Address Book
+          .col-md-6.sidebarSpecial.m-t-xs
+            .col-md-2.no-padder
+              img(src='/assets/images/dashico8.png')
+            .col-md-9
+              .h4.text-u-c.top-margin-10
+                a(ng-href='{{$ctrl.URLS.PREFIX}}blog.{{$ctrl.URLS.DOMAIN}}') Blog
+
+
+
+
+
+
+

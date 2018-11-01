@@ -1,0 +1,448 @@
+.bg-light.lter.b-b.wrapper-md.ng-scope
+  .wrapper-md.bg-white-only
+    .container
+      .row
+        .col-md-8
+          .div-border-create
+            h2.m-n.alert.alert-info 1. DELIVERY ADDRESS
+              span(
+              uib-popover = "Please take extra care to make sure that you have entered the correct address while making an International Shipment. T" +
+              "he courier will charge an additional fee (between INR 3000 to INR 7000) to your Shoppre account if you " +
+              "update your address after the shipment has left our facility. Many couriers charge this fee after delivery, " +
+              "so you may see it charged to your account post-shipment."
+              popover-trigger="'mouseenter'"
+              popover-placement='right'
+              popover-append-to-body='true'
+              )
+               i.m-l.fa.fa-info-circle
+            .col-md-2.padding-10.pull-right
+              a.btn.btn-success(ng-click='$ctrl.open()') Add Address
+            .col-md-10.col-lg-8.radioBox(ng-repeat='item in $ctrl.customer.Addresses')
+              .radio
+                label.i-checks
+                  input(type='radio', name='a', ng-value='item.id' ng-model='$ctrl.data.address_id' )
+                  i
+                  b {{item.first_name}} {{item.last_name}} &nbsp; &nbsp; &nbsp;
+                  | {{item.phone}}
+                 span(type='button', ng-click='$ctrl.editAddress(item.id, $index)')
+                  i.fa.fa-pencil-square-o.m-l-md
+                  br
+                  i
+                  | {{item.line1}},
+                  span(
+                    ng-if='item.line2'
+                    ng-bind='item.line2 + " , "'
+                  )
+                  | {{item.city}},
+                  | {{item.state}},
+                  | {{item.Country.name}}
+                  span(
+                     ng-if='item.pincode'
+                     ng-bind='" - " + item.pincode'
+                  )
+          div.div-border-create.clearfix
+            h2.m-n.alert.alert.alert-info.panel-warning 2. SHIPMENT SUMMARY
+              .clearfix
+            .div.col-md-6
+              p.div-list.ship-packages {{$ctrl.shipments.length}} Packages in this shipment
+            .div.col-md-3.pull-right
+              h4
+                button.btn.btn-info(
+                ui-sref='packages.index'
+                popover-trigger="'mouseenter'"
+                popover-placement='bottom'
+                popover-append-to-body='true'
+                ) Add more package
+            .clearfix
+            .full-width
+              .wrapper-md.ng-scope
+                .panel.panel-default
+                  div
+                    table.table.table-bordered.m-b-none.default.footable-loaded.footable.table-responsive(
+                    ui-jq='footable', data-filter='#filter', data-page-size='5')
+                      thead
+                        tr
+                          th.footable-visible.footable-first-column.footable-sortable(data-toggle='true')
+                          th.footable-visible.footable-sortable
+                            | From
+                            span.footable-sort-indicator
+                          th.footable-visible.footable-sortable(data-hide='phone,tablet')
+                            | Package Id
+                            span.footable-sort-indicator
+                          th.footable-visible.footable-sortable(data-hide='phone,tablet', data-name='Date Of Birth')
+                            | Total Value
+                            span.footable-sort-indicator
+                          th.footable-visible.footable-last-column.footable-sortable(data-hide='phone')
+                            | Weight
+                            span.footable-sort-indicator
+                      tbody(ng-repeat="shipment in $ctrl.shipments" ng-init='$ctrl.MoreOption={}')
+                        tr.footable-even(style='display: table-row;')
+                          td.footable-visible.footable-first-column(ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]')
+                            i.fa.fa-sort-desc
+                          td.footable-visible
+                            a(ui-sref='package.show({ id: package.id })' ng-bind='shipment.Store.name')
+                          td.footable-visible(ng-bind='shipment.id')
+                          td.footable-visible ₹{{shipment.price_amount}}
+                          td.footable-visible {{shipment.weight}} KG
+                        tr.footable-even(style='display: table-row;')
+                          td.footable-visible(colspan='5' ng-if='$ctrl.MoreOption[$index]')
+                            p(ng-if='$ctrl.standard_photo_check==="yes" || $ctrl.advc_photo_check==="yes"')
+                              button(href='') Photos
+
+                            table#DataTables_Table_4.table.table-bordered.m-b-none
+                              thead
+                                tr(role='row')
+                                  th.sorting_asc.text-u-c(style='width: 186px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Package Details
+                                  th.sorting.text-u-c(style='width: 242px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') QTY
+                                  th.sorting.text-u-c(style='width: 241px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Value per Unit
+                                  th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending') Value
+                              tbody(ng-repeat="item in shipment.PackageItems")
+                                tr.odd(role='row')
+                                  td.sorting_1 {{item.name}}
+                                  td {{item.quantity}}
+                                  td ₹{{item.price_amount}}
+                                  td ₹{{item.price_amount * item.quantity}}
+                      tr.footable-even.table-footer
+                        td.footable-visible.footable-first-column
+                        td.footable-visible
+                        td.footable-visible Shipment Totals
+                        td.footable-visible ₹{{$ctrl.totalpackagePriceAmount}}
+                        td.footable-visible Final Weight of Shipment to be calculated
+                          span(
+                          uib-popover = "All International carriers base their billable shipping rates"+
+                          "on the greater of Actual Weight and Dimensional Weight."+
+                          "Actual weight is the weight of the package when put on a"+
+                          "scale."+
+                          " Dimensional weight is based on the size of the package. It is"+
+                          "calculated by multiplying the dimensions of the item."+
+                          "For International Shipments:"+
+                          "Dimensional Weight = Length x Width x Height (in cm) / 5000"+
+                          "For Domestic Shipments:"+
+                          "Dimensional Weight = Length x Width x Height (in cm) / 4000"
+                          popover-trigger="'mouseenter'"
+                          popover-placement='right'
+                          popover-append-to-body='true'
+                          )
+                            i.m-l.fa.fa-info-circle
+                        td.footable-visible
+            .clearfix
+              .div-list
+                h4
+                  //a.bg-danger(href='') Cancel Request
+                  button.btn.btn-danger(
+                  ui-sref='packages.index'
+                  popover-trigger="'mouseenter'"
+                  popover-placement='bottom'
+                  popover-append-to-body='true'
+                  ) Cancel Request
+                p Order confirmation email will be sent to &nbsp;
+                  span.summary-order {{$ctrl.customer.email}}
+                button.btn.btn-sm.btn-success.m-t-xs.text-u-c.pull-left.m-t-md.m-b-md(type='submit' ng-click='$ctrl.create()')  Confirm Your Ship Request *
+                .clearfix
+                p.pull-left * Kindly note that you CANNOT change your Delivery Address, Package Selection or your Shipping Preferences after you create your ship request.
+
+        .col-md-4
+          //.list-group-item.text-danger.text-u-c
+          //  span.badge.pull-right.bg-success
+          //  span.badge.pull-right.bg-success {{$ctrl.customer.wallet_balance_amount}}
+          //  |     Shoppre Wallet
+          //  span(
+          //  uib-popover = 'Shoppre can add or deduct cash from your Shoppre Wallet depending on the situation.'+
+          //  'For eg: Your Personal Shopper balance will be settled here in your Shoppre Wallet.'+
+          //  'If the amount is positive, it means that you own this much cash, and this amount will be deducted from the final charges.'+
+          //  'If the amount is negative, it means that this amount will be added to the final charges.'
+          //  popover-trigger="'mouseenter'"
+          //  popover-placement='right'
+          //  popover-append-to-body='true'
+          //  )
+          //    i.m-l.fa.fa-info-circle
+          .panel.panel-info.m-t-md
+            .panel-heading.font-bold.text-u-c SHIPPING PREFERENCES SUMMARY
+            .panel-body
+              form.form.form-validation.form-horizontal.wrapper-md(
+              name="newShipmentForm"
+              novalidate
+              ng-submit='$ctrl.create()'
+              autocomplete='off'
+              )
+                p PACKING OPTIONS
+                ul.list-group.list-group-lg.m-b-none.list-unstyled
+                  li
+                    .checkbox(ng-click='$ctrl.updateCharges()')
+                      label.i-checks(ng-if='$ctrl.data.repack')
+                        input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.repack')
+                        i
+                        | Discard Shoe boxes
+                      label.i-checks(ng-if='$ctrl.data.repack === false')
+                        input(type='checkbox',  checked='false' value='' ng-model='$ctrl.data.repack')
+                        i
+                        | Discard Shoe boxes
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover='We repack all the necessary items (items which arrive at our facility in big boxes) for FREE of cost (except Shoe Boxes which we do not discard). Discarding shoe boxes before your shipment is packed can help reduce the dimensional weight of your shipment in some cases. A charge of INR 100 per shipment will be incurred to discard shoe boxes)'
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+                  li
+                    .checkbox(ng-click='$ctrl.updateCharges()')
+                      label.i-checks(ng-if='$ctrl.data.extra_packing')
+                        input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.extra_packing')
+                        i
+                        | Add extra packing material
+                      label.i-checks(ng-if='$ctrl.data.extra_packing === false')
+                        input(type='checkbox',  value='' ng-model='$ctrl.data.extra_packing')
+                        i
+                        | Add extra packing material
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover='Additional protective packaging will be added to every shipment at the cost of INR 500.*Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).'
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+                  li
+                    .checkbox(ng-click='$ctrl.updateCharges()')
+                      label.i-checks(ng-if='$ctrl.data.original')
+                        input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.original')
+                        i
+                        | Ship in original boxes(do not repack)
+                      label.i-checks(ng-if='$ctrl.data.original === false')
+                        input(type='checkbox',  value='' ng-model='$ctrl.data.original')
+                        i
+                        | Ship in original boxes(do not repack)
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover='We usually repack all the necessary items (items which arrive at our facility in big boxes) in order to reduce the dimensional weight for FREE of cost (except Shoe Boxes). You can choose this option to ship your packages in the original shipping boxes in which they were received.'
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+                  li
+                    .checkbox(ng-click='$ctrl.updateCharges()')
+                      label.i-checks(ng-if='$ctrl.data.gift_wrap')
+                        input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.gift_wrap')
+                        i
+                        | Gift Wrap
+                      label.i-checks(ng-if='$ctrl.data.gift_wrap === false')
+                        input(type='checkbox',  value='' ng-model='$ctrl.data.gift_wrap')
+                        i
+                        | Gift Wrap
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover='We can gift wrap your items at a cost of INR 100/- per package. However, please note that the gift wrapped item will be placed in another box before it is being shipped and that box cannot be wrapped.'
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+                  li
+                    .checkbox(ng-click='$ctrl.updateCharges()')
+                      label.i-checks(ng-if='$ctrl.data.gift_note')
+                        input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.gift_note')
+                        i
+                        | Gift Note
+                      label.i-checks(ng-if='$ctrl.data.gift_note === false')
+                        input(type='checkbox',  value='' ng-model='$ctrl.data.gift_note')
+                        i
+                        | Gift Note
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover='We can write a gift note and place it inside your package at a cost of INR 50/- per package.'
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+                    textarea.m-b-xs.m-t-xs.form-control(
+                    type="text",
+                    ng-model="$ctrl.data.gift_note_text",
+                    style='resize: none;',
+                    placeholder="Enter Gift Note"
+                    )
+                  li.txt-kg
+                    .col-md-2.no-padder
+                        input.form-control.no-padder.text-center(type='text', placeholder='in KG' ng-model='$ctrl.data.max_weight')
+                      label.col-md-10.control-label.text-left Max weight per package (in KG)
+                        i.fa.fa-info-circle.m-l-xs(
+                        uib-popover='Choose this option if you would like to restrict a Maximum weight of individual boxes in a shipment. Shoppre will split your shipment into multiple boxes not exceeding this box weight limit (whenever possible), at the same cost of splitting a package (INR 200 per new package created)*.' +
+                        'Please note that a shipment which weighs more than 30kg will be considered as a commercial shipment and will incur a custom clearance cost of INR 2500.' +
+                        '*Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).'
+                        popover-trigger="'mouseenter'"
+                        popover-placement='top'
+                        popover-append-to-body='true'
+                        )
+                  .clearfix
+                br
+                p  PROFORMA INVOICE OPTIONS
+                ul.list-group.list-group-lg.m-b-none.list-unstyled
+                  li
+                    .checkbox(ng-click='$ctrl.updateCharges()')
+                      label.i-checks(ng-if='$ctrl.data.mark_personal_use')
+                        input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.mark_personal_use')
+                        i
+                        | Mark items for personal use only
+                      label.i-checks(ng-if='$ctrl.data.mark_personal_use === false')
+                        input(type='checkbox',  checked='false' value='' ng-model='$ctrl.data.mark_personal_use')
+                        i
+                        | Mark items for personal use only
+                      i.fa.fa-info-circle.m-l-xs(
+                      uib-popover='We repack all the necessary items (items which arrive at our facility in big boxes) for FREE of cost (except Shoe Boxes which we do not discard). Discarding shoe boxes before your shipment is packed can help reduce the dimensional weight of your shipment in some cases. A charge of INR 100 per shipment will be incurred to discard shoe boxes)'
+                      popover-trigger="'mouseenter'"
+                      popover-placement='top'
+                      popover-append-to-body='true'
+                      )
+                  li
+                    .checkbox(ng-click='$ctrl.updateCharges()')
+                      label.i-checks(ng-if='$ctrl.data.invoice_include')
+                        input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.invoice_include')
+                        i
+                        | Please include a printed proforma invoice with in my shipment
+                      label.i-checks(ng-if='$ctrl.data.invoice_include === false')
+                        input(type='checkbox',  checked='false' value='' ng-model='$ctrl.data.invoice_include')
+                        i
+                        | Please include a printed proforma invoice with in my shipment
+                  li
+                    label.pull-left   TAX ID: &nbsp; &nbsp;
+                    .pull-left
+                      input(type='text', ng-model='$ctrl.data.invoice_tax_id')
+          .panel.panel-info.m-t-md
+            .panel-heading.font-bold.text-u-c PACKAGE LEVEL CHARGES SUMMARY
+            .panel-body
+              form.ng-pristine.ng-valid(role='form')
+                ul.list-group.list-group-lg.m-b-none.list-unstyled.charges-summary
+                  li
+                    b Shipping Preference Charges
+                    i.span.badge.pull-right.bg-success {{$ctrl.operationsAmount}}
+                    span(
+                    uib-popover = "(includes the above mentioned charges)"
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
+                    )
+                        i.m-l.fa.fa-info-circle
+                  li
+                    | Additional Storage Fee
+                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.storage_amount}}
+                    span(
+                    uib-popover = "Shoppre offers FREE storage up to 20 days*. Packages stored past the free storage period will incur storage fees of INR 100/day from the 21st Day. Storage fees continue to accrue until your package is  shipped, picked-up,  discarded or returned to the sender. *No. of days may be more for Membership Partners, and Loyalty Members (Silver and above)."
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
+                    )
+                      i.m-l.fa.fa-info-circle
+                  li
+                    | Photo Charges
+                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.photo_amount}}
+                    span(
+                    uib-popover = 'Basic Photos: We take upto 5 Basic photographs of all your items for a cost of INR 50*.'+
+                    'Additional Photos: You can also request upto 10 additional photos (incase you want some more details or if you want to inspect if the items are not damaged) for a cost of INR 500.'+
+                    '*Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
+                    )
+                      i.m-l.fa.fa-info-circle
+                  li
+                    b Consolidation Charges
+                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.consolidation_charge_amount}}
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover='Shoppre charges a small fee of INR 100 per package (not per item) that you add to the parcel (when you have two or more packages to consolidate).' +
+                    '*Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                  li
+                    | Pick-up Service
+                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.pickup_amount}}
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover='The service fee is as below:From Bangalore, INR 40/kg, Minimum INR 100 From any other city, INR 50/kg, Minimum INR 200' +
+                    ' *Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                  li
+                    | Split Package
+                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.split_package_amount}}
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover='Shoppre can split your package if it contains more than one item, and if you wish to separate them into multiple packages. You can split your package and discard an item, return it to the sender, ship it at a different time or to a different address. There is a cost of INR 200 per new package* created. For eg. if you have splitted your package into 3, you will be charged INR 400 .*Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                  li
+                    | Package Special Handling Fee
+                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.special_handling_amount }}
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover='Any Package which requires Special Handling will be prompted via email to you.' +
+                    'All liquids/ semi-liquids/ homemade food/ medicines/ ayurvedic products/ dangerous goods like nail polish, etc. will incur charges as below:' +
+                    'Less than 5 kg = INR 1000 per shipment' +
+                    '5 kg to 10 kg = INR 1500 per shipment' +
+                    'Above 10 kg = INR 2500 per shipment' +
+                    'The costs might not be limited to the above for all cases (for example, in cases of shipping heavy weight objects or heavy volume dangerous goods such as paints, etc.) - it could vary, and we shall inform you via email.'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                  li
+                    | Receive Mail
+                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.receive_mail_amount }}
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover='Shoppre charges an additional amount of INR 100 for receiving a package which is considered as a document (2 kg and below). Shipping charges of Documents slightly vary from that of Non-documents.' +
+                    '*Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                  li
+                    | Scan Document
+                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.scan_document_amount}}
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover='You can scan your documents (all/some pages of your document) for a charge of INR 40.00/day (Minimum INR 100)* .* Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above).'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                  li
+                    | Address Correction
+                    i.span.badge.pull-right.bg-success {{$ctrl.shipmentMeta.wrong_address_amount}}
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover='Incoming Packages: There is an INR 200 fee for packages that arrive at our distribution center with an incomplete address. You can avoid these fees by making sure the seller properly addresses your order. Outgoing Packages: Please take extra care to make sure that you have entered the correct address while making an International Shipment. The courier will charge an additional fee (between INR 3000 to INR 7000)* to your Shoppre account if you update your address after the shipment has left our facility. Many couriers charge this fee after delivery, so you may see it charged to your account post-shipment. '
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                  li
+                    | Special Package Clearance Fee
+                    i.span.badge.pull-right.bg-success {{$ctrl.data.is_liquid}}
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover='Any Package which requires Special Handling will be prompted via email to you. All liquids/ semi-liquids/ homemade food/ medicines/ ayurvedic products/ dangerous goods like nail polish,  etc. will incur charges as below:' +
+                    ' Less than 5 kg = INR 1000 per shipment*' +
+                    ' 5 kg to 10 kg = INR 1500 per shipment*' +
+                    ' Above 10 kg = INR 2500 per shipment*' +
+                    ' The costs might not be limited to the above for all cases (for example, in cases of shipping heavy weight objects or heavy volume dangerous goods such as paints, etc.) - it could vary, and we shall inform you via email.*Charges may be lesser for Membership Partners, and Loyalty Members (Silver and above). '
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                  li
+                    b Overweight Clearance Fee
+                    span.badge.pull-right.bg-success To Be Calculated
+                    i.fa.fa-info-circle.m-l-xs(
+                    uib-popover='Any shipment which weighs more than 30 kg will be considered as a commercial shipment and will incur a custom clearance cost of INR 2500. If you would like to restrict a Maximum weight of individual boxes in a shipment, you can input the “maximum weight per shipment” of your choice, under your Shipping Preferences. Shoppre will split your shipment into multiple boxes not exceeding this box weight limit (whenever possible), at the same cost of splitting a package (INR 200 per new package created).'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='top'
+                    popover-append-to-body='true'
+                    )
+                  hr
+                  li
+                    b Total Package Level Charges
+                    span.badge.pull-right.bg-success {{$ctrl.totalChargeAmount}}
+
+
+                  .clearfix
+                  .panel.panel-info.m-t-md
+                    .panel-heading.font-bold.text-u-c SHIPPING CHARGES
+                    center.panel-body
+                      p To be estimated after we pack your items
+                      button.btn.btn-sm.btn-success.m-t-xs.m-t(ng-click='$ctrl.create(newShipmentForm)') Confirm Your Ship Request *
+                      .clearfix
+                      p.text-justify.m-t * Kindly note that you &nbsp;
+                        span.summary-order CANNOT &nbsp;
+                        | change your Delivery Address, Package Selection or your Shipping Preferences after you create your ship request.
+

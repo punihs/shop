@@ -19,12 +19,6 @@ module.exports = (sequelize, DataTypes) => {
           return `${salutation} ${firstName} ${lastName}`;
         },
       },
-      mobile: {
-        type: DataTypes.VIRTUAL,
-        get() {
-          return this.getDataValue('phone');
-        },
-      },
     }, properties(DataTypes)), {
     tableName: 'users',
     timestamps: true,
@@ -48,16 +42,10 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.associate = (db) => {
-    User.hasMany(db.App);
-    User.hasMany(db.AccessToken);
-    User.hasMany(db.RefreshToken);
     User.hasMany(db.Address, {
       foreignKey: 'customer_id',
     });
-    User.hasMany(db.LoyaltyHistory, {
-      foreignKey: 'customer_id',
-    });
-    User.hasMany(db.Session);
+
     User.hasMany(db.SocketSession);
     User.hasMany(db.Package, {
       foreignKey: 'customer_id',

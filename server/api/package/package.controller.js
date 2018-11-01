@@ -10,12 +10,12 @@ const db = require('../../conn/sqldb');
 const { packageCreate } = require('./package.schema');
 
 const {
-  Package, PackageItem, User, Follower, LoyaltyHistory, PhotoRequest,
-  Locker, Store, PackageState, Country, PackageCharge, LoyaltyPoint, Notification,
+  Package, PackageItem, User, Follower, PhotoRequest,
+  Locker, Store, PackageState, Country, PackageCharge, Notification,
 } = db;
 
 const {
-  LOYALTY_TYPE: { REWARD },
+  // LOYALTY_TYPE: { REWARD },
   PACKAGE_STATE_IDS: {
     READY_TO_SHIP,
     PACKAGE_ITEMS_UPLOAD_PENDING, INCOMING_PACKAGE,
@@ -134,40 +134,40 @@ exports.create = async (req, res, next) => {
           PackageCharge
             .create(charges);
 
-          if (req.body.is_featured_seller === 1) {
-            const points = 50;
-            const options = {
-              attributes: ['id', 'points', 'total_points'],
-              where: { customer_id: req.body.customer_id },
-            };
-            LoyaltyPoint
-              .find(options)
-              .then((loyaltyPoints) => {
-                let level = '';
-                if (loyaltyPoints.total_points < 1000) {
-                  level = 1;
-                } else if (loyaltyPoints >= 1000 && loyaltyPoints.total < 6000) {
-                  level = 2;
-                } else if (loyaltyPoints.total >= 6000 && loyaltyPoints.total < 26000) {
-                  level = 3;
-                } else if (loyaltyPoints.total >= 26000) {
-                  level = 4;
-                }
-                loyaltyPoints.update({
-                  level,
-                  points: loyaltyPoints.points + points,
-                  total_points: loyaltyPoints.total_points + points,
-                });
-
-                const misclenious = {};
-                misclenious.customer_id = id;
-                misclenious.description = 'Featured Seller Shopping Reward';
-                misclenious.points = points;
-                misclenious.type = REWARD;
-                LoyaltyHistory
-                  .create(misclenious);
-              });
-          }
+          // if (req.body.is_featured_seller === 1) {
+          //   const points = 50;
+          //   const options = {
+          //     attributes: ['id', 'points', 'total_points'],
+          //     where: { customer_id: req.body.customer_id },
+          //   };
+          //   LoyaltyPoint
+          //     .find(options)
+          //     .then((loyaltyPoints) => {
+          //       let level = '';
+          //       if (loyaltyPoints.total_points < 1000) {
+          //         level = 1;
+          //       } else if (loyaltyPoints >= 1000 && loyaltyPoints.total < 6000) {
+          //         level = 2;
+          //       } else if (loyaltyPoints.total >= 6000 && loyaltyPoints.total < 26000) {
+          //         level = 3;
+          //       } else if (loyaltyPoints.total >= 26000) {
+          //         level = 4;
+          //       }
+          //       loyaltyPoints.update({
+          //         level,
+          //         points: loyaltyPoints.points + points,
+          //         total_points: loyaltyPoints.total_points + points,
+          //       });
+          //
+          //       const misclenious = {};
+          //       misclenious.customer_id = id;
+          //       misclenious.description = 'Featured Seller Shopping Reward';
+          //       misclenious.points = points;
+          //       misclenious.type = REWARD;
+          //       LoyaltyHistory
+          //         .create(misclenious);
+          //     });
+          // }
 
           return Package.updateState({
             db,

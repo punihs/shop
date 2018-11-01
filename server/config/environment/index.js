@@ -9,9 +9,8 @@ const IS_DEV = env.NODE_ENV === 'development';
 const config = {
   all: {
     env: env.NODE_ENV,
-    port: env.PORT || 5000,
+    port: env.PORT || 5007,
     ip: env.IP || '0.0.0.0',
-    LAMBDA_PORT: process.env.LAMBDA_PORT || 5004,
     root,
     FROM_EMAIL: process.env.FROM_EMAIL || 'support@shoppre.com',
     URLS_API: `${env.PREFIX}api.${env.DOMAIN}`,
@@ -26,16 +25,6 @@ const config = {
         client_id: '569763436942-abu23ni3ethv0n64mscbdihm1518t0pd.apps.googleusercontent.com',
         client_secret: 'EX9E5-vBMf5z6mJwAywlCSMe',
       },
-    },
-    paytm: {
-      MID: 'INDLLP22228431438570',
-      KEY: 'r&Xd973ZIk43rWzq',
-    },
-    AXIS: {
-      axis_key: env.AXIS_KEY,
-      merchant_id: env.AXIS_MERCHANT_ID,
-      secure_secret: env.AXIS_SECURE_SECRET,
-      vpc_access_code: env.AXIS_VPC_ACCESS_CODE,
     },
   },
   development: {

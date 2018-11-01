@@ -40,7 +40,7 @@ angular
       utilsScript: '/bower_components/intl-tel-input/build/js/utils.js',
     });
 
-    $urlRouterProvider.when('/', '/locker');
+    $urlRouterProvider.when('/', '/packages');
     $urlRouterProvider.otherwise(($injector) => $injector.get('$state').go('access.404'));
 
     $locationProvider.html5Mode(true);

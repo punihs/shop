@@ -79,10 +79,15 @@ class AddAddressController {
         this
           .toaster
           .pop('success', `${data.city} Shipping Address ${this.type} Successfull.`, '');
-        this.type === 'add' ?
-          this.$uibModalInstance.close(Object.assign(data, { id: aid, Country: { name: this.Country.model } })) :
-          this.$uibModalInstance.close(Object.assign(data, { id: this.addressId, Country: { name: this.Country.model } }));
-        // return this.$state.go('accounts.address-list');
+
+        if (this.type === 'add') {
+          return this.$uibModalInstance
+            .close(Object.assign(data, { id: aid, Country: { name: this.Country.model } }));
+        }
+
+        return this.$uibModalInstance
+            .close(Object
+              .assign(data, { id: this.addressId, Country: { name: this.Country.model } }));
       })
       .catch((err) => {
         this.submitting = false;

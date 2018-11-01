@@ -296,9 +296,12 @@ const shipmentStates = ({
 }, {
   state_id: 28,
   group_id: OPS,
-  child_id: 42,
-},
-{
+  child_id: 60,
+}, {
+  state_id: 60,
+  group_id: OPS,
+  child_id: 40,
+}, {
   state_id: 27,
   group_id: OPS,
   child_id: 32,
@@ -326,6 +329,10 @@ const shipmentStates = ({
   state_id: 36,
   group_id: OPS,
   child_id: 37,
+}, {
+  state_id: 37,
+  group_id: OPS,
+  child_id: 25,
 }, {
   state_id: 35,
   group_id: OPS,

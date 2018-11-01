@@ -244,6 +244,10 @@ const shipmentStates = [{
   id: 55,
   name: 'Shipment Deleted',
   config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 60,
+  name: 'Customer Document Resolved',
+  config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
 }].map(x => ({ ...x, type: SHIPMENT }));
 
 module.exports = () => packageStates.concat(shipmentStates);
