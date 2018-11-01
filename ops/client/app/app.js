@@ -1,3 +1,15 @@
+const raven = Raven.config('https://71883f8963384e47a84bada0451462f1@sentry.io/1313557', {});
+
+if (localStorage.userinfo) {
+  const user = JSON.parse(localStorage.userinfo);
+}
+raven.setUser({
+  id: user.id,
+  email: user.email,
+});
+
+raven.install();
+
 angular.module('qui.components', []);
 
 angular
@@ -28,8 +40,11 @@ angular.module('uiGenApp', [
   'ngCookies',
   'btford.socket-io',
   'ngIntlTelInput',
+  'ngRaven',
 ])
-  .config(($urlRouterProvider, $locationProvider, ngIntlTelInputProvider) => {
+  .config(($urlRouterProvider, $locationProvider, ngIntlTelInputProvider, $ravenProvider) => {
+    const dev = location.href.includes('.test');
+    $ravenProvider.development(dev);
     ngIntlTelInputProvider.set({
       initialCountry: 'us',
       autoHideDialCode: true,
@@ -41,6 +56,30 @@ angular.module('uiGenApp', [
 
     $locationProvider.html5Mode(true);
   })
+  .factory('$exceptionHandler', function () {
+    return function errorCatcherHandler(exception, cause) {
+      console.error(exception.stack);
+      Raven.captureException(exception);
+      // do not rethrow the exception - breaks the digest cycle
+    };
+  })
+  .factory('errorHttpInterceptor', ['$q', function ($q) {
+    return {
+      responseError: function responseError(rejection) {
+        Raven.captureException(new Error('HTTP response error'), {
+          extra: {
+            config: rejection.config,
+            status: rejection.status,
+          },
+        });
+        return $q.reject(rejection);
+      },
+    };
+  }])
+  .config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.interceptors.push('errorHttpInterceptor');
+  }])
+
   .constant('RENAMED_STATES', {
   });
 

@@ -104,7 +104,6 @@ class ShipRequestConfirmController {
 
         packages.forEach((x) => {
           this.totalpackagePriceAmount += x.price_amount;
-          this.data.photo_amount += x.PackageCharge.advanced_photo_amount || 0 + x.PackageCharge.standard_photo_amount || 0;
           this.data.photo_amount += (x.PackageCharge.advanced_photo_amount || 0) +
             (x.PackageCharge.standard_photo_amount || 0);
 
@@ -177,6 +176,7 @@ class ShipRequestConfirmController {
       payment_gateway_id: this.data.paymentGateway,
     };
     const method = 'get';
+    debugger;
     return this
       .$http[method]('$/api/transactions/create', { params: this.params })
       .then(({ data: url }) => {
@@ -191,7 +191,6 @@ class ShipRequestConfirmController {
         } else if (gateWaySeleted === this.PAYMENT_GATEWAY.CASH
           || gateWaySeleted === this.PAYMENT_GATEWAY.WALLET
           || gateWaySeleted === this.PAYMENT_GATEWAY.WIRE) {
-          console.log({ url });
           // this.$state.go('transaction.response', { id: this.shipment.id, amount: url.amount  });
           this.$window.location = url;
         }

@@ -5,15 +5,16 @@ const {
   App,
 } = require('./../../../conn/sqldb');
 const { ip, port, MASTER_TOKEN } = require('../../../config/environment');
+const { APPS } = require('../../../config/constants');
 
 const log = debug('server-components-oauth-express-loginAs');
 
-const getClientByUsername = (username) => {
-  log('getClientByUsername', username);
+const getClient = (req) => {
+  log('getClient', req.body.app_id);
   return App.find({
     attributes: ['client_id', 'client_secret', 'redirect_uri'],
     where: {
-      id: 1,
+      id: req.body.app_id || APPS.MEMBER,
     },
     raw: true,
   });
@@ -39,7 +40,7 @@ module.exports = (req, res, next) => {
   };
 
   return getToken(req.body.username)
-    .then(accessToken => getClientByUsername(req.body.username)
+    .then(accessToken => getClient(req)
       .then((app) => {
         req.headers.authorization = `Bearer ${accessToken}`;
         req.body.allow = 'true';

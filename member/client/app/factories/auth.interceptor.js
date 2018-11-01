@@ -13,6 +13,7 @@ angular
         config.headers.admin = true;
         config.headers.userIds = Session.read('VIEW_AS_IDS');
       }
+
       if (config.url[0] === '$') config.url = `${URLS.PAYAPI}${config.url.substr(1)}`;
       if (config.url[0] === '~') config.url = `${URLS.AUTH}${config.url.substr(1)}`;
       if (config.url[0] === '/') config.url = `${URLS.PFAPI}/api${config.url}`;

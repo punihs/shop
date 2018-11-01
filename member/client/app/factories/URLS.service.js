@@ -7,8 +7,8 @@ angular.module('uiGenApp')
     return {
       CDN: `${PREFIX}cdn.${DOMAIN}`,
       AUTH: `${PREFIX}api.${DOMAIN}`,
-      PFAPI: `${PREFIX}papi.${DOMAIN}`,
-      PAYAPI: `${PREFIX}pay.${DOMAIN}`,
+      PFAPI: `${PREFIX}pf-api.${DOMAIN}`,
+      PAYAPI: `${PREFIX}pay-api.${DOMAIN}`,
       ACCOUNTS: `${PREFIX}accounts.${DOMAIN}`,
       HELP: `${PREFIX}ship.${DOMAIN}`,
       OAUTH: `${PREFIX}accounts.${DOMAIN}/authorise?client_id=member&response_type=code&` +

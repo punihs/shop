@@ -47,7 +47,7 @@ exports.index = ({ params, query, user: actingUser }) => {
     case (actingUser.app_id === APPS.OPS && actingUser.group_id === OPS): {
       if (IS_CUSTOMER_PAGE) options.where.customer_id = params.customerId;
       options.attributes = ['id', 'customer_id', 'created_at', 'final_amount', 'final_weight', 'updated_at',
-        'country_id', 'payment_gateway_id', 'tracking_code', 'shipping_carrier', 'tracking_url', 'customer_name'];
+        'country_id', 'tracking_code', 'shipping_carrier', 'tracking_url', 'customer_name'];
       options.include = [{
         where: {},
         model: ShipmentState,

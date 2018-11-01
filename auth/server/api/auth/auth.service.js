@@ -1,9 +1,5 @@
 const { Auth } = require('../../conn/sqldb');
-const { GSUITE_DOMAIN } = require('../../config/environment');
-const { GROUPS: { OPS, CUSTOMER }, ROLES: { RECEPTION } } = require('../../config/constants');
 const hookshot = require('./auth.hookshot');
-const { generateVirtualAddressCode } = require('../../components/util');
-const { encrypt } = require('../../components/crypto');
 
 const checkDuplicate = email => Auth.find({
   attributes: ['id'],
@@ -20,7 +16,6 @@ exports.signup = async ({ body }) => {
     email: e,
     phone,
     password,
-    virtual_address_code: virtualAddressCode,
     hooks,
   } = body;
 
@@ -36,29 +31,22 @@ exports.signup = async ({ body }) => {
         };
       }
 
-      const IS_OPS = GSUITE_DOMAIN === email.trim().split('@')[1];
-
       // - Saving Customer Details
-      return encrypt(email)
-        .then(token => Auth
-          .create({
-            id,
-            salutation,
-            first_name: firstName,
-            last_name: lastName,
-            password,
-            email,
-            phone,
-            virtual_address_code: virtualAddressCode || generateVirtualAddressCode(),
-            group_id: IS_OPS ? OPS : CUSTOMER,
-            email_token: token,
-            role_id: IS_OPS ? RECEPTION : null,
-          }, { hooks })
-          .then((customer) => {
-            // - Sending Verification Email via Hook
-            hookshot.signup(customer);
+      return Auth
+        .create({
+          id,
+          salutation,
+          first_name: firstName,
+          last_name: lastName,
+          password,
+          email,
+          phone,
+        }, { hooks })
+        .then((customer) => {
+          // - Sending Verification Email via Hook
+          hookshot.signup(customer);
 
-            return { code: 201, customer };
-          }));
+          return { code: 201, customer };
+        });
     });
 };

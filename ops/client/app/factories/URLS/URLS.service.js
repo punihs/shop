@@ -5,9 +5,9 @@ angular.module('uiGenApp')
     const DOMAIN = `${host.substr(host.indexOf('.') + 1)}`;
 
     return {
-      CDN: `${PREFIX}cnd.${DOMAIN}`,
+      CDN: `${PREFIX}cdn.${DOMAIN}`,
       AUTH: `${PREFIX}api.${DOMAIN}`,
-      PFAPI: `${PREFIX}papi.${DOMAIN}`,
+      PFAPI: `${PREFIX}pf-api.${DOMAIN}`,
       ACCOUNTS: `${PREFIX}accounts.${DOMAIN}`,
       HELP: `${PREFIX}ship.${DOMAIN}`,
       OAUTH: `${PREFIX}accounts.${DOMAIN}/authorise?client_id=ops&response_type=code&` +

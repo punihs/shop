@@ -57,7 +57,7 @@
     "node-php-password": "^0.1.2",
     "node-webhooks": "^1.4.0",
     "node-xlsx": "^0.12.0",
-    "oauth2-server": "quezx/node-oauth2-server",
+    "oauth2-server": "github:quezx/node-oauth2-server",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "response-time": "^2.3.2",

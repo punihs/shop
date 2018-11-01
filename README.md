@@ -20,10 +20,12 @@ npm start
 ```
 
 Ports
-api & 5000
-accounts 5001
+pf-api & 5007
+accounts 4999
 ops 5002
 member 5003
+pay-api 5005
+ship-api 5008
 
 ```bash
 sudo nano /etc/nginx/conf.d/s3.ap-southeast-1.amazonaws.test.conf
@@ -71,7 +73,6 @@ server {
     proxy_set_header   X-Forwarded-Proto $scheme;
     proxy_set_header   Host              $http_host;
     proxy_pass http://127.0.0.1:5000/socket.io/socket.io.js;
-
   }
 
   include frontend;

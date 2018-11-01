@@ -2,6 +2,7 @@
 const {
   App, AuthCode, RefreshToken,
 } = require('./../../../conn/sqldb');
+const { APPS } = require('../../../config/constants');
 
 module.exports = (req, res, next) => {
   if (req.body.grant_type) return next();
@@ -30,7 +31,7 @@ module.exports = (req, res, next) => {
     promise = Promise.resolve({
       attributes: ['client_id', 'client_secret'],
       where: {
-        id: 1,
+        id: req.body.app_id || APPS.MEMBER,
       },
       raw: true,
     });

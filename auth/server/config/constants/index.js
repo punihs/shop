@@ -6,12 +6,10 @@ const constants = {
     BOT: 4,
     SHIPPING: 5,
   },
-  ROLES: {
-    CEO: 1,
-    RECEPTION: 2,
-    PACKAGE_VERIFIER: 3,
-    STORAGE: 4,
-    PACKAGER: 5,
+  APPS: {
+    ACCOUNTS: 1,
+    OPS: 2,
+    MEMBER: 3,
   },
 };
 

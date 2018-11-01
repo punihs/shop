@@ -49,6 +49,8 @@ module.exports = function (config) {
       'client/bower_components/intl-tel-input/build/js/intlTelInput.js',
       'client/bower_components/ng-intl-tel-input/dist/ng-intl-tel-input.js',
       'client/bower_components/angular-hotkeys-light/angular-hotkeys-light.js',
+      'client/bower_components/raven-js/dist/raven.js',
+      'client/bower_components/angular-raven/angular-raven.js',
       'client/bower_components/ui-select/dist/select.js',
       // endbower
       'client/app/app.js',

@@ -29,7 +29,6 @@ module.exports = DataTypes => ({
     },
   },
   alternate_email: DataTypes.STRING,
-  password: DataTypes.STRING,
   virtual_address_code: {
     type: DataTypes.STRING(10),
     unique: {

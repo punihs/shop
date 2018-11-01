@@ -205,7 +205,7 @@
               div
                 span(ng-bind='"₹" + $ctrl.data.pick_up_charge_amount')
 
-        uib-tab(index='2', heading='Docs')
+        uib-tab.hide(index='2', heading='Docs')
           .col-xs-12.wrapper-xs.no-padder-left(ng-if='$ctrl.document.length')
             .w-full.wrapper-xs.inline(ng-repeat='(key, file) in $ctrl.document')
               .m-b-xs.wrapper-xs.clear(ng-class="$last ?'':'b-b'")

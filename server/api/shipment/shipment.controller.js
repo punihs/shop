@@ -677,9 +677,9 @@ exports.shipQueue = async (req, res) => {
   };
   await Shipment
     .findAll(options)
-    .then((shipment) => {
-      log(shipment);
-      res.json({ shipment });
+    .then((shipments) => {
+      log(shipments);
+      res.json({ shipments });
     });
 };
 
@@ -1219,7 +1219,6 @@ exports.payResponse = async (req, res, next) => {
       }
       const paymentGateWay = Number(req.query.pg);
       const { amount } = req.query;
-      console.log({ amount });
       if (paymentGateWay === WIRE || paymentGateWay === CASH || paymentGateWay === WALLET) {
         res.json(`${sucessURL}?${stringify({
           error: 'success',

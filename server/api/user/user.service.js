@@ -19,7 +19,6 @@ exports.signup = async ({ body }) => {
     last_name: lastName,
     email: e,
     phone,
-    password,
     virtual_address_code: virtualAddressCode,
     hooks,
   } = body;
@@ -46,7 +45,6 @@ exports.signup = async ({ body }) => {
             salutation,
             first_name: firstName,
             last_name: lastName,
-            password,
             email,
             phone,
             virtual_address_code: virtualAddressCode || generateVirtualAddressCode(),
