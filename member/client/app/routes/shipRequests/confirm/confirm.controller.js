@@ -176,7 +176,6 @@ class ShipRequestConfirmController {
       payment_gateway_id: this.data.paymentGateway,
     };
     const method = 'get';
-    debugger;
     return this
       .$http[method]('$/api/transactions/create', { params: this.params })
       .then(({ data: url }) => {
