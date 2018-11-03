@@ -26,15 +26,10 @@ const constants = {};
   { name: 'group' },
   { name: 'user' },
   { name: 'package_item_category' },
-  { name: 'shipping_partner', keyMap: false },
   { name: 'store', keyMap: false },
-  { name: 'place', keyMap: false },
-  { name: 'source', keyMap: false },
   { name: 'state', keyMap: false },
   { name: 'actionable_state', keyMap: false },
   { name: 'locker', keyMap: false },
-  { name: 'shipment_type', keyMap: false },
-  { name: 'shipping_rate', keyMap: false },
 ]
   .forEach(({ name, keyMap = true }) => {
     const data = r(`./../../api/${_.camelCase(name)}/${_.camelCase(name)}.seed`)(constants);

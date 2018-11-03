@@ -1,7 +1,7 @@
 const path = require('path');
 const dotenv = require('dotenv');
 
-const root = path.normalize(`${__dirname}/../../../..`);
+const root = path.normalize(`${__dirname}/../../..`);
 
 const env = dotenv.config({ path: path.join(root, '.env') }).parsed;
 const IS_DEV = env.NODE_ENV === 'development';

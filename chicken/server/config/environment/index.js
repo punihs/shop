@@ -8,7 +8,7 @@ const env = dotenv.config({ path: path.join(root, '.env') }).parsed;
 const config = {
   all: {
     env: env.NODE_ENV,
-    port: env.PORT || 5005,
+    port: env.PORT || 6000,
     ip: env.IP || '0.0.0.0',
     root,
     FROM_EMAIL: process.env.FROM_EMAIL || 'support@shoppre.com',

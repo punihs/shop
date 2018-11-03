@@ -1,12 +1,12 @@
 const raven = Raven.config('https://bbf0351970bc4723bb53c27b5c43ef7e@sentry.io/1313555', {});
 
-if(localStorage.userinfo){
+if (localStorage.userinfo){
   const user = JSON.parse(localStorage.userinfo);
-}
-raven.setUser({
+  raven.setUser({
     id: user.id,
-    email: user.email
+    email: user.email,
   });
+}
 
 raven.install();
 

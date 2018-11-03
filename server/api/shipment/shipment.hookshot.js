@@ -22,3 +22,14 @@ exports.stateChange = async ({
     actingUser,
   });
 };
+
+exports.create = ({
+  actingUser, shipment, packages, address,
+}) => {
+  hookshot.trigger('shipment:create', {
+    actingUser,
+    shipment,
+    packages,
+    address,
+  });
+};

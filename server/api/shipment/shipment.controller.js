@@ -1,21 +1,27 @@
 const debug = require('debug');
 const moment = require('moment');
 const _ = require('lodash');
+
 const xlsx = require('node-xlsx');
+const { stringify } = require('querystring');
+
 
 const logger = require('../../components/logger');
+const ship = require('./components/ship');
+const { addressStringify } = require('./components/util');
+const { calcPackageLevelCharges, calcLiquidCharges } = require('./components/shipRequest');
 
-const eventEmitter = require('../../conn/event');
+const hookshot = require('./shipment.hookshot');
 
 const db = require('../../conn/sqldb');
 const shipper = require('../../conn/shipper');
-const { stringify } = require('querystring');
+
 
 const {
   Country, Shipment, Package, Address, PackageCharge, ShipmentMeta, Notification,
   PackageState, User, Locker,
-  ShipmentState, Store, ShipmentType, DHLLog,
-  PackageItem, PhotoRequest, ShippingRate, PaymentGateway,
+  ShipmentState, Store,
+  PackageItem, PhotoRequest, PaymentGateway,
 } = db;
 
 const {
@@ -75,7 +81,7 @@ exports.index = (req, res, next) => index(req)
 
       return res.end(excel, 'binary');
     }
-    log({ result });
+
     return res.json(result);
   })
   .catch(next);
@@ -85,20 +91,17 @@ exports.show = async (req, res, next) => {
     return show(req, res);
   }
 
-  log('show', req.query);
+
   return Shipment
     .findById(req.params.id, {
       attributes: req.query.fl
         ? req.query.fl.split(',')
         : ['id', 'customer_id', 'created_at', 'weight', 'final_weight', 'packages_count',
-          'pick_up_charge_amount', 'payment_gateway_fee_amount', 'final_amount'],
+          'pick_up_charge_amount', 'payment_gateway_fee_amount', 'final_amount', 'shipment_type_id'],
       include: [{
         model: ShipmentState,
         attributes: ['id', 'state_id'],
         required: false,
-      }, {
-        model: ShipmentType,
-        attributes: ['id', 'name'],
       }, {
         model: ShipmentMeta,
         attributes: ['sticker_charge_amount', 'original', 'mark_personal_use', 'invoice_tax_id', 'repacking_charge_amount', 'extra_packing_charge_amount', 'original_ship_box_charge__amount',
@@ -130,9 +133,9 @@ exports.show = async (req, res, next) => {
         attributes: ['id', 'name', 'iso2', 'iso3'],
       },
         // , {
-      //   model: PaymentGateway,
-      //   attributes: ['id', 'value'],
-      // }
+        //   model: PaymentGateway,
+        //   attributes: ['id', 'value'],
+        // }
       {
         model: Address,
         attributes: [
@@ -157,19 +160,13 @@ exports.status = async (req, res, next) => Shipment
     attributes: ['shipping_partner_id', 'tracking_code'],
     raw: true,
   })
-  .then((shipment) => {
-    log('status:shipment', shipment);
-    return shipper[shipment.shipping_partner_id]
-      .status(shipment.tracking_code)
-      .then((result) => {
-        log('result', result);
-        return res
-          .json({
-            shipper: shipment.shipping_partner_id,
-            result,
-          });
-      });
-  })
+  .then(shipment => shipper[shipment.shipping_partner_id]
+    .status(shipment.tracking_code)
+    .then(result => res
+      .json({
+        shipper: shipment.shipping_partner_id,
+        result,
+      })))
   .catch(next);
 
 exports.unread = async (req, res) => {
@@ -181,29 +178,28 @@ exports.unread = async (req, res) => {
 exports.update = async (req, res) => {
   const { id } = req.params;
 
-  const shipmentMeta = await Shipment
+  const shipment = await Shipment
     .find({
-      attributes: ['package_level_charges_amount'],
+      attributes: ['id', 'package_level_charges_amount'],
       where: { id },
       include: [{
         model: ShipmentMeta,
-        attributes: ['liquid_charge_amount', 'overweight_charge_amount', 'is_liquid'],
+        attributes: ['id', 'liquid_charge_amount', 'overweight_charge_amount', 'is_liquid'],
       }],
     });
+
   const updateShipment = req.body;
   const updateMeta = {};
 
-  let packageLevelCharges = shipmentMeta.package_level_charges_amount;
-  log('liquid', shipmentMeta);
+  let packageLevelCharges = shipment.package_level_charges_amount;
 
-  if (shipmentMeta.ShipmentMetum.is_liquid === 1) {
-    packageLevelCharges -= shipmentMeta.ShipmentMetum.liquid_charge_amount || 0;
-    log('weight', req.body.weight);
-    log({ packageLevelCharges });
+  if (shipment.ShipmentMetum.is_liquid === 1) {
+    packageLevelCharges -= shipment.ShipmentMetum.liquid_charge_amount || 0;
     updateMeta.liquid_charge_amount = req.body.liquid_charge_amount;
   }
-  if (shipmentMeta.ShipmentMetum.overweight === '1') {
-    packageLevelCharges -= shipmentMeta.ShipmentMetum.overweight_charge_amount || 0;
+
+  if (shipment.ShipmentMetum.overweight === '1') {
+    packageLevelCharges -= shipment.ShipmentMetum.overweight_charge_amount || 0;
     if (req.body.weight > 30) {
       updateMeta.overweight_charge_amount = 2500.00;
     } else {
@@ -217,7 +213,7 @@ exports.update = async (req, res) => {
     updateMeta.overweight = '0';
     updateMeta.overweight_charge_amount = 0;
   }
-  log('updateMeta', JSON.stringify(updateMeta));
+
   await ShipmentMeta.update(updateMeta, { where: { shipment_id: id } });
   packageLevelCharges = Number(packageLevelCharges);
   packageLevelCharges += Number(updateMeta.liquid_charge_amount) || 0;
@@ -229,7 +225,7 @@ exports.update = async (req, res) => {
   const pickUpChargeAmount = req.body.pick_up_charge_amount || 0;
   const estimatedAmount =
     (subTotalAmount - discountAmount) + packageLevelCharges + pickUpChargeAmount;
-  log(subTotalAmount, discountAmount, packageLevelCharges, pickUpChargeAmount);
+
   updateShipment.sub_total_amount = subTotalAmount;
   updateShipment.discount_amount = discountAmount;
   updateShipment.estimated_amount = estimatedAmount;
@@ -287,7 +283,7 @@ exports.destroy = async (req, res) => {
       .findAll({
         where: { shipment_id: shipment.id },
       });
-    log('pkg id', JSON.stringify(pkg));
+
 
     await pkg
       .map(packageId => Package
@@ -319,128 +315,47 @@ exports.destroy = async (req, res) => {
   }
 };
 
-const calcShipping = async (countryId, weight, type) => {
-  const docType = weight <= 2 ? type : 'nondoc';
-  let rate = '';
-  const optionsRate = {
-    attributes: ['amount'],
-    where: {
-      country_id: countryId,
-      consignment_type: docType,
-      minimum: {
-        $lt: weight,
-      },
-    },
-  };
-  if (weight <= 300) {
-    optionsRate.where.maximum = {
-      $gte: weight,
-    };
-  } else {
-    optionsRate.where.max = 0;
-  }
-  log('optionsRate', JSON.stringify(optionsRate));
-  rate = await ShippingRate
-    .find(optionsRate);
-  log('rate', rate);
-  if (rate) {
-    const amount = (rate.rate_type === 'fixed') ? rate.amount : rate.amount * weight;
-    log('-----------amount', amount);
-    return amount;
-  }
-  return false;
+const getAddress = ({ addressId }) => Address.find({
+  attributes: ['salutation', 'first_name', 'last_name', 'line1', 'line2', 'state',
+    'city', 'pincode', 'phone', 'email', 'country_id'],
+  where: { id: addressId },
+  include: [{
+    model: Country,
+    attributes: ['name'],
+  }],
+});
+
+const additionKeysMap = {
+  consolidation_charge_amount: true,
+  repacking_charge_amount: true,
+  sticker_charge_amount: true,
+  extra_packing_charge_amount: true,
+  original_ship_box_charge_amount: true,
+  gift_wrap_charge_amount: true,
+  gift_note_charge_amount: true,
 };
 
-const getEstimation = async (packageIds, countryId, userId) => {
-  const packages = await Package.findAll({
-    include: [{
-      attributes: ['storage_amount', 'wrong_address_amount', 'special_handling_amount', 'receive_mail_amount',
-        'pickup_amount', 'standard_photo_amount', 'advanced_photo_amount', 'split_package_amount',
-        'scan_document_amount'],
-      model: PackageCharge,
-    }],
-    where: {
-      customer_id: userId,
-      id: packageIds,
-    },
-  });
-  log('packages', JSON.stringify(packages));
+const calculataPackingCharge = obj => Object
+  .keys(additionKeysMap)
+  .reduce((nxt, key) => {
+    if (!additionKeysMap[key]) return nxt;
+    return nxt + (obj[key] || 0);
+  }, 0);
 
-  const country = await Country
-    .findById(countryId, {
-      attributes: ['discount_percentage'],
-    });
-
-  const shipping = {
-    price: 0,
-    weight: 0,
-    sub_total_amount: 0,
-    estimated: 0,
-    level: 0,
-    count: packages.length,
-  };
-  log({ shipping });
-  // packages.forEach((p) => {
-  let packItem = '';
-  // eslint-disable-next-line no-restricted-syntax
-  for (packItem of packages) {
-    const pack = packItem.toJSON();
-    shipping.price += pack.price_amount;
-    shipping.weight += pack.weight;
-
-    const packageCharge = pack.PackageCharge || {};
-    log({ packageCharge });
-
-    const keys = [
-      'storage_amount', 'wrong_address_amount', 'special_handling_amount', 'receive_mail_amount',
-      'pickup_amount', 'standard_photo_amount', 'advanced_photo_amount', 'split_package_amount',
-      'scan_document_amount',
-    ];
-    let type = '';
-    type = pack.content_type === 1 ? 'doc' : 'nondoc';
-    type = type === 'doc' ? 1 : 2;
-
-    shipping.level += keys.reduce((nxt, key) => (nxt + (packageCharge[key] || 0)), 0);
-    log('data', countryId, pack.weight, type);
-
-    // eslint-disable-next-line no-await-in-loop
-    const shippingCharge = await calcShipping(countryId, pack.weight, type);
-    log('shippingCharge', shippingCharge);
-
-    if (shippingCharge) {
-      shipping.sub_total_amount = shippingCharge;
-      log('shippingCharge', shippingCharge);
-    }
-  }
-  shipping.discount = (country.discount_percentage / 100) * shipping.sub_total_amount;
-  let estimated = shipping.sub_total_amount - shipping.discount;
-  estimated += shipping.level;
-  shipping.estimated = estimated;
-
-  return shipping;
-};
-
-const getAddress = (address) => {
-  log('getAddress', address.toJSON());
-
-  let toAddress = address.line1;
-  if (address.line2) toAddress += `, ${address.line2}`;
-
-  toAddress += `, ${address.city}`;
-  toAddress += `, ${address.state}`;
-  toAddress += `, ${address.Country.name}`;
-  if (address.pincode) toAddress += `, ${address.pincode}`;
-  return toAddress;
-};
-
-const getPackages = (userId, packageIds) => Package
+const getPackages = ({ actingUser, packageIds }) => Package
   .findAll({
-    attributes: ['id', 'package_state_id'],
+    attributes: ['id', 'package_state_id', 'weight', 'content_type', 'price_amount'],
     where: {
-      customer_id: userId,
+      customer_id: actingUser.id,
       id: packageIds,
     },
     include: [{
+      attributes: [
+        'id', 'storage_amount', 'wrong_address_amount', 'special_handling_amount',
+        'receive_mail_amount', 'pickup_amount', 'standard_photo_amount', 'advanced_photo_amount',
+        'split_package_amount', 'scan_document_amount'],
+      model: PackageCharge,
+    }, {
       attributes: ['id', 'package_id'],
       model: PackageState,
       where: {
@@ -449,139 +364,16 @@ const getPackages = (userId, packageIds) => Package
     }],
   });
 
-const saveShipment = ({
-  userId, address, toAddress, shipping,
+const updatePackages = ({
+  packageIds,
+  stateId,
+  actingUser,
+  shipmentId,
 }) => {
-  const shipment = {};
-  log({ address });
-  shipment.customer_id = userId;
-  shipment.customer_name = `${address.first_name} ${address.last_name}`;
-  shipment.address = toAddress;
-  shipment.address_id = address.id;
-  shipment.country_id = address.country_id;
-  shipment.phone = address.phone;
-  shipment.packages_count = shipping.count;
-  shipment.weight = shipping.weight;
-  shipment.final_weight = shipping.weight;
-  shipment.value_amount = shipping.price;
-  shipment.discount_amount = shipping.discount;
-  shipment.package_level_charges_amount = shipping.level;
-  shipment.sub_total_amount = shipping.sub_total_amount;
-  shipment.estimated_amount = shipping.estimated;
-  shipment.final_amount = 0;
-
-  shipment.payment_gateway_name = 'pending';
-  shipment.payment_status = 'pending';
-  shipment.status = 'inreview';
-
-  const orderCode = `${moment().format('YYYYMMDDHHmmss')}-${userId}`;
-
-  shipment.order_code = orderCode;
-  log({ shipment });
-  // log({ shipment });
-  return Shipment
-    .create(shipment);
-};
-
-const saveShipmentMeta = ({ req, sR, packageIds }) => {
-  log({ sR });
-  const meta = Object.assign({ shipment_id: sR.id }, req.body);
-  meta.repacking_charge_amount = (req.body.repack === true) ? 100.00 : 0;
-  meta.sticker_charge_amount = (req.body.sticker === true) ? 0 : 0;
-  meta.sticker_charge_amount = 0;
-
-  if (packageIds.length > 1) {
-    meta.consolidation = true;
-    meta.consolidation_charge_amount = (packageIds.length - 1) * 100.00;
-  }
-
-  meta.gift_wrap_charge_amount = (req.body.gift_wrap === true) ? 100.00 : 0;
-  meta.gift_note_charge_amount = (req.body.gift_note === true) ? 50.00 : 0;
-
-  meta.extra_packing_charge_amount = (req.body.extra_packing === true) ? 500.00 : 0;
-
-  if (req.body.is_liquid === true) {
-    log('liquid true', JSON.stringify(req.body));
-    if (sR.weight < 5) {
-      meta.liquid_charge_amount = 1392.40;
-    }
-    if (sR.weight >= 5 && req.body.weight < 10
-    ) {
-      meta.liquid_charge_amount = 3009.00;
-    }
-    if (sR.weight >= 10 && req.body.weight < 15
-    ) {
-      meta.liquid_charge_amount = 5369.00;
-    }
-    if (sR.weight >= 15) {
-      meta.liquid_charge_amount = 7729.00;
-    }
-  }
-
-  meta.invoice_tax_id = req.body.invoice_tax_id;
-  meta.mark_personal_use = req.body.mark_personal_use;
-  meta.invoice_include = req.body.invoice_include;
-  meta.original_ship_box_charge__amount = 0;
-  meta.max_weight = req.body.max_weight;
-  meta.shipment_id = sR.id;
-  log({ meta });
-  log('body JSON', JSON.stringify(req.body));
-  return ShipmentMeta.create(meta);
-};
-
-const updateShipment = async ({ shipmentMeta, sR }) => {
-  let packageLevelCharges = sR.package_level_charges_amount;
-  log('SR1', (sR));
-  log('packageLevelCharges', (packageLevelCharges));
-  log('repacking_charge_amount', (shipmentMeta.repacking_charge_amount));
-  log('sticker_charge_amount', (shipmentMeta.sticker_charge_amount));
-  log('extra_packing_charge_amount', (shipmentMeta.extra_packing_charge_amount));
-  log('original_ship_box_charge__amount', (shipmentMeta.original_ship_box_charge__amount));
-  log('gift_wrap_charge_amount', (shipmentMeta.gift_wrap_charge_amount));
-  log('gift_note_charge_amount', (shipmentMeta.gift_note_charge_amount));
-  log('consolidation_charge_amount', (shipmentMeta.consolidation_charge_amount));
-  log('liquid_charge_amount', (shipmentMeta.liquid_charge_amount));
-  let totalPackageCharges = shipmentMeta.repacking_charge_amount || 0;
-  totalPackageCharges += shipmentMeta.sticker_charge_amount || 0;
-  totalPackageCharges += shipmentMeta.extra_packing_charge_amount || 0;
-  totalPackageCharges += shipmentMeta.original_ship_box_charge__amount || 0;
-  totalPackageCharges += shipmentMeta.gift_wrap_charge_amount || 0;
-  totalPackageCharges += shipmentMeta.gift_note_charge_amount || 0;
-  totalPackageCharges += shipmentMeta.consolidation_charge_amount || 0;
-  log('totalPackageCharges', (totalPackageCharges));
-  packageLevelCharges += totalPackageCharges;
-
-  packageLevelCharges += shipmentMeta.liquid_charge_amount || 0;
-  log('shipmentMeta.liquid_charge_amount end', (shipmentMeta.liquid_charge_amount));
-
-  const updateShip = await Shipment.findById(sR.id);
-  const shipmentUpdate = [];
-
-  let estimatedAmount = updateShip.estimated_amount;
-  estimatedAmount -= sR.package_level_charges_amount;
-  estimatedAmount += packageLevelCharges;
-  log({ estimatedAmount });
-
-  log('sR.package_level_charges_amount', (sR.package_level_charges_amount));
-
-  shipmentUpdate.package_level_charges_amount = packageLevelCharges;
-  log('packageLevelCharges123', (packageLevelCharges));
-  shipmentUpdate.estimated_amount = estimatedAmount;
-  log('updateShip', JSON.stringify(updateShip));
-  const shipdata = await Shipment.find({ where: { id: sR.id } });
-  log('shipdata', JSON.stringify(shipdata));
-  Shipment.update({
-    package_level_charges_amount: shipmentUpdate.package_level_charges_amount,
-    estimated_amount: shipmentUpdate.estimated_amount,
-  }, { where: { id: sR.id } });
-  return Shipment.findById(sR.id);
-};
-
-const updatePackages = (shipmentId, packageIds, actingUser) => {
-  log({ packageIds });
   packageIds.map(id => Package.updateState({
     db,
-    nextStateId: ADDED_TO_SHIPMENT,
+    lastStateId: null,
+    nextStateId: stateId,
     pkg: { id },
     actingUser,
   }));
@@ -592,54 +384,153 @@ const updatePackages = (shipmentId, packageIds, actingUser) => {
   });
 };
 
+const getShipmentMetaMap = ({ body, NUMBER_OF_PACKAGES }) => {
+  const meta = {
+    repacking_charge_amount: body.repack ? 100.00 : 0,
+    // - Todo: sticker charge amount is 0 always & original_ship_box_charge_amount
+    original_ship_box_charge_amount: 0,
+    sticker_charge_amount: body.sticker ? 0 : 0,
+    gift_wrap_charge_amount: body.gift_wrap ? 100.00 : 0,
+    gift_note_charge_amount: body.gift_note ? 50.00 : 0,
+    extra_packing_charge_amount: body.extra_packing ? 500.00 : 0,
+  };
+
+  if (NUMBER_OF_PACKAGES > 1) {
+    meta.consolidation = true;
+    meta.consolidation_charge_amount = (NUMBER_OF_PACKAGES - 1) * 100.00;
+  }
+
+  return meta;
+};
 
 exports.create = async (req, res, next) => {
-  log('shipment:create', req.body, { customerId: req.user.id });
   try {
     const { id: userId } = req.user;
     const packageIds = req.query.package_ids.split(',');
-    const packages = await getPackages(userId, packageIds);
 
-    if (!packages.length) return res.status(400).json({ message: 'No Packages Found.' });
-    log('addressid', req.body.address_id);
-    const address = await Address.find({
-      attributes: ['salutation', 'first_name', 'last_name', 'line1', 'line2', 'state',
-        'city', 'pincode', 'phone', 'email', 'country_id'],
-      where: { id: req.body.address_id },
-      include: [{
-        model: Country,
-        attributes: ['name'],
-      }],
-    });
-
-    const toAddress = await getAddress(address);
-
-    const shipping = await getEstimation(packageIds, address.country_id, userId);
-    log('shipping', JSON.stringify(shipping));
-    const sR = await saveShipment({
-      userId, address, toAddress, shipping,
-    });
-    log('sR saveShipment', JSON.stringify(sR));
-    const shipmentMeta = await saveShipmentMeta({ req, sR, packageIds });
-    log('shipmentMeta saveShipmentMeta', JSON.stringify(shipmentMeta));
-    const updateShip = await updateShipment({ shipmentMeta, sR });
-    log('packageIds', packageIds);
-    log('updateShip123', updateShip);
-    log('sR', sR.id);
-    updatePackages(sR.id, packageIds, req.user);
-
-    await Shipment.updateShipmentState({
-      db,
-      nextStateId: PACKAGING_REQUESTED,
-      shipment: sR,
+    // - Get All Packages Related to Ship Request
+    const packages = await getPackages({
       actingUser: req.user,
+      packageIds,
     });
 
-    eventEmitter.emit('shipment:create', {
-      userId, sR, packages, address, updateShip,
+    if (!packages.length) {
+      return res
+        .status(400)
+        .json({ message: 'No Packages Found.' });
+    }
+
+    // - Get Address to Send Package
+    const address = await getAddress({
+      addressId: req.body.address_id,
     });
 
-    return res.status(201).json(sR);
+    // - Calculate Package Level Charges
+    const shipRequest = await calcPackageLevelCharges({
+      packages,
+    });
+
+    // - Get Pricing from Ship API
+    const {
+      final_amount: shippingCharge,
+      standard_amount: standardAmount,
+      discount_amount: discountAmount,
+    } = await ship
+      .getPricing({
+        countryId: address.country_id,
+        weight: shipRequest.weight,
+        type: packages[0].content_type,
+      });
+
+    const shipmentChargeMap = getShipmentMetaMap({
+      body: req.body,
+      // No of Packages required for consolidation charge calcuation
+      NUMBER_OF_PACKAGES: packageIds.length,
+      // - Weight Required for Liquid Clearance Charge
+      weight: shipRequest.weight,
+    });
+
+    const liquidClearanceCharge = req.body.is_liquid
+      ? calcLiquidCharges({ weight: shipRequest.weight })
+      : 0;
+
+    const packingCharge = calculataPackingCharge(shipmentChargeMap) + liquidClearanceCharge;
+
+    // - Create Shipment
+    const shipment = await Shipment
+      .create({
+        package_level_charges_amount: packingCharge + shipRequest.package_level_charges_amount,
+        liquid_charge_amount: liquidClearanceCharge,
+        estimated_amount: shipRequest.package_level_charges_amount + packingCharge + shippingCharge,
+        weight: shipRequest.weight,
+        packages_count: packages.length,
+        value_amount: shipRequest.value_amount,
+        sub_total_amount: standardAmount,
+        discount_amount: discountAmount,
+        pick_up_charge_amount: 0,
+        volumetric_weight: 0,
+
+        customer_id: userId,
+        customer_name: `${address.first_name} ${address.last_name}`,
+        address: addressStringify(address),
+        phone: address.phone,
+        address_id: address.id,
+        final_amount: 0,
+
+        final_weight: shipRequest.weight,
+        payment_gateway_name: 'pending',
+        payment_status: 'pending',
+        status: 'inreview',
+        order_code: `${moment().format('YYYYMMDDHHmmss')}-${userId}`,
+      });
+
+    await ShipmentMeta
+      .upsert({
+        id: shipment.id,
+        ...shipmentChargeMap,
+        ...req.body,
+      });
+
+    // - Async
+    await updatePackages({
+      packageIds,
+      stateId: ADDED_TO_SHIPMENT,
+      actingUser: req.user,
+      shipmentId: shipment.id,
+    })
+      .catch(err => logger.error({
+        t: 'updatePackages',
+        body: req.body,
+        actingUser: req.user,
+        err,
+      }));
+
+    // - Async
+    await Shipment
+      .updateShipmentState({
+        db,
+        nextStateId: PACKAGING_REQUESTED,
+        shipment,
+        actingUser: req.user,
+      })
+      .catch(err => logger.error({
+        t: 'updateShipmentState',
+        body: req.body,
+        actingUser: req.user,
+        err,
+      }));
+
+    // - Async
+    hookshot.create({
+      actingUser: req.user,
+      shipment,
+      packages,
+      address,
+    });
+
+    return res
+      .status(201)
+      .json(shipment);
   } catch (e) {
     return next(e);
   }
@@ -865,9 +756,6 @@ exports.finalShipRequest = async (req, res) => {
     action_description: `Customer submitted payment - Order#  ${shipment.order_code}`,
   });
 
-  log('shipment', shipment);
-  log('ship_request_id', shipment.id);
-  log('shipment', JSON.stringify(shipment));
 
   const url = 'http://pay.shoppre.test/api/transactions/create?';
   const e = shipment.estimated_amount;
@@ -877,14 +765,12 @@ exports.finalShipRequest = async (req, res) => {
 
 exports.createShipment = async (req, res, IsShippingAddress) => {
   const customerId = req.user.id;
-  log('createShipment.customerId', customerId);
-  log('req.user.package_ids', req.query.packageIds);
+
 
   if (!req.user.package_ids) {
-    log('createshipments-package-ids', req.user.ids);
     res.status(400).json({ message: 'package is not found' });
   }
-  log('req.query;', req.query);
+
 
   const { packageIds } = req.query;
   const { IS_LIQUID } = req.user;
@@ -915,7 +801,7 @@ exports.createShipment = async (req, res, IsShippingAddress) => {
   if (!packages) {
     res.redirect('customer.locker').status(400).json({ message: 'package not found' });
   }
-  log('packageIds.split ', packageIds.split(',').length);
+
   if (packageIds.split(',').length > 1) {
     consolidationChargesAmount = (packageIds.split(',').length - 1) * 100.00;
   }
@@ -931,10 +817,9 @@ exports.createShipment = async (req, res, IsShippingAddress) => {
     optsAmount: 0,
     scan_document_amount: 0,
   };
-  log({ shipmentMeta });
-  log('packages123 ', JSON.stringify(packages));
+
+
   packages.forEach((pack) => {
-    log('pack', JSON.stringify(pack));
     shipmentMeta.storage_amount += pack.PackageCharge.storage_amount || 0;
     shipmentMeta.photo_amount += pack.PackageCharge.standard_photo_amount || 0;
     shipmentMeta.photo_amount += pack.PackageCharge.advanced_photo_amount || 0;
@@ -944,13 +829,12 @@ exports.createShipment = async (req, res, IsShippingAddress) => {
     shipmentMeta.split_package_amount += pack.PackageCharge.split_package_amount || 0;
     shipmentMeta.wrong_address_amount += pack.PackageCharge.wrong_address_amount || 0;
     shipmentMeta.scan_document_amount += pack.PackageCharge.scan_document_amount || 0;
-    log('adding package charges', shipmentMeta);
   });
-  log('charges', shipmentMeta);
+
 
   const optionsCustomer = {
     attributes: ['id', 'salutation', 'first_name', 'last_name', 'email',
-      'virtual_address_code', 'wallet_balance_amount'],
+      'virtual_address_code'],
     where: { id: customerId },
     include: [{
       model: Address,
@@ -967,7 +851,7 @@ exports.createShipment = async (req, res, IsShippingAddress) => {
   const customer = await User
     .find(optionsCustomer);
 
-  log(JSON.stringify(shipmentMeta));
+
   return res.json({
     customer, packages, shipmentMeta, IS_LIQUID, IsShippingAddress,
   });
@@ -983,7 +867,7 @@ const NORMAL = '1';
 exports.redirectShipment = async (req, res) => {
   const customerId = req.user.id;
   const { packageIds } = req.query;
-  log({ packageIds });
+
   const packages = await Package
     .findAll({
       attributes: ['id', 'content_type', 'created_at'],
@@ -1016,9 +900,6 @@ exports.redirectShipment = async (req, res) => {
   }));
 
   if (contentTypes.length !== 1) {
-    log('Packages containing special items must be chosen and shipped separately.');
-    log('contentTypess', (contentTypes));
-    log('length', (contentTypes.length));
     return res
       .status(400)
       .json({
@@ -1050,7 +931,7 @@ exports.redirectShipment = async (req, res) => {
 
   let address = '';
   let IsShippingAddress = true;
-  log({ customerId });
+
   if (req.body.addressId) {
     address = await Address
       .findById(req.body.addressId);
@@ -1062,7 +943,6 @@ exports.redirectShipment = async (req, res) => {
       address = await Address
         .find(optionAddress);
       if (address) {
-        log('redirectShipment.Ship request required address to proceed!');
         // return res.status(400).redirect('customer.address')
         // .json({ message: 'Ship request required address to proceed!' });
         IsShippingAddress = false;
@@ -1073,16 +953,15 @@ exports.redirectShipment = async (req, res) => {
       attributes: ['id'],
       where: { customer_id: customerId, is_default: 1 },
     };
-    log('redirectShipment.testing break point address');
+
     address = await Address
       .find(optionAddress);
     if (!address) {
-      log('redirectShipment.Ship request required address to proceed!');
       // return res.status(400).json({ message: 'Ship request required address to proceed!' });
       IsShippingAddress = false;
     }
   }
-  log('redirectShipment.testing break point');
+
 
   req.user.package_ids = packageIds;
   req.user.IS_LIQUID = IS_LIQUID;
@@ -1095,11 +974,9 @@ exports.redirectShipment = async (req, res) => {
 exports.state = async (req, res, next) => Shipment
   .findById(req.params.id)
   .then((shipment) => {
-    log({ shipment });
     if (SHIPMENT_HANDED === req.body.state_id) {
       if (!shipment.dispatch_date || !shipment.shipping_carrier || !shipment.number_of_packages ||
         !shipment.weight_by_shipping_partner || !shipment.tracking_code) {
-        log('You must update Shipment Tracking Information to send dispatch notification!');
         return res.status(400).json({
           message: 'You must update Shipment Tracking Information to send dispatch notification!',
         });
@@ -1117,10 +994,6 @@ exports.state = async (req, res, next) => Shipment
       .then(status => res.json(status));
   })
   .catch(next);
-
-const models = {
-  1: DHLLog,
-};
 
 exports.paymentState = async (req, res) => {
   let comments = '';
@@ -1147,38 +1020,6 @@ exports.paymentState = async (req, res) => {
     });
 };
 
-exports.updateShipmetStatus = () => {
-  const DISPATCHED_TO_DELIVERED = [18, 19, 21, 20, 23, 26, 24, 25, 28, 27, 29, 30, 31, 36];
-
-  return Shipment
-    .findAll({
-      attributes: [
-        'id', 'tracking_code', 'shipping_partner_id',
-      ],
-      include: [{
-        model: ShipmentState,
-        attributes: ['id', 'state_id'],
-        where: { state_id: DISPATCHED_TO_DELIVERED },
-      }],
-    })
-    .then((shipments) => {
-      log('shipments', shipments.length);
-      return Promise
-        .all(shipments
-          .map((shipment) => {
-            log('shipment', shipment.toJSON());
-            return shipper[shipment.shipping_partner_id]
-              .lastStatus(shipment.tracking_code)
-              .then(({ customPayload }) => models[shipment.shipping_partner_id]
-                .create({
-                  shipment_id: shipment.id,
-                  ...customPayload,
-                }));
-          }));
-    });
-};
-// -http://api.shoppre.test/api/public/shipments/1/response?status=1&uid=647
-
 exports.payResponse = async (req, res, next) => {
   try {
     const failedURL = `${URLS_MEMBER}/shipRequests/`;
@@ -1189,7 +1030,7 @@ exports.payResponse = async (req, res, next) => {
       'faced any issues in completing the payment, please contact us.',
       2: 'Security Error! Please try again after sometime or contact us for support.',
       3: 'Payment transaction failed! You can try again now or if you faced any issues in ' +
-        'completing the payment, please contact us.',
+      'completing the payment, please contact us.',
       4: 'Unexpected error occurred and payment has been failed',
       5: 'invalid payment gateway',
       6: `success #${req.params.id}`,
@@ -1219,6 +1060,7 @@ exports.payResponse = async (req, res, next) => {
       }
       const paymentGateWay = Number(req.query.pg);
       const { amount } = req.query;
+
       if (paymentGateWay === WIRE || paymentGateWay === CASH || paymentGateWay === WALLET) {
         res.json(`${sucessURL}?${stringify({
           error: 'success',
@@ -1260,9 +1102,8 @@ exports.response = async (req, res) => {
   };
   const shipment = await Shipment
     .find(options);
-  log({ shipment });
+
   if (shipment && shipment.customer_id === customerId) {
-    // return res.json({ shipment });
     return res.json({ shipment });
   }
   return res.status(404).json({ message: 'shipment not found' });
@@ -1273,7 +1114,7 @@ exports.shipRequestResponse = async (req, res) => {
   await Shipment.find({
     where: { order_code: orderCode },
     attributes: ['customer_name', 'address', 'phone', 'order_code'],
-  }).then(shipment => res.json(shipment));
+  }).then(shipment => res.json({ shipment }));
 };
 
 exports.trackingUpdate = async (req, res, next) => {

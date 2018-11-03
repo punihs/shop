@@ -172,10 +172,6 @@ exports.show = async (req, res) => {
         'consolidation_charge_amount', 'gift_wrap_charge_amount', 'gift_note_charge_amount', 'insurance_amount',
         'liquid_charge_amount', 'overweight_charge_amount', 'shipment_id'],
     }, {
-      model: User,
-      as: 'Customer',
-      attributes: ['wallet_balance_amount'],
-    }, {
       model: ShipmentState,
       attributes: ['id', 'shipment_id'],
       where: { state_id: [PAYMENT_REQUESTED, PAYMENT_FAILED, PAYMENT_COMPLETED] },

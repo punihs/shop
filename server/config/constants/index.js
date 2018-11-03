@@ -1,4 +1,5 @@
 const constants = {
+
   GROUPS: {
     OPS: 1,
     CUSTOMER: 2,

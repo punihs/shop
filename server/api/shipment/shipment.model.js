@@ -48,20 +48,12 @@ module.exports = (sequelize, DataTypes) => {
       as: 'Creator',
     });
 
-    Shipment.belongsTo(db.ShipmentType, {
-      foreignKey: 'shipment_type_id',
-    });
-
-    Shipment.belongsTo(db.Place, {
-      foreignKey: 'destination_city_id',
-    });
     Shipment.belongsTo(db.Address, {
       foreignKey: 'address_id',
     });
     Shipment.hasMany(db.Package);
-    Shipment.hasOne(db.ShipmentMeta);
-    db.Place.hasMany(Shipment, {
-      foreignKey: 'destination_city_id',
+    Shipment.hasOne(db.ShipmentMeta, {
+      foreignKey: 'id',
     });
 
     Shipment.belongsTo(db.ShipmentState, {
@@ -72,9 +64,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Shipment.belongsTo(db.Country);
-    Shipment.belongsTo(db.ShippingPartner);
-    Shipment.belongsTo(db.ShipmentType);
-    Shipment.hasOne(db.ShipmentMeta);
+
     db.Country.hasMany(Shipment);
   };
 

@@ -24,6 +24,7 @@
     "moment": "^2.19.2",
     "morgan": "~1.9.0",
     "mysql2": "^1.5.3",
+    "oauth2-server": "quezx/node-oauth2-server",
     "paypal-rest-sdk": "^1.8.1",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",

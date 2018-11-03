@@ -23,8 +23,8 @@ class ShipmentCreateController {
     this.TITLE = `${this.EDIT ? 'Edit' : 'Add New'} Shipment`;
     this.Page.setTitle(this.TITLE);
     this.shipmentTypes = this.Session.read('shipment-types');
-    this.data.shipment_type_id =
-      (this.EDIT && this.data.ShipmentType) ? this.data.ShipmentType.id : this.shipmentTypes[0].id;
+    // this.data.shipment_type_id =
+    //   (this.EDIT && this.data.ShipmentType) ? this.data.ShipmentType.id : this.shipmentTypes[0].id;
   }
 
   reset(newShipmentForm) {

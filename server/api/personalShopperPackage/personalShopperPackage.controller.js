@@ -911,8 +911,8 @@ exports.updateShopOrder = async (req, res, next) => {
   if (!personalShopPackage) {
     return res.json({ message: 'admin.shopper.packages' });
   }
-  const customer = await User
-    .find({ where: { id: personalShopPackage.customer_id } });
+  // const customer = await User
+  //   .find({ where: { id: personalShopPackage.customer_id } });
   try {
     const { seller_invoice: sellerInvoice } = req.body;
 
@@ -932,7 +932,7 @@ exports.updateShopOrder = async (req, res, next) => {
 
   const personalShop = {};
   personalShop.amount_paid = req.body.amount_paid;
-  const totalWalletAmount = customer.wallet_balance_amount;
+  // const totalWalletAmount = 0;// customer.wallet_balance_amount;
 
   // eslint-disable-next-line default-case
   switch (req.body.status) {
@@ -949,10 +949,10 @@ exports.updateShopOrder = async (req, res, next) => {
         return res.json({ error: 'Please update final amount paid to website and seller invoice to proceed!' });
       }
       personalShop.status = 'processed';
-      const customerPaidToWebsite = personalShopPackage.price_amount +
-        personalShopPackage.sales_tax + personalShopPackage.delivery_charge;
-      const walletAdded = customerPaidToWebsite - personalShop.amount_paid;
-      customer.wallet_balance_amount = totalWalletAmount + walletAdded;
+      // const customerPaidToWebsite = personalShopPackage.price_amount +
+      //   personalShopPackage.sales_tax + personalShopPackage.delivery_charge;
+      // const walletAdded = customerPaidToWebsite - personalShop.amount_paid;
+      // customer.wallet_balance_amount = totalWalletAmount + walletAdded;
 
       // transactions.description = 'personal shopper ';
       // transactions.amount = walletAdded;

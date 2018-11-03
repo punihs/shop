@@ -129,7 +129,7 @@ class ShipRequestConfirmController {
   }
 
   GetPaymentGateways() {
-    this.$http['get']('http://pay.shoppre.test/api/paymentGateways')
+    this.$http['get']('$/api/paymentGateways')
       .then(({ data: { gateWay } }) => {
         this.paymentGateways = gateWay;
       })

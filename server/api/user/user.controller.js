@@ -81,7 +81,7 @@ exports.me = (req, res, next) => {
       attributes: [
         'id', 'salutation', 'first_name', 'last_name', 'email', 'alternate_email', 'group_id',
         'phone', 'secondary_phone', 'profile_photo_url',
-        'virtual_address_code', 'wallet_balance_amount', 'email_verify',
+        'virtual_address_code', 'email_verify',
       ],
       limit: Number(req.query.limit) || 20,
     })
@@ -157,7 +157,7 @@ exports.show = (req, res, next) => {
             ? req.query.fl.split(',')
             : [
               'id', 'name', 'first_name', 'last_name', 'salutation', 'virtual_address_code',
-              'phone', 'email', 'email_verify', 'wallet_balance_amount',
+              'phone', 'email', 'email_verify',
               'secondary_phone', 'alternate_email',
             ],
           include: [{

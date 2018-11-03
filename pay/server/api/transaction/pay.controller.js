@@ -290,7 +290,6 @@ exports.create = async (req, res) => {
     is_wallet: isWallet,
   } = req.query;
   const IS_WALLET = isWallet === '1';
-  console.log({ estimated });
 
   // - http://pay.shoppre.test/api/transactions/create?object_id=2&estimated=5&uid=647&payment_gateway_id=3&is_wallet=0
   // - Todo: cron for adding cashback to wallet as soon as delivered
@@ -311,7 +310,7 @@ exports.create = async (req, res) => {
   const paymentGatewayFeeAmount = finalAmountWithoutPGFee *
     (paymentGatewayChargesMap[Number(paymentGatewayId)] / 100);
   const finalAmount = finalAmountWithoutPGFee + paymentGatewayFeeAmount;
-  console.log({ finalAmount, paymentGatewayFeeAmount, discount });
+  log({ finalAmount, paymentGatewayFeeAmount, discount });
   if (IS_WALLET && amountInWallet < finalAmount) {
     await Transaction.create({
       object_name: 'shipment',

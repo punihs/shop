@@ -31,7 +31,7 @@ module.exports = (req, res, next) => {
     promise = Promise.resolve({
       attributes: ['client_id', 'client_secret'],
       where: {
-        id: req.body.app_id || APPS.MEMBER,
+        id: 3, //req.body.app_id || APPS.MEMBER,
       },
       raw: true,
     });

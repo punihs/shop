@@ -42,10 +42,6 @@ module.exports = DataTypes => ({
 
   secondary_phone: DataTypes.STRING,
 
-  wallet_balance_amount: {
-    type: DataTypes.DECIMAL(15, 2),
-    defaultValue: 0,
-  },
   email_verify: {
     type: DataTypes.ENUM,
     values: ['yes', 'no'],

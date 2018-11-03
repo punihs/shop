@@ -16,6 +16,7 @@ const config = {
     URLS_API: `${env.PREFIX}api.${env.DOMAIN}`,
     URLS_MEMBER: `${env.PREFIX}member.${env.DOMAIN}`,
     URLS_WWW: `${env.PREFIX}www.${env.DOMAIN}`,
+    URLS_SHIP: `${env.PREFIX}ship-api.${env.DOMAIN}`,
     PREFIX: `${env.PREFIX}`,
     DOMAIN: `${env.DOMAIN}`,
     auth: {

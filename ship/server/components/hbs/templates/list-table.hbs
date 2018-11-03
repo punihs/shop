@@ -1,0 +1,16 @@
+<table>
+    <thead>
+    </thead>
+    <tbody>
+      {{#each rows }}
+      <tr style="text-align: left">
+        {{#if colspan}}
+            <td colspan="{{colspan}}">{{{head}}}</td>
+        {{else}}
+          {{#if head}}<td>{{{head}}}</td>{{/if}}
+          {{#if text}}<td><b>{{{text}}}</b></td>{{/if}}
+        {{/if}}
+      </tr>
+      {{/each}}
+    </tbody>
+</table>

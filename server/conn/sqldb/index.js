@@ -25,13 +25,10 @@ const db = {
 
 [
   // - Enums
-  'Country', 'Place', 'Locker',
-
-  // - Tracking
-  'DHLLog',
+  'Country', 'Locker',
 
   // - Basic
-  'User', 'UserMeta', 'Group', 'PasswordReset', 'Follower', 'SocketSession',
+  'User', 'UserMeta', 'Group', 'Follower', 'SocketSession',
 
   // - Customer Account
   // Shoppre.com - Inspired by MyUS.com
@@ -43,26 +40,15 @@ const db = {
 
   'PhotoRequest',
 
-  'Shipment', 'ShipmentMeta', 'ShipmentType', 'ShippingPartner', 'ShipmentState',
+  'Shipment', 'ShipmentMeta', 'ShipmentState',
 
   // - Notifications
   'Notification', 'Comment',
 
-  // - Organitation
-  'ShippingRate',
-
   // - Product
   'Store',
 
-  // - Reviews
-  'Review', 'Feedback',
-
-  // - Estomations
-  'Estimation',
-
   'Log',
-
-  'Source',
 
 ].forEach((model) => {
   db[model] = db.sequelize.import(`../../api/${_.camelCase(model)}/${_.camelCase(model)}.model.js`);

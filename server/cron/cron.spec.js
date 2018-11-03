@@ -3,7 +3,7 @@ const app = require('./../app');
 const auth = require('../../logs/credentials');
 
 describe('schedule Cron Job', () => {
-  it('return shipmentTypes', (done) => {
+  it('runs cron', (done) => {
     request(app)
       .get('/api/crons/')
       .set('Authorization', `Bearer ${auth.access_token}`)

@@ -26,24 +26,16 @@ const personalShopperPackage = require('./api/personalShopperPackage');
 const address = require('./api/address');
 const user = require('./api/user');
 const userPublic = require('./api/user');
-const pricing = require('./api/pricing');
 const notification = require('./api/notification');
 const userDocument = require('./api/userDocument');
 const country = require('./api/country');
-const review = require('./api/review');
-const feedback = require('./api/feedback');
-const shippingPartnerShipments = require('./api/shippingPartner/shipment');
 const health = require('./api/health');
-const passwordReset = require('./api/passwordReset');
-const place = require('./api/place');
 const store = require('./api/store');
-const estimation = require('./api/estimation');
 const userPackage = require('./api/user/package');
 const userShipment = require('./api/user/shipment');
 const photoRequest = require('./api/package/photoRequest');
 const follower = require('./api/package/follower');
 const shipmentFollower = require('./api/shipment/follower');
-const shipmentTypes = require('./api/shipmentType');
 const minio = require('./conn/minio/minio.route');
 const cron = require('./cron');
 
@@ -62,7 +54,6 @@ module.exports = (app) => {
     photoRequest,
     follower,
   );
-  app.use('/api/shippingPartners', shippingPartnerShipments);
   app.use('/api/addresses', authenticate(), address);
   app.use('/api/public/shipments', shipment);
   app.use(
@@ -78,9 +69,6 @@ module.exports = (app) => {
   app.use('/api/personalShopperPackages', authenticate(), personalShopperPackage);
   app.use('/api/userDocuments', authenticate(), userDocument);
   app.use('/api/countries', country);
-  app.use('/api/reviews', review);
-  app.use('/api/feedbacks', feedback);
-  app.use('/api/pricing', pricing);
   app.use('/api/packageItems', authenticate(), packageItem);
   app.use('/api/packageItemCategories', authenticate(), packageItemCategory);
   app.use('/api/users/public', userPublic);
@@ -92,11 +80,7 @@ module.exports = (app) => {
     userShipment,
   );
   app.use('/api/crons', cron);
-  app.use('/api/places', place);
   app.use('/api/stores', store);
-  app.use('/api/passwordReset', passwordReset);
-  app.use('/api/estimations', estimation);
-  app.use('/api/shipmentTypes', shipmentTypes);
   app.get('/secured', authenticate(), (req, res) => res.json({ name, version }));
 
   app.get('/health', (req, res) => res.json({ name, version }));
