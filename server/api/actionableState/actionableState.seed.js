@@ -1,4 +1,3 @@
-
 const {
   STATE_TYPES: { PACKAGE, SHIPMENT },
 } = require('../../config/constants');
@@ -353,13 +352,7 @@ const shipmentStates = ({
   state_id: 26,
   group_id: OPS,
   child_id: 40,
-},
-//  {
-//   state_id: 42,
-//   group_id: BOT,
-//   child_id: 40,
-// }// ,
-{
+}, {
   state_id: 16,
   group_id: MEMBER,
   child_id: 41,

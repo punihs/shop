@@ -1,9 +1,9 @@
-const debug = require('debug');
 const _ = require('lodash');
-const { Address, Country } = require('./../../conn/sqldb');
-const { GROUPS: { CUSTOMER } } = require('./../../config/constants');
+const debug = require('debug');
 
+const { GROUPS: { CUSTOMER } } = require('./../../config/constants');
 const { ajv, transform } = require('./../../components/ajv');
+const { Address, Country } = require('./../../conn/sqldb');
 
 const log = debug('s.api.address.controller');
 
@@ -66,7 +66,11 @@ exports.create = (req, res, next) => {
   log('create', req.body);
   const valid = ajv.validate('createAddress', req.body);
 
-  if (!valid) return res.status(400).json(transform(ajv));
+  if (!valid) {
+    return res
+      .status(400)
+      .json(transform(ajv));
+  }
 
   const { is_default: isDefault } = req.body;
 
@@ -95,26 +99,45 @@ exports.create = (req, res, next) => {
     .catch(next);
 };
 
-exports.update = async (req, res) => {
-  const { id } = req.params;
-  if (req.body.is_default) {
-    await Address.update({ is_default: false }, { where: { customer_id: req.user.id } });
+exports.update = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    if (req.body.is_default) {
+      await Address
+        .update({
+          is_default: false,
+        }, {
+          where: {
+            customer_id: req.user.id,
+          },
+        });
+    }
+
+    const status = await Address
+      .update(_.omit(req.body, ['customer_id']), { where: { id } });
+    res
+      .json(status);
+  } catch (e) {
+    next(e);
   }
-  const status = await Address.update(_.omit(req.body, ['customer_id']), { where: { id } });
-  return res.json(status);
 };
 
-exports.metaupdate = async (req, res) => {
-  const { id } = req.params;
-  const customerId = req.user.id;
-  await Address.update({ is_default: '0' }, { where: { customer_id: customerId } });
-  await Address.update({ is_default: '1' }, { where: { id } });
-  return res.status(200).json({ id });
-};
+exports.destroy = async (req, res, next) => {
+  try {
+    const { id } = req.params;
 
-exports.destroy = async (req, res) => {
-  const { id } = req.params;
-  const status = await Address.destroy({ where: { id } });
-  return res.json(status);
+    const address = await Address
+      .destroy({
+        where: {
+          id,
+          customer_id: req.user.id,
+        },
+      });
+
+    res.json(address);
+  } catch (e) {
+    next(e);
+  }
 };
 
