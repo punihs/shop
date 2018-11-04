@@ -1,4 +1,4 @@
-const render = require('../../../../../../sesmetrics-sdk/render');
+const render = require('../../../../../../chicken-sdk/render');
 const { GROUPS } = require('../../../../config/constants');
 
 const TemplateName = __dirname.split('/')

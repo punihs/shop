@@ -3,7 +3,7 @@ const { GROUPS: { CUSTOMER } } = require('../../../../config/constants');
 
 const { CURRENT_EVENT_KEY } = require('../../../../config/environment');
 
-const render = require('../../../../../../sesmetrics-sdk/render');
+const render = require('../../../../../../chicken-sdk/render');
 const TemplateData = require('./state-change.data')[CURRENT_EVENT_KEY];
 
 const TemplateName = __dirname.split('/')

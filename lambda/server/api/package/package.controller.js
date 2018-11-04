@@ -1,5 +1,5 @@
 const event = require('../../conn/events');
-const { PREFIX, DOMAIN } = require('../../config/environment');
+// const { PREFIX, DOMAIN } = require('../../config/environment');
 
 exports.notifications = (req, res) => {
   const {
@@ -29,19 +29,19 @@ exports.notifications = (req, res) => {
           ENV,
         }),
       }],
-      oneSignal: [{
-        userId: customer.id,
-        msg: {
-          title: `Your shipment arrived from ${pkg.Store.name}`,
-          body: 'just now',
-          link: `${PREFIX}member.${DOMAIN}/locker?bucket=IN_REVIEW`,
-        },
-      }],
-      whatsapp: [{
-        number: customer.phone,
-        message: `Your package arrived from ${pkg.Store.name} - ${pkg.id} - \n
-          ${PREFIX}member.${DOMAIN}/locker?bucket=IN_REVIEW`,
-      }],
+      // oneSignal: [{
+      //   userId: customer.id,
+      //   msg: {
+      //     title: `Your shipment arrived from ${pkg.Store.name}`,
+      //     body: 'just now',
+      //     link: `${PREFIX}member.${DOMAIN}/locker?bucket=IN_REVIEW`,
+      //   },
+      // }],
+      // whatsapp: [{
+      //   number: customer.phone,
+      //   message: `Your package arrived from ${pkg.Store.name} - ${pkg.id} - \n
+      //     ${PREFIX}member.${DOMAIN}/locker?bucket=IN_REVIEW`,
+      // }],
     });
   res.status(200).end();
 };
