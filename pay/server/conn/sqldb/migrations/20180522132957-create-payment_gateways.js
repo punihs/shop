@@ -11,7 +11,7 @@ module.exports = {
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     value: DataTypes.STRING,
-    charges: DataTypes.INTEGER,
+    fee: DataTypes.INTEGER,
     status: DataTypes.INTEGER,
   }, timestamps(3, DataTypes)), engine),
   down(queryInterface) {

@@ -49,9 +49,9 @@ class TransactionCreateController {
     const amount = Number(this.amount);
     this.paymentGateways.forEach((x) => {
       if (Number(x.id) === Number(this.data.paymentGateway)) {
-        if (x.charges) {
+        if (x.fee) {
           this.data.amount = amount + (amount *
-            (x.charges / 100));
+            (x.fee / 100));
         } else {
           this.data.amount = amount;
         }
