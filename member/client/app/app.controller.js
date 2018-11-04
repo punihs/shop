@@ -87,8 +87,8 @@ class AppController {
 
   showShipmentSideBar() {
     return [
-      'packages.index',
-      'shipment.packages.index',
+      // 'packages.index',
+      // 'shipment.packages.index',
     ].includes(this.$state.current.name);
   }
 

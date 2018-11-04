@@ -8,6 +8,7 @@ const router = express.Router();
 router.get('/', controller.index);
 router.get('/create', payController.create);
 router.get('/:id', payController.show);
+router.get('/:id/response', controller.show);
 router.post('/', controller.create);
 router.put('/:id', controller.update);
 router.delete('/:id', controller.destroy);

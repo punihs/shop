@@ -1,47 +1,38 @@
 div.no-margin
   .wrapper-md.bg-white-only
     .container-fluid
-      .col-md-8.m-t-xs
+      .col-md-8
         center
           h4.subpaybtn(ng-show = '$ctrl.isPaymentSubmit')
             | Your shipment is ready.
-            // todo - change href
             a.summary-order(ui-sref='shipRequests.index')&nbsp; Submit Your Payment &nbsp;
             |  Quickly in order to avoid storage fees.
             a.tooltipkey(href='javascript:void(0)', title='Your package is now ready to be shipped and your final charges have been updated.You get a free time period of 7 DAYS to submit your payment. You will incur a storage fee of INR 100/ day for your prepared parcel from the 8th day onwards, which you can view in your Shoppre Wallet.')
               i.fa.fa-question-circle-o
         div
-          .order-top-left.col-md-6.no-padding-right
-            h3 Packages in locker&nbsp;
+          .no-padding-right
+            h3.m-t-xs.inline Packages in locker&nbsp;
               strong(ng-bind='$ctrl.user.virtual_address_code')
-              // todo - change href
-            a.btn.btn-primary(
-              ui-sref='packages.create'
-            ) Alert Shoppre about my incoming Packages (Optional)
-          // todo required to display offers
-          //.order-top-left.col-md-6.no-padding-right
-          //  h3(style='color: hotpink;') Coming Soon
-          //  a.btn.btn-blue.col-md-12(style='background-color: hotpink', target='_blank', href='https://www.shoppre.com/campaign/ind-day/website/308?myaccount-locker') ShoppRe: Independence Day 7% Discount. Claim Offer!
-        .clearfix
-        .col-md-8.pull-right.text-right.no-padder-right.m-t-md.m-t-xs
-          ul.nav.nav-pills.nav-sm.pull-right
-            li.m-r-sm.pull-right(ng-if='$ctrl.queueCount')
-              a.h5.font-bold.b-a.btn-info(
-                ui-sref='shipRequests.index'
-              ) View Queue
-              span.badge.badge-lg.locker-up.pull-right-xs.text-danger(
-                style='border: 1px solid red'
-                ng-bind='$ctrl.queueCount'
-              )
-            li.hide.m-r-sm.pull-right: a.h5.font-bold.b-a.btn-info(
-              uib-tooltip='Alert Shoppre about my incoming packages (Optional)'
-              ng-href='{{$ctrl.URLS.PREFIX}}myaccount.{{$ctrl.URLS.DOMAIN}}/incoming-order'
-            )
-              | Inform about your purchases to Shoppre Team
+            h4.pull-right.text-u-c(ng-if='$ctrl.queueCount') We are preparing currently {{$ctrl.queueCount}} shipment for you
+            .m-b.col-md-12.no-padder
+              ul.nav.nav-pills.nav-sm.pull-left.no-padder
+                li.m-r-sm.pull-right(ng-if='$ctrl.queueCount')
+                  a.font-bold.b-a.btn-info(
+                  ui-sref='packages.create'
+                  ) Alert Shoppre about my incoming Packages (Optional)
+              ul.nav.nav-pills.nav-sm.pull-right.no-padder
+                li.m-r-sm(ng-if='$ctrl.queueCount')
+                  a.font-bold.b-a.btn-info(
+                    ui-sref='shipRequests.index'
+                  ) View Queue
+                  span.badge.badge-lg.locker-up.pull-right-xs.text-danger(
+                    style='border: 1px solid red'
+                    ng-bind='$ctrl.queueCount'
+                  )
+
         .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
-        .clearfix
-        .col-md-8.pull-right.text-right.no-padder-right(ng-if='$ctrl.queueCount')
-          h4.text-u-c We are preparing currently {{$ctrl.queueCount}} shipment for you
+
+
         .clearfix
         .hbox.accounts.panel.panel-warning.m-t-xs
           .bg-white-only

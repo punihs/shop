@@ -87,10 +87,34 @@ exports.index = (req, res, next) => index(req)
   .catch(next);
 
 exports.show = async (req, res, next) => {
-  if (req.user.group_id === CUSTOMER) {
-    return show(req, res);
+  const { id } = req.params;
+  const { id: customerId, group_id: groupId } = req.user;
+
+  if (req.query.transactionSuccessPage) {
+    try {
+      const shipment = await Shipment
+        .find({
+          attributes: ['id', 'value_amount', 'address', 'customer_id', 'weight', 'payment_gateway_id',
+            'order_code', 'final_amount', 'package_level_charges_amount', 'customer_name', 'phone'],
+          where: { order_code: id, customer_id: customerId },
+          include: [{
+            model: User,
+            as: 'Customer',
+            attributes: ['id', 'email'],
+          }],
+        });
+
+      if (!shipment) return res.status(404).json({ message: 'shipment not found' });
+
+      return res.json({ shipment });
+    } catch (err) {
+      return next(err);
+    }
   }
 
+  if (groupId === CUSTOMER) {
+    return show(req, res);
+  }
 
   return Shipment
     .findById(req.params.id, {
@@ -132,10 +156,6 @@ exports.show = async (req, res, next) => {
         model: Country,
         attributes: ['id', 'name', 'iso2', 'iso3'],
       },
-        // , {
-        //   model: PaymentGateway,
-        //   attributes: ['id', 'value'],
-        // }
       {
         model: Address,
         attributes: [
@@ -1023,7 +1043,7 @@ exports.paymentState = async (req, res) => {
 exports.payResponse = async (req, res, next) => {
   try {
     const failedURL = `${URLS_MEMBER}/shipRequests/`;
-    const sucessURL = `${URLS_MEMBER}/transactions/${req.params.id}/response`;
+    const sucessURL = `${URLS_MEMBER}/transactions/${req.query.transaction_id}/response`;
     const { status } = req.query;
     const msg = {
       1: 'Looks like you cancelled the payment. You can try again now or if you ' +
@@ -1035,7 +1055,8 @@ exports.payResponse = async (req, res, next) => {
       5: 'invalid payment gateway',
       6: 'success',
     }[status];
-    const shipment = await Shipment.findById(req.params.id);
+    const shipment = await Shipment
+      .find({ where: { order_code: req.params.id } });
     // - Todo: Security issue
     const customer = await User.findById(req.query.uid, { raw: true });
     Shipment.update({
@@ -1043,7 +1064,7 @@ exports.payResponse = async (req, res, next) => {
       payment_gateway_id: req.query.pg,
       final_amount: req.query.amount,
       payment_gateway_fee_amount: req.query.pgAmount || 0,
-    }, { where: { id: req.params.id } });
+    }, { where: { order_code: req.params.id } });
 
     const SUCCESS = '6';
     if (req.query.status === SUCCESS) {
@@ -1068,12 +1089,14 @@ exports.payResponse = async (req, res, next) => {
 
       if (paymentGateWay === WIRE || paymentGateWay === CASH || paymentGateWay === WALLET) {
         res.json(`${sucessURL}?${stringify({
+          object_id: shipment.order_code,
+          customer_id: req.query.uid,
           status: 'success',
           message: msg,
           amount,
         })}`);
       } else {
-        res.redirect(`${sucessURL}?status='sucess'&message=${msg}&amount=${amount}`);
+        res.redirect(`${sucessURL}?object_id=${shipment.order_code}&customer_id=${req.query.uid}&status='sucess'&message=${msg}&amount=${amount}`);
       }
     } else {
       Shipment
@@ -1090,28 +1113,6 @@ exports.payResponse = async (req, res, next) => {
   } catch (e) {
     next(e);
   }
-};
-
-exports.response = async (req, res) => {
-  const { id } = req.params;
-  const customerId = req.user.id;
-  const options = {
-    attributes: ['id', 'value_amount', 'address', 'customer_id', 'weight', 'payment_gateway_id',
-      'order_code', 'final_amount', 'package_level_charges_amount', 'customer_name', 'phone'],
-    where: { id },
-    include: [{
-      model: User,
-      as: 'Customer',
-      attributes: ['id', 'email'],
-    }],
-  };
-  const shipment = await Shipment
-    .find(options);
-
-  if (shipment && shipment.customer_id === customerId) {
-    return res.json({ shipment });
-  }
-  return res.status(404).json({ message: 'shipment not found' });
 };
 
 exports.shipRequestResponse = async (req, res) => {

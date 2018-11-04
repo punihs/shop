@@ -31,6 +31,12 @@ angular.module('uiGenApp')
         url: '/shipRequests/:orderCode',
         template: '<div ui-view=""></div>',
       })
+      .state('shipRequest.show', {
+        url: '',
+        templateUrl: 'app/routes/shipRequests/transactions/response/show.html',
+        controller: 'ShipRequestTransactionResponseController',
+        controllerAs: '$ctrl',
+      })
       .state('shipRequest.confirm', {
         url: '/confirm',
         templateUrl: 'app/routes/shipRequests/confirm/confirm.html',

@@ -1,0 +1,37 @@
+section.ship_response
+  .container
+    .row
+      .col-sm-12
+        .longblock
+          .col-sm-12
+              p.info
+                | We will dispatch your shipment once your payment is confirmed. In such a case, we advise you to opt for an alternative payment method if your shipment is urgent or if you don’t want to be charged with storage cost. Please click here if you wish to
+                a.summary-order(ui-sref='shipRequest.confirm({orderCode: $ctrl.shipment.order_code})')&nbsp; change the payment method.
+          .col-sm-6
+            .splitbox
+              h3 Sent to:
+              h4 {{$ctrl.shipment.customer_name}}
+              p {{$ctrl.shipment.address}}
+              strong Phone: {{$ctrl.shipment.phone}}
+          .col-sm-6
+            .splitbox
+              h3 Shipment Details:
+              p # {{$ctrl.shipment.order_code}}
+              p Estimated Weight: {{$ctrl.shipment.weight}} Kg
+              p Estimated Value of Items: INR {{$ctrl.shipment.value_amount}}
+              p
+                | Shoppre Shipping Charges: INR {{$ctrl.shipment.final_amount}}
+          .clearfix
+          .ship_points
+            h4 What's Next
+            ul
+              li
+                | The shipment order will be in
+                a.summary-order(ui-sref='shipRequests.index')&nbsp; Queue
+                |  until the items LEAVE Shoppre facility.
+              li
+                | You can view your shipped packages in transit in your
+                a.summary-order(ui-sref="shipRequests.history")&nbsp; History
+                | .
+              li
+                | We shall let you know if we haven’t received your amount (in case of wire transfer) in 2 days. If we don’t receive your amount within 7 days from the time your parcel was ready to be shipped, you will incur a storage fee of INR 100/day from the 8th day onwards. We can only dispatch your parcel from the Shopre facility upon confirmation of the payment.

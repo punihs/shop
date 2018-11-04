@@ -29,14 +29,6 @@ module.exports = DataTypes => ({
     },
   },
   alternate_email: DataTypes.STRING,
-  password: DataTypes.STRING,
-  virtual_address_code: {
-    type: DataTypes.STRING(10),
-    unique: {
-      args: true,
-      message: 'Locker code already in use!',
-    },
-  },
   profile_photo_url: DataTypes.STRING,
 
   phone: DataTypes.STRING,
@@ -47,27 +39,4 @@ module.exports = DataTypes => ({
     type: DataTypes.DECIMAL(15, 2),
     defaultValue: 0,
   },
-  email_verify: {
-    type: DataTypes.ENUM,
-    values: ['yes', 'no'],
-  },
-  email_token: DataTypes.STRING,
-  remember_token: DataTypes.STRING,
-  admin_info: DataTypes.STRING,
-  admin_read: {
-    type: DataTypes.ENUM,
-    values: ['yes', 'no'],
-  },
-  is_prime: DataTypes.INTEGER,
-  is_seller: {
-    type: DataTypes.ENUM,
-    values: ['0', '1'],
-  },
-  medium: DataTypes.STRING,
-  google_contacts_accessed: DataTypes.BOOLEAN,
-  otp: DataTypes.STRING,
-  facebook: DataTypes.JSON,
-  twitter: DataTypes.JSON,
-  google: DataTypes.JSON,
-  github: DataTypes.JSON,
 });

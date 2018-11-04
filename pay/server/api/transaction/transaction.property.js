@@ -20,7 +20,7 @@ module.exports = DataTypes => ({
     ],
   },
   description: DataTypes.STRING,
-  object_id: DataTypes.INTEGER,
+  object_id: DataTypes.STRING,
   object_name: DataTypes.STRING,
   status: DataTypes.STRING,
   final_amount: DataTypes.INTEGER,

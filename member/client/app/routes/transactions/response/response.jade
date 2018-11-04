@@ -3,24 +3,23 @@ section.ship_response
     .row
       .col-sm-12
         .longblock
-          h4.title SHIP REQUEST CONFIRMATION
+          h4.title PAYMENT CONFIRMATION
           h3.alert.alert-success.text-center Success! You have completed your ship request.
           .col-md-12
             p.confirm
               | An email confirmation of your request has been sent to
-              a.summary-order(href='javascript:void(0)')&nbsp; {{$ctrl.shipment.Customer.email}}
+              a.summary-order(href='javascript:void(0)')&nbsp; {{$ctrl.transaction.Customer.email}}
               | .
-          .col-sm-12(ng-show = "$ctrl.shipment.payment_gateway_id == $ctrl.paymentGatewayWireID")
+          .col-sm-12(ng-show = "$ctrl.transaction.payment_gateway_id == $ctrl.paymentGatewayWireID")
             .wireoption
               p.info
-                | We will dispatch your shipment once your payment to the below bank account is confirmed. Kindly note that we currently
+                | We will process your order once your payment to the below bank account is confirmed. Kindly note that we currently
                 strong.m-l-xs DO NOT ACCEPT WESTERN UNION MONEY TRANSFERS
                 | .
                 strong
                   | Also, it may take up to 7 business days for the amount to reflect in our account, especially in case of International Wire Transfers.
                 |  In such a case, we advise you to opt for an alternative payment method if your shipment is urgent or if you don’t want to be charged with storage cost. Please click here if you wish to
-                a.summary-order.m-r-xs.m-l-xs(ui-sref='shipRequest.confirm({orderCode: $ctrl.shipment.order_code})')&nbsp; change the payment method
-                | .
+                a.summary-order(ui-sref='transaction.create({ object_id: $ctrl.transaction.object_id, amount: $ctrl.transaction.amount, customer_id: $ctrl.transaction.customer_id })')&nbsp; change the payment method.
               .bg-light.well
                 h4 Account Name: INDIANSHOPPRE LLP
                 p Account Number: 918020022874771
@@ -30,41 +29,22 @@ section.ship_response
                 p E-mail ID: finance@shoppre.com
                 p Address: NO. 9, M.G. ROAD, BLOCK 'A'
                 p Swift Code: AXISINBB009
-          .col-sm-12(ng-show = "$ctrl.shipment.payment_gateway_id === $ctrl.paymentGatewayCashID")
+          .col-sm-12(ng-show = "$ctrl.transaction.payment_gateway_id === $ctrl.paymentGatewayCashID")
               p.info
-                | We will dispatch your shipment once your payment is confirmed. In such a case, we advise you to opt for an alternative payment method if your shipment is urgent or if you don’t want to be charged with storage cost. Please click here if you wish to
-                a.summary-order(ui-sref='shipRequest.confirm({orderCode: $ctrl.shipment.order_code})')&nbsp; change the payment method.
-          .col-sm-6
-            .splitbox
-              h3 Sent to:
-              h4 {{$ctrl.shipment.customer_name}}
-              p {{$ctrl.shipment.address}}
-              strong Phone: {{$ctrl.shipment.phone}}
-          .col-sm-6
-            .splitbox
-              h3 Shipment Details:
-              p # {{$ctrl.shipment.order_code}}
-              p Estimated Weight: {{$ctrl.shipment.weight}} Kg
-              p Estimated Value of Items: INR {{$ctrl.shipment.value_amount}}
-              p
-                | Shoppre Shipping Charges: INR {{$ctrl.$stateParams.amount}}
+                | We will process your order once your payment is confirmed. In such a case, we advise you to opt for an alternative payment method if your order is urgent or if you don’t want to be charged with storage cost. Please click here if you wish to
+                a.summary-order(ui-sref='transaction.create({ orderCode: $ctrl.transaction.object_id, amount: $ctrl.transaction.amount })')&nbsp; change the payment method.
           .clearfix
           .alert.alert-warning.text-center(role='alert')
             h4
-              | AFTER your payment has been confirmed, our shipping experts will make every effort to process your shipment within 24 hours.
+              | AFTER your payment has been confirmed, your order processed within 24 hours.
             p
-              | An email with your tracking information will be sent to you as soon as your parcels have been dispatched.
+              | An email with your transaction information sent when payment gets completed.
           .clearfix
           .ship_points
             h4 What's Next
-            ul
-              li
-                | The shipment order will be in
-                a.summary-order(ui-sref='shipRequests.index')&nbsp; Queue
-                |  until the items LEAVE Shoppre facility.
-              li
-                | You can view your shipped packages in transit in your
-                a.summary-order(ui-sref="shipRequests.history")&nbsp; History
-                | .
-              li
-                | We shall let you know if we haven’t received your amount (in case of wire transfer) in 2 days. If we don’t receive your amount within 7 days from the time your parcel was ready to be shipped, you will incur a storage fee of INR 100/day from the 8th day onwards. We can only dispatch your parcel from the Shopre facility upon confirmation of the payment.
+                button.btn.btn-shoppre(
+                type='submit',
+                style='width: 100%;font-size: 18px;border-radius: 5px;background: #10c018;font-weight: 900;'
+                ng-click='$ctrl.response()'
+                )
+                  | View your order details

@@ -33,6 +33,30 @@ exports.index = (req, res, next) => {
     .catch(next);
 };
 
+exports.show = (req, res, next) => {
+  const {
+    object_id: objectId,
+    customer_id: customerId,
+  } = req.query;
+  const {
+    id,
+  } = req.params;
+
+  return Transaction
+    .find({
+      attributes: ['id', 'payment_gateway_id', 'amount', 'object_id', 'customer_id'],
+      where: { object_id: objectId, id },
+      include: [{
+        model: User,
+        as: 'Customer',
+        attributes: ['email', 'first_name'],
+        where: { id: customerId },
+      }],
+    })
+    .then(transaction => res.json(transaction))
+    .catch(next);
+};
+
 exports.create = async (req, res, next) => {
   const transaction = req.body;
   const customerId = req.body.customer_id;

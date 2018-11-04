@@ -9,20 +9,9 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       paranoid: true,
       underscored: true,
-      // todo - required in wallet transaction
-      // hooks: {
-      //   afterCreate(transaction) {
-      //     log('action', transaction.toJSON());
-      //     const { db } = Transaction;
-      //     const user = db.User.build({ id: transaction.customer_id });
-      //     const action = Number(transaction.type) === 2 ? 'decrement' : 'increment';
-      //     user[action]({ wallet_balance_amount: transaction.amount })
-      //       .catch(err => logger.error('hook', err));
-      //   },
-      // },
     },
-  );
 
+  );
   Transaction.associate = (db) => {
     Transaction.db = db;
     Transaction.belongsTo(db.PaymentGateway);

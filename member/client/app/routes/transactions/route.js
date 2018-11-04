@@ -8,7 +8,7 @@ angular.module('uiGenApp')
         template: '<div ui-view=""></div>',
       })
       .state('transaction.response', {
-        url: '/response?status&message&amount',
+        url: '/response?status&message&amount&customer_id&object_id',
         templateUrl: 'app/routes/transactions/response/response.html',
         controller: 'TransactionResponseController',
         controllerAs: '$ctrl',

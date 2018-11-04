@@ -22,7 +22,6 @@ router.put('/:id/meta', controller.metaUpdate);
 router.delete('/:id', controller.destroy);
 router.get('/:orderCode/invoice', controller.invoice);
 router.put('/:id/state', controller.state);
-router.get('/:id/request/response', controller.response);
 router.get('/:id/response', controller.payResponse);
 router.get('/:orderCode/request/shipRequestResponse', controller.shipRequestResponse);
 router.put('/:id/tracking', controller.trackingUpdate);
