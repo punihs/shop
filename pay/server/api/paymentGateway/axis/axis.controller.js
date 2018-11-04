@@ -2,7 +2,7 @@ const debug = require('debug');
 
 const { stringify } = require('querystring');
 
-const { URLS_PAY, AXIS } = require('../../../config/environment');
+const { URLS_PAY_API, AXIS } = require('../../../config/environment');
 
 
 const log = debug('s.axis.controller');
@@ -13,7 +13,7 @@ exports.create = async (req, res, transaction) => {
   res.json(`https://cp.shoppre.com/axis/api.php?&${stringify({
     final_amount: transaction.amount,
     payment_id: transaction.id,
-    redirect_url: `${URLS_PAY}/api/transactions/${transaction.id}/complete`,
+    redirect_url: `${URLS_PAY_API}/api/transactions/${transaction.id}/complete`,
     ...AXIS,
   })}`);
 };

@@ -5,7 +5,7 @@ const connection = require('paypal-rest-sdk');
 const log = debug('s.paypal.controller');
 
 const {
-  PAYPAL_CLIENT_ID, PAYPAL_SECRET, PAYPAL_MODE, URLS_PAY,
+  PAYPAL_CLIENT_ID, PAYPAL_SECRET, PAYPAL_MODE, URLS_PAY_API,
 } = require('../../../config/environment');
 
 connection.configure({
@@ -53,8 +53,8 @@ exports.create = async (req, res, transaction) => {
   log({ amount });
   createPayment.transactions[0].item_list.items[0].price = amount;
   createPayment.transactions[0].amount.total = amount;
-  createPayment.redirect_urls.return_url = `${URLS_PAY}/api/transactions/${transaction.id}/complete?status=success`;
-  createPayment.redirect_urls.cancel_url = `${URLS_PAY}/api/transactions/${transaction.id}/complete?status=failed`;
+  createPayment.redirect_urls.return_url = `${URLS_PAY_API}/api/transactions/${transaction.id}/complete?status=success`;
+  createPayment.redirect_urls.cancel_url = `${URLS_PAY_API}/api/transactions/${transaction.id}/complete?status=failed`;
 
   connection.payment.create(createPayment, (error, payment) => {
     if (error) return Promise.reject(error);

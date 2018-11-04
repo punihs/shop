@@ -12,14 +12,6 @@ class ShipRequestConfirmController {
     this.$state = $state;
     this.$uibModal = $uibModal;
     this.CONFIG = CONFIG;
-    this.PAYMENT_GATEWAY = {
-      WIRE: 1,
-      CASH: 2,
-      CARD: 3,
-      PAYTM: 4,
-      PAYPAL: 5,
-      WALLET: 6,
-    };
     this.$onInit();
   }
 
@@ -115,94 +107,20 @@ class ShipRequestConfirmController {
           this.data.scan_document_amount += x.PackageCharge.scan_document_amount || 0;
           this.data.wrong_address_amount += x.PackageCharge.wrong_address_amount || 0;
         });
-        this.GetPaymentGateways();
       })
       .catch((err) => {
         this
           .toaster
           .pop('error', err.data.message);
       });
-  }
-
-  walletClicked() {
-    this.selectedGateway();
-  }
-
-  GetPaymentGateways() {
-    this.$http['get']('$/api/paymentGateways')
-      .then(({ data: { gateWay } }) => {
-        this.paymentGateways = gateWay;
-      })
-      .catch((err) => {
-        this
-          .toaster
-          .pop('error', err.data.message);
-      });
-  }
-
-  applyPromoCode() {
-    if (this.couponCode) {
-      const querystring = `order_code=${this.shipment.order_code}&coupon_code=${this.couponCode}`;
-      this.$http
-        .put(`/redemptions/apply?${querystring}`)
-        .then(({ data: { message } }) => {
-          this.message = message;
-          const params =
-            `&payment_gateway_id=${this.data.paymentGateway}&wallet=${this.params.wallet}`;
-          this.getList(params);
-        })
-        .catch((err) => {
-          this
-            .toaster
-            .pop('error', err.data.message);
-        });
-    } else {
-      this.message = 'Enter Promocode';
-    }
   }
 
   submitPayment() {
-    if (!this.data.paymentGateway) {
-      return this
-        .toaster
-        .pop('error', 'Select payment Gateway');
-    }
-    if (this.submitting) return null;
-    this.params = {
-      estimated: this.payment.amount,
+    this.$state.go('transaction.create', {
+      amount: this.payment.amount,
       object_id: this.shipment.id,
-      uid: this.shipment.customer_id,
-      is_wallet: 0,
-      payment_gateway_id: this.data.paymentGateway,
-    };
-    const method = 'get';
-    return this
-      .$http[method]('$/api/transactions/create', { params: this.params })
-      .then(({ data: url }) => {
-        const gateWaySeleted = Number(this.params.payment_gateway_id);
-        this.submitting = false;
-        if (gateWaySeleted === this.PAYMENT_GATEWAY.CARD) {
-          this.$window.location = url;
-        } else if (gateWaySeleted === this.PAYMENT_GATEWAY.PAYTM) {
-          this.$state.go('transactions.paytm', { url });
-        } else if (gateWaySeleted === this.PAYMENT_GATEWAY.PAYPAL) {
-          this.$window.location = url.url;
-        } else if (gateWaySeleted === this.PAYMENT_GATEWAY.CASH
-          || gateWaySeleted === this.PAYMENT_GATEWAY.WALLET
-          || gateWaySeleted === this.PAYMENT_GATEWAY.WIRE) {
-          // this.$state.go('transaction.response', { id: this.shipment.id, amount: url.amount  });
-          this.$window.location = url;
-        }
-      })
-      .catch((err) => {
-        this.submitting = false;
-
-        this
-          .toaster
-          .pop('error', 'There was problem creating Shipment. Please contact Shoppre team.');
-
-        this.error = err.data;
-      });
+      customer_id: this.shipment.customer_id,
+    });
   }
 }
 

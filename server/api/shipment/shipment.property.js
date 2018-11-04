@@ -28,6 +28,7 @@ module.exports = DataTypes => ({
   is_axis_banned_item: DataTypes.BOOLEAN,
   courier_charge_amount: DataTypes.DECIMAL(8, 2),
   payment_status: DataTypes.STRING,
+  payment_gateway_id: DataTypes.STRING,
   status: DataTypes.STRING,
   admin_info: DataTypes.STRING,
   admin_read: {

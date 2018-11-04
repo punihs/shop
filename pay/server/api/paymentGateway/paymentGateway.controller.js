@@ -4,7 +4,7 @@ const {
 
 exports.index = (req, res, next) => {
   const options = {
-    attributes: ['id', 'name'],
+    attributes: ['id', 'name', 'charges'],
   };
 
   return PaymentGateway

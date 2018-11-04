@@ -8,9 +8,15 @@ angular.module('uiGenApp')
         template: '<div ui-view=""></div>',
       })
       .state('transaction.response', {
-        url: '/response?error&message&amount',
+        url: '/response?status&message&amount',
         templateUrl: 'app/routes/transactions/response/response.html',
         controller: 'TransactionResponseController',
+        controllerAs: '$ctrl',
+      })
+      .state('transaction.create', {
+        url: '/create?amount&object_id&customer_id',
+        templateUrl: 'app/routes/transactions/create/create.html',
+        controller: 'TransactionCreateController',
         controllerAs: '$ctrl',
       });
   });

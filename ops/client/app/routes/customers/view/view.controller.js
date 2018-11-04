@@ -179,30 +179,30 @@ class CustomerViewController {
       });
   }
   getWalletTransactions() {
-    this
-      .$http
-      .get(`/transactions?customer_id=${this.id}`)
-      .then(({ data }) => {
-        this.transactions = data;
-      });
+    // this
+    //   .$http
+    //   .get(`/transactions?customer_id=${this.id}`)
+    //   .then(({ data }) => {
+    //     this.transactions = data;
+    //   });
   }
   getLoyaltyRewards() {
-    this
-      .$http
-      .get(`/loyaltyHistories?customer_id=${this.id}`)
-      .then(({
-        data: {
-          loyaltyHistory, loyaltyPoints,
-        },
-      }) => {
-        this.loyaltyHistories = loyaltyHistory;
-        this.loyaltyPoints = loyaltyPoints;
-      })
-      .catch((err) => {
-        this
-          .toaster
-          .pop('error', err.data.message);
-      });
+    // this
+    //   .$http
+    //   .get(`/loyaltyHistories?customer_id=${this.id}`)
+    //   .then(({
+    //     data: {
+    //       loyaltyHistory, loyaltyPoints,
+    //     },
+    //   }) => {
+    //     this.loyaltyHistories = loyaltyHistory;
+    //     this.loyaltyPoints = loyaltyPoints;
+    //   })
+    //   .catch((err) => {
+    //     this
+    //       .toaster
+    //       .pop('error', err.data.message);
+    //   });
   }
   getShippingPreferences() {
     this.$http

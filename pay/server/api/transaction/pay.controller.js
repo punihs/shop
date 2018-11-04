@@ -7,7 +7,7 @@ const {
   Redemption, Coupon, User, PaymentGateway, Transaction,
 } = require('../../conn/sqldb');
 const transactionController = require('../transaction/transaction.controller');
-const { URLS_API } = require('../../config/environment');
+const { URLS_PF_API } = require('../../config/environment');
 const {
   PAYMENT_GATEWAY: {
     WIRE, WALLET, CASH, PAYTM, CARD, PAYPAL,
@@ -39,7 +39,7 @@ const paymentGatewaysMap = {
   [PAYPAL]: paypal,
   [WALLET]: {
     create: (req, res, transaction) => {
-      res.redirect(`${URLS_API}/api/transactions/${transaction.id}/complete?status=success`);
+      res.redirect(`${URLS_PF_API}/api/transactions/${transaction.id}/complete?status=success`);
     },
   },
   [CASH]: {
@@ -371,8 +371,7 @@ exports.create = async (req, res) => {
         .findById(transaction.customer_id, {
           attributes: ['id', 'wallet_balance_amount'],
         });
-      // const url = `${URLS_API}/transactions/${objectId}/response?status=6`;
-      const apiCBUrl = `${URLS_API}/api/public/shipments/${objectId}/response?uid=${customer.id}`;
+      const apiCBUrl = `${URLS_PF_API}/api/public/shipments/${objectId}/response?uid=${customer.id}`;
       return transactionController.success({
         transaction,
         customer,

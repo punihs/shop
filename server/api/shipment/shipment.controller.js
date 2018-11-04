@@ -1033,12 +1033,17 @@ exports.payResponse = async (req, res, next) => {
       'completing the payment, please contact us.',
       4: 'Unexpected error occurred and payment has been failed',
       5: 'invalid payment gateway',
-      6: `success #${req.params.id}`,
+      6: 'success',
     }[status];
     const shipment = await Shipment.findById(req.params.id);
     // - Todo: Security issue
     const customer = await User.findById(req.query.uid, { raw: true });
-    Shipment.update({ transaction_id: req.query.transaction_id }, { where: { id: req.params.id } });
+    Shipment.update({
+      transaction_id: req.query.transaction_id,
+      payment_gateway_id: req.query.pg,
+      final_amount: req.query.amount,
+      payment_gateway_fee_amount: req.query.pgAmount || 0,
+    }, { where: { id: req.params.id } });
 
     const SUCCESS = '6';
     if (req.query.status === SUCCESS) {
@@ -1063,12 +1068,12 @@ exports.payResponse = async (req, res, next) => {
 
       if (paymentGateWay === WIRE || paymentGateWay === CASH || paymentGateWay === WALLET) {
         res.json(`${sucessURL}?${stringify({
-          error: 'success',
+          status: 'success',
           message: msg,
           amount,
         })}`);
       } else {
-        res.redirect(`${sucessURL}?error='sucess'&message=${msg}&amount=${amount}`);
+        res.redirect(`${sucessURL}?status='sucess'&message=${msg}&amount=${amount}`);
       }
     } else {
       Shipment
@@ -1091,7 +1096,7 @@ exports.response = async (req, res) => {
   const { id } = req.params;
   const customerId = req.user.id;
   const options = {
-    attributes: ['id', 'value_amount', 'address', 'customer_id', 'weight',
+    attributes: ['id', 'value_amount', 'address', 'customer_id', 'weight', 'payment_gateway_id',
       'order_code', 'final_amount', 'package_level_charges_amount', 'customer_name', 'phone'],
     where: { id },
     include: [{

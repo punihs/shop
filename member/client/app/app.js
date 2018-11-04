@@ -1,6 +1,6 @@
 const raven = Raven.config('https://bbf0351970bc4723bb53c27b5c43ef7e@sentry.io/1313555', {});
 
-if (localStorage.userinfo){
+if (localStorage.userinfo) {
   const user = JSON.parse(localStorage.userinfo);
   raven.setUser({
     id: user.id,
@@ -41,7 +41,7 @@ angular
     'dndLists',
     'ngSanitize',
     'ngCookies',
-    'btford.socket-io',
+    // 'btford.socket-io',
     'ngIntlTelInput',
     'ngRaven',
   ])
@@ -74,14 +74,14 @@ angular
         Raven.captureException(new Error('HTTP response error'), {
           extra: {
             config: rejection.config,
-            status: rejection.status
-          }
+            status: rejection.status,
+          },
         });
         return $q.reject(rejection);
-      }
+      },
     };
   }])
-  .config(['$httpProvider', function($httpProvider) {
+  .config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('errorHttpInterceptor');
   }]);
 

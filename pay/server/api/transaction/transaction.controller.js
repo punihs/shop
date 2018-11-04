@@ -18,7 +18,7 @@ const {
   },
 } = require('../../config/constants');
 
-const { URLS_MEMBER, PREFIX, DOMAIN } = require('../../config/environment');
+const { URLS_MEMBER, URLS_PF_API } = require('../../config/environment');
 
 exports.index = (req, res, next) => {
   const options = {
@@ -182,7 +182,10 @@ exports.success = async ({
   }
   // todo: don't delete
   // ShopperBalance::where('customer_id', $customer_id)->update(['amount' => 0]);
-  return res.redirect(`${apiCBUrl}&status=6&transaction_id=${transaction.id}&paymentStatus=${paymentStatus}&pg=${paymentGatewayId}&amount=${finalAmt}`);
+  const pgAmount = transaction.payment_gateway_fee_amount;
+  const query = `&transaction_id=${transaction.id}&paymentStatus=${paymentStatus}&pg=${paymentGatewayId}`;
+  return res
+    .redirect(`${apiCBUrl}${query}&status=6&amount=${finalAmt}&pgAmount=${pgAmount}`);
 };
 
 
@@ -316,8 +319,7 @@ exports.complete = async (req, res, next) => {
     const { object_id: objectId } = transaction;
     const url = `${URLS_MEMBER}/shipRequests/${objectId}/response`;
 
-    const URLS_API = `${PREFIX}api.${DOMAIN}`;
-    const apiCBUrl = `${URLS_API}/api/public/shipments/${objectId}/response?uid=${customer.id}`;
+    const apiCBUrl = `${URLS_PF_API}/api/public/shipments/${objectId}/response?uid=${customer.id}`;
 
     const AUTHORISED = transaction && transaction.customer_id === customer.id;
     if (!AUTHORISED) {

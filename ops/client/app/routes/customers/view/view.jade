@@ -353,87 +353,87 @@ div.m-t-xl.no-margin
       //            .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='transaction.amount')
       //            .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-trash(ng-click="$ctrl.deleteWalletTransaction($ctrl.$stateParams.id, transaction.id, transaction.amount, transaction.type, $index)")
       //            .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-edit(ng-click="$ctrl.editWalletTransaction($ctrl.$stateParams.id, transaction.id, transaction.amount, transaction.description, $index)")
-      div
-        .h1.m-l-md.font-thin.h3
-          b Miscellaneous Rewards
-
-      hr
-      form.form.form-validation.form-horizontal.wrapper-md(
-      name="LoyaltyForm"
-      novalidate
-      ng-submit='$ctrl.postLoyalty(LoyaltyForm)'
-      )
-        .well.m-t.m-l.bg-light.hover-wrap
-          .row
-            .col-md-12.col-sm-12.col-xs-12
-              h5
-                p Add miscellaneous loyalty points to this profile.
-                p Points to Redeem : {{ $ctrl.loyaltyPoints.points }}
-                p Total Points: {{ $ctrl.loyaltyPoints.total_points }}
-                  span(ng-if='$ctrl.loyaltyPoints.total_points < 1000')
-                    |   ( BRONZE SHIPPR )
-                  span(ng-if='$ctrl.loyaltyPoints.total_points >= 1000 && $ctrl.loyaltyPoints.total_points < 6000')
-                    |   ( SILVER SHIPPR )
-                  span(ng-if='$ctrl.loyaltyPoints.total_points >= 6000 && $ctrl.loyaltyPoints.total_points < 26000')
-                    |   ( GOLD SHIPPR )
-                  span(ng-if='$ctrl.loyaltyPoints.total_points >= 26000')
-                    |   ( PLATINUM SHIPPR )
-          .row
-            .col-md-4.col-sm-2.col-xs-12
-              label.col-xs-12.input-group
-                | Reason/Information
-                span.text-danger *
-                input.form.form-control(
-                type='text'
-                name='description'
-                placeholder='eg. for feedback'
-                ng-model='$ctrl.data.description'
-                required
-                )
-                span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && LoyaltyForm.description.$dirty && LoyaltyForm.description.$invalid') Please enter description
-
-            .col-md-4.col-sm-2.col-xs-12
-              label.col-xs-12.input-group
-                | Reward Points
-                span.text-danger *
-                input.form.form-control(
-                type='number'
-                name='points'
-                placeholder='eg. 2'
-                ng-model='$ctrl.data.points'
-                required
-                )
-                span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && LoyaltyForm.points.$dirty && LoyaltyForm.points.$invalid') Please enter points
-
-            .col-md-2.col-sm-2.col-xs-12.save
-              h4(ng-bind="$ctrl.error.message" style="color:red;")
-              button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitLoyalty")
-                span.fa.fa-forward.m-r-sm
-                span.text-white(ng-if='!$ctrl.submitLoyalty') Save Changes
-                span(ng-if='$ctrl.submitLoyalty')
-                  i.fa.fa-spin.fa-circle-o-notch
-                  span.text-white &nbsp;&nbsp;SubmittingLoyalty...
-          .row
-            .col-md-12.no-padder-right
-              table.table.m-b-none
-                thead
-                  tr
-                    th.col-xs-3 Date
-                    th.col-xs-3 Reason/Information
-                    th.col-xs-3 Reward Points
-                    th.col-xs-1 Delete
-                    th.col-xs-2 Edit
-
-              .col-xs-12(style='padding: 10px;')
-                .col-xs-12(ng-show='$ctrl.loyaltyHistories.length === 0')
-                  td(colspan="5")
-                    h2.text-center.text-muted No Loyatly Rewards Details
-
-                .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='loyaltyHistory in $ctrl.loyaltyHistories')
-                  .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs {{ loyaltyHistory.created_at | date:'MMM d, y' }} IST {{ loyaltyHistory.created_at | date:'h:mm a' }}
-                  .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='loyaltyHistory.description')
-                  .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='loyaltyHistory.points')
-                  .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-trash(ng-click="$ctrl.deleteLoyaltyPoints($ctrl.$stateParams.id, loyaltyHistory.id, loyaltyHistory.points, $index)")
-                  .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-edit(ng-click="$ctrl.editLoyaltyPoints($ctrl.$stateParams.id, loyaltyHistory.id, loyaltyHistory.points, loyaltyHistory.description, $index)")
+      //div
+      //  .h1.m-l-md.font-thin.h3
+      //    b Miscellaneous Rewards
+      //
+      //hr
+      //form.form.form-validation.form-horizontal.wrapper-md(
+      //name="LoyaltyForm"
+      //novalidate
+      //ng-submit='$ctrl.postLoyalty(LoyaltyForm)'
+      //)
+      //  .well.m-t.m-l.bg-light.hover-wrap
+      //    .row
+      //      .col-md-12.col-sm-12.col-xs-12
+      //        h5
+      //          p Add miscellaneous loyalty points to this profile.
+      //          p Points to Redeem : {{ $ctrl.loyaltyPoints.points }}
+      //          p Total Points: {{ $ctrl.loyaltyPoints.total_points }}
+      //            span(ng-if='$ctrl.loyaltyPoints.total_points < 1000')
+      //              |   ( BRONZE SHIPPR )
+      //            span(ng-if='$ctrl.loyaltyPoints.total_points >= 1000 && $ctrl.loyaltyPoints.total_points < 6000')
+      //              |   ( SILVER SHIPPR )
+      //            span(ng-if='$ctrl.loyaltyPoints.total_points >= 6000 && $ctrl.loyaltyPoints.total_points < 26000')
+      //              |   ( GOLD SHIPPR )
+      //            span(ng-if='$ctrl.loyaltyPoints.total_points >= 26000')
+      //              |   ( PLATINUM SHIPPR )
+      //    .row
+      //      .col-md-4.col-sm-2.col-xs-12
+      //        label.col-xs-12.input-group
+      //          | Reason/Information
+      //          span.text-danger *
+      //          input.form.form-control(
+      //          type='text'
+      //          name='description'
+      //          placeholder='eg. for feedback'
+      //          ng-model='$ctrl.data.description'
+      //          required
+      //          )
+      //          span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && LoyaltyForm.description.$dirty && LoyaltyForm.description.$invalid') Please enter description
+      //
+      //      .col-md-4.col-sm-2.col-xs-12
+      //        label.col-xs-12.input-group
+      //          | Reward Points
+      //          span.text-danger *
+      //          input.form.form-control(
+      //          type='number'
+      //          name='points'
+      //          placeholder='eg. 2'
+      //          ng-model='$ctrl.data.points'
+      //          required
+      //          )
+      //          span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && LoyaltyForm.points.$dirty && LoyaltyForm.points.$invalid') Please enter points
+      //
+      //      .col-md-2.col-sm-2.col-xs-12.save
+      //        h4(ng-bind="$ctrl.error.message" style="color:red;")
+      //        button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitLoyalty")
+      //          span.fa.fa-forward.m-r-sm
+      //          span.text-white(ng-if='!$ctrl.submitLoyalty') Save Changes
+      //          span(ng-if='$ctrl.submitLoyalty')
+      //            i.fa.fa-spin.fa-circle-o-notch
+      //            span.text-white &nbsp;&nbsp;SubmittingLoyalty...
+      //    .row
+      //      .col-md-12.no-padder-right
+      //        table.table.m-b-none
+      //          thead
+      //            tr
+      //              th.col-xs-3 Date
+      //              th.col-xs-3 Reason/Information
+      //              th.col-xs-3 Reward Points
+      //              th.col-xs-1 Delete
+      //              th.col-xs-2 Edit
+      //
+      //        .col-xs-12(style='padding: 10px;')
+      //          .col-xs-12(ng-show='$ctrl.loyaltyHistories.length === 0')
+      //            td(colspan="5")
+      //              h2.text-center.text-muted No Loyatly Rewards Details
+      //
+      //          .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='loyaltyHistory in $ctrl.loyaltyHistories')
+      //            .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs {{ loyaltyHistory.created_at | date:'MMM d, y' }} IST {{ loyaltyHistory.created_at | date:'h:mm a' }}
+      //            .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='loyaltyHistory.description')
+      //            .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='loyaltyHistory.points')
+      //            .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-trash(ng-click="$ctrl.deleteLoyaltyPoints($ctrl.$stateParams.id, loyaltyHistory.id, loyaltyHistory.points, $index)")
+      //            .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-edit(ng-click="$ctrl.editLoyaltyPoints($ctrl.$stateParams.id, loyaltyHistory.id, loyaltyHistory.points, loyaltyHistory.description, $index)")
 
 .clearfix

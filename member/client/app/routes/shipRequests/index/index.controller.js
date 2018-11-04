@@ -19,13 +19,11 @@ class ShipRequestsIndexController {
     this.$http
       .get('/shipments/queue')
       .then(({ data: { shipments } }) => {
-        console.log({ shipments });
         shipments.map(x => this.shipments.push(x));
         this.todayDate = new Date();
         this.shipments.map((s) => {
           const shipment = s;
           const shipmentDate = new Date(shipment.created_at);
-          const ONE_HOUR = 60 * 60 * 1000;
 
           // - Todo: moment().diff(moment(shipmentDate), 'hour')
           shipment.totalHours = moment().diff(moment(shipmentDate), 'hour');
