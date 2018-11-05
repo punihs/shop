@@ -42,7 +42,7 @@ class AddComment {
     this.Session = Session;
   }
 
-  open(id, index) {
+  open(index, id) {
     return this.$uibModal.open({
       templateUrl: 'app/directives/add-comments/add-comments.html',
       controller: AddcommentCtrl,
@@ -50,8 +50,8 @@ class AddComment {
       bindToController: 'true',
       size: 'md',
       resolve: {
-        id: () => id,
         index: () => index,
+        id: () => id,
       },
 
     });

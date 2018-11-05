@@ -249,7 +249,7 @@ class RequestPhotosService {
     this.Session = Session;
   }
 
-  open(packageDetail, index) {
+  open(index, packageDetail) {
     return this.$uibModal.open({
       templateUrl: 'app/directives/request-photos/request-photos.html',
       controller: RequestPhotosController,
@@ -257,12 +257,8 @@ class RequestPhotosService {
       bindToController: 'true',
       size: 'lg',
       resolve: {
-        packageDetail() {
-          return packageDetail;
-        },
-        index() {
-          return packageDetail;
-        },
+        index: () => index,
+        packageDetail: () => packageDetail,
       },
     });
   }
