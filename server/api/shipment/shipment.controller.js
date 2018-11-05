@@ -34,7 +34,7 @@ const {
     RTO_REQUESTED, RAISE_SHIPMENT_LOST_CLAIM, PENALTY_PAYMENT_REQUESTED,
     PENALTY_PAYMENT_DONE, WRONG_ADDRESS_FOLLOW_UP, CLAIM_PROCESSED_TO_CUSTOMER,
     SHIPMENT_DELIVERED, SHIPMENT_DELETED, SHIPMENT_REJECTED_BY_CUSTOMER, RETURN_TO_ORIGIN,
-    CUSTOMER_ACKNOWLEDGEMENT_RECEIVED, AMOUNT_RECEIVED_FROM_UPSTREAM,
+    CUSTOMER_ACKNOWLEDGEMENT_RECEIVED, AMOUNT_RECEIVED_FROM_UPSTREAM, INVOICE_REQUESTED,
   },
   SHIPMENT_HISTORY,
   PACKAGE_STATE_IDS: { READY_TO_SHIP },
@@ -131,6 +131,7 @@ exports.show = async (req, res, next) => {
         attributes: ['sticker_charge_amount', 'original', 'mark_personal_use', 'invoice_tax_id', 'repacking_charge_amount', 'extra_packing_charge_amount', 'original_ship_box_charge__amount',
           'consolidation_charge_amount', 'gift_wrap_charge_amount', 'gift_note_charge_amount', 'gift_note_text',
           'insurance_amount', 'liquid_charge_amount', 'overweight_charge_amount'],
+        where: { id: req.params.id },
       }, {
         attributes: ['id', 'weight', 'package_state_id', 'price_amount'],
         model: Package,
@@ -205,6 +206,7 @@ exports.update = async (req, res) => {
       include: [{
         model: ShipmentMeta,
         attributes: ['id', 'liquid_charge_amount', 'overweight_charge_amount', 'is_liquid'],
+        where: { id },
       }],
     });
 
@@ -212,7 +214,8 @@ exports.update = async (req, res) => {
   const updateMeta = {};
 
   let packageLevelCharges = shipment.package_level_charges_amount;
-
+  console.log({ packageLevelCharges });
+  console.log('shipment', JSON.stringify(shipment));
   if (shipment.ShipmentMetum.is_liquid === 1) {
     packageLevelCharges -= shipment.ShipmentMetum.liquid_charge_amount || 0;
     updateMeta.liquid_charge_amount = req.body.liquid_charge_amount;
@@ -234,7 +237,7 @@ exports.update = async (req, res) => {
     updateMeta.overweight_charge_amount = 0;
   }
 
-  await ShipmentMeta.update(updateMeta, { where: { shipment_id: id } });
+  await ShipmentMeta.update(updateMeta, { where: { id } });
   packageLevelCharges = Number(packageLevelCharges);
   packageLevelCharges += Number(updateMeta.liquid_charge_amount) || 0;
   packageLevelCharges += Number(updateMeta.overweight_charge_amount) || 0;
@@ -570,7 +573,7 @@ exports.shipQueue = async (req, res) => {
       model: ShipmentState,
       attributes: ['state_id'],
       where: {
-        state_id: [PACKAGING_REQUESTED, PAYMENT_REQUESTED,
+        state_id: [PACKAGING_REQUESTED, PAYMENT_REQUESTED, INVOICE_REQUESTED,
           PAYMENT_COMPLETED, PAYMENT_FAILED, PAYMENT_CONFIRMED, UPSTREAM_SHIPMENT_REQUEST_CREATED],
       },
     }, {
