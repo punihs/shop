@@ -55,7 +55,7 @@ class TransactionCreateController {
           this.data.paymentGatewayFeeAmount = paymentGatewayFeeAmount;
         } else {
           this.data.amount = finalAmountWithoutPGFee;
-          this.data.paymentGatewayFeeAmount = finalAmountWithoutPGFee;
+          this.data.paymentGatewayFeeAmount = 0;
         }
       }
     });
