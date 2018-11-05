@@ -1,6 +1,7 @@
 class RequestPhotosController {
-  constructor($uibModalInstance, $http, packageDetail, $state, URLS, toaster, $window) {
+  constructor($uibModalInstance, $http, packageDetail, index, $state, URLS, toaster, $window) {
     this.pkg = packageDetail;
+    this.index = index;
     this.packagePhotos = '';
     this.$state = $state;
     this.$window = $window;
@@ -248,7 +249,7 @@ class RequestPhotosService {
     this.Session = Session;
   }
 
-  open(packageDetail) {
+  open(packageDetail, index) {
     return this.$uibModal.open({
       templateUrl: 'app/directives/request-photos/request-photos.html',
       controller: RequestPhotosController,
@@ -257,6 +258,9 @@ class RequestPhotosService {
       size: 'lg',
       resolve: {
         packageDetail() {
+          return packageDetail;
+        },
+        index() {
           return packageDetail;
         },
       },

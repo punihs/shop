@@ -1,9 +1,10 @@
 class AddcommentCtrl {
-  constructor($uibModalInstance, toaster, $http, $state, id) {
+  constructor($uibModalInstance, toaster, $http, $state, id, index) {
     this.$uibModalInstance = $uibModalInstance;
     this.toaster = toaster;
     this.$http = $http;
     this.$state = $state;
+    this.index = index;
     this.id = id;
     this.data = {};
   }
@@ -41,7 +42,7 @@ class AddComment {
     this.Session = Session;
   }
 
-  open(id) {
+  open(id, index) {
     return this.$uibModal.open({
       templateUrl: 'app/directives/add-comments/add-comments.html',
       controller: AddcommentCtrl,
@@ -50,7 +51,9 @@ class AddComment {
       size: 'md',
       resolve: {
         id: () => id,
+        index: () => index,
       },
+
     });
   }
 }

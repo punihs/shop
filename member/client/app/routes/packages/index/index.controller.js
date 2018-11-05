@@ -261,7 +261,7 @@ class PackagesIndexController {
   }
 
   viewPhotos(index, packageDetail) {
-    const modal = this.RequestPhotosService.open(packageDetail);
+    const modal = this.RequestPhotosService.open(packageDetail, index);
     modal
       .result
       .then((data) => {
@@ -276,7 +276,7 @@ class PackagesIndexController {
             Object.assign(x, { PhotoRequests });
           }
         });
-        const modal1 = this.RequestPhotosService.open(this.packages[index]);
+        const modal1 = this.RequestPhotosService.open(this.packages[index], index);
         modal1
           .result
           .then((result) => {
@@ -289,13 +289,13 @@ class PackagesIndexController {
                 }
               }
             });
-            this.RequestPhotosService.open(this.packages[index]);
+            this.RequestPhotosService.open(this.packages[index], index);
           });
       });
   }
 
   open(id, index) {
-    const modal = this.AddComment.open(id);
+    const modal = this.AddComment.open(id, index);
     modal
       .result
       .then((data) => {
