@@ -1,5 +1,5 @@
 const debug = require('debug');
-const hookshot = require('./shipment.hookshot');
+const hookshot = require('../../conn/hookshot');
 
 const log = debug('s-api-shipment-notification');
 
