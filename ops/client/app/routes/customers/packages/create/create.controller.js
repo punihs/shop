@@ -64,9 +64,9 @@ class PackageCreateController {
     if (this.EDIT) {
       if (this.data.Store) {
         this.Store.model = this.data.Store.name;
+      } else {
+        this.Store.model = null;
       }
-
-      this.Store.model = null;
     }
   }
 
