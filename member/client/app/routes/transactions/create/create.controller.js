@@ -46,14 +46,16 @@ class TransactionCreateController {
   }
 
   selectedGateway() {
-    const amount = Number(this.amount);
+    const finalAmountWithoutPGFee = Number(this.amount);
     this.paymentGateways.forEach((x) => {
       if (Number(x.id) === Number(this.data.paymentGateway)) {
         if (x.fee) {
-          this.data.amount = amount + (amount *
-            (x.fee / 100));
+          const paymentGatewayFeeAmount = (finalAmountWithoutPGFee * (x.fee / 100));
+          this.data.amount = finalAmountWithoutPGFee + paymentGatewayFeeAmount;
+          this.data.paymentGatewayFeeAmount = paymentGatewayFeeAmount;
         } else {
-          this.data.amount = amount;
+          this.data.amount = finalAmountWithoutPGFee;
+          this.data.paymentGatewayFeeAmount = finalAmountWithoutPGFee;
         }
       }
     });
@@ -93,6 +95,7 @@ class TransactionCreateController {
       uid: this.data.customer_id,
       is_wallet: 0,
       payment_gateway_id: this.data.paymentGateway,
+      paymentGatewayFeeAmount: this.data.paymentGatewayFeeAmount,
     };
     const method = 'get';
     return this

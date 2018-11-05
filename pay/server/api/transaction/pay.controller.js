@@ -286,8 +286,9 @@ exports.create = async (req, res) => {
     uid: customerId,
     payment_gateway_id: paymentGatewayId,
     object_id: objectId,
-    estimated,
+    estimated: finalAmountWithPGFee,
     is_wallet: isWallet,
+    paymentGatewayFeeAmount,
   } = req.query;
   const IS_WALLET = isWallet === '1';
 
@@ -300,17 +301,19 @@ exports.create = async (req, res) => {
     amountFromFlatDiscount,
     amountForCashback,
   } = await calculateDiscountsAndDeductions({
-    query: req.query, customerId, objectId, estimated,
+    query: req.query, customerId, objectId, finalAmountWithPGFee,
   });
-  log({ estimated, paymentGatewayId });
+  log({ paymentGatewayId });
 
   const discount = amountAgainstLoyaltyPoints + amountFromFlatDiscount;
 
-  const finalAmountWithoutPGFee = estimated - discount;
-  const paymentGatewayFeeAmount = finalAmountWithoutPGFee *
-    (paymentGatewayChargesMap[Number(paymentGatewayId)] / 100);
-  const finalAmount = finalAmountWithoutPGFee + paymentGatewayFeeAmount;
-  log({ finalAmount, paymentGatewayFeeAmount, discount });
+  const finalAmount = finalAmountWithPGFee - discount;
+  // commented since PG is calculated from front end
+  // const paymentGatewayFeeAmount = finalAmountWithoutPGFee *
+  //   (paymentGatewayChargesMap[Number(paymentGatewayId)] / 100);
+  // const finalAmount = finalAmountWithoutPGFee + paymentGatewayFeeAmount;
+  // const finalAmount = finalAmountWithoutPGFee;
+  log({ finalAmount, discount });
   if (IS_WALLET && amountInWallet < finalAmount) {
     await Transaction.create({
       object_name: 'shipment',
