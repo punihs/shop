@@ -1,7 +1,7 @@
 class PackagesIndexController {
   constructor(
     $http, Page, $uibModal, $stateParams, CONFIG, $location, $state, Session, S3,
-    toaster, moment, URLS, AddComment, RequestPhotosService) {
+    toaster, moment, URLS, AddComment, PhotoService) {
     this.$http = $http;
     this.Page = Page;
     this.S3 = S3;
@@ -15,8 +15,7 @@ class PackagesIndexController {
     this.Session = Session;
     this.URLS = URLS;
     this.AddComment = AddComment;
-    this.RequestPhotosService = RequestPhotosService;
-
+    this.PhotoService = PhotoService;
 
     return this.$onInit();
   }
@@ -261,7 +260,7 @@ class PackagesIndexController {
   }
 
   viewPhotos(index, packageDetail) {
-    const modal = this.RequestPhotosService.open(index, packageDetail);
+    const modal = this.PhotoService.open(index, packageDetail);
     modal
       .result
       .then((data) => {
