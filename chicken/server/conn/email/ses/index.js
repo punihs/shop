@@ -38,10 +38,12 @@ const sendTemplatedEmail = (params) => {
 };
 
 const email = {
+  pulse: connection,
   quarc: connection,
   sendTemplatedEmail,
   sendTemplatedEmailAsync: sendTemplatedEmail,
   send: sendTemplatedEmail,
+  createTemplateAsync: connection.createTemplateAsync,
 };
 
 module.exports = email;

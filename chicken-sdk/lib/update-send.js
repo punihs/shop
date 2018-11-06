@@ -1,5 +1,5 @@
 
-const ses = require('../../sesmetrics/server/conn/email/ses');
+const ses = require('../../chicken/server/conn/email/ses');
 const {
   SES_DIRECT, CURRENT_EMAIL, root, EMAIL_SOURCE, EMAIL_TO, project,
 } = require('../config');

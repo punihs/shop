@@ -3,7 +3,7 @@ const rp = require('request-promise');
 const logger = require('../../lambda/server/components/logger');
 const { root, CURRENT_EMAIL, project } = require('../config');
 // const { EmailTemplate } = require('../../conn/sqldb');
-const ses = require('../../lambda/server/conn/email/ses');
+const ses = require('../../chicken/server/conn/email/ses');
 
 const log = debug('s-emails-lib-build');
 
@@ -23,7 +23,7 @@ exports.cmd = (e) => {
     // make entry if doesnt exists in qurac email_templates
     rp({
       method: 'POST',
-      url: 'http://localhost:5005/api/emailTemplates',
+      url: 'http://localhost:6000/api/emailTemplates',
       json: true,
       body: {
         name: `${templateFullName}_${groupId}`,
@@ -34,7 +34,7 @@ exports.cmd = (e) => {
       .catch(err => logger.error('buildTemplate EmailTemplate error', err, templateFullName));
 
     log('createTemplateAsync:Template', Template);
-    return ses.quarc
+    return ses.pulse
       .createTemplateAsync({ Template });
   }));
 };

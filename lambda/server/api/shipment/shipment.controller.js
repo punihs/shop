@@ -1,5 +1,5 @@
 const debug = require('debug');
-const ses = require('../../conn/email/ses');
+const ses = require('../../../../chicken/server/conn/email/ses');
 
 const log = debug('s-api-shipment-notification');
 

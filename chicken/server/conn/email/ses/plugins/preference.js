@@ -50,7 +50,7 @@ module.exports = async ([params, emailLog]) => {
   });
 
   const toUser = users.filter(x => (x.email === firstToAddress))[0];
-  const toUserId = toUser.id || null;
+  const toUserId = (toUser || {}).id || null;
   log('toUser', { toUserId, firstToAddress });
 
   const userIdUserMap = {};
@@ -76,7 +76,7 @@ module.exports = async ([params, emailLog]) => {
       {
         ...emailLog,
         email_template_id: emailTemplate.id,
-        user_id: toUser.id,
+        user_id: toUserId,
       }]);
   }
 
