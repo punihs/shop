@@ -11,3 +11,5 @@ dist
 npm-debug.log
 coverage
 client/app/ng-modules
+server/ssl-bundle.crt
+server/star.key
