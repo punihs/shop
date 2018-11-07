@@ -649,9 +649,6 @@ exports.history = (req, res) => {
       where: {
         state_id: SHIPMENT_HISTORY,
       },
-    }, {
-      model: PaymentGateway,
-      attributes: ['id', 'name', 'value'],
     }],
     order: [['updated_at', 'desc']],
   };
