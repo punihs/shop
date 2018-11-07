@@ -5,6 +5,8 @@ angular.module('uiGenApp')
     const DOMAIN = `${host.substr(host.indexOf('.') + 1)}`;
 
     return {
+      DOMAIN,
+      PREFIX,
       CDN: `${PREFIX}cdn.${DOMAIN}`,
       AUTH: `${PREFIX}api.${DOMAIN}`,
       PFAPI: `${PREFIX}pf-api.${DOMAIN}`,

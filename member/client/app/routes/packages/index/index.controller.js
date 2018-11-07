@@ -275,7 +275,7 @@ class PackagesIndexController {
             Object.assign(x, { PhotoRequests });
           }
         });
-        const modal1 = this.RequestPhotosService.open(index, this.packages[index]);
+        const modal1 = this.PhotoService.open(index, this.packages[index]);
         modal1
           .result
           .then((result) => {
@@ -288,7 +288,7 @@ class PackagesIndexController {
                 }
               }
             });
-            this.RequestPhotosService.open(index, this.packages[index]);
+            this.PhotoService.open(index, this.packages[index]);
           });
       });
   }

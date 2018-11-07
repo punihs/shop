@@ -1,11 +1,16 @@
-class AddcommentCtrl {
-  constructor($uibModalInstance, toaster, $http, $state, id, index) {
+class AddCommentController {
+  /*  @ngInject   */
+  constructor(
+    $uibModalInstance, $http, Session,
+    $stateParams, toaster, id, index,
+  ) {
     this.$uibModalInstance = $uibModalInstance;
-    this.toaster = toaster;
     this.$http = $http;
-    this.$state = $state;
-    this.index = index;
+    this.$stateParams = $stateParams;
+    this.toaster = toaster;
+    this.Session = Session;
     this.id = id;
+    this.index = index;
     this.data = {};
   }
 
@@ -16,6 +21,7 @@ class AddcommentCtrl {
   ok() {
     this.$uibModalInstance.close();
   }
+
   saveNote() {
     this.submitting = true;
     this.$http
@@ -36,6 +42,7 @@ class AddcommentCtrl {
       });
   }
 }
+
 class AddComment {
   constructor($uibModal, Session) {
     this.$uibModal = $uibModal;
@@ -45,7 +52,7 @@ class AddComment {
   open(index, id) {
     return this.$uibModal.open({
       templateUrl: 'app/directives/add-comments/add-comments.html',
-      controller: AddcommentCtrl,
+      controller: AddCommentController,
       controllerAs: '$ctrl',
       bindToController: 'true',
       size: 'md',
@@ -53,7 +60,6 @@ class AddComment {
         index: () => index,
         id: () => id,
       },
-
     });
   }
 }

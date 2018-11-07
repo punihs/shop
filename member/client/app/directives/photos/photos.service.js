@@ -2,13 +2,14 @@
 class PhotosController {
   /*  @ngInject   */
   constructor($uibModalInstance, $http, Session, $stateParams, packageDetail, index, toaster, URLS,
-    $window) {
+    $window, CONFIG) {
     this.$uibModalInstance = $uibModalInstance;
     this.$http = $http;
     this.$stateParams = $stateParams;
     this.toaster = toaster;
     this.$window = $window;
     this.URLS = URLS;
+    this.CONFIG = CONFIG;
     this.Session = Session;
     this.pkg = packageDetail;
     this.index = index;
@@ -62,6 +63,7 @@ class PhotosController {
 
 
   $onInit() {
+    this.PACKAGE_STATE_IDS = this.CONFIG.PACKAGE_STATE_IDS;
     if (this.photoRequestLength || this.slides.length) {
       if ((this.standardExits && this.advancedExits) ||
         (this.standardRequested && this.advancedRequested)) {
@@ -162,16 +164,20 @@ class PhotosController {
     this.standardPhotoRequestSubmit = true;
     this.advancedPhotoRequest = false;
   }
+
   continueAdditional() {
     this.advancedPhotoRequestSubmit = true;
     this.standardPhotoRequest = false;
   }
+
   requestStandard() {
     this.data = {
       type: 'standard_photo',
+      state_id: this.PACKAGE_STATE_IDS.STANDARD_PHOTO_REQUEST,
+      comments: 'Standard Photo Requested',
     };
     this.$http
-      .put(`/packages/${this.pkg.id}/photoRequests`, this.data)
+      .put(`/packages/${this.pkg.id}/state`, this.data)
       .then(() => {
         this.showAdditional = true;
         this.showStandard = true;
@@ -216,9 +222,11 @@ class PhotosController {
     this.photoList = true;
     this.data = {
       type: 'advanced_photo',
+      state_id: this.PACKAGE_STATE_IDS.ADVANCED_PHOTO_REQUEST,
+      comments: 'Advanced Photo Requested',
     };
     this.$http
-      .put(`/packages/${this.pkg.id}/photoRequests`, this.data)
+      .put(`/packages/${this.pkg.id}/state`, this.data)
       .then(() => {
         this
           .toaster
