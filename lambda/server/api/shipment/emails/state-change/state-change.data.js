@@ -55,7 +55,7 @@ const customer = {
 };
 
 const ENV = {
-  URLS_MEMBER: 'http://member.shoppre.test',
+  URLS_PARCEL: 'http://parcel.shoppre.test',
   URLS_WWW: 'http://www.shoppre.test',
 };
 

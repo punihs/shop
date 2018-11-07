@@ -35,7 +35,7 @@ const {
   GROUPS: { CUSTOMER },
   PAYMENT_GATEWAY: { WALLET, WIRE, CASH },
 } = require('../../config/constants');
-const { URLS_MEMBER } = require('../../config/environment');
+const { URLS_LOGISTICS } = require('../../config/environment');
 
 const BUCKETS = require('../../config/constants/buckets');
 
@@ -1181,8 +1181,8 @@ exports.updateShipmetStatus = () => {
 
 exports.payResponse = async (req, res, next) => {
   try {
-    const failedURL = `${URLS_MEMBER}/shipRequests/`;
-    const sucessURL = `${URLS_MEMBER}/transactions/${req.params.id}/response`;
+    const failedURL = `${URLS_LOGISTICS}/shipRequests/`;
+    const sucessURL = `${URLS_LOGISTICS}/transactions/${req.params.id}/response`;
     const { status } = req.query;
     const msg = {
       1: 'Looks like you cancelled the payment. You can try again now or if you ' +

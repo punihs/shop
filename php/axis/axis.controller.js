@@ -2,7 +2,7 @@ const rp = require('request-promise');
 const { stringify } = require('querystring');
 
 const {
-  URLS_PHP, URLS_MEMBER, URLS_API, AXIS_KEY, AXIS_MERCHANT_ID, AXIS_VPC_ACCESS_CODE,
+  URLS_PHP, URLS_PARCEL, URLS_API, AXIS_KEY, AXIS_MERCHANT_ID, AXIS_VPC_ACCESS_CODE,
   AXIS_SECURE_SECRET,
 } = require('../../server/config/environment');
 
@@ -35,8 +35,8 @@ exports.success = async (req, res) => {
   log('success', req.body, req.query);
   return verify(req.body)
     .then((response) => {
-      log(URLS_MEMBER, { body: req.body, response });
-      return res.redirect(`${URLS_MEMBER}/payment/success`);
+      log(URLS_PARCEL, { body: req.body, response });
+      return res.redirect(`${URLS_PARCEL}/payment/success`);
     })
     .catch((err) => {
       log('errrrrrrr', err);

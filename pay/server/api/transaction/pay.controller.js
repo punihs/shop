@@ -7,7 +7,7 @@ const {
   Redemption, Coupon, User, PaymentGateway, Transaction,
 } = require('../../conn/sqldb');
 const transactionController = require('../transaction/transaction.controller');
-const { URLS_PF_API } = require('../../config/environment');
+const { URLS_PARCEL_API } = require('../../config/environment');
 const {
   PAYMENT_GATEWAY: {
     WIRE, WALLET, CASH, PAYTM, CARD, PAYPAL,
@@ -16,7 +16,7 @@ const {
     SHIPMENT,
   },
 } = require('./../../config/constants');
-const { URLS_MEMBER } = require('../../config/environment');
+const { URLS_PARCEL } = require('../../config/environment');
 const {
   PAYMENT_GATEWAY,
 } = require('../../config/constants/charges');
@@ -39,7 +39,7 @@ const paymentGatewaysMap = {
   [PAYPAL]: paypal,
   [WALLET]: {
     create: (req, res, transaction) => {
-      res.redirect(`${URLS_PF_API}/api/transactions/${transaction.id}/complete?status=success`);
+      res.redirect(`${URLS_PARCEL_API}/api/transactions/${transaction.id}/complete?status=success`);
     },
   },
   [CASH]: {
@@ -64,7 +64,7 @@ const initiatePayment = (transaction, req, res) => {
   switch (Number(transaction.payment_gateway_id)) {
     case CARD: return axis.create(req, res, transaction);
     case PAYPAL: return paypal.create(req, res, transaction);
-    default: return res.redirect(`${URLS_MEMBER}/shipRequests?message=Invalid Payment Gateway`);
+    default: return res.redirect(`${URLS_PARCEL}/shipRequests?message=Invalid Payment Gateway`);
   }
 };
 
@@ -374,7 +374,7 @@ exports.create = async (req, res) => {
         .findById(transaction.customer_id, {
           attributes: ['id', 'wallet_balance_amount'],
         });
-      const apiCBUrl = `${URLS_PF_API}/api/public/shipments/${objectId}/response?uid=${customer.id}`;
+      const apiCBUrl = `${URLS_PARCEL_API}/api/public/shipments/${objectId}/response?uid=${customer.id}`;
       return transactionController.success({
         transaction,
         customer,

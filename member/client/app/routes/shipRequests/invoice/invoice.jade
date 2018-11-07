@@ -118,18 +118,6 @@ section.ship_response.m-t-md.m-b-md
               td(colspan='2')
               td Coupon Discount :
               td (-) INR {{$ctrl.shipment.coupon_amount| number: 2}}
-            tr.item(ng-if="$ctrl.shipment.loyalty_amount > 0")
-              td(colspan='2')
-              td Loyalty Reward :
-              td (-) INR {{$ctrl.shipment.loyalty_amount| number: 2}}
-            tr.item(ng-if="$ctrl.shipment.wallet_amount != 0")
-              td(colspan='2')
-              td Wallet Amount :
-              td.pull-left INR {{$ctrl.shipment.wallet_amount| number: 2}}
-                span(ng-if="$ctrl.shipment.wallet_amount < 0")
-                  p.pull-right (Amount added)
-                span(ng-if="$ctrl.shipment.wallet_amount > 0")
-                  p.pull-right (Amount deducted)
             tr.item(ng-if="$ctrl.shipment.payment_gateway_fee_amount > 0")
               td(colspan='2')
               td Payment Gateway Fee :

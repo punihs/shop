@@ -9,6 +9,8 @@ const {
   PACKAGE_STATE_IDS: { RETURN_REQUEST_FROM_CUSTOMER, SPLIT_PACKAGE, DISCARD_REQUESTED },
 } = require('../../../config/constants');
 
+const { updateState } = require('../package.service');
+
 exports.return = async (req, res) => {
   const returnPackid = req.params.id;
   const customerId = req.user.id;
@@ -33,7 +35,7 @@ exports.return = async (req, res) => {
     { where: { id: returnPackid } },
   );
 
-  Package.updateState({
+  updateState({
     db,
     nextStateId: RETURN_REQUEST_FROM_CUSTOMER,
     pkg: { id: returnPackid },

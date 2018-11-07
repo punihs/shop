@@ -13,14 +13,14 @@ module.exports = () => [{
   client_id: 'ops',
   client_secret: 'opssecret',
   port: 5002,
-  redirect_uri: 'http://ops.shoppre.test/access/oauth',
+  redirect_uri: 'http://parcel-ops.shoppre.test/access/oauth',
 }, {
   id: 3,
   name: 'Membership',
   client_id: 'member',
   client_secret: 'membershipsecret',
   port: 5003,
-  redirect_uri: 'http://member.shoppre.test/access/oauth',
+  redirect_uri: 'http://parcel.shoppre.test/access/oauth',
 }, {
   id: 4,
   name: 'WWW',

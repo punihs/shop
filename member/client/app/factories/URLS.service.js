@@ -3,17 +3,21 @@ angular.module('uiGenApp')
     const { host, protocol } = window.location;
     const PREFIX = `${protocol}//${host.substr(0, host.indexOf('-') + 1)}`;
     const DOMAIN = `${host.substr(host.indexOf('.') + 1)}`;
-
+    const project = 'parcel';
     return {
       DOMAIN,
       PREFIX,
+
       CDN: `${PREFIX}cdn.${DOMAIN}`,
-      AUTH: `${PREFIX}api.${DOMAIN}`,
-      PFAPI: `${PREFIX}pf-api.${DOMAIN}`,
-      PAYAPI: `${PREFIX}pay-api.${DOMAIN}`,
       ACCOUNTS: `${PREFIX}accounts.${DOMAIN}`,
       HELP: `${PREFIX}ship.${DOMAIN}`,
-      OAUTH: `${PREFIX}accounts.${DOMAIN}/authorise?client_id=member&response_type=code&` +
-      `redirect_uri=${PREFIX}member.${DOMAIN}/access/oauth`,
-    };
+
+      API: `${PREFIX}api.${DOMAIN}`,
+      PARCEL_API: `${PREFIX}${project}-api.${DOMAIN}`,
+      PAY_API: `${PREFIX}pay-api.${DOMAIN}`,
+      CHICKEN_API: `${PREFIX}chicken-api.${DOMAIN}`,
+
+      OAUTH: `${PREFIX}accounts.${DOMAIN}/authorise?client_id=${project}&response_type=code&` +
+      `redirect_uri=${PREFIX}${project}.${DOMAIN}/access/oauth`,
+    }; 
   });

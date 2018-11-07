@@ -46,13 +46,16 @@ class AppController {
             enable: false,
           },
         });
+
         if (!this.Session.read('oneSignalPlayerId')) {
           OneSignal.getUserId((pid) => {
             this
               .$http
-              .post('/notificationSubscriptions', {
+              .post('#/notificationSubscriptions', {
                 player_id: pid,
-              }).then(() => this.Session.create('oneSignalPlayerId', pid));
+              })
+              .then(() => this.Session
+                .create('oneSignalPlayerId', pid));
           });
         }
       });

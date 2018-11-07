@@ -34,7 +34,7 @@ const {
 
 const logger = require('../../components/logger');
 
-const { index } = require('./package.service');
+const { index, updateState } = require('./package.service');
 
 exports.indexPublic = (req, res, next) => {
   log('indexPublic', req.query);
@@ -176,7 +176,7 @@ exports.create = async (req, res, next) => {
           //     });
           // }
 
-          return Package.updateState({
+          return updateState({
             db,
             lastStateId: null,
             nextStateId: PACKAGE_ITEMS_UPLOAD_PENDING,
@@ -215,7 +215,7 @@ exports.create = async (req, res, next) => {
           db.PackageCharge
             .create(charges);
 
-          Package.updateState({
+          updateState({
             db,
             lastStateId: null,
             nextStateId: INCOMING_PACKAGE,
@@ -341,27 +341,25 @@ exports.state = async (req, res, next) => {
     }
   }
 
-  return Package
-    .updateState({
-      db,
-      pkg,
-      actingUser: req.user,
-      nextStateId: req.body.state_id,
-      comments: req.body.comments,
-    })
+  return updateState({
+    db,
+    pkg,
+    actingUser: req.user,
+    nextStateId: req.body.state_id,
+    comments: req.body.comments,
+  })
     .then(status => res.json(status))
     .catch(next);
 };
 
 exports.facets = (req, res, next) => Package
   .findById(req.params.id)
-  .then(pkg => Package
-    .updateState({
-      db,
-      pkg,
-      actingUser: req.user,
-      nextStateId: req.body.state_id,
-    })
+  .then(pkg => updateState({
+    db,
+    pkg,
+    actingUser: req.user,
+    nextStateId: req.body.state_id,
+  })
     .then(status => res.json(status)))
   .catch(next);
 
@@ -477,14 +475,13 @@ exports.invoice = async (req, res, next) => {
   if (pkg) {
     Package
       .update({ invoice: object }, { where: { id } });
-    Package
-      .updateState({
-        db,
-        pkg,
-        actingUser: req.user,
-        nextStateId: IN_REVIEW,
-        comments: 'Cusotmer Uploaded Invoice',
-      });
+    updateState({
+      db,
+      pkg,
+      actingUser: req.user,
+      nextStateId: IN_REVIEW,
+      comments: 'Cusotmer Uploaded Invoice',
+    });
     Notification
       .create({
         customer_id: pkg.customer_id,

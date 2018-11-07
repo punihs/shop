@@ -91,7 +91,7 @@ div.m-t-xl.no-margin
                           div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.SHIPMENT_CANCELLED')
                             p Cancelled
                       td.footable-visible(ng-show='shipment.ShipmentState.state_id != $ctrl.SHIPMENT_STATE_IDS.SHIPMENT_CANCELLED')
-                        a.summary-order(ui-sref='shipRequest.invoice({ shipmentId: shipment.id })', target='_blank') {{shipment.order_code}}
+                        a.summary-order(ui-sref='shipRequest.invoice({ orderCode: shipment.order_code })', target='_blank') {{shipment.order_code}}
                       td.footable-visible(ng-show='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.SHIPMENT_CANCELLED')
                         | ---
                     tr

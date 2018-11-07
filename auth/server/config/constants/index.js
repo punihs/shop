@@ -8,8 +8,8 @@ const constants = {
   },
   APPS: {
     ACCOUNTS: 1,
-    OPS: 2,
-    MEMBER: 3,
+    PARCEL_OPS: 2,
+    PARCEL: 3,
   },
 };
 

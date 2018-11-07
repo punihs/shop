@@ -3,11 +3,12 @@ const debug = require('debug');
 const hookshot = require('../../conn/hookshot');
 const viewConfig = require('../../view.config');
 const { PACKAGE_STATE_ID_NAMES_MAP } = require('../../config/constants');
+const { User, Store } = require('../../conn/sqldb');
 
 const log = debug('s-api-package-notification');
 
 exports.stateChange = async ({
-  db: { User, Store }, actingUser, pkg, nextStateId, lastStateId,
+  actingUser, pkg, nextStateId, lastStateId,
 }) => Promise
   .all([
     User

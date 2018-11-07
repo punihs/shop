@@ -12,6 +12,7 @@ const { addressStringify } = require('./components/util');
 const { calcPackageLevelCharges, calcLiquidCharges } = require('./components/shipRequest');
 
 const hookshot = require('./shipment.hookshot');
+const packageService = require('../package/package.service');
 
 const db = require('../../conn/sqldb');
 const shipper = require('../../conn/shipper');
@@ -21,7 +22,7 @@ const {
   Country, Shipment, Package, Address, PackageCharge, ShipmentMeta, Notification,
   PackageState, User, Locker,
   ShipmentState, Store,
-  PackageItem, PhotoRequest, PaymentGateway,
+  PackageItem, PhotoRequest,
 } = db;
 
 const {
@@ -41,7 +42,7 @@ const {
   GROUPS: { CUSTOMER },
   PAYMENT_GATEWAY: { WALLET, WIRE, CASH },
 } = require('../../config/constants');
-const { URLS_MEMBER } = require('../../config/environment');
+const { URLS_PARCEL } = require('../../config/environment');
 
 const BUCKETS = require('../../config/constants/buckets');
 
@@ -307,7 +308,7 @@ exports.destroy = async (req, res) => {
 
 
     await pkg
-      .map(packageId => Package
+      .map(packageId => packageService
         .updateState({
           db,
           lastStateId: null,
@@ -391,7 +392,7 @@ const updatePackages = ({
   actingUser,
   shipmentId,
 }) => {
-  packageIds.map(id => Package.updateState({
+  packageIds.map(id => packageService.updateState({
     db,
     lastStateId: null,
     nextStateId: stateId,
@@ -1040,8 +1041,8 @@ exports.paymentState = async (req, res) => {
 
 exports.payResponse = async (req, res, next) => {
   try {
-    const failedURL = `${URLS_MEMBER}/shipRequests/`;
-    const sucessURL = `${URLS_MEMBER}/transactions/${req.query.transaction_id}/response`;
+    const failedURL = `${URLS_PARCEL}/shipRequests/`;
+    const sucessURL = `${URLS_PARCEL}/transactions/${req.query.transaction_id}/response`;
     const { status } = req.query;
     const msg = {
       1: 'Looks like you cancelled the payment. You can try again now or if you ' +

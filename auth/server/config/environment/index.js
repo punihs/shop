@@ -15,7 +15,6 @@ const config = {
     root,
     FROM_EMAIL: process.env.FROM_EMAIL || 'support@shoppre.com',
     URLS_API: `${env.PREFIX}api.${env.DOMAIN}`,
-    URLS_MEMBER: `${env.PREFIX}member.${env.DOMAIN}`,
     URLS_WWW: `${env.PREFIX}www.${env.DOMAIN}`,
     PREFIX: `${env.PREFIX}`,
     DOMAIN: `${env.DOMAIN}`,

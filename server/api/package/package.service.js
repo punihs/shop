@@ -2,18 +2,38 @@ const debug = require('debug');
 const sequelize = require('sequelize');
 
 const {
-  Package, Store, User, Locker, PackageState, PackageItem, PhotoRequest,
-  State, ShipmentState, Shipment,
-} = require('../../conn/sqldb');
-
-const {
   APPS, GROUPS: { CUSTOMER, OPS },
   SHIPMENT_STATE_IDS: {
     PAYMENT_FAILED, PAYMENT_REQUESTED, PAYMENT_INITIATED,
     PAYMENT_COMPLETED, PAYMENT_CONFIRMED, PACKAGING_REQUESTED, UPSTREAM_SHIPMENT_REQUEST_CREATED,
   },
+  PACKAGE_STATE_IDS: {
+    PACKAGE_ITEMS_UPLOAD_PENDING, SPLIT_PACKAGE_PROCESSED,
+    READY_TO_SHIP,
+  },
 } = require('./../../config/constants');
+const {
+  PACKAGE: {
+    SPLIT_PACKAGE,
+    // RETURN,
+  },
+} = require('../../config/constants/charges');
 const BUCKETS = require('./../../config/constants/buckets');
+
+const logger = require('../../components/logger');
+
+const {
+  Package, Store, User, Locker, PackageState, PackageItem, PhotoRequest,
+  State, ShipmentState, Shipment,
+} = require('../../conn/sqldb');
+
+const hookshot = require('./package.hookshot');
+
+const stateIdcommentMap = {
+  [PACKAGE_ITEMS_UPLOAD_PENDING]: 'Package Recieved',
+  [SPLIT_PACKAGE_PROCESSED]: 'Package Splitted!', // email sending is pending
+};
+
 
 const log = debug('s-api-package-service');
 
@@ -226,4 +246,81 @@ exports.index = ({ query, params, user: actingUser }) => {
       queueCount,
       paymentCount,
     }));
+};
+exports.updateState = ({
+  db,
+  lastStateId,
+  nextStateId,
+  pkg,
+  actingUser,
+  comments = null,
+}) => {
+  log('updateState', nextStateId, pkg, comments);
+  const options = {
+    package_id: pkg.id,
+    user_id: actingUser.id,
+    state_id: nextStateId,
+  };
+  if (stateIdcommentMap[nextStateId]) options.comments = stateIdcommentMap[nextStateId];
+  if (comments) options.comments = comments || stateIdcommentMap[nextStateId];
+
+  return db.PackageState
+    .create(options)
+    .then((packageState) => {
+      switch (nextStateId) {
+        case READY_TO_SHIP: {
+          log('state changed', READY_TO_SHIP);
+          // - Todo: check number of items validation
+          // else if (itemCount !== pack.number_of_items) {
+          //   return res.status(400).res.json({ message: 'please check your items !' });
+          // }
+          break;
+        }
+        case SPLIT_PACKAGE_PROCESSED: {
+          db.PackageCharge
+            .update(
+              { split_package_amount: SPLIT_PACKAGE },
+              { where: { id: pkg.id } },
+            );
+          break;
+        }
+        case PACKAGE_ITEMS_UPLOAD_PENDING: {
+          log({ PACKAGE_ITEMS_UPLOAD_PENDING });
+          db.Locker
+            .allocation({ customerId: pkg.customer_id });
+          break;
+        }
+        // case RETURN_PICKUP_DONE: {
+        //   const transaction = {};
+        //   const customerId = actingUser.id;
+        //   transaction.type = DEBIT;
+        //   transaction.customer_id = customerId;
+        //   transaction.amount = RETURN;
+        //   db.Transaction
+        //     .create(transaction);
+        //   break;
+        // }
+        default: {
+          log('state changed default');
+        }
+      }
+
+      if ([PACKAGE_ITEMS_UPLOAD_PENDING].includes(nextStateId)) {
+        hookshot
+          .stateChange({
+            nextStateId,
+            lastStateId,
+            pkg,
+            actingUser,
+          })
+          .catch(err => logger.error('statechange notification', nextStateId, pkg, err));
+      }
+
+      return db.Package
+        .update({
+          package_state_id: packageState.id,
+        }, {
+          where: { id: pkg.id },
+        });
+    });
 };

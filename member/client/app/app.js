@@ -19,7 +19,7 @@ angular
   ])
   .constant('MODULE_VERSION', '0.0.1');
 // this configs to initiated using provider
-const MEMBER = 2;
+const CUSTOMER = 2;
 angular
   .module('uiGenApp', [
     'uiGenApp.constants',
@@ -60,10 +60,9 @@ angular
 
     $locationProvider.html5Mode(true);
   })
-  .factory('CONFIG', (appConfig) => appConfig[MEMBER])
+  .factory('CONFIG', (appConfig) => appConfig[CUSTOMER])
   .factory('$exceptionHandler', function () {
     return function errorCatcherHandler(exception, cause) {
-      console.error(exception.stack);
       Raven.captureException(exception);
       // do not rethrow the exception - breaks the digest cycle
     };

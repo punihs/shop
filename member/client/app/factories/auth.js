@@ -6,9 +6,8 @@ angular.module('qui.core')
       let refreshingToken = false;
 
       authService.login = function login(credentials) {
-        const url = `${URLS.AUTH}/oauth/token`;
         return $http
-          .post(url, credentials, {
+          .post(`${URLS.API}/oauth/token`, credentials, {
             ignoreAuthModule: true,
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             transformRequest(obj) {
@@ -33,10 +32,9 @@ angular.module('qui.core')
           return $q.reject({ warning: 'Refresh token request already sent.' });
         }
         refreshingToken = true; // Set refresh_token reuqest tracker flag
-        const url = `${URLS.AUTH}/oauth/token`;
         return $http
           .post(
-            url,
+            `${URLS.API}/oauth/token`,
             { refresh_token: Session.read('oauth').refresh_token },
           {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -60,9 +58,8 @@ angular.module('qui.core')
       };
 
       authService.logout = function logout() {
-        const url = `${URLS.AUTH}/oauth/revoke`;
         return $http
-          .post(url, { access_token: Session.getAccessToken() }, {
+          .post(`${URLS.API}/oauth/revoke`, { access_token: Session.getAccessToken() }, {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             transformRequest(obj) {
               return Object

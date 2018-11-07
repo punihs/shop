@@ -18,7 +18,7 @@ const {
   },
 } = require('../../config/constants');
 
-const { URLS_MEMBER, URLS_PF_API } = require('../../config/environment');
+const { URLS_PARCEL, URLS_PARCEL_API } = require('../../config/environment');
 
 exports.index = (req, res, next) => {
   const options = {
@@ -341,9 +341,9 @@ exports.complete = async (req, res, next) => {
     const isRetryPayment = transaction.is_retry_payment;
 
     const { object_id: objectId } = transaction;
-    const url = `${URLS_MEMBER}/shipRequests/${objectId}/response`;
+    const url = `${URLS_PARCEL}/shipRequests/${objectId}/response`;
 
-    const apiCBUrl = `${URLS_PF_API}/api/public/shipments/${objectId}/response?uid=${customer.id}`;
+    const apiCBUrl = `${URLS_PARCEL_API}/api/public/shipments/${objectId}/response?uid=${customer.id}`;
 
     const AUTHORISED = transaction && transaction.customer_id === customer.id;
     if (!AUTHORISED) {

@@ -16,7 +16,7 @@ div.no-margin
             h4.pull-right.text-u-c(ng-if='$ctrl.queueCount') We are preparing currently {{$ctrl.queueCount}} shipment for you
             .m-b.col-md-12.no-padder
               ul.nav.nav-pills.nav-sm.pull-left.no-padder
-                li.m-r-sm.pull-right(ng-if='$ctrl.queueCount')
+                li.m-r-sm.pull-right
                   a.font-bold.b-a.btn-info(
                   ui-sref='packages.create'
                   ) Alert Shoppre about my incoming Packages (Optional)
@@ -636,7 +636,7 @@ div.no-margin
               img(src='/assets/images/dashico8.png')
             .col-md-9
               .h4.text-u-c.top-margin-10
-                a(ng-href='{{$ctrl.URLS.PREFIX}}blog.{{$ctrl.URLS.DOMAIN}}') Blog
+                a(ng-href='https://blog.{{$ctrl.URLS.DOMAIN}}') Blog
 
 
 

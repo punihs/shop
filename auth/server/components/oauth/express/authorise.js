@@ -1,8 +1,11 @@
+const debug = require('debug');
 
 const { App } = require('../../../conn/sqldb');
 
+const log = debug('oauth-authorise');
+
 module.exports = (req, res) => {
-  console.log('authorise')
+  log('authorise');
   return App
     .find({
       where: {
@@ -16,4 +19,4 @@ module.exports = (req, res) => {
       return res.json(app);
     })
     .catch(err => res.status(400).json(err));
-}
+};
