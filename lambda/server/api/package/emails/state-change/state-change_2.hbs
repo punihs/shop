@@ -1,9 +1,17 @@
 {{#if PACKAGE_ITEMS_UPLOAD_PENDING}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p>
+      <br><br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        I would like to inform you that your package from <span class="il">{{pkg.Store.name}}</span>. You will receive your complete details once Shipping Team updates the package details.
+      Great News!
+      <br><br>
+      Your package from {{pkg.Store.name}} has been dropped off at ShoppRe Warehouse.
+      <br><br>
+
+        Please be patient while your package is undergoing several quality checks & documentation to ensure it is not
+        damaged and is meeting the export quality requirements. And, further details would be updated in your <a
+        href="https://staging-member.shoppre.com/packages?bucket=IN_REVIEW">Dashboard</a> within 24 hours.
         <br>
         <br>
         Your package is shipped by <span class="il">{{pkg.Store.name}}</span> and the reference ID is {{pkg.invoice_code}}.
@@ -15,49 +23,75 @@
 {{else if CUSTOMER_INPUT}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        We received a package for you, however, it did not include a merchant invoice, or the invoice did not show the value of the merchandise.This information is required by customs, and we
-        will need you to enter the value before we can ship your package.
+        We'd like to inform you that unfortunately the invoice of your package with Package ID:<span class="il">{{pkg.id}}</span>,
+        that we've just received did not make the cost of the item(s) clear.
         <br>
         <br>
-        You can find the value of your purchases on the invoice or order confirmation you received from the merchant. To enter your merchandise values:
-        <br>
-        Visit your Action Required tab
-        Select  Provide Item Values
-        Enter the price you paid for the item(s) in the field provided
+        Hence, we request you to update the same in your <a href="https://staging-member.shoppre.com/locker?bucket=ACTION_REQUIRED">Dashboard</a>;
+        so that we can prepare to ship without any delay.
         <br>
         <br>
-        Please note,  you will not be able to select this package for shipping until you have entered the purchase value.
+        1. Visit your <a href="https://staging-member.shoppre.com/locker?bucket=ACTION_REQUIRED">Action Required</a> tab
+        <br>
+        2. Enter the price you paid for the item(s) in the field provided
+        <br>
+        3. Select  <b>Submit Item Values</b>
+        <br>
+        <br>
+        Note: You cannot make a Ship Request with us unless you provide the product cost(s).
+        <br>
+        You can also forward your invoice/attach the invoice of the purchase when you write to us.
       </p> </td>
   </tr>
 {{else if READY_TO_SHIP}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Dear {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Good news! A package has stored in your locker: PackageId is<span class="il">{{pkg.id}}</span>.
+      We have some great news for you! Your package has reached our facility and safely been kept in your locker ever since.
         <br>
         <br>
-        Your package is ready for  shipping .
+        <b>Package details;</b>
         <br>
         <br>
-
-      </p> </td>
+        Package ID:<span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+        Arrived From: <span class="il">{{pkg.Store.name}}</span>
+        <br><br>
+        Weight of the package (in kg):<span class="il">{{pkg.weight}}</span>
+        <br><br>
+        Quantity:<span class="il">{{pkg.total_quantity}}</span>
+        <br><br>
+        Received Date:<span class="il">{{pkg.created_at}}</span>
+        <br><br>
+        Cost of the Package:<span class="il">{{pkg.price_amount}}</span>
+        <br>
+        <br>
+        Feel free to <a href="https://staging-member.shoppre.com/packages?bucket=READY_TO_SEND">Sign in </a>to your ShoppRe account & review/edit
+        the product costs or  <a href="https://staging-member.shoppre.com/users/preferences">View the Photo</a> of your packages at a discounted rate of
+        <strike>₹100</strike> ₹50, before making a request to ship.
+      </p>
+    </td>
   </tr>
 {{else if DAMAGED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        I would like to inform you that your package is Damaged.PackageId is  <span class="il">{{pkg.id}}</span>.
+        We're afraid the package with id:<span class="il">{{pkg.id}}</span> you purchased from <span class="il">{{pkg.Store.name}}</span> has arrived at our facility with a damage.
         <br>
         <br>
-        Your package is shipped by <span class="il">{{pkg.Store.name}}</span> and the reference ID is {{pkg.invoice_code}}.
+        Go to your <a href="https://staging-member.shoppre.com/locker">Dashboard</a> to let us know how to proceed. You can choose to Return or Discard the item.
+        <br>
+        Do reach out to us at <a href="support@shoppre.com">support@shoppre.com</a> in case of any query.
         <br>
         <br>
-
-      </p> </td>
+        If you have any questions, <a href="https://www.shoppre.com/faq">Visit our FAQ</a> page for further clarification.
+      </p>
+    </td>
   </tr>
 {{else if RETURN_REQUEST_FROM_CUSTOMER}}
   <tr>

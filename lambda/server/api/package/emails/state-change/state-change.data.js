@@ -24,8 +24,11 @@ const pkg = {
   id: 1,
   invoice_code: 'AMZ123',
   Store: {
-    name: 'Amazon',
+    name: 'Amazon.in',
   },
+  created_at: '19-07-2018',
+  price_amount: '250',
+  total_quantity: '2',
 };
 
 const customer = {
