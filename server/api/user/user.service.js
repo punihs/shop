@@ -1,4 +1,4 @@
-const { User } = require('../../conn/sqldb');
+const { User, ShippingPreference } = require('../../conn/sqldb');
 const { GSUITE_DOMAIN } = require('../../config/environment');
 const { GROUPS: { OPS, CUSTOMER }, ROLES: { RECEPTION } } = require('../../config/constants');
 const hookshot = require('./user.hookshot');
@@ -53,6 +53,8 @@ exports.signup = async ({ body }) => {
             role_id: IS_OPS ? RECEPTION : null,
           }, { hooks })
           .then((customer) => {
+            ShippingPreference
+              .create({ customer_id: customer.id });
             // - Sending Verification Email via Hook
             hookshot.signup(customer);
 
