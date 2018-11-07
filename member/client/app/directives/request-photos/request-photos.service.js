@@ -1,5 +1,5 @@
 class RequestPhotosController {
-  constructor($uibModalInstance, $http, packageDetail, index, $state, URLS, toaster, $window) {
+  constructor($uibModalInstance, $http, packageDetail, index, $state, URLS, toaster, $window, CONFIG) {
     this.pkg = packageDetail;
     this.index = index;
     this.packagePhotos = '';
@@ -7,6 +7,7 @@ class RequestPhotosController {
     this.$window = $window;
     this.$http = $http;
     this.URLS = URLS;
+    this.CONFIG = CONFIG;
     this.toaster = toaster;
     this.standardId = '1';
     this.advancedId = '2';
@@ -56,6 +57,7 @@ class RequestPhotosController {
   }
 
   $onInit() {
+    this.PACKAGE_STATE_IDS = this.CONFIG.PACKAGE_STATE_IDS;
     if (this.photoRequestLength || this.slides.length) {
       if ((this.standardExits && this.advancedExits) ||
         (this.standardRequested && this.advancedRequested)) {
@@ -163,9 +165,11 @@ class RequestPhotosController {
   requestStandard() {
     this.data = {
       type: 'standard_photo',
+      state_id: this.PACKAGE_STATE_IDS.STANDARD_PHOTO_REQUEST,
+      comments: 'Standard Photo Requested',
     };
     this.$http
-      .put(`/packages/${this.pkg.id}/photoRequests`, this.data)
+      .put(`/packages/${this.pkg.id}/state`, this.data)
       .then(() => {
         this.showAdditional = true;
         this.showStandard = true;
@@ -210,9 +214,11 @@ class RequestPhotosController {
     this.photoList = true;
     this.data = {
       type: 'advanced_photo',
+      state_id: this.PACKAGE_STATE_IDS.ADVANCED_PHOTO_REQUEST,
+      comments: 'Advanced Photo Requested',
     };
     this.$http
-      .put(`/packages/${this.pkg.id}/photoRequests`, this.data)
+      .put(`/packages/${this.pkg.id}/state`, this.data)
       .then(() => {
         this
           .toaster

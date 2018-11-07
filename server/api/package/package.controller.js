@@ -22,9 +22,16 @@ const {
     STANDARD_PHOTO_REQUEST, DAMAGED,
     ADVANCED_PHOTO_REQUEST, IN_REVIEW, AWAITING_VERIFICATION,
   },
+  PHOTO_REQUEST_TYPES: { BASIC, ADVANCED },
+  PHOTO_REQUEST_STATES: { COMPLETED },
   GROUPS: { OPS, CUSTOMER },
   PACKAGE_TYPES: { INCOMING },
 } = require('../../config/constants');
+
+const {
+  PACKAGE: { STANDARD_PHOTO, ADVANCED_PHOTO },
+} = require('../../config/constants/charges');
+
 const logger = require('../../components/logger');
 
 const { index } = require('./package.service');
@@ -238,9 +245,7 @@ exports.state = async (req, res, next) => {
     if (!packageItemCount) {
       return res.status(400).json({ message: 'Package items is empty!' });
     }
-  }
-
-  if ([READY_TO_SHIP].includes(req.body.state_id)) {
+  } else if ([READY_TO_SHIP].includes(req.body.state_id)) {
     const photoRequest = Package.find({
       attributes: ['id'],
       where: { id: req.params.id },
@@ -260,6 +265,79 @@ exports.state = async (req, res, next) => {
 
     if (!pkg.price_amount) {
       return res.status(400).json({ message: 'Please update package value' });
+    }
+  } else if ([STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST].includes(req.body.state_id)) {
+    const customerId = req.user.id;
+    const { id: packageId } = req.params;
+    const { type } = req.body;
+    const IS_BASIC_PHOTO = type === 'standard_photo';
+
+    const CHARGE = IS_BASIC_PHOTO ? STANDARD_PHOTO : ADVANCED_PHOTO;
+    const REVEW_TEXT = IS_BASIC_PHOTO ? 'Basic' : 'Advanced';
+    let status = '';
+
+    if (!packageId && !Number(packageId)) {
+      return res.status(400).json({ message: 'arg:package_id missing.' });
+    }
+
+    const packg = await Package
+      .find({
+        attributes: ['id'],
+        where: { id: packageId },
+        include: [{
+          model: PackageItem,
+          attributes: ['object', 'object_advanced'],
+        }],
+      });
+
+    if (!packg) return res.status(400).json({ message: 'Package not found.' });
+
+    // Todo: picking only one item
+    const photoRequest = await PhotoRequest
+      .find({
+        attributes: ['id'],
+        where: {
+          package_id: packageId,
+          type: IS_BASIC_PHOTO ? BASIC : ADVANCED,
+        },
+      });
+
+    if (photoRequest) {
+      return res.json({ message: `Already ${REVEW_TEXT} photo requested` });
+    }
+
+    PhotoRequest.create({
+      package_id: packageId,
+      type: IS_BASIC_PHOTO ? BASIC : ADVANCED,
+      status: COMPLETED,
+      charge_amount: CHARGE,
+    });
+
+    PackageCharge
+      .upsert({ id: packageId, [`${type}_amount`]: CHARGE });
+
+    Notification.create({
+      customer_id: customerId,
+      action_type: 'package',
+      action_id: packageId,
+      action_description: `Requested for ${REVEW_TEXT} Photos  - Order# ${packageId}`,
+    });
+
+    if (!IS_BASIC_PHOTO) {
+      status = !packg.PackageItems[0].object_advanced
+        ? 'pending'
+        : 'completed';
+    } else {
+      status = 'completed';
+    }
+
+    if (status === 'completed') {
+      return res
+        .json({
+          error: '0',
+          status,
+          photos: packg.object,
+        });
     }
   }
 

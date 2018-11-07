@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     value: DataTypes.STRING,
-    fee: DataTypes.INTEGER,
+    fee: DataTypes.DECIMAL(4, 2),
     status: DataTypes.INTEGER,
   }, {
     tableName: 'payment_gateways',

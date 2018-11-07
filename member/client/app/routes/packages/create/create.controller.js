@@ -17,10 +17,12 @@ class PackagesCreateController {
   }
 
   onInit() {
+    this.uploadingPhotos = false;
     this.submitting = false;
     this.showSuccess = false;
     this.data = {};
     this.Page.setTitle('Alert Shoppre about Incoming Package');
+    document.getElementById('store_id').focus();
 
     this.Stores = {
       select: ($item) => {

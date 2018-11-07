@@ -33,7 +33,6 @@ const health = require('./api/health');
 const store = require('./api/store');
 const userPackage = require('./api/user/package');
 const userShipment = require('./api/user/shipment');
-const photoRequest = require('./api/package/photoRequest');
 const follower = require('./api/package/follower');
 const shipmentFollower = require('./api/shipment/follower');
 const minio = require('./conn/minio/minio.route');
@@ -51,7 +50,6 @@ module.exports = (app) => {
     packageComment,
     packageCharge,
     specialRequest,
-    photoRequest,
     follower,
   );
   app.use('/api/addresses', authenticate(), address);

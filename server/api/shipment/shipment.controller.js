@@ -214,8 +214,6 @@ exports.update = async (req, res) => {
   const updateMeta = {};
 
   let packageLevelCharges = shipment.package_level_charges_amount;
-  console.log({ packageLevelCharges });
-  console.log('shipment', JSON.stringify(shipment));
   if (shipment.ShipmentMetum.is_liquid === 1) {
     packageLevelCharges -= shipment.ShipmentMetum.liquid_charge_amount || 0;
     updateMeta.liquid_charge_amount = req.body.liquid_charge_amount;

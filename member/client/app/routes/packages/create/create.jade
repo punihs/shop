@@ -35,7 +35,6 @@ div.m-t-xl.no-margin.bg-white-only
                   .alert.alert-success(ng-show='$ctrl.showSuccess')
                     h4.panel-title.text-center.font-thin.h5
                       | Your order has been submitted to shoppre package collection centre. We will update you once your package receive our facility.
-
               .row
                 .col-md-8.col-sm-12.col-xs-12.col-md-offset-2.no-padder-right
                   label.col-xs-12.input-group
@@ -44,6 +43,7 @@ div.m-t-xl.no-margin.bg-white-only
                     input.form-control(
                       type='text'
                       name="store_id"
+                      id="store_id"
                       ng-model='$ctrl.Stores.model'
                       placeholder='eg: Amazon.in'
                       uib-typeahead='region.name for region in $ctrl.Stores.get($viewValue)'
@@ -56,7 +56,6 @@ div.m-t-xl.no-margin.bg-white-only
                     )
                     i.fa.fa-refresh.fa-spin(ng-show='$ctrl.Stores.loadingStores')
                     span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.store_id.$dirty && newPackageForm.store_id.$invalid') Please enter Store Name
-
               .row
                 .col-md-8.col-sm-12.col-xs-12.col-md-offset-2.no-padder-right
                   label.col-xs-12.input-group
@@ -66,10 +65,7 @@ div.m-t-xl.no-margin.bg-white-only
                       name='tracking_code'
                       placeholder='eg. 94114'
                       ng-model='$ctrl.data.tracking_code'
-                      autofocus
                     )
-
-
               .row
                 .col-md-8.col-sm-12.col-xs-12.col-md-offset-2.no-padder-right
                   label.col-xs-12.input-group
@@ -80,7 +76,6 @@ div.m-t-xl.no-margin.bg-white-only
                       name='invoice_code'
                       placeholder='eg. 9844717202'
                       ng-model='$ctrl.data.invoice_code'
-                      autofocus
                     )
               .row
                 .col-md-8.col-sm-12.col-xs-12.col-md-offset-2.no-padder-right
@@ -92,8 +87,6 @@ div.m-t-xl.no-margin.bg-white-only
                       placeholder=''
                       ng-model='$ctrl.data.comments'
                       rows='3'
-                      autofocus
-
                     )
               .row
                 .col-md-8.col-sm-12.col-xs-12.col-md-offset-2.no-padder-right
@@ -133,23 +126,13 @@ div.m-t-xl.no-margin.bg-white-only
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && !$ctrl.data.file && newPackageForm.file.$invalid') Please choose file
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.file.$invalid') Please choose supported file
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.file.$dirty && newPackageForm.file.$invalid') Please choose supported file
-                .col-xs-1.wrapper-sm.m-t-xs
-                  img.pull-left.m-r(
-                  ng-if='$ctrl.data.object'
-                  ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.object}}'
-                  style='height: 120px;width: 200px;'
-                  )
               .row
               .col-md-6.col-xs-12.col-md-offset-2.no-padder-right
                   h4(ng-bind="$ctrl.error.message" style="color:red;")
-                  button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting")
+                  button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting || $ctrl.uploadingPhotos")
                     span.fa.fa-forward.m-r-sm
-                    span.text-white(ng-if='!$ctrl.submitting') Save New Order
+                    span.text-white(ng-if='!$ctrl.submitting', ng-show='$ctrl.uploadingPhotos') Uploading Photo...
+                    span.text-white(ng-if='!$ctrl.submitting', ng-show='!$ctrl.uploadingPhotos') Save
                     span(ng-if='$ctrl.submitting')
                       i.fa.fa-spin.fa-circle-o-notch
                       span.text-white &nbsp;&nbsp;Submitting...
-
-    .clearfix
-
-div(ng-show='$ctrl.submitting')
-  span(ng-include="'app/routes/jobs/cv-uploading/cv-uploading.html'")

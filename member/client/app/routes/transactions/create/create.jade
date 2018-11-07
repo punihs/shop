@@ -7,11 +7,11 @@
             h2.m-n.alert.alert.alert-info.panel-warning PAYMENT SUMMARY
             .panel-body
               .radio(ng-repeat="paymentgateway in $ctrl.paymentGateways")
-                label.i-checks(ng-show = 'paymentgateway.value === "wallet" && $ctrl.shipment.Customer.wallet_balance_amount > $ctrl.shipment.estimated_amount')
+                label.i-checks(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value === "wallet" && $ctrl.shipment.Customer.wallet_balance_amount > $ctrl.shipment.estimated_amount')
                   input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", type='radio', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
                   i
                   | {{paymentgateway.name}} {{paymentgateway.description}} (₹{{$ctrl.shipment.Customer.wallet_balance_amount | number : 2}})
-                label.i-checks(ng-show = 'paymentgateway.value !== "wallet"')
+                label.i-checks(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value !== "wallet"')
                   input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", ng-disabled='$ctrl.shipment.is_axis_banned_item && paymentgateway.value === "card" ' type='radio', name='a', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
                   i
                   | {{paymentgateway.name}}
@@ -42,7 +42,7 @@
           //    button.btn.btn-shoppreng(ng-click='$ctrl.applyPromoCode()')
           //      | Apply
           //h5 Promo Code Applicable on Basic Shipping Costs
-
+          //
           //ul.list-group.list-group-lg.m-b-none.list-unstyled.chkbox_background(ng-if="$ctrl.shipment.Customer.wallet_balance_amount && $ctrl.shipment.Customer.wallet_balance_amount < $ctrl.shipment.estimated_amount && $ctrl.shipment.Customer.wallet_balance_amount !== 0")
           //  li
           //    .checkbox
