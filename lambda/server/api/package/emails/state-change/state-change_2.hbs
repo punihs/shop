@@ -106,9 +106,20 @@
 {{else if RETURN_PICKUP_DONE}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        This mail is to inform you that the package below has successfully left the Shoppre facility.PackageId is<span class="il">{{pkg.id}}</span>.
+        Great news!
+        <br><br>
+        As per your Return Request, your package with ID: <span class="il">{{pkg.id}}</span> has successfully been dispatched from the ShoppRe facility back to the Seller.
+        <br><br>
+        <b>Package Details;</b>
+        <br><br>
+        Arrived From: <span class="il">{{pkg.Store.name}}</span>
+        <br><br>
+        Arrived On: <span class="il">{{pkg.created_at}}</span>
+        <br><br>
+        <br><br>
+        Returned to: if option A then <span class="il">{{pkg.Store.name}}</span> or else option B Address
         <br>
         <br>
       </p> </td>
@@ -116,29 +127,50 @@
 {{else if SPLIT_PACKAGE}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi{{customer.first_name}},</p>
+      <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Customer requested for Split package. PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        Thank you for reaching out! We have received your request to split the package with ID:
+        <span class="il">{{pkg.id}}</span>.
+        The service fee incurred - Rs. 200 per each new package created - is updated in your
+        <i>Package Level Charges</i>
+        (which, you can see when you make the <b>Ship Request</b>).
+        <br><br>
+        If you have any further questions, <a href="https://www.shoppre.com/faq">Visit our FAQ</a> page or contact
+        our Support.
         <br>
         <br>
+
       </p> </td>
   </tr>
 {{else if SPLIT_PACKAGE_PROCESSED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        This mail is to inform you that the package below has successfully splitted.PackageId is<span class="il">{{pkg.id}}</span>.
         <br>
+        This is to inform you that we have successfully split your package with ID: <span class="il">{{pkg.id}}</span>.
+        <br>
+        <br>
+        The service fee incurred - Rs. 200 per each new package created - is updated in your <i>Package Level Charges</i>
+        (which, you can see when you make the <b>Ship Request</b>).
+        <br><br>
+        If you have any further questions, <a href="https://www.shoppre.com/faq">Visit our FAQ</a> page or contact our Support.
         <br>
       </p> </td>
   </tr>
 {{else if DISCARDED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        This mail is to inform you that the package below has successfully Discarded.PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        Good News!
+        <br><br>
+        Your request to discard the package ID: <span class="il">{{pkg.id}}</span> has been fulfilled.
+        <br><br>
+        Hope you have a great time with us!
         <br>
         <br>
       </p> </td>
@@ -146,33 +178,65 @@
 {{else if DISCARD_REQUESTED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Customer requested for Discard package. PackageId is<span class="il">{{pkg.id}}</span>.
+        Thank you for reaching out!
+        <br><br>
+        Your request to discard the package ID: <span class="il">{{pkg.id}}</span> has been received.
+        <br><br>
+        To make sure that you get the best of our services, we'd like you to confirm some details of your request;
+        <br>
+        1. Do you really intend to discard this package [ID]/item [Name] ?*
+        <br><br>
+        A. Yes
+        <br>
+        B. No
+        <br><br>
+        2. If Yes, may we know the reason for discarding it?
+        [text field]
+        <br><br>
+        We're waiting to hear back from you!
+        <br>
+        After getting your response, we assure you we'll take the appropriate action within 24 hours.
         <br>
         <br>
       </p> </td>
   </tr>
-{{else if STANDARD_PHOTO_REQUEST}}
-  <tr>
-    <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
-      <p style="margin:4px 20px 18px 20px;width:640px">
-        Customer requested for Starndard Photos. PackageId is<span class="il">{{pkg.id}}</span>.
-        <br>
-        <br>
-      </p> </td>
-  </tr>
+
+
 {{else if ADVANCED_PHOTO_REQUEST}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Customer requested for Starndard Photos. PackageId is<span class="il">{{pkg.id}}</span>.
+        <br>
+        We have received the request you made for advanced photos of your package with ID: <span class="il">{{pkg.id}}</span>.
+        You'd be glad to know that your request is under progress and you can look forward for an update within 24 hours.
+        <br><br>
+        You'd be charged Rs.500 for this extra facility and it would be added to your final shipping cost rendered to us.
+        <br><br>
+        We'll keep you posted!
         <br>
         <br>
       </p> </td>
   </tr>
+{{else if ADVANCED_PHOTO_PROCESSED}}
+  <tr>
+  <td colspan="2" style="width:640px">
+    <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
+  <p style="margin:4px 20px 18px 20px;width:640px">
+    <br>
+    As a response to your request for advanced photos of your Package ID: <span class="il">{{pkg.id}}</span>, the same has been uploaded in your Dashboard.
+    <br><br>
+    Click here to go view the photos now.
+    <br><br>
+    Please note, that an additional cost of Rs. 500 would be charged for availing this feature which, will be added to your final shipping costs.
+    <br>
+    <br>
+  </p> </td>
+  </tr>
+
+
 {{else if PS_RETURN_REQUESTED}}
   <tr>
     <td colspan="2" style="width:640px">
