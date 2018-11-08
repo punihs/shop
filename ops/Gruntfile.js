@@ -56,7 +56,7 @@ module.exports = function (grunt) {
     },
     open: {
       server: {
-        url: 'http://ops.shoppre.test',
+        url: 'http://parcel-ops.shoppre.test',
       },
     },
     watch: {

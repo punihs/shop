@@ -35,18 +35,7 @@
   <!-- endbuild -->
   <link rel="manifest" href="/manifest.json" />
   <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
-  <script>
-    var OneSignal = window.OneSignal || [];
-    OneSignal.push(function() {
-      OneSignal.init({
-        appId: "b7792635-0674-4e60-bef9-66d31b818a92",
-        autoRegister: false,
-        notifyButton: {
-          enable: true,
-        },
-      });
-    });
-  </script>
+
   <script type="text/javascript">
 
     if (navigator.serviceWorker) {
@@ -73,7 +62,7 @@
   </script>
 
 
-  <!--<script src="/socket.io/socket.io.js"></script>-->
+  <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
 <!--[if lt IE 7]>
@@ -131,8 +120,6 @@
   }
   ga('send', 'pageview');
 </script>
-<tawk></tawk>
-<comet-chat></comet-chat>
 
 <!--[if lt IE 9]>
 <script src="bower_components/es5-shim/es5-shim.js"></script>
@@ -259,7 +246,6 @@
 <script src="components/navigation/navigation.directive.js"></script>
 <script src="components/quick-state-change/quick-state-change.directive.js"></script>
 <script src="components/socket/socket.service.js"></script>
-<script src="components/web-notify/web-notify.config.js"></script>
 <!-- endinjector -->
 <!-- endbuild -->
 </body>

@@ -1,12 +1,11 @@
 class AppController {
   constructor(
     $window, $uibModal, $state, $rootScope, URLS,
-    $http, $stateParams, Session, Page,
-    // socket
+    $http, $stateParams, Session, Page, socket,
   ) {
     const vm = this;
     this.Page = Page;
-    // this.socket = socket;
+    this.socket = socket;
     vm.$stateParams = $stateParams;
     vm.Session = Session;
 
@@ -32,9 +31,35 @@ class AppController {
         container: false,
         offScreen: false, // flag for show of sidebar for mobile view
         mobileHeader: false, // flag to show header Nav and Search in mobile view
-        isAdmin: vm.Session.read('ROLE_ADMIN'),
       },
     };
+
+    if (this.Session.isAuthenticated()) {
+      const OneSignal = window.OneSignal || [];
+      OneSignal.push(() => {
+        OneSignal.sendTag('key', this.userinfo.id);
+        OneSignal.init({
+          appId: 'b7792635-0674-4e60-bef9-66d31b818a92',
+          allowLocalhostAsSecureOrigin: true,
+          autoRegister: true,
+          notifyButton: {
+            enable: false,
+          },
+        });
+
+        if (!this.Session.read('oneSignalPlayerId')) {
+          OneSignal.getUserId((pid) => {
+            this
+              .$http
+              .post('#/notificationSubscriptions', {
+                player_id: pid,
+              })
+              .then(() => this.Session
+                .create('oneSignalPlayerId', pid));
+          });
+        }
+      });
+    }
 
     vm.updateNavigationBar = (currentState, stateParams) => {
       let navbarHeaderColor = 'bg-primary';
@@ -64,43 +89,6 @@ class AppController {
 
     vm.Page = Page; // Set Page title
     vm.$state = $state;
-
-    // Applicant search related Functions
-    vm.Applicants = {
-      select: ($item) => {
-        vm.Applicants.searchText = '';
-        $state.go('applicant.view', { applicantId: $item.id });
-      },
-
-      get: (searchText) => $http
-        .get('/search', {
-          params: {
-            type: 'applicants',
-            q: searchText,
-            offset: 0,
-            limit: 15,
-            fl: 'id,name',
-          },
-        }),
-
-      noResults: false,
-      loadingRegions: false,
-    };
-
-    vm.interviewUI = {
-      5: {
-        icon: 'phone',
-        color: 'success',
-      },
-      8: {
-        icon: 'user',
-        color: 'warning',
-      },
-      17: {
-        icon: 'skype',
-        color: 'info',
-      },
-    };
 
     vm.showCustomerSideBar = function showNavJobs() {
       return [

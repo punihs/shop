@@ -9,12 +9,9 @@ angular
         config.headers.Authorization = `Bearer ${Session.getAccessToken()}`;
       }
 
-      if (Session.read('ROLE_ADMIN') && !config.skipAdminView) {
-        config.headers.admin = true;
-        config.headers.userIds = Session.read('VIEW_AS_IDS');
-      }
-      if (config.url[0] === '~') config.url = `${URLS.AUTH}/api${config.url.substr(1)}`;
-      if (config.url[0] === '/') config.url = `${URLS.PFAPI}/api${config.url}`;
+      if (config.url[0] === '#') config.url = `${URLS.CHICKEN_API}${config.url.substr(1)}`;
+      if (config.url[0] === '~') config.url = `${URLS.API}/api${config.url.substr(1)}`;
+      if (config.url[0] === '/') config.url = `${URLS.PARCEL_API}/api${config.url}`;
       return config;
     },
   }))

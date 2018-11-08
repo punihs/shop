@@ -11,8 +11,6 @@ const socket = require('socket.io');
 const socketioConfig = require('./config/socketio');
 // const logger = require('./components/logger');
 
-// const api = require('./conn/api');
-// api.credentials,
 
 const expressConfig = require('./config/express');
 const { env, ip, port } = require('./config/environment');

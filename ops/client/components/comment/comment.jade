@@ -15,7 +15,7 @@
     .m-b.text-md.clearfix Recent Activity
     .streamline.b-l.m-b
       .sl-item(
-        ng-repeat='comment in $ctrl.data.comments | orderBy: ["created_at", "id"]'
+        ng-repeat='comment in $ctrl.data.comments track by $index | orderBy: ["created_at", "id"]'
         ng-class="comment.User.id !== $ctrl.user.id  ? 'b-success.b-l' : ''"
       )
         .m-l

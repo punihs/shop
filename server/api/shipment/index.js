@@ -14,7 +14,6 @@ router.get('/:orderCode/confirmShipment', controller.show); // - submit payment:
 router.get('/redirectShipment', controller.redirectShipment); // - create shiprequest:php
 router.post('/', controller.create);
 router.get('/:id', controller.show);
-router.get('/:id/status', controller.status);
 router.post('/:id/unread', controller.unread);
 router.put('/:id', controller.update);
 router.put('/:id/paymentState', controller.paymentState);

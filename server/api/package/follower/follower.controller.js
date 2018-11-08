@@ -15,9 +15,15 @@ exports.index = (req, res, next) => {
   log('index', req.query);
 
   return Follower
-    .findAll({ where: { object_id: req.params.packageId } })
+    .findAll({
+      where: {
+        object_id: req.params.packageId,
+        object_type_id: PACKAGE,
+      },
+    })
     .then((followers) => {
       if (!followers.length) return res.json([]);
+
       return User
         .findAll({
           attributes,
@@ -25,7 +31,7 @@ exports.index = (req, res, next) => {
             id: followers
               .map(x => x.user_id)
               .filter(x => (x !== req.user.id)),
-            object_type_id: PACKAGE,
+
           },
           include: [{
             model: SocketSession,
