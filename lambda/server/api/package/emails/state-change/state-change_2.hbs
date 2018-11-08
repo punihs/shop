@@ -45,6 +45,26 @@
         You can also forward your invoice/attach the invoice of the purchase when you write to us.
       </p> </td>
   </tr>
+{{else if INVOICE_REQUESTED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{actingUser.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        Thank you for choosing us for your shipping needs!
+        <br>
+        It seems that we don't have the right invoice of your purchase.
+        We'd need for you to upload the same on your Dashboard so that we can continue with processing your
+        package ID: <nbsp><span class="il">{{pkg.id}}</span></nbsp> and getting it on it's way to you without any delay.
+        <br>
+        The steps are:
+        <br>
+        1. Visit the <a href="https://staging-member.shoppre.com/locker?bucket=ACTION_REQUIRED">Action Required</a> tab on your Dashboard
+        2. Select “Upload Invoice”
+        3. Choose the invoice from your computer & confirm
+        <br>
+        <br>
+      </p> </td>
+  </tr>
 {{else if READY_TO_SHIP}}
   <tr>
     <td colspan="2" style="width:640px">
