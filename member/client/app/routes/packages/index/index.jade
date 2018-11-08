@@ -234,14 +234,11 @@ div.no-margin
                                                 p.text-muted.clear.text-ellipsis(ng-bind="specialRequest.description")
                             td(colspan=8 ng-if='$ctrl.$stateParams.bucket==="ACTION_REQUIRED" && $ctrl.MoreOption[$index]')
                               h5.font-bold How to provide item values:
+                              span(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.CUSTOMER_INPUT')
                                 p
-                                  strong Option 1:
+                                  strong Option 1: &nbsp;
                                   | Enter the values of each item. If the values are accepted, you will be able to ship right away.
                                   | If the values are declined, a merchant invoice will be required.
-                                p
-                                  strong Option 1:
-                                  | Upload merchant invoice. Your package will be placed "In Review" untill the values are verified by Shoppre.
-                              span(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.CUSTOMER_INPUT')
                                 table#DataTables_Table_9.table.table-bordered.m-b-none
                                   thead
                                     tr(role='row')
@@ -268,6 +265,9 @@ div.no-margin
                                     td
                                       button.btn.btn-sm.btn-warning.m-b-xs.text-u-c.pull-right(type='submit', ng-click="$ctrl.submitValues(package.id, $index)") Confirm Package
                               span(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.UPLOAD_INVOICE_REQUESTED')
+                                p
+                                  strong Option 1:&nbsp;
+                                  | Upload merchant invoice. Your package will be placed "In Review" untill the values are verified by Shoppre.
                                 form.form.form-validation.form-horizontal.wrapper-md(
                                 name="newPackageItemForm"
                                 novalidate

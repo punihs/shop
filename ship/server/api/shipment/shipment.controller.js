@@ -1207,6 +1207,7 @@ exports.payResponse = async (req, res, next) => {
           shipment,
           actingUser: customer,
           nextStateId: PAYMENT_COMPLETED,
+          payment_status: 'success',
           comments: `Payment ${req.query.paymentStatus}!`,
         });
       if (req.query.paymentStatus) {
@@ -1219,7 +1220,6 @@ exports.payResponse = async (req, res, next) => {
       }
       const paymentGateWay = Number(req.query.pg);
       const { amount } = req.query;
-      console.log({ amount });
       if (paymentGateWay === WIRE || paymentGateWay === CASH || paymentGateWay === WALLET) {
         res.json(`${sucessURL}?${stringify({
           error: 'success',
@@ -1236,6 +1236,7 @@ exports.payResponse = async (req, res, next) => {
           shipment,
           actingUser: customer,
           nextStateId: PAYMENT_FAILED,
+          payment_status: 'failed',
           comments: 'payment failed',
         });
 

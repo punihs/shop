@@ -17,12 +17,14 @@ class TransactionCreateController {
   $onInit() {
     this.data = {};
     this.paymentGateways = [];
+    this.shipment = {};
     this.Page.setTitle('ShoppRe Pay');
     this.getPaymentGateways();
     this.data.amount = this.$stateParams.amount;
     this.amount = this.$stateParams.amount;
     this.data.object_id = this.$stateParams.object_id;
     this.data.customer_id = this.$stateParams.customer_id;
+    this.data.axis_banned = this.$stateParams.axis_banned;
     this.PAYMENT_GATEWAY = {
       WIRE: 1,
       CASH: 2,

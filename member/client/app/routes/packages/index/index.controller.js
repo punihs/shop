@@ -140,22 +140,26 @@ class PackagesIndexController {
     this.$http
       .put(`/packageItems/${id}/values`, itemValues)
       .then(() => {
+        if (this.$stateParams.bucket === 'ACTION_REQUIRED') {
+          this
+            .toaster
+            .pop('sucess', 'Package values Updated');
+          this.packages.splice(this.packages.findIndex(l => (l.id === id)), 1);
+          this.facets.ACTION_REQUIRED -= 1;
+          this.facets.IN_REVIEW += 1;
+        } else {
+          this
+            .toaster
+            .pop('sucess', 'Changed Package Values in Ready to Send');
+          this.packages.splice(this.packages.findIndex(l => (l.id === id)), 1);
+          this.facets.READY_TO_SEND -= 1;
+          this.facets.IN_REVIEW += 1;
+        }
+      }).catch(() => {
+        this
+          .toaster
+          .pop('error', 'Error updating values');
       });
-    if (this.$stateParams.bucket === 'ACTION_REQUIRED') {
-      this
-        .toaster
-        .pop('sucess', 'Package values Updated');
-      this.packages.splice(this.packages.findIndex(l => (l.id === id)), 1);
-      this.facets.ACTION_REQUIRED -= 1;
-      this.facets.IN_REVIEW += 1;
-    } else {
-      this
-        .toaster
-        .pop('sucess', 'Changed Package Values in Ready to Send');
-      this.packages.splice(this.packages.findIndex(l => (l.id === id)), 1);
-      this.facets.READY_TO_SEND -= 1;
-      this.facets.IN_REVIEW += 1;
-    }
   }
 
   selectAllPackages(isChecked) {

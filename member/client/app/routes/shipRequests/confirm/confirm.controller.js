@@ -121,6 +121,7 @@ class ShipRequestConfirmController {
       amount: this.payment.amount,
       object_id: this.shipment.order_code,
       customer_id: this.shipment.customer_id,
+      axis_banned: this.shipment.is_axis_banned_item,
     });
   }
 }

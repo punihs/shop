@@ -14,7 +14,7 @@ angular.module('uiGenApp')
         controllerAs: '$ctrl',
       })
       .state('transaction.create', {
-        url: '/create?amount&object_id&customer_id',
+        url: '/create?amount&object_id&customer_id&axis_banned',
         templateUrl: 'app/routes/transactions/create/create.html',
         controller: 'TransactionCreateController',
         controllerAs: '$ctrl',

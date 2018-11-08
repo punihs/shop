@@ -5,6 +5,8 @@ const {
 } = require('../../conn/sqldb');
 const db = require('../../conn/sqldb');
 const minio = require('../../conn/minio');
+
+const packageService = require('../package/package.service')
 const {
   PRICE_ENTERER: { SHOPPRE },
   PACKAGE_STATE_IDS: {
@@ -92,9 +94,9 @@ exports.update = async (req, res) => {
 
 exports.values = async (req, res) => {
   const { id } = req.params;
-  const pkg = await Package
-    .findById(id, { attributes: ['id', 'customer_id'] });
+  let totalAmount = null;
   req.body.forEach((x) => {
+    totalAmount = x.price_amount * x.quantity;
     PackageItem
       .update(
         {
@@ -104,18 +106,21 @@ exports.values = async (req, res) => {
         },
         { where: { id: x.id } },
       );
+
+    Package.update({ price_amount: totalAmount }, { where: { id } });
+
     Notification
       .create({
-        customer_id: pkg.customer_id,
+        customer_id: req.user.id,
         action_type: 'Package',
-        action_id: pkg.id,
-        action_description: `Customer submitted Package Item Values - Order#  ${pkg.id}`,
+        action_id: id,
+        action_description: `Customer submitted Package Item Values - Order#  ${id}`,
       });
   });
-  Package
+  packageService
     .updateState({
       db,
-      pkg,
+      pkg: { id },
       actingUser: req.user,
       nextStateId: IN_REVIEW,
       comments: 'Cusotmer Updated/reset the value',

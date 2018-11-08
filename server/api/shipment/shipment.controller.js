@@ -493,6 +493,7 @@ exports.create = async (req, res, next) => {
     await ShipmentMeta
       .upsert({
         id: shipment.id,
+        liquid_charge_amount: liquidClearanceCharge,
         ...shipmentChargeMap,
         ...req.body,
       });
@@ -546,7 +547,7 @@ exports.create = async (req, res, next) => {
 exports.shipQueue = async (req, res) => {
   const options = {
     attributes: [
-      'id', 'order_code', 'customer_name', 'address',
+      'id', 'order_code', 'customer_name', 'address', 'payment_gateway_id',
       'phone', 'packages_count', 'final_weight', 'wallet_amount', 'package_level_charges_amount',
       'coupon_amount', 'loyalty_amount', 'estimated_amount', 'created_at', 'payment_status',
       'final_amount', 'payment_gateway_fee_amount',
