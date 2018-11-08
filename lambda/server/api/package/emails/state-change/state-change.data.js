@@ -48,10 +48,12 @@ const ENV = {
 module.exports = {
   PACKAGE_ITEMS_UPLOAD_PENDING: {
     PACKAGE_ITEMS_UPLOAD_PENDING: true,
+    nextStateName: 'PACKAGE_ITEMS_UPLOAD_PENDING',
     pkg,
     customer,
     actingUser: OPS,
     ENV,
+    subject: 'Your Package Has Just Arrived at Our Facility!',
   },
   CUSTOMER_INPUT: {
     CUSTOMER_INPUT: true,
@@ -60,6 +62,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: 'Please Input the Product Costs of Your Purchase',
   },
   READY_TO_SHIP: {
     READY_TO_SHIP: true,
@@ -68,6 +71,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: `Your Package Is Ready to be Shipped | Package ID: ${pkg.id}`,
   },
   DAMAGED: {
     DAMAGED: true,
@@ -76,6 +80,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: 'Seems Your Item Had Arrived Here With a Damage!',
   },
   RETURN_REQUEST_FROM_CUSTOMER: {
     RETURN_REQUEST_FROM_CUSTOMER: true,
@@ -84,6 +89,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
   RETURN_PICKUP_DONE: {
     RETURN_PICKUP_DONE: true,
@@ -92,6 +98,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
   SPLIT_PACKAGE: {
     SPLIT_PACKAGE: true,
@@ -100,6 +107,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
   SPLIT_PACKAGE_PROCESSED: {
     SPLIT_PACKAGE_PROCESSED: true,
@@ -108,6 +116,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
   DISCARDED: {
     DISCARDED: true,
@@ -116,6 +125,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
   DISCARD_REQUESTED: {
     DISCARD_REQUESTED: true,
@@ -124,6 +134,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
   STANDARD_PHOTO_REQUEST: {
     STANDARD_PHOTO_REQUEST: true,
@@ -132,6 +143,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
   ADVANCED_PHOTO_REQUEST: {
     ADVANCED_PHOTO_REQUEST: true,
@@ -140,6 +152,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
   PS_RETURN_REQUESTED: {
     PS_RETURN_REQUESTED: true,
@@ -148,6 +161,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
   PS_REFUND_RECIEVED: {
     PS_REFUND_RECIEVED: true,
@@ -156,6 +170,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
   ORDER_CREATED: {
     ORDER_CREATED: true,
@@ -164,6 +179,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
   ORDER_CANCELLED: {
     ORDER_CANCELLED: true,
@@ -172,6 +188,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
   PAYMENT_INITIATED: {
     PAYMENT_INITIATED: true,
@@ -180,6 +197,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
   PAYMENT_FAILED: {
     PAYMENT_FAILED: true,
@@ -188,6 +206,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
   PAYMENT_COMPLETED: {
     PAYMENT_COMPLETED: true,
@@ -196,6 +215,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
   ORDER_PLACED: {
     ORDER_PLACED: true,
@@ -204,6 +224,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
   OUT_OF_STOCK: {
     OUT_OF_STOCK: true,
@@ -212,6 +233,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
   REFUNDED_TO_WALLET: {
     REFUNDED_TO_WALLET: true,
@@ -220,6 +242,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
   REFUNDED_TO_BANK_ACCOUNT: {
     REFUNDED_TO_BANK_ACCOUNT: true,
@@ -228,6 +251,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
   AWAITING_PACKAGE: {
     AWAITING_PACKAGE: true,
@@ -236,5 +260,6 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
+    subject: '',
   },
 };

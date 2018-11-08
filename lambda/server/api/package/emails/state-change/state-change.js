@@ -1,6 +1,5 @@
 
 const { GROUPS: { CUSTOMER } } = require('../../../../config/constants');
-const { emailSubject } = require('./subject');
 
 const { CURRENT_EVENT_KEY } = require('../../../../config/environment');
 
@@ -11,11 +10,6 @@ const TemplateName = __dirname.split('/')
   .slice(-3)
   .filter(x => (x !== 'emails'))
   .join('_');
-const data = {
-  eventKey: CURRENT_EVENT_KEY,
-  packageId: 13,
-};
-const subject = emailSubject(data);
 
 module.exports = {
   Meta: {
@@ -26,7 +20,7 @@ module.exports = {
     TemplateData,
     Template: {
       TemplateName: `${TemplateName}_${CUSTOMER}`,
-      SubjectPart: subject,
+      SubjectPart: '{{subject}}',
       HtmlPart: render({
         TemplateName: `${TemplateName}_${CUSTOMER}`,
         extras: ['header', 'virtualAddress', 'items', 'footer', 'signature'],

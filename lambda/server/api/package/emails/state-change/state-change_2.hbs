@@ -9,14 +9,14 @@
       Your package from {{pkg.Store.name}} has been dropped off at ShoppRe Warehouse.
       <br><br>
 
-        Please be patient while your package is undergoing several quality checks & documentation to ensure it is not
-        damaged and is meeting the export quality requirements. And, further details would be updated in your <a
-        href="https://staging-member.shoppre.com/packages?bucket=IN_REVIEW">Dashboard</a> within 24 hours.
-        <br>
-        <br>
-        Your package is shipped by <span class="il">{{pkg.Store.name}}</span> and the reference ID is {{pkg.invoice_code}}.
-        <br>
-        <br>
+      Please be patient while your package is undergoing several quality checks & documentation to ensure it is not
+      damaged and is meeting the export quality requirements. And, further details would be updated in your <a
+      href="{{ENV.URLS_MEMBER}}/packages?bucket=IN_REVIEW">Dashboard</a> within 24 hours.
+      <br>
+      <br>
+      Your package is shipped by <span class="il">{{pkg.Store.name}}</span> and the reference ID is {{pkg.invoice_code}}.
+      <br>
+      <br>
 
       </p> </td>
   </tr>
@@ -29,11 +29,11 @@
         that we've just received did not make the cost of the item(s) clear.
         <br>
         <br>
-        Hence, we request you to update the same in your <a href="https://staging-member.shoppre.com/locker?bucket=ACTION_REQUIRED">Dashboard</a>;
+        Hence, we request you to update the same in your <a href="{{ENV.URLS_MEMBER}}/packages?bucket=ACTION_REQUIRED">Dashboard</a>;
         so that we can prepare to ship without any delay.
         <br>
         <br>
-        1. Visit your <a href="https://staging-member.shoppre.com/locker?bucket=ACTION_REQUIRED">Action Required</a> tab
+        1. Visit your <a href="{{ENV.URLS_MEMBER}}/packages?bucket=ACTION_REQUIRED">Action Required</a> tab
         <br>
         2. Enter the price you paid for the item(s) in the field provided
         <br>
@@ -70,8 +70,8 @@
         Cost of the Package:<span class="il">{{pkg.price_amount}}</span>
         <br>
         <br>
-        Feel free to <a href="https://staging-member.shoppre.com/packages?bucket=READY_TO_SEND">Sign in </a>to your ShoppRe account & review/edit
-        the product costs or  <a href="https://staging-member.shoppre.com/users/preferences">View the Photo</a> of your packages at a discounted rate of
+        Feel free to <a href="{{ENV.URLS_MEMBER}}/packages?bucket=READY_TO_SEND">Sign in </a>to your ShoppRe account & review/edit
+        the product costs or  <a href="{{ENV.URLS_MEMBER}}/users/preferences">View the Photo</a> of your packages at a discounted rate of
         <strike>₹100</strike> ₹50, before making a request to ship.
       </p>
     </td>
@@ -84,12 +84,12 @@
         We're afraid the package with id:<span class="il">{{pkg.id}}</span> you purchased from <span class="il">{{pkg.Store.name}}</span> has arrived at our facility with a damage.
         <br>
         <br>
-        Go to your <a href="https://staging-member.shoppre.com/locker">Dashboard</a> to let us know how to proceed. You can choose to Return or Discard the item.
+        Go to your <a href="{{ENV.URLS_MEMBER}}/packages?bucket=IN_REVIEW">Dashboard</a> to let us know how to proceed. You can choose to Return or Discard the item.
         <br>
-        Do reach out to us at <a href="support@shoppre.com">support@shoppre.com</a> in case of any query.
+        Do reach out to us at <a href="mail:support@shoppre.com">support@shoppre.com</a> in case of any query.
         <br>
         <br>
-        If you have any questions, <a href="https://www.shoppre.com/faq">Visit our FAQ</a> page for further clarification.
+        If you have any questions, <a href="{{ENV.URLS_WWW}}/faq">Visit our FAQ</a> page for further clarification.
       </p>
     </td>
   </tr>

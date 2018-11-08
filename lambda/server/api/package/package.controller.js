@@ -1,4 +1,5 @@
 const event = require('../../conn/events');
+const subjectMap = require('../package/emails/state-change/subject');
 // const { PREFIX, DOMAIN } = require('../../config/environment');
 
 exports.notifications = (req, res) => {
@@ -23,6 +24,7 @@ exports.notifications = (req, res) => {
         TemplateData: JSON.stringify({
           nextStateId,
           [nextStateName]: true,
+          subject: subjectMap({ nextStateName, pkg }),
           pkg: { ...pkg },
           customer,
           actingUser,
