@@ -14,7 +14,7 @@ const config = {
     root,
     FROM_EMAIL: process.env.FROM_EMAIL || 'support@shoppre.com',
     URLS_API: `${env.PREFIX}api.${env.DOMAIN}`,
-    URLS_PARCEL: `${env.PREFIX}member.${env.DOMAIN}`,
+    URLS_PARCEL: `${env.PREFIX}parcel.${env.DOMAIN}`,
     URLS_WWW: `${env.PREFIX}www.${env.DOMAIN}`,
     URLS_SHIP: `${env.PREFIX}logistics-api.${env.DOMAIN}`,
     PREFIX: `${env.PREFIX}`,

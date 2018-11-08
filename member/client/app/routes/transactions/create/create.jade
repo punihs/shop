@@ -12,12 +12,12 @@
                   i
                   | {{paymentgateway.name}} {{paymentgateway.description}} (₹{{$ctrl.shipment.Customer.wallet_balance_amount | number : 2}})
                 label.i-checks(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value !== "wallet"')
-                  input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", ng-disabled='$ctrl.data.axis_banned && paymentgateway.value === "card" ' type='radio', name='a', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
+                  input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", ng-disabled='$ctrl.data.axis_banned == "true" && paymentgateway.value === "card" ' type='radio', name='a', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
                   i
                   | {{paymentgateway.name}}
-                  b(ng-hide='$ctrl.data.axis_banned && paymentgateway.value === "card" ') {{paymentgateway.description}}
+                  b(ng-hide='$ctrl.data.axis_banned == "true" && paymentgateway.value === "card" ') {{paymentgateway.description}}
                 i.fa.fa-info-circle.m-l-xs(
-                ng-show='$ctrl.data.axis_banned && paymentgateway.value === "card" '
+                ng-show='$ctrl.data.axis_banned == "true" && paymentgateway.value === "card" '
                 uib-popover='You cannot use this payment gateway for this shipment - Read FAQ to know more \n'
                 popover-trigger="'mouseenter'"
                 popover-placement='right'
