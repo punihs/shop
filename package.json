@@ -19,7 +19,7 @@
     "socket-monitor": "socket.io-monitor",
     "copy": "cp -r ./auth/logs/* ./logs",
     "test": "NODE_ENV=test nyc --reporter=text mocha --opts .mocharc server/api/**/*.spec.js --exit | grep -v '100'",
-    "kill": "kill -9 $(lsof -t -i:5000);",
+    "kill": "kill -9 $(lsof -t -i:5007);",
     "ssh-copy-id": "ssh-copy-id pulse@staging-app1.shoppre.com",
     "clear-bucket": "node server/conn/minio/remove-bucket",
     "validate": "npm ls"

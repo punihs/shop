@@ -8,7 +8,7 @@ const {
     PAYMENT_COMPLETED, PAYMENT_CONFIRMED, PACKAGING_REQUESTED, UPSTREAM_SHIPMENT_REQUEST_CREATED,
   },
   PACKAGE_STATE_IDS: {
-    PACKAGE_ITEMS_UPLOAD_PENDING, SPLIT_PACKAGE_PROCESSED,
+    PACKAGE_ITEMS_UPLOAD_PENDING, SPLIT_PACKAGE_PROCESSED, AWAITING_VERIFICATION, IN_REVIEW,
     READY_TO_SHIP,
   },
 } = require('./../../config/constants');
@@ -305,7 +305,7 @@ exports.updateState = ({
         }
       }
 
-      if ([PACKAGE_ITEMS_UPLOAD_PENDING].includes(nextStateId)) {
+      if (!([IN_REVIEW, AWAITING_VERIFICATION].includes(nextStateId))) {
         hookshot
           .stateChange({
             nextStateId,
