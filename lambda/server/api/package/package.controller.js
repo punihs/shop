@@ -12,6 +12,11 @@ exports.notifications = (req, res) => {
     ENV,
   } = req.body;
 
+  const targetUser = {
+    MEMBER: 'MEMBER',
+    OPS: 'OPS',
+  };
+
   event
     .fire({
       ses: [{
@@ -24,7 +29,7 @@ exports.notifications = (req, res) => {
         TemplateData: JSON.stringify({
           nextStateId,
           [nextStateName]: true,
-          subject: subjectMap({ nextStateName, pkg }),
+          subject: subjectMap({ nextStateName, pkg, targetUser}),
           pkg: { ...pkg },
           customer,
           actingUser,

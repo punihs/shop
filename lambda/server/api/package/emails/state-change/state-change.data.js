@@ -48,7 +48,6 @@ const ENV = {
 module.exports = {
   PACKAGE_ITEMS_UPLOAD_PENDING: {
     PACKAGE_ITEMS_UPLOAD_PENDING: true,
-    nextStateName: 'PACKAGE_ITEMS_UPLOAD_PENDING',
     pkg,
     customer,
     actingUser: OPS,
@@ -100,8 +99,18 @@ module.exports = {
     packageItems,
     subject: '',
   },
+  UPLOAD_INVOICE_REQUESTED: {
+    UPLOAD_INVOICE_REQUESTED: true,
+    pkg,
+    customer,
+    actingUser: OPS,
+    ENV,
+    packageItems,
+    subject: 'Please Upload the Invoice of Your Purchase',
+  },
   SPLIT_PACKAGE: {
     SPLIT_PACKAGE: true,
+    nextStateName: 'SPLIT_PACKAGE',
     pkg,
     customer,
     actingUser: OPS,

@@ -16,7 +16,7 @@
     "lint": "eslint --fix --ext .js --ignore-path .gitignore ./server",
     "test": "NODE_ENV=test nyc --reporter=text mocha --opts .mocharc server/api/**/*.spec.js --exit | grep -v '100'",
     "onsignal:ui": "cd test-onesignal && http-server -S -p 5003",
-    "kill": "kill -9 $(lsof -t -i:5004);",
+    "kill": "kill -9 $(lsof -t -i:6000);",
     "maildev": "maildev --outgoing-host cp.shoppre.com --outgoing-user 'notifications@cp.shoppre.com' --outgoing-pass 'Easy@2020' --outgoing-port 587",
     "validate": "npm ls"
   },

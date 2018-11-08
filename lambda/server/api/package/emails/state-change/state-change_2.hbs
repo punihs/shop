@@ -8,17 +8,16 @@
       <br><br>
       Your package from {{pkg.Store.name}} has been dropped off at ShoppRe Warehouse.
       <br><br>
-
       Please be patient while your package is undergoing several quality checks & documentation to ensure it is not
       damaged and is meeting the export quality requirements. And, further details would be updated in your <a
-      href="{{ENV.URLS_MEMBER}}/packages?bucket=IN_REVIEW">Dashboard</a> within 24 hours.
+      href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW">Dashboard</a> within 24 hours.
       <br>
       <br>
       Your package is shipped by <span class="il">{{pkg.Store.name}}</span> and the reference ID is {{pkg.invoice_code}}.
       <br>
       <br>
-
-      </p> </td>
+      </p>
+    </td>
   </tr>
 {{else if CUSTOMER_INPUT}}
   <tr>
@@ -29,11 +28,11 @@
         that we've just received did not make the cost of the item(s) clear.
         <br>
         <br>
-        Hence, we request you to update the same in your <a href="{{ENV.URLS_MEMBER}}/packages?bucket=ACTION_REQUIRED">Dashboard</a>;
+        Hence, we request you to update the same in your <a href="{{ENV.URLS_PARCEL}}/packages?bucket=ACTION_REQUIRED">Dashboard</a>;
         so that we can prepare to ship without any delay.
         <br>
         <br>
-        1. Visit your <a href="{{ENV.URLS_MEMBER}}/packages?bucket=ACTION_REQUIRED">Action Required</a> tab
+        1. Visit your <a href="{{ENV.URLS_PARCEL}}/packages?bucket=ACTION_REQUIRED">Action Required</a> tab
         <br>
         2. Enter the price you paid for the item(s) in the field provided
         <br>
@@ -45,7 +44,7 @@
         You can also forward your invoice/attach the invoice of the purchase when you write to us.
       </p> </td>
   </tr>
-{{else if INVOICE_REQUESTED}}
+{{else if UPLOAD_INVOICE_REQUESTED}}
   <tr>
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{actingUser.first_name}},</p> <br>
@@ -90,8 +89,8 @@
         Cost of the Package:<span class="il">{{pkg.price_amount}}</span>
         <br>
         <br>
-        Feel free to <a href="{{ENV.URLS_MEMBER}}/packages?bucket=READY_TO_SEND">Sign in </a>to your ShoppRe account & review/edit
-        the product costs or  <a href="{{ENV.URLS_MEMBER}}/users/preferences">View the Photo</a> of your packages at a discounted rate of
+        Feel free to <a href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND">Sign in </a>to your ShoppRe account & review/edit
+        the product costs or  <a href="{{ENV.URLS_PARCEL}}/users/preferences">View the Photo</a> of your packages at a discounted rate of
         <strike>₹100</strike> ₹50, before making a request to ship.
       </p>
     </td>
@@ -104,7 +103,7 @@
         We're afraid the package with id:<span class="il">{{pkg.id}}</span> you purchased from <span class="il">{{pkg.Store.name}}</span> has arrived at our facility with a damage.
         <br>
         <br>
-        Go to your <a href="{{ENV.URLS_MEMBER}}/packages?bucket=IN_REVIEW">Dashboard</a> to let us know how to proceed. You can choose to Return or Discard the item.
+        Go to your <a href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW">Dashboard</a> to let us know how to proceed. You can choose to Return or Discard the item.
         <br>
         Do reach out to us at <a href="mail:support@shoppre.com">support@shoppre.com</a> in case of any query.
         <br>
@@ -147,7 +146,7 @@
 {{else if SPLIT_PACKAGE}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi{{customer.first_name}},</p>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p>
       <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
         <br>
@@ -157,7 +156,7 @@
         <i>Package Level Charges</i>
         (which, you can see when you make the <b>Ship Request</b>).
         <br><br>
-        If you have any further questions, <a href="https://www.shoppre.com/faq">Visit our FAQ</a> page or contact
+        If you have any further questions, <a href="{{ENV.URLS_WWW}}/faq">Visit our FAQ</a> page or contact
         our Support.
         <br>
         <br>
@@ -176,9 +175,10 @@
         The service fee incurred - Rs. 200 per each new package created - is updated in your <i>Package Level Charges</i>
         (which, you can see when you make the <b>Ship Request</b>).
         <br><br>
-        If you have any further questions, <a href="https://www.shoppre.com/faq">Visit our FAQ</a> page or contact our Support.
+        If you have any further questions, <a href="{{ENV.URLS_WWW}}/faq">Visit our FAQ</a> page or contact our Support.
         <br>
-      </p> </td>
+      </p>
+    </td>
   </tr>
 {{else if DISCARDED}}
   <tr>
@@ -193,7 +193,8 @@
         Hope you have a great time with us!
         <br>
         <br>
-      </p> </td>
+      </p>
+    </td>
   </tr>
 {{else if DISCARD_REQUESTED}}
   <tr>
@@ -240,23 +241,21 @@
         <br>
       </p> </td>
   </tr>
-{{else if ADVANCED_PHOTO_PROCESSED}}
-  <tr>
-  <td colspan="2" style="width:640px">
-    <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
-  <p style="margin:4px 20px 18px 20px;width:640px">
-    <br>
-    As a response to your request for advanced photos of your Package ID: <span class="il">{{pkg.id}}</span>, the same has been uploaded in your Dashboard.
-    <br><br>
-    Click here to go view the photos now.
-    <br><br>
-    Please note, that an additional cost of Rs. 500 would be charged for availing this feature which, will be added to your final shipping costs.
-    <br>
-    <br>
-  </p> </td>
-  </tr>
-
-
+<!--{{else if ADVANCED_PHOTO_PROCESSED}}-->
+  <!--<tr>-->
+  <!--<td colspan="2" style="width:640px">-->
+    <!--<p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>-->
+  <!--<p style="margin:4px 20px 18px 20px;width:640px">-->
+    <!--<br>-->
+    <!--As a response to your request for advanced photos of your Package ID: <span class="il">{{pkg.id}}</span>, the same has been uploaded in your Dashboard.-->
+    <!--<br><br>-->
+    <!--Click here to go view the photos now.-->
+    <!--<br><br>-->
+    <!--Please note, that an additional cost of Rs. 500 would be charged for availing this feature which, will be added to your final shipping costs.-->
+    <!--<br>-->
+    <!--<br>-->
+  <!--</p> </td>-->
+  <!--</tr>-->
 {{else if PS_RETURN_REQUESTED}}
   <tr>
     <td colspan="2" style="width:640px">
