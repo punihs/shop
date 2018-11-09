@@ -4,16 +4,14 @@ div.m-t-xl.no-margin
       div
         .h1.m-l-md.font-thin.h3
           | MEMBERSHIP PROFILE
-          ul.nav.nav-pills.nav-sm.pull-right
-            li.m-r-xs.pull-right
-              a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
-                ui-sref='users.passwordChange'
-                popover-trigger="'mouseenter'"
-                popover-placement='bottom'
-                popover-append-to-body='true'
-              )
-                span.fa.fa-forward
-                span  Change Password
+          .inline.pull-right
+            a.text-md.text-u-l(
+              ui-sref='users.passwordChange'
+              popover-trigger="'mouseenter'"
+              popover-placement='bottom'
+              popover-append-to-body='true'
+            )
+              span  Change Password
 
 
       hr.no-margin-bottom
@@ -62,13 +60,13 @@ div.m-t-xl.no-margin
                   label.col-xs-12.input-group
                     | Last Name
                     input.form.form-control(
-                      type='text'
-                      name='last_name'
-                      placeholder='eg. Sharma'
-                      ng-model='$ctrl.data.last_name'
-                      q-text-maxlength='60'
-                      autofocus
-                      required
+                    type='text'
+                    name='last_name'
+                    placeholder='eg. Sharma'
+                    ng-model='$ctrl.data.last_name'
+                    q-text-maxlength='60'
+                    autofocus
+                    required
                     )
                     span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.last_name.$dirty && profileForm.last_name.$invalid') Please enter Last Name
 
@@ -82,26 +80,26 @@ div.m-t-xl.no-margin
                   label.col-xs-12.input-group
                     | Email
                     input.form.form-control(
-                      type='email'
-                      name='email'
-                      placeholder='eg. adithya@gmail.com'
-                      ng-model='$ctrl.data.email'
-                      q-text-maxlength="60"
-                      autofocus
-                      required
+                    type='email'
+                    name='email'
+                    placeholder='eg. adithya@gmail.com'
+                    ng-model='$ctrl.data.email'
+                    q-text-maxlength="60"
+                    autofocus
+                    required
                     )
                     span.wrapper-xs.text-xs.text-danger(
-                      ng-show='$ctrl.clickUpload && profileForm.email.$dirty && profileForm.email.$invalid'
+                    ng-show='$ctrl.clickUpload && profileForm.email.$dirty && profileForm.email.$invalid'
                     ) Please enter Email
                 .col-md-4.col-sm-5.col-xs-12.no-padder-right
                   label.col-xs-12.input-group
                     | Alternate Email
                     input.form.form-control(
-                      type='email'
-                      name='alternate_email'
-                      placeholder='eg. alt_adithya@gmail.com'
-                      ng-model='$ctrl.data.alternate_email'
-                      q-text-maxlength="60"
+                    type='email'
+                    name='alternate_email'
+                    placeholder='eg. alt_adithya@gmail.com'
+                    ng-model='$ctrl.data.alternate_email'
+                    q-text-maxlength="60"
                     )
                     span.wrapper-xs.text-xs.text-danger(
                     ng-show='$ctrl.clickUpload && profileForm.alternate_email.$dirty && profileForm.alternate_email.$invalid'
@@ -137,7 +135,7 @@ div.m-t-xl.no-margin
                 .col-md-6.col-xs-12
                   h4(ng-bind="$ctrl.error.message" style="color:red;")
                   button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting")
-                    span.fa.fa-forward.m-r-sm
+                    i.fa.fa-check-circle-o.m-r-xs(ng-if='!$ctrl.submitting')
                     span.text-white(ng-if='!$ctrl.submitting') Save Changes
                     span(ng-if='$ctrl.submitting')
                       i.fa.fa-spin.fa-circle-o-notch
@@ -145,6 +143,3 @@ div.m-t-xl.no-margin
 
 
     .clearfix
-
-//div(ng-show='$ctrl.submitting')
-//  span(ng-include="'app/routes/jobs/cv-uploading/cv-uploading.html'")

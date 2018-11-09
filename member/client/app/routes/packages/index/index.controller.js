@@ -16,7 +16,6 @@ class PackagesIndexController {
     this.URLS = URLS;
     this.AddComment = AddComment;
     this.PhotoService = PhotoService;
-
     return this.$onInit();
   }
 
@@ -160,6 +159,14 @@ class PackagesIndexController {
           .toaster
           .pop('error', 'Error updating values');
       });
+  }
+
+  replaceCharWithSpace(input, char) {
+    if (!input) return '';
+
+    const text = input.replace(new RegExp(char, 'g'), ' ');
+    console.log(text);
+    return text;
   }
 
   selectAllPackages(isChecked) {
