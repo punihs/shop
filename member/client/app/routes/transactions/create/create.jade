@@ -1,11 +1,12 @@
-.bg-light.lter.b-b.wrapper-md.ng-scope
+.pos-fix.w-full.h-full(style='left:0;top:0;z-index: -1;background: #fff')
+.wrapper-md
   .wrapper-md.bg-white-only
     .container
       .row
         .col-md-7
-          div.div-border-create.alert
-            h2.m-n.alert.alert.alert-info.panel-warning PAYMENT SUMMARY
-            .panel-body
+          div.div-border-create
+            h2.m-n.alert.alert-info.bg-primary.text-white PAYMENT SUMMARY
+            .panel-body.text-primary
               .radio(ng-repeat="paymentgateway in $ctrl.paymentGateways")
                 label.i-checks(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value === "wallet" && $ctrl.shipment.Customer.wallet_balance_amount > $ctrl.shipment.estimated_amount')
                   input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", type='radio', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
@@ -14,8 +15,8 @@
                 label.i-checks(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value !== "wallet"')
                   input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", ng-disabled='$ctrl.data.axis_banned == "true" && paymentgateway.value === "card" ' type='radio', name='a', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
                   i
-                  | {{paymentgateway.name}}
-                  b(ng-hide='$ctrl.data.axis_banned == "true" && paymentgateway.value === "card" ') {{paymentgateway.description}}
+                  .inline(ng-bind='paymentgateway.name')
+                  em.text-muted(ng-hide='$ctrl.data.axis_banned == "true" && paymentgateway.value === "card" ' ng-bind='paymentgateway.description')
                 i.fa.fa-info-circle.m-l-xs(
                 ng-show='$ctrl.data.axis_banned == "true" && paymentgateway.value === "card" '
                 uib-popover='You cannot use this payment gateway for this shipment - Read FAQ to know more \n'
@@ -66,14 +67,13 @@
           //        i
           //        | Shoppre Wallet
           //      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.Customer.wallet_balance_amount| number : 2}}
-          div.final-ship-charge
+          .final-ship-charge.text-primary
             h4 Final Shipping Charges *
-              h4.fa.fa-rupee {{$ctrl.data.amount| number : 2}}
+              h4.fa.fa-rupee.font-bold &nbsp;{{$ctrl.data.amount| number : 2}}
 
-          button.btn.btn-shoppre(
-          type='submit',
-          style='width: 100%;font-size: 18px;border-radius: 5px;background: #10c018;font-weight: 900;'
-          ng-click='$ctrl.submitPayment()'
+          button.btn.btn-success.font-bold.r-x.text-lg.w-full(
+            type='submit'
+            ng-click='$ctrl.submitPayment()'
           )
             | Pay
           //a.btn.btn-shoppre(

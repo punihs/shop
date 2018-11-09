@@ -13,3 +13,5 @@ coverage
 client/app/ng-modules
 server/ssl-bundle.crt
 server/star.key
+ssl-bundle.crt
+star.key

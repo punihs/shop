@@ -1,12 +1,12 @@
 .wrapper-xs
   .hbox
     .col.thumb-lg
-      div.b-a.bg-light.text-center.m-l-md.m-t.b-primary(style='border-radius: 50%;width:40px;height: 40px;')
+      div.b-a.text-center.m-l-md.m-t.b-primary(style='border-radius: 50%;width:40px;height: 40px;')
         a.m-t-lg.font-lg.text-u-c(
           ng-if='!NavBar.user.profile_photo_url'
           style='color: #5585B9;font-size: 26px;'
           ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen'
-          ng-bind='$ctrl.userInitial'
+          ng-bind='NavBar.userInitial'
         )
         img(
           ng-if='NavBar.user.profile_photo_url'

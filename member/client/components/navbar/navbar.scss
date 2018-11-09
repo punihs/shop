@@ -121,6 +121,12 @@ navbar {
     }
   }
 
+  .bg-primary {
+    .nav > li > a {
+      color: #fff !important;
+    }
+  }
+
   .navbar-brand img {
     margin: 10px 0 0 10px;
     width: 84px;

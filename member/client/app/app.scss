@@ -1021,15 +1021,16 @@ li.dndPlaceholder {
   background-color: white;
   background-position: 10px 10px;
   background-repeat: no-repeat;
-  padding: 1px 32px 6px 25px;
+  padding: 5px 32px 6px 25px;
   -webkit-transition: width 0.4s ease-in-out;
   transition: width 0.4s ease-in-out;
   margin-top: 7px;
+  margin-left: 1px;
 }
 .nav-serach-icon {
   position: absolute;
   margin-left: 12px;
-  margin-top: 14px;
+  margin-top: 18px;
 }
 
 .search-box input {

@@ -22,8 +22,8 @@ class AppController {
       settings: {
         themeID: 1,
         navbarHeaderColor: 'bg-primary dk',
-        navbarCollapseColor: 'bg-info',
-        asideColor: 'bg-info bg-gd-dk',
+        navbarCollapseColor: 'bg-success ',
+        asideColor: 'bg-danger lter',
         headerFixed: true,
         asideFixed: true,
         asideFolded: true,
@@ -96,9 +96,9 @@ class AppController {
   }
 
   updateNavigationBar(currentState, stateParams) {
-    let navbarHeaderColor = 'bg-primary';
-    let navbarCollapseColor = 'bg-info';
-    let asideColor = 'bg-info bg-gd-dk';
+    let navbarHeaderColor = 'bg-primary dk';
+    let navbarCollapseColor = 'bg-primary';
+    let asideColor = 'bg-primary lter';
     if (currentState.startsWith('candidates.') || currentState.startsWith('candidate.')) {
       navbarHeaderColor = stateParams.source === '0' ? 'bg-black' : 'bg-sea-green';
       navbarCollapseColor = stateParams.source === '0' ? 'bg-black' : 'bg-sea-green';

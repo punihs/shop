@@ -6,13 +6,13 @@
     button.pull-right.visible-xs.dk(ng-click='App.hideExt()' ng-if='App.$state.current.name === "extension"')
       i.fa.fa-times
     //- brand
-    a.navbar-brand.text-lt.bg-dark(
+    a.navbar-brand.text-lt.bg-primary(
       style='line-height: 44px;width: 258px;'
       ng-class="{'company-logo' : App.app.settings.isAdmin, 'consultant-logo': !App.app.settings.isAdmin}"
       ui-sref='{{App.$state.current.name !== "extension" ? "dash.packages" : ""}}'
     )
       img.pull-left(style='width: 30px;margin-top: 5px;' src='assets/images/logo.png', alt='{{App.app.name}}')
-      span(style='margin-left: -122px;font-weight: 400;font-size: 18px;' title='{{App.app.name}}') {{App.app.name}}
+      span(style='margin-left: -122px;font-weight: 400;font-size: 18px;color: #fff !important;' title='{{App.app.name}}') {{App.app.name}}
   //- navbar collapse
   .collapse.pos-rlt.navbar-collapse.box-shadow(
     class='{{App.app.settings.navbarCollapseColor}}'
@@ -55,7 +55,7 @@
           popover-placement='bottom-right'
           popover-is-open='NavBar.isProfPopOpen'
           style='padding: 0 10px;'
-        ): div.bg-light.b-info.b-a.text-center(style='height: 30px;width: 30px;border-radius: 50%;')
+        ): div.bg-white.b-primary.b-a.text-center(style='height: 30px;width: 30px;border-radius: 50%;')
             span.text-md.text-u-c(
               ng-if='!NavBar.user.profile_photo_url'
               style='color: #4675b6;line-height: 1.7em;'

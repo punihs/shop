@@ -1,10 +1,11 @@
-.bg-light.lter.b-b.wrapper-md.ng-scope
+.pos-fix.w-full.h-full(style='left:0;top:0;z-index: -1;background: #fff;')
+.wrapper-md
   .wrapper-md.bg-white-only
     .container
       .row
         .col-md-7
           .div-border-create
-            h2.m-n.alert.alert-info 1. DELIVERY ADDRESS
+            h2.m-n.alert.bg-primary.text-white 1. DELIVERY ADDRESS
               span
                 i.fa.fa-info-circle.m-l-xs(
                 uib-popover='Please take extra care to make sure that you have entered the correct address while making an International Shipment. T' +
@@ -21,7 +22,7 @@
               | &nbsp;PH&nbsp; {{$ctrl.shipment.phone}}
 
           div.div-border-create
-            h2.m-n.alert.alert.alert-info.panel-warning 2. SHIPMENT SUMMARY
+            h2.m-n.alert.alert.bg-primary.text-white 2. SHIPMENT SUMMARY
             .col-md-12.div-border-create
               p.m-t-xs {{$ctrl.packages.length}} Packages in this shipment
               .panel.panel-default
@@ -66,15 +67,14 @@
                             tr.odd(role='row')
                               td.sorting_1 {{item.name}}
                               td {{item.quantity}}
-                              td ₹{{item.price_amount | number : 2}}
-                              td ₹{{item.price_amount * item.quantity | number : 2}}
+                              td ₹&nbsp;{{item.price_amount | number : 2}}
+                              td ₹&nbsp;{{item.price_amount * item.quantity | number : 2}}
                   tr.footable-even.table-footer
                     td.footable-visible.footable-first-column
                     td.footable-visible
                     td.footable-visible Shipment Totals
-                    td.footable-visible ₹{{$ctrl.totalpackagePriceAmount | number : 2}}
+                    td.footable-visible ₹&nbsp;{{$ctrl.totalpackagePriceAmount | number : 2}}
                     td.footable-visible {{$ctrl.shipment.final_weight | number :2}} KG
-                    td.footable-visible
           .clearfix
         .col-md-4
           //.row
@@ -95,8 +95,8 @@
           //    button.btn.btn-shoppreng(ng-click='$ctrl.applyPromoCode()')
           //      | Apply
           //h5 Promo Code Applicable on Basic Shipping Costs
-          .panel.panel-info
-            .panel-heading.font-bold.text-u-c SHIPPING CHARGES SUMMARY
+          .panel
+            .panel-heading.font-bold.text-u-c.bg-primary.text-white SHIPPING CHARGES SUMMARY
             .panel-body
               form.form.form-validation.form-horizontal(
               name="newShipmentForm"
@@ -108,11 +108,11 @@
                   li
                     p
                       | Total Value of items
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.value_amount | number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.shipment.value_amount | number : 2}}
                   li
                     p
                       | Total Weight
-                      span.totalvalue.pull-right {{$ctrl.shipment.final_weight | number :2}} KG
+                      span.totalvalue.pull-right.font-bold &nbsp; {{$ctrl.shipment.final_weight | number :2}} KG
                       span(
                       uib-popover = 'All International carriers base their billable shipping rates on the greater of Actual Weight and Dimensional Weight.'+
                       'Actual weight is the weight of the package when put on a scale.'+
@@ -129,16 +129,16 @@
                   li
                     p
                       | Packages Count
-                      span.totalvalue.pull-right {{$ctrl.shipment.packages_count}}
+                      span.totalvalue.pull-right.font-bold &nbsp; {{$ctrl.shipment.packages_count}}
                   li
                     hr
                     p
                       | Sub Total
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.sub_total_amount | number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.shipment.sub_total_amount | number : 2}}
                   li
                     p
                       | Shipping Discount
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.discount_amount| number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.shipment.discount_amount| number : 2}}
                       span(
                       uib-popover = 'Apart from Country-based shipping discounts, Additional discounts may apply to Shoppre Membership Partners and to Shoppre Loyalty Members (Gold and above).'
                       popover-trigger="'mouseenter'"
@@ -149,90 +149,90 @@
                   li(ng-if="$ctrl.wallet === 1  || $ctrl.payment.wallet < 0")
                     p
                       | Shoppre Wallet
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.payment.wallet}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.payment.wallet}}
                         h6(ng-if="$ctrl.payment.wallet > 0") Amount to bededucted
                         h6(ng-if="$ctrl.payment.wallet < 0") Amount to be Added
                   li
                   li(ng-if="$ctrl.shipment.pick_up_charge_amount > 0")
                     p
                       | Pickup Charge
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.pick_up_charge_amount| number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.shipment.pick_up_charge_amount| number : 2}}
                   li
                     hr
                     p
                       | Basic Shipping Costs
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.estimated_amount - $ctrl.shipment.package_level_charges_amount - $ctrl.payment.wallet | number: 2 }}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.shipment.estimated_amount - $ctrl.shipment.package_level_charges_amount - $ctrl.payment.wallet | number: 2 }}
                   .clearfix
-          .panel.panel-info.m-t-md(ng-show="$ctrl.shipment.package_level_charges_amount > 0")
-            .panel-heading.font-bold.text-u-c PACKAGE LEVEL CHARGES SUMMARY
+          .panel.m-t-md(ng-show="$ctrl.shipment.package_level_charges_amount > 0")
+            .panel-heading.font-bold.text-u-c.bg-primary.text-white PACKAGE LEVEL CHARGES SUMMARY
             .panel-body
               form.ng-pristine.ng-valid(role='form')
                 ul.list-group.list-group-lg.m-b-none.list-unstyled
                   li(ng-if="$ctrl.shipmentMeta.repacking_charge_amount > 0")
                     p
                       | Discard shoe boxes
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipmentMeta.repacking_charge_amount| number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.shipmentMeta.repacking_charge_amount| number : 2}}
                   li(ng-if="$ctrl.shipmentMeta.sticker_charge_amount > 0")
                     p
                       | Fragile stikers
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipmentMeta.sticker_charge_amount| number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.shipmentMeta.sticker_charge_amount| number : 2}}
                   li(ng-if="$ctrl.shipmentMeta.extra_packing_charge_amount > 0")
                     p
                       | Extra packing material
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipmentMeta.extra_packing_charge_amount| number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.shipmentMeta.extra_packing_charge_amount| number : 2}}
                   li(ng-if="$ctrl.shipmentMeta.original_ship_box_charge__amount > 0")
                     p
                       | Ship in original boxes
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipmentMeta.original_ship_box_charge_amount| number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.shipmentMeta.original_ship_box_charge_amount| number : 2}}
                   li(ng-if="$ctrl.shipmentMeta.gift_wrap_charge_amount > 0")
                     p
                       | Gift wrap
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipmentMeta.gift_wrap_charge_amount| number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.shipmentMeta.gift_wrap_charge_amount| number : 2}}
                   li(ng-if="$ctrl.shipmentMeta.gift_note_charge_amount > 0")
                     p
                       | Gift note
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipmentMeta.gift_note_charge_amount| number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.shipmentMeta.gift_note_charge_amount| number : 2}}
                   li(ng-if="$ctrl.shipmentMeta.consolidation_charge_amount > 0")
                     p
                       | Package consolidation
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipmentMeta.consolidation_charge_amount| number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.shipmentMeta.consolidation_charge_amount| number : 2}}
                   li(ng-if="$ctrl.shipmentMeta.liquid_charge_amount > 0")
                     p
                       | Special Package Clearance Fee
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipmentMeta.liquid_charge_amount| number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.shipmentMeta.liquid_charge_amount| number : 2}}
                   li(ng-if="$ctrl.shipmentMeta.overweight_charge_amount > 0")
                     p
                       | Overweight Clearance Fee
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipmentMeta.overweight_charge_amount| number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.shipmentMeta.overweight_charge_amount| number : 2}}
                 ul.list-group.list-group-lg.m-b-none.list-unstyled
                   li(ng-if="$ctrl.data.storage_amount > 0")
                     p
                       | Additional Storage Fee
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.storage_amount | number: 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.data.storage_amount | number: 2}}
                   li(ng-if="$ctrl.data.photo_amount")
                     p
                       | Photo Charges
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.photo_amount| number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.data.photo_amount| number : 2}}
                   li(ng-if="$ctrl.data.pickup_amount > 0")
                     p
                       | Pick-up Service
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.pickup_amount| number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.data.pickup_amount| number : 2}}
                   li(ng-if="$ctrl.data.split_package_amount > 0")
                     p
                       | Split Package
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.split_package_amount| number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.data.split_package_amount| number : 2}}
                   li(ng-if="$ctrl.data.special_handling_amount > 0")
                     p
                       | Special Handling Fee
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.special_handling_amount| number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.data.special_handling_amount| number : 2}}
                   li(ng-if="$ctrl.data.receive_mail_amount > 0")
                     p
                       | Special Handling Fee
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.receive_mail_amount| number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.data.receive_mail_amount| number : 2}}
                   li(ng-if="$ctrl.data.scan_document_amount > 0")
                     p
                       | Scan Document
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.scan_document_amount| number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.data.scan_document_amount| number : 2}}
                   li(ng-if="$ctrl.data.wrong_address_amount > 0")
                     p
                       | Address Correction
@@ -241,19 +241,19 @@
                     hr
                     p
                       | Package Level Charges :
-                      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.package_level_charges_amount| number : 2}}
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.shipment.package_level_charges_amount| number : 2}}
                   .clearfix
-          .panel.panel-info.m-t-md
-            .panel-heading.font-bold.text-u-c FINAL CHARGES
+          .panel.m-t-md
+            .panel-heading.font-bold.text-u-c.bg-primary.text-white FINAL CHARGES
             .panel-body
               form.ng-pristine.ng-valid(role='form')
                 ul.list-group.list-group-lg.m-b-none.list-unstyled
                   p
                     | Basic Shipping Costs
-                    span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.estimated_amount - $ctrl.shipment.package_level_charges_amount - $ctrl.payment.wallet| number : 2}}
+                    i.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.shipment.estimated_amount - $ctrl.shipment.package_level_charges_amount - $ctrl.payment.wallet| number : 2}}
                   p
                     | Package Level Charges
-                    span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.package_level_charges_amount| number : 2}}
+                    span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.shipment.package_level_charges_amount| number : 2}}
                     span(
                     uib-popover = 'Shoppre includes all of the service charges (apart from shipping charges) under Package Level Charges. The break-up is as shown above.'
                     popover-trigger="'mouseenter'"
@@ -308,13 +308,14 @@
           //        i
           //        | Shoppre Wallet
           //      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.Customer.wallet_balance_amount| number : 2}}
-          div.final-ship-charge
+          div.final-ship-charge.text-shoppre
             h4 Final Shipping Charges *
-              h4.fa.fa-rupee {{$ctrl.payment.amount| number : 2}}
+              h4
+                i.fa.fa-rupee.m-r-xs
+                span(ng-bind='$ctrl.payment.amount| number : 2')
 
-          button.btn.btn-shoppre(
+          button.btn.btn-success.r-x.font-bold.w-full(
           type='submit',
-          style='width: 100%;font-size: 18px;border-radius: 5px;background: #10c018;font-weight: 900;'
           ng-click='$ctrl.submitPayment()'
           )
             | Proceed to Payment
