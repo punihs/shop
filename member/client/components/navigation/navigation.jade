@@ -1,32 +1,70 @@
 //- list
 ul.nav.navbar-nav.navbar-left
   li.hidden-folded.padder.m-t.m-b-sm.text-muted.text-xs Navigation
-  li.nav-menu-item(ui-sref-active='active'): a.hv(ui-sref='packages.index')
+  li.nav-menu-item(ui-sref-active='active'): a(ui-sref='packages.index')
     i.fa.fa-dashboard.text-white
-    span DASHBOARD
+    span.font-bold  Dashboard
 
-  li.nav-menu-item(ui-sref-active='active' uib-dropdown)
-    a.hv( target='_blank' ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/personal-shopper')
-      i.fa.fa-list-alt.text-white
-      span PERSONAL SHOPPER
+  li.nav-menu-item(ui-sref-active='active')
+    a.font-bold(
+      title='Alert Shoppre about my incoming Packages (Optional)'
+      ui-sref='packages.create'
+    )
+      i.fa.fa-box.text-white
+      span.font-bold Incoming Package
 
-  li.nav-menu-item(ui-sref-active='active' uib-dropdown)
-    a.hv(ng-href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/schedule-pickup?uid={{App.userinfo.id}}')
+  li.nav-menu-item(ui-sref-active='active')
+    a(
+    ui-sref='shipRequests.index'
+    )
       i.fa.fa-list-alt.text-white
-      span SCHEDULE PICKUP
-  li.nav-menu-item(ui-sref-active='active' uib-dropdown)
-      a.hv.custom-dropdown-toggle(uib-dropdown-toggle ng-class='{"hv": $ctrl.getPositionState()}')
-        i.fa.fa-list-alt.text-white
-        span MORE
-        b.text-xs.utf8-caret ▼
-      ul.dropdown-menu.navbar-dropdown-menu(uib-dropdown-menu='', role='menu', aria-labelledby='single-button' style='height: auto !important;top: auto !important;left: auto !important;')
-        li(role='menu')
-          a.hv(ui-sref='shipRequests.history') SHIPMENT HISTORY
-        li(role='menu')
-          a.hv(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/favorite-stores') MY FAVOURITE STORE
-        li(role='menu')
-          a.hv(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/loyalty-points') MY LOYALTY POINTS
-        li(role='menu')
-          a.hv(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/refer-a-friend') REFER A FRIEND
+      span.font-bold  Shipment Queue
+  li.nav-menu-item(ui-sref-active='active')
+    a(target='_blank' ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/personal-shopper')
+      i.fa.fa-list-alt.text-white
+      span.font-bold  Personal Shopper
+
+  li.nav-menu-item(ui-sref-active='active')
+    a(target='_blank' ng-href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/schedule-pickup?uid={{App.userinfo.id}}')
+      i.fa.fa-list-alt.text-white
+      span.font-bold  Schedule Pickup
+  li.nav-menu-item(ui-sref-active='active')
+    a(ui-sref='shipRequests.history')
+      i.fa.fa-list-alt.text-white
+      span.font-bold  Shipment History
+  li.nav-menu-item(ui-sref-active='active')
+    a(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/favorite-stores')
+      i.fa.fa-list-alt.text-white
+      span.font-bold  My Favourite Store
+  li.nav-menu-item(ui-sref-active='active')
+    a(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/loyalty-points')
+      i.fa.fa-list-alt.text-white
+      span.font-bold  My Loyalty Points
+  li.nav-menu-item(ui-sref-active='active')
+    a(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/refer-a-friend')
+      i.fa.fa-list-alt.text-white
+      span.font-bold  Refer a Friend
+  li.nav-menu-item(ui-sref-active='active')
+    a(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/country-guide')
+      i.fa.fa-list-alt.text-white
+      span.font-bold  Country Guides
+  li.nav-menu-item(ui-sref-active='active')
+    a(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/browse-categories')
+      i.fa.fa-list-alt.text-white
+      span.font-bold  Brands you love
+  li.nav-menu-item(ui-sref-active='active')
+    a(ng-href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/services')
+      i.fa.fa-list-alt.text-white
+      span.font-bold  Our Services
+  li.nav-menu-item(ui-sref-active='active')
+    a(ui-sref='users.address-index')
+      i.fa.fa-list-alt.text-white
+      span.font-bold  Address Book
+  li.nav-menu-item(ui-sref-active='active')
+    a(ng-href='https://blog.{{App.URLS.DOMAIN}}')
+      i.fa.fa-list-alt.text-white
+      span.font-bold  Blog
+
+
 
 

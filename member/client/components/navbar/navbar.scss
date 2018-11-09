@@ -1,26 +1,11 @@
 navbar {
   background-image: url('https://myaccount.shoppre.com/img/top-bar.jpg');
-  .navbar-collapse {
-    margin-left: 240px !important;
-  }
+
 
   .hv, .n-hv{
     font-weight:400 !important;
     font-size: 13px !important;
     letter-spacing: 0.06em;
-  }
-
-  .nav {
-      >li {
-        >a.hv, a.n-hv {
-          &:hover {
-            position: relative;
-            color: #fff;
-            text-decoration: none;
-            background: transparent !important;
-          }
-        }
-    }
   }
 
   span.career-icon {

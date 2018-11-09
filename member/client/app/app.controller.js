@@ -17,7 +17,7 @@ class AppController {
     this.userinfo = this.Session.read('userinfo');
     this.states = this.Session.read('states');
     this.app = {
-      name: 'MEMBER',
+      name: 'Parcel',
       version: '0.0.1',
       settings: {
         themeID: 1,
@@ -26,8 +26,8 @@ class AppController {
         asideColor: 'bg-danger lter',
         headerFixed: true,
         asideFixed: true,
-        asideFolded: true,
-        asideDock: true,
+        asideFolded: false,
+        asideDock: false,
         container: false,
         offScreen: false, // flag for show of sidebar for mobile view
         mobileHeader: false, // flag to show header Nav and Search in mobile view

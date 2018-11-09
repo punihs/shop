@@ -1,7 +1,7 @@
 $icon-font-path: "../bower_components/bootstrap-sass/assets/fonts/bootstrap/";
 //@import '../bower_components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
 $fa-font-path: "../bower_components/font-awesome/fonts";
-@import '../bower_components/font-awesome/scss/font-awesome';
+@import '../bower_components/font-awesome/web-fonts-with-css/scss/fontawesome';
 @import '../../../angulr/main';
 
 /**
@@ -44,6 +44,10 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 .loyalty-image{max-width:45%}
 .user-category span,.howto-earn h3,.pointsto-cash h3,.howto-earn a{
   color:#fe9611
+}
+
+.navi ul.nav li {
+  width: 200px;
 }
 
 .loyalty-points{
