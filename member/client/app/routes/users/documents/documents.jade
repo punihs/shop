@@ -6,11 +6,11 @@ div.m-t-xl.no-margin
       hr
       p.no-margin Please upload any documents requested by Shoppre to validate your account (For example, your photo identification, etc.).
         | Please do not upload invoices here. Seller invoices can be uploaded to your packages in My Locker.
-      form.form.form-validation.form-horizontal.wrapper-md(
-      name="documentForm"
-      novalidate
-      ng-submit='$ctrl.create(documentForm)'
-      autocomplete='off'
+      form.form.form-validation.form-horizontal.m-t(
+        name="documentForm"
+        novalidate
+        ng-submit='$ctrl.create(documentForm)'
+        autocomplete='off'
       )
         .row
           .col-md-4.col-sm-2.col-xs-12
@@ -18,11 +18,11 @@ div.m-t-xl.no-margin
               | Document Description
               span.text-danger *
               input.form.form-control(
-              type='text'
-              name='description'
-              placeholder='eg. for feedback'
-              ng-model='$ctrl.data.description'
-              required
+                type='text'
+                name='description'
+                placeholder='eg. for feedback'
+                ng-model='$ctrl.data.description'
+                required
               )
               span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && documentForm.description.$dirty && documentForm.description.$invalid') Please enter document description
         .row
@@ -63,7 +63,7 @@ div.m-t-xl.no-margin
           .col-md-6.col-xs-12
             h4(ng-bind="$ctrl.error.message" style="color:red;")
             button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting")
-              span.fa.fa-forward.m-r-sm
+              i.fas.fa-save.m-r-sm
               span.text-white(ng-if='!$ctrl.submitting') Save Changes
               span(ng-if='$ctrl.submitting')
                 i.fa.fa-spin.fa-circle-o-notch

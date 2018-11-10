@@ -23,8 +23,7 @@ div.m-t-xl.no-margin
         .row
           .col-md-12.col-sm-12.col-xs-12.no-padder
             h4 Contact Information
-            .col-md-11
-
+            div
               .row
                 .col-md-12.col-sm-12.col-xs-12
                   h5 PRIMARY ACCOUNT HOLDER NAME
@@ -104,38 +103,31 @@ div.m-t-xl.no-margin
                     span.wrapper-xs.text-xs.text-danger(
                     ng-show='$ctrl.clickUpload && profileForm.alternate_email.$dirty && profileForm.alternate_email.$invalid'
                     ) Please enter Alternate Email
+              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
               .row
                 .col-md-12.col-sm-12.col-xs-12
                   h5 PHONE NUMBERS
               .row
-                .col-md-7.col-sm-7.col-xs-12
-                  label.col-xs-12.input-group
-                    | Primary Phone / Mobile Number
+                .col-xs-12
+                  .col-md-4.col-sm-6.col-xs-12
+                    .form-group
+                      label.input-group Primary Phone / Mobile Number
+                      input#tel.form-control(type='text', name='phone', ng-model='$ctrl.data.phone', ng-intl-tel-input='')
+                      span.help-block(ng-show='profileForm.phone.$pristine && profileForm.phone.$touched') Please type a telephone number
+                      span.help-block(ng-show='profileForm.phone.$invalid && profileForm.phone.$touched') Invalid :(
+                      span.help-block(ng-show='profileForm.phone.$valid && profileForm.phone.$touched') Valid :)
+                  .col-md-4.col-sm-6.col-xs-12
+                    .form-group
+                      label.input-group Secondary Phone / Mobile Number
+                      input#tel1.form-control(type='text', name='secondary_phone', ng-model='$ctrl.data.secondary_phone', ng-intl-tel-input='')
+                      span.help-block(ng-show='profileForm.secondary_phone.$pristine && profileForm.secondary_phone.$touched') Please type a telephone number
+                      span.help-block(ng-show='profileForm.secondary_phone.$invalid && profileForm.secondary_phone.$touched') Invalid :(
+                      span.help-block(ng-show='profileForm.secondary_phone.$valid && profileForm.secondary_phone.$touched') Valid :)
               .row
-                .col-md-4.col-sm-5.col-xs-12
-                  input#tel.form-control(type='text', name='phone', ng-model='$ctrl.data.phone', ng-intl-tel-input='')
-                  span.help-block(ng-show='profileForm.phone.$pristine && profileForm.phone.$touched') Please type a telephone number
-                  span.help-block(ng-show='profileForm.phone.$invalid && profileForm.phone.$touched') Invalid :(
-                  span.help-block(ng-show='profileForm.phone.$valid && profileForm.phone.$touched') Valid :)
-
-              .row
-                .col-md-7.col-sm-7.col-xs-12
-                  label.col-xs-12.input-group
-                    | Secondary Phone / Mobile Number
-              .row
-                .col-md-4.col-sm-5.col-xs-12
-                  input#tel1.form-control(type='text', name='secondary_phone', ng-model='$ctrl.data.secondary_phone', ng-intl-tel-input='')
-                  span.help-block(ng-show='profileForm.secondary_phone.$pristine && profileForm.secondary_phone.$touched') Please type a telephone number
-                  span.help-block(ng-show='profileForm.secondary_phone.$invalid && profileForm.secondary_phone.$touched') Invalid :(
-                  span.help-block(ng-show='profileForm.secondary_phone.$valid && profileForm.secondary_phone.$touched') Valid :)
-
-
-
-              .row
-                .col-md-6.col-xs-12
+                .col-md-6.col-xs-12.col-sm-12
                   h4(ng-bind="$ctrl.error.message" style="color:red;")
                   button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting")
-                    i.fa.fa-check-circle-o.m-r-xs(ng-if='!$ctrl.submitting')
+                    i.fas.fa-save.m-r-xs(ng-if='!$ctrl.submitting')
                     span.text-white(ng-if='!$ctrl.submitting') Save Changes
                     span(ng-if='$ctrl.submitting')
                       i.fa.fa-spin.fa-circle-o-notch

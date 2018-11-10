@@ -1,5 +1,3 @@
-
-
 class PasswordChangeController {
   /* @ngInject*/
   constructor($http, toaster, Page, $stateParams, $cookies, Session) {
@@ -12,12 +10,7 @@ class PasswordChangeController {
     this.$http = $http;
     this.$stateParams = $stateParams;
     this.$cookies = $cookies;
-    this.$onInit();
     this.id = this.$stateParams.id;
-  }
-
-  $onInit() {
-
   }
 
   validateForm(form) {

@@ -1,3 +1,4 @@
+.bg-white-only.pos-abt.h-full.w-full(style='top:0;left:0;z-index: -1;')
 div
   .hbox(before-bottom='$ctrl.loadPackages()' style="position:relative")
 
@@ -40,20 +41,17 @@ div
       .m-t-xxl.m-b-md(style='height: 1px;')
       .m-t-xxl.m-b-md(style='height: 1px;')
         .hbox
-          .col-md-12
-
+          .col-md-12.bg-white-only.m-t-n-md
             div
-              .h1.m-l-md.font-thin.h3
-                ul.nav.nav-pills.nav-sm.pull-right
-                  li.m-r-xs.pull-right
-                    a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
-                      ui-sref='users.address-create'
-                      popover-trigger="'mouseenter'"
-                      popover-placement='bottom'
-                      popover-append-to-body='true'
-                    )
-                      span.fa.fa-plus.m-r-sm
-                      span Add New Shipping Address
+              .pull-right
+                a.btn-success.btn(
+                  ui-sref='users.address-create'
+                  popover-trigger="'mouseenter'"
+                  popover-placement='bottom'
+                  popover-append-to-body='true'
+                )
+                  i.fas.fa-plus.m-r-sm
+                  span Add New Shipping Address
 
             .col-xs-12(style='padding: 10px;')
               .col-xs-12(ng-show='$ctrl.addresses.length === 0 && !$ctrl.ui.loading')
@@ -99,6 +97,6 @@ div
                     )
                     span.label.pull-left.padding-5.m-t-xs.bg-primary(ng-if='address.is_default') DEFAULT SHIPPING ADDRESS
                     button.pull-right.m-t-xxs.btn-xs.btn-info(ng-click='$ctrl.destroy(address, $index)')
-                      i.fa.fa-trash-o
+                      i.fas.fa-trash
 
-            .clearfix
+            .clearfix.bg-white-only
