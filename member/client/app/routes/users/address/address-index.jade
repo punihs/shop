@@ -1,64 +1,105 @@
-div.m-t-xl.no-margin
-  .hbox
-    .wrapper-md.bg-white-only
-      div
-        .h1.m-l-md.font-thin.h3
-          | Address Book
-          ul.nav.nav-pills.nav-sm.pull-right
-            li.m-r-xs.pull-right
-              a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
-                ui-sref='users.address-create'
-                popover-trigger="'mouseenter'"
-                popover-placement='bottom'
-                popover-append-to-body='true'
-              )
-                span.fa.fa-plus.m-r-sm
-                span Add New Shipping Address
+div
+  .hbox(before-bottom='$ctrl.loadPackages()' style="position:relative")
 
-      .col-xs-12(style='padding: 10px;')
-        .col-xs-12(ng-show='$ctrl.addresses.length === 0 && !$ctrl.ui.loading')
-          td(colspan="5")
-            h1.text-center.text-muted Start Adding Addresses to your Address Book
-            br
-            br
-            br
-            br
-            br
-            br
-            br
-            br
-            br
-            br
-      hr
-      .well.m-t.m-l.bg-light.col-md-3.hover-wrap.address-box-height(ng-repeat='address in $ctrl.addresses' ng-class='address.is_default ? "dker": "lt"')
-        .row
-          .col-xs-12
-            h4
-              span.font-thin(ng-bind='(address.city ? address.city.toUpperCase() : "") + " Address"')
-              span.flag-icon.m-l-xs(
-                ng-class='"flag-icon-"+ address.Country.iso2.toLowerCase()'
-              )
-              span.pull-right.font-thin.pointer.m-t.display-on-hover(ui-sref='users.address-edit({ id: address.id })')
-                span.fa.fa-edit.m-l-xs
-                | &nbsp;EDIT
+    // - Primary Header
+    .bg-white-only.w-full.b-b(style='position: fixed;z-index: 6;height: 40px;')
+      .pull-left.wrapper-sm.no-padder-top
+        span.h4.text-info
+          | Packages in locker&nbsp;
+          span.font-bold(ng-bind='$ctrl.user.virtual_address_code')
+    .bg-light
+      storage-limit(data='$ctrl.user')
 
-            strong(ng-bind='address.first_name + " " + address.last_name')
 
-            p
-              small.block(ng-bind='address.line1')
-              small.block(ng-bind='address.line2')
-              small.block(ng-bind='address.city + ", " + address.state')
-              small(ng-bind='address.Country.name')
-              span(
-                ng-if='address.pincode'
-                ng-bind='" - " + address.pincode'
-              )
-              small.block(
-                ng-if='address.phone'
-                ng-bind='address.phone'
-              )
-              span.label.pull-left.padding-5.m-t-xs.bg-primary(ng-if='address.is_default') DEFAULT SHIPPING ADDRESS
-              button.pull-right.m-t-xxs.btn-xs.btn-info(ng-click='$ctrl.destroy(address, $index)')
-                i.fa.fa-trash-o
 
-      .clearfix
+    // - Secondary Header
+    .bg-light.b-b.padder.w-full.bg-white-only.m-t-xl(
+    style='position:fixed;z-index: 6;height: 42px;'
+    )
+      ul.nav.nav-pills.nav-sm.m-t-xs
+        li(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active" ng-show="$ctrl.buckets")
+          a(
+          ui-sref='packages.index({ bucket: bucket })'
+          ng-bind='$ctrl.replaceCharWithSpace(bucket, "_")'
+          style='padding: 6px 9px;'
+          )
+
+    div(style='position: fixed;right: 5px;z-index: 9;margin-top: 5px;')
+      ul.nav.nav-pills.nav-sm
+        li.m-r-xs.pull-right
+          a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
+          ui-sref='packages.create'
+          uib-popover="Alert ShoppRe Team about your Order"
+          popover-trigger="'mouseenter'"
+          popover-placement='bottom'
+          popover-append-to-body='true'
+          )
+            span Add Incoming Package
+    // - Content Area
+    .bg-light(style='min-height: 200px;')
+      .m-t-xxl.m-b-md(style='height: 1px;')
+      .m-t-xxl.m-b-md(style='height: 1px;')
+        .hbox
+          .col-md-12
+
+            div
+              .h1.m-l-md.font-thin.h3
+                |
+                ul.nav.nav-pills.nav-sm.pull-right
+                  li.m-r-xs.pull-right
+                    a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
+                      ui-sref='users.address-create'
+                      popover-trigger="'mouseenter'"
+                      popover-placement='bottom'
+                      popover-append-to-body='true'
+                    )
+                      span.fa.fa-plus.m-r-sm
+                      span Add New Shipping Address
+
+            .col-xs-12(style='padding: 10px;')
+              .col-xs-12(ng-show='$ctrl.addresses.length === 0 && !$ctrl.ui.loading')
+                td(colspan="5")
+                  h1.text-center.text-muted Start Adding Addresses to your Address Book
+                  br
+                  br
+                  br
+                  br
+                  br
+                  br
+                  br
+                  br
+                  br
+                  br
+            hr
+            .well.m-t.m-l.bg-light.col-md-3.hover-wrap.address-box-height(ng-repeat='address in $ctrl.addresses' ng-class='address.is_default ? "dker": "lt"')
+              .row
+                .col-xs-12
+                  h4
+                    span.font-thin(ng-bind='(address.city ? address.city.toUpperCase() : "") + " Address"')
+                    span.flag-icon.m-l-xs(
+                      ng-class='"flag-icon-"+ address.Country.iso2.toLowerCase()'
+                    )
+                    span.pull-right.font-thin.pointer.m-t.display-on-hover(ui-sref='users.address-edit({ id: address.id })')
+                      span.fa.fa-edit.m-l-xs
+                      | &nbsp;EDIT
+
+                  strong(ng-bind='address.first_name + " " + address.last_name')
+
+                  p
+                    small.block(ng-bind='address.line1')
+                    small.block(ng-bind='address.line2')
+                    small.block(ng-bind='address.city + ", " + address.state')
+                    small(ng-bind='address.Country.name')
+                    span(
+                      ng-if='address.pincode'
+                      ng-bind='" - " + address.pincode'
+                    )
+                    small.block(
+                      ng-if='address.phone'
+                      ng-bind='address.phone'
+                    )
+                    span.label.pull-left.padding-5.m-t-xs.bg-primary(ng-if='address.is_default') DEFAULT SHIPPING ADDRESS
+                    button.pull-right.m-t-xxs.btn-xs.btn-info(ng-click='$ctrl.destroy(address, $index)')
+                      i.fa.fa-trash-o
+
+            .clearfix

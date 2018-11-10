@@ -1,7 +1,9 @@
-$icon-font-path: "../bower_components/bootstrap-sass/assets/fonts/bootstrap/";
+$icon-font-path: "/bower_components/bootstrap-sass/assets/fonts/bootstrap/";
 //@import '../bower_components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
-$fa-font-path: "../bower_components/font-awesome/fonts";
-@import '../bower_components/font-awesome/scss/font-awesome';
+$fa-font-path: "../bower_components/font-awesome/webfonts";
+@import '../bower_components/font-awesome/scss/fontawesome';
+@import '../bower_components/font-awesome/scss/solid';
+@import '../bower_components/font-awesome/scss/brands';
 @import '../../../angulr/main';
 
 /**

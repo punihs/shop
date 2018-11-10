@@ -5,7 +5,7 @@ angular.module('uiGenApp')
       .state('users', {
         abstract: true,
         url: '/users',
-        templateUrl: 'app/routes/users/users.html',
+        template: '<div ui-view=""></div>',
       })
       .state('users.profile', {
         url: '/profile',

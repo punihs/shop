@@ -5,7 +5,7 @@
     "angular": "~1.4.8",
     "moment": "~2.10.6",
     "ui-select": "angular-ui-select#~0.13.2",
-    "font-awesome": "fontawesome#~4.5.0",
+    "font-awesome": "git@github.com:shoppre/fonts-awesome.git",
     "animate.css": "animate-css#~3.4.0",
     "source-sans-pro": "git://github.com/adobe-fonts/source-sans-pro.git#release",
     "angular-http-auth": "~1.2.3",
