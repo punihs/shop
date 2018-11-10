@@ -26,6 +26,7 @@ $fa-font-path: "../bower_components/font-awesome/webfonts";
 @import 'routes/access/access.scss';
 @import 'routes/dashboard/index/hover.scss';
 @import 'routes/packages/create/create.scss';
+@import 'routes/packages/index/index.scss';
 @import 'routes/users/users.scss';
 @import '../components/footer/footer.scss';
 @import '../components/navbar/navbar.scss';
@@ -52,7 +53,7 @@ $fa-font-path: "../bower_components/font-awesome/webfonts";
 }
 
 .navi ul.nav li {
-  width: 200px;
+  width: 210px;
 }
 
 .loyalty-points{

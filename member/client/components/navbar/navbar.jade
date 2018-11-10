@@ -17,7 +17,11 @@
       ng-class="{'company-logo' : App.app.settings.isAdmin, 'consultant-logo': !App.app.settings.isAdmin}"
       ui-sref='{{App.$state.current.name !== "extension" ? "dash.packages" : ""}}'
     )
-      img.pull-left(style='width: 30px;margin-top: 5px;' src='assets/images/logo.png', alt='{{App.app.name}}')
+      img.pull-left(
+        style='width: 30px;margin-top: 7px;margin-left: 15px;'
+        src='assets/images/logo.png',
+        alt='{{App.app.name}}'
+        )
       span.m-l(
         ng-bind='App.app.name'
         style='font-weight: 600;font-size: 30px;color: #fff !important;'
@@ -36,7 +40,6 @@
         i.icon-user.fa-fw
     //ng-focus="App.openSearchCandidate($event)"
 
-    aside
     .col-sm-5.col-md-2.hide: form.w-full.navbar-form.no-padder(role='search' ng-if="!App.userinfo.isBlocked")
 
 

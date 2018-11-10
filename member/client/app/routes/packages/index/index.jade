@@ -4,7 +4,7 @@ div
     // - Primary Header
     .bg-white-only.w-full.b-b(style='position: fixed;z-index: 6;height: 40px;')
       .pull-left.wrapper-sm.no-padder-top
-        span.h4.text-info
+        span.h4
           | Packages in locker&nbsp;
           span.font-bold(ng-bind='$ctrl.user.virtual_address_code')
     .bg-light
@@ -15,18 +15,20 @@ div
     .bg-light.b-b.padder.w-full.bg-white-only.m-t-xl(
       style='position:fixed;z-index: 6;height: 42px;'
     )
-      ul.nav.nav-pills.nav-sm.m-t-xs
+      ul.nav.nav-pills.nav-sm.m-t-xs.shoppre-nav-pills
         li(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active" ng-show="$ctrl.buckets")
           a(
            ui-sref='packages.index({ bucket: bucket })'
-           ng-bind='$ctrl.replaceCharWithSpace(bucket, "_")'
            style='padding: 6px 9px;'
           )
+            span(ng-bind='$ctrl.replaceCharWithSpace(bucket, "_")')
+            span.badge.bg-info.pull-right(ng-bind='$ctrl.facets[bucket]')
 
     div(style='position: fixed;right: 5px;z-index: 9;margin-top: 5px;')
       ul.nav.nav-pills.nav-sm
+      ul.nav.nav-pills.nav-sm
         li.m-r-xs.pull-right
-          a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
+          a.h5.font-bold.b-a.btn-addon.btn-info.text-white-only.b-info.imp(
             ui-sref='packages.create'
             uib-popover="Alert ShoppRe Team about your Order"
             popover-trigger="'mouseenter'"
@@ -94,8 +96,6 @@ div
                           th.footable-visible.footable-sortable
                             | From
                             span.footable-sort-indicator
-                          th.footable-visible.footable-sortable(data-hide='phone,tablet')
-                            | Package ID
                             span.footable-sort-indicator
                           th.footable-visible.footable-sortable(data-hide='phone,tablet', data-name='Date Of Birth')
                             | Date Recieved
@@ -125,12 +125,12 @@ div
                           td.footable-visible.footable-first-column(ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]')
                             i.fa.fa-sort-desc
                           td.footable-visible
-                            a(ui-sref='package.show({ id: package.id })' ng-bind='package.Store.name')
+                            a(ui-sref='package.show({ id: package.id })' ng-bind='package.Store.name' title='{{package.id}}')
                             br
-                            span.text-info {{package.invoice_code}}
-                          td.footable-visible {{package.id}}
+                            span.text-info(ng-bind='package.invoice_code')
                             span.badge.bg-success.m-l-xs(ng-if='package.content_type === "2"') SPECIAL
                             span.badge.bg-danger.m-l-xs(ng-if='package.damaged') DAMAGED
+
                           td.footable-visible(
                             uib-tooltip="{{$ctrl.moment(package.created_at).fromNow()}} IST {{package.created_at | date:'h:mm a'}}"
                             tooltip-placement='right'

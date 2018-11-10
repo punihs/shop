@@ -71,6 +71,7 @@
     'container':App.app.settings.container      }" class="app">
   <!--<header>-->
   <navbar></navbar> <!--<div ng-include="'html/blocks/header.html'" class="app-header navbar"></div>-->
+  <aside></aside>
   <!--</header>-->
   <content>
     <div class="app-content" ng-class="{'m-t-xl': App.app.settings.isAdmin}">
@@ -145,7 +146,7 @@
 <!-- build:js(.tmp) app/app.js -->
 <script src="app/app.js"></script>
 <!-- injector:js -->
-<script src="app/factories/session.js"></script>
+<script src="app/factories/qui.components/scroll.to.bottom.js"></script>
 <script src="app/app.constant.js"></script>
 <script src="app/directives/add-comments/add-comments.service.js"></script>
 <script src="app/directives/address/address.service.js"></script>
@@ -181,8 +182,8 @@
 <script src="app/factories/qui.components/contenteditable.js"></script>
 <script src="app/factories/qui.components/form.js"></script>
 <script src="app/factories/qui.components/keypress.js"></script>
-<script src="app/factories/qui.components/scroll.to.bottom.js"></script>
 <script src="app/app.controller.js"></script>
+<script src="app/factories/session.js"></script>
 <script src="app/factories/user.js"></script>
 <script src="app/routes/access/access.js"></script>
 <script src="app/routes/access/oauth/oauth.controller.js"></script>
@@ -217,7 +218,6 @@
 <script src="components/navbar/navbar.directive.js"></script>
 <script src="components/navigation/navigation.controller.js"></script>
 <script src="components/navigation/navigation.directive.js"></script>
-<script src="components/shipment-nav/shipment-nav.directive.js"></script>
 <script src="components/socket/socket.service.js"></script>
 <!-- endinjector -->
 <!-- endbuild -->
