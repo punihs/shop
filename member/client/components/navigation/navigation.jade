@@ -1,23 +1,26 @@
 //- list
 ul.nav.navbar-nav.navbar-left
   li.hidden-folded.padder.m-t.m-b-sm.text-muted.text-xs Navigation
-  li.nav-menu-item(ui-sref-active='active'): a(ui-sref='packages.index')
+  li.nav-menu-item(ui-sref-active='active'): a(ui-sref='dashboard.index')
     i.fa.fa-dashboard.text-white
     span.font-bold  Dashboard
+  li.nav-menu-item(ui-sref-active='active'): a(ui-sref='packages.index')
+    i.fa.fa-dashboard.text-white
+    span.font-bold  Packages
 
   li.nav-menu-item(ui-sref-active='active')
     a.font-bold(
       title='Alert Shoppre about my incoming Packages (Optional)'
       ui-sref='packages.create'
     )
-      i.fa.fa-box.text-white
+      i.fa.cubes-box.text-white
       span.font-bold Incoming Package
 
   li.nav-menu-item(ui-sref-active='active')
     a(
     ui-sref='shipRequests.index'
     )
-      i.fa.fa-list-alt.text-white
+      i.fa.fa-dropbox.text-white
       span.font-bold  Shipment Queue
   li.nav-menu-item(ui-sref-active='active')
     a(target='_blank' ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/personal-shopper')

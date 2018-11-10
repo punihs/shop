@@ -8,7 +8,7 @@ angular.module('uiGenApp')
         template: '<div ui-view=""></div>',
       })
       .state('shipRequests.index', {
-        url: '/',
+        url: '',
         templateUrl: 'app/routes/shipRequests/index/index.html',
         controller: 'ShipRequestsIndexController',
         controllerAs: '$ctrl',

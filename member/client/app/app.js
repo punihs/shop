@@ -26,21 +26,11 @@ angular
     'ngAnimate',
     'ui.router',
     'ui.bootstrap',
-    'mwl.calendar',
-    'chart.js',
     'ngFileUpload',
     'angular-loading-bar',
-    'easypiechart',
-    'scrollable-table',
     'naif.base64',
-    'rzModule',
     'toaster',
     'ngclipboard',
-    'isteven-multi-select',
-    'dndLists',
-    'ngSanitize',
-    'ngCookies',
-    // 'btford.socket-io',
     'ngIntlTelInput',
     'ngRaven',
   ])
@@ -54,7 +44,7 @@ angular
       utilsScript: '/bower_components/intl-tel-input/build/js/utils.js',
     });
 
-    $urlRouterProvider.when('/', '/packages');
+    $urlRouterProvider.when('/', '/dashboard');
     $urlRouterProvider.otherwise(($injector) => $injector.get('$state').go('access.404'));
 
     $locationProvider.html5Mode(true);

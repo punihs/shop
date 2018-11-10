@@ -16,18 +16,18 @@ div.m-t-xl.no-margin
             .row
               .col-md-2.col-sm-2.col-xs-12.right-pad-0
                 label.input-group
-                  | Salutation
+                  | Title
                   span.text-danger *
                   select.form.form-control.no-padder(
                   ng-model='$ctrl.data.salutation'
                   name='salutation'
                   required
                   )
-                    option(value='') Salutation
+                    option(value='') Title
                     option Mr
                     option Ms
                     option Mrs
-              span.wrapper-xs.text-xs.text-danger.salution-danger(ng-show='$ctrl.clickUpload && newAddressForm.salutation.$dirty && newAddressForm.salutation.$invalid') Enter Salutation
+              span.wrapper-xs.text-xs.text-danger.salution-danger(ng-show='$ctrl.clickUpload && newAddressForm.salutation.$dirty && newAddressForm.salutation.$invalid') Enter Title
               .col-md-4.col-sm-5.col-xs-12.right-pad-0
                 label.col-xs-12.input-group
                   | First Name

@@ -32,17 +32,17 @@ div.m-t-xl.no-margin
               .row
                 .col-md-2.col-sm-2.col-xs-12
                   label.col-xs-12.input-group
-                    | Salutation
+                    | Title
                     select.form.form-control(
                       ng-model='$ctrl.data.salutation'
                       name='salutation'
                       required
                     )
-                      option(value='') Salutation
+                      option(value='') Title
                       option Mr
                       option Ms
                       option Mrs
-                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.salutation.$dirty && profileForm.salutation.$invalid') Please select Salutation
+                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.salutation.$dirty && profileForm.salutation.$invalid') Please select Title
 
                 .col-md-4.col-sm-5.col-xs-12.no-padder
                   label.col-xs-12.input-group

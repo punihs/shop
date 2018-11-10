@@ -1,0 +1,9 @@
+.hover-target {
+  display: none !important;
+}
+
+.hover-wrap:hover {
+  .hover-target {
+    display: inline-block !important;
+  }
+}

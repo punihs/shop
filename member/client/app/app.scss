@@ -1,7 +1,7 @@
 $icon-font-path: "../bower_components/bootstrap-sass/assets/fonts/bootstrap/";
 //@import '../bower_components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
 $fa-font-path: "../bower_components/font-awesome/fonts";
-@import '../bower_components/font-awesome/web-fonts-with-css/scss/fontawesome';
+@import '../bower_components/font-awesome/scss/font-awesome';
 @import '../../../angulr/main';
 
 /**
@@ -21,7 +21,9 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 @import 'directives/directive-header/directive-header.scss';
 @import 'directives/package-filter/package-filter.scss';
 @import 'directives/shipment-filter/shipment-filter.scss';
+@import 'directives/sub-header/sub-header.scss';
 @import 'routes/access/access.scss';
+@import 'routes/dashboard/index/hover.scss';
 @import 'routes/packages/create/create.scss';
 @import 'routes/users/users.scss';
 @import '../components/footer/footer.scss';
@@ -35,7 +37,9 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 }
 .invisible{visibility: hidden}
 .height-21{height:21.5em;}
-
+.wrapper-parcel {
+  min-height: 73vh;
+}
 .btn.icon {
   padding: 5px 10px;
   margin-left: 3px;
