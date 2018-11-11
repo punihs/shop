@@ -199,7 +199,7 @@ class PackagesIndexController {
   }
 
   copied() {
-    this.toaster.pop('info', 'Copied');
+    this.toaster.pop('success', 'Copied');
   }
 
   getList() {

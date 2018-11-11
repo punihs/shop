@@ -40,13 +40,18 @@ $fa-font-path: "../bower_components/font-awesome/webfonts";
 .invisible{visibility: hidden}
 .height-21{height:21.5em;}
 .wrapper-parcel {
-  min-height: 73vh;
+  min-height: 82vh;
 }
 .btn.icon {
   padding: 5px 10px;
   margin-left: 3px;
   margin-right: 3px;
 }
+
+.no-padder-left {
+  padding-left: 0;
+}
+
 .loyalty-image{max-width:45%}
 .user-category span,.howto-earn h3,.pointsto-cash h3,.howto-earn a{
   color:#fe9611

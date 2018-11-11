@@ -1,5 +1,5 @@
 div
-  .hbox(before-bottom='$ctrl.loadPackages()' style="position:relative")
+  .hbox(style="position:relative")
 
     // - Primary Header
     .bg-white-only.w-full.b-b(style='position: fixed;z-index: 6;height: 40px;')
@@ -25,16 +25,18 @@ div
           )
             span  Change Password
 
+
     // - Content Area
     .bg-light(style='min-height: 200px;')
       .m-t-xxl.m-b-lg(style='height: 1px;')
       .hbox
-        .wrapper-md.bg-white-only.parcel-wrapper
+        .wrapper-md.bg-white-only.wrapper-parcel
           .col-md-12
             form.form.form-validation.form-horizontal(
               name="profileForm"
               novalidate
               ng-submit='$ctrl.create(profileForm)'
+              autocomplete='off'
             )
               .col-md-12.col-sm-12.col-xs-12.no-padder
                 .row
@@ -122,21 +124,21 @@ div
                     h5 PHONE NUMBERS
                 .row
                   .col-xs-12
-                    .col-md-4.col-sm-6.col-xs-12
-                      .form-group
-                        label.input-group Primary Phone / Mobile Number
+                    .col-md-4.col-sm-6.col-xs-12.no-padder-left
+                      label.col-xs-12.input-group
+                        | Primary Phone / Mobile Number
                         input#tel.form-control(type='text', name='phone', ng-model='$ctrl.data.phone', ng-intl-tel-input='')
                         span.help-block(ng-show='profileForm.phone.$pristine && profileForm.phone.$touched') Please type a telephone number
                         span.help-block(ng-show='profileForm.phone.$invalid && profileForm.phone.$touched') Invalid :(
                         span.help-block(ng-show='profileForm.phone.$valid && profileForm.phone.$touched') Valid :)
                     .col-md-4.col-sm-6.col-xs-12
-                      .form-group
-                        label.input-group Secondary Phone / Mobile Number
+                      label.col-xs-12.input-group
+                        | Secondary Phone / Mobile Number
                         input#tel1.form-control(type='text', name='secondary_phone', ng-model='$ctrl.data.secondary_phone', ng-intl-tel-input='')
                         span.help-block(ng-show='profileForm.secondary_phone.$pristine && profileForm.secondary_phone.$touched') Please type a telephone number
                         span.help-block(ng-show='profileForm.secondary_phone.$invalid && profileForm.secondary_phone.$touched') Invalid :(
                         span.help-block(ng-show='profileForm.secondary_phone.$valid && profileForm.secondary_phone.$touched') Valid :)
-                .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+                .line.line-dashed.b-b.line-lg.pull-in(style='margin: 0 0 5px 0;')
                 .row
                   .col-md-6.col-xs-12.col-sm-12
                     h4(ng-bind="$ctrl.error.message" style="color:red;")

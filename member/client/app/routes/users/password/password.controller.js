@@ -1,13 +1,12 @@
 class PasswordController {
   /* @ngInject*/
-  constructor($http, toaster, Page, $stateParams, $cookies, Session) {
+  constructor($http, toaster, Page, $stateParams, Session) {
     this.$http = $http;
     this.toaster = toaster;
     this.Page = Page;
     this.Session = Session;
     this.$http = $http;
     this.$stateParams = $stateParams;
-    this.$cookies = $cookies;
 
     return this.$onInit();
   }
