@@ -143,10 +143,11 @@ div
                   .col-md-6.col-xs-12.col-sm-12
                     h4(ng-bind="$ctrl.error.message" style="color:red;")
                     button.btn.btn-info(type='submit' ng-disabled="$ctrl.submitting")
-                      i.fas.fa-save.m-r-xs(ng-if='!$ctrl.submitting')
-                      span.text-white(ng-if='!$ctrl.submitting') Save Changes
+                      span(ng-if='!$ctrl.submitting')
+                        i.fas.fa-save.m-r-xs
+                        span.text-white Save Changes
                       span(ng-if='$ctrl.submitting')
-                        i.fa.fa-spin.fa-circle-o-notch
+                        i.fas.fa-circle-notch
                         span.text-white &nbsp;&nbsp;Submitting...
 
 

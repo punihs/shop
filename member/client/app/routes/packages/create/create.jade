@@ -1,142 +1,152 @@
-.bg-white-only.pos-fix.h-full.w-full(style='z-index: -1;top: 0;left: 0;')
-.bg-white-only
-  .container-fluid
-    div.m-t-sm
-      .h3.font-thin.text-center
-        span Pre-Alert Shoppre about your Incoming Packages
-      .h5.text-center.m-t-xs
-        | If you would like to alert us about any of your future incoming items that will be
-        | arriving at your locker in our facility, you can provide the details now!
-        span(ng-bind='" " + $ctrl.TITLE')
-      .col-xs-12
-        a.m-t-sm.btn.btn-sm.btn-default.imp(
-          ui-sref='packages.index'
-          popover-trigger="'mouseenter'"
-          popover-placement='bottom'
-          popover-append-to-body='true'
-        )
-          i.fa.fa-backward.m-r-xs
-          | Go Back
+div
+  .hbox(style="position:relative")
 
-    hr.no-margin-bottom
-    form.form.form-validation.form-horizontal.wrapper-md(
-      name="newPackageForm"
-      novalidate
-      ng-submit='$ctrl.create(newPackageForm)'
+    // - Primary Header
+    .bg-white-only.w-full.b-b(style='position: fixed;z-index: 6;height: 40px;')
+      .pull-left.wrapper-sm.no-padder-top
+        span.h4
+          i.fas.fa-cube.m-r
+          | Add Incoming Package
+
+    // - Secondary Header
+    .bg-light.b-b.padder.w-full.bg-white-only.m-t-xl(
+    style='position:fixed;z-index: 6;height: 65px;'
     )
-      .row
-        .col-md-12.col-sm-12.col-xs-12.no-padder
-          .col-md-12
-            .row
-              .col-md-12.col-sm-12.col-xs-12.no-padder-right
-                .alert.alert-success(ng-show='$ctrl.showSuccess')
-                  h4.panel-title.text-center.font-thin.h5
-                    | Your order has been submitted to shoppre package collection centre. We will update you once your package receive our facility.
+      div.m-t-sm
+        .h4
+          | Pre-Alert Shoppre about your Incoming Packages
+        .h5.m-t-xs
+          | If you would like to alert us about any of your future incoming items that will be
+          | arriving at your locker in our facility, you can provide the details now!
+          span(ng-bind='" " + $ctrl.TITLE')
 
-            .row
-              .col-md-8.col-sm-8.col-xs-12
-                label.col-xs-12.input-group
-                  | Store
-                  span.text-danger *
-                  input.form-control(
-                    type='text'
-                    name="store_id"
-                    ng-model='$ctrl.Stores.model'
-                    placeholder='eg: Amazon.in'
-                    uib-typeahead='region.name for region in $ctrl.Stores.get($viewValue)'
-                    typeahead-loading='$ctrl.Stores.loadingStores'
-                    typeahead-no-results='$ctrl.Stores.noResults'
-                    typeahead-on-select='$ctrl.Stores.select($item)'
-                    typeahead-wait-ms="10"
-                    autocomplete="off"
-                    required
-                  )
-                  i.fa.fa-refresh.fa-spin(ng-show='$ctrl.Stores.loadingStores')
-                  span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.store_id.$dirty && newPackageForm.store_id.$invalid') Please enter Store Name
-              
-                .m-t-sm
+    // - Content Area
+    .bg-light(style='min-height: 200px;')
+      .m-t-xxl.m-b-lg(style='height: 1px;')
+      .hbox
+        .wrapper-md.bg-white-only.wrapper-parcel
+          .col-md-12.no-padder
+            form.form.form-validation.form-horizontal(
+              name="newPackageForm"
+              novalidate
+              ng-submit='$ctrl.create(newPackageForm)'
+            )
+                //.row
+                //  .col-md-12.col-sm-12.col-xs-12
+                //    h5 PRIMARY ACCOUNT HOLDER NAME
+              .row.p-t-lg
+                .col-md-12.col-sm-12.col-xs-12.no-padder-right.p-t-xs
+                  .alert.alert-success.p-t-xs.p-b-xs(ng-show='$ctrl.showSuccess')
+                    h4.panel-title.text-center.font-thin.h5.m-t-xs
+                      | Your order has been submitted to shoppre package collection centre. We will update you once your package receive our facility.
+              .row
+                .col-md-8.col-sm-8.col-xs-12
                   label.col-xs-12.input-group
-                    | Tracking Number(optional)
-                    input.form.form-control(
-                      type='number'
-                      name='tracking_code'
-                      placeholder='eg. 94114'
-                      ng-model='$ctrl.data.tracking_code'
+                    | Store
+                    span.text-danger *
+                    input.form-control(
+                      type='text'
+                      name="store_id"
+                      ng-model='$ctrl.Stores.model'
+                      placeholder='eg: Amazon.in'
+                      uib-typeahead='region.name for region in $ctrl.Stores.get($viewValue)'
+                      typeahead-loading='$ctrl.Stores.loadingStores'
+                      typeahead-no-results='$ctrl.Stores.noResults'
+                      typeahead-on-select='$ctrl.Stores.select($item)'
+                      typeahead-wait-ms="10"
+                      autofocus=
+                      autocomplete="off"
+                      required
                     )
-
-                .m-t-sm
-                  label.col-xs-12.input-group
-                    | Order / Invoice Number (optional)
-                    input.form.form-control(
-                      type='number'
-                      name='invoice_code'
-                      placeholder='eg. 9844717202'
-                      ng-model='$ctrl.data.invoice_code'
-                    )
-
-                .m-t-sm
-                  label.col-xs-12.input-group
-                    | Notes (optional)
-                    textarea.form.form-control(
-                      name='comments'
-                      placeholder=''
-                      ng-model='$ctrl.data.comments'
-                      rows='3'
-                    )
-              .col-md-4.col-sm-12.col-xs-12.m-t-sm
-                  .hbox
-                    label.col
-                      | Add Document (Required)
-                      span.text-danger *
-                      h6 Upload the saved merchant invoice or confirmation email that shows each individual item value as a PDF, JPG, PNG or BMP.
-                      .btn-file-wrapper(ng-class="newPackageForm.file.$touched && newPackageForm.file.$invalid ? 'input-file-danger':''" drag-drop-toggle)
-                        .btn-file
-                          span(ng-show="(newPackageForm.file.$touched && newPackageForm.file.$valid) || $ctrl.data.file")
-                            span.text-muted(ng-bind="$ctrl.file.name")
-                          p.no-margin(ng-hide="(newPackageForm.file.$touched && newPackageForm.file.$valid) || $ctrl.data.file")
-                            span.text-bold Choose a file
-                            |  or Drag it here.
-                          span.file-support(ng-hide="(newPackageForm.file.$touched && newPackageForm.file.$valid) || $ctrl.data.file") Supported Formats: .png, .jpeg, .jpg, .bmp'
-                          input.form-control(
-                            accept="image/*"
-                            type="file"
-                            ng-model='$ctrl.file'
-                            name='file'
-                            ngf-pattern="'.png,.jpeg,.jpg,.bmp'"
-                            ngf-max-size="15MB"
-                            ngf-max-files="1"
-                            ngf-select='$ctrl.uploadingPhotos=true;'
-                            onclick="this.value = null"
-                            ng-image-compress
-                            image="myAwesomeImage"
-                            ctrl="$ctrl"
-                            upload-fn="$ctrl.startUpload"
-                            resize-max-height="1000"
-                            resize-max-width="1000"
-                            resize-quality="0.7"
-                            resize-type="image/jpg"
-                            required
-                          )
-                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && !$ctrl.data.file && newPackageForm.file.$invalid') Please choose file
-                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.file.$invalid') Please choose supported file
-                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.file.$dirty && newPackageForm.file.$invalid') Please choose supported file
-                .col-xs-1.wrapper-sm.m-t-xs
-                  img.pull-left.m-r(
-                    ng-if='$ctrl.data.object'
-                    ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.object}}'
-                    style='height: 120px;width: 200px;'
-                  )
-            .row
-              .col-xs-12
-                .m-t-sm
-                  h4(ng-bind="$ctrl.error.message" style="color:red;")
-                  button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting")
-                    i.fa.fa-check.m-r-xs(ng-if='!$ctrl.submitting')
-                    span.text-white(ng-if='!$ctrl.submitting') Save New Order
-                    span(ng-if='$ctrl.submitting')
-                      i.fa.fa-spin.fa-circle-o-notch
-                      span.text-white &nbsp;&nbsp;Submitting...      
-    .clearfix
+                    i.fa.fa-refresh.fa-spin(ng-show='$ctrl.Stores.loadingStores')
+                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.store_id.$dirty && newPackageForm.store_id.$invalid') Please enter Store Name
+                  .line.line-dashed.b-b.line-lg.pull-in(style='margin: 10px 0;')
+                  .m-t-sm
+                    label.col-xs-12.input-group
+                      | Tracking Number(optional)
+                      input.form.form-control(
+                        type='number'
+                        name='tracking_code'
+                        placeholder='eg. 94114'
+                        ng-model='$ctrl.data.tracking_code'
+                      )
+                  .line.line-dashed.b-b.line-lg.pull-in(style='margin: 10px 0;')
+                  .m-t-sm
+                    label.col-xs-12.input-group
+                      | Order / Invoice Number (optional)
+                      input.form.form-control(
+                        type='number'
+                        name='invoice_code'
+                        placeholder='eg. 9844717202'
+                        ng-model='$ctrl.data.invoice_code'
+                      )
+                  .line.line-dashed.b-b.line-lg.pull-in(style='margin: 10px 0;')
+                  .m-t-sm
+                    label.col-xs-12.input-group
+                      | Notes (optional)
+                      textarea.form.form-control(
+                        name='comments'
+                        placeholder=''
+                        ng-model='$ctrl.data.comments'
+                        rows='3'
+                      )
+                  .line.line-dashed.b-b.line-lg.pull-in(style='margin: 10px 0;')
+                  .m-t-sm
+                    .hbox
+                      label.col
+                        | Add Document (Required)
+                        span.text-danger *
+                        h6 Upload the saved merchant invoice or confirmation email that shows each individual item value as a PDF, JPG, PNG or BMP.
+                        .btn-file-wrapper(ng-class="newPackageForm.file.$touched && newPackageForm.file.$invalid ? 'input-file-danger':''" drag-drop-toggle)
+                          .btn-file
+                            span(ng-show="(newPackageForm.file.$touched && newPackageForm.file.$valid) || $ctrl.data.file")
+                              span.text-muted(ng-bind="$ctrl.file.name")
+                            p.no-margin(ng-hide="(newPackageForm.file.$touched && newPackageForm.file.$valid) || $ctrl.data.file")
+                              span.text-bold Choose a file
+                              |  or Drag it here.
+                            span.file-support(ng-hide="(newPackageForm.file.$touched && newPackageForm.file.$valid) || $ctrl.data.file") Supported Formats: .png, .jpeg, .jpg, .bmp'
+                            input.form-control(
+                              accept="image/*"
+                              type="file"
+                              ng-model='$ctrl.file'
+                              name='file'
+                              ngf-pattern="'.png,.jpeg,.jpg,.bmp'"
+                              ngf-max-size="15MB"
+                              ngf-max-files="1"
+                              ngf-select='$ctrl.uploadingPhotos=true;'
+                              onclick="this.value = null"
+                              ng-image-compress
+                              image="myAwesomeImage"
+                              ctrl="$ctrl"
+                              upload-fn="$ctrl.startUpload"
+                              resize-max-height="1000"
+                              resize-max-width="1000"
+                              resize-quality="0.7"
+                              resize-type="image/jpg"
+                              required
+                            )
+                        //span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && !$ctrl.data.file && newPackageForm.file.$invalid') Please choose file
+                        //span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.file.$invalid') Please choose supported file
+                        //span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.file.$dirty && newPackageForm.file.$invalid') Please choose supported file
+                    //.col-xs-1.wrapper-sm.m-t-xs
+                    //  img.pull-left.m-r(
+                    //    ng-if='$ctrl.data.object'
+                    //    ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.object}}'
+                    //    style='height: 120px;width: 200px;'
+                    //  )
+                  .line.line-dashed.b-b.line-lg.pull-in(style='margin: 10px 0;')
+                  button.btn.btn-info(type='submit')
+                    span.text-white
+                      i.fa.fa-save.m-r-xs
+                      span.text-white Save New Order
+                    //button.btn.btn-info(type='submit' ng-disabled="$ctrl.submitting")
+                    //  span.text-white(ng-if='!$ctrl.submitting')
+                    //    i.fa.fa-save.m-r-xs
+                    //    span.text-white Save New Order
+                    //  span(ng-if='$ctrl.submitting')
+                    //    i.fa.fa-spin.fa-circle-notch
+                    //    span.text-white &nbsp;&nbsp;Submitting...
+          .clearfix
 
 div(ng-show='$ctrl.submitting')
   span(ng-include="'app/routes/jobs/cv-uploading/cv-uploading.html'")

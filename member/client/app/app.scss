@@ -52,6 +52,10 @@ $fa-font-path: "../bower_components/font-awesome/webfonts";
   padding-left: 0;
 }
 
+.no-padder-bottom {
+  padding-bottom: 0;
+}
+
 .loyalty-image{max-width:45%}
 .user-category span,.howto-earn h3,.pointsto-cash h3,.howto-earn a{
   color:#fe9611
@@ -196,6 +200,10 @@ $fa-font-path: "../bower_components/font-awesome/webfonts";
   margin-top: 10px;
 }
 
+.no-margin-bottom {
+  margin-bottom: 0;
+}
+
 .right-padding-20 {
   padding-right: 20px;
 }
@@ -319,6 +327,10 @@ $fa-font-path: "../bower_components/font-awesome/webfonts";
   padding-bottom: 5px;
 }
 
+.p-b-md {
+  padding-bottom: 10px;
+}
+
 .p-l-xs {
   padding-left: 5px;
 }
@@ -333,6 +345,9 @@ $fa-font-path: "../bower_components/font-awesome/webfonts";
 
 .p-t-md {
   padding-top: 10px;
+}
+.p-t-lg {
+  padding-top: 15px;
 }
 
 .p-b-md {
