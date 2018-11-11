@@ -1,4 +1,4 @@
-class preferencesController {
+class PreferencesController {
   constructor(Page, $http, toaster, Session) {
     this.Page = Page;
     this.$http = $http;
@@ -7,6 +7,7 @@ class preferencesController {
     this.data = {};
     this.$onInit();
   }
+
   $onInit() {
     this.Page.setTitle('Shipment Preferences');
     this.defaultAddress = {};
@@ -34,4 +35,4 @@ class preferencesController {
   }
 }
 angular.module('uiGenApp')
-.controller('preferencesController', preferencesController);
+.controller('PreferencesController', PreferencesController);

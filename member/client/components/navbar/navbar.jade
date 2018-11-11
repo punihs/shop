@@ -13,7 +13,7 @@
       i.fa.fa-times
     //- brand
     a.navbar-brand.text-lt(
-      style='line-height: 44px;'
+      style='line-height: 47px;'
       ng-class="{'company-logo' : App.app.settings.isAdmin, 'consultant-logo': !App.app.settings.isAdmin}"
       ui-sref='{{App.$state.current.name !== "extension" ? "dash.packages" : ""}}'
     )
@@ -24,7 +24,7 @@
         )
       span.m-l(
         ng-bind='App.app.name'
-        style='font-weight: 600;font-size: 30px;color: #fff !important;'
+        style='font-weight: 600;font-size: 24px;color: #fff !important;'
         title='{{App.app.name}}'
       )
   //- navbar collapse

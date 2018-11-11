@@ -1,16 +1,21 @@
-class PasswordChangeController {
+class PasswordController {
   /* @ngInject*/
   constructor($http, toaster, Page, $stateParams, $cookies, Session) {
     this.$http = $http;
     this.toaster = toaster;
     this.Page = Page;
     this.Session = Session;
-    this.data = [];
-    this.submitting = false;
     this.$http = $http;
     this.$stateParams = $stateParams;
     this.$cookies = $cookies;
+
+    return this.$onInit();
+  }
+
+  $onInit() {
     this.id = this.$stateParams.id;
+    this.submitting = false;
+    this.data = [];
   }
 
   validateForm(form) {
@@ -25,15 +30,14 @@ class PasswordChangeController {
   }
 
   logOut() {
-    // Removing chat user cookie
-    this.$cookies.remove('cc_data');
     this.notify = this.Session.read('notify');
+    // - Notification unsubscribe not works
     this.Auth
       .logout()
       .then(() => this.cleanup(), () => this.cleanup());
   }
 
-  ChangePassword(formPasswordChange) {
+  changePassword(formPasswordChange) {
     this.clickChange = true;
     const data = Object.assign({ }, this.data);
     const form = this.validateForm(formPasswordChange);
@@ -58,5 +62,5 @@ class PasswordChangeController {
 }
 
 angular.module('uiGenApp')
-  .controller('PasswordChangeController', PasswordChangeController);
+  .controller('PasswordController', PasswordController);
 

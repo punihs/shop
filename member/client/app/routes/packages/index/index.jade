@@ -1,10 +1,11 @@
 div
-  .hbox(before-bottom='$ctrl.loadPackages()' style="position:relative")
+  .hbox(style="position:relative")
 
     // - Primary Header
     .bg-white-only.w-full.b-b(style='position: fixed;z-index: 6;height: 40px;')
       .pull-left.wrapper-sm.no-padder-top
         span.h4
+          i.fas.fa-cubes.m-r
           | Packages in locker&nbsp;
           span.font-bold(ng-bind='$ctrl.user.virtual_address_code')
     .bg-light

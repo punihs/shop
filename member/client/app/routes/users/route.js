@@ -40,13 +40,13 @@ angular.module('uiGenApp')
       .state('users.preferences', {
         url: '/preferences',
         templateUrl: 'app/routes/users/preferences/preferences.html',
-        controller: 'preferencesController',
+        controller: 'PreferencesController',
         controllerAs: '$ctrl',
       })
-      .state('users.passwordChange', {
+      .state('users.password', {
         url: '/password',
-        templateUrl: 'app/routes/users/passwordChange/passwordChange.html',
-        controller: 'PasswordChangeController',
+        templateUrl: 'app/routes/users/password/password.html',
+        controller: 'PasswordController',
         controllerAs: '$ctrl',
       });
   });
