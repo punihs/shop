@@ -33,12 +33,8 @@ module.exports = DataTypes => ({
   profile_photo_url: DataTypes.STRING,
 
   phone: DataTypes.STRING,
-
-  medium: DataTypes.STRING,
-  google_contacts_accessed: DataTypes.BOOLEAN,
-  otp: DataTypes.STRING,
   facebook: DataTypes.JSON,
-  twitter: DataTypes.JSON,
+  // - NodeJS Google Login not working
   google: DataTypes.JSON,
-  github: DataTypes.JSON,
+
 });

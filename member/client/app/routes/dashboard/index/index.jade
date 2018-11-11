@@ -9,6 +9,7 @@ div
       .bg-white-only.w-full.b-b(style='position: fixed;z-index: 6;height: 40px;')
         .pull-left.wrapper-sm.no-padder-top
           span.h4.text-info
+            i.fas.fa-th-large.m-r
             | Welcome,
             span.font-bold(ng-bind='$ctrl.user.name')
         .pull-left.wrapper-sm
@@ -23,8 +24,8 @@ div
           )
           span.m-l-xs(ng-bind='$ctrl.user.Country.name')
         .pull-left.wrapper-sm.no-padder-top.ng-binding(title='Virtual Address Code')
-          i.fa.fa-lg.fa-dropbox.text-light-dker
-          span.m-l-xs(ng-bind='$ctrl.user.virtual_address_code')
+          i.fas.fa-user-lock.text-light-dker.m-r-xs
+          span.font-bold(ng-bind='$ctrl.user.virtual_address_code')
         .pull-left.wrapper-sm.no-padder-top(title='Email')
           i.fa.fa-md.fa-at.text-light-dker
           span &nbsp;&nbsp;
@@ -50,12 +51,15 @@ div
       .bg-light.b-b.padder.w-full.bg-white-only.m-t-xl(
         style='position:fixed;z-index: 6;height: 42px;'
       )
-        ul.nav.nav-pills.nav-sm.m-t-xs(ng-if='page.packagesIndex')
-          li(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active" ng-show="$ctrl.buckets")
-            a(
-            ui-sref='packages.index({ bucket: bucket })'
-            ng-bind="bucket"
-            )
+        div.m-t-sm
+          i.fas.fa-fire.m-r-xs
+          span.font-bold(ui-sref='packages.index({ bucket: bucket })' style='cursor: pointer') Trending :
+
+          a.m-l-sm(
+            target='_blank'
+            href='https://www.shoppre.com/offers/diwali-shopping-and-courier-from-india-shipping-offer/'
+          )
+            | Diwali Offer
 
       div(style='position: fixed;right: 5px;z-index: 9;margin-top: 9px;')
         ul.nav.nav-pills.nav-sm

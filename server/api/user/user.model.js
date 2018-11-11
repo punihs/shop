@@ -58,10 +58,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'country_id',
     });
     User.belongsTo(db.Group);
-    User.belongsTo(db.User, {
-      foreignKey: 'referred_by',
-      as: 'ReferredUser',
-    });
   };
 
   User.prototype.verifyPassword = function verifyPassword(password, cb) {

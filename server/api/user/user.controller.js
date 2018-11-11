@@ -19,16 +19,12 @@ exports.index = (req, res, next) => {
   const options = {
     attributes: [
       'id', 'name', 'email', 'salutation', 'first_name', 'last_name', 'phone',
-      'country_id', 'referred_by', 'created_at', 'virtual_address_code',
+      'country_id', 'created_at', 'virtual_address_code',
       'profile_photo_url', 'updated_at', 'email_verify',
     ],
     include: [{
       model: Country,
       attributes: ['id', 'name', 'iso2'],
-    }, {
-      model: User,
-      as: 'ReferredUser',
-      attributes: ['id', 'name', 'salutation', 'first_name', 'last_name'],
     }, {
       model: Shipment,
       attributes: ['id'],
@@ -81,7 +77,7 @@ exports.me = (req, res, next) => {
       attributes: [
         'id', 'salutation', 'first_name', 'last_name', 'email', 'alternate_email', 'group_id',
         'phone', 'secondary_phone', 'profile_photo_url',
-        'virtual_address_code', 'email_verify',
+        'virtual_address_code',
       ],
       limit: Number(req.query.limit) || 20,
     })
