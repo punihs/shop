@@ -2,7 +2,7 @@ class shipmentsShowController {
   /* @ngInject */
   constructor(
     $http, $stateParams, URLS, $sce, $state, $window, Page, Session, $q, ChangeShipmentState,
-    pkg, JobModal, ListModal, toaster) {
+    pkg, ListModal, toaster) {
     this.Number = Number;
     this.URLS = URLS;
     this.$sce = $sce;
