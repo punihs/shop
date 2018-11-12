@@ -2,7 +2,7 @@ class PackageShowController {
   /* @ngInject */
   constructor(
     $http, $stateParams, URLS, $sce, $state, $window, Page, Session, $q, ChangeState,
-    pkg, JobModal, ListModal, toaster, $scope, ViewPhotoService
+    pkg, ListModal, toaster, $scope, ViewPhotoService
   ) {
     this.Number = Number;
     this.$scope = $scope;
