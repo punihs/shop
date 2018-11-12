@@ -5,18 +5,19 @@ div
     .bg-white-only.w-full.b-b(style='position: fixed;z-index: 6;height: 40px;')
       .pull-left.wrapper-sm.no-padder-top
         span.h4.text-info
-          i.fas.fa-list-alt.m-r
+          i.fas.fa-plane-departure.m-r
           | SHIPMENTS IN QUEUE
     .bg-light
 
     // - Secondary Header
     .bg-light.b-b.padder.w-full.bg-white-only.m-t-xl(
-    style='position:fixed;z-index: 6;height: 42px;'
+    style='position:fixed;z-index: 6;height: 47px;'
     )
-      div.m-t-sm
+      div.m-t-xs
         .h5
-          | If you would like to alert us about any of your future incoming items that will be
-          | arriving at your locker in our facility, you can provide the details now!
+          | Kindly Submit your Payment within 7 DAYS after you have received Shoppre's email titled "Submit Payment | Your Shipment is packed and weighed".
+        .h5.m-t-xs
+          | From the 8th day, your parcel will start accumulating Storage fees of INR 100/day which you can view in your Shoppre wallet.
           span(ng-bind='" " + $ctrl.TITLE')
 
     // - Content Area
@@ -24,8 +25,8 @@ div
       .m-t-xxl.m-b-lg(style='height: 1px;')
       .hbox
         .wrapper-md.bg-white-only.wrapper-parcel
-          .col-md-12
-            .row.p-t-lg
+          .col-md-12.no-padder.m-t-xs
+            .row
               .col-md-12.col-sm-12.col-xs-12.no-padder-right
                 div
                   .alert.alert-warning(role='alert', ng-if='$ctrl.inreview')
@@ -37,11 +38,6 @@ div
                       | Past shipments
                       | can be viewed in your &nbsp;
                       a(ui-sref="shipRequests.history") History
-                  .alert.alert-warning
-                    h5
-                      | Kindly Submit your Payment within 7 DAYS after you have received Shoppre's email titled "Submit Payment | Your Shipment is packed and weighed".
-                    h5
-                      | From the 8th day, your parcel will start accumulating Storage fees of INR 100/day which you can view in your Shoppre wallet.
                 .clearfix
                   .row
                     .col-md-12.col-sm-12.col-xs-12
@@ -228,3 +224,6 @@ div
                                               td.footable-visible {{packageItem.price_amount}}
                                               td.footable-visible {{packageItem.quantity * packageItem.price_amount}}
 
+                        h3.text-center.text-info(ng-if='$ctrl.shipments.length=== 0')
+                          | No Ship Requests
+          .clearfix
