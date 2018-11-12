@@ -5,7 +5,7 @@
       .row
         .col-md-7
           div.div-border-create
-            h2.m-n.alert.alert-info.bg-primary.text-white PAYMENT SUMMARY
+            h2.m-n.alert.alert-info.bg-primary.text-white.font-bold PAYMENT SUMMARY
             .panel-body.text-primary
               .radio(ng-repeat="paymentgateway in $ctrl.paymentGateways")
                 label.i-checks(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value === "wallet" && $ctrl.shipment.Customer.wallet_balance_amount > $ctrl.shipment.estimated_amount')
