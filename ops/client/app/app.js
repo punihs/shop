@@ -18,7 +18,7 @@ angular
     'qui.components',
     'http-auth-interceptor',
   ])
-  .constant('MODULE_VERSION', '0.0.1');
+  .constant('MODULE_VERSION', '0.0.1')
 // this configs to initiated using provider
 angular.module('uiGenApp', [
   'qui.core',

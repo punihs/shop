@@ -20,7 +20,7 @@ module.exports = {
     TemplateData,
     Template: {
       TemplateName: `${TemplateName}_${CUSTOMER}`,
-      SubjectPart: 'Shipment Mails',
+      SubjectPart: '{{subject}}',
       HtmlPart: render({
         TemplateName: `${TemplateName}_${CUSTOMER}`,
         extras: ['header', 'virtualAddress', 'items', 'footer', 'signature'],

@@ -1,18 +1,22 @@
 const debug = require('debug');
 const ses = require('../../../../chicken/server/conn/email/ses');
+const subjectMap = require('../shipment/emails/state-change/subject');
 
 const log = debug('s-api-shipment-notification');
 
-exports.stateChange = async (req, res, next) => {
-  log('statechange');
+exports.notification = async (req, res, next) => {
   try {
     const {
       nextStateId,
-      shipment,
-      packages,
+      shipmentDetails,
+      shipToAddress,
+      nextStateName,
+      pkg,
       customer,
       actingUser,
+      ENV,
     } = req.body;
+    console.log('Shipment Notification', shipmentDetails);
 
     ses.sendTemplatedEmailAsync({
       Source: `"${actingUser.first_name} from Shoppre" <${actingUser.email}>`,
@@ -20,13 +24,17 @@ exports.stateChange = async (req, res, next) => {
       Destination: {
         ToAddresses: [customer.email],
       },
-      Template: 'shipment_state-change',
+      Template: 'shipment_state-change_2',
       TemplateData: JSON.stringify({
         nextStateId,
-        shipment,
-        packages,
+        [nextStateName]: true,
+        shipmentDetails,
+        shipToAddress,
+        subject: subjectMap({ nextStateName, shipmentDetails }),
+        pkg: { ...pkg },
         customer,
         actingUser,
+        ENV,
       }),
     });
   } catch (e) {

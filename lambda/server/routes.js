@@ -7,11 +7,13 @@ const logger = require('./components/logger');
 
 // - Routers
 const pkg = require('./api/package');
+const shipment = require('./api/shipment');
 const user = require('./api/user');
 
 module.exports = (app) => {
   app.get('/api/health', (req, res) => res.json({ name, version }));
   app.use('/api/packages', pkg);
+  app.use('/api/shipments', shipment);
   app.use('/api/users', user);
   app.use(logger.transports.sentry.raven.errorHandler());
 

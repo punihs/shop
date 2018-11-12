@@ -29,7 +29,6 @@ module.exports = (app) => {
       headers,
       user: u,
     });
-
     return res.status(500).json({ message: err.message, stack: err.stack });
   });
   app.route('/*').get((req, res) => res.status(404).json({ message: '404' }));

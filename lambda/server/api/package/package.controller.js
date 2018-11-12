@@ -29,7 +29,7 @@ exports.notifications = (req, res) => {
         TemplateData: JSON.stringify({
           nextStateId,
           [nextStateName]: true,
-          subject: subjectMap({ nextStateName, pkg, targetUser}),
+          subject: subjectMap({ nextStateName, pkg, targetUser }),
           pkg: { ...pkg },
           customer,
           actingUser,

@@ -3,10 +3,11 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Shipment Request Created Successfully.ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Shipment Request Created Successfully.ShipmentId is: &nbsp;<span class="il">{{shipmentDetails.id}}</span>.
         <br>
         <br>
-      </p> </td>
+      </p>
+    </td>
   </tr>
 {{else if INVOICE_REQUESTED}}
   <tr>
@@ -24,7 +25,8 @@
         Payment Requested For Your Shipment. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
         <br>
         <br>
-      </p> </td>
+      </p>
+    </td>
   </tr>
 {{else if PAYMENT_INITIATED}}
   <tr>

@@ -65,7 +65,9 @@ module.exports = {
     pkg,
     customer,
     shipToAddress,
+    shipmentDetails,
     actingUser: OPS,
+    subject: 'We Have Received Your Shipping Request | Shipment : 9',
     ENV,
   },
   INVOICE_REQUESTED: {
@@ -75,6 +77,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   PAYMENT_REQUESTED: {
@@ -84,6 +87,7 @@ module.exports = {
     actingUser: OPS,
     shipToAddress,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   PAYMENT_INITIATED: {
@@ -92,6 +96,7 @@ module.exports = {
     customer,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipToAddress,
     shipmentDetails,
   },
@@ -102,6 +107,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
     paymentGateway,
   },
@@ -112,6 +118,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   PAYMENT_CONFIRMED: {
@@ -121,6 +128,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   UPSTREAM_SHIPMENT_REQUEST_CREATED: {
@@ -130,6 +138,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   SHIPMENT_HANDED: {
@@ -139,6 +148,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   SHIPMENT_IN_TRANSIT: {
@@ -148,6 +158,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   SHIPMENT_MANUAL_FOLLOW_UP: {
@@ -157,6 +168,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   SHIPMENT_LOST: {
@@ -166,6 +178,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   CUSTOM_ON_HOLD: {
@@ -175,15 +188,18 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   WRONG_ADDRESS: {
     WRONG_ADDRESS: true,
+    nextStateName: 'WRONG_ADDRESS',
     pkg,
     customer,
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   SHIPMENT_REJECTED_BY_CUSTOMER: {
@@ -193,6 +209,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   RTO_REQUESTED: {
@@ -202,6 +219,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   RAISE_SHIPMENT_LOST_CLAIM: {
@@ -211,6 +229,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   PENALTY_PAYMENT_REQUESTED: {
@@ -220,6 +239,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   RETURN_TO_ORIGIN: {
@@ -229,6 +249,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   AMOUNT_RECEIVED_FROM_UPSTREAM: {
@@ -238,6 +259,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   PENALTY_PAYMENT_DONE: {
@@ -247,6 +269,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   WRONG_ADDRESS_FOLLOW_UP: {
@@ -256,6 +279,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   CLAIM_PROCESSED_TO_CUSTOMER: {
@@ -265,6 +289,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   CUSTOMER_ACKNOWLEDGEMENT_RECEIVED: {
@@ -274,6 +299,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   SHIPMENT_DELIVERED: {
@@ -283,6 +309,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
   SHIPMENT_CANCELLED: {
@@ -292,6 +319,7 @@ module.exports = {
     shipToAddress,
     actingUser: OPS,
     ENV,
+    subject: '',
     shipmentDetails,
   },
 };

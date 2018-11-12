@@ -8,14 +8,14 @@
       {{#if packageItems}}
         {{#each packageItems}}
           <tr>
-            <td align="center" valign="top" style="width:150px;height:115px">
-              <a href="{{ENV.URLS_PARCEL}}/packages/{{pkg.id}}?packageItemId={{id}}"
-              style="margin:0 20px 0 0"
-              title="ItemImage"
-              target="_blank" >
-              <img width="150px" src="{{object}}">
-              </a>
-            </td>
+            <!--<td align="center" valign="top" style="width:150px;height:115px">-->
+              <!--<a href="{{ENV.URLS_PARCEL}}/packages/{{pkg.id}}?packageItemId={{id}}"-->
+              <!--style="margin:0 20px 0 0"-->
+              <!--title="ItemImage"-->
+              <!--target="_blank" >-->
+              <!--<img width="150px" src="{{object}}">-->
+              <!--</a>-->
+            <!--</td>-->
             <td align="center" style="color:#666;padding:10px 10px 0 10px;width:410px;height:115px">
               <p style="margin:0 0 0 7px;padding:0">
                 <a href="{{ENV.URLS_PARCEL}}/packages/{{pkg.id}}?packageItemId={{id}}"
@@ -33,15 +33,20 @@
         {{/each}}
       {{else}}
         <tr>
-          <td align="center" valign="top" style="width:150px;height:115px">
-            <a href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW" style="margin:0 20px 0 0" title="ItemImage" target="_blank" ><img src="https://www.activebarcode.com/images/pictos/barcode1d.png"> </a> </td>
+          <!--<td align="center" valign="top" style="width:150px;height:115px">-->
+            <!--<a href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW" style="margin:0 20px 0 0" title="ItemImage" target="_blank" >-->
+              <!--<img src="https://www.activebarcode.com/images/pictos/barcode1d.png"> -->
+            <!--</a> -->
+          <!--</td>-->
           <td align="center" style="color:#666;padding:10px 10px 0 10px;width:410px;height:115px">
             <p style="margin:0 0 0 7px;padding:0">
               <a href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW" style="font:14px Arial,sans-serif;text-decoration:none;color:#006699" target="_blank" >
                 Shoppre Shipping Team processing your package...
               </a>
             </p>
-            <p> </p></td>
+            <p>
+          </p>
+        </td>
         </tr>
       {{/if}}
 
