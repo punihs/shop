@@ -1,9 +1,17 @@
-div.m-t-xl.no-margin
-  .hbox
-    .wrapper-md.bg-white-only.pull-left
-      h1.m-l-md.font-thin.h3.no-margin
-        strong ACCOUNT DOCUMENTS
-      hr
+div
+  .hbox(style="position:relative")
+
+    // - Primary Header
+    .bg-white-only.w-full.b-b(style='position: fixed;z-index: 6;height: 40px;')
+      .pull-left.wrapper-sm.no-padder-top
+        span.h4
+          i.fas.fa-file-signature.m-r
+          | Accounts Documents
+
+    // - Content Area
+    .wrapper-md.bg-white-only(style='min-height: 200px;')
+      .m-t-xl(style='height: 1px;')
+      .hbox
       p.no-margin Please upload any documents requested by Shoppre to validate your account (For example, your photo identification, etc.).
         | Please do not upload invoices here. Seller invoices can be uploaded to your packages in My Locker.
       form.form.form-validation.form-horizontal.m-t(
@@ -62,7 +70,7 @@ div.m-t-xl.no-margin
         .row
           .col-md-6.col-xs-12
             h4(ng-bind="$ctrl.error.message" style="color:red;")
-            button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting")
+            button.btn.btn-info(type='submit' ng-disabled="$ctrl.submitting")
               i.fas.fa-save.m-r-sm
               span.text-white(ng-if='!$ctrl.submitting') Save Changes
               span(ng-if='$ctrl.submitting')
