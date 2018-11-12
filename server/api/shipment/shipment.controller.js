@@ -413,7 +413,6 @@ exports.create = async (req, res, next) => {
   try {
     const { id: userId } = req.user;
     const packageIds = req.query.package_ids.split(',');
-    console.log('Shipment Package Ids :');
 
     // - Get All Packages Related to Ship Request
     const packages = await getPackages({

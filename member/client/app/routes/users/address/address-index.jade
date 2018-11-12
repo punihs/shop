@@ -46,6 +46,7 @@ div
               .col-xs-12(ng-show='$ctrl.addresses.length === 0 && !$ctrl.ui.loading')
                 td(colspan="5")
                   h1.text-center.text-muted Start Adding Addresses to your Address Book
+                  brAdd New Shipping Address
                   br
                   br
                   br
@@ -55,8 +56,7 @@ div
                   br
                   br
                   br
-                  br
-            hr
+            //hr
             .well.m-t.m-l.bg-light.col-md-3.hover-wrap.address-box-height(ng-repeat='address in $ctrl.addresses' ng-class='address.is_default ? "dker": "lt"')
               .row
                 .col-xs-12

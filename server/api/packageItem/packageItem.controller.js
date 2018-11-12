@@ -6,7 +6,7 @@ const {
 const db = require('../../conn/sqldb');
 const minio = require('../../conn/minio');
 
-const packageService = require('../package/package.service')
+const packageService = require('../package/package.service');
 const {
   PRICE_ENTERER: { SHOPPRE },
   PACKAGE_STATE_IDS: {
