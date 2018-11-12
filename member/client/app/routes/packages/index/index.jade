@@ -336,12 +336,7 @@ div
                                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && !$ctrl.data.file && !newPackageItemForm.file.$invalid') Please choose file
                                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageItemForm.file.$invalid') Please choose supported file
                                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageItemForm.file.$dirty && newPackageItemForm.file.$invalid') Please choose supported file
-                                .col-xs-3.wrapper-sm.m-t-xs
-                                  img.pull-left.m-r(
-                                    ng-if='$ctrl.data.object_thumb'
-                                    ng-src='{{$ctrl.data.object_thumb}}'
-                                    style='height: 30px;width: 30px;border-radius: 50%;'
-                                  )
+                                .pull-left.m-t-md
                                   button.btn.btn-sm.btn-warning.m-b-xs.text-u-c.pull-right(ng-click="$ctrl.submitInvoice(package.id)") Confirm Package
                             td(colspan=8 ng-if='$ctrl.$stateParams.bucket==="ALL" && $ctrl.MoreOption[$index]')
                               table#DataTables_Table_7.table.table-bordered.m-b-none
