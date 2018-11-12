@@ -84,6 +84,11 @@ $fa-font-path: "../bower_components/font-awesome/webfonts";
   font-weight: bold;
 
 }
+
+.pointer {
+  cursor: pointer;
+}
+
 .streach-text {
   -webkit-transform: scale(2, 1.2); /* Safari and Chrome */
   -moz-transform: scale(2, 1.2); /* Firefox */
@@ -1058,4 +1063,32 @@ li.dndPlaceholder {
 
 .table-inner {
   background-color: antiquewhite !important;
+}
+
+.line-spacing {
+  line-height: 1.5em;
+}
+
+.address-popover {
+  div[uib-popover-template-popup] {
+    min-width: 700px;
+  }
+}
+
+
+.bg-primary {
+  .nav > {
+    li {
+    > a {
+        color: #fff !important;
+      }
+    }
+  }
+  > a {
+    color: #fff !important;
+    &:hover {
+      color: #507dbc;
+    }
+  }
+
 }

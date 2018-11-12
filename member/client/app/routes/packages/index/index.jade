@@ -26,17 +26,14 @@ div
             span.badge.bg-info.pull-right(ng-bind='$ctrl.facets[bucket]')
 
     div(style='position: fixed;right: 5px;z-index: 9;margin-top: 5px;')
-      ul.nav.nav-pills.nav-sm
-      ul.nav.nav-pills.nav-sm
-        li.m-r-xs.pull-right
-          a.h5.font-bold.b-a.btn-addon.btn-info.text-white-only.b-info.imp(
-            ui-sref='packages.create'
-            uib-popover="Alert ShoppRe Team about your Order"
-            popover-trigger="'mouseenter'"
-            popover-placement='bottom'
-            popover-append-to-body='true'
-          )
-            span Add Incoming Package
+      a.btn-info.btn.btn-sm(
+        ui-sref='packages.create'
+        uib-popover="Alert ShoppRe Team about your Order"
+        popover-trigger='mouseenter'
+        popover-placement='bottom'
+        popover-append-to-body='true'
+      )
+        span Add Incoming Package
     // - Content Area
     .bg-light(style='min-height: 200px;')
       .m-t-xxl.m-b-md(style='height: 1px;')
