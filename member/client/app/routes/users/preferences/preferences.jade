@@ -30,9 +30,9 @@ div
                 .clearfix
                   .row
                     .col-md-8
-                      h5.font-normal.no-padder DEFAULT SHIPPING ADDRESS
+                      h5.font-bold.no-padder.no-margin-top.no-margin-bottom DEFAULT SHIPPING ADDRESS
                       a.text-info(ui-sref='users.address-new', ng-if='$ctrl.defaultAddress == ""') + Add A Shipping Address
-                      .well.m-t-sm.m-l.bg-light.col-md-4.hover-wrap.no-margin-left.m-b-sm(ng-class='dker', ng-if='$ctrl.defaultAddress != ""')
+                      .well.m-t-sm.m-l.bg-light.col-md-4.hover-wrap.no-margin-left(ng-class='dker', ng-if='$ctrl.defaultAddress != ""')
                         .row
                           .wrapper-sm
                             .h4
@@ -52,12 +52,12 @@ div
                               ng-bind='$ctrl.defaultAddress.phone'
                               )
                               span.label.pull-left.padding-5.m-t-xs.bg-primary DEFAULT SHIPPING ADDRESS
-                      .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+                      .line.line-dashed.b-b.m-t.m-b.pull-in
 
                   // Todo Need to show this code in next iteration
                   .row.hide
                     .col-md-8
-                      h5.font-normal LOG IN OPTIONS
+                      h5.font-bold LOG IN OPTIONS
                       ul.list-group.list-group-lg.m-b-none.list-unstyled
                         li
                           .checkbox
@@ -106,10 +106,10 @@ div
                             popover-placement='right'
                             popover-append-to-body='true'
                             )
-                      .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+                      .line.line-dashed.b-b.m-t.m-b.pull-in
                   .row
                     .col-md-8
-                      h5.font-normal PACKING OPTIONS
+                      h5.font-bold.no-margin-top PACKING OPTIONS
                       ul.list-group.list-group-lg.m-b-none.list-unstyled
                         li
                           .checkbox
@@ -199,7 +199,7 @@ div
                               ng-model='$ctrl.data.max_weight',
                               name='max_weight',
                               )
-                            label.col-lg-10.control-label.m-t-xs.no-margin-bottom Max weight per box/Multi-piece shipment (MPS) 1 kilogram is about 2.2046 pounds
+                            label.col-lg-10.control-label.m-t-xs Max weight per box/Multi-piece shipment (MPS) 1 kilogram is about 2.2046 pounds
                               i.fa.fa-info-circle.m-l-xs(
                               uib-popover='Choose this option if you would like to restrict a Maximum weight of individual boxes in a shipment. Shoppre will split your shipment into multiple boxes not exceeding this box weight limit (whenever possible), at the same cost of splitting a package (INR 200 per new package created)*\n' +
                               'Please note that a shipment which weighs more than 30kg will be considered as a commercial shipment and will incur a custom clearance cost of INR 2500.\n' +
@@ -209,10 +209,10 @@ div
                               popover-append-to-body='true'
                               )
                           .clearfix
-                      .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
-                  .row.m-b-md
+                      .line.line-dashed.b-b.m-t.m-b.pull-in
+                  .row
                     .col-md-8
-                      h5.font-normal.no-margin-bottom PERFORMA INVOICE OPTIONS
+                      h5.font-bold.no-margin-bottom.no-margin-top PERFORMA INVOICE OPTIONS
                       ul.list-group.list-group-lg.m-b-none.list-unstyled
                         li
                           .form-group
@@ -238,9 +238,8 @@ div
                               )
                               i
                               | Please include a printed Proforma Invoice in my shipment
-                      .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+                      .line.line-dashed.b-b.m-t.m-b.pull-in
 
-                  button.btn.btn-info.btn-addon.btn-sm(ng-click="$ctrl.updatePreference()")
-                    i.fas.fa-save.m-r-xs
+                  button.btn.btn-info(ng-click="$ctrl.updatePreference()")
                     span Save Changes
           .clearfix

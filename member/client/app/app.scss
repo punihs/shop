@@ -389,7 +389,7 @@ strong.highlight {
   font-weight: 500;
   font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   padding: 5px;
-  background-color: #F3EB3A;
+    background-color: #F3EB3A;
 }
 
 .multiCheckDropDown {
@@ -1106,4 +1106,9 @@ li.dndPlaceholder {
     }
   }
 
+}
+
+
+.no-margin-top{
+  margin-top:0px;
 }

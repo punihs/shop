@@ -71,13 +71,13 @@ class PackagesIndexController {
     this.specialRequests = [{
       name: 'Return to Sender',
       value: 'return',
-      price: 'INR 400',
+      price: '₹ 400',
       acceptanceMessage: 'I understand that I will have to pay a fee ' +
-      'of INR 400 for the return.',
+      'of  ₹ 400 for the return.',
       infoContent: 'Once the item arrives at our facility, ' +
       'if you feel the item is not as per your expectation or is damaged, ' +
       'it can be exchanged/returned to the seller (as per the seller exchange/return policy). ' +
-      'The cost for returning at item is charged at INR 400*. ' +
+      'The cost for returning at item is charged at  ₹ 400*. ' +
       'You will be responsible for all return shipping fees as well (if needed).' +
       ' If it has to be couriered to sender’s destination by Shoppre, ' +
       'charges as per domestic shipping rates will be considered.' +
@@ -94,15 +94,15 @@ class PackagesIndexController {
     }, {
       name: 'Split Package',
       value: 'split',
-      price: 'INR 200 * Per New Package Created',
+      price: ' ₹ 200 * Per New Package Created',
       acceptanceMessage: 'I understand that I will have to pay a fee ' +
-      'of INR 200 for the split package.',
+      'of  ₹ 200 for the split package.',
       infoContent: 'Shoppre can split your package if it contains more than one item, and if you ' +
       'wish to separate them into multiple packages. ' +
       'You can split your package and discard an item, ' +
       'return it to the sender, ship it at a different time or to a different address. ' +
-      'There is a cost of INR 200 per new package* created. For eg. if you have splitted ' +
-      'your package into 3, you will be charged INR 400 .' +
+      'There is a cost of  ₹ 200 per new package* created. For eg. if you have splitted ' +
+      'your package into 3, you will be charged  ₹ 400 .' +
       '*Charges may be lesser for Membership Partners, ' +
       'and Loyalty Members (Silver and above).',
       description: 'Split  contents of package separate packages',
@@ -111,7 +111,7 @@ class PackagesIndexController {
     }, {
       name: 'Abandon Package',
       value: 'abandon',
-      price: 'INR 0 ',
+      price: ' ₹ 0 ',
       infoContent: ' Once Abandon Your Package' +
       'shall not able to recover.',
       description: 'Our team will dispose of the package and its contents',
@@ -254,7 +254,7 @@ class PackagesIndexController {
       templateUrl: 'app/directives/special-request/special-request.html',
       controller: 'SpecialRequestController',
       controllerAs: '$ctrl',
-      size: 'lg',
+      size: 'md',
       resolve: {
         id() {
           return id;
