@@ -1,7 +1,7 @@
 .wrapper-xs
   .hbox
     .col.thumb-lg
-      div.b-a.text-center.m-l-md.m-t.b-primary(style='border-radius: 50%;width:40px;height: 40px;')
+      div.b-a.text-center.m-l-md.b-primary.m-t-xs-md(style='border-radius: 50%;width:40px;height: 40px;')
         a.m-t-lg.font-lg.text-u-c(
           ng-if='!NavBar.user.profile_photo_url'
           style='color: #5585B9;font-size: 26px;'
@@ -16,13 +16,14 @@
     .col
       .w-full.m-t-xs.text-md.text-black.text-ellipsis(ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen' ng-bind='App.userinfo.name' title='{{App.userinfo.name}}')
       .w-full.m-t-xs.text-black.text-ellipsis(ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen' ng-bind='App.userinfo.email' title='{{App.userinfo.email}}')
-      .w-full.m-t-xs: a.text-xs(ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen' href='' style='color: #5585B9;' ui-sref='users.password()') Change Password
   .hbox
     .col.w-full.m-t-xs
-      .w-full: a.text-sm.m-l-sm(style='color: #888;' ui-sref='users.profile' ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen;App.fullPage = false;') My Account
-      .w-full.hide: a.text-sm.m-l-sm(href='{{App.URLS.ACCOUNTS}}/support' style='color: #888;' ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen') Support
-      .w-full(ng-controller='LogoutController as logout')
-        span.pull-right.btn.btn-sm.bg-gray.b-a.b-gray(
+      .w-full.p-t-xs: a.text-sm.m-l-sm(style='color: #5585B9;' ui-sref='users.profile' ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen;App.fullPage = false;') My Account
+      .w-full.m-t-xs: a.text-xs.p-l-md(ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen' href='' style='color: #5585B9;' ui-sref='users.password()') Change Password
+        span.w-full.m-t-n-sm(ng-controller='LogoutController as logout')
+          span.pull-right.btn.btn-sm.bg-gray.b-a.b-gray(
           style='color: #333'
           ng-click='logout.$onInit();$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen;'
-        ) Logout
+          ) Logout
+      .w-full.hide: a.text-sm.m-l-sm(href='{{App.URLS.ACCOUNTS}}/support' style='color: #888;' ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen') Support
+

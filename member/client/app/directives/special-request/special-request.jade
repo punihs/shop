@@ -11,13 +11,13 @@
   ng-submit='$ctrl.submitSpecialoffer(newOfferForm)'
   autocomplete='off'
   )
-      .radio(ng-if="$ctrl.value === 'return'")
+      .radio.m-t-md(ng-if="$ctrl.value === 'return'")
         label.i-checks
           input(type='radio', name='a', value='1', checked='', ng-click="$ctrl.changeReturnMode('sellerPickup')", ng-model="$ctrl.data.return_pickup")
           i
           | The sender will pick-up the package directly from Shoppre facility.
           | You shall pay them for the charges, if any.
-      textarea.form-control(
+      textarea.form-control.m-t-md(
       rows=4,
       ng-if="$ctrl.value === 'return'",
       name='message1'
@@ -25,13 +25,13 @@
       ng-required='$ctrl.returnToSenderPickup'
       )
       span.wrapper-xs.text-xs.text-danger(ng-show='newOfferForm.message1.$dirty && newOfferForm.message1.$invalid') Please enter comments
-      .radio(ng-if="$ctrl.value === 'return'")
+      .radio.m-t-md(ng-if="$ctrl.value === 'return'")
             label.i-checks
               input(type='radio', name='a', value='2', checked='', ng-click="$ctrl.changeReturnMode('shoppreReturn')", ng-model="$ctrl.data.return_shoppre" )
               i
               | Shoppre has to return the package for you to the Sender.
               | You will be charged as per our Domestic Shipping Rates which will be notified to you via email.
-      textarea.form-control(
+      textarea.form-control.m-t-md(
       rows=4,
       ng-hide="$ctrl.value === 'abandon'",
       name="message2"
@@ -39,13 +39,13 @@
       ng-required='$ctrl.returnToSenderShoppre'
       )
       span.wrapper-xs.text-xs.text-danger(ng-show='newOfferForm.message2.$dirty && newOfferForm.message2.$invalid') Please enter comments
-      .checkbox(ng-hide="$ctrl.value === 'abandon'", ng-required='$ctrl.acceptanceCheckBox' )
-            label.i-checks
+      .checkbox(ng-hide="$ctrl.value === 'abandon'", ng-required='$ctrl.acceptanceCheckBox')
+            label.i-checks.m-t-md
               input(type='checkbox', value='' name='agree' ng-model="$ctrl.data.agree", ng-required='$ctrl.acceptanceCheckBox')
-              i
+              i(style='height:15px;width:15px')
               | {{ $ctrl.offer.acceptanceMessage }}
       span.wrapper-xs.text-xs.text-danger(ng-show='newOfferForm.agree.$dirty && newOfferForm.agree.$invalid') Please check
-      .modal-footer.no-padder.m-t-xs.text-left.no-border
+      .modal-footer.no-padder.m-t-md.text-left.no-border
         a.btn.btn-warning.text-u-c(ng-click='$ctrl.cancel()') Cancel Request
         button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting")  Submit Request
 
