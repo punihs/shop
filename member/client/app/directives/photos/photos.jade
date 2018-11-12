@@ -1,9 +1,9 @@
 .modal-header
   .modal-title
-    .h4.text-info View Photos
+    .h3.font-bold.text-info View Photos
       .close(ng-click='$ctrl.cancel()') ×
 .modal-body
-  .row(ng-show='$ctrl.standardPhotoRequest')
+  .row(ng-show='$ctrl.standardPhotoRequest && !$ctrl.standardAlreadyRequested')
     .col-md-12(ng-show='!$ctrl.standardPhoto')
       .col-md-3.photo-left
         i.fa.fa-camera.big-cam.m-t-md
@@ -40,7 +40,7 @@
         .alert.alert-warning
           | Already Requested for Standard photo
 
-  .row(ng-show='$ctrl.advancedPhotoRequest')
+  .row(ng-show='$ctrl.advancedPhotoRequest && !$ctrl.advancedAlreadyRequested')
     .col-md-12(ng-show='!$ctrl.advancedPhoto')
       .col-md-3.photo-left
         i.fa.fa-camera.big-cam.m-t-md
