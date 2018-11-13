@@ -10,7 +10,7 @@ const { APPS } = require('../../../config/constants');
 const log = debug('server-components-oauth-express-loginAs');
 
 const getClient = (req) => {
-  console.log('getClient', req.body.app_id);
+  log('getClient', req.body.app_id);
   return App.find({
     attributes: ['client_id', 'client_secret', 'redirect_uri'],
     where: {
