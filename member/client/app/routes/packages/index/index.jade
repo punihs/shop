@@ -120,8 +120,8 @@ div
                                 i
                       tbody(ng-repeat="package in $ctrl.packages"  )
                         tr.footable-even(style='display: table-row;')
-                          td.footable-visible.footable-first-column(ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]')
-                            i.fa.fa-sort-desc
+                          td.footable-visible.footable-first-column.text-blue(ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]')
+                            i.fa.fa-chevron-circle-down
                           td.footable-visible
                             a(ui-sref='package.show({ id: package.id })' ng-bind='package.Store.name' title='{{package.id}}')
                             br
@@ -143,7 +143,7 @@ div
                           td.footable-visible(ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'"){{package.weight | number : 2}} KG
                           td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'" )
                             a(ng-click='$ctrl.viewPhotos($index, package)')
-                              u Photos
+                              u.text-blue Photos
                           td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='ALL'" ng-bind='package.PackageState.State.name' )
                           td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'")
                             .checkbox.no-margin
@@ -162,14 +162,14 @@ div
                                     th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending')  Total Value
                                 tbody
                                   tr.odd(role='row' ng-repeat="item in package.PackageItems")
-                                    td {{item.name}}
-                                    td {{item.quantity}}
-                                    td
+                                    td.item-v-align(ng-bind='item.name')
+                                    td.item-v-align(ng-bind='item.quantity')
+                                    td.item-v-align
                                       .input-group
                                         span.input-group-addon
                                           i.fa.fa-money
                                         input.form-control(type='text', id='{{item.id}}' ng-model= 'item.price_amount', value= '{{item.price_amount}}')
-                                    td  {{item.quantity * item.price_amount}}
+                                    td.item-v-align(ng-bind='item.quantity * item.price_amount | number: 2')
                                   tr
                                     td(colspan=8)
                                       p.m-t-md
@@ -222,10 +222,10 @@ div
                                     th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending') Value
                                 tbody
                                   tr.odd(role='row' ng-repeat="item in package.PackageItems")
-                                    td.sorting_1 {{item.name}}
-                                    td {{item.quantity}}
-                                    td {{item.price_amount}}
-                                    td {{item.total_amount}}
+                                    td.sorting_1.item-v-align(ng-bind='item.name')
+                                    td.item-v-align(ng-bind='item.quantity')
+                                    td.item-v-align(ng-bind='item.price_amount | number: 2')
+                                    td.item-v-align(ng-bind='item.total_amount | number: 2')
                               table#DataTables_Table_4.table.table-bordered.m-b-none
                                 tr
                                   td(colspan=8)
@@ -276,20 +276,23 @@ div
                                       th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending') Value
                                   tbody
                                     tr.odd(role='row' ng-repeat="item in package.PackageItems")
-                                      td.sorting_1 {{item.name}}
-                                      td {{item.quantity}}
-                                      td
+                                      td.sorting_1.item-v-align(ng-bind='item.name')
+                                      td.item-v-align(ng-bind='item.quantity')
+                                      td.item-v-align
                                         .input-group
                                           span.input-group-addon
                                             i.fa.fa-money
                                           input.form-control(type='text', ng-model= 'item.price_amount', ng-change='$ctrl.getTotalItemAmount($parent.$index)' value= '{{item.price_amount}}')
-                                      td {{item.quantity * item.price_amount}}
+                                      td.item-v-align(ng-bind='item.quantity * item.price_amount | number: 2')
                                 table#DataTables_Table_6.table.table-bordered.m-b-none
                                   tr(role='row')
                                     td(colspan="2" ng-model= '$ctrl.data.weight[package.id]')
-                                      span Total Weight : {{package.weight}} kg
+                                      | Total Weight : &nbsp;
+                                      span(ng-bind='package.weight | number: 2')
+                                      |  kg
                                     td
-                                      span Total Values Of This Package : {{ $ctrl.totalItemAmount }}
+                                      | Total Value Of This Package : &nbsp;
+                                      span(ng-bind='$ctrl.totalItemAmount | number: 2')
                                     td
                                       button.btn.btn-sm.btn-warning.m-b-xs.text-u-c.pull-right(type='submit', ng-click="$ctrl.submitValues(package.id, $index)") Confirm Package
                               span(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.UPLOAD_INVOICE_REQUESTED')
@@ -348,10 +351,10 @@ div
                                     th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending') Value
                                 tbody
                                   tr.odd(role='row' ng-repeat="item in package.PackageItems")
-                                    td.sorting_1(ng-bind='item.name')
-                                    td(ng-bind='item.quantity')
-                                    td(ng-bind='item.price_amount')
-                                    td(ng-bind='item.total_amount')
+                                    td.sorting_1.item-v-align(ng-bind='item.name')
+                                    td.item-v-align(ng-bind='item.quantity')
+                                    td.item-v-align(ng-bind='item.price_amount | number: 2')
+                                    td.item-v-align(ng-bind='item.total_amount | number: 2')
                               table#DataTables_Table_8.table.table-bordered.m-b-none
                                 tr
                                   td(colspan=8)
