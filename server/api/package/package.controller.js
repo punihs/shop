@@ -235,7 +235,7 @@ exports.create = async (req, res, next) => {
 
 exports.state = async (req, res, next) => {
   const pkg = await Package
-    .findById(req.params.id);
+    .findById(req.params.id, { raw: true });
 
   if ([AWAITING_VERIFICATION, DAMAGED].includes(req.body.state_id)) {
     const packageItemCount = await PackageItem.count({

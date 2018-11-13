@@ -9,7 +9,7 @@ const {
   },
   PACKAGE_STATE_IDS: {
     PACKAGE_ITEMS_UPLOAD_PENDING, SPLIT_PACKAGE_PROCESSED, AWAITING_VERIFICATION, IN_REVIEW,
-    READY_TO_SHIP,
+    READY_TO_SHIP, ADDED_SHIPMENT,
   },
 } = require('./../../config/constants');
 const {
@@ -305,7 +305,7 @@ exports.updateState = ({
         }
       }
 
-      if (!([IN_REVIEW, AWAITING_VERIFICATION].includes(nextStateId))) {
+      if (!([IN_REVIEW, AWAITING_VERIFICATION, ADDED_SHIPMENT].includes(nextStateId))) {
         hookshot
           .stateChange({
             nextStateId,

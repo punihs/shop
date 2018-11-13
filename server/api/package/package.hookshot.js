@@ -13,6 +13,7 @@ exports.stateChange = async ({
   .all([
     User
       .findById(pkg.customer_id, {
+        raw: true,
         attributes: [
           'id', 'name', 'salutation', 'first_name', 'last_name', 'email', 'virtual_address_code', 'phone',
         ],
