@@ -43,7 +43,7 @@ div
                 h1.text-center.text-muted Start Adding Addresses to your Address Book
 
             //hr
-            .well.col-md-4.m-t.m-l.bg-info.hover-wrap.address-box-height(ng-repeat='address in $ctrl.addresses' ng-class='address.is_default ? "dker": "lt"')
+            .well.col-md-4.m-t.m-l.bg-info.hover-wrap.address-box-height(style='min-height: 205px;' ng-repeat='address in $ctrl.addresses' ng-class='address.is_default ? "dker": "lt"')
               h4.no-margin-top
                 span.font-thin(ng-bind='(address.city ? address.city.toUpperCase() : "") + " Address"')
                 span.flag-icon.m-l-xs(
