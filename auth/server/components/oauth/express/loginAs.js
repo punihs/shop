@@ -10,11 +10,11 @@ const { APPS } = require('../../../config/constants');
 const log = debug('server-components-oauth-express-loginAs');
 
 const getClient = (req) => {
-  log('getClient', req.body.app_id);
+  console.log('getClient', req.body.app_id);
   return App.find({
     attributes: ['client_id', 'client_secret', 'redirect_uri'],
     where: {
-      id: req.body.app_id || APPS.MEMBER,
+      id: req.body.app_id || APPS.PARCEL,
     },
     raw: true,
   });
@@ -42,6 +42,7 @@ module.exports = (req, res, next) => {
   return getToken(req.body.username)
     .then(accessToken => getClient(req)
       .then((app) => {
+        console.log({app})
         req.headers.authorization = `Bearer ${accessToken}`;
         req.body.allow = 'true';
         req.body.response_type = 'code';
