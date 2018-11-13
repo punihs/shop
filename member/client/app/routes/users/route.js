@@ -24,6 +24,11 @@ angular.module('uiGenApp')
         templateUrl: 'app/routes/users/address/address-create.html',
         controller: 'AddressesCreateController',
         controllerAs: '$ctrl',
+        resolve: {
+          address() {
+            return {};
+          },
+        },
       })
       .state('users.address-edit', {
         url: '/address/:id/edit',

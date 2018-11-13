@@ -60,6 +60,7 @@ angular
   .factory('CONFIG', (appConfig) => appConfig[CUSTOMER])
   .factory('$exceptionHandler', function () {
     return function errorCatcherHandler(exception, cause) {
+      console.log(exception, cause);
       Raven.captureException(exception);
       // do not rethrow the exception - breaks the digest cycle
     };
@@ -73,6 +74,7 @@ angular
             status: rejection.status,
           },
         });
+        console.log(rejection);
         return $q.reject(rejection);
       },
     };
