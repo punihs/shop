@@ -70,17 +70,18 @@ div
                           tbody.odd(ng-repeat="shipment in $ctrl.shipments")
                             tr.footable-even(style='display: table-row;')
                               td.footable-visible.footable-first-column(ng-click='shipment.open = !shipment.open')
-                                i.fa.fa-sort-desc
-                              td.footable-visible {{shipment.customer_name}}
-                              td.footable-visible {{shipment.order_code}}
-                              td.footable-visible(
-                              ng-bind='$ctrl.moment(shipment.created_at).fromNow()'
-                              uib-tooltip="{{shipment.created_at | date:'MMM d, y'}} IST {{shipment.created_at | date:'h:mm a'}}"
-                              tooltip-placement='right'
-                              tooltip-append-to-body='true'
-                              )
-                              td.footable-visible {{shipment.final_weight}}
-                              td.footable-visible {{shipment.packages_count}}
+                                i.fa.fa-chevron-circle-down.text-info
+                              td.footable-visible.text-center {{shipment.customer_name}}
+                              td.footable-visible.text-center {{shipment.order_code}}
+                              td.footable-visible.text-center
+                                span(
+                                  ng-bind="shipment.created_at | date:'MMM d, y'"
+                                  uib-tooltip="IST {{shipment.created_at | date:'h:mm a'}}"
+                                  tooltip-placement='right'
+                                  tooltip-append-to-body='true'
+                                  )
+                              td.footable-visible.text-center {{shipment.final_weight | number:2}} kg
+                              td.footable-visible.text-center {{shipment.packages_count}}
                               td.footable-visible
                                 div
                                   div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PACKAGING_REQUESTED')

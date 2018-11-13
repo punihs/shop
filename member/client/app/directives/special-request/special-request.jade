@@ -39,13 +39,13 @@
       ng-required='$ctrl.returnToSenderShoppre'
       )
       span.wrapper-xs.text-xs.text-danger(ng-show='newOfferForm.message2.$dirty && newOfferForm.message2.$invalid') Please enter comments
-      .checkbox.m-t(ng-hide="$ctrl.value === 'abandon'", ng-required='$ctrl.acceptanceCheckBox' )
+      .m-t(ng-hide="$ctrl.value === 'abandon'", ng-required='$ctrl.acceptanceCheckBox' )
             label.i-checks.right-padding-5
               input(type='checkbox', value='' name='agree' ng-model="$ctrl.data.agree", ng-required='$ctrl.acceptanceCheckBox')
               i
               | {{ $ctrl.offer.acceptanceMessage }}
       span.wrapper-xs.text-xs.text-danger(ng-show='newOfferForm.agree.$dirty && newOfferForm.agree.$invalid') Please check
-      .modal-footer.no-padder.m-t.text-left.no-border
+      .modal-footer.no-padder.m-t.text-left.no-border.m-t-xs-md
         a.btn.btn-default.text-u-c(ng-click='$ctrl.cancel()') Cancel Request
         button.btn.btn-info(type='submit' ng-disabled="$ctrl.submitting")  Submit Request
 
