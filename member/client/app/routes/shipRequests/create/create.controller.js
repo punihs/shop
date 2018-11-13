@@ -128,6 +128,20 @@ class ShipRequestsCreateController {
       });
   }
 
+  deletePackage(id) {
+    const { packageIds } = this.$stateParams;
+    const index = packageIds.indexOf(id.toString());
+    if (packageIds.length > 1) {
+      this.$state
+        .go('packages.index');
+    }
+    packageIds.splice(index, 1);
+    if (packageIds.length) {
+      this.$state
+        .go('shipRequests.create', { packageIds });
+    }
+  }
+
   create() {
     if (!this.IsShippingAddress) {
       this
