@@ -1,7 +1,8 @@
 class DashboardIndexController {
-  constructor(Page, Session) {
+  constructor(Page, Session, URLS) {
     this.Page = Page;
     this.Session = Session;
+    this.URLS = URLS;
 
     return this.$onInit();
   }

@@ -1,6 +1,6 @@
 class AddressesCreateController {
   constructor(
-    Page, $state, $stateParams, $http, toaster
+    Page, $state, $stateParams, $http, toaster, address
   ) {
     this.Page = Page;
     this.$http = $http;
@@ -8,13 +8,18 @@ class AddressesCreateController {
     this.$stateParams = $stateParams;
     this.toaster = toaster;
     this.Number = Number;
-    this.submitting = false;
-    this.data = {};
+    this.address = address;
+
     this.$onInit();
   }
 
   $onInit() {
+    this.submitting = false;
+    this.data = this.address;
+
     this.EDIT = this.$stateParams.id;
+
+
     this.TITLE = `${this.EDIT ? 'Edit' : 'Add New'} Shipping Address`;
     this.Page.setTitle(this.TITLE);
 
@@ -53,17 +58,7 @@ class AddressesCreateController {
       loadingCountry: false,
     };
 
-    if (this.EDIT) this.getAddress();
-  }
-
-  getAddress() {
-    this
-      .$http
-      .get(`/addresses/${this.$stateParams.id}`)
-      .then(({ data: address }) => {
-        this.data = address;
-        this.Country.model = address.Country.name;
-      });
+    if (this.EDIT) this.Country.model = this.address.Country.name;
   }
 
   validateForm(form) {

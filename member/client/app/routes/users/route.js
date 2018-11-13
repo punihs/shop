@@ -30,6 +30,16 @@ angular.module('uiGenApp')
         templateUrl: 'app/routes/users/address/address-create.html',
         controller: 'AddressesCreateController',
         controllerAs: '$ctrl',
+        resolve: {
+          address($http, $stateParams) {
+            const EDITING = $stateParams.id;
+            if (!EDITING) return {};
+
+            return $http
+              .get(`/addresses/${$stateParams.id}`)
+              .then(({ data: address }) => address);
+          },
+        },
       })
       .state('users.documents', {
         url: '/documents',

@@ -10,6 +10,7 @@ angular.module('uiGenApp')
 
       CDN: `${PREFIX}cdn.${DOMAIN}`,
       ACCOUNTS: `${PREFIX}accounts.${DOMAIN}`,
+      PARCEL: `${PREFIX}parcel.${DOMAIN}`,
       HELP: `${PREFIX}ship.${DOMAIN}`,
 
       API: `${PREFIX}api.${DOMAIN}`,
@@ -19,5 +20,5 @@ angular.module('uiGenApp')
 
       OAUTH: `${PREFIX}accounts.${DOMAIN}/authorise?client_id=${project}&response_type=code&` +
       `redirect_uri=${PREFIX}${project}.${DOMAIN}/access/oauth`,
-    }; 
+    };
   });

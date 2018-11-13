@@ -4,204 +4,198 @@ div
     // - Primary Header
     .bg-white-only.w-full.b-b(style='position: fixed;z-index: 6;height: 40px;')
       .pull-left.wrapper-sm.no-padder-top
-        span.h4.text-info
-          i.fas.fa-address-book.text-info-lter
-          |  Address Book-
-          span(ng-bind='" " + $ctrl.TITLE')
+        span.h4
+          i.fas.fa-address-book.text-info-lter.m-r-sm
+          a(ui-sref='users.address-index') Address Book
+          i.fas.fa-angle-right.m-r-xs.m-l-xs
+          span.text-info(ng-bind='" " + $ctrl.TITLE')
     .bg-light
 
     // - Secondary Header
     .bg-light.b-b.padder.w-full.bg-white-only.m-t-xl(
     style='position:fixed;z-index: 6;height: 42px;'
     )
-      div.m-t-sm
-        .h5
+      .h5.m-t-sm
+        i.fas.fa-info-circle.m-r-sm
+        span
           | If you would like to alert us about any of your future incoming items that will be
           | arriving at your locker in our facility, you can provide the details now!
-          span(ng-bind='" " + $ctrl.TITLE')
 
     // - Content Area
     .bg-light(style='min-height: 200px;')
       .m-t-xxl.m-b-lg(style='height: 1px;')
       .hbox
         .wrapper-md.bg-white-only.wrapper-parcel
-          .col-md-12.col-sm-12.col-xs-12.no-padder
-            form.form.form-validation.form-horizontal(
+          .col-md-12.col-sm-12.col-xs-12
+            form.form.form-validation.form-horizontal.m-t-xs(
             name="newAddressForm"
             novalidate
             ng-submit='$ctrl.create(newAddressForm)'
             autocomplete='off'
             )
-              .row
-                .col-md-12.col-sm-12.col-xs-12.no-padder
-                  .col-md-7
-                    .row
-                      .col-md-2.col-sm-2.col-xs-12
-                        label.col-xs-12.input-group
-                          | Title
-                          span.text-danger *
-                          select.form.form-control(
-                          ng-model='$ctrl.data.salutation'
-                          name='salutation'
-                          required
-                          )
-                            option(value='') Title
-                            option Mr
-                            option Ms
-                            option Mrs
-                          span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.salutation.$dirty && newAddressForm.salutation.$invalid') Please select Title
-                      .col-md-4.col-sm-5.col-xs-12.no-padder
-                        label.col-xs-12.input-group
-                          | First Name
-                          span.text-danger *
-                          input.form.form-control(
-                          type='text'
-                          name='first_name'
-                          placeholder='eg. Aditya'
-                          ng-model='$ctrl.data.first_name'
-                          autofocus
-                          required
-                          )
-                          span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.first_name.$dirty && newAddressForm.first_name.$invalid') Please enter First Name
-                      .col-md-6.col-sm-5.col-xs-12
-                        label.col-xs-12.input-group
-                          | Last Name
-                          span.text-danger *
-                          input.form.form-control(
-                          type='text'
-                          name='last_name'
-                          placeholder='eg. Sharma'
-                          ng-model='$ctrl.data.last_name'
-                          required
-                          )
-                          span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.last_name.$dirty && newAddressForm.last_name.$invalid') Please enter Last Name
-                    .line.line-dashed.b-b.line-lg.pull-in(style='margin: 15px 0;')
-                    .row
-                      .col-md-6.col-sm-5.col-xs-12.no-padder-right
-                        label.col-xs-12.input-group
-                          | Line 1
-                          span.text-danger *
-                          input.form.form-control(
-                          type='text'
-                          name='line1'
-                          placeholder='eg. 131 W, 3rd Street'
-                          ng-model='$ctrl.data.line1'
-                          required
-                          )
-                          span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.line1.$dirty && newAddressForm.line1.$invalid') Please enter Line 1
-                      .col-md-6.col-sm-5.col-xs-12
-                        label.col-xs-12.input-group
-                          | Line 2
-                          input.form.form-control(
-                          type='text'
-                          name='line2'
-                          placeholder='eg. 5th Ave'
-                          ng-model='$ctrl.data.line2'
-                          )
+              .col-md-7.col-sm-12.col-xs-12.no-padder
+                .row
+                  .col-md-2.col-sm-2.col-xs-12
+                    label.col-xs-12.input-group
+                      | Title
+                      span.text-danger *
+                      select.form.form-control(
+                      ng-model='$ctrl.data.salutation'
+                      name='salutation'
+                      required
+                      )
+                        option(value='') Title
+                        option Mr
+                        option Ms
+                        option Mrs
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.salutation.$dirty && newAddressForm.salutation.$invalid') Please select Title
+                  .col-md-4.col-sm-5.col-xs-12.no-padder
+                    label.col-xs-12.no-padder.input-group
+                      | First Name
+                      span.text-danger *
+                      input.form.form-control(
+                        type='text'
+                        name='first_name'
+                        placeholder='eg. Aditya'
+                        ng-model='$ctrl.data.first_name'
+                        autofocus
+                        required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.first_name.$dirty && newAddressForm.first_name.$invalid') Please enter First Name
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Last Name
+                      span.text-danger *
+                      input.form.form-control(
+                      type='text'
+                      name='last_name'
+                      placeholder='eg. Sharma'
+                      ng-model='$ctrl.data.last_name'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.last_name.$dirty && newAddressForm.last_name.$invalid') Please enter Last Name
 
-                    .line.line-dashed.b-b.line-lg.pull-in(style='margin: 15px 0;')
-                    .row
-                      .col-md-6.col-sm-5.col-xs-12.no-padder-right
-                        label.col-xs-12.input-group
-                          | City
-                          span.text-danger *
-                          input.form.form-control(
-                          type='text'
-                          name='city'
-                          placeholder='eg. San Franscisco'
-                          ng-model='$ctrl.data.city'
-                          required
-                          )
-                          span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.city.$dirty && newAddressForm.city.$invalid') Please enter City
-                      .col-md-6.col-sm-5.col-xs-12
-                        label.col-xs-12.input-group
-                          | State/Province
-                          span.text-danger *
-                          input.form.form-control(
-                          type='text'
-                          name='state'
-                          placeholder='eg. California'
-                          ng-model='$ctrl.data.state'
-                          required
-                          )
-                          span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.state.$dirty && newAddressForm.state.$invalid') Please enter state
-                    .line.line-dashed.b-b.line-lg.pull-in(style='margin: 15px 0;')
-                    .row
-                      .col-md-6.col-sm-5.col-xs-12.no-padder-right
-                        label.col-xs-12.input-group
-                          | Pincode/Zip Code
-                          input.form.form-control(
-                          type='text'
-                          name='pincode'
-                          placeholder='eg. 94114'
-                          ng-model='$ctrl.data.pincode'
-                          )
-                      .col-md-6.col-sm-5.col-xs-12
-                        label.col-xs-12.input-group
-                          | Country
-                          span.text-danger *
-                          input.form.form-control(
-                          type='text'
-                          name="country_id"
-                          ng-model='$ctrl.Country.model'
-                          placeholder='eg: United States of America'
-                          uib-typeahead='country.name for country in $ctrl.Country.get($viewValue)'
-                          typeahead-loading='$ctrl.Country.loadingCountry'
-                          typeahead-no-results='$ctrl.Country.noResults'
-                          typeahead-on-select='$ctrl.Country.select($item)'
-                          ng-blur="$ctrl.Country.blur()"
-                          typeahead-wait-ms="10"
-                          autocomplete="off"
-                          required
-                          )
-                          span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.country_id.$dirty && newAddressForm.country_id.$invalid') Please select Country
-                          i.fa.fa-refresh.fa-spin.m-l-xs(ng-show='$ctrl.Country.loadingCountry')
-                          div(ng-show='$ctrl.Country.noResults')
-                            i.fa.fa-remove
-                            |  No Results Found
-                    .row
-                      .col-md-7.col-sm-7.col-xs-12
-                        label.col-xs-12.input-group
-                          | Phone / Mobile Number
-                          span.text-danger *
-                    .row
-                      .col-md-4.col-sm-5.col-xs-12
-                        input#tel.form-control(type='text', name='phone', ng-model='$ctrl.data.phone', ng-intl-tel-input='')
-                        span.help-block(ng-show='newAddressForm.phone.$pristine && newAddressForm.phone.$touched') Please type a telephone number
-                        span.help-block(ng-show='newAddressForm.phone.$invalid && newAddressForm.phone.$touched') Invalid :(
-                        span.help-block(ng-show='newAddressForm.phone.$valid && newAddressForm.phone.$touched') Valid :)
-                    .line.line-dashed.b-b.line-lg.pull-in(style='margin: 15px 0;')
-                    .row
-                      .col-xs-12: ul.nav
-                        li: label.i-checks.i-checks-sm
-                          input(
-                          type="checkbox"
-                          ng-model="$ctrl.data.is_default"
-                          )
-                          i
-                          .hide
-                          | Set this as Default Shipping Address.
+                .line.line-dashed.b-b.line-lg.pull-in(style='margin: 15px 0;')
+                .row
+                  .col-md-6.col-sm-5.col-xs-12.no-padder-right
+                    label.col-xs-12.input-group
+                      | Line 1
+                      span.text-danger *
+                      input.form.form-control(
+                      type='text'
+                      name='line1'
+                      placeholder='eg. 131 W, 3rd Street'
+                      ng-model='$ctrl.data.line1'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.line1.$dirty && newAddressForm.line1.$invalid') Please enter Line 1
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Line 2
+                      input.form.form-control(
+                      type='text'
+                      name='line2'
+                      placeholder='eg. 5th Ave'
+                      ng-model='$ctrl.data.line2'
+                      )
 
-                    .row
-                      .col-md-8
-                        .text-danger.font-bold(ng-if="newAddressForm.salary.$error.max") Please check Current CTC
-                        .text-danger.font-bold(ng-if="newAddressForm.file.$error.maxSize") Please select file less than 5MB
-                      .col-md-6.col-xs-12
-                        h4(ng-bind="$ctrl.error.message" style="color:red;")
-                        button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting")
-                          span.fa.fa-forward.m-r-sm
-                          span.text-white(ng-if='!$ctrl.submitting') Save New Shipping Address
-                          span(ng-if='$ctrl.submitting')
-                            i.fa.fa-spin.fa-circle-o-notch
-                            span.text-white &nbsp;&nbsp;Submitting...
+                .line.line-dashed.b-b.line-lg.pull-in(style='margin: 15px 0;')
+                .row
+                  .col-md-6.col-sm-5.col-xs-12.no-padder-right
+                    label.col-xs-12.input-group
+                      | City
+                      span.text-danger *
+                      input.form.form-control(
+                      type='text'
+                      name='city'
+                      placeholder='eg. San Franscisco'
+                      ng-model='$ctrl.data.city'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.city.$dirty && newAddressForm.city.$invalid') Please enter City
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | State/Province
+                      span.text-danger *
+                      input.form.form-control(
+                      type='text'
+                      name='state'
+                      placeholder='eg. California'
+                      ng-model='$ctrl.data.state'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.state.$dirty && newAddressForm.state.$invalid') Please enter state
+
+                .line.line-dashed.b-b.line-lg.pull-in(style='margin: 15px 0;')
+                .row
+                  .col-md-6.col-sm-5.col-xs-12.no-padder-right
+                    label.col-xs-12.input-group
+                      | Pincode/Zip Code
+                      input.form.form-control(
+                      type='text'
+                      name='pincode'
+                      placeholder='eg. 94114'
+                      ng-model='$ctrl.data.pincode'
+                      )
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Country
+                      span.text-danger *
+                      input.form.form-control(
+                      type='text'
+                      name="country_id"
+                      ng-model='$ctrl.Country.model'
+                      placeholder='eg: United States of America'
+                      uib-typeahead='country.name for country in $ctrl.Country.get($viewValue)'
+                      typeahead-loading='$ctrl.Country.loadingCountry'
+                      typeahead-no-results='$ctrl.Country.noResults'
+                      typeahead-on-select='$ctrl.Country.select($item)'
+                      ng-blur="$ctrl.Country.blur()"
+                      typeahead-wait-ms="10"
+                      autocomplete="off"
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.country_id.$dirty && newAddressForm.country_id.$invalid') Please select Country
+                      i.fa.fa-refresh.fa-spin.m-l-xs(ng-show='$ctrl.Country.loadingCountry')
+                      div(ng-show='$ctrl.Country.noResults')
+                        i.fa.fa-remove
+                        |  No Results Found
+
+                .line.line-dashed.b-b.line-lg.pull-in(style='margin: 15px 0;')
+                .row
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Phone / Mobile Number
+                      span.text-danger *
+                      input#tel.form.form-control(type='text', name='phone', ng-model='$ctrl.data.phone', ng-intl-tel-input='')
+                      span.help-block(ng-show='newAddressForm.phone.$pristine && newAddressForm.phone.$touched') Please type a telephone number
+                      span.help-block(ng-show='newAddressForm.phone.$invalid && newAddressForm.phone.$touched') Invalid :(
+                      span.help-block(ng-show='newAddressForm.phone.$valid && newAddressForm.phone.$touched') Valid :)
+
+                .line.line-dashed.b-b.line-lg.pull-in(style='margin: 15px 0;')
+                .row
+                  .col-xs-12: ul.nav
+                    li: label.i-checks.i-checks-sm
+                      input(
+                      type="checkbox"
+                      ng-model="$ctrl.data.is_default"
+                      )
+                      i
+                      .hide
+                      | Set this as Default Shipping Address.
+
+                .row
+                  .col-md-8
+                    .text-danger.font-bold(ng-if="newAddressForm.salary.$error.max") Please check Current CTC
+                    .text-danger.font-bold(ng-if="newAddressForm.file.$error.maxSize") Please select file less than 5MB
+                  .col-md-6.col-xs-12
+                    h4(ng-bind="$ctrl.error.message" style="color:red;")
+                    button.btn.btn-info(type='submit' ng-disabled="$ctrl.submitting")
+                      span(ng-if='!$ctrl.submitting')
+                        i.fas.fa-save.m-r-xs
+                        span.text-white Save Changes
+                      span(ng-if='$ctrl.submitting')
+                        i.fas.fa-circle-notch
+                        span.text-white &nbsp;&nbsp;Submitting...
 
           .clearfix
-
-
-
-
-
-
-
-//div(ng-show='$ctrl.submitting')
-//  span(ng-include="'app/routes/jobs/cv-uploading/cv-uploading.html'")
