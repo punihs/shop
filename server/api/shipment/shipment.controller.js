@@ -47,7 +47,7 @@ const BUCKETS = require('../../config/constants/buckets');
 const { ADDED_TO_SHIPMENT } = require('../../config/constants/packageStates');
 
 const log = debug('s.shipment.controller');
-const { index, show } = require('./shipment.service');
+const { index, show, updateShipmentState } = require('./shipment.service');
 
 exports.index = (req, res, next) => index(req)
   .then((result) => {
@@ -304,14 +304,13 @@ exports.destroy = async (req, res) => {
     await ShipmentMeta
       .destroy({ where: { shipment_id: id } });
 
-    await Shipment
-      .updateShipmentState({
-        db,
-        shipment,
-        actingUser: req.user,
-        nextStateId: SHIPMENT_DELETED,
-        comments: 'Shipment Deleted By OPS',
-      });
+    await updateShipmentState({
+      db,
+      shipment,
+      actingUser: req.user,
+      nextStateId: SHIPMENT_DELETED,
+      comments: 'Shipment Deleted By OPS',
+    });
     await Package
       .update({ shipment_id: null }, { where: { shipment_id: id } });
 
@@ -513,13 +512,12 @@ exports.create = async (req, res, next) => {
       }));
 
     // - Async
-    await Shipment
-      .updateShipmentState({
-        db,
-        nextStateId: PACKAGING_REQUESTED,
-        shipment,
-        actingUser: req.user,
-      })
+    await updateShipmentState({
+      db,
+      nextStateId: PACKAGING_REQUESTED,
+      shipment,
+      actingUser: req.user,
+    })
       .catch(err => logger.error({
         t: 'updateShipmentState',
         body: req.body,
@@ -677,22 +675,20 @@ exports.cancelRequest = async (req, res, next) => {
       }
 
       return Promise
-        .all([
-          Shipment
-            .updateShipmentState({
-              db,
-              shipment,
-              actingUser: req.user,
-              nextStateId: SHIPMENT_CANCELLED,
-              comments: 'Shipment Cancelled By Customer',
-            }),
+        .all([updateShipmentState({
+          db,
+          shipment,
+          actingUser: req.user,
+          nextStateId: SHIPMENT_CANCELLED,
+          comments: 'Shipment Cancelled By Customer',
+        }),
 
-          Notification.create({
-            customer_id: customerId,
-            action_type: 'shipment',
-            action_id: shipment.id,
-            action_description: `Shipment request cancelled - Order#  ${shipment.order_code}`,
-          }),
+        Notification.create({
+          customer_id: customerId,
+          action_type: 'shipment',
+          action_id: shipment.id,
+          action_description: `Shipment request cancelled - Order#  ${shipment.order_code}`,
+        }),
         ])
         .then(() => res.json({ message: 'Ship request has been cancelled!', shipment }));
     })
@@ -987,14 +983,13 @@ exports.state = async (req, res, next) => Shipment
       }
     }
 
-    return Shipment
-      .updateShipmentState({
-        db,
-        shipment,
-        actingUser: req.user,
-        nextStateId: req.body.state_id,
-        comments: req.body.comments,
-      })
+    return updateShipmentState({
+      db,
+      shipment,
+      actingUser: req.user,
+      nextStateId: req.body.state_id,
+      comments: req.body.comments,
+    })
       .then(status => res.json(status));
   })
   .catch(next);
@@ -1012,14 +1007,13 @@ exports.paymentState = async (req, res) => {
         comments = 'Shipment Payment failed';
         State = PAYMENT_FAILED;
       }
-      return Shipment
-        .updateShipmentState({
-          db,
-          shipment,
-          actingUser: req.body.user,
-          nextStateId: State,
-          comments,
-        })
+      return updateShipmentState({
+        db,
+        shipment,
+        actingUser: req.body.user,
+        nextStateId: State,
+        comments,
+      })
         .then(status => res.json(status));
     });
 };
@@ -1052,14 +1046,13 @@ exports.payResponse = async (req, res, next) => {
 
     const SUCCESS = '6';
     if (req.query.status === SUCCESS) {
-      Shipment
-        .updateShipmentState({
-          db,
-          shipment,
-          actingUser: customer,
-          nextStateId: PAYMENT_COMPLETED,
-          comments: `Payment ${req.query.paymentStatus}!`,
-        });
+      updateShipmentState({
+        db,
+        shipment,
+        actingUser: customer,
+        nextStateId: PAYMENT_COMPLETED,
+        comments: `Payment ${req.query.paymentStatus}!`,
+      });
       if (req.query.paymentStatus) {
         await Notification.create({
           customer_id: customer.id,
@@ -1083,15 +1076,13 @@ exports.payResponse = async (req, res, next) => {
         res.redirect(`${sucessURL}?object_id=${shipment.order_code}&customer_id=${req.query.uid}&status='sucess'&message=${msg}&amount=${amount}`);
       }
     } else {
-      Shipment
-        .updateShipmentState({
-          db,
-          shipment,
-          actingUser: customer,
-          nextStateId: PAYMENT_FAILED,
-          comments: 'payment failed',
-        });
-
+      updateShipmentState({
+        db,
+        shipment,
+        actingUser: customer,
+        nextStateId: PAYMENT_FAILED,
+        comments: 'payment failed',
+      });
       res.redirect(`${failedURL}?error='failed'&message=${msg}`);
     }
   } catch (e) {
