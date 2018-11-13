@@ -91,7 +91,7 @@ class AddressesCreateController {
           .toaster
           .pop('success', `${data.city} Shipping Address Created Successfully.`, '');
 
-        return this.$state.go('users.address-list');
+        return this.$state.go('users.address-index');
       })
       .catch((err) => {
         this.submitting = false;

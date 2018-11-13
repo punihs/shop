@@ -167,10 +167,10 @@ div
                     label.col-xs-12.input-group
                       | Phone / Mobile Number
                       span.text-danger *
-                      input#tel.form.form-control(type='text', name='phone', ng-model='$ctrl.data.phone', ng-intl-tel-input='')
-                      span.help-block(ng-show='newAddressForm.phone.$pristine && newAddressForm.phone.$touched') Please type a telephone number
-                      span.help-block(ng-show='newAddressForm.phone.$invalid && newAddressForm.phone.$touched') Invalid :(
-                      span.help-block(ng-show='newAddressForm.phone.$valid && newAddressForm.phone.$touched') Valid :)
+                    input#tel.form.form-control(type='text', name='phone', ng-model='$ctrl.data.phone', ng-intl-tel-input='')
+                    span.help-block(ng-show='newAddressForm.phone.$pristine && newAddressForm.phone.$touched') Please type a telephone number
+                    span.help-block(ng-show='newAddressForm.phone.$invalid && newAddressForm.phone.$touched') Invalid :(
+                    span.help-block(ng-show='newAddressForm.phone.$valid && newAddressForm.phone.$touched') Valid :)
 
                 .line.line-dashed.b-b.line-lg.pull-in(style='margin: 15px 0;')
                 .row
