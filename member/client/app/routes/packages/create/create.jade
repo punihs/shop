@@ -125,21 +125,21 @@ div
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && !$ctrl.data.file && newPackageForm.file.$invalid') Please choose file
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.file.$invalid') Please choose supported file
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.file.$dirty && newPackageForm.file.$invalid') Please choose supported file
-                  .col-xs-1.wrapper-sm.m-t-xs
-                    img.pull-left.m-r(
-                      ng-if='$ctrl.data.object'
-                      ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.object}}'
-                      style='height: 120px;width: 200px;'
-                    )
-                .line.line-dashed.b-b.line-lg.pull-in(style='margin: 10px 0;')
-                  button.btn.btn-info(type='submit' ng-disabled="$ctrl.submitting")
-                    span.text-white(ng-if='!$ctrl.submitting')
-                      i.fa.fa-save.m-r-xs
-                      span.text-white Save New Order
-                    span(ng-if='$ctrl.submitting')
-                      i.fa.fa-spin.fa-circle-notch
-                      span.text-white &nbsp;&nbsp;Submitting...
+                  .row
+                   .col-md-12
+                     .col-md-3
+                       button.btn.btn-info.m-t(type='submit' ng-disabled="$ctrl.submitting")
+                         span.text-white(ng-if='!$ctrl.submitting')
+                           i.fa.fa-save.m-r-xs
+                           span.text-white Save New Order
+                         span(ng-if='$ctrl.submitting')
+                           i.fa.fa-spin.fa-circle-notch
+                           span.text-white &nbsp;&nbsp;Submitting...
+                     .col-md-5
+                      .wrapper-sm.m-t-xs
+                        img.pull-left.m-r(
+                        ng-if='$ctrl.data.object'
+                        ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.object}}'
+                        style='height: 120px;width: 200px;'
+                        )
         .clearfix
-
-div(ng-show='$ctrl.submitting')
-  span(ng-include="'app/routes/jobs/cv-uploading/cv-uploading.html'")
