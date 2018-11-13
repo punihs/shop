@@ -16,7 +16,15 @@ angular
     'qui.components',
     'http-auth-interceptor',
   ])
-  .constant('MODULE_VERSION', '0.0.1');
+  .constant('MODULE_VERSION', '0.0.1')
+  .constant('ADDRESS', {
+    line1: '#181, 1st Floor,',
+    line2: '2nd Cross Rd, 1st Block Koramangala,',
+    line3: 'Bengaluru, Karnataka,',
+    line4: 'India, 560034',
+    phone: '+91 80 4094 4077',
+    email: 'support@shoppre.com',
+  });
 // this configs to initiated using provider
 const CUSTOMER = 2;
 angular

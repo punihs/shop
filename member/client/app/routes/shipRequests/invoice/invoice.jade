@@ -13,9 +13,15 @@ section.ship_response.m-t-md.m-b-md
                         img(src='/assets/images/wordmark.png', style='width:100%; max-width:300px;')
 
                       td
-                          p Invoice Number :# {{$ctrl.shipment.id}}
-                          p Order Number : # {{$ctrl.shipment.order_code}}
-                          p Date: {{$ctrl.shipment.updated_at | date: 'dd/MM/yyyy'}}
+                        p
+                          | Invoice Number : #
+                          span(ng-bind='$ctrl.shipment.id')
+                        p
+                          | Order Number : #
+                          span(ng-bind='$ctrl.shipment.order_code')
+                        p
+                          | Date:
+                          span(ng-bind='$ctrl.shipment.updated_at | date: "MMM d, y"')
             tr.information
               td(colspan='4')
                 table
@@ -24,18 +30,32 @@ section.ship_response.m-t-md.m-b-md
                       td(width='50%')
                         h4
                           b SHIPPED TO
-                        strong  {{$ctrl.shipment.customer_name}}
-                        p       {{$ctrl.shipment.address}}
-                        p       PH: {{$ctrl.shipment.phone}}
+                        strong(ng-bind='$ctrl.shipment.customer_name')
+                        p
+                          span(ng-bind='$ctrl.shipment.address')
+                        p
+                          | PH:
+                          span(ng-bind='$ctrl.shipment.phone')
                       td(width='50%')
                         h4
                           b YOUR SHOPPRE ADDRESS
-                        strong  {{$ctrl.shipment.Customer.first_name}} {{$ctrl.shipment.Customer.last_name}}
-                        p  #181, 1st Floor,
-                        p  2nd Cross Rd, 1st Block Koramangala,
-                        p  Bengaluru, Karnataka 560034
-                        p  Phone : +91 80 4094 4077
-                        p  Email : support@shoppre.com
+                        strong
+                          span(ng-bind='$ctrl.shipment.Customer.first_name')
+                          span(ng-bind='$ctrl.shipment.Customer.last_name')
+                        p
+                          span(ng-bind='$ctrl.address.line1')
+                        p
+                          span(ng-bind='$ctrl.address.line2')
+                        p
+                          span(ng-bind='$ctrl.address.line3')
+                        p
+                          span(ng-bind='$ctrl.address.line4')
+                        p
+                          | Phone:
+                          span(ng-bind='$ctrl.address.phone')
+                        p
+                          | Email:
+                          span(ng-bind='$ctrl.address.email')
             tr.heading
               td.invoice-from-width From
               td.invoice-packid-width Package ID
@@ -43,11 +63,23 @@ section.ship_response.m-t-md.m-b-md
               td Weight
             tr.item(ng-repeat="package in $ctrl.Packages")
               td.invoice-from-width
-                strong {{package.Store.name}}
-                |  -   {{package.invoice_code}}F
-              td.invoice-packid-width {{package.id}}
-              td.invoice-total-width INR {{package.price_amount}}
-              td {{package.weight}} Kg
+                strong(ng-bind='package.Store.name')
+                | &nbsp; - &nbsp;
+                span(ng-bind='package.invoice_code')
+              td.invoice-packid-width
+                span(ng-bind='package.id')
+              td.invoice-total-width
+                | INR &nbsp;
+                span(ng-bind='package.price_amount')
+              td
+                span(ng-bind='package.weight | number: 2')
+                span &nbsp;kg
+            tr.item(ng-if="$ctrl.shipment.final_weight > 0")
+              td(colspan='2')
+              td Total Weight :
+              td
+                span(ng-bind='$ctrl.shipment.final_weight | number: 2')
+                span &nbsp;kg
             tr.item
               td(colspan='2')
               td Estimated Shipping :

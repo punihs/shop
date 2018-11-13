@@ -1,12 +1,17 @@
 class ShipRequestInvoiceController {
-  constructor($http, Page, $uibModal, toaster, $stateParams) {
+  constructor($http, Page, $uibModal, toaster, $stateParams, ADDRESS) {
     this.$http = $http;
     this.Page = Page;
     this.$uibModal = $uibModal;
     this.$stateParams = $stateParams;
     this.toaster = toaster;
-    this.orderCode = this.$stateParams.orderCode;
+    this.address = ADDRESS;
+    this.$onInit();
+  }
+
+  $onInit() {
     this.shipment = [];
+    this.orderCode = this.$stateParams.orderCode;
     this.Packages = [];
     this.ShipmentMetum = [];
     this.PackageCharge = {};
@@ -19,10 +24,6 @@ class ShipRequestInvoiceController {
       wrong_address_amount: 0,
       split_amount: 0,
     };
-    this.$onInit();
-  }
-
-  $onInit() {
     this.$http
       .get(`/shipments/${this.orderCode}/invoice`)
       .then(({ data: { shipment } }) => {
