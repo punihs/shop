@@ -22,7 +22,6 @@ class PackagesCreateController {
     this.showSuccess = false;
     this.data = {};
     this.Page.setTitle('Alert Shoppre about Incoming Package');
-    // document.getElementById('store_id').focus();
 
     this.Stores = {
       select: ($item) => {
