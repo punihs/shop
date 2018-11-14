@@ -71,28 +71,26 @@
     'container':App.app.settings.container      }" class="app">
   <!--<header>-->
   <navbar></navbar> <!--<div ng-include="'html/blocks/header.html'" class="app-header navbar"></div>-->
-  <aside></aside>
+  <div ng-include="'components/aside/aside.html'"
+       ng-class="{    'off-screen': App.app.settings.offScreen,  }"
+       class="app-aside hidden-xs {{App.app.settings.asideColor}}">
+
+  </div>
+
   <!--</header>-->
-  <content>
-    <div class="app-content" ng-class="{'m-t-xl': App.app.settings.isAdmin}">
-      <div ui-butterbar=""></div>
-      <a href="" ui-toggle-class="off-screen" data-target=".app-aside" class="off-screen-toggle hide"></a>
-      <div>
-        <toaster-container  toaster-options="{'position-class': 'toast-bottom-right'}"></toaster-container>
-        <div class="hbox">
-          <div ng-if="App.showShipmentSideBar()" class="col w-md">
-            <!--<div class="wrapper b-b bg">-->
-            <!--<a ui-sref="app.mail.compose" class="btn btn-sm btn-danger w-xs font-bold" href="#/app/mail/compose">Manage JD</a>-->
-            <!--</div>-->
-            <shipment-nav></shipment-nav>
-          </div>
-          <div ui-view class="col"></div>
-        </div>
+  <div class="app-content" ng-class="{'m-t-xl': App.app.settings.isAdmin}">
+    <div ui-butterbar=""></div>
+    <a href="" ui-toggle-class="off-screen" data-target=".app-aside" class="off-screen-toggle hide"></a>
+    <div>
+      <toaster-container  toaster-options="{'position-class': 'toast-bottom-right'}"></toaster-container>
+      <div class="hbox">
+        <div ui-view class="col"></div>
       </div>
     </div>
-  </content>
+  </div>
+
 </div>
-<!--<div ng-include="'html/blocks/aside.html'" ng-class="{    'off-screen': App.app.settings.offScreen,  }" class="app-aside hidden-xs {{App.app.settings.asideColor}}"></div>-->
+
 
 <!--<navbar></navbar>-->
 <!--<div ui-view=""></div>-->
@@ -112,8 +110,6 @@
   }
   ga('send', 'pageview');
 </script>
-<tawk></tawk>
-<comet-chat></comet-chat>
 
 <!--[if lt IE 9]>
 <script src="bower_components/es5-shim/es5-shim.js"></script>

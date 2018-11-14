@@ -24,6 +24,7 @@
     .directive('navigation', () => ({
       templateUrl: 'components/navigation/navigation.html',
       restrict: 'E',
+      replace: true,
       controller: NavigationController,
       controllerAs: '$ctrl',
       bindToController: true,
