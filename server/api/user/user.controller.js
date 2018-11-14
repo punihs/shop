@@ -20,7 +20,7 @@ exports.index = (req, res, next) => {
     attributes: [
       'id', 'name', 'email', 'salutation', 'first_name', 'last_name', 'phone',
       'country_id', 'created_at', 'virtual_address_code',
-      'profile_photo_url', 'updated_at', 'email_verify',
+      'profile_photo_url', 'updated_at'
     ],
     include: [{
       model: Country,
@@ -153,7 +153,7 @@ exports.show = (req, res, next) => {
             ? req.query.fl.split(',')
             : [
               'id', 'name', 'first_name', 'last_name', 'salutation', 'virtual_address_code',
-              'phone', 'email', 'email_verify',
+              'phone', 'email',
               'secondary_phone', 'alternate_email',
             ],
           include: [{
@@ -220,34 +220,6 @@ exports.register = async (req, res, next) => {
         message: messagesMap[status.code],
       }))
     .catch(next);
-};
-
-exports.verify = async (req, res) => {
-  const { email } = req.body;
-  if (email) {
-    const options = {
-      attributes: [
-        'email_verify', 'id',
-      ],
-      where: { email, id: req.user.id },
-    };
-    await User.find(options)
-      .then((customer) => {
-        if (customer.email_verify !== 'yes') {
-          if (req.body.token === customer.email_token) {
-            customer.update({
-              email_token: null,
-              email_verify: 'yes',
-            });
-            res.json({ message: 'Email address verified successfully. Please login to continue.' });
-          } else {
-            res.json({ error: 'Email verification failed! Resend verfication link from your profile.' });
-          }
-        } else {
-          res.json({ message: 'Your email address already been verified. Please login to continue.' });
-        }
-      });
-  }
 };
 
 exports.updateChangePassword = async (req, res, next) => { // change Password

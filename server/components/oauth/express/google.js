@@ -58,7 +58,6 @@ exports.oauth = (req, res, next) => {
                 User
                   .update({
                     profile_photo_url: me.image.url,
-                    email_verify: 'yes',
                     google: { ...me, token },
                   }, { where: { email } })
                   .catch(err => logger.error('User me save', err, req.body));

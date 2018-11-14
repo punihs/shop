@@ -97,7 +97,7 @@ describe('GET /api/shipments/1/packages', () => {
 //       google_contacts_accessed: 0,
 //       medium: null,
 //       country_code: null,
-//       email_verify: 'yes',
+
 //       name: 'Abhinav Mishra',
 //       updated_at: '2018-05-15T17:05:19.000+05:30',
 //       admin_read: 'yes',
