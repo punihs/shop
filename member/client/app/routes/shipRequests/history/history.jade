@@ -55,7 +55,7 @@ div
                       tbody.odd(ng-repeat="shipment in $ctrl.shipments")
                         tr.footable-even(style='display: table-row;')
                           td.footable-visible.footable-first-column(ng-click='shipment.open = !shipment.open')
-                            i.fa.fa-sort-desc
+                            i.fa.fa-chevron-circle-down.text-info
                           td.footable-visible {{shipment.customer_name}}
                           td.footable-visible(ng-show='shipment.ShipmentState.state_id != $ctrl.SHIPMENT_STATE_IDS.SHIPMENT_CANCELLED')
                             | Shipped {{shipment.number_of_packages}} Parcel(s) via: {{shipment.shipping_carrier}} to {{shipment.Customer.Country.iso2}} {{shipment.weight_by_shipping_partner}} Kg Tracking#
@@ -180,7 +180,7 @@ div
                               tbody.odd(role='row' ng-repeat="package in shipment.Packages")
                                 tr.footable-even(style='display: table-row;')
                                   td.footable-visible.footable-first-column(ng-click='package.open = !package.open')
-                                    i.fa.fa-sort-desc
+                                    i.fa.fa-chevron-circle-down.text-info
                                   td.footable-visible
                                     a(ui-sref='package.show({ id: package.id })' ng-bind='package.Store.name')
                                   td.footable-visible {{package.id}}

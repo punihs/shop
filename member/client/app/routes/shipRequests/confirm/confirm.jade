@@ -47,12 +47,12 @@
                   tbody(ng-repeat="package in $ctrl.packages" ng-init='$ctrl.MoreOption={}')
                     tr.footable-even(style='display: table-row;')
                       td.footable-visible.footable-first-column(ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]')
-                        i.fa.fa-sort-desc
+                        i.fa.fa-chevron-circle-down.text-info
                       td.footable-visible
                         a(ui-sref='package.show({ id: package.id })' ng-bind='package.Store.name')
                       td.footable-visible(ng-bind='package.invoice_code')
                       td.footable-visible ₹{{package.price_amount | number : 2}}
-                      td.footable-visible {{package.weight | number :2}} KG
+                      td.footable-visible {{package.weight | number :2}} kg
                     tr.footable-even(style='display: table-row;')
                       td.footable-visible(colspan='5' ng-if='$ctrl.MoreOption[$index]')
                         p(ng-show='package.PhotoRequests.length > 0')
@@ -75,7 +75,7 @@
                     td.footable-visible
                     td.footable-visible Shipment Totals
                     td.footable-visible ₹&nbsp;{{$ctrl.totalpackagePriceAmount | number : 2}}
-                    td.footable-visible {{$ctrl.shipment.final_weight | number :2}} KG
+                    td.footable-visible {{$ctrl.shipment.final_weight | number :2}} kg
           .clearfix
         .col-md-4
           //.row
@@ -113,7 +113,7 @@
                   li
                     p
                       | Total Weight
-                      span.totalvalue.pull-right &nbsp; {{$ctrl.shipment.final_weight | number :2}} KG
+                      span.totalvalue.pull-right &nbsp; {{$ctrl.shipment.final_weight | number :2}} kg
                       span(
                       uib-popover = 'All International carriers base their billable shipping rates on the greater of Actual Weight and Dimensional Weight.'+
                       'Actual weight is the weight of the package when put on a scale.'+

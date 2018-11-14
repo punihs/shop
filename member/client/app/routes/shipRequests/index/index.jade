@@ -186,7 +186,7 @@ div
                                   tbody.odd(role='row' ng-repeat="package in shipment.Packages")
                                     tr.footable-even(style='display: table-row;')
                                       td.footable-visible.footable-first-column(ng-click='package.open = !package.open')
-                                        i.fa.fa-sort-desc
+                                        i.fa.fa-chevron-circle-down.text-info
                                       td.footable-visible
                                         a(ui-sref='package.show({ id: package.id })' ng-bind='package.Store.name')
                                       td.footable-visible {{package.id}}

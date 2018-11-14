@@ -71,7 +71,7 @@ exports.split = async (req, res) => {
     { status: 'split', splitting_directions: splitMsg },
     { where: { id: splitPackid } },
   );
-  Package.updateState({
+  updateState({
     db,
     nextStateId: SPLIT_PACKAGE,
     pkg: { id: splitPackid },
@@ -96,7 +96,7 @@ exports.abandon = async (req, res) => {
     { status: 'abandon' },
     { where: { id: abandonPackid } },
   );
-  Package.updateState({
+  updateState({
     db,
     nextStateId: DISCARD_REQUESTED,
     pkg: { id: abandonPackid },

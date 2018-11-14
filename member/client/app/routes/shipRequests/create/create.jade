@@ -25,7 +25,7 @@
                   b {{item.first_name}} {{item.last_name}} &nbsp; &nbsp; &nbsp;
                   | {{item.phone}}
                  span(type='button', ng-click='$ctrl.editAddress(item.id, $index)')
-                  i.fa.fa-pencil-square-o.m-l-md
+                  i.text-blue.fa.fa-edit.m-l-md
                   br
                   i
                   | {{item.line1}},
@@ -81,12 +81,12 @@
                       tbody(ng-repeat="shipment in $ctrl.shipments" ng-init='$ctrl.MoreOption={}')
                         tr.footable-even(style='display: table-row;')
                           td.footable-visible.footable-first-column(ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]')
-                            i.fa.fa-sort-desc
+                            i.fa.fa-chevron-circle-down.text-info
                           td.footable-visible
                             a(ui-sref='package.show({ id: package.id })' ng-bind='shipment.Store.name')
                           td.footable-visible(ng-bind='shipment.id')
                           td.footable-visible ₹{{shipment.price_amount | number : 2}}
-                          td.footable-visible {{shipment.weight}} KG
+                          td.footable-visible {{shipment.weight}} kg
                           td.text-center
                             .i.m-t-sm.wrapper-xs.fa.fa-trash(title='Delete Package' ng-click='$ctrl.deletePackage(shipment.id, $index)')
                         tr.footable-even(style='display: table-row;')
@@ -111,7 +111,7 @@
                         td.footable-visible.footable-first-column
                         td.footable-visible
                         td.footable-visible Shipment Totals
-                        td.footable-visible ₹{{$ctrl.totalpackagePriceAmount}}
+                        td.footable-visible ₹{{$ctrl.totalpackagePriceAmount | number : 2}}
                         td.footable-visible Final Weight of Shipment to be calculated
                           span(
                           uib-popover = "All International carriers base their billable shipping rates"+
@@ -260,8 +260,8 @@
                     )
                   li.txt-kg
                     .col-md-2.no-padder
-                        input.form-control.no-padder.text-center(type='text', placeholder='in KG' ng-model='$ctrl.data.max_weight')
-                      label.col-md-10.control-label.text-left Max weight per package (in KG)
+                        input.form-control.no-padder.text-center(type='text', placeholder='in kg' ng-model='$ctrl.data.max_weight')
+                      label.col-md-10.control-label.text-left Max weight per package (in kg)
                         i.fa.fa-info-circle.m-l-xs(
                         uib-popover='Choose this option if you would like to restrict a Maximum weight of individual boxes in a shipment. Shoppre will split your shipment into multiple boxes not exceeding this box weight limit (whenever possible), at the same cost of splitting a package (INR 200 per new package created)*.' +
                         'Please note that a shipment which weighs more than 30kg will be considered as a commercial shipment and will incur a custom clearance cost of INR 2500.' +
