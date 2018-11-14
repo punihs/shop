@@ -62,7 +62,12 @@ div
               span &nbsp;shipment for you
 
             .clearfix
-            .hbox.accounts.panel.panel-warning.m-t-xs
+            .well(ng-if="!$ctrl.packages.length")
+              p.alert.alert-danger.text-center(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'") There are currently no package to ship. Please purchase a product with shoppre locker address.
+              p.alert.alert-danger.text-center(ng-if="$ctrl.$stateParams.bucket==='IN_REVIEW'") You currently have no packages under review by Shoppre.
+              p.alert.alert-danger.text-center(ng-if="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'") There are currently no packages that require action on your part.
+              p.alert.alert-danger.text-center(ng-if="$ctrl.$stateParams.bucket==='ALL'") There are currently no package received by shoppre team. Please shop with your locker address.
+            .hbox.accounts.panel.panel-warning.m-t-xs(ng-if="$ctrl.packages.length")
               .bg-white-only.hide
                 .nav-tabs-alt
                   .bg-white-only.b-b(style='width: 100%; height: 44px;')
@@ -75,19 +80,13 @@ div
                           span.badge.bg-warning.pull-right.no-margin.m-t-xs(ng-show='$index === 2' ng-bind='$ctrl.replaceCharWithSpace($ctrl.facets.ACTION_REQUIRED, "_")')
                           span.badge.bg-warning.pull-right.no-margin.m-t-xs(ng-show='$index === 3' ng-bind='$ctrl.replaceCharWithSpace($ctrl.facets.ALL, "_")')
               .full-width
-
                 .panel.panel-default
-                  .well(ng-if="!$ctrl.packages.length")
-                    p.alert.alert-danger.text-center(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'") There are currently no package to ship. Please purchase a product with shoppre locker address.
-                    p.alert.alert-danger.text-center(ng-if="$ctrl.$stateParams.bucket==='IN_REVIEW'") You currently have no packages under review by Shoppre.
-                    p.alert.alert-danger.text-center(ng-if="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'") There are currently no packages that require action on your part.
-                    p.alert.alert-danger.text-center(ng-if="$ctrl.$stateParams.bucket==='ALL'") There are currently no package received by shoppre team. Please shop with your locker address.
-                  div(ng-hide="!$ctrl.packages.length")
+                  div
                     .panel-heading
                       | Select Package to Ship
                     table.table.table-bordered.m-b-none.default.footable-loaded.footable(
                      ui-jq='footable', data-filter='#filter', data-page-size='5')
-                      thead
+                      thead.bg-primary.text-white
                         tr
                           th.footable-visible.footable-sortable
                             | Details

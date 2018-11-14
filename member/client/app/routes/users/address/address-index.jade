@@ -8,7 +8,6 @@ div
         span.h4.text-info
           i.fas.fa-address-book.text-info-lter.m-r-sm
           | Address Book
-
     div(style='position: fixed;right: 5px;z-index: 9;margin-top: 5px;')
       a.pull-right.btn.btn-info.btn-sm(
         ui-sref='users.address-create'
@@ -21,20 +20,13 @@ div
 
 
     // - Secondary Header
-    .bg-light.b-b.padder.w-full.bg-white-only.m-t-xl(
+    .bg-light.padder.w-full.bg-white-only.m-t-xl.hidden(
       style='position:fixed;z-index: 6;height: 42px;'
     )
-    //  .h5.m-t-sm
-    //      i.fas.fa-info-circle.m-r-sm
-    //      span
-    //        | If you would like to alert us about any of your future incoming items that will be
-    //        | arriving at your locker in our facility, you can provide the details now!
-    //
-
 
     // - Content Area
-    .bg-light(style='min-height: 200px;')
-      .m-t-xxl.m-b-md(style='height: 1px;')
+    .bg-white-only(style='min-height: 200px;')
+      .m-b-md(style='height: 1px;')
       .m-t-xxl.m-b-md(style='height: 1px;')
         .hbox
           .wrapper-md.bg-white-only.m-t-n-md
