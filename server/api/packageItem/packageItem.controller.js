@@ -96,7 +96,7 @@ exports.values = async (req, res) => {
   const { id } = req.params;
   let totalAmount = null;
   req.body.forEach((x) => {
-    totalAmount = x.price_amount * x.quantity;
+    totalAmount += x.price_amount * x.quantity;
     PackageItem
       .update(
         {
@@ -106,17 +106,18 @@ exports.values = async (req, res) => {
         },
         { where: { id: x.id } },
       );
-
-    Package.update({ price_amount: totalAmount }, { where: { id } });
-
-    Notification
-      .create({
-        customer_id: req.user.id,
-        action_type: 'Package',
-        action_id: id,
-        action_description: `Customer submitted Package Item Values - Order#  ${id}`,
-      });
   });
+
+  Notification
+    .create({
+      customer_id: req.user.id,
+      action_type: 'Package',
+      action_id: id,
+      action_description: `Customer submitted Package Item Values - Order#  ${id}`,
+    });
+
+  Package.update({ price_amount: totalAmount }, { where: { id } });
+
   packageService
     .updateState({
       db,
