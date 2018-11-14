@@ -6,7 +6,7 @@ const { root, project } = require('../config');
 
 exports.cmd = () => Promise
   .all([
-    'hello',
+    'package',
   ].map(layout => Promise
     .all(fs.readdirSync(`${root}/${project}/server/api/${layout}/emails`)
       .map((template) => {
