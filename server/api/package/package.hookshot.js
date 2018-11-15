@@ -13,7 +13,6 @@ exports.stateChange = async ({
   .all([
     User
       .findById(pkg.customer_id, {
-        raw: true,
         attributes: [
           'id', 'name', 'salutation', 'first_name', 'last_name', 'email', 'virtual_address_code', 'phone',
         ],
@@ -33,7 +32,7 @@ exports.stateChange = async ({
         nextStateName: [PACKAGE_STATE_ID_NAMES_MAP[nextStateId]],
         actingUser,
         pkg: { ...pkg, Store: store },
-        customer,
+        customer: customer.toJSON(),
         ENV: viewConfig,
       }, headers);
   });
