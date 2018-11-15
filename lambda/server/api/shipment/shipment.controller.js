@@ -1,5 +1,5 @@
 const debug = require('debug');
-const ses = require('../../../../chicken/server/conn/email/ses');
+const ses = require('../../../../engage/server/conn/email/ses');
 const subjectMap = require('../shipment/emails/state-change/subject');
 
 const log = debug('s-api-shipment-notification');

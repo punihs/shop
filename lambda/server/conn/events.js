@@ -1,5 +1,5 @@
 const debug = require('debug');
-const ses = require('../../../chicken/server/conn/email/ses');
+const ses = require('../../../engage/server/conn/email/ses');
 const whatsapp = require('./whatsapp');
 
 const { CURRENT_EVENT } = require('../config/environment');
