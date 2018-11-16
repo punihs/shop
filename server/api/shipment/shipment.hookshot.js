@@ -4,6 +4,9 @@ const hookshot = require('../../conn/hookshot');
 const log = debug('s-api-shipment-notification');
 const { User } = require('../../conn/sqldb');
 
+const map = {
+  16: 'PAYMENT_REQUESTED',
+};
 exports.stateChange = async ({
   actingUser, shipment, packages, nextStateId, ENV, address,
 }) => {
@@ -18,9 +21,10 @@ exports.stateChange = async ({
   return hookshot.trigger('shipment:stateChange', {
     before: null,
     nextStateId,
+    nextStateName: map[nextStateId],
     shipment: { ...shipment },
     packages,
-    customer,
+    customer: customer.toJSON(),
     actingUser,
     ENV,
     subject: '',

@@ -16,7 +16,23 @@ exports.notification = async (req, res, next) => {
       actingUser,
       ENV,
     } = req.body;
-    console.log('Shipment Notification', req.body);
+
+    const TemplateData = JSON.stringify({
+      nextStateId,
+      [nextStateName]: true,
+      shipment,
+      address,
+      subject: subjectMap({ nextStateName, shipment }),
+      packages,
+      customer,
+      actingUser,
+      ENV,
+    });
+
+    console.log('---------------\n\n');
+    console.log(TemplateData);
+    console.log('\n\n---------------');
+
     // console.log('Shipment Notification', shipment);
 
     ses.sendTemplatedEmailAsync({
@@ -26,17 +42,7 @@ exports.notification = async (req, res, next) => {
         ToAddresses: [customer.email],
       },
       Template: 'shipment_state-change_2',
-      TemplateData: JSON.stringify({
-        nextStateId,
-        [nextStateName]: true,
-        shipment,
-        address,
-        subject: subjectMap({ nextStateName, shipment }),
-        packages,
-        customer,
-        actingUser,
-        ENV,
-      }),
+      TemplateData,
     });
   } catch (e) {
     next(e);
