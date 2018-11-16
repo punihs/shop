@@ -20,7 +20,7 @@ exports.index = (req, res, next) => {
     attributes: [
       'id', 'name', 'email', 'salutation', 'first_name', 'last_name', 'phone',
       'country_id', 'created_at', 'virtual_address_code',
-      'profile_photo_url', 'updated_at'
+      'profile_photo_url', 'updated_at',
     ],
     include: [{
       model: Country,

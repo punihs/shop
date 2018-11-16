@@ -81,6 +81,7 @@ module.exports = {
     shipment,
   },
   PAYMENT_REQUESTED: {
+    nextStateName: 'PAYMENT_REQUESTED',
     PAYMENT_REQUESTED: true,
     packages,
     customer,
