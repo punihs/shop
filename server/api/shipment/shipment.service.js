@@ -462,6 +462,15 @@ exports.updateShipmentState = async ({
       log('state changed default');
     }
   }
+  hookshot
+    .stateChange({
+      db,
+      nextStateId,
+      shipment,
+      actingUser,
+      packages: [],
+    });
+
   log('shipmentState', shipmentState.id);
   return db.Shipment
     .update({

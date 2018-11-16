@@ -3,7 +3,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Shipment Request Created Successfully.ShipmentId is: &nbsp;<span class="il">{{shipmentDetails.id}}</span>.
+        Shipment Request Created Successfully.ShipmentId is: &nbsp;<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p>
@@ -14,7 +14,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Payment Completed For Your Shipment.ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Payment Completed For Your Shipment.ShipmentId is<span class="il">{{shipment.id}}</span>.
       </p> </td>
   </tr>
 {{else if PAYMENT_REQUESTED}}
@@ -22,7 +22,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Payment Requested For Your Shipment. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Payment Requested For Your Shipment. ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p>
@@ -33,7 +33,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Payment Initiated  For Your Shipment.ShipmentId is  <span class="il">{{shipmentDetails.id}}</span>.
+        Payment Initiated  For Your Shipment.ShipmentId is  <span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -43,7 +43,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Payment Completed For Your Shipment. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Payment Completed For Your Shipment. ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -53,7 +53,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Payment Failed For Your Shipment.ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Payment Failed For Your Shipment.ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -63,7 +63,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Payment Confirmed For Your Shipment. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Payment Confirmed For Your Shipment. ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -73,7 +73,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        This mail is to inform you that Upstream Shipment Request Created.ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        This mail is to inform you that Upstream Shipment Request Created.ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -83,7 +83,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Shipment Handovered.ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Your Shipment Handovered.ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -93,7 +93,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Shipment In Transit. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Your Shipment In Transit. ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -103,7 +103,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Shipment Manual Follow Up. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Shipment Manual Follow Up. ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -113,7 +113,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Shipment Lost. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Your Shipment Lost. ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -123,7 +123,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Shipment On Custom Hold. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Your Shipment On Custom Hold. ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -133,7 +133,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Wrong Address. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Wrong Address. ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -143,7 +143,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Shipment Rejected By Customer. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Shipment Rejected By Customer. ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -153,7 +153,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Customer Requested For RTO. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Customer Requested For RTO. ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -163,7 +163,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Customer Raise Shipment Lost Claim. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Customer Raise Shipment Lost Claim. ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -173,7 +173,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Shipment Penalty Payment Requested, ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Your Shipment Penalty Payment Requested, ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -183,7 +183,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Shipment Return To Origin. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Your Shipment Return To Origin. ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -193,7 +193,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Amount Received From Upstream. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Your Amount Received From Upstream. ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -203,7 +203,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Shipment Penalty Payment Done. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Your Shipment Penalty Payment Done. ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -213,7 +213,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Wrong Address Follow Up. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Wrong Address Follow Up. ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -223,7 +223,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-       Claim Processed To Customer. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+       Claim Processed To Customer. ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -233,7 +233,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Customer Acknowledgement Received . ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Customer Acknowledgement Received . ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -243,7 +243,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your shipmentDetails Delivered. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Your shipment Delivered. ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -253,7 +253,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your shipmentDetails Cancelled. ShipmentId is<span class="il">{{shipmentDetails.id}}</span>.
+        Your shipment Cancelled. ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>

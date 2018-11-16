@@ -2,9 +2,10 @@ const debug = require('debug');
 const hookshot = require('../../conn/hookshot');
 
 const log = debug('s-api-shipment-notification');
+const { User } = require('../../conn/sqldb');
 
 exports.stateChange = async ({
-  db: { User }, actingUser, shipment, packages, nextStateId,
+  actingUser, shipment, packages, nextStateId, ENV, address,
 }) => {
   const customer = await User
     .findById(shipment.customer_id, {
@@ -14,12 +15,16 @@ exports.stateChange = async ({
     });
 
   log({ customer });
-  return hookshot.trigger('shipment:state-change', {
+  return hookshot.trigger('shipment:stateChange', {
+    before: null,
     nextStateId,
-    shipment: { ...shipment.toJSON() },
+    shipment: { ...shipment },
     packages,
-    customer: customer.toJSON(),
+    customer,
     actingUser,
+    ENV,
+    subject: '',
+    address,
   });
 };
 

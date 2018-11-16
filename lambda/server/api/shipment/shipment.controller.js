@@ -8,15 +8,16 @@ exports.notification = async (req, res, next) => {
   try {
     const {
       nextStateId,
-      shipmentDetails,
-      shipToAddress,
+      shipment,
+      address,
       nextStateName,
-      pkg,
+      packages,
       customer,
       actingUser,
       ENV,
     } = req.body;
-    console.log('Shipment Notification', shipmentDetails);
+    console.log('Shipment Notification', req.body);
+    // console.log('Shipment Notification', shipment);
 
     ses.sendTemplatedEmailAsync({
       Source: `"${actingUser.first_name} from Shoppre" <${actingUser.email}>`,
@@ -28,10 +29,10 @@ exports.notification = async (req, res, next) => {
       TemplateData: JSON.stringify({
         nextStateId,
         [nextStateName]: true,
-        shipmentDetails,
-        shipToAddress,
-        subject: subjectMap({ nextStateName, shipmentDetails }),
-        pkg: { ...pkg },
+        shipment,
+        address,
+        subject: subjectMap({ nextStateName, shipment }),
+        packages,
         customer,
         actingUser,
         ENV,

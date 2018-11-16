@@ -5,5 +5,5 @@ module.exports = {
   CURRENT_EMAIL: 'shipment_state-change',
   project: 'lambda',
   EMAIL_SOURCE: 'support@shoppre.com',
-  EMAIL_TO: 'test@test.com',
+  EMAIL_TO: 'tech.shoppre@gmail.com',
 };

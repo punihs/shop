@@ -1,4 +1,5 @@
 {
   "package:stateChange": ["http://localhost:5004/api/packages/notifications"],
+  "shipment:stateChange": ["http://localhost:5004/api/shipments/notifications"],
   "user:signup": ["http://localhost:5004/api/users/notifications"]
 }
