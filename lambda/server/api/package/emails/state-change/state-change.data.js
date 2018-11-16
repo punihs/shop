@@ -43,6 +43,7 @@ const customer = {
 const ENV = {
   URLS_PARCEL: 'http://parcel.shoppre.test',
   URLS_WWW: 'http://www.shoppre.test',
+  URLS_MYACCOUNT: 'http://myaccount.shoppre.test',
 };
 
 module.exports = {
@@ -88,7 +89,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: '',
+    subject: `Your Request to Return the Package ID: ${pkg.id} Has Been Received`,
   },
   RETURN_PICKUP_DONE: {
     RETURN_PICKUP_DONE: true,
@@ -97,7 +98,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: '',
+    subject: `Return Request | Your Package ID: ${pkg.id}Has Been Dispatched `,
   },
   UPLOAD_INVOICE_REQUESTED: {
     UPLOAD_INVOICE_REQUESTED: true,
@@ -116,7 +117,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: '',
+    subject: 'Request to Split Your Package Has Been Received',
   },
   SPLIT_PACKAGE_PROCESSED: {
     SPLIT_PACKAGE_PROCESSED: true,
@@ -125,7 +126,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: '',
+    subject: `Your Package ID: ${pkg.id} has successfully been split!`,
   },
   DISCARDED: {
     DISCARDED: true,
@@ -134,7 +135,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: '',
+    subject: `Your Package ID: ${pkg.id} Has Successfully Been Discarded!`,
   },
   DISCARD_REQUESTED: {
     DISCARD_REQUESTED: true,
@@ -143,7 +144,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: '',
+    subject: `Your Request to Discard the Package ID: ${pkg.id} Has Been Received`,
   },
   STANDARD_PHOTO_REQUEST: {
     STANDARD_PHOTO_REQUEST: true,
@@ -152,7 +153,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: '',
+    subject: 'Customer Has Requested Standard Photos',
   },
   ADVANCED_PHOTO_REQUEST: {
     ADVANCED_PHOTO_REQUEST: true,
@@ -161,7 +162,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: '',
+    subject: 'Customer Has Requested Advanced Photos',
   },
   PS_RETURN_REQUESTED: {
     PS_RETURN_REQUESTED: true,
