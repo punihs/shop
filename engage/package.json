@@ -27,7 +27,7 @@
   "license": "ISC",
   "dependencies": {
     "addressparser": "^1.0.1",
-    "aws-sdk": "^2.229.1",
+    "aws-sdk": "^2.356.0",
     "bluebird": "^3.3.5",
     "body-parser": "^1.18.3",
     "debug": "^4.1.0",
