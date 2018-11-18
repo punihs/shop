@@ -126,7 +126,11 @@
       <tr>
         <td style="padding:0px 0px 5px 20px;text-align:right;width:120px">
           <span style="font-size:12px"> Package ID: </span> <span style="font-size:12px">
-            {{#if PACKAGE_ITEMS_UPLOAD_PENDING "||" DAMAGED}}
+            {{#if DAMAGED}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{#if PACKAGE_ITEMS_UPLOAD_PENDING}}
               <a
                 href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>

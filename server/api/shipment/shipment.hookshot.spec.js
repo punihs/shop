@@ -18,12 +18,15 @@ describe('POST /api/shipments/notifications', () => {
         tracking_number: 'A123GGH',
         created_at: '2018-08-20',
       }],
+      paymentGateway: {
+        name: 'wire',
+      },
       subject: 'test',
       customer: {
         name: 'Mr. Abhinav Mishra',
         first_name: 'Abhinav',
         virtual_address_code: 'SHPR12-182',
-        email: 'support@shoppre.com',
+        email: 'tech.shoppre@gmail.com',
       },
       actingUser: {
         first_name: 'Saneel',
@@ -58,6 +61,8 @@ describe('POST /api/shipments/notifications', () => {
         shipping_carrier: 'DHL',
         dispatch_date: '2018-08-20',
         customer_id: 646,
+        value_amount: '10000',
+        delivered_date: '2018-08-20',
       },
     })
       .then(() => {

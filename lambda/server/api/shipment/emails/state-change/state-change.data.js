@@ -9,10 +9,13 @@ const shipment = {
   final_weight: 10,
   estimated_amount: '7000',
   final_amount: '10000',
+  value_amount: '10000',
   created_by: 1,
   tracking_code: '1234567H',
+  tracking_url: 'www.google.com',
   shipping_carrier: 'DHL',
   dispatch_date: '2018-08-20',
+  delivered_date: '2018-08-20',
 };
 
 const paymentGateway = {
@@ -51,7 +54,7 @@ const customer = {
   name: 'Mr. Abhinav Mishra',
   first_name: 'Abhinav',
   virtual_address_code: 'SHPR12-182',
-  email: 'support@shoppre.com',
+  email: 'tech.shoppre@gmail.com',
 };
 
 const ENV = {
@@ -67,7 +70,7 @@ module.exports = {
     address,
     shipment,
     actingUser: OPS,
-    subject: 'We Have Received Your Shipping Request | Shipment : 9',
+    subject: `We Have Received Your Shipping Request | Shipment ID: ${shipment.id}`,
     ENV,
   },
   INVOICE_REQUESTED: {
@@ -88,7 +91,7 @@ module.exports = {
     actingUser: OPS,
     address,
     ENV,
-    subject: '',
+    subject: `Make Payment | Your Shipment ID: ${shipment.id} Is Packed & Weighed`,
     shipment,
   },
   PAYMENT_INITIATED: {
@@ -97,7 +100,7 @@ module.exports = {
     customer,
     actingUser: OPS,
     ENV,
-    subject: '',
+    subject: 'Payment Initiated',
     address,
     shipment,
   },
@@ -108,9 +111,10 @@ module.exports = {
     address,
     actingUser: OPS,
     ENV,
-    subject: '',
+    subject: 'Payment Completed',
     shipment,
     paymentGateway,
+    cash: 'Cash',
   },
   PAYMENT_FAILED: {
     PAYMENT_FAILED: true,
@@ -119,8 +123,9 @@ module.exports = {
     address,
     actingUser: OPS,
     ENV,
-    subject: '',
+    subject: 'Payment failed',
     shipment,
+    paymentGateway,
   },
   PAYMENT_CONFIRMED: {
     PAYMENT_CONFIRMED: true,
@@ -129,8 +134,9 @@ module.exports = {
     address,
     actingUser: OPS,
     ENV,
-    subject: '',
+    subject: 'Payment Confirmed',
     shipment,
+    paymentGateway,
   },
   UPSTREAM_SHIPMENT_REQUEST_CREATED: {
     UPSTREAM_SHIPMENT_REQUEST_CREATED: true,

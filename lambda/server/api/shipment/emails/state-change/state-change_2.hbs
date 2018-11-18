@@ -1,30 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
 {{#if PACKAGING_REQUESTED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Dear {{customer.first_name}},</p> <br><br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Shipment Request Created Successfully.ShipmentId is: &nbsp;<span class="il">{{shipment.id}}</span>.
+        Thank you for submitting a shipping request with us. We look forward to handling your package(s) with extreme care and to set you up with a premium-quality shipping experience.
         <br>
         <br>
+        <b>Shipment Details</b>
+        <br>
+        <br>
+
+        Shipment ID: <span class="il">{{shipment.id}}</span>
+        <br>  <br>
+        Weight of the Shipment (in Kg.): <i> To be calculated</i>
+        <br>  <br>
+        Getting it delivered to: 
+        <br>
+        <span class="il">{{address.line1}}</span>,
+        <br>
+        <span class="il">{{address.line2}}</span>,
+        <br>
+        <span class="il">{{address.city}}</span>,
+        <br>
+        <span class="il">{{address.state}}</span>,
+        <br>
+        <span class="il">{{address.country}}</span>,
+        <br>
+        <span class="il">{{address.pincode}}</span>,
+        <br>
+        <span class="il">{{address.phone}}</span>
+        <br><br>
+        <i>Please confirm the address once again as a wrong address can attract a very high penalty.</i>
+        <br> <br>
+
+        For more information about your shipment(s), sign in to your ShoppRe account and check out your Shipments In <a href="{{ENV.URLS_PARCEL}}/shipRequests">Queue page</a>. We'll update the details & enroll you for payment once we have estimated the cost your shipment would incur.
       </p>
     </td>
   </tr>
-{{else if INVOICE_REQUESTED}}
-  <tr>
-    <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
-      <p style="margin:4px 20px 18px 20px;width:640px">
-        Payment Completed For Your Shipment.ShipmentId is<span class="il">{{shipment.id}}</span>.
-      </p> </td>
-  </tr>
+
 {{else if PAYMENT_REQUESTED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Dear {{customer.first_name}},</p> <br><br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Payment Requested For Your Shipment. ShipmentId is<span class="il">{{shipment.id}}</span>.
+        Thanks for placing an order with us!
+        <br><br>
+        <b>Check out the final shipment details of your order;</b>
+        <br><br>
+        Shipment Id:<span class="il">{{shipment.id}}</span>
+        <br><br>
+        Weight Of the Shipment (in Kg.):<span class="il">{{shipment.final_weight}}</span>
+        <br><br>
+        Shipping Cost:<span class="il">{{shipment.final_amount}}</span>
+        <br><br>
+        Status of the Shipment: Awaiting Payment
         <br>
         <br>
+        As you can see, it is important to make the payment at the earliest to confirm your order. Without further delay, please <a href="{{ENV.URLS_PARCEL}}/shipRequests">Sign in</a> to your ShoppRe account, refer to your <a href= "ENV.URLS_PARCEL}}/shipRequests">Queue</a> & make the payment.
+        <br><br>
+        The payment has to be made within 7 days of receiving this email otherwise, your package will start incurring a storage fee of Rs. 100/day from the 8th day onward. You can see the same reflecting in your ShoppRe Wallet.
+        <br><br>
+        Please note that if you choose Wire Transfer as your payment mode, it may take up to 7 business days for it to reflect in our account. Hence, we advise you to opt for an alternative payment mode if your shipment is of urgent nature or if you don’t want to be charged with a storage fee.
+        <br><br>
+        And, we do not accept Western Union Money Transfers currently.
+        <br><br>
+        Hope you have an easy time!
       </p>
     </td>
   </tr>
@@ -41,39 +87,90 @@
 {{else if PAYMENT_COMPLETED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
-      <p style="margin:4px 20px 18px 20px;width:640px">
-        Payment Completed For Your Shipment. ShipmentId is<span class="il">{{shipment.id}}</span>.
-        <br>
-        <br>
-      </p> </td>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Dear {{customer.first_name}},</p><br><br>
+    <p style="margin:4px 20px 18px 20px;width:640px">
+      We really appreciate you confirming your shipment details. Please note that your shipment will be dispatched from our facility within 24 hours of the payment being received.
+      <br> <br>
+      <b>Details of your order;</b>
+      <br><br>
+      Shipment Id:<span class="il">{{shipment.id}}</span>
+      <br><br>
+      Weight of the shipment (in Kg.):<span class="il">{{shipment.final_weight}}</span>
+      <br><br>
+      Total Shipping Cost: <a href="{{ENV.URLS_PARCEL}}/shipRequests/{{shipment.order_code}}/invoice">View the Invoice </a>
+      <br><br>
+      Mode of Payment Selected: <span class="il">{{paymentGateway.name}}</span>
+      {{#if wire}}
+        <br><br>
+        <b>While making the transfer:</b>
+        <br><br>
+        <ol>
+          <li>Mention your ShoppRe LOCKER NUMBER and/or NAME.</li>
+          <li>Make your transfer payable to Shoppre.com with the details given below.
+            <br>
+            Account Name: INDIANSHOPPRE LLP
+            <br>
+            Account Number: 918020022874771
+            <br>
+            Branch: Bangalore
+            <br>
+            IFSC Code: UTIB0000009
+            <br>
+            MICR Code: 560211002
+            <br>
+            E-mail ID: finance@shoppre.com
+            <br>
+            Address: NO. 9, M.G. ROAD, BLOCK 'A'
+            <br>
+            Swift Code: AXISINBB009
+          </li>
+          <li>Please send an email to the ID mentioned above; notifying of the payment being made.</li>
+        </ol>
+        Kindly note that, as you have chosen Wire Transfer as your payment method; it may take up to 7 business days for the amount to reflect in our account since it’s an international transfer. In such a case, we'd advise you to opt for an alternative payment method if your shipment is of urgent nature or if you don’t want to be charged with *storage costs. Click if you want to <a href="{{ENV.URLS_PARCEL}}/shipRequests">change the payment method!</a>
+        <br><br>
+        And, we currently do not accept Western Union Money Transfers.
+        <br><br>
+        <i>*Your package/shipment will start incurring a storage fee of Rs. 100/day from the 8th day onward, which you can see reflecting in your ShoppRe Wallet.</i>
+      {{/if}}
+
+      {{#if cash }}
+        Once the final invoice for your package is created, you get a FREE storage period of 7 DAYS. Your shipment will incur a storage fee of INR 100/day from the 8th day onward. It would be reflected in your ShoppRe Wallet and attributed to your Shipping Costs. If you have already made the payment, please ignore this mail.
+      {{/if}}
+      To see the final invoice of your order, click here - <a href="{{ENV.URLS_PARCEL}}/shipRequests/{{shipment.order_code}}/invoice"> View the Invoice </a>
+      </p>
+    </td>
   </tr>
 {{else if PAYMENT_FAILED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br><br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Payment Failed For Your Shipment.ShipmentId is<span class="il">{{shipment.id}}</span>.
-        <br>
-        <br>
-      </p> </td>
+        Unfortunately, your transaction attempt using your <span class="il">{{paymentGateway.name}}</span> to pay INR <span class="il">{{paymentGateway.name}}</span> for your Shipment ID <span class="il">{{shipment.id}}</span> has been failed. You can either <a href="{{ENV.URLS_PARCEL}}/shipRequests/{{shipment.order_code}}/confirm">retry your payment</a> or <a href="{{ENV.URLS_PARCEL}}/shipRequests/{{shipment.order_code}}/confirm">try another payment method</a>. In case if the amount has been deducted from your account, the same will be credited back within 7 working days.
+        <br><br>
+        Kindly contact us immediately in case you need help, to prevent any further delay.
+        <br><br>
+        <b>Note:</b> THE PAYMENT HAS TO BE MADE WITHIN 7 DAYS of creating the final shipping request. From the 8th day onward, your package will start incurring a storage fee of INR 100/day which would be reflected in your ShoppRe wallet.
+        <br><br>
+      </p>
+    </td>
   </tr>
 {{else if PAYMENT_CONFIRMED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Dear {{customer.first_name}},</p> <br><br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Payment Confirmed For Your Shipment. ShipmentId is<span class="il">{{shipment.id}}</span>.
-        <br>
-        <br>
+        We have received the payment you made for the shipment <span class="il">{{shipment.id}}</span> via <span class="il">{{paymentGateway.name}}</span>. The shipment will be dispatched within the next 24 hours. We will keep you posted on the status of the same.
+        <br><br>
+        If you have any questions regarding the dispatch - <a href="{{URLS_WWW}}/contact">Contact Us.</a>
+        <br><br>
       </p> </td>
   </tr>
 {{else if UPSTREAM_SHIPMENT_REQUEST_CREATED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Dear {{customer.first_name}},</p> <br><br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        This mail is to inform you that Upstream Shipment Request Created.ShipmentId is<span class="il">{{shipment.id}}</span>.
+        We have created a Ship Request with our Courier Partner to fulfill your shipment <span class="il">{{shipment.id}}</span>. Please note that we will intimate you as soon as the dispatch of your shipment from Shoppre Facility is completed.
         <br>
         <br>
       </p> </td>
@@ -81,19 +178,49 @@
 {{else if SHIPMENT_HANDED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br><br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Shipment Handovered.ShipmentId is<span class="il">{{shipment.id}}</span>.
+        We are so excited to inform you that your shipment has been prepared to ship.<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
+        <b>Shipment Details</b>
+        <br><br>
+        Carrier: <span class="il">{{shipment.shipping_carrier}}</span>
+        <br><br>
+        Scheduled shipping date: <span class="il">{{shipment.dispatch_date}}</span>
+        <br><br>
+        Total weight of the shipment (in kg.): <span class="il">{{shipment.final_weight}}</span>
+        <br><br>
+        Declared value: <span class="il">{{shipment.value_amount}}</span>
+        <br><br>
+        Destination address:
+        <br>
+        <span class="il">{{address.line1}}</span>,
+        <br>
+        <span class="il">{{address.line2}}</span>,
+        <br>
+        <span class="il">{{address.city}}</span>,
+        <br>
+        <span class="il">{{address.state}}</span>,
+        <br>
+        <span class="il">{{address.country}}</span>,
+        <br>
+        <span class="il">{{address.pincode}}</span>,
+        <br>
+        <span class="il">{{address.phone}}</span>
+        <br><br>
+        Airway bill number:
       </p> </td>
   </tr>
 {{else if SHIPMENT_IN_TRANSIT}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Dear {{customer.first_name}},</p>
+      <br><br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Shipment In Transit. ShipmentId is<span class="il">{{shipment.id}}</span>.
+        This is to inform you that your Shipment <span class="il">{{shipment.id}}</span> is in transit.
+        <br><br>
+        You can track your shipment <a href="{{shipment.tracking_url}}">here</a>. Feel free to reach out in case of any query.
         <br>
         <br>
       </p> </td>
@@ -223,7 +350,7 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-       Claim Processed To Customer. ShipmentId is<span class="il">{{shipment.id}}</span>.
+        Claim Processed To Customer. ShipmentId is<span class="il">{{shipment.id}}</span>.
         <br>
         <br>
       </p> </td>
@@ -241,11 +368,21 @@
 {{else if SHIPMENT_DELIVERED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Dear {{customer.first_name}},</p>
+      <br><br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your shipment Delivered. ShipmentId is<span class="il">{{shipment.id}}</span>.
+        We're so glad that your shipment was delivered on <span class="il">{{shipment.delivered_date}}</span>. If you want to have a look at your final invoice, <a href="{{ENV.URLS_PARCEL}}/shipRequests/history">Click Here</a>.
+        <br><br>
+        ShoppRe is dedicated to providing a convenient, affordable, and personalized shipping experience for those who need a reliable logistics solution from India. We rely on customers like you to give us your insights on what we are doing right and what we could improve on.
         <br>
         <br>
+        Your opinions will help shape our future and allow us to go the distance in maintaining our position as the industry leader.
+        <br><br>
+        Earn 50 loyalty points by answering this quick 3-question survey! Start the Survey.
+        <br><br>
+        Earn another 100 loyalty points by giving a quick review on both Google & Facebook each.
+        <br><br>
+        <a href="https://goo.gl/Hfqj8r">Google Review/</a><a href="https://www.facebook.com/pg/goshoppre/reviews/?ref=page_internal">Facebook Review</a>
       </p> </td>
   </tr>
 {{else if SHIPMENT_CANCELLED}}
@@ -259,3 +396,6 @@
       </p> </td>
   </tr>
 {{/if}}
+
+</body>
+</html>

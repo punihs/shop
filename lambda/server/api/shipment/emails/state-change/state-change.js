@@ -25,7 +25,7 @@ module.exports = {
       SubjectPart: '{{subject}}',
       HtmlPart: render({
         TemplateName: `${TemplateName}_${CUSTOMER}`,
-        extras: ['header',],
+        extras: ['header', 'virtualAddress', 'items', 'footer', 'signature'],
         afterContent: ['global:cheers'],
       }),
     },

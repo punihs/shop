@@ -17,10 +17,11 @@ const {
 const {
   APPS, GROUPS: { OPS, CUSTOMER },
   SHIPMENT_STATE_IDS: {
-    PAYMENT_COMPLETED, PAYMENT_FAILED, PAYMENT_REQUESTED, SHIPMENT_CANCELLED,
+    PAYMENT_COMPLETED, PAYMENT_FAILED, PAYMENT_REQUESTED, SHIPMENT_CANCELLED, SHIPMENT_DELIVERED,
     DISPATCHED, DELIVERED, INTRANSIT, CUSTOM_HOLD, LOST, WRONG_DELIVERY, PAYMENT_CONFIRMED,
   },
   PACKAGE_STATE_IDS: { READY_TO_SHIP, DAMAGED },
+  PAYMENT_GATEWAY: { WALLET, WIRE, CASH },
 } = require('./../../config/constants');
 
 // const {
@@ -462,6 +463,27 @@ exports.updateShipmentState = async ({
       log('state changed default');
     }
   }
+
+  const state = Shipment.findOne({
+    where: { id: shipment.id, state_id: SHIPMENT_DELIVERED },
+    include: [{
+      model: ShipmentState,
+      attributes: ['created_at'],
+    }],
+  });
+
+  let gateway = null;
+  shipment.delivered_date = state.created_at;
+  if (shipment.payment_gateway_id) {
+    if (shipment.payment_gateway_id === CASH) {
+      gateway = 'cash';
+    } else if (shipment.payment_gateway_id === WIRE) {
+      gateway = 'wire';
+    } else {
+      gateway = null;
+    }
+  }
+
   hookshot
     .stateChange({
       db,
@@ -469,6 +491,7 @@ exports.updateShipmentState = async ({
       shipment,
       actingUser,
       packages: [],
+      [gateway]: true,
     });
 
   log('shipmentState', shipmentState.id);
