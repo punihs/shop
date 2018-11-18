@@ -1,15 +1,15 @@
-// const raven = Raven.config('https://71883f8963384e47a84bada0451462f1@sentry.io/1313557', {});
-//
-// if (localStorage.userinfo) {
-//   const user = JSON.parse(localStorage.userinfo);
-//   debugger
-//   raven.setUser({
-//     id: user.id,
-//     email: user.email,
-//   });
-// }
-//
-// raven.install();
+ const raven = Raven.config('https://a4576e2b58fa419d9a76610db580a7b0@sentry.shoppre.com/5', {});
+
+ if (localStorage.userinfo) {
+   const user = JSON.parse(localStorage.userinfo);
+   debugger
+   raven.setUser({
+     id: user.id,
+     email: user.email,
+   });
+ }
+
+ raven.install();
 
 angular.module('qui.components', []);
 
