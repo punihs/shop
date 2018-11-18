@@ -1,4 +1,4 @@
-const raven = Raven.config('https://bbf0351970bc4723bb53c27b5c43ef7e@sentry.io/1313555', {});
+const raven = Raven.config('https://63923aa0ddd84099a85067b781b6b403@sentry.shoppre.com/4', {});
 
 if (localStorage.userinfo) {
   const user = JSON.parse(localStorage.userinfo);
