@@ -356,6 +356,14 @@ const shipmentStates = ({
   state_id: 16,
   group_id: MEMBER,
   child_id: 41,
+}, {
+  state_id: 25,
+  group_id: OPS,
+  child_id: 61,
+}, {
+  state_id: 28,
+  group_id: OPS,
+  child_id: 61,
 }].map(x => ({ ...x, type: SHIPMENT }));
 
 module.exports = constants => packageStates(constants)

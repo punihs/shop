@@ -247,6 +247,10 @@ const shipmentStates = [{
 }, {
   id: 60,
   name: 'Customer Document Resolved',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 61,
+  name: 'Shipment Abandon',
   config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
 }].map(x => ({ ...x, type: SHIPMENT }));
 
