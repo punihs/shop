@@ -21,7 +21,10 @@ const {
     DISPATCHED, DELIVERED, INTRANSIT, CUSTOM_HOLD, LOST, WRONG_DELIVERY, PAYMENT_CONFIRMED,
   },
   PACKAGE_STATE_IDS: { READY_TO_SHIP, DAMAGED },
-  PAYMENT_GATEWAY: { WALLET, WIRE, CASH },
+  PAYMENT_GATEWAY: {
+    WIRE, CASH, CARD, PAYTM, PAYPAL, WALLET,
+  },
+  PAYMENT_GATEWAY_NAMES,
 } = require('./../../config/constants');
 
 // const {
@@ -339,18 +342,6 @@ exports.updateShipmentState = async ({
         tracking.payment_status = 'success';
         await db.Shipment.update(tracking, { where: { id: shipment.id } });
       }
-
-      shipment.getPackages()
-        .then(packageItems => hookshot
-          .stateChange({
-            db,
-            nextStateId,
-            shipment,
-            actingUser,
-            packageItems,
-          }))
-        .catch(err => logger.error('statechange notification', nextStateId, shipment, err));
-
       break;
     }
     // case SHIPMENT_HANDED: {
@@ -464,25 +455,41 @@ exports.updateShipmentState = async ({
     }
   }
 
-  const state = Shipment.findOne({
-    where: { id: shipment.id, state_id: SHIPMENT_DELIVERED },
-    include: [{
-      model: ShipmentState,
-      attributes: ['created_at'],
-    }],
-  });
-
+  console.log({ SHIPMENT_DELIVERED });
   let gateway = null;
-  shipment.delivered_date = state.created_at;
-  if (shipment.payment_gateway_id) {
-    if (shipment.payment_gateway_id === CASH) {
-      gateway = 'cash';
-    } else if (shipment.payment_gateway_id === WIRE) {
-      gateway = 'wire';
-    } else {
-      gateway = null;
+  if (Number(nextStateId) === Number(SHIPMENT_DELIVERED)) {
+    console.log({ SHIPMENT_DELIVERED });
+    shipment.delivered_date = moment();
+  }
+
+  switch (Number(shipment.payment_gateway_id)) {
+    case CASH: {
+      gateway = PAYMENT_GATEWAY_NAMES.CASH; break;
+    }
+    case CARD: {
+      gateway = PAYMENT_GATEWAY_NAMES.CARD; break;
+    }
+    case WIRE: {
+      gateway = PAYMENT_GATEWAY_NAMES.WIRE; break;
+    }
+    case PAYPAL: {
+      gateway = PAYMENT_GATEWAY_NAMES.PAYPAL; break;
+    }
+    case PAYTM: {
+      gateway = PAYMENT_GATEWAY_NAMES.PAYTM; break;
+    }
+    case WALLET: {
+      gateway = PAYMENT_GATEWAY_NAMES.WALLET; break;
+    }
+    default: {
+      gateway = null; break;
     }
   }
+  const paymentGateway = {
+    name: gateway,
+  };
+  const { address } = shipment;
+  log('gateway', [gateway]);
 
   hookshot
     .stateChange({
@@ -491,7 +498,9 @@ exports.updateShipmentState = async ({
       shipment,
       actingUser,
       packages: [],
-      [gateway]: true,
+      gateway,
+      paymentGateway,
+      address,
     });
 
   log('shipmentState', shipmentState.id);

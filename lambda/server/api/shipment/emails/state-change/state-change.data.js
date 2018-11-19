@@ -40,15 +40,7 @@ const packages = [{
   created_at: '2018-08-20',
 }];
 
-const address = {
-  line1: '314 Euphoria Circle',
-  line2: '314 Euphoria Circle',
-  city: 'Cary, NC',
-  state: 'florida',
-  country: 'United states',
-  pincode: '560008',
-  phone: '8970972343',
-};
+const address = '# 181, 2nd Cross Road, 7th Main ,1st block koramangala, marathahalli, hyderabad, karnataka, India, 560034';
 
 const customer = {
   name: 'Mr. Abhinav Mishra',

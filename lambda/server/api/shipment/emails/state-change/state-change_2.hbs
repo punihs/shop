@@ -22,19 +22,8 @@
         <br>  <br>
         Getting it delivered to: 
         <br>
-        <span class="il">{{address.line1}}</span>,
-        <br>
-        <span class="il">{{address.line2}}</span>,
-        <br>
-        <span class="il">{{address.city}}</span>,
-        <br>
-        <span class="il">{{address.state}}</span>,
-        <br>
-        <span class="il">{{address.country}}</span>,
-        <br>
-        <span class="il">{{address.pincode}}</span>,
-        <br>
-        <span class="il">{{address.phone}}</span>
+        <span class="il">{{address}}</span>
+
         <br><br>
         <i>Please confirm the address once again as a wrong address can attract a very high penalty.</i>
         <br> <br>
@@ -161,7 +150,7 @@
       <p style="margin:4px 20px 18px 20px;width:640px">
         We have received the payment you made for the shipment <span class="il">{{shipment.id}}</span> via <span class="il">{{paymentGateway.name}}</span>. The shipment will be dispatched within the next 24 hours. We will keep you posted on the status of the same.
         <br><br>
-        If you have any questions regarding the dispatch - <a href="{{URLS_WWW}}/contact">Contact Us.</a>
+        If you have any questions regarding the dispatch - <a href="{{ENV.URLS_WWW}}/contact">Contact Us.</a>
         <br><br>
       </p> </td>
   </tr>
@@ -195,19 +184,7 @@
         <br><br>
         Destination address:
         <br>
-        <span class="il">{{address.line1}}</span>,
-        <br>
-        <span class="il">{{address.line2}}</span>,
-        <br>
-        <span class="il">{{address.city}}</span>,
-        <br>
-        <span class="il">{{address.state}}</span>,
-        <br>
-        <span class="il">{{address.country}}</span>,
-        <br>
-        <span class="il">{{address.pincode}}</span>,
-        <br>
-        <span class="il">{{address.phone}}</span>
+        <span class="il">{{address}}</span>
         <br><br>
         Airway bill number:
       </p> </td>

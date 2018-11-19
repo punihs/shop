@@ -972,7 +972,7 @@ exports.redirectShipment = async (req, res) => {
 };
 
 exports.state = async (req, res, next) => Shipment
-  .findById(req.params.id)
+  .findById(req.params.id, { raw: true })
   .then((shipment) => {
     if (SHIPMENT_HANDED === req.body.state_id) {
       if (!shipment.dispatch_date || !shipment.shipping_carrier || !shipment.number_of_packages ||

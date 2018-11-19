@@ -141,6 +141,14 @@ const constants = {
     PAYPAL: 5,
     WALLET: 6,
   },
+  PAYMENT_GATEWAY_NAMES: {
+    WIRE: 'wire',
+    CASH: 'cash',
+    CARD: 'card',
+    PAYTM: 'paytm',
+    PAYPAL: 'paypal',
+    WALLET: 'wallet',
+  },
 };
 
 constants.PACKAGE_STATE_ID_NAMES_MAP = Object
@@ -148,6 +156,12 @@ constants.PACKAGE_STATE_ID_NAMES_MAP = Object
   .reduce((nxt, stateName) => ({
     ...nxt,
     [constants.PACKAGE_STATE_IDS[stateName]]: stateName,
+  }), {});
+constants.SHIPMENT_STATE_ID_NAMES_MAP = Object
+  .keys(constants.SHIPMENT_STATE_IDS)
+  .reduce((nxt, stateName) => ({
+    ...nxt,
+    [constants.SHIPMENT_STATE_IDS[stateName]]: stateName,
   }), {});
 
 module.exports = constants;

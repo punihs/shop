@@ -21,7 +21,6 @@ describe('POST /api/shipments/notifications', () => {
       paymentGateway: {
         name: 'wire',
       },
-      subject: 'test',
       customer: {
         name: 'Mr. Abhinav Mishra',
         first_name: 'Abhinav',
