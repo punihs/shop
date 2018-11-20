@@ -126,15 +126,15 @@
       <tr>
         <td style="padding:0px 0px 5px 20px;text-align:right;width:120px">
           <span style="font-size:12px"> Package ID: </span> <span style="font-size:12px">
-            {{#if DAMAGED}}
-              <a
-                href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW"
-                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
             {{#if PACKAGE_ITEMS_UPLOAD_PENDING}}
               <a
                 href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
-            {{else if CUSTOMER_INPUT}} || {{else if UPLOAD_INVOICE_REQUESTED}}
+            {{else if CUSTOMER_INPUT}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=ACTION_REQUIRED"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if UPLOAD_INVOICE_REQUESTED}}
               <a
                 href="{{ENV.URLS_PARCEL}}/packages?bucket=ACTION_REQUIRED"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
@@ -142,9 +142,41 @@
               <a
                 href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if DAMAGED}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if RETURN_REQUEST_FROM_CUSTOMER}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
             {{else if RETURN_PICKUP_DONE}}
               <a
                 href="{{ENV.URLS_PARCEL}}/packages?bucket=ALL"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if SPLIT_PACKAGE}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if SPLIT_PACKAGE_PROCESSED}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=ALL"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if DISCARDED}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=ALL"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if DISCARD_REQUESTED}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if STANDARD_PHOTO_REQUEST}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if ADVANCED_PHOTO_REQUEST}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
             {{/if}}
               <br> </span>
