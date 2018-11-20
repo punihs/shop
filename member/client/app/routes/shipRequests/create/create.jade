@@ -15,8 +15,8 @@
               popover-append-to-body='true'
               )
                i.m-l.fa.fa-info-circle
-            .col-md-2.padding-10.pull-right
-              a.btn.btn-success(ng-click='$ctrl.open()') Add Address
+            .padding-10.pull-right
+              a.btn-info.btn.btn-sm(ng-click='$ctrl.open()') Add Address
             .col-md-10.col-lg-8.radioBox(ng-repeat='item in $ctrl.customer.Addresses')
               .radio
                 label.i-checks
@@ -25,7 +25,7 @@
                   b {{item.first_name}} {{item.last_name}} &nbsp; &nbsp; &nbsp;
                   | {{item.phone}}
                  span(type='button', ng-click='$ctrl.editAddress(item.id, $index)')
-                  i.text-blue.fa.fa-edit.m-l-md
+                  i.text-blue.fa.fa-edit.m-l-md.pointer
                   br
                   i
                   | {{item.line1}},
@@ -47,7 +47,7 @@
               p.div-list.ship-packages {{$ctrl.shipments.length}} Packages in this shipment
             .padding-10.pull-right
               h4
-                button.btn.btn-info(
+                button.btn.btn-info.btn-sm(
                 ui-sref='packages.index'
                 popover-trigger="'mouseenter'"
                 popover-placement='bottom'
@@ -55,7 +55,7 @@
                 ) Add more package
             .clearfix
             .full-width
-              .wrapper-md.ng-scope
+              .ng-scope
                 .panel.panel-default
                   div
                     table.table.table-bordered.m-b-none.default.footable-loaded.footable.table-responsive(
@@ -81,18 +81,18 @@
                       tbody(ng-repeat="shipment in $ctrl.shipments" ng-init='$ctrl.MoreOption={}')
                         tr.footable-even(style='display: table-row;')
                           td.footable-visible.footable-first-column(ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]')
-                            i.fa.fa-chevron-circle-down.text-info
+                            i.fa.fa-chevron-circle-down.text-info.pointer
                           td.footable-visible
                             a(ui-sref='package.show({ id: package.id })' ng-bind='shipment.Store.name')
                           td.footable-visible(ng-bind='shipment.id')
                           td.footable-visible ₹{{shipment.price_amount | number : 2}}
                           td.footable-visible {{shipment.weight}} kg
-                          td.text-center
+                          td.text-center.pointer
                             .i.m-t-sm.wrapper-xs.fa.fa-trash(title='Delete Package' ng-click='$ctrl.deletePackage(shipment.id, $index)')
                         tr.footable-even(style='display: table-row;')
                           td.footable-visible(colspan='5' ng-if='$ctrl.MoreOption[$index]')
-                            p(ng-if='$ctrl.standard_photo_check==="yes" || $ctrl.advc_photo_check==="yes"')
-                              button(href='') Photos
+                            p(ng-if='$ctrl.standardExits || $ctrl.advancedExits')
+                              button.btn-info(ng-click='$ctrl.viewPhotos(shipment)') Photos
 
                             table#DataTables_Table_4.table.table-bordered.m-b-none
                               thead
@@ -111,6 +111,7 @@
                         td.footable-visible.footable-first-column
                         td.footable-visible
                         td.footable-visible Shipment Totals
+
                         td.footable-visible ₹{{$ctrl.totalpackagePriceAmount | number : 2}}
                         td.footable-visible Final Weight of Shipment to be calculated
                           span(
@@ -133,12 +134,8 @@
             .clearfix
               .div-list
                 h4
-                  button.btn.btn-danger(
-                  ui-sref='packages.index({ packageIds: $ctrl.$stateParams.packageIds })'
-                  popover-trigger="'mouseenter'"
-                  popover-placement='bottom'
-                  popover-append-to-body='true'
-                  ) Cancel Request
+                  a.text-danger.txt-underline(ui-sref='packages.index({ packageIds: $ctrl.$stateParams.packageIds })')
+                    | Cancel Request
                 p Order confirmation email will be sent to &nbsp;
                   span.summary-order {{$ctrl.customer.email}}
                 button.btn.btn-sm.btn-success.m-t-xs.text-u-c.pull-left.m-t-md.m-b-md(type='submit' ng-click='$ctrl.create()')  Confirm Your Ship Request *
@@ -163,13 +160,13 @@
           .panel.panel-info
             .ship-create-sidebar.font-bold.text-u-c.text-white.bg-primary SHIPPING PREFERENCES SUMMARY
             .panel-body
-              form.form.form-validation.form-horizontal.wrapper-md(
+              form.form.form-validation.form-horizontal(
               name="newShipmentForm"
               novalidate
               ng-submit='$ctrl.create()'
               autocomplete='off'
               )
-                p PACKING OPTIONS
+                p.txt-underline PACKING OPTIONS
                 ul.list-group.list-group-lg.m-b-none.list-unstyled
                   li
                     .checkbox(ng-click='$ctrl.updateCharges()')
@@ -272,7 +269,7 @@
                         )
                   .clearfix
                 br
-                p  PROFORMA INVOICE OPTIONS
+                p.txt-underline PROFORMA INVOICE OPTIONS
                 ul.list-group.list-group-lg.m-b-none.list-unstyled
                   li
                     .checkbox(ng-click='$ctrl.updateCharges()')
@@ -303,13 +300,13 @@
                   li
                     label.pull-left   TAX ID: &nbsp; &nbsp;
                     .pull-left
-                      input(type='text', ng-model='$ctrl.data.invoice_tax_id')
+                      input.form-control.no-padder(type='text', ng-model='$ctrl.data.invoice_tax_id')
           .panel.panel-info.m-t-md
             .ship-create-sidebar.font-bold.text-u-c.text-white.bg-primary PACKAGE LEVEL CHARGES SUMMARY
             .panel-body
               form.ng-pristine.ng-valid(role='form')
                 ul.list-group.list-group-lg.m-b-none.list-unstyled.charges-summary
-                  li
+                  li(ng-if= '$ctrl.operationsAmount')
                     b Shipping Preference Charges
                     i.span.badge.pull-right.bg-success {{$ctrl.operationsAmount}}
                     span(
@@ -438,8 +435,6 @@
                   li
                     b Total Package Level Charges
                     span.badge.pull-right.bg-success {{$ctrl.totalChargeAmount}}
-
-
                   .clearfix
                   .panel.panel-info.m-t-md
                     .ship-create-sidebar.font-bold.text-u-c SHIPPING CHARGES
