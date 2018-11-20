@@ -1,5 +1,5 @@
 class ShipRequestsCreateController {
-  constructor($http, Page, $stateParams, $location, AddAddress, toaster, $state) {
+  constructor($http, Page, $stateParams, $location, AddAddress, toaster, $state, $uibModal) {
     this.AddAddress = AddAddress;
     this.$http = $http;
     this.Page = Page;
@@ -7,6 +7,7 @@ class ShipRequestsCreateController {
     this.$location = $location;
     this.$stateParams = $stateParams;
     this.toaster = toaster;
+    this.$uibModal = $uibModal;
 
     this.$onInit();
   }
@@ -82,6 +83,21 @@ class ShipRequestsCreateController {
         },
       }) => {
         this.shipments = packages;
+
+        this.standardId = '1';
+        this.advancedId = '2';
+        this.photoTypeStandard = packages[0].PhotoRequests.map(x => x.type === this.standardId);
+        this.photoTypeAdvanced = packages[0].PhotoRequests.map(x => x.type === this.advancedId);
+
+        this.standardExits = false;
+        this.advancedExits = false;
+        if (this.photoTypeStandard.includes(true)) {
+          this.standardExits = true;
+        }
+        if (this.photoTypeAdvanced.includes(true)) {
+          this.advancedExits = true;
+        }
+
         this.customer = customer;
         this.shipmentMeta = shipmentMeta;
         this.data = {
@@ -126,6 +142,20 @@ class ShipRequestsCreateController {
           .toaster
           .pop('danger', err.data.message);
       });
+  }
+
+  viewPhotos(packageDetail) {
+    this.$uibModal.open({
+      templateUrl: 'app/directives/viewPhotos/viewPhotos.html',
+      controller: 'ViewPhotosController',
+      controllerAs: '$ctrl',
+      size: 'lg',
+      resolve: {
+        packageDetail() {
+          return packageDetail;
+        },
+      },
+    });
   }
 
   deletePackage(id) {

@@ -61,12 +61,12 @@ ul.nav
           )
           span Assisted Purchase
 
-  li
+  li.hide
     a.auto(ui-sref='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/loyalty-points')
       i.fas.fa-rupee-sign.text-warning-dker
       span.font-bold My Loyalty Points
 
-  li(ng-class='$ctrl.active === "offers" ? "active" : ""')
+  li.hide(ng-class='$ctrl.active === "offers" ? "active" : ""')
     a.auto(ng-click='$ctrl.toggle("offers")')
       span.pull-right.text-muted
         i.fa.fa-fw.fa-angle-right.text
@@ -135,7 +135,7 @@ ul.nav
   li.hidden-folded.padder.m-t.m-b-sm.text-muted.text-xs
     span Help
   li
-    a(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/country-guide' target='_blank')
+    a(ng-href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/country-guide' target='_blank')
       i.fas.fa-atlas.text-info
       span.font-bold  Country Guides
   li

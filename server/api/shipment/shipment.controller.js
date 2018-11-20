@@ -787,7 +787,7 @@ exports.createShipment = async (req, res, IsShippingAddress) => {
       attributes: ['name'],
     }, {
       model: PhotoRequest,
-      attributes: ['id', 'status'],
+      attributes: ['id', 'status', 'type'],
     }, {
       model: PackageItem,
       attributes: ['name', 'quantity', 'price_amount', 'object', 'object_advanced'],
