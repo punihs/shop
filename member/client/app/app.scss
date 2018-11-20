@@ -27,6 +27,8 @@ $fa-font-path: "../bower_components/font-awesome/webfonts";
 @import 'routes/dashboard/index/hover.scss';
 @import 'routes/packages/create/create.scss';
 @import 'routes/packages/index/index.scss';
+@import 'routes/shipRequests/confirm/confirm.scss';
+@import 'routes/transactions/response/response.scss';
 @import 'routes/users/users.scss';
 @import '../components/footer/footer.scss';
 @import '../components/navbar/navbar.scss';
@@ -532,9 +534,6 @@ li.dndPlaceholder {
   border: 1px solid #989898;
 }
 
-.m-t-xs-md {
-  margin-top: 10px;
-}
 .blink {
   animation: blinker 1s linear infinite;
 }

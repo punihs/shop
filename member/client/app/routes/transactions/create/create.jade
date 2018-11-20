@@ -1,86 +1,100 @@
-.pos-fix.w-full.h-full(style='left:0;top:0;z-index: -1;background: #fff')
-.wrapper-md
-  .wrapper-md.bg-white-only
-    .container
-      .row
-        .col-md-7
-          div.div-border-create
-            h2.m-n.alert.bg-primary.text-white.font-bold PAYMENT SUMMARY
-            .panel-body.text-primary
-              .radio(ng-repeat="paymentgateway in $ctrl.paymentGateways")
-                label.i-checks(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value === "wallet" && $ctrl.shipment.Customer.wallet_balance_amount > $ctrl.shipment.estimated_amount')
-                  input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", type='radio', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
-                  i
-                  | {{paymentgateway.name}} {{paymentgateway.description}} (₹{{$ctrl.shipment.Customer.wallet_balance_amount | number : 2}})
-                label.i-checks(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value !== "wallet"')
-                  input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", ng-disabled='$ctrl.data.axis_banned == "true" && paymentgateway.value === "card" ' type='radio', name='a', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
-                  i
-                  .inline(ng-bind='paymentgateway.name')
-                  em.text-muted(ng-hide='$ctrl.data.axis_banned == "true" && paymentgateway.value === "card" ' ng-bind='paymentgateway.description')
-                i.fa.fa-info-circle.m-l-xs(
-                ng-show='$ctrl.data.axis_banned == "true" && paymentgateway.value === "card" '
-                uib-popover='You cannot use this payment gateway for this shipment - Read FAQ to know more \n'
-                popover-trigger="'mouseenter'"
-                popover-placement='right'
-                popover-append-to-body='true'
-                )
-        .col-md-4
-          //.row
-          //  .col-sm-12
-          //    div.text-center.invalid-promo(ng-if="$ctrl.message")
-          //      | {{$ctrl.message}}
-          //    div.promo-success.text-center(ng-if="$ctrl.promoStatus === 'cashback_success'")
-          //      | Promo code {{$ctrl.promoStatus}} applied INR  {{$ctrl.couponAmount}} will be credit in your wallet after shipment dispatched.
-          //    div.promo-success.text-center(ng-if="$ctrl.promoStatus === 'discount_success'")
-          //      | Promo code {{$ctrl.promoStatus}} applied
-          //    div.text-center.invalid-promo(ng-if="$ctrl.promoStatus === 'promo_expired'")
-          //      | Promo code expired that you applied last.
-          //.clearfix
-          //.row
-          //  .col-sm-8
-          //    input.form-control(type='text', name='promocode', ng-model="$ctrl.couponCode", placeholder='Enter Promo Code', style='font-size: 11px;')
-          //  .col-sm-4
-          //    button.btn.btn-shoppreng(ng-click='$ctrl.applyPromoCode()')
-          //      | Apply
-          //h5 Promo Code Applicable on Basic Shipping Costs
-          //
-          //ul.list-group.list-group-lg.m-b-none.list-unstyled.chkbox_background(ng-if="$ctrl.shipment.Customer.wallet_balance_amount && $ctrl.shipment.Customer.wallet_balance_amount < $ctrl.shipment.estimated_amount && $ctrl.shipment.Customer.wallet_balance_amount !== 0")
-          //  li
-          //    .checkbox
-          //      label.i-checks(ng-if="$ctrl.shipment.Customer.wallet_balance_amount")
-          //        input(
-          //        ng-model='$ctrl.isWalletChecked'
-          //        type='checkbox',
-          //        ng-change="$ctrl.walletClicked()",
-          //        ng-checked ="$ctrl.isWalletChecked"
-          //        )
-          //        i
-          //        | Shoppre Wallet
-          //      label.i-checks(ng-if="$ctrl.shipment.Customer.wallet_balance_amount < 0")
-          //        input(
-          //        ng-model='$ctrl.isWalletChecked'
-          //        type='checkbox',
-          //        ng-change="$ctrl.walletClicked()",
-          //        ng-checked='true'
-          //        ng-disabled="$ctrl.status = 'disabled'"
-          //        )
-          //        i
-          //        | Shoppre Wallet
-          //      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.Customer.wallet_balance_amount| number : 2}}
-          .final-ship-charge.text-primary
-            h4 Final Shipping Charges *
-              h4.fa.fa-rupee.font-bold &nbsp;₹ {{$ctrl.data.amount| number : 2}}
+div
+  .hbox(style="position:relative")
 
-          button.btn.btn-info.font-bold.r-x.text-lg.w-full(
-            type='submit'
-            ng-click='$ctrl.submitPayment()'
-          )
-            | Pay
-          //a.btn.btn-shoppre(
-          //style='width: 100%;font-size: 18px;border-radius: 5px;background: #10c018;font-weight: 900;'
-          //ng-href='http://pay.shoppre.test/api/transactions/create?estimated={{$ctrl.payment.amount}}&object_id={{$ctrl.shipment.id}}'
-          //)
-          //  | Proceed to Payment
-          h5 * Charges shown DO NOT include any duties and taxes due upon shipment arriaval in your receiving country.
+    // - Primary Header
+    .bg-white-only.w-full.b-b(style='position: fixed;z-index: 6;height: 40px;')
+      .pull-left.wrapper-sm.no-padder-top.text-info
+        span.h4
+          i.fas.fa-rupee-sign.m-r
+          | Make Payment
+
+    // - Content Area
+    .bg-white.m-t-n-xs-md(style='min-height: 200px;')
+      .m-t-xxl(style='height: 1px;')
+      .hbox
+        .wrapper-md.bg-white-only.wrapper-parcel
+          .col-md-12.no-padder-left.p-t-lg
+            .pos-fix.w-full.h-full(style='left:0;top:0;z-index: -1;background: #fff')
+            .container
+              .row
+                .col-md-7
+                  div.div-border-create
+                    h2.m-n.alert.bg-primary.text-white.font-bold PAYMENT SUMMARY
+                    .panel-body.text-primary
+                      .radio(ng-repeat="paymentgateway in $ctrl.paymentGateways")
+                        label.i-checks(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value === "wallet" && $ctrl.shipment.Customer.wallet_balance_amount > $ctrl.shipment.estimated_amount')
+                          input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", type='radio', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
+                          i
+                          | {{paymentgateway.name}} {{paymentgateway.description}} (₹{{$ctrl.shipment.Customer.wallet_balance_amount | number : 2}})
+                        label.i-checks(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value !== "wallet"')
+                          input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", ng-disabled='$ctrl.data.axis_banned == "true" && paymentgateway.value === "card" ' type='radio', name='a', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
+                          i
+                          .inline(ng-bind='paymentgateway.name')
+                          em.text-muted(ng-hide='$ctrl.data.axis_banned == "true" && paymentgateway.value === "card" ' ng-bind='paymentgateway.description')
+                        i.fa.fa-info-circle.m-l-xs(
+                        ng-show='$ctrl.data.axis_banned == "true" && paymentgateway.value === "card" '
+                        uib-popover='You cannot use this payment gateway for this shipment - Read FAQ to know more \n'
+                        popover-trigger="'mouseenter'"
+                        popover-placement='right'
+                        popover-append-to-body='true'
+                        )
+                .col-md-4
+                  //.row
+                  //  .col-sm-12
+                  //    div.text-center.invalid-promo(ng-if="$ctrl.message")
+                  //      | {{$ctrl.message}}
+                  //    div.promo-success.text-center(ng-if="$ctrl.promoStatus === 'cashback_success'")
+                  //      | Promo code {{$ctrl.promoStatus}} applied INR  {{$ctrl.couponAmount}} will be credit in your wallet after shipment dispatched.
+                  //    div.promo-success.text-center(ng-if="$ctrl.promoStatus === 'discount_success'")
+                  //      | Promo code {{$ctrl.promoStatus}} applied
+                  //    div.text-center.invalid-promo(ng-if="$ctrl.promoStatus === 'promo_expired'")
+                  //      | Promo code expired that you applied last.
+                  //.clearfix
+                  //.row
+                  //  .col-sm-8
+                  //    input.form-control(type='text', name='promocode', ng-model="$ctrl.couponCode", placeholder='Enter Promo Code', style='font-size: 11px;')
+                  //  .col-sm-4
+                  //    button.btn.btn-shoppreng(ng-click='$ctrl.applyPromoCode()')
+                  //      | Apply
+                  //h5 Promo Code Applicable on Basic Shipping Costs
+                  //
+                  //ul.list-group.list-group-lg.m-b-none.list-unstyled.chkbox_background(ng-if="$ctrl.shipment.Customer.wallet_balance_amount && $ctrl.shipment.Customer.wallet_balance_amount < $ctrl.shipment.estimated_amount && $ctrl.shipment.Customer.wallet_balance_amount !== 0")
+                  //  li
+                  //    .checkbox
+                  //      label.i-checks(ng-if="$ctrl.shipment.Customer.wallet_balance_amount")
+                  //        input(
+                  //        ng-model='$ctrl.isWalletChecked'
+                  //        type='checkbox',
+                  //        ng-change="$ctrl.walletClicked()",
+                  //        ng-checked ="$ctrl.isWalletChecked"
+                  //        )
+                  //        i
+                  //        | Shoppre Wallet
+                  //      label.i-checks(ng-if="$ctrl.shipment.Customer.wallet_balance_amount < 0")
+                  //        input(
+                  //        ng-model='$ctrl.isWalletChecked'
+                  //        type='checkbox',
+                  //        ng-change="$ctrl.walletClicked()",
+                  //        ng-checked='true'
+                  //        ng-disabled="$ctrl.status = 'disabled'"
+                  //        )
+                  //        i
+                  //        | Shoppre Wallet
+                  //      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.Customer.wallet_balance_amount| number : 2}}
+                  .final-ship-charge.text-primary.no-margin-top
+                    h4 Final Shipping Charges *
+                      h4.fa.fa-rupee.font-bold &nbsp;₹ {{$ctrl.data.amount| number : 2}}
+
+                  button.btn.btn-info.font-bold.r-x.text-lg.w-full(
+                    type='submit'
+                    ng-click='$ctrl.submitPayment()'
+                  )
+                    | Pay
+                  //a.btn.btn-shoppre(
+                  //style='width: 100%;font-size: 18px;border-radius: 5px;background: #10c018;font-weight: 900;'
+                  //ng-href='http://pay.shoppre.test/api/transactions/create?estimated={{$ctrl.payment.amount}}&object_id={{$ctrl.shipment.id}}'
+                  //)
+                  //  | Proceed to Payment
+                  h5 * Charges shown DO NOT include any duties and taxes due upon shipment arriaval in your receiving country.
 
 
