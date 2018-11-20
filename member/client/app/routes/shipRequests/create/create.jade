@@ -136,12 +136,6 @@
                 h4
                   a.text-danger.txt-underline(ui-sref='packages.index({ packageIds: $ctrl.$stateParams.packageIds })')
                     | Cancel Request
-                  //button.btn.btn-danger(
-                  //ui-sref='packages.index({ packageIds: $ctrl.$stateParams.packageIds })'
-                  //popover-trigger="'mouseenter'"
-                  //popover-placement='bottom'
-                  //popover-append-to-body='true'
-                  //) Cancel Request
                 p Order confirmation email will be sent to &nbsp;
                   span.summary-order {{$ctrl.customer.email}}
                 button.btn.btn-sm.btn-success.m-t-xs.text-u-c.pull-left.m-t-md.m-b-md(type='submit' ng-click='$ctrl.create()')  Confirm Your Ship Request *
@@ -441,8 +435,6 @@
                   li
                     b Total Package Level Charges
                     span.badge.pull-right.bg-success {{$ctrl.totalChargeAmount}}
-
-
                   .clearfix
                   .panel.panel-info.m-t-md
                     .ship-create-sidebar.font-bold.text-u-c SHIPPING CHARGES
