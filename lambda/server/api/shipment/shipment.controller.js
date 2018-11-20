@@ -14,18 +14,20 @@ exports.notification = async (req, res, next) => {
       packages,
       customer,
       actingUser,
+      paymentGateway,
       ENV,
     } = req.body;
-
     const TemplateData = JSON.stringify({
       nextStateId,
+      nextStateName,
       [nextStateName]: true,
       shipment,
       address,
-      subject: subjectMap({ nextStateName, shipment }),
+      subject: subjectMap({ nextStateName, shipment, paymentGateway }),
       packages,
       customer,
       actingUser,
+      paymentGateway,
       ENV,
     });
 

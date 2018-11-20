@@ -40,15 +40,7 @@ const packages = [{
   created_at: '2018-08-20',
 }];
 
-const address = {
-  line1: '314 Euphoria Circle',
-  line2: '314 Euphoria Circle',
-  city: 'Cary, NC',
-  state: 'florida',
-  country: 'United states',
-  pincode: '560008',
-  phone: '8970972343',
-};
+const address = '# 181, 2nd Cross Road, 7th Main ,1st block koramangala, marathahalli, hyderabad, karnataka, India, 560034';
 
 const customer = {
   name: 'Mr. Abhinav Mishra',
@@ -111,7 +103,7 @@ module.exports = {
     address,
     actingUser: OPS,
     ENV,
-    subject: 'Payment Completed',
+    subject: `Payment Received! | Shipment ID: ${shipment.id}`,
     shipment,
     paymentGateway,
     cash: 'Cash',
@@ -123,7 +115,7 @@ module.exports = {
     address,
     actingUser: OPS,
     ENV,
-    subject: 'Payment failed',
+    subject: `Transaction Attempt Failed: Using your ${paymentGateway.name} | ShipmentID: ${shipment.id}`,
     shipment,
     paymentGateway,
   },
@@ -134,7 +126,7 @@ module.exports = {
     address,
     actingUser: OPS,
     ENV,
-    subject: 'Payment Confirmed',
+    subject: `Payment Confirmed! | Shipment ID: ${shipment.id}`,
     shipment,
     paymentGateway,
   },
@@ -145,7 +137,7 @@ module.exports = {
     address,
     actingUser: OPS,
     ENV,
-    subject: '',
+    subject: `We have created a Ship Request with our Courier Partner for your ShipmentID: ${shipment.id}`,
     shipment,
   },
   SHIPMENT_HANDED: {
@@ -155,7 +147,7 @@ module.exports = {
     address,
     actingUser: OPS,
     ENV,
-    subject: '',
+    subject: `Your Package Is Scheduled to Ship Today! | ShipmentID: ${shipment.id}`,
     shipment,
   },
   SHIPMENT_IN_TRANSIT: {
@@ -165,7 +157,7 @@ module.exports = {
     address,
     actingUser: OPS,
     ENV,
-    subject: '',
+    subject: `Your ShipmentID: ${shipment.id} is in Transit to the Destination`,
     shipment,
   },
   SHIPMENT_MANUAL_FOLLOW_UP: {
@@ -316,7 +308,7 @@ module.exports = {
     address,
     actingUser: OPS,
     ENV,
-    subject: '',
+    subject: `Shipment Delivered | Earn 150 Loyalty Points! | ShipmentID: ${shipment.id}`,
     shipment,
   },
   SHIPMENT_CANCELLED: {
@@ -326,7 +318,7 @@ module.exports = {
     address,
     actingUser: OPS,
     ENV,
-    subject: '',
+    subject: `Shipment Cancelled! | Shipment ID: ${shipment.id}`,
     shipment,
   },
 };
