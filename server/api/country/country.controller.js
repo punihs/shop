@@ -2,7 +2,7 @@ const rp = require('request-promise');
 
 const { Country } = require('../../conn/sqldb');
 
-exports.index = (req, res, next) => {
+exports.index = async (req, res, next) => {
   try {
     const options = {
       attributes: [
@@ -13,20 +13,19 @@ exports.index = (req, res, next) => {
       offset: Number(req.query.offset) || 0,
     };
 
-    return Country
-      .findAll(options)
-      .then(countries => res.json(countries))
-      .catch(next);
+    const countries = await Country
+      .findAll(options);
+    return res.json(countries);
   } catch (err) {
     return next(err);
   }
 };
 
-exports.show = (req, res, next) => {
+exports.show = async (req, res, next) => {
   try {
     const { slug } = req.params;
 
-    return Country
+    const country = await Country
       .find({
         attributes: [
           'id', 'name', 'slug', 'iso2', 'iso3', 'currency_code', 'capital_city',
@@ -34,23 +33,25 @@ exports.show = (req, res, next) => {
         ],
         where: { slug },
         raw: true,
-      })
-      .then((country) => {
-        if (!country) return res.status(400).end();
+      });
 
-        const q = `INR_${country.currency_code}`;
+    if (!country) return res.status(400).end();
 
-        return rp({
-          uri: `http://free.currencyconverterapi.com/api/v3/convert?q=${q}&compact=ultra`,
-          json: true,
-        })
-          .then(response => res
-            .json({
-              ...country,
-              exchangeRate: response[q],
-            }));
-      })
-      .catch(next);
+    const q = `INR_${country.currency_code}`;
+
+    const response = await rp({
+      uri: `http://free.currencyconverterapi.com/api/v3/convert?q=${q}&compact=ultra`,
+      json: true,
+    });
+
+    if (!response) {
+      return res.status(400).end();
+    }
+
+    return res.json({
+      ...country,
+      exchangeRate: response[q],
+    });
   } catch (err) {
     return next(err);
   }
