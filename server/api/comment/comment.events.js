@@ -19,23 +19,27 @@ const events = {
   afterDestroy: 'remove',
 };
 
-function emitEvent(event) {
-  log('event', event);
-  return (doc) => {
-    const comment = doc.toJSON();
-    log('doc', { comment });
-    User
-      .findById(comment.user_id, {
-        attributes: [
-          'id', 'email', 'first_name', 'last_name', 'group_id', 'salutation', 'name',
-        ],
-      })
-      .then((user) => {
-        log('event', event);
-        CommentEvents.emit(event, { ...comment, User: user.toJSON() });
-      })
-      .catch(err => logger.error('CommentEvents', err));
-  };
+function emitEvent(event, next) {
+  try {
+    log('event', event);
+    return (doc) => {
+      const comment = doc.toJSON();
+      log('doc', { comment });
+      User
+        .findById(comment.user_id, {
+          attributes: [
+            'id', 'email', 'first_name', 'last_name', 'group_id', 'salutation', 'name',
+          ],
+        })
+        .then((user) => {
+          log('event', event);
+          CommentEvents.emit(event, { ...comment, User: user.toJSON() });
+        })
+        .catch(err => logger.error('CommentEvents', err));
+    };
+  } catch (err) {
+    return next(err);
+  }
 }
 
 // Register the event emitter to the model events
