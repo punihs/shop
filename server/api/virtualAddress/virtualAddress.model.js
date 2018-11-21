@@ -12,10 +12,6 @@ module.exports = (sequelize, DataTypes) => {
     VirtualAddress.belongsTo(db.User, {
       foreignKey: 'customer_id',
     });
-
-    VirtualAddress.belongsTo(db.User, {
-      foreignKey: 'customer_id',
-    });
   };
 
   return VirtualAddress;
