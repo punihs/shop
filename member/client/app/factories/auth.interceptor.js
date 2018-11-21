@@ -1,5 +1,5 @@
 angular
-  .module('qui.core')
+  .module('uiGenApp')
   .factory('AuthInterceptor', (Session, URLS) => ({
     request: (conf) => {
       const config = conf;

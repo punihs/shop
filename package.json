@@ -1,6 +1,6 @@
 {
   "name": "parcel",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Parcel",
   "main": "server/index.js",
   "scripts": {
@@ -35,8 +35,7 @@
   "homepage": "https://github.com/shoppre/parcel#readme",
   "private": true,
   "pre-commit": [
-    "lint",
-    "npm run full-test"
+    "lint"
   ],
   "dependencies": {
     "ajv": "^6.5.0",

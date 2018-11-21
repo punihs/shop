@@ -1,8 +1,7 @@
 class PackageItemsController {
   constructor(
     Page, $state, $stateParams, $http, toaster, pkg,
-    Session, item, S3, URLS, createCategory,
-  ) {
+    Session, item, S3, URLS, createCategory) {
     this.Session = Session;
     this.Page = Page;
     this.$http = $http;

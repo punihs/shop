@@ -9,14 +9,39 @@ if (localStorage.userinfo) {
 }
 raven.install();
 
-angular.module('qui.components', []);
-
+// this configs to initiated using provider
+const CUSTOMER = 2;
 angular
-  .module('qui.core', [
-    'qui.components',
+  .module('uiGenApp', [
+    'uiGenApp.constants',
+    'ngAnimate',
+    'ui.router',
+    'ui.bootstrap',
+    'ngFileUpload',
+    'angular-loading-bar',
+    'naif.base64',
+    'toaster',
+    'ngclipboard',
+    'ngIntlTelInput',
+    'ngRaven',
     'http-auth-interceptor',
   ])
-  .constant('MODULE_VERSION', '0.0.1')
+  .config(($urlRouterProvider, $locationProvider, ngIntlTelInputProvider, $ravenProvider) => {
+    const dev = location.href.includes('.test');
+    $ravenProvider.development(dev);
+    ngIntlTelInputProvider.set({
+      initialCountry: 'us',
+      autoHideDialCode: true,
+      nationalMode: false,
+      utilsScript: '/bower_components/intl-tel-input/build/js/utils.js',
+    });
+
+    $urlRouterProvider.when('/', '/dashboard');
+    $urlRouterProvider.otherwise(($injector) => $injector.get('$state').go('access.404'));
+
+    $locationProvider.html5Mode(true);
+  })
+  .factory('CONFIG', (appConfig) => appConfig[CUSTOMER])
   .constant('ADDRESS', {
     line1: '#181, 1st Floor,',
     line2: '2nd Cross Rd, 1st Block Koramangala,',
@@ -34,63 +59,23 @@ angular
     email_id: 'finance@shoppre.com',
     address: 'NO. 9, M.G. ROAD, BLOCK-A',
     swift_code: 'AXISINBB009',
-  });
-
-// this configs to initiated using provider
-const CUSTOMER = 2;
-angular
-  .module('uiGenApp', [
-    'uiGenApp.constants',
-    'qui.core',
-    'ngAnimate',
-    'ui.router',
-    'ui.bootstrap',
-    'ngFileUpload',
-    'angular-loading-bar',
-    'naif.base64',
-    'toaster',
-    'ngclipboard',
-    'ngIntlTelInput',
-    'ngRaven',
-  ])
-  .config(($urlRouterProvider, $locationProvider, ngIntlTelInputProvider, $ravenProvider) => {
-    const dev = location.href.includes('.test');
-    $ravenProvider.development(true);
-    ngIntlTelInputProvider.set({
-      initialCountry: 'us',
-      autoHideDialCode: true,
-      nationalMode: false,
-      utilsScript: '/bower_components/intl-tel-input/build/js/utils.js',
-    });
-
-    $urlRouterProvider.when('/', '/dashboard');
-    $urlRouterProvider.otherwise(($injector) => $injector.get('$state').go('access.404'));
-
-    $locationProvider.html5Mode(true);
   })
-  .factory('CONFIG', (appConfig) => appConfig[CUSTOMER])
-  .factory('$exceptionHandler', function () {
-    return function errorCatcherHandler(exception, cause) {
-      console.log(exception, cause);
-      Raven.captureException(exception);
-      // do not rethrow the exception - breaks the digest cycle
-    };
-  })
-  .factory('errorHttpInterceptor', ['$q', function ($q) {
-    return {
-      responseError: function responseError(rejection) {
-        Raven.captureException(new Error('HTTP response error'), {
-          extra: {
-            config: rejection.config,
-            status: rejection.status,
-          },
-        });
-        console.log(rejection);
-        return $q.reject(rejection);
-      },
-    };
-  }])
-  .config(['$httpProvider', function ($httpProvider) {
+  // - todo: Raven to moved to factor
+  // do not rethrow the exception - breaks the digest cycle, (exception, cause)
+  .factory('$exceptionHandler', () => (exception) => Raven.captureException(exception))
+  .factory('errorHttpInterceptor', ($q) => ({
+    responseError: function responseError(rejection) {
+      Raven.captureException(new Error('HTTP response error'), {
+        extra: {
+          config: rejection.config,
+          status: rejection.status,
+        },
+      });
+
+      return $q.reject(rejection);
+    },
+  }))
+  .config(['$httpProvider', ($httpProvider) => {
     $httpProvider.interceptors.push('errorHttpInterceptor');
   }]);
 

@@ -1,22 +1,19 @@
 class AppController {
-  constructor(
-    $window, $uibModal, $state, $rootScope, URLS,
-    $http, $stateParams, Session, Page, socket,
-  ) {
-    const vm = this;
+  constructor($window, $uibModal, $state, $rootScope, URLS, $http, $stateParams, Session,
+    Page, socket) {
     this.Page = Page;
     this.socket = socket;
-    vm.$stateParams = $stateParams;
-    vm.Session = Session;
+    this.$stateParams = $stateParams;
+    this.Session = Session;
 
-    vm.userinfo = this.Session.read('userinfo');
-    vm.states = this.Session.read('states');
-    vm.shipmentStates = this.Session.read('shipment-states');
+    this.userinfo = this.Session.read('userinfo');
+    this.states = this.Session.read('states');
+    this.shipmentStates = this.Session.read('shipment-states');
 
-    vm.Math = Math;
-    vm.URLS = URLS;
+    this.Math = Math;
+    this.URLS = URLS;
     // config
-    vm.app = {
+    this.app = {
       name: 'OPS',
       version: '0.0.1',
       settings: {
@@ -61,7 +58,7 @@ class AppController {
       });
     }
 
-    vm.updateNavigationBar = (currentState, stateParams) => {
+    this.updateNavigationBar = (currentState, stateParams) => {
       let navbarHeaderColor = 'bg-primary';
       let navbarCollapseColor = 'bg-info';
       let asideColor = 'bg-info bg-gd-dk';
@@ -70,9 +67,9 @@ class AppController {
         navbarCollapseColor = stateParams.source === '0' ? 'bg-black' : 'bg-sea-green';
         asideColor = stateParams.source === '0' ? 'bg-black bg-gd-dk' : 'bg-sea-green bg-gd-dk';
       }
-      vm.app.settings.navbarHeaderColor = navbarHeaderColor;
-      vm.app.settings.navbarCollapseColor = navbarCollapseColor;
-      vm.app.settings.asideColor = asideColor;
+      this.app.settings.navbarHeaderColor = navbarHeaderColor;
+      this.app.settings.navbarCollapseColor = navbarCollapseColor;
+      this.app.settings.asideColor = asideColor;
     };
 
     // keeps track of state change and hides sidebar view for mobile
@@ -82,15 +79,15 @@ class AppController {
         previousState: from.name,
         currentState: to.name,
       });
-      vm.app.settings.offScreen = false;
-      vm.app.settings.mobileHeader = false;
-      vm.updateNavigationBar($rootScope.currentState, toParams);
+      this.app.settings.offScreen = false;
+      this.app.settings.mobileHeader = false;
+      this.updateNavigationBar($rootScope.currentState, toParams);
     });
 
-    vm.Page = Page; // Set Page title
-    vm.$state = $state;
+    this.Page = Page; // Set Page title
+    this.$state = $state;
 
-    vm.showCustomerSideBar = function showNavJobs() {
+    this.showCustomerSideBar = function showNavJobs() {
       return [
         'packages.index',
         'customer.view',
@@ -103,8 +100,6 @@ class AppController {
         'customer.shipments.index',
       ].includes($state.current.name);
     };
-
-    vm.hideExt = () => $window.parent.postMessage({ type: 'RESET' }, '*');
   }
 }
 

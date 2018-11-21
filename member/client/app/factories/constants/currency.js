@@ -1,4 +1,4 @@
-angular.module('qui.core')
+angular.module('uiGenApp')
   .constant('CURRENCY', {
     USD: 'USD United States Dollars',
     EUR: 'EUR Euro',

@@ -1,4 +1,4 @@
-angular.module('qui.components')
+angular.module('uiGenApp')
   .directive('contenteditable', () =>
     ({
       require: 'ngModel',

@@ -1,4 +1,4 @@
-angular.module('qui.core')
+angular.module('uiGenApp')
 // Depending on constant: AUTH_EVENTS
   .factory('Auth',
     ($log, $http, $q, Session, URLS) => {

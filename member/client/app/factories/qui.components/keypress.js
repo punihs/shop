@@ -1,4 +1,4 @@
-angular.module('qui.components')
+angular.module('uiGenApp')
   .directive('emptyBackspace', ($parse) => ({
     link: (scope, element, attrs) => {
       element.on('keydown', (e) => {

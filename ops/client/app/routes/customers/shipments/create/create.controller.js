@@ -1,7 +1,5 @@
 class ShipmentCreateController {
-  constructor(
-    Page, $state, $stateParams, $http, toaster, customer, shipment, Session
-  ) {
+  constructor(Page, $state, $stateParams, $http, toaster, customer, shipment, Session) {
     this.Session = Session;
     this.Page = Page;
     this.$http = $http;
@@ -11,20 +9,20 @@ class ShipmentCreateController {
     this.toaster = toaster;
     this.Number = Number;
     this.$ = $;
-    this.submitting = false;
-    this.submittingTracking = false;
-    this.data = shipment || {};
+    this.shipment = shipment;
+
     this.$onInit();
   }
 
   $onInit() {
+    this.submitting = false;
+    this.submittingTracking = false;
+    this.data = this.shipment || {};
     this.EDIT = !!this.$stateParams.shipmentId && this.$stateParams.shipmentId !== '';
     this.quickMode = this.EDIT ? false : (this.Session.read('quickMode') || false);
     this.TITLE = `${this.EDIT ? 'Edit' : 'Add New'} Shipment`;
     this.Page.setTitle(this.TITLE);
     this.shipmentTypes = this.Session.read('shipment-types');
-    // this.data.shipment_type_id =
-    //   (this.EDIT && this.data.ShipmentType) ? this.data.ShipmentType.id : this.shipmentTypes[0].id;
   }
 
   reset(newShipmentForm) {

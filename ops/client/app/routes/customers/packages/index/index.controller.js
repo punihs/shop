@@ -2,8 +2,7 @@ class CustomersPackagesIndexController {
   /* @ngInject */
   constructor(
     QCONFIG, $stateParams, $filter, moment, $window, Page,
-    customer, $http, $state, Session, Prototype, ExcelDownload, ChangeState
-  ) {
+    customer, $http, $state, Session, Prototype, ExcelDownload, ChangeState) {
     this.QCONFIG = QCONFIG;
     this.$stateParams = $stateParams;
     this.$http = $http;

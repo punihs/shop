@@ -30,7 +30,7 @@ class ShipRequestsIndexController {
       .then(({ data: { shipments } }) => {
         shipments.map(x => this.shipments.push(x));
         this.todayDate = new Date();
-        console.log({ shipments });
+
         this.payment_gate_id = Number(shipments[0].payment_gateway_id);
         this.shipments.map((s) => {
           const shipment = s;

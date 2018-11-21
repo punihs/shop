@@ -165,7 +165,7 @@ class PackagesIndexController {
     if (!input) return '';
 
     const text = input.replace(new RegExp(char, 'g'), ' ');
-    console.log(text);
+
     return text;
   }
 
@@ -275,7 +275,7 @@ class PackagesIndexController {
     modal
       .result
       .then((data) => {
-        this.packages.map((x) => {
+        this.packages.forEach((x) => {
           if (x.id === data.id) {
             let PhotoRequests = '';
             if (data.type === 'standard') {
@@ -290,7 +290,7 @@ class PackagesIndexController {
         modal1
           .result
           .then((result) => {
-            this.packages.map((x) => {
+            this.packages.forEach((x) => {
               if (x.id === result.id) {
                 if (result.type === 'standard') {
                   x.PhotoRequests.push({ status: '2', type: '1' });

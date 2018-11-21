@@ -1,15 +1,14 @@
- const raven = Raven.config('https://a4576e2b58fa419d9a76610db580a7b0@sentry.shoppre.com/5', {});
+const raven = Raven.config('https://a4576e2b58fa419d9a76610db580a7b0@sentry.shoppre.com/5', {});
 
- if (localStorage.userinfo) {
-   const user = JSON.parse(localStorage.userinfo);
-   debugger
-   raven.setUser({
-     id: user.id,
-     email: user.email,
-   });
- }
+if (localStorage.userinfo) {
+  const user = JSON.parse(localStorage.userinfo);
+  raven.setUser({
+    id: user.id,
+    email: user.email,
+  });
+}
 
- raven.install();
+raven.install();
 
 angular.module('qui.components', []);
 
@@ -18,7 +17,7 @@ angular
     'qui.components',
     'http-auth-interceptor',
   ])
-  .constant('MODULE_VERSION', '0.0.1')
+  .constant('MODULE_VERSION', '0.0.1');
 // this configs to initiated using provider
 angular.module('uiGenApp', [
   'qui.core',
@@ -57,30 +56,18 @@ angular.module('uiGenApp', [
 
     $locationProvider.html5Mode(true);
   })
-  .factory('$exceptionHandler', function () {
-    return function errorCatcherHandler(exception, cause) {
-      console.error(exception.stack);
-      Raven.captureException(exception);
-      // do not rethrow the exception - breaks the digest cycle
-    };
-  })
-  .factory('errorHttpInterceptor', ['$q', function ($q) {
-    return {
-      responseError: function responseError(rejection) {
-        Raven.captureException(new Error('HTTP response error'), {
-          extra: {
-            config: rejection.config,
-            status: rejection.status,
-          },
-        });
-        return $q.reject(rejection);
-      },
-    };
-  }])
-  .config(['$httpProvider', function ($httpProvider) {
-    $httpProvider.interceptors.push('errorHttpInterceptor');
-  }])
+  .factory('$exceptionHandler', () => (exception) => Raven.captureException(exception))
+  .factory('errorHttpInterceptor', ($q) => ({
+    responseError: function responseError(rejection) {
+      Raven.captureException(new Error('HTTP response error'), {
+        extra: {
+          config: rejection.config,
+          status: rejection.status,
+        },
+      });
 
-  .constant('RENAMED_STATES', {
-  });
+      return $q.reject(rejection);
+    },
+  }))
+  .config($httpProvider => $httpProvider.interceptors.push('errorHttpInterceptor'));
 

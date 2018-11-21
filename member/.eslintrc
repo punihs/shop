@@ -15,7 +15,9 @@
     "_": true,
     "String": true,
     "confirm": true,
-    "playerId": true
+    "playerId": true,
+    "importScripts": true,
+    "Raven": true
   }
 
 }

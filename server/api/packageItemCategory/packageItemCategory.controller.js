@@ -7,6 +7,7 @@ exports.index = async (req, res, next) => {
     const packageItemcategory = await PackageItemCategory
       .findAll({
         attributes: ['id', 'name'],
+        offset: Number(req.query.offset) || 0,
         limit: Number(req.query.limit) || 20,
       });
 
@@ -18,21 +19,33 @@ exports.index = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
   try {
-    const ItemCategory = req.body;
-    ItemCategory.created_by = ItemCategory.user_id;
+    const { name } = req.body;
 
-    const packageItemCategory = await PackageItemCategory.find({
-      attributes: ['id'],
-      where: { name: ItemCategory.name },
-    });
+    const packageItemCategory = await PackageItemCategory
+      .findOne({
+        attributes: ['id'],
+        where: { name },
+      });
+
     if (packageItemCategory) {
-      res.status(200).json({ message: `Category  ${ItemCategory.name} is Already exists` });
-    } else {
-      const itemCategory = await PackageItemCategory
-        .create(ItemCategory);
-
-      res.json({ package_item_category_id: itemCategory.id, message: `Category  ${ItemCategory.name} is created` });
+      return res
+        .status(200)
+        .json({
+          id: packageItemCategory.id,
+          message: `Category  ${name} is Already exists`,
+        });
     }
+
+    const { id } = await PackageItemCategory
+      .create({
+        name,
+        created_by: req.user.id,
+      });
+
+    return res.json({
+      id,
+      message: `Category  ${name} is created`,
+    });
   } catch (err) {
     return next(err);
   }
@@ -40,6 +53,7 @@ exports.create = async (req, res, next) => {
 
 exports.destroy = async (req, res, next) => {
   const { id } = req.params;
+
   try {
     const status = await PackageItemCategory.destroy({ where: { id } });
 

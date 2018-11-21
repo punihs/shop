@@ -3,8 +3,7 @@ class PackagesIndexController {
   constructor(
     QCONFIG, $scope, $stateParams, $location, $state, Prototype,
     $rootScope, $timeout, $window, $http, moment, $uibModal, Session, ExcelDownload,
-    ChangeState, Page, PackageFilter
-  ) {
+    ChangeState, Page, PackageFilter) {
     this.Page = Page;
     this.QCONFIG = QCONFIG;
     this.$scope = $scope;
@@ -76,8 +75,7 @@ class PackagesIndexController {
           }, 800);
         }
       },
-      true,
-    );
+      true);
 
     // $emit coming from directive
     this.$scope.$on('loadMore', () => this.loadPackages());
@@ -148,24 +146,24 @@ class PackagesIndexController {
 
     this.$http
       .get('/packages', { params: this.params })
-      .then(({ data: { packages, total, facets } }) => {
+      .then(({ data: { packages: current, total } }) => {
+        const packages = current;
         // Handle error for php error
         if (typeof packages === 'undefined') {
           if (!!refresh) this.packages = [];
           this.ui.lazyLoad = false;
           return;
         }
-        packageIds = packages.map((x) => {
-          return x.id;
-        });
+        packageIds = packages.map((x) => x.id);
 
+        // todo: this code should be in server
         this.$http
           .get(`/packages/items/damaged?packageIds=${packageIds}`)
           .then(({ data: { packageStates } }) => {
             const damagedIds = packageStates.map(x => x.package_id);
-            packages.map((x) => {
+            packages.forEach((x, i) => {
               if (damagedIds.includes(x.id)) {
-                x.damaged = true;
+                packages[i].damaged = true;
               }
             });
           });
@@ -174,13 +172,19 @@ class PackagesIndexController {
           this.$state.go('packages.index', { bucket: 'ALL' });
           return;
         }
+
         this.packages.push(...packages);
-        console.log('this.packages', this.packages);
+
         this.todayDate = new Date();
-        this.packages.map(packageData => {
-          const packageDate = new Date(packageData.created_at);
-          packageData.totalDays = Math.ceil((Math.abs(this.todayDate.getTime() - packageDate.getTime()))/(1000 * 3600 * 24));
-          return packageData;
+        this.packages.forEach((pkg, i) => {
+          const packageDate = new Date(pkg.created_at);
+          // - todo: change to moment().diff(moment(), 'days')
+          this.packages[i].totalDays = Math
+            .ceil((Math
+              .abs(this
+                .todayDate
+                .getTime() - packageDate
+                .getTime())) / (1000 * 3600 * 24));
         });
 
         this.total = total;

@@ -2,8 +2,7 @@ class PackageShowController {
   /* @ngInject */
   constructor(
     $http, $stateParams, URLS, $sce, $state, $window, Page, Session, $q, ChangeState,
-    pkg, ListModal, toaster, $scope, ViewPhotoService
-  ) {
+    pkg, ListModal, toaster, $scope, ViewPhotoService) {
     this.Number = Number;
     this.$scope = $scope;
     this.URLS = URLS;
@@ -20,23 +19,24 @@ class PackageShowController {
     this.ListModal = ListModal;
     this.ViewPhotoService = ViewPhotoService;
     this.moment = moment;
-    this.customer = pkg.Customer;
-    this.editAllowedStates = [1, 2, 5];
-    this.location = $window.location;
-    this.user = Session.read('userinfo');
+
     this.$onInit();
   }
 
   $onInit() {
+    this.states = this.Session.read('states');
+    this.user = this.Session.read('userinfo');
+
+    this.location = this.$window.location;
+    this.customer = this.data.Customer;
+
+    this.Page.setFavicon(`${this.$stateParams.profilePhotoUrl}`);
+    if (this.data.Store) this.Page.setTitle(this.data.Store.name);
+
     this.root = '_root_';
     this.modal = {};
     this.packageItemsAdditionAllowedStateIds = [1];
-    this.states = this.Session.read('states');
-    this.user = this.Session.read('userinfo');
-    this.data.Store ?
-      this.Page.setTitle(this.data.Store.name) :
-      this.Page.setTitle(this.data.store_name);
-    this.Page.setFavicon(`${this.$stateParams.profilePhotoUrl}`);
+    this.editAllowedStates = [1, 2, 5];
     this.packageItems = [];
     this.charges = null;
 

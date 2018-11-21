@@ -3,8 +3,7 @@ class ShipmentsIndexController {
   constructor(
     QCONFIG, $scope, $stateParams, $location, $state, Prototype,
     $rootScope, $timeout, $window, $http, moment, $uibModal, Session, ExcelDownload,
-    ChangeShipmentState, Page, ShipmentFilter,
-  ) {
+    ChangeShipmentState, Page, ShipmentFilter) {
     this.Page = Page;
     this.QCONFIG = QCONFIG;
     this.$scope = $scope;

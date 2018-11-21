@@ -1,9 +1,6 @@
 class AddCommentController {
   /*  @ngInject   */
-  constructor(
-    $uibModalInstance, $http, Session,
-    $stateParams, toaster, id, index,
-  ) {
+  constructor($uibModalInstance, $http, Session, $stateParams, toaster, id, index) {
     this.$uibModalInstance = $uibModalInstance;
     this.$http = $http;
     this.$stateParams = $stateParams;
