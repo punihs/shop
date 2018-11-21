@@ -1,6 +1,5 @@
 const request = require('supertest');
 const app = require('./../../app');
-// const auth = require('../../../logs/credentials');
 const opsAuth = require('../../../logs/ops-credentials');
 
 describe('Search', () => {
