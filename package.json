@@ -1,6 +1,6 @@
 {
   "name": "parcel",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Parcel",
   "main": "server/index.js",
   "scripts": {
