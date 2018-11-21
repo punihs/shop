@@ -7,17 +7,20 @@ const {
 const { PackageState } = require('../../conn/sqldb');
 
 exports.index = async (req, res, next) => {
-  const { packageIds } = req.query;
+  try {
+    const { packageIds } = req.query;
 
-  PackageState
-    .findAll({
-      attributes: ['id', 'package_id'],
-      where: {
-        package_id: packageIds.split(','),
-        state_id: DAMAGED,
-      },
-    })
-    .then(packageStates =>
-      res.json({ packageStates }))
-    .catch(next);
+    const packageStates = await PackageState
+      .findAll({
+        attributes: ['id', 'package_id'],
+        where: {
+          package_id: packageIds.split(','),
+          state_id: DAMAGED,
+        },
+      });
+
+    return res.json({ packageStates });
+  } catch (err) {
+    return next(err);
+  }
 };
