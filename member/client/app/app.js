@@ -24,7 +24,18 @@ angular
     line4: 'India, 560034',
     phone: '+91 80 4094 4077',
     email: 'support@shoppre.com',
+  })
+  .constant('ACCOUNT_DETAILS', {
+    account_name: 'INDIANSHOPPRE LLP',
+    account_number: '918020022874771',
+    branch: 'Bangalore',
+    ifs_code: 'UTIB0000009',
+    micr_code: '560211002',
+    email_id: 'finance@shoppre.com',
+    address: 'NO. 9, M.G. ROAD, BLOCK-A',
+    swift_code: 'AXISINBB009',
   });
+
 // this configs to initiated using provider
 const CUSTOMER = 2;
 angular

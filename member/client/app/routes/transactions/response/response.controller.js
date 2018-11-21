@@ -1,11 +1,12 @@
 class TransactionResponseController {
-  constructor($http, Page, $uibModal, toaster, $stateParams, CONFIG, $state) {
+  constructor($http, Page, $uibModal, toaster, $stateParams, CONFIG, $state, $httpParamSerializer) {
     this.$http = $http;
     this.Page = Page;
     this.CONFIG = CONFIG;
     this.$stateParams = $stateParams;
     this.$uibModal = $uibModal;
     this.toaster = toaster;
+    this.$httpParamSerializer = $httpParamSerializer;
     this.$state = $state;
     this.id = this.$stateParams.id;
     this.customerId = this.$stateParams.customer_id;
@@ -27,7 +28,21 @@ class TransactionResponseController {
           .toaster
           .pop('error', err.data.message);
       });
+
+    const queryParams = {
+      id: this.$stateParams.object_id,
+      uid: this.$stateParams.customer_id,
+      message: this.$stateParams.message,
+      amount: this.$stateParams.amount,
+      status: 6,
+      transaction_id: this.$stateParams.id,
+    };
+    const qs = this.$httpParamSerializer(queryParams);
+
+    this.$http
+      .get(`/shipments/${this.$stateParams.object_id}/response?${qs}`);
   }
+
   response() {
     this.$state.go('shipRequest.show', { orderCode: this.transaction.object_id });
   }

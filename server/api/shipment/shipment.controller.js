@@ -2,11 +2,10 @@ const debug = require('debug');
 const moment = require('moment');
 const _ = require('lodash');
 
-const { stringify } = require('querystring');
-
 const logger = require('../../components/logger');
 const ship = require('./components/ship');
 const { addressStringify } = require('./components/util');
+const { stringify } = require('querystring');
 const { calcPackageLevelCharges, calcLiquidCharges } = require('./components/shipRequest');
 
 const hookshot = require('./shipment.hookshot');
@@ -35,7 +34,6 @@ const {
   SHIPMENT_HISTORY,
   PACKAGE_STATE_IDS: { READY_TO_SHIP },
   GROUPS: { CUSTOMER },
-  PAYMENT_GATEWAY: { WALLET, WIRE, CASH },
 } = require('../../config/constants');
 const { URLS_PARCEL } = require('../../config/environment');
 
@@ -970,7 +968,7 @@ exports.paymentState = async (req, res) => {
 
 exports.payResponse = async (req, res, next) => {
   try {
-    const failedURL = `${URLS_PARCEL}/shipRequests/`;
+    const failedURL = `${URLS_PARCEL}/shipRequests`;
     const sucessURL = `${URLS_PARCEL}/transactions/${req.query.transaction_id}/response`;
     const { status } = req.query;
     const msg = {
@@ -995,35 +993,36 @@ exports.payResponse = async (req, res, next) => {
     }, { where: { order_code: req.params.id } });
 
     const SUCCESS = '6';
+    log(req.query.status);
+    log(req.query);
     if (req.query.status === SUCCESS) {
-      updateShipmentState({
+      await updateShipmentState({
         shipment,
         actingUser: customer,
         nextStateId: PAYMENT_COMPLETED,
         comments: `Payment ${req.query.paymentStatus}!`,
       });
 
-      const paymentGateWay = Number(req.query.pg);
       const { amount } = req.query;
+      const params = {
+        object_id: shipment.order_code,
+        customer_id: req.query.uid,
+        status: 'sucess',
+        message: msg,
+        amount,
+      };
 
-      if (paymentGateWay === WIRE || paymentGateWay === CASH || paymentGateWay === WALLET) {
-        res.json(`${sucessURL}?${stringify({
-          object_id: shipment.order_code,
-          customer_id: req.query.uid,
-          status: 'success',
-          message: msg,
-          amount,
-        })}`);
-      } else {
-        res.redirect(`${sucessURL}?object_id=${shipment.order_code}&customer_id=${req.query.uid}&status='sucess'&message=${msg}&amount=${amount}`);
-      }
+      res.redirect(`${sucessURL}?${stringify({
+        params,
+      })}`);
     } else {
-      updateShipmentState({
+      await updateShipmentState({
         shipment,
         actingUser: customer,
         nextStateId: PAYMENT_FAILED,
         comments: 'payment failed',
       });
+
       res.redirect(`${failedURL}?error='failed'&message=${msg}`);
     }
   } catch (e) {

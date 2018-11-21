@@ -32,14 +32,22 @@ div
                     |  In such a case, we advise you to opt for an alternative payment method if your shipment is urgent or if you don’t want to be charged with storage cost. Please click here if you wish to
                     a.summary-order.text-info(ui-sref='transaction.create({ object_id: $ctrl.transaction.object_id, amount: $ctrl.transaction.amount, customer_id: $ctrl.transaction.customer_id })')&nbsp; change the payment method.
                   .bg-light.well
-                    h4 Account Name: INDIANSHOPPRE LLP
-                    p Account Number: 918020022874771
-                    p Branch: Bangalore
-                    p IFS Code: UTIB0000009
-                    p MICR Code: 560211002
-                    p E-mail ID: finance@shoppre.com
-                    p Address: NO. 9, M.G. ROAD, BLOCK 'A'
-                    p Swift Code: AXISINBB009
+                    h4 Account Name:
+                      | {{$ctrl.account.account_name}}
+                    p Account Number:
+                      | {{$ctrl.account.account_number}}
+                    p Branch:
+                      | {{$ctrl.account.branch}}
+                    p IFS Code:
+                      | {{$ctrl.account.ifs_code}}
+                    p MICR Code:
+                      | {{$ctrl.account.micr_code}}
+                    p E-mail ID:
+                      | {{$ctrl.account.email_id}}
+                    p Address:
+                        | {{$ctrl.account.address}}
+                    p Swift Code:
+                        | {{$ctrl.account.swift_code}}
               .col-sm-12.no-padder-left(ng-show = "$ctrl.transaction.payment_gateway_id === $ctrl.paymentGatewayCashID")
                   p.info
                     | We will process your order once your payment is confirmed. In such a case, we advise you to opt for an alternative payment method if your order is urgent or if you don’t want to be charged with storage cost. Please click here if you wish to
@@ -53,8 +61,14 @@ div
               .clearfix
               .ship_points
                 h4.m-t-xs-md What's Next
-                button.btn.btn-info.m-t-xs-md(
-                  type='submit',
-                  ng-click='$ctrl.response()'
+                a.btn.btn-success.m-t-xs-md(
+                  ng-if='$ctrl.transaction.status === "pending"'
+                  ng-click='$ctrl.continue()'
                 )
-                  | View your order details
+                  | Click to Continue
+
+                a.btn.btn-danger.m-t-xs-md.m-l-md(
+                  type='submit',
+                  ui-sref='shipRequest.confirm({orderCode: $ctrl.transaction.object_id})'
+                )
+                  | Change payment Method
