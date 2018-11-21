@@ -1,8 +1,6 @@
 const debug = require('debug');
 const { EventEmitter } = require('events');
 
-const logger = require('../../components/logger');
-
 const { Comment, User } = require('../../conn/sqldb');
 
 const CommentEvents = new EventEmitter();
@@ -34,8 +32,7 @@ function emitEvent(event, next) {
         .then((user) => {
           log('event', event);
           CommentEvents.emit(event, { ...comment, User: user.toJSON() });
-        })
-        .catch(err => logger.error('CommentEvents', err));
+        });
     };
   } catch (err) {
     return next(err);
