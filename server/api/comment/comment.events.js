@@ -1,11 +1,9 @@
-/**
- * Comment model events
- */
 const debug = require('debug');
 const { EventEmitter } = require('events');
 
-const { Comment, User } = require('../../conn/sqldb');
 const logger = require('../../components/logger');
+
+const { Comment, User } = require('../../conn/sqldb');
 
 const CommentEvents = new EventEmitter();
 

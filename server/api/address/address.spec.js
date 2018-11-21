@@ -1,8 +1,9 @@
 const request = require('supertest');
-const app = require('./../../app');
+
 const auth = require('../../../logs/credentials');
 const opsAuth = require('../../../logs/ops-credentials');
 
+const app = require('./../../app');
 
 describe('GET /api/address', () => {
   it('return address', (done) => {

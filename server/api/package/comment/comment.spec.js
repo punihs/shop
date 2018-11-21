@@ -1,8 +1,10 @@
 const request = require('supertest');
-const app = require('../../../app');
-const { Package, Comment } = require('../../../conn/sqldb');
+
 const auth = require('../../../../logs/credentials');
 const opsAuth = require('../../../../logs/ops-credentials');
+
+const app = require('../../../app');
+const { Package, Comment } = require('../../../conn/sqldb');
 
 describe('ops GET /api/packages/1/comments', () => {
   it('return packages/1/comments', (done) => {

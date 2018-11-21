@@ -1,5 +1,5 @@
-
 const express = require('express');
+
 const controller = require('./address.controller');
 
 const router = express.Router();

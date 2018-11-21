@@ -4,16 +4,15 @@ const {
 
 exports.show = (req, res, next) => {
   const { id } = req.params;
-  const options = {
-    attributes: [
-      'storage_amount', 'wrong_address_amount', 'special_handling_amount', 'receive_mail_amount',
-      'pickup_amount', 'standard_photo_amount', 'advanced_photo_amount', 'scan_document_amount',
-      'split_package_amount',
-    ],
-  };
 
   return PackageCharge
-    .findById(id, options)
+    .findById(id, {
+      attributes: [
+        'storage_amount', 'wrong_address_amount', 'special_handling_amount', 'receive_mail_amount',
+        'pickup_amount', 'standard_photo_amount', 'advanced_photo_amount', 'scan_document_amount',
+        'split_package_amount',
+      ],
+    })
     .then(packageCharge => res.json(packageCharge || {}))
     .catch(next);
 };

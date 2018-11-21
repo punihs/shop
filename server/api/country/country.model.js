@@ -16,8 +16,6 @@ module.exports = (sequelize, DataTypes) => {
     currency_code: DataTypes.STRING,
     capital_city: DataTypes.STRING,
     flag: DataTypes.STRING,
-    discount_percentage: DataTypes.INTEGER,
-    is_shipping_available: DataTypes.BOOLEAN,
   }, {
     tableName: 'countries',
     timestamps: false,

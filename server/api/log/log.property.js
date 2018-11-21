@@ -1,4 +1,3 @@
-
 module.exports = DataTypes => ({
   id: {
     allowNull: false,
