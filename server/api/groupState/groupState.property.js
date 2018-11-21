@@ -1,4 +1,3 @@
-
 module.exports = DataTypes => ({
   group_id: {
     type: DataTypes.INTEGER(11),

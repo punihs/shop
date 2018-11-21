@@ -1,5 +1,3 @@
-
-
 module.exports = DataTypes => ({
   id: {
     type: DataTypes.INTEGER(11),
@@ -18,6 +16,6 @@ module.exports = DataTypes => ({
     },
     allowNull: false,
   },
-  type: DataTypes.INTEGER,
+  type: DataTypes.INTEGER, // 1 - packages 2 - shipments
   object_id: DataTypes.INTEGER,
 });

@@ -1,4 +1,5 @@
 const rp = require('request-promise');
+
 const { Country } = require('../../conn/sqldb');
 
 exports.index = (req, res, next) => {

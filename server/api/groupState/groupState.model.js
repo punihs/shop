@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'group_states',
     timestamps: false,
     underscored: true,
-    indexes: [{ unique: true, fields: ['group_id', 'state_id'] }],
   });
 
   GroupState.associate = (models) => {

@@ -7,25 +7,6 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
   });
 
-  Follower.serializeFollowers = db => function middleware(req, res, next) {
-    const adminWhere = { client_id: req.user.client_id };
-    if (!adminWhere.id) adminWhere.id = req.user.id;
-    return db.User.findAll({ where: adminWhere })
-      .then(users =>
-        Follower
-          .findAll({
-            where: { user_id: users.map(x => x.id) },
-            attributes: ['object_id'],
-            raw: true,
-          })
-          .then((followers) => {
-            const request = req;
-            request.followers = followers;
-            next();
-          }))
-      .catch(next);
-  };
-
   Follower.associate = (db) => {
     Follower.belongsTo(db.User, {
       foreignKey: 'user_id',

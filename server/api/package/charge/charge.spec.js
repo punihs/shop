@@ -1,8 +1,9 @@
 const request = require('supertest');
 
-const app = require('../../../app');
 const auth = require('../../../../logs/credentials');
 const opsAuth = require('../../../../logs/ops-credentials');
+
+const app = require('../../../app');
 const { Package, PackageCharge } = require('../../../conn/sqldb');
 
 describe('GET /api/packages/:id/charges', () => {

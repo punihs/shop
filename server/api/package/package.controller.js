@@ -2,56 +2,38 @@ const _ = require('lodash');
 const debug = require('debug');
 const Ajv = require('ajv');
 
-const log = debug('package');
-
-const db = require('../../conn/sqldb');
-const { packageCreate } = require('./package.schema');
-
-const {
-  Package, PackageItem, User, Follower, PhotoRequest,
-  Locker, Store, PackageState, Country, PackageCharge,
-} = db;
-
 const {
   PACKAGE_STATE_IDS: {
     READY_TO_SHIP,
-    PACKAGE_ITEMS_UPLOAD_PENDING, INCOMING_PACKAGE,
-    STANDARD_PHOTO_REQUEST, DAMAGED,
-    ADVANCED_PHOTO_REQUEST, IN_REVIEW, AWAITING_VERIFICATION,
+    PACKAGE_ITEMS_UPLOAD_PENDING,
+    INCOMING_PACKAGE,
+    STANDARD_PHOTO_REQUEST,
+    ADVANCED_PHOTO_REQUEST,
+    AWAITING_VERIFICATION,
+    DAMAGED,
+    IN_REVIEW,
   },
   PHOTO_REQUEST_TYPES: { BASIC, ADVANCED },
   PHOTO_REQUEST_STATES: { COMPLETED },
   GROUPS: { OPS, CUSTOMER },
   PACKAGE_TYPES: { INCOMING },
 } = require('../../config/constants');
-
 const {
   PACKAGE: { STANDARD_PHOTO, ADVANCED_PHOTO },
 } = require('../../config/constants/charges');
+const { packageCreate } = require('./package.schema');
 
 const logger = require('../../components/logger');
 
+const db = require('../../conn/sqldb');
+
 const { index, updateState } = require('./package.service');
 
-exports.indexPublic = (req, res, next) => {
-  log('indexPublic', req.query);
-  if (req.query.public !== 'true') return next();
-  const limit = Number(req.query.limit) || 20;
-
-  const options = {
-    where: {},
-    attributes: ['id', 'price_amount', 'weight', 'store_id'],
-    offset: Number(req.query.offset) || 0,
-    limit: (limit && limit > 20) ? 20 : limit,
-    raw: true,
-  };
-
-  return Package
-    .findAll(options)
-    .then(packages => res
-      .json({ items: packages }))
-    .catch(next);
-};
+const {
+  Package, PackageItem, User, Follower, PhotoRequest,
+  Locker, Store, PackageState, Country, PackageCharge,
+} = db;
+const log = debug('package');
 
 exports.index = (req, res, next) => index(req)
   .then((result) => {
@@ -94,9 +76,28 @@ exports.show = async (req, res, next) => {
     })
     .then((pkg) => {
       if (!pkg) return res.status(404).end();
-      return res.json({ ...pkg.toJSON(), state_id: pkg.PackageState.state_id });
+      return res.json({
+        ...pkg.toJSON(),
+        state_id: pkg.PackageState.state_id,
+      });
     })
     .catch(next);
+};
+
+const addFollowers = ({ userIds, objectId }) => {
+  const followers = userIds
+    .map(followerId => ({
+      user_id: followerId,
+      object_id: objectId,
+    }));
+
+  Follower
+    .bulkCreate(followers)
+    .catch(err => logger
+      .error({
+        t: 'follower creation',
+        e: err,
+      }));
 };
 
 exports.create = async (req, res, next) => {
@@ -115,75 +116,54 @@ exports.create = async (req, res, next) => {
       ];
 
       const pkg = _.pick(req.body, allowed);
-      // internal user
+
+      // - Internal user
       pkg.created_by = req.user.id;
       pkg.package_type = INCOMING;
 
-      return Package.create(pkg)
-        .then(({ id }) => {
-          const fs = [req.user.id, req.body.customer_id]
-            .map(followerId => ({ user_id: followerId, object_id: id }));
+      try {
+        const { id } = await Package
+          .create(pkg);
 
-          Follower
-            .bulkCreate(fs)
-            .catch(err => logger.error('follower creation', req.user, req.body, err));
+        // - Async Todo: need to move to socket server
+        addFollowers({
+          objectId: id,
+          userIds: [
+            req.user.id,
+            req.body.customer_id,
+          ],
+        });
 
-          const charges = {};
-          charges.id = id;
-          log('body', JSON.stringify(req.body));
-          if (req.body.is_doc === true) {
-            charges.receive_mail_amount = 0.00;
-          }
+        const charges = { id };
 
-          PackageCharge
-            .create(charges);
+        log('body', JSON.stringify(req.body));
+        if (req.body.is_doc === true) {
+          charges.receive_mail_amount = 0.00;
+        }
 
-          // if (req.body.is_featured_seller === 1) {
-          //   const points = 50;
-          //   const options = {
-          //     attributes: ['id', 'points', 'total_points'],
-          //     where: { customer_id: req.body.customer_id },
-          //   };
-          //   LoyaltyPoint
-          //     .find(options)
-          //     .then((loyaltyPoints) => {
-          //       let level = '';
-          //       if (loyaltyPoints.total_points < 1000) {
-          //         level = 1;
-          //       } else if (loyaltyPoints >= 1000 && loyaltyPoints.total < 6000) {
-          //         level = 2;
-          //       } else if (loyaltyPoints.total >= 6000 && loyaltyPoints.total < 26000) {
-          //         level = 3;
-          //       } else if (loyaltyPoints.total >= 26000) {
-          //         level = 4;
-          //       }
-          //       loyaltyPoints.update({
-          //         level,
-          //         points: loyaltyPoints.points + points,
-          //         total_points: loyaltyPoints.total_points + points,
-          //       });
-          //
-          //       const misclenious = {};
-          //       misclenious.customer_id = id;
-          //       misclenious.description = 'Featured Seller Shopping Reward';
-          //       misclenious.points = points;
-          //       misclenious.type = REWARD;
-          //       LoyaltyHistory
-          //         .create(misclenious);
-          //     });
-          // }
+        // - todo: now await and catch together
+        await PackageCharge
+          .create(charges)
+          .catch(e => logger.error({ e, b: req.body }));
 
-          return updateState({
-            lastStateId: null,
-            nextStateId: PACKAGE_ITEMS_UPLOAD_PENDING,
-            pkg: { ...pkg, id },
-            actingUser: req.user,
-          }).then(() => res.status(201).json({ id }));
-        })
-        .catch(next);
+        await updateState({
+          lastStateId: null,
+          nextStateId: PACKAGE_ITEMS_UPLOAD_PENDING,
+          pkg: { ...pkg, id },
+          actingUser: req.user,
+        });
+
+        return res
+          .status(201)
+          .json({ id });
+      } catch (e) {
+        return next(e);
+      }
     }
     case CUSTOMER: {
       const IS_OPS = req.user.group_id === OPS;
+
+      // - Validating input
       const ajv = new Ajv();
       ajv.addSchema(packageCreate, 'PackageCreate');
       const valid = ajv.validate('PackageCreate', req.body);
@@ -204,24 +184,25 @@ exports.create = async (req, res, next) => {
         .create(pkg)
         .then((pack) => {
           const { id } = pack;
-          const charges = {};
-          charges.id = id;
-          charges.receive_mail_amount = 0.00;
+          const charges = {
+            id,
+            receive_mail_amount: 0.00,
+          };
 
           PackageCharge
             .create(charges);
 
-          updateState({
-            lastStateId: null,
-            nextStateId: INCOMING_PACKAGE,
-            pkg: { ...pack.toJSON(), ...pack.id },
-            actingUser: req.user,
-            comments: `Submitted Incoming Alert From ${req.body.store_name}`,
-          });
-
-          return res
-            .status(201)
-            .json({ id });
+          return Package
+            .updateState({
+              lastStateId: null,
+              nextStateId: INCOMING_PACKAGE,
+              pkg: { ...pack.toJSON(), ...pack.id },
+              actingUser: req.user,
+              comments: `Submitted Incoming Alert From ${req.body.store_name}`,
+            })
+            .then(() => res
+              .status(201)
+              .json({ id }));
         });
     }
     default: return next();
@@ -229,126 +210,127 @@ exports.create = async (req, res, next) => {
 };
 
 exports.state = async (req, res, next) => {
-  const pkg = await Package
-    .findById(req.params.id, { raw: true });
-
-  if ([AWAITING_VERIFICATION, DAMAGED].includes(req.body.state_id)) {
-    const packageItemCount = await PackageItem.count({
-      where: { package_id: req.params.id },
-    });
-
-    if (!packageItemCount) {
-      return res.status(400).json({ message: 'Package items is empty!' });
-    }
-  } else if ([READY_TO_SHIP].includes(req.body.state_id)) {
-    const photoRequest = Package.find({
-      attributes: ['id'],
-      where: { id: req.params.id },
-      include: [{
-        model: PackageState,
-        where: { state_id: [STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST] },
-      }],
-    });
-
-    if (!photoRequest) {
-      return res.status(400).json({ message: 'Please check and update the Photo Request Status !' });
-    }
-
-    if (!pkg.weight) {
-      return res.status(400).json({ message: 'Please update weight of the package' });
-    }
-
-    if (!pkg.price_amount) {
-      return res.status(400).json({ message: 'Please update package value' });
-    }
-  } else if ([STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST].includes(req.body.state_id)) {
-    const { id: packageId } = req.params;
-    const { type } = req.body;
-    const IS_BASIC_PHOTO = type === 'standard_photo';
-
-    const CHARGE = IS_BASIC_PHOTO ? STANDARD_PHOTO : ADVANCED_PHOTO;
-    const REVEW_TEXT = IS_BASIC_PHOTO ? 'Basic' : 'Advanced';
-    let status = '';
-
-    if (!packageId && !Number(packageId)) {
-      return res.status(400).json({ message: 'arg:package_id missing.' });
-    }
-
-    const packg = await Package
-      .find({
-        attributes: ['id'],
-        where: { id: packageId },
-        include: [{
-          model: PackageItem,
-          attributes: ['object', 'object_advanced'],
-        }],
+  try {
+    const stateId = Number(req.body.state_id);
+    const pkg = await Package
+      .findById(req.params.id, {
+        attributes: ['id', 'weight', 'price_amount'],
       });
 
-    if (!packg) return res.status(400).json({ message: 'Package not found.' });
-
-    // Todo: picking only one item
-    const photoRequest = await PhotoRequest
-      .find({
-        attributes: ['id'],
-        where: {
-          package_id: packageId,
-          type: IS_BASIC_PHOTO ? BASIC : ADVANCED,
-        },
-      });
-
-    if (photoRequest) {
-      return res.json({ message: `Already ${REVEW_TEXT} photo requested` });
-    }
-
-    PhotoRequest.create({
-      package_id: packageId,
-      type: IS_BASIC_PHOTO ? BASIC : ADVANCED,
-      status: COMPLETED,
-      charge_amount: CHARGE,
-    });
-
-    PackageCharge
-      .upsert({ id: packageId, [`${type}_amount`]: CHARGE });
-
-    if (!IS_BASIC_PHOTO) {
-      status = !packg.PackageItems[0].object_advanced
-        ? 'pending'
-        : 'completed';
-    } else {
-      status = 'completed';
-    }
-
-    if (status === 'completed') {
-      return res
-        .json({
-          error: '0',
-          status,
-          photos: packg.object,
+    if ([AWAITING_VERIFICATION, DAMAGED].includes(stateId)) {
+      const packageItemCount = await PackageItem
+        .count({
+          where: { package_id: req.params.id },
         });
-    }
-  }
 
-  return updateState({
-    pkg,
-    actingUser: req.user,
-    nextStateId: req.body.state_id,
-    comments: req.body.comments,
-  })
-    .then(status => res.json(status))
-    .catch(next);
+      if (!packageItemCount) {
+        return res.status(400).json({ message: 'Package items is empty!' });
+      }
+    }
+
+    if ([READY_TO_SHIP].includes(stateId)) {
+      const photoRequest = Package
+        .find({
+          attributes: ['id'],
+          where: { id: req.params.id },
+          include: [{
+            model: PackageState,
+            where: { state_id: [STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST] },
+          }],
+        });
+
+      if (!photoRequest) {
+        return res.status(400).json({ message: 'Please check and update the Photo Request Status !' });
+      }
+
+      if (!pkg.weight) {
+        return res.status(400).json({ message: 'Please update weight of the package' });
+      }
+
+      if (!pkg.price_amount) {
+        return res.status(400).json({ message: 'Please update package value' });
+      }
+    } else if ([STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST].includes(req.body.state_id)) {
+      const { id: packageId } = req.params;
+      const { type } = req.body;
+      const IS_BASIC_PHOTO = type === 'standard_photo';
+
+      const CHARGE = IS_BASIC_PHOTO ? STANDARD_PHOTO : ADVANCED_PHOTO;
+      const REVEW_TEXT = IS_BASIC_PHOTO ? 'Basic' : 'Advanced';
+      let status = '';
+
+      if (!packageId && !Number(packageId)) {
+        return res.status(400).json({ message: 'arg:package_id missing.' });
+      }
+
+      const packg = await Package
+        .find({
+          attributes: ['id'],
+          where: { id: packageId },
+          include: [{
+            model: PackageItem,
+            attributes: ['object', 'object_advanced'],
+          }],
+        });
+
+      if (!packg) return res.status(400).json({ message: 'Package not found.' });
+
+      // Todo: picking only one item
+      const photoRequest = await PhotoRequest
+        .find({
+          attributes: ['id'],
+          where: {
+            package_id: packageId,
+            type: IS_BASIC_PHOTO ? BASIC : ADVANCED,
+          },
+        });
+
+      if (photoRequest) {
+        return res.json({ message: `Already ${REVEW_TEXT} photo requested` });
+      }
+
+      PhotoRequest.create({
+        package_id: packageId,
+        type: IS_BASIC_PHOTO ? BASIC : ADVANCED,
+        status: COMPLETED,
+        charge_amount: CHARGE,
+      });
+
+      PackageCharge
+        .upsert({ id: packageId, [`${type}_amount`]: CHARGE });
+
+      if (!IS_BASIC_PHOTO) {
+        status = !packg.PackageItems[0].object_advanced
+          ? 'pending'
+          : 'completed';
+      } else {
+        status = 'completed';
+      }
+
+      if (status === 'completed') {
+        return res
+          .json({
+            error: '0',
+            status,
+            photos: packg.object,
+          });
+      }
+    }
+
+    const status = await updateState({
+      pkg,
+      actingUser: req.user,
+      nextStateId: stateId,
+      comments: req.body.comments || req.body.message2 || req.body.message1,
+    });
+
+    return res.json(status);
+  } catch (e) {
+    return next(e);
+  }
 };
 
-exports.facets = (req, res, next) => Package
-  .findById(req.params.id)
-  .then(pkg => updateState({
-    pkg,
-    actingUser: req.user,
-    nextStateId: req.body.state_id,
-  })
-    .then(status => res.json(status)))
-  .catch(next);
-
-exports.update = (req, res, next) => {
+exports.update = async (req, res, next) => {
   const allowed = [
     'store_id',
     'invoice_code',
@@ -359,44 +341,43 @@ exports.update = (req, res, next) => {
     'content_type',
   ];
 
-  const { id } = req.params;
-  const { customerId } = req.user.id;
+  try {
+    const { id } = req.params;
+    const { id: customerId } = req.user;
 
-  const pack = _.pick(req.body, allowed);
-  pack.updated_by = customerId;
+    const pkg = _.pick(req.body, allowed);
+    pkg.updated_by = customerId;
 
-  return Package
-    .update(pack, { where: { id } })
-    .then(() => res.json({ id }))
-    .catch(next);
+    await Package
+      .update(pkg, { where: { id } });
+
+    return res.json({ id });
+  } catch (e) {
+    return next(e);
+  }
 };
 
-exports.destroy = async (req, res) => {
+exports.destroy = async (req, res, next) => {
   const { id } = req.params;
-  await PackageItem
-    .destroy({ where: { package_id: id } });
-  await PackageCharge
-    .destroy({ where: { id } });
-  await PhotoRequest
-    .destroy({ where: { package_id: id } });
-  await Package
-    .destroy({ where: { id } });
-  res.status(200).json({ message: 'Deleted successfully' });
-};
 
-exports.unread = async (req, res) => {
-  const { id } = req.params;
-  const status = await Package.update({ admin_read: false }, { where: { id } });
-  return res.json(status);
-};
+  try {
+    await PackageItem
+      .destroy({ where: { package_id: id } });
 
-exports.addNote = async (req, res) => {
-  const { id } = req.params;
-  await Package
-    .update(req.body, { where: { id } });
-  return res.json({ message: 'Note updated to your package' });
-};
+    await PackageCharge
+      .destroy({ where: { id } });
 
+    await PhotoRequest
+      .destroy({ where: { package_id: id } });
+
+    await Package
+      .destroy({ where: { id } });
+
+    res.status(200).json({ message: 'Deleted successfully' });
+  } catch (e) {
+    next(e);
+  }
+};
 
 exports.invoice = async (req, res, next) => {
   const { id } = req.params;
@@ -422,15 +403,4 @@ exports.invoice = async (req, res, next) => {
   } catch (err) {
     return next(err);
   }
-};
-
-exports.damaged = async (req, res) => {
-  const { packageIds } = req.query;
-
-  await PackageState
-    .findAll({
-      attributes: ['id', 'package_id'],
-      where: { package_id: packageIds.split(','), state_id: DAMAGED },
-    }).then(packageStates =>
-      res.json({ packageStates }));
 };
