@@ -4,17 +4,16 @@ const { Country } = require('../../conn/sqldb');
 
 exports.index = async (req, res, next) => {
   try {
-    const options = {
-      attributes: [
-        'id', 'name', 'slug', 'iso2', 'iso3', 'currency_code', 'capital_city',
-        'discount_percentage', 'is_shipping_available', 'flag',
-      ],
-      limit: Number(req.query.limit) || 20,
-      offset: Number(req.query.offset) || 0,
-    };
-
     const countries = await Country
-      .findAll(options);
+      .findAll({
+        attributes: [
+          'id', 'name', 'slug', 'iso2', 'iso3', 'currency_code', 'capital_city',
+          'discount_percentage', 'is_shipping_available', 'flag',
+        ],
+        limit: Number(req.query.limit) || 20,
+        offset: Number(req.query.offset) || 0,
+      });
+
     return res.json(countries);
   } catch (err) {
     return next(err);
