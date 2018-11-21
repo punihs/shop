@@ -9,13 +9,12 @@ const {
   },
   PACKAGE_STATE_IDS: {
     PACKAGE_ITEMS_UPLOAD_PENDING, SPLIT_PACKAGE_PROCESSED, AWAITING_VERIFICATION, IN_REVIEW,
-    READY_TO_SHIP, ADDED_SHIPMENT,
+    ADDED_SHIPMENT,
   },
 } = require('./../../config/constants');
 const {
   PACKAGE: {
     SPLIT_PACKAGE,
-    // RETURN,
   },
 } = require('../../config/constants/charges');
 const BUCKETS = require('./../../config/constants/buckets');
@@ -24,7 +23,7 @@ const logger = require('../../components/logger');
 
 const {
   Package, Store, User, Locker, PackageState, PackageItem, PhotoRequest,
-  State, ShipmentState, Shipment,
+  State, ShipmentState, Shipment, PackageCharge,
 } = require('../../conn/sqldb');
 
 const hookshot = require('./package.hookshot');
@@ -34,25 +33,20 @@ const stateIdcommentMap = {
   [SPLIT_PACKAGE_PROCESSED]: 'Package Splitted!', // email sending is pending
 };
 
-
 const log = debug('s-api-package-service');
 
 const kvmap = (arr, key, value) => arr.reduce((nxt, x) => ({ ...nxt, [x[key]]: x[value] }), {});
 
 exports.index = ({ query, params, user: actingUser }) => {
-  log('index', { groupId: actingUser.group_id, app_id: actingUser.app_id });
-  log({ BUCKETS });
-
   // - Locker Page or Member Dashboard
   const IS_CUSTOMER_PAGE = !!params.customerId;
   const BUCKET = BUCKETS.PACKAGE[actingUser.group_id];
-  log({ BUCKET });
-  log({ actingUser });
+
   const { bucket } = query;
   let orderSort = '';
   if (query.sort) {
     const [field, order] = query.sort.split(' ');
-    log({ field, order });
+
     if (field && order) {
       orderSort = [[field, order]];
     } else {
@@ -136,8 +130,6 @@ exports.index = ({ query, params, user: actingUser }) => {
   if (query.sid) {
     options.include[0].where.state_id = query.sid.split(',');
   } else if (states.includes(bucket) && options.include && options.include.length) {
-    const AWAITING_VERIFICATION = 2;
-
     // - uploaded person can't do verification
     if (bucket === 'TASKS') {
       options.include[0].where = {
@@ -248,36 +240,28 @@ exports.index = ({ query, params, user: actingUser }) => {
     }));
 };
 exports.updateState = ({
-  db,
   lastStateId,
   nextStateId,
   pkg,
   actingUser,
   comments = null,
 }) => {
-  log('updateState', nextStateId, pkg, comments);
   const options = {
     package_id: pkg.id,
     user_id: actingUser.id,
     state_id: nextStateId,
   };
+
   if (stateIdcommentMap[nextStateId]) options.comments = stateIdcommentMap[nextStateId];
+
   if (comments) options.comments = comments || stateIdcommentMap[nextStateId];
 
-  return db.PackageState
+  return PackageState
     .create(options)
     .then((packageState) => {
       switch (nextStateId) {
-        case READY_TO_SHIP: {
-          log('state changed', READY_TO_SHIP);
-          // - Todo: check number of items validation
-          // else if (itemCount !== pack.number_of_items) {
-          //   return res.status(400).res.json({ message: 'please check your items !' });
-          // }
-          break;
-        }
         case SPLIT_PACKAGE_PROCESSED: {
-          db.PackageCharge
+          PackageCharge
             .update(
               { split_package_amount: SPLIT_PACKAGE },
               { where: { id: pkg.id } },
@@ -285,21 +269,10 @@ exports.updateState = ({
           break;
         }
         case PACKAGE_ITEMS_UPLOAD_PENDING: {
-          log({ PACKAGE_ITEMS_UPLOAD_PENDING });
-          db.Locker
+          Locker
             .allocation({ customerId: pkg.customer_id });
           break;
         }
-        // case RETURN_PICKUP_DONE: {
-        //   const transaction = {};
-        //   const customerId = actingUser.id;
-        //   transaction.type = DEBIT;
-        //   transaction.customer_id = customerId;
-        //   transaction.amount = RETURN;
-        //   db.Transaction
-        //     .create(transaction);
-        //   break;
-        // }
         default: {
           log('state changed default');
         }
@@ -316,7 +289,7 @@ exports.updateState = ({
           .catch(err => logger.error('statechange notification', nextStateId, pkg, err));
       }
 
-      return db.Package
+      return Package
         .update({
           package_state_id: packageState.id,
         }, {

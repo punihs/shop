@@ -2,7 +2,6 @@ const path = require('path');
 const cors = require('cors');
 const morgan = require('morgan');
 const express = require('express');
-const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const responseTime = require('response-time');
 const helmet = require('helmet');
@@ -31,7 +30,6 @@ module.exports = (app) => {
   app.use(express.static(`${config.root}/public`));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
-  app.use(cookieParser());
   app.use(cors());
   app.use(logger.transports.sentry.raven.requestHandler(true));
   app.set('view engine', 'jade');

@@ -1,5 +1,5 @@
 
-const ses = require('../../engage/server/conn/email/ses');
+const ses = require('../../../../../engage/server/conn/email/ses');
 const {
   SES_DIRECT, CURRENT_EMAIL, root, EMAIL_SOURCE, EMAIL_TO, project,
 } = require('../config');

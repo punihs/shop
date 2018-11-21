@@ -31,9 +31,9 @@ exports.notification = async (req, res, next) => {
       ENV,
     });
 
-    console.log('---------------\n\n');
-    console.log(TemplateData);
-    console.log('\n\n---------------');
+    log('---------------\n\n');
+    log(TemplateData);
+    log('\n\n---------------');
 
     // console.log('Shipment Notification', shipment);
 

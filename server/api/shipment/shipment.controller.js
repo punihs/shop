@@ -2,9 +2,7 @@ const debug = require('debug');
 const moment = require('moment');
 const _ = require('lodash');
 
-const xlsx = require('node-xlsx');
 const { stringify } = require('querystring');
-
 
 const logger = require('../../components/logger');
 const ship = require('./components/ship');
@@ -17,14 +15,13 @@ const packageService = require('../package/package.service');
 const db = require('../../conn/sqldb');
 
 const {
-  Country, Shipment, Package, Address, PackageCharge, ShipmentMeta, Notification,
+  Country, Shipment, Package, Address, PackageCharge, ShipmentMeta,
   PackageState, User, Locker,
   ShipmentState, Store,
   PackageItem, PhotoRequest,
 } = db;
 
 const {
-  SHIPMENT_STATE_ID_NAMES,
   SHIPMENT_STATE_IDS: {
     SHIPMENT_HANDED, PACKAGING_REQUESTED,
     PAYMENT_COMPLETED, PAYMENT_FAILED, PAYMENT_REQUESTED, PAYMENT_CONFIRMED,
@@ -50,39 +47,7 @@ const log = debug('s.shipment.controller');
 const { index, show, updateShipmentState } = require('./shipment.service');
 
 exports.index = (req, res, next) => index(req)
-  .then((result) => {
-    if (req.query.xlsx) {
-      const header = [
-        'id', 'Store Name', 'Virtual Address Code', 'Status',
-      ];
-      const excel = xlsx.build([{
-        name: 'Shipments',
-        data: [header]
-          .concat(result
-            .Shipments
-            .map(({
-              id,
-              Store: store,
-              Customer,
-              ShipmentState: shipmentState,
-            }) => [
-              id, store.name, Customer.virtual_address_code,
-              SHIPMENT_STATE_ID_NAMES[shipmentState.state_id],
-            ])),
-      }]);
-
-      res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-      res.setHeader(
-        'Content-disposition',
-        `attachment; filename=Packages_${moment()
-          .format('DD-MM-YYYY')}.xlsx`,
-      );
-
-      return res.end(excel, 'binary');
-    }
-
-    return res.json(result);
-  })
+  .then(result => res.json(result))
   .catch(next);
 
 exports.show = async (req, res, next) => {
@@ -294,7 +259,6 @@ exports.destroy = async (req, res) => {
     await pkg
       .map(packageId => packageService
         .updateState({
-          db,
           lastStateId: null,
           nextStateId: READY_TO_SHIP,
           pkg: packageId,
@@ -305,7 +269,6 @@ exports.destroy = async (req, res) => {
       .destroy({ where: { shipment_id: id } });
 
     await updateShipmentState({
-      db,
       shipment,
       actingUser: req.user,
       nextStateId: SHIPMENT_DELETED,
@@ -376,7 +339,6 @@ const updatePackages = ({
   shipmentId,
 }) => {
   packageIds.map(id => packageService.updateState({
-    db,
     lastStateId: null,
     nextStateId: stateId,
     pkg: { id },
@@ -513,7 +475,6 @@ exports.create = async (req, res, next) => {
 
     // - Async
     await updateShipmentState({
-      db,
       nextStateId: PACKAGING_REQUESTED,
       shipment,
       actingUser: req.user,
@@ -648,84 +609,89 @@ exports.history = (req, res) => {
 exports.cancelRequest = async (req, res, next) => {
   const { id: customerId } = req.user;
   const { id: shipmentId } = req.params;
-  return Shipment
-    .find({
-      attributes: ['id', 'created_at', 'order_code'],
-      where: {
-        customer_id: customerId,
-        id: shipmentId,
-      },
-      include: [{
-        model: ShipmentState,
-        attributes: ['id'],
-        where: { state_id: PACKAGING_REQUESTED },
-      }],
-    })
-    .then((shipment) => {
-      if (!shipment) return res.status(400).json({ message: 'requested shipment not exist' });
-
-      const CANCELLATION_TIME = moment(shipment.created_at).diff(moment(), 'hours');
-
-      if (CANCELLATION_TIME > 1) {
-        const message = 'You can not cancel shipment after 1 hour from shipment creation. ' +
-          `creation Time Gap: ${CANCELLATION_TIME}`;
-        return res
-          .status(400)
-          .json({ message });
-      }
-
-      return Promise
-        .all([updateShipmentState({
-          db,
-          shipment,
-          actingUser: req.user,
-          nextStateId: SHIPMENT_CANCELLED,
-          comments: 'Shipment Cancelled By Customer',
-        }),
-
-        Notification.create({
+  try {
+    const shipment = Shipment
+      .find({
+        attributes: ['id', 'created_at', 'order_code'],
+        where: {
           customer_id: customerId,
-          action_type: 'shipment',
-          action_id: shipment.id,
-          action_description: `Shipment request cancelled - Order#  ${shipment.order_code}`,
-        }),
-        ])
-        .then(() => res.json({ message: 'Ship request has been cancelled!', shipment }));
-    })
-    .catch(next);
+          id: shipmentId,
+        },
+        include: [{
+          model: ShipmentState,
+          attributes: ['id'],
+          where: { state_id: PACKAGING_REQUESTED },
+        }],
+      });
+
+    if (!shipment) return res.status(400).json({ message: 'requested shipment not exist' });
+
+    const CANCELLATION_TIME = moment(shipment.created_at).diff(moment(), 'hours');
+
+    if (CANCELLATION_TIME > 1) {
+      const message = 'You can not cancel shipment after 1 hour from shipment creation. ' +
+        `creation Time Gap: ${CANCELLATION_TIME}`;
+      return res
+        .status(400)
+        .json({ message });
+    }
+
+    await updateShipmentState({
+      shipment,
+      actingUser: req.user,
+      nextStateId: SHIPMENT_CANCELLED,
+      comments: 'Shipment Cancelled By Customer',
+    });
+
+    return res.json({
+      message: 'Ship request has been cancelled!',
+      shipment,
+    });
+  } catch (err) {
+    return next(err);
+  }
 };
 
 exports.invoice = async (req, res) => {
   const { orderCode } = req.params;
-  let packages;
-  const options = {
-    where: { order_code: orderCode },
-    include: [{
-      model: User,
-      as: 'Customer',
-      attributes: ['first_name', 'last_name'],
-    }, {
-      model: ShipmentMeta,
-    }, {
-      model: Package,
-      include: [{
-        model: PackageItem,
-        attributes: ['id', 'quantity', 'price_amount', 'total_amount', 'object', 'name'],
-      }, {
-        model: Store,
-        attributes: ['id', 'name'],
-      }, {
-        model: PackageCharge,
-      }],
-    }],
-  };
+
   const shipment = await Shipment
-    .find(options);
-  if (shipment) {
-    packages = await Package
-      .findAll({ where: { shipment_id: shipment.id } });
-  }
-  return res.json({ packages, shipment });
+    .find({
+      where: { order_code: orderCode },
+      include: [{
+        model: User,
+        as: 'Customer',
+        attributes: ['first_name', 'last_name'],
+      }, {
+        model: ShipmentMeta,
+      }, {
+        model: Package,
+        include: [{
+          model: PackageItem,
+          attributes: ['id', 'quantity', 'price_amount', 'total_amount', 'object', 'name'],
+        }, {
+          model: Store,
+          attributes: ['id', 'name'],
+        }, {
+          model: PackageCharge,
+        }],
+      }],
+    });
+
+  if (!shipment) return res.status(400).end();
+
+  // - Todo: attributes missing
+  const packages = await Package
+    .findAll({
+      where: {
+        shipment_id: shipment.id,
+      },
+    });
+
+  return res.json({
+    shipment,
+    packages,
+  });
 };
 
 exports.finalShipRequest = async (req, res) => {
@@ -742,20 +708,6 @@ exports.finalShipRequest = async (req, res) => {
   if (!shipment) return res.status(400).json({ message: 'shipment not found' });
 
   log('shipment.wallet_amount', shipment.wallet_amount);
-
-
-  const notification = {};
-  notification.customer_id = customerId;
-  notification.action_type = 'shipment';
-  notification.action_id = shipment.id;
-
-  await Notification.create({
-    customer_id: customerId,
-    action_type: 'shipment',
-    action_id: shipment.id,
-    action_description: `Customer submitted payment - Order#  ${shipment.order_code}`,
-  });
-
 
   const url = 'http://pay.shoppre.test/api/transactions/create?';
   const e = shipment.estimated_amount;
@@ -984,7 +936,6 @@ exports.state = async (req, res, next) => Shipment
     }
 
     return updateShipmentState({
-      db,
       shipment,
       actingUser: req.user,
       nextStateId: req.body.state_id,
@@ -1008,7 +959,6 @@ exports.paymentState = async (req, res) => {
         State = PAYMENT_FAILED;
       }
       return updateShipmentState({
-        db,
         shipment,
         actingUser: req.body.user,
         nextStateId: State,
@@ -1047,20 +997,12 @@ exports.payResponse = async (req, res, next) => {
     const SUCCESS = '6';
     if (req.query.status === SUCCESS) {
       updateShipmentState({
-        db,
         shipment,
         actingUser: customer,
         nextStateId: PAYMENT_COMPLETED,
         comments: `Payment ${req.query.paymentStatus}!`,
       });
-      if (req.query.paymentStatus) {
-        await Notification.create({
-          customer_id: customer.id,
-          action_type: 'shipment',
-          action_id: shipment.id,
-          action_description: `Shipment Payment ${req.query.paymentStatus}!`,
-        });
-      }
+
       const paymentGateWay = Number(req.query.pg);
       const { amount } = req.query;
 
@@ -1077,7 +1019,6 @@ exports.payResponse = async (req, res, next) => {
       }
     } else {
       updateShipmentState({
-        db,
         shipment,
         actingUser: customer,
         nextStateId: PAYMENT_FAILED,

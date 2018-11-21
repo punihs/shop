@@ -1,8 +1,6 @@
 const _ = require('lodash');
 const debug = require('debug');
 const Ajv = require('ajv');
-// const moment = require('moment');
-// const xlsx = require('node-xlsx');
 
 const log = debug('package');
 
@@ -11,11 +9,10 @@ const { packageCreate } = require('./package.schema');
 
 const {
   Package, PackageItem, User, Follower, PhotoRequest,
-  Locker, Store, PackageState, Country, PackageCharge, Notification,
+  Locker, Store, PackageState, Country, PackageCharge,
 } = db;
 
 const {
-  // LOYALTY_TYPE: { REWARD },
   PACKAGE_STATE_IDS: {
     READY_TO_SHIP,
     PACKAGE_ITEMS_UPLOAD_PENDING, INCOMING_PACKAGE,
@@ -177,7 +174,6 @@ exports.create = async (req, res, next) => {
           // }
 
           return updateState({
-            db,
             lastStateId: null,
             nextStateId: PACKAGE_ITEMS_UPLOAD_PENDING,
             pkg: { ...pkg, id },
@@ -212,11 +208,10 @@ exports.create = async (req, res, next) => {
           charges.id = id;
           charges.receive_mail_amount = 0.00;
 
-          db.PackageCharge
+          PackageCharge
             .create(charges);
 
           updateState({
-            db,
             lastStateId: null,
             nextStateId: INCOMING_PACKAGE,
             pkg: { ...pack.toJSON(), ...pack.id },
@@ -267,7 +262,6 @@ exports.state = async (req, res, next) => {
       return res.status(400).json({ message: 'Please update package value' });
     }
   } else if ([STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST].includes(req.body.state_id)) {
-    const customerId = req.user.id;
     const { id: packageId } = req.params;
     const { type } = req.body;
     const IS_BASIC_PHOTO = type === 'standard_photo';
@@ -316,13 +310,6 @@ exports.state = async (req, res, next) => {
     PackageCharge
       .upsert({ id: packageId, [`${type}_amount`]: CHARGE });
 
-    Notification.create({
-      customer_id: customerId,
-      action_type: 'package',
-      action_id: packageId,
-      action_description: `Requested for ${REVEW_TEXT} Photos  - Order# ${packageId}`,
-    });
-
     if (!IS_BASIC_PHOTO) {
       status = !packg.PackageItems[0].object_advanced
         ? 'pending'
@@ -342,7 +329,6 @@ exports.state = async (req, res, next) => {
   }
 
   return updateState({
-    db,
     pkg,
     actingUser: req.user,
     nextStateId: req.body.state_id,
@@ -355,7 +341,6 @@ exports.state = async (req, res, next) => {
 exports.facets = (req, res, next) => Package
   .findById(req.params.id)
   .then(pkg => updateState({
-    db,
     pkg,
     actingUser: req.user,
     nextStateId: req.body.state_id,
@@ -405,60 +390,6 @@ exports.unread = async (req, res) => {
   return res.json(status);
 };
 
-// exports.count = (req, res, next) => {
-//   const { customerId } = req.user.id;
-//   const options = {
-//     attributes: ['id'],
-//     where: { customer_id: customerId, package_type: INCOMING },
-//     include: [{
-//       model: PackageState,
-//       where: { state_id: 5 },
-//     }],
-//   };
-//   const readyToShipCount = Package
-//     .count(options);
-//
-//   const optionInReview = {
-//     attributes: ['id'],
-//     where: { customer_id: customerId, package_type: INCOMING },
-//     include: [{
-//       model: PackageState,
-//       where: { state_id: 4 },
-//     }],
-//   };
-//   const inReviewCount = Package
-//     .count(optionInReview)
-//     .catch(next);
-//
-//   const optionActionRequired = {
-//     attributes: ['id'],
-//     where: { customer_id: customerId, package_type: INCOMING },
-//     include: [{
-//       model: PackageState,
-//       where: { state_id: 3 },
-//     }],
-//   };
-//   const actionRequiredCount = Package
-//     .count(optionActionRequired)
-//     .catch(next);
-//
-//   const optionAll = {
-//     attributes: ['id'],
-//     where: { customer_id: customerId, package_type: INCOMING },
-//     include: [{
-//       model: PackageState,
-//       where: { state_id: [3, 4, 5] },
-//     }],
-//   };
-//   const allCount = Package
-//     .count(optionAll)
-//     .catch(next);
-//
-//   return res.json({
-//     readyToShipCount, inReviewCount, actionRequiredCount, allCount,
-//   });
-// };
-
 exports.addNote = async (req, res) => {
   const { id } = req.params;
   await Package
@@ -470,33 +401,32 @@ exports.addNote = async (req, res) => {
 exports.invoice = async (req, res, next) => {
   const { id } = req.params;
   const { object } = req.body;
-  const pkg = await Package
-    .findById(id, { attributes: ['id', 'customer_id'] });
-  if (pkg) {
+
+  try {
+    const pkg = await Package
+      .findById(id, { attributes: ['id', 'customer_id'] });
+
+    if (!pkg) return res.status(400).end();
+
     Package
       .update({ invoice: object }, { where: { id } });
+
     updateState({
-      db,
       pkg,
       actingUser: req.user,
       nextStateId: IN_REVIEW,
       comments: 'Cusotmer Uploaded Invoice',
     });
-    Notification
-      .create({
-        customer_id: pkg.customer_id,
-        action_type: 'Package',
-        action_id: pkg.id,
-        action_description: `Customer Uploaded Package Invoice - Order#  ${pkg.id}`,
-      })
-      .then(() => res.json({ message: 'Invoice updated succesfully' }))
-      .catch(next);
+
+    return res.json({ message: 'Invoice updated succesfully' });
+  } catch (err) {
+    return next(err);
   }
 };
 
 exports.damaged = async (req, res) => {
   const { packageIds } = req.query;
-  // packageIds.then(packages=> {
+
   await PackageState
     .findAll({
       attributes: ['id', 'package_id'],

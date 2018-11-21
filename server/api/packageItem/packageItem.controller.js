@@ -1,9 +1,8 @@
 const debug = require('debug');
 const moment = require('moment');
 const {
-  PackageItem, Package, PackageItemCategory, Notification,
+  PackageItem, Package, PackageItemCategory,
 } = require('../../conn/sqldb');
-const db = require('../../conn/sqldb');
 const minio = require('../../conn/minio');
 
 const packageService = require('../package/package.service');
@@ -108,19 +107,10 @@ exports.values = async (req, res) => {
       );
   });
 
-  Notification
-    .create({
-      customer_id: req.user.id,
-      action_type: 'Package',
-      action_id: id,
-      action_description: `Customer submitted Package Item Values - Order#  ${id}`,
-    });
-
   Package.update({ price_amount: totalAmount }, { where: { id } });
 
   packageService
     .updateState({
-      db,
       pkg: { id },
       actingUser: req.user,
       nextStateId: IN_REVIEW,

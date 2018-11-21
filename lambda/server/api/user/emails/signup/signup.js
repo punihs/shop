@@ -1,4 +1,4 @@
-const render = require('../../../../../../chicken-sdk/render');
+const render = require('../../../../components/engage-sdk/render');
 const { GROUPS } = require('../../../../config/constants');
 
 const TemplateName = __dirname.split('/')

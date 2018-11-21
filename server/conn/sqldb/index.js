@@ -43,7 +43,7 @@ const db = {
   'Shipment', 'ShipmentMeta', 'ShipmentState',
 
   // - Notifications
-  'Notification', 'Comment',
+  'Comment',
 
   // - Product
   'Store',

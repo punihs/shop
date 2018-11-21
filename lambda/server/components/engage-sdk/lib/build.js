@@ -1,9 +1,8 @@
 const debug = require('debug');
 const rp = require('request-promise');
-const logger = require('../../lambda/server/components/logger');
+const logger = require('../../logger');
 const { root, CURRENT_EMAIL, project } = require('../config');
-// const { EmailTemplate } = require('../../conn/sqldb');
-const ses = require('../../engage/server/conn/email/ses');
+const ses = require('../../../../../engage/server/conn/email/ses');
 
 const log = debug('s-emails-lib-build');
 

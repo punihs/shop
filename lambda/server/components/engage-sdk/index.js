@@ -1,4 +1,4 @@
-const logger = require('../lambda/server/components/logger');
+const logger = require('../logger');
 
 const required = require;
 const { argv } = process;

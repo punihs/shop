@@ -27,14 +27,6 @@ const {
   PAYMENT_GATEWAY_NAMES,
 } = require('./../../config/constants');
 
-// const {
-//   // TRANSACTION_TYPES: { CREDIT },
-//   SHIPMENT_STATE_IDS: {
-//     INQUEUE, INREVIEW, DISPATCHED, DELIVERED, CANCELED, SHIPMENT_CANCELLED,
-//     INTRANSIT, CUSTOM_HOLD, LOST, WRONG_DELIVERY, PAYMENT_CONFIRMED,
-//     // SHIPMENT_HANDED,
-//   },
-// } = require('../../config/constants');
 
 const BUCKETS = require('./../../config/constants/buckets');
 
@@ -46,6 +38,7 @@ exports.index = ({ params, query, user: actingUser }) => {
   const IS_CUSTOMER_PAGE = !!params.customerId;
   const BUCKET = BUCKETS.SHIPMENT[actingUser.group_id];
   let orderSort = '';
+
   if (query.sort) {
     const [field, order] = query.sort.split(' ');
     log({ field, order });
@@ -64,6 +57,7 @@ exports.index = ({ params, query, user: actingUser }) => {
     offset: Number(query.offset) || 0,
     limit: Number(query.limit) || 20,
   };
+
   switch (true) {
     case (actingUser.app_id === APPS.OPS && actingUser.group_id === OPS): {
       if (IS_CUSTOMER_PAGE) options.where.customer_id = params.customerId;
@@ -80,12 +74,7 @@ exports.index = ({ params, query, user: actingUser }) => {
       }, {
         model: Package,
         attributes: ['id'],
-      },
-      //   {
-      //   model: PaymentGateway,
-      //   attributes: ['id', 'value'],
-      // }
-      {
+      }, {
         model: Country,
         attributes: ['id', 'name'],
       }, {
@@ -130,11 +119,6 @@ exports.index = ({ params, query, user: actingUser }) => {
     }
     default: {
       options.attributes = ['id', 'final_amount', 'weight', 'customer_id'];
-      // options.include = [{
-      //   model: Store,
-      //   attributes: ['id', 'name'],
-      // }];
-
       break;
     }
   }
@@ -228,12 +212,12 @@ exports.show = async (req, res) => {
       attributes: ['id', 'type', 'status'],
     }],
   };
+
   const packages = await Package
     .findAll(optionsPackage);
 
-  // const amount = shipment.estimated_amount;
   const estimated = shipment.estimated_amount;
-  // const estimated = shipment.estimated_amount - shipment.package_level_charges_amount;
+
   const paymentGatewayId = req.query.payment_gateway_id ?
     Number(req.query.payment_gateway_id) : null;
 
@@ -247,12 +231,10 @@ exports.show = async (req, res) => {
     packages,
     payment,
   });
-  // getWallet({ estimated });
 };
 
 const stateIdcommentMap = {
   [INQUEUE]: 'shipment under queue after payment',
-  // [INREVIEW]: 'shipment under review by shoppre',
   [DISPATCHED]: 'Shipment is dispatched',
   [INTRANSIT]: 'intransit',
   [CUSTOM_HOLD]: 'custom_hold',
@@ -264,14 +246,17 @@ const stateIdcommentMap = {
 };
 
 exports.updateShipmentState = async ({
-  db,
   nextStateId,
-  shipment,
+  shipment: current,
   actingUser,
   comments = null,
 }) => {
   log('updateShipmentState', nextStateId);
+
+
+  const shipment = current;
   log('shp', shipment);
+
   const options = {
     shipment_id: shipment.id,
     user_id: actingUser.id,
@@ -282,57 +267,11 @@ exports.updateShipmentState = async ({
   if (comments) options.comments = comments || stateIdcommentMap[nextStateId];
 
 
-  const shipmentState = await db.ShipmentState
+  const shipmentState = await ShipmentState
     .create(options);
+
   switch (nextStateId) {
     case PAYMENT_CONFIRMED: {
-      // - todo required for next iteration
-
-      // const optionsLoyalty = {
-      //   attributes: ['id', 'total_points', 'points', 'level'],
-      //   where: { customer_Id: shipment.customer_id },
-      // };
-      // const loyaltyId = await db.LoyaltyPoint
-      //   .find(optionsLoyalty);
-      // log('loyaltyId', loyaltyId);
-      // const loyalty = {};
-      // let points = {};
-      // log('level', loyaltyId.level);
-      // if (loyaltyId.shipment_id !== 1) {
-      //   if (loyaltyId.level === 1) {
-      //     points = ((5 / 100) * shipment.final_amount);
-      //   } else if (loyaltyId.level === 2) {
-      //     points = ((8 / 100) * shipment.final_amount);
-      //   } else if (loyaltyId.level === 3) {
-      //     points = ((10 / 100) * shipment.final_amount);
-      //   } else if (loyaltyId.level === 4) {
-      //     points = ((12 / 100) * shipment.final_amount);
-      //   }
-      //   log('final amount', shipment.final_amount);
-      //   log('level', loyaltyId.level);
-      //   loyalty.points = loyaltyId.points + points;
-      //   loyalty.total_points = loyaltyId.points + points;
-      //
-      //   if (loyaltyId.total_points < 1000) {
-      //     loyaltyId.level = 1;
-      //   } else if (loyaltyId.total_points >= 1000 && loyaltyId.total_points < 6000) {
-      //     loyalty.level = 2;
-      //   } else if (loyaltyId.total >= 6000 && loyaltyId.total < 26000) {
-      //     loyalty.level = 3;
-      //   } else if (loyaltyId.total >= 26000) {
-      //     loyalty.level = 4;
-      //   }
-      //   loyalty.shipment_id = shipment.id;
-      //   log({ loyalty });
-      //   await db.LoyaltyPoint.update(loyalty, { where: { id: loyaltyId.id } });
-      //
-      //   const misclenious = {};
-      //   misclenious.customer_id = shipment.customer_id;
-      //   misclenious.description = 'Shipping Reward';
-      //   misclenious.points = points;
-      //   misclenious.type = REWARD;
-      //   await db.LoyaltyHistory.create(misclenious);
-      // }
       if (!shipment.tracking) {
         const tracking = {};
         tracking.dispatch_date = moment();
@@ -340,77 +279,25 @@ exports.updateShipmentState = async ({
         tracking.weight_by_shipping_partner = shipment.final_weight;
         tracking.value_by_shipping_partner = shipment.value_amount;
         tracking.payment_status = 'success';
-        await db.Shipment.update(tracking, { where: { id: shipment.id } });
+        await Shipment.update(tracking, { where: { id: shipment.id } });
       }
+
+      shipment.getPackages()
+        .then(packageItems => hookshot
+          .stateChange({
+            nextStateId,
+            shipment,
+            actingUser,
+            packageItems,
+          }))
+        .catch(err => logger.error('statechange notification', nextStateId, shipment, err));
+
       break;
     }
-    // case SHIPMENT_HANDED: {
-    // log('state changed - shipment handed to partner', SHIPMENT_HANDED);
-    // if (shipment.tracking_code) {
-    // - Todo:  add this code before creating state
-    // const tracking = shipment.tracking_code;
-    // if (!shipment.dispatch_date || !shipment.shipping_carrier
-    // || !shipment.number_of_packages ||
-    //   !shipment.weight_by_shipping_partner ||
-    //   !shipment.value_by_shipping_partner || !shipment.tracking_code) {
-    //   return res.json({ error:
-    // 'You must update Shipment Tracking Information to send dispatch notification!' });
-    // }
-    // $shpmnt->shipping_status = 'dispatched';
-
-    // const couponAppliedStatus = await db.Redemption
-    //   .update({ status: 'success' }, { where: { shipment_order_code: shipment.order_code } });
-    //
-    // let promo = '';
-    // if (couponAppliedStatus) {
-    //   promo = await db.Coupon
-    //     .find(
-    //       { attributes: ['id', 'cashback_percentage', 'max_cashback_amount'] },
-    //       { where: { code: couponAppliedStatus.coupon_code } },
-    //     );
-    //
-    //   if (promo) {
-    //     // const optionCashBack = {
-    //     //   attributes: ['wallet_balance_amount'],
-    //     //   where: { id: actingUser.id },
-    //     // }
-    //     if (promo.cashback_percentage) {
-    //       // await db.User(optionCashBack)
-    //       //   .then(total_wallet_amount => {
-    //       const cashbackAmount =
-    //           shipment.estimated_amount * (promo.cashback_percentage / 100);
-    //       const maxCouponAmount = promo.max_cashback_amount || 0;
-    //       let totalCashbackAmount = 0;
-    //       if (cashbackAmount <= maxCouponAmount) {
-    //         totalCashbackAmount = cashbackAmount;
-    //       } else {
-    //         totalCashbackAmount = maxCouponAmount;
-    //       }
-    //       const transaction = {};
-    //       transaction.customer_id = actingUser.customer_id;
-    //       transaction.amount = totalCashbackAmount;
-    //       transaction.type = CREDIT;
-    //       transaction.description =
-    // `Wallet transactions for coupon code | Shipment ID  ${shipment.order_code}`;
-    //       // });
-    //     }
-    //   }
-    // }
-    // if(!in_array('ship_dispatched', $shipmails)){
-    //   $this->mailerShipping($shipRqst->id, 'ship_dispatched');
-    // }
-    // } else {
-    // return redirect()->back()->with('error',
-    // 'You must update Shipment Tracking Information to send dispatch notification!');
-    // }
-
-
-    //   break;
-    // }
     case SHIPMENT_CANCELLED: {
       log('state changed CANCELLED', SHIPMENT_CANCELLED);
 
-      const packages = db.Package
+      const packages = Package
         .findAll({
           attributes: ['id'],
           where: {
@@ -420,14 +307,13 @@ exports.updateShipmentState = async ({
 
       if (packages) {
         packages.map(pkg => updateState({
-          db,
           pkg,
           actingUser,
           nextStateId: READY_TO_SHIP,
         }));
       }
 
-      db.Package.update(
+      Package.update(
         { shipment_id: null },
         {
           where: { shipment_id: shipment.id },
@@ -441,7 +327,6 @@ exports.updateShipmentState = async ({
       shipment.getPackages()
         .then(packages => hookshot
           .stateChange({
-            db,
             nextStateId,
             shipment,
             actingUser,
@@ -455,10 +340,8 @@ exports.updateShipmentState = async ({
     }
   }
 
-  console.log({ SHIPMENT_DELIVERED });
   let gateway = null;
   if (Number(nextStateId) === Number(SHIPMENT_DELIVERED)) {
-    console.log({ SHIPMENT_DELIVERED });
     shipment.delivered_date = moment();
   }
 
@@ -493,7 +376,6 @@ exports.updateShipmentState = async ({
 
   hookshot
     .stateChange({
-      db,
       nextStateId,
       shipment,
       actingUser,
@@ -504,7 +386,8 @@ exports.updateShipmentState = async ({
     });
 
   log('shipmentState', shipmentState.id);
-  return db.Shipment
+  return Shipment
+
     .update({
       shipment_state_id: shipmentState.id,
     }, {

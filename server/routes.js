@@ -22,11 +22,9 @@ const packageItemCategory = require('./api/packageItemCategory');
 const shipment = require('./api/shipment');
 const shipmentComment = require('./api/shipment/comment');
 const shipmentPackage = require('./api/shipment/package');
-const personalShopperPackage = require('./api/personalShopperPackage');
 const address = require('./api/address');
 const user = require('./api/user');
 const userPublic = require('./api/user');
-const notification = require('./api/notification');
 const userDocument = require('./api/userDocument');
 const country = require('./api/country');
 const health = require('./api/health');
@@ -63,8 +61,6 @@ module.exports = (app) => {
     shipmentFollower,
   );
   app.use('/api/shippingPreference', authenticate(), shippingPreference);
-  app.use('/api/notifications', authenticate(), notification);
-  app.use('/api/personalShopperPackages', authenticate(), personalShopperPackage);
   app.use('/api/userDocuments', authenticate(), userDocument);
   app.use('/api/countries', country);
   app.use('/api/packageItems', authenticate(), packageItem);

@@ -21,8 +21,9 @@ const connection = mysql.createConnection({
 });
 
 const getList = (cb) => {
-  const list = 'select response_time, request from logs';
+  const list = 'select response_time, request from logs limit 1';
   connection.query(list, (error, result) => {
+    if (error) log(error);
     log(Object.keys(result[0]).join('\t\t'));
 
     let n = 0;

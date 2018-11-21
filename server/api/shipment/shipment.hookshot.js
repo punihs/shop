@@ -5,10 +5,6 @@ const viewConfig = require('../../view.config');
 const log = debug('s-api-shipment-notification');
 const { User } = require('../../conn/sqldb');
 
-// const map = {
-//   18: 'PAYMENT_REQUESTED',
-// };
-
 const { SHIPMENT_STATE_ID_NAMES_MAP } = require('../../config/constants');
 
 exports.stateChange = async ({
