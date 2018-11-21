@@ -1,4 +1,3 @@
-
 exports.packageCreate = {
   title: 'Package',
   type: 'object',

@@ -35,102 +35,110 @@ const {
 } = db;
 const log = debug('package');
 
-exports.index = (req, res, next) => index(req)
-  .then((result) => {
-    log('testing all the requirements');
-    return res.json(result);
-  })
-  .catch(next);
+exports.index = async (req, res, next) => {
+  try {
+    const result = await index(req, next);
 
-exports.show = async (req, res, next) => {
-  log('show', req.query);
-  return Package
-    .findById(req.params.id, {
-      attributes: req.query.fl
-        ? req.query.fl.split(',')
-        : ['id', 'customer_id', 'created_at', 'weight', 'content_type'],
-      include: [{
-        model: PackageState,
-        attributes: ['id', 'state_id'],
-      }, {
-        model: PackageItem,
-        attributes: ['id'],
-      }, {
-        model: Store,
-        attributes: ['id', 'name'],
-      }, {
-        model: User,
-        as: 'Customer',
-        attributes: [
-          'id', 'name', 'first_name', 'last_name', 'salutation', 'virtual_address_code',
-          'email', 'phone',
-        ],
-        include: [{
-          model: Country,
-          attributes: ['id', 'name', 'iso2'],
-        }, {
-          model: Locker,
-          attributes: ['id', 'name', 'short_name', 'allocated_at'],
-        }],
-      }],
-    })
-    .then((pkg) => {
-      if (!pkg) return res.status(404).end();
-      return res.json({
-        ...pkg.toJSON(),
-        state_id: pkg.PackageState.state_id,
-      });
-    })
-    .catch(next);
+    log('testing all the requirements');
+
+    return res.json(result);
+  } catch (err) {
+    return next(err);
+  }
 };
 
-const addFollowers = ({ userIds, objectId }) => {
-  const followers = userIds
-    .map(followerId => ({
-      user_id: followerId,
-      object_id: objectId,
-    }));
+exports.show = async (req, res, next) => {
+  try {
+    log('show', req.query);
+    const pkg = await Package
+      .findById(req.params.id, {
+        attributes: req.query.fl
+          ? req.query.fl.split(',')
+          : ['id', 'customer_id', 'created_at', 'weight', 'content_type'],
+        include: [{
+          model: PackageState,
+          attributes: ['id', 'state_id'],
+        }, {
+          model: PackageItem,
+          attributes: ['id'],
+        }, {
+          model: Store,
+          attributes: ['id', 'name'],
+        }, {
+          model: User,
+          as: 'Customer',
+          attributes: [
+            'id', 'name', 'first_name', 'last_name', 'salutation', 'virtual_address_code',
+            'email', 'phone',
+          ],
+          include: [{
+            model: Country,
+            attributes: ['id', 'name', 'iso2'],
+          }, {
+            model: Locker,
+            attributes: ['id', 'name', 'short_name', 'allocated_at'],
+          }],
+        }],
+      });
 
-  Follower
-    .bulkCreate(followers)
-    .catch(err => logger
-      .error({
-        t: 'follower creation',
-        e: err,
+    if (!pkg) return res.status(404).end();
+
+    return res.json({
+      ...pkg.toJSON(),
+      state_id: pkg.PackageState.state_id,
+    });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const addFollowers = async ({ userIds, objectId, next }) => {
+  try {
+    const followers = userIds
+      .map(followerId => ({
+        user_id: followerId,
+        object_id: objectId,
       }));
+
+    return await Follower
+      .bulkCreate(followers);
+  } catch (err) {
+    return next(err);
+  }
 };
 
 exports.create = async (req, res, next) => {
   log('create', req.body);
   switch (req.user.group_id) {
     case OPS: {
-      const allowed = [
-        'is_doc',
-        'store_id',
-        'invoice_code',
-        'virtual_address_code',
-        'weight',
-        'price_amount',
-        'customer_id',
-        'content_type',
-      ];
-
-      const pkg = _.pick(req.body, allowed);
-
-      // - Internal user
-      pkg.created_by = req.user.id;
-      pkg.package_type = INCOMING;
-
       try {
+        const allowed = [
+          'is_doc',
+          'store_id',
+          'invoice_code',
+          'virtual_address_code',
+          'weight',
+          'price_amount',
+          'customer_id',
+          'content_type',
+        ];
+
+        const pkg = _.pick(req.body, allowed);
+
+        // - Internal user
+        pkg.created_by = req.user.id;
+        pkg.package_type = INCOMING;
+
         const { id } = await Package
           .create(pkg);
 
         // - Async Todo: need to move to socket server
-        addFollowers({
+        await addFollowers({
           objectId: id,
           userIds: [
             req.user.id,
             req.body.customer_id,
+            next,
           ],
         });
 
@@ -143,14 +151,14 @@ exports.create = async (req, res, next) => {
 
         // - todo: now await and catch together
         await PackageCharge
-          .create(charges)
-          .catch(e => logger.error({ e, b: req.body }));
+          .create(charges);
 
         await updateState({
           lastStateId: null,
           nextStateId: PACKAGE_ITEMS_UPLOAD_PENDING,
           pkg: { ...pkg, id },
           actingUser: req.user,
+          next,
         });
 
         return res
@@ -161,49 +169,51 @@ exports.create = async (req, res, next) => {
       }
     }
     case CUSTOMER: {
-      const IS_OPS = req.user.group_id === OPS;
+      try {
+        const IS_OPS = req.user.group_id === OPS;
 
-      // - Validating input
-      const ajv = new Ajv();
-      ajv.addSchema(packageCreate, 'PackageCreate');
-      const valid = ajv.validate('PackageCreate', req.body);
+        // - Validating input
+        const ajv = new Ajv();
+        ajv.addSchema(packageCreate, 'PackageCreate');
+        const valid = ajv.validate('PackageCreate', req.body);
 
-      if (!valid) {
-        log('create', ajv.errorsText());
-        return res.status(400).json({ message: ajv.errorsText() });
+        if (!valid) {
+          log('create', ajv.errorsText());
+          return res.status(400).json({ message: ajv.errorsText() });
+        }
+
+        const pkg = req.body;
+        pkg.created_by = req.user.id;
+        pkg.package_type = INCOMING;
+        pkg.invoice = pkg.object;
+
+        if (!IS_OPS) pkg.customer_id = req.user.id;
+
+        const pack = await Package
+          .create(pkg);
+        const { id } = pack;
+        const charges = {
+          id,
+          receive_mail_amount: 0.00,
+        };
+
+        await PackageCharge
+          .create(charges);
+
+        await Package
+          .updateState({
+            lastStateId: null,
+            nextStateId: INCOMING_PACKAGE,
+            pkg: { ...pack.toJSON(), ...pack.id },
+            actingUser: req.user,
+            comments: `Submitted Incoming Alert From ${req.body.store_name}`,
+            next,
+          });
+
+        res.status(201).json({ id });
+      } catch (err) {
+        return next(err);
       }
-
-      const pkg = req.body;
-      pkg.created_by = req.user.id;
-      pkg.package_type = INCOMING;
-      pkg.invoice = pkg.object;
-
-      if (!IS_OPS) pkg.customer_id = req.user.id;
-
-      return Package
-        .create(pkg)
-        .then((pack) => {
-          const { id } = pack;
-          const charges = {
-            id,
-            receive_mail_amount: 0.00,
-          };
-
-          PackageCharge
-            .create(charges);
-
-          return Package
-            .updateState({
-              lastStateId: null,
-              nextStateId: INCOMING_PACKAGE,
-              pkg: { ...pack.toJSON(), ...pack.id },
-              actingUser: req.user,
-              comments: `Submitted Incoming Alert From ${req.body.store_name}`,
-            })
-            .then(() => res
-              .status(201)
-              .json({ id }));
-        });
     }
     default: return next();
   }
@@ -229,7 +239,7 @@ exports.state = async (req, res, next) => {
     }
 
     if ([READY_TO_SHIP].includes(stateId)) {
-      const photoRequest = Package
+      const photoRequest = await Package
         .find({
           attributes: ['id'],
           where: { id: req.params.id },
@@ -289,14 +299,14 @@ exports.state = async (req, res, next) => {
         return res.json({ message: `Already ${REVEW_TEXT} photo requested` });
       }
 
-      PhotoRequest.create({
+      await PhotoRequest.create({
         package_id: packageId,
         type: IS_BASIC_PHOTO ? BASIC : ADVANCED,
         status: COMPLETED,
         charge_amount: CHARGE,
       });
 
-      PackageCharge
+      await PackageCharge
         .upsert({ id: packageId, [`${type}_amount`]: CHARGE });
 
       if (!IS_BASIC_PHOTO) {
@@ -322,6 +332,7 @@ exports.state = async (req, res, next) => {
       actingUser: req.user,
       nextStateId: stateId,
       comments: req.body.comments || req.body.message2 || req.body.message1,
+      next,
     });
 
     return res.json(status);
@@ -389,14 +400,15 @@ exports.invoice = async (req, res, next) => {
 
     if (!pkg) return res.status(400).end();
 
-    Package
+    await Package
       .update({ invoice: object }, { where: { id } });
 
-    updateState({
+    await updateState({
       pkg,
       actingUser: req.user,
       nextStateId: IN_REVIEW,
       comments: 'Cusotmer Uploaded Invoice',
+      next,
     });
 
     return res.json({ message: 'Invoice updated succesfully' });

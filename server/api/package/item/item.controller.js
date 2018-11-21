@@ -13,40 +13,45 @@ const {
 
 const log = debug('package');
 
-exports.index = (req, res, next) => {
-  log('index', req.query);
+exports.index = async (req, res, next) => {
+  try {
+    log('index', req.query);
 
-  return PackageItem
-    .findAll({
-      where: { package_id: req.params.packageId },
-      attributes: [
-        'id', 'name', 'quantity', 'price_amount', 'total_amount', 'object',
-        'object_invoice',
-      ],
-      include: [{
-        model: PackageItemCategory,
-        attributes: ['name'],
-      }],
-      order: [['id', 'desc']],
-      limit: Number(req.query.limit) || 20,
-    })
-    .then(packageItems => res
-      .json(packageItems))
-    .catch(next);
+    const packageItems = await PackageItem
+      .findAll({
+        where: { package_id: req.params.packageId },
+        attributes: [
+          'id', 'name', 'quantity', 'price_amount', 'total_amount', 'object',
+          'object_invoice',
+        ],
+        include: [{
+          model: PackageItemCategory,
+          attributes: ['name'],
+        }],
+        order: [['id', 'desc']],
+        limit: Number(req.query.limit) || 20,
+      });
+    return res.json(packageItems);
+  } catch (err) {
+    return next(err);
+  }
 };
 
-exports.create = (req, res, next) => {
-  log('create', req.body);
+exports.create = async (req, res, next) => {
+  try {
+    log('create', req.body);
 
-  return PackageItem
-    .create({
-      ...req.body,
-      package_id: req.params.packageId,
-      created_by: req.user.id,
-    })
-    .then(({ id }) => res
-      .json({ id }))
-    .catch(next);
+    const pkgItem = await PackageItem
+      .create({
+        ...req.body,
+        package_id: req.params.packageId,
+        created_by: req.user.id,
+      });
+
+    return res.json(pkgItem.id);
+  } catch (err) {
+    return next(err);
+  }
 };
 
 exports.update = async (req, res, next) => {
@@ -58,9 +63,9 @@ exports.update = async (req, res, next) => {
     const status = await PackageItem
       .update(packageItem, { where: { id } });
 
-    res.json(status);
-  } catch (e) {
-    next(e);
+    return res.json(status);
+  } catch (err) {
+    return next(err);
   }
 };
 
@@ -100,20 +105,25 @@ exports.destroy = async (req, res, next) => {
       });
 
     return res.json({ message: `#${id} Package Item deleted sucessfully` });
-  } catch (e) {
-    return next(e);
+  } catch (err) {
+    return next(err);
   }
 };
 
-exports.image = (req, res, next) => {
-  log('index', req.query);
+exports.image = async (req, res, next) => {
+  try {
+    log('index', req.query);
 
-  return PackageItem
-    .findById(req.params.id, {
-      attributes: ['id', 'object'],
-    })
-    .then(({ object }) => minio
-      .downloadLink({ object })
-      .then(url => res.json({ url })))
-    .catch(next);
+    const object = await PackageItem
+      .findById(req.params.id, {
+        attributes: ['id', 'object'],
+      });
+
+    const url = await minio
+      .downloadLink({ object });
+
+    return res.json({ url });
+  } catch (err) {
+    return next(err);
+  }
 };
