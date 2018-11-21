@@ -1,4 +1,3 @@
-
 module.exports = () => [{
   shipment_id: 115,
   state_id: 16,
