@@ -31,6 +31,7 @@ exports.index = async (req, res, next) => {
         order: [['id', 'desc']],
         limit: Number(req.query.limit) || 20,
       });
+
     return res.json(packageItems);
   } catch (err) {
     return next(err);

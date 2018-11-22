@@ -50,6 +50,7 @@ exports.index = async (req, res, next) => {
 exports.show = async (req, res, next) => {
   try {
     log('show', req.query);
+
     const pkg = await Package
       .findById(req.params.id, {
         attributes: req.query.fl
@@ -109,6 +110,7 @@ const addFollowers = async ({ userIds, objectId, next }) => {
 
 exports.create = async (req, res, next) => {
   log('create', req.body);
+
   switch (req.user.group_id) {
     case OPS: {
       try {
@@ -179,6 +181,7 @@ exports.create = async (req, res, next) => {
 
         if (!valid) {
           log('create', ajv.errorsText());
+
           return res.status(400).json({ message: ajv.errorsText() });
         }
 
@@ -191,6 +194,7 @@ exports.create = async (req, res, next) => {
 
         const pack = await Package
           .create(pkg);
+
         const { id } = pack;
         const charges = {
           id,
@@ -210,7 +214,7 @@ exports.create = async (req, res, next) => {
             next,
           });
 
-        res.status(201).json({ id });
+        return res.status(201).json({ id });
       } catch (err) {
         return next(err);
       }
@@ -222,6 +226,7 @@ exports.create = async (req, res, next) => {
 exports.state = async (req, res, next) => {
   try {
     const stateId = Number(req.body.state_id);
+
     const pkg = await Package
       .findById(req.params.id, {
         attributes: ['id', 'weight', 'price_amount'],
@@ -369,9 +374,9 @@ exports.update = async (req, res, next) => {
 };
 
 exports.destroy = async (req, res, next) => {
-  const { id } = req.params;
-
   try {
+    const { id } = req.params;
+
     await PackageItem
       .destroy({ where: { package_id: id } });
 
@@ -391,10 +396,10 @@ exports.destroy = async (req, res, next) => {
 };
 
 exports.invoice = async (req, res, next) => {
-  const { id } = req.params;
-  const { object } = req.body;
-
   try {
+    const { id } = req.params;
+    const { object } = req.body;
+
     const pkg = await Package
       .findById(id, { attributes: ['id', 'customer_id'] });
 

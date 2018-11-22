@@ -23,7 +23,8 @@ exports.stateChange = async ({
 
     log('package notification', { customer });
     const headers = {};
-    await hookshot
+
+    return await hookshot
       .trigger('package:stateChange', {
         object: 'package',
         event: 'stateChange',

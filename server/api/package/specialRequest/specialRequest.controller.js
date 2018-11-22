@@ -29,7 +29,6 @@ exports.return = async (req, res, next) => {
       returnMsg = 'return_shoppre,'.concat(req.body.message2);
     }
 
-    // sending mail is pending here
     await Package.update(
       { status: 'return', return_send: returnMsg },
       { where: { id: returnPackid } },
@@ -55,16 +54,15 @@ exports.split = async (req, res, next) => {
     const customerId = req.user.id;
     let splitMsg = '';
 
-    const packages = await Package
+    const pkg = await Package
       .find({
         where: { customer_id: customerId, id: splitPackid },
       });
 
-    if (packages) {
+    if (pkg) {
       splitMsg = req.body.message2;
     }
 
-    // sending mail is pending here
     await Package.update(
       { status: 'split', splitting_directions: splitMsg },
       { where: { id: splitPackid } },
@@ -78,7 +76,7 @@ exports.split = async (req, res, next) => {
       next,
     });
 
-    res.status(201)
+    return res.status(201)
       .json({
         message: 'Your Split Package request has been submitted to shoppre team.',
       });
@@ -92,7 +90,6 @@ exports.abandon = async (req, res, next) => {
     const abandonPackid = req.params.id;
     log('abandon', abandonPackid);
 
-    // - sending mail is pending here
     await Package.update(
       { status: 'abandon' },
       { where: { id: abandonPackid } },
@@ -106,7 +103,7 @@ exports.abandon = async (req, res, next) => {
       next,
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       message: 'All items in your package has been discarded as per your request.' +
         ' You can no longer retrieve the items in your package.',
     });
