@@ -1,4 +1,3 @@
-
 module.exports = {
   addressStringify(address) {
     let toAddress = address.line1;

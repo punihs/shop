@@ -1,4 +1,3 @@
-
 const debug = require('debug');
 
 const log = debug('package');
@@ -10,34 +9,39 @@ const { Follower, User, SocketSession } = db;
 const attributes = [
   'id', 'email', 'first_name', 'last_name', 'salutation', 'profile_photo_url', 'name',
 ];
-exports.index = (req, res, next) => {
-  log('index', req.query);
 
-  return Follower
-    .findAll({ where: { object_id: req.params.packageId } })
-    .then((followers) => {
-      if (!followers.length) return res.json([]);
-      return User
-        .findAll({
-          attributes,
+exports.index = async (req, res, next) => {
+  try {
+    log('index', req.query);
+
+    const followers = await Follower
+      .findAll({ where: { object_id: req.params.packageId } });
+
+    if (!followers.length) return res.json([]);
+
+    const users = await User
+      .findAll({
+        attributes,
+        where: {
+          id: followers
+            .map(x => x.user_id)
+            .filter(x => (x !== req.user.id)),
+          object_type_id: SHIPMENT,
+        },
+        include: [{
+          model: SocketSession,
+          attributes: ['id'],
           where: {
-            id: followers
-              .map(x => x.user_id)
-              .filter(x => (x !== req.user.id)),
-            object_type_id: SHIPMENT,
+            is_online: true,
           },
-          include: [{
-            model: SocketSession,
-            attributes: ['id'],
-            where: {
-              is_online: true,
-            },
-            required: false,
-          }],
-        })
-        .then(users => res
-          .json(users
-            .map(x => ({ ...x.toJSON(), online: !!x.SocketSessions.length }))));
-    })
-    .catch(next);
+          required: false,
+        }],
+      });
+
+    return res
+      .json(users
+        .map(x => ({ ...x.toJSON(), online: !!x.SocketSessions.length })));
+  } catch (err) {
+    return next(err);
+  }
 };

@@ -8,38 +8,47 @@ const { User } = require('../../conn/sqldb');
 const { SHIPMENT_STATE_ID_NAMES_MAP } = require('../../config/constants');
 
 exports.stateChange = async ({
-  actingUser, shipment, packages, nextStateId, address, paymentGateway, gateway,
+  actingUser, shipment, packages, nextStateId, address, paymentGateway, gateway, next
 }) => {
-  const customer = await User
-    .findById(shipment.customer_id, {
-      attributes: [
-        'name', 'salutation', 'first_name', 'last_name', 'email', 'virtual_address_code',
-      ],
-    });
+  try {
+    const customer = await User
+      .findById(shipment.customer_id, {
+        attributes: [
+          'name', 'salutation', 'first_name', 'last_name', 'email', 'virtual_address_code',
+        ],
+      });
 
-  log({ paymentGateway });
-  return hookshot.trigger('shipment:stateChange', {
-    before: null,
-    nextStateId,
-    nextStateName: SHIPMENT_STATE_ID_NAMES_MAP[nextStateId],
-    shipment: { ...shipment },
-    paymentGateway,
-    packages,
-    customer: customer.toJSON(),
-    actingUser,
-    ENV: viewConfig,
-    address,
-    [gateway]: true,
-  });
+    log({ paymentGateway });
+
+    return hookshot.trigger('shipment:stateChange', {
+      before: null,
+      nextStateId,
+      nextStateName: SHIPMENT_STATE_ID_NAMES_MAP[nextStateId],
+      shipment: { ...shipment },
+      paymentGateway,
+      packages,
+      customer: customer.toJSON(),
+      actingUser,
+      ENV: viewConfig,
+      address,
+      [gateway]: true,
+    });
+  } catch (err) {
+    return next(err);
+  }
 };
 
 exports.create = ({
-  actingUser, shipment, packages, address,
+  actingUser, shipment, packages, address, next,
 }) => {
-  hookshot.trigger('shipment:create', {
-    actingUser,
-    shipment,
-    packages,
-    address,
-  });
+  try {
+    return hookshot.trigger('shipment:create', {
+      actingUser,
+      shipment,
+      packages,
+      address,
+    });
+  } catch (err) {
+    return next(err);
+  }
 };

@@ -5,7 +5,6 @@ const log = debug('ship-index');
 
 const { URLS_SHIP } = require('../../../../config/environment');
 
-//   (countryId, toCreate.weight, packages[0].content_type)
 module.exports = {
   getPricing({ countryId, weight, type }) {
     log('getPricing', { countryId, weight, type });
