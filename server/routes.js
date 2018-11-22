@@ -17,7 +17,7 @@ const packageItem = require('./api/packageItem');
 const packageItems = require('./api/package/item');
 const packageCharge = require('./api/package/charge');
 const specialRequest = require('./api/package/specialRequest');
-const shippingPreference = require('./api/shippingPreference');
+const userShippingPreference = require('./api/user/shippingPreference');
 const packageItemCategory = require('./api/packageItemCategory');
 const shipment = require('./api/shipment');
 const shipmentComment = require('./api/shipment/comment');
@@ -60,7 +60,6 @@ module.exports = (app) => {
     shipmentComment,
     shipmentFollower,
   );
-  app.use('/api/shippingPreference', authenticate(), shippingPreference);
   app.use('/api/userDocuments', authenticate(), userDocument);
   app.use('/api/countries', country);
   app.use('/api/packageItems', authenticate(), packageItem);
@@ -72,6 +71,7 @@ module.exports = (app) => {
     authenticate(),
     userPackage,
     userShipment,
+    userShippingPreference,
   );
   app.use('/api/crons', cron);
   app.use('/api/stores', store);

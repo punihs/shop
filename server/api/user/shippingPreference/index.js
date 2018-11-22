@@ -4,8 +4,8 @@ const controller = require('./shippingPreference.controller');
 
 const router = express.Router();
 
-router.get('/:id', controller.show);
-router.put('/:id', controller.update);
+router.get('/:id/shippingPreference', controller.show);
+router.put('/:id/shippingPreference', controller.update);
 
 module.exports = router;
 

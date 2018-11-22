@@ -12,16 +12,16 @@ class PreferencesController {
     this.Page.setTitle('Shipment Preferences');
     this.defaultAddress = {};
     this.$http
-      .get(`/shippingPreference/${this.Session.read('userinfo').id}`)
-      .then(({ data: { preference } }) => {
-        this.defaultAddress = preference[0].User.Addresses[0];
-        this.data = preference[0];
+      .get(`/users/${this.Session.read('userinfo').id}/shippingPreference`)
+      .then(({ data: { shippingPreference } }) => {
+        this.defaultAddress = shippingPreference.User.Addresses[0];
+        this.data = shippingPreference;
       });
   }
 
   updatePreference() {
     this.$http
-      .put(`/shippingPreference/${this.Session.read('userinfo').id}`, this.data)
+      .put(`/users/${this.Session.read('userinfo').id}/shippingPreference`, this.data)
       .then(() => {
         this
           .toaster

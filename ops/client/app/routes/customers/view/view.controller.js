@@ -206,9 +206,9 @@ class CustomerViewController {
   }
   getShippingPreferences() {
     this.$http
-      .get(`/shippingPreference/${this.id}`)
-      .then(({ data: { preference } }) => {
-        this.shippingPreference = preference[0];
+      .get(`/users/${this.id}/shippingPreference`)
+      .then(({ data: { shippingPreference } }) => {
+        this.shippingPreference = shippingPreference[0];
       });
   }
 
