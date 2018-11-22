@@ -15,15 +15,17 @@ class PackageShowController {
     this.$stateParams = $stateParams;
     this.toaster = toaster;
     this.ChangeState = ChangeState;
-    this.data = pkg;
+    this.pkg = pkg;
     this.ListModal = ListModal;
     this.ViewPhotoService = ViewPhotoService;
     this.moment = moment;
+    this.$window = $window;
 
     this.$onInit();
   }
 
   $onInit() {
+    this.data = this.pkg;
     this.states = this.Session.read('states');
     this.user = this.Session.read('userinfo');
 
