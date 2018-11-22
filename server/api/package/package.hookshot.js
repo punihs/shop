@@ -7,6 +7,8 @@ const { User, Store } = require('../../conn/sqldb');
 
 const log = debug('s-api-package-notification');
 
+const toJSON = object => (object.toJSON ? object.toJSON() : object)
+
 exports.stateChange = async ({
   actingUser, pkg, nextStateId, lastStateId, next,
 }) => {
@@ -21,10 +23,10 @@ exports.stateChange = async ({
     const store = await Store
       .findById(pkg.store_id, { raw: true, attributes: ['name'] });
 
-    log('package notification', { customer });
+    log('package notification', { customer, pkg });
     const headers = {};
 
-    return await hookshot
+    hookshot
       .trigger('package:stateChange', {
         object: 'package',
         event: 'stateChange',
@@ -32,8 +34,8 @@ exports.stateChange = async ({
         after: nextStateId,
         nextStateName: [PACKAGE_STATE_ID_NAMES_MAP[nextStateId]],
         actingUser,
-        pkg: { ...pkg, Store: store },
-        customer: customer.toJSON(),
+        pkg: { ...toJSON(pkg), Store: store },
+        customer: toJSON(customer),
         ENV: viewConfig,
       }, headers);
   } catch (err) {

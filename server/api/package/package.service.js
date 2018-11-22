@@ -286,7 +286,7 @@ exports.updateState = async ({
     }
 
     if (!([IN_REVIEW, AWAITING_VERIFICATION, ADDED_SHIPMENT].includes(nextStateId))) {
-      await hookshot
+      hookshot
         .stateChange({
           nextStateId,
           lastStateId,

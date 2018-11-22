@@ -93,7 +93,7 @@ exports.show = async (req, res, next) => {
   }
 };
 
-const addFollowers = async ({ userIds, objectId, next }) => {
+const addFollowers = async ({ userIds, objectId }) => {
   try {
     const followers = userIds
       .map(followerId => ({
@@ -228,7 +228,7 @@ exports.state = async (req, res, next) => {
 
     const pkg = await Package
       .findById(req.params.id, {
-        attributes: ['id', 'weight', 'price_amount'],
+        attributes: ['id', 'weight', 'price_amount', 'customer_id'],
       });
 
     if ([AWAITING_VERIFICATION, DAMAGED].includes(stateId)) {
@@ -244,18 +244,17 @@ exports.state = async (req, res, next) => {
 
     if ([READY_TO_SHIP].includes(stateId)) {
       const photoRequest = await Package
-        .find({
+        .findById(req.params.id, {
           attributes: ['id'],
-          where: { id: req.params.id },
           include: [{
             model: PackageState,
             where: { state_id: [STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST] },
           }],
         });
 
-      if (!photoRequest) {
-        return res.status(400).json({ message: 'Please check and update the Photo Request Status !' });
-      }
+      // if (!photoRequest) {
+      //   return res.status(400).json({ message: 'Please check and update the Photo Request Status !' });
+      // }
 
       if (!pkg.weight) {
         return res.status(400).json({ message: 'Please update weight of the package' });
