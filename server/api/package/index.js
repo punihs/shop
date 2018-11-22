@@ -1,4 +1,3 @@
-
 const express = require('express');
 const controller = require('./package.controller');
 const autheticate = require('../../components/oauth/authenticate');

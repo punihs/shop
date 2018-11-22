@@ -1,4 +1,3 @@
-
 const properties = require('./package.property');
 
 module.exports = (sequelize, DataTypes) => {
