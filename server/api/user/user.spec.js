@@ -35,26 +35,6 @@ describe('GET /api/users/states', () => {
   });
 });
 
-// describe(' POST /api/users', () => {
-//   it('will create user', (done) => {
-//     request(app)
-//       .post('/api/users')
-//       .send({
-//         name: 'Saneel E S',
-//         email: 'saneel@shoppre.com',
-//         password: 'Password123',
-//         group_id: 1,
-//       })
-//       .set('Authorization', `Bearer ${auth.access_token}`)
-//       .expect('Content-Type', /json/)
-//       .expect(200)
-//       .then(() => {
-//         done();
-//       });
-//   });
-// });
-
-
 describe('GET /api/users/:id', () => {
   it('will fetch user', (done) => {
     request(app)
@@ -122,70 +102,6 @@ describe('delete /api/users/:id', () => {
       });
   });
 });
-// describe(' POST /api/users/verify', () => {
-//   it('verify user ', (done) => {
-//     request(app)
-//       .post('/api/users/verify')
-//       .send({
-//         customer_id: '646',
-//         email: 'tech.shoppre@gmail.com',
-//       })
-//       .set('Authorization', `Bearer ${auth.access_token}`)
-//       .expect('Content-Type', /json/)
-//       .expect(200)
-//       .then(() => {
-//         done();
-//       });
-//   });
-// });
-//
-// describe('member POST /api/users/register', () => {
-//   it('will create user', (done) => {
-//     request(app)
-//       .post('/api/users/register')
-//       .send({
-//         salutation: 'Mr',
-//         last_name: 'v',
-//         first_name: 'Manjesh',
-//         email: 'manjeshpv+2@gmail.com',
-//         phone: '+919844717202',
-//         password: 'admin1234',
-//         virtual_address_code: 'SHPR78-221',
-//         hooks: true,
-//       })
-//       .set('Authorization', `Bearer ${auth.access_token}`)
-//       .expect('Content-Type', /json/)
-//       .expect(200)
-//       .then(() => {
-//         done();
-//       });
-//   });
-// });
-
-//
-// describe(' POST /api/users/register', () => {
-//   it('will create user with out reffral code', (done) => {
-//     request(app)
-//       .post('/api/users/register')
-//       .send({
-//         _token: '2yVT9voBawG19WrPu9aD8QtCDyoysCoqVUxBSJui',
-//         referrer: '',
-//         title: 'Mr',
-//         firstname: 'punith',
-//         lastname: 'HS',
-//         email: 'punith@shoppre.com',
-//         password: 'Punith897097',
-//         password_confirmation: 'Punith897097',
-//         refferal: '',
-//       })
-//       .set('Authorization', `Bearer ${auth.access_token}`)
-//       .expect('Content-Type', /json/)
-//       .expect(200)
-//       .then(() => {
-//         done();
-//       });
-//   });
-// });
 
 describe(' put /api/users/646/changePassword', () => {
   it('will create user with out reffral code', (done) => {

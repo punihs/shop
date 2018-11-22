@@ -1,4 +1,3 @@
-
 module.exports = (constants) => {
   const {
     GROUP: {
