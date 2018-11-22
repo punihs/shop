@@ -1,14 +1,14 @@
-const raven = Raven.config('https://a4576e2b58fa419d9a76610db580a7b0@sentry.shoppre.com/5', {});
-
-if (localStorage.userinfo) {
-  const user = JSON.parse(localStorage.userinfo);
-  raven.setUser({
-    id: user.id,
-    email: user.email,
-  });
-}
-
-raven.install();
+// const raven = Raven.config('https://a4576e2b58fa419d9a76610db580a7b0@sentry.shoppre.com/5', {});
+//
+// if (localStorage.userinfo) {
+//   const user = JSON.parse(localStorage.userinfo);
+//   raven.setUser({
+//     id: user.id,
+//     email: user.email,
+//   });
+// }
+//
+// raven.install();
 
 angular.module('qui.components', []);
 
@@ -42,9 +42,11 @@ angular.module('uiGenApp', [
   'ngIntlTelInput',
   'ngRaven',
 ])
-  .config(($urlRouterProvider, $locationProvider, ngIntlTelInputProvider, $ravenProvider) => {
-    const dev = location.href.includes('.test');
-    $ravenProvider.development(dev);
+  .config(($urlRouterProvider, $locationProvider, ngIntlTelInputProvider,
+           // $ravenProvider
+  ) => {
+    // const dev = location.href.includes('.test');
+    // $ravenProvider.development(true);
     ngIntlTelInputProvider.set({
       initialCountry: 'us',
       autoHideDialCode: true,
@@ -56,18 +58,18 @@ angular.module('uiGenApp', [
 
     $locationProvider.html5Mode(true);
   })
-  .factory('$exceptionHandler', () => (exception) => Raven.captureException(exception))
-  .factory('errorHttpInterceptor', ($q) => ({
-    responseError: function responseError(rejection) {
-      Raven.captureException(new Error('HTTP response error'), {
-        extra: {
-          config: rejection.config,
-          status: rejection.status,
-        },
-      });
-
-      return $q.reject(rejection);
-    },
-  }))
-  .config($httpProvider => $httpProvider.interceptors.push('errorHttpInterceptor'));
+  // .factory('$exceptionHandler', () => (exception) => Raven.captureException(exception))
+  // .factory('errorHttpInterceptor', ($q) => ({
+  //   responseError: function responseError(rejection) {
+  //     Raven.captureException(new Error('HTTP response error'), {
+  //       extra: {
+  //         config: rejection.config,
+  //         status: rejection.status,
+  //       },
+  //     });
+  //
+  //     return $q.reject(rejection);
+  //   },
+  // }))
+  // .config($httpProvider => $httpProvider.interceptors.push('errorHttpInterceptor'));
 

@@ -204,15 +204,14 @@ exports.create = async (req, res, next) => {
         await PackageCharge
           .create(charges);
 
-        await Package
-          .updateState({
-            lastStateId: null,
-            nextStateId: INCOMING_PACKAGE,
-            pkg: { ...pack.toJSON(), ...pack.id },
-            actingUser: req.user,
-            comments: `Submitted Incoming Alert From ${req.body.store_name}`,
-            next,
-          });
+        await updateState({
+          lastStateId: null,
+          nextStateId: INCOMING_PACKAGE,
+          pkg: { ...pack.toJSON(), ...pack.id },
+          actingUser: req.user,
+          comments: `Submitted Incoming Alert From ${req.body.store_name}`,
+          next,
+        });
 
         return res.status(201).json({ id });
       } catch (err) {
@@ -420,4 +419,15 @@ exports.invoice = async (req, res, next) => {
   } catch (err) {
     return next(err);
   }
+};
+
+exports.damaged = async (req, res) => {
+  const { packageIds } = req.query;
+
+  await PackageState
+    .findAll({
+      attributes: ['id', 'package_id'],
+      where: { package_id: packageIds.split(','), state_id: DAMAGED },
+    }).then(packageStates =>
+      res.json({ packageStates }));
 };

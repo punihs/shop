@@ -28,7 +28,7 @@ angular
   ])
   .config(($urlRouterProvider, $locationProvider, ngIntlTelInputProvider, $ravenProvider) => {
     const dev = location.href.includes('.test');
-    $ravenProvider.development(dev);
+    $ravenProvider.development(true);
     ngIntlTelInputProvider.set({
       initialCountry: 'us',
       autoHideDialCode: true,
