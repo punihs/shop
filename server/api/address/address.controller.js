@@ -95,7 +95,7 @@ exports.create = async (req, res, next) => {
         });
     }
 
-    const { id } = Address
+    const { id } = await Address
       .create(Object.assign({}, req.body, {
         customer_id: req.user.id,
       }));
