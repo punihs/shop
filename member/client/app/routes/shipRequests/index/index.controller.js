@@ -28,7 +28,7 @@ class ShipRequestsIndexController {
     this.$http
       .get('/shipments/queue')
       .then(({ data: { shipments } }) => {
-        shipments.map(x => this.shipments.push(x));
+        this.shipments = shipments;
         this.todayDate = new Date();
 
         this.payment_gate_id = Number(shipments[0].payment_gateway_id);
