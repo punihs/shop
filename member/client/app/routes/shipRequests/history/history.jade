@@ -129,17 +129,10 @@ div
                               table.table.table-bordered.default.footable-loaded.footable
                                 tr
                                   td Estimated Shipping
-                                  td ₹ {{estimated = shipment.estimated_amount - shipment.package_level_charges_amount - shipment.wallet_amount}}
+                                  td ₹ {{estimated = shipment.estimated_amount - shipment.package_level_charges_amount}}
                                 tr
                                   td Package Level Charges
                                   td ₹ {{shipment.package_level_charges_amount}}
-                                tr(ng-if="shipment.wallet_amount != 0")
-                                  td Shoppre Wallet
-                                  td ₹ {{shipment.wallet_amount}}
-                                    span(ng-if ="shipment.wallet_amount < 0")
-                                      p.pull-right (Amount added)
-                                    span(ng-if="shipment.wallet_amount > 0")
-                                      p.pull-right (Amount deducted)
                                 tr(ng-if="shipment.coupon_amount > 0")
                                   td Coupon Reward
                                   td (-)₹ {{shipment.coupon_amount}}
@@ -223,3 +216,4 @@ div
                                           td.footable-visible {{packageItem.quantity * packageItem.price_amount}}
 
 
+          .clearfix

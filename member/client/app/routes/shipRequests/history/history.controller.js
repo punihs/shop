@@ -24,8 +24,8 @@ class ShipRequestHistoryController {
   getList() {
     this.$http
       .get('/shipments/history')
-      .then(({ data: { shipment } }) => {
-        shipment.forEach(x => this.shipments.push(x));
+      .then(({ data: { shipments } }) => {
+        this.shipments = shipments;
       })
       .catch((err) => {
         this
