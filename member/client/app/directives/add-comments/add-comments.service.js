@@ -22,7 +22,7 @@ class AddCommentController {
   saveNote() {
     this.submitting = true;
     this.$http
-      .put(`/packages/${this.id}/addNote`, this.data)
+      .put(`/packages/${this.id}`, this.data)
       .then(({ data: { message } }) => {
         this
           .toaster

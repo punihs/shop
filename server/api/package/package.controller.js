@@ -353,6 +353,7 @@ exports.update = async (req, res, next) => {
     'customer_id',
     'is_doc',
     'content_type',
+    'notes',
   ];
 
   try {
