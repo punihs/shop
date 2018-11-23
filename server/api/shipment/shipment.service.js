@@ -295,17 +295,6 @@ exports.updateShipmentState = async ({
 
           await Shipment.update(tracking, { where: { id: shipment.id } });
         }
-
-        const packageItems = await shipment.getPackages();
-        hookshot
-          .stateChange({
-            nextStateId,
-            shipment,
-            actingUser,
-            packageItems,
-            next,
-          });
-
         break;
       }
       case SHIPMENT_CANCELLED: {
