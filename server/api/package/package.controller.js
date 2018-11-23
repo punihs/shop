@@ -353,6 +353,7 @@ exports.update = async (req, res, next) => {
     'customer_id',
     'is_doc',
     'content_type',
+    'notes',
   ];
 
   try {
@@ -361,6 +362,7 @@ exports.update = async (req, res, next) => {
 
     const pkg = _.pick(req.body, allowed);
     pkg.updated_by = customerId;
+    console.log({ pkg });
 
     await Package
       .update(pkg, { where: { id } });
