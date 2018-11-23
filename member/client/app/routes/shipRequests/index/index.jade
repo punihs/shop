@@ -17,7 +17,7 @@ div
         .h5
           | Kindly Submit your Payment within 7 DAYS after you have received Shoppre's email titled "Submit Payment | Your Shipment is packed and weighed".
         .h5.m-t-xs
-          | From the 8th day, your parcel will start accumulating Storage fees of INR 100/day which you can view in your Shoppre wallet.
+          | From the 8th day, your parcel will start accumulating Storage fees of INR 100/day.
           span(ng-bind='" " + $ctrl.TITLE')
 
     // - Content Area
@@ -135,17 +135,10 @@ div
                                   table.table.table-bordered.default.footable-loaded.footable
                                     tr
                                       td Estimated Shipping
-                                      td ₹ {{estimated = shipment.estimated_amount - shipment.package_level_charges_amount - shipment.wallet_amount}}
+                                      td ₹ {{estimated = shipment.estimated_amount - shipment.package_level_charges_amount}}
                                     tr
                                       td Package Level Charges
                                       td ₹ {{shipment.package_level_charges_amount}}
-                                    tr(ng-if="shipment.wallet_amount != 0")
-                                      td Shoppre Wallet
-                                      td ₹ {{shipment.wallet_amount}}
-                                        span(ng-if ="shipment.wallet_amount < 0")
-                                          p.pull-right (Amount added)
-                                        span(ng-if="shipment.wallet_amount > 0")
-                                          p.pull-right (Amount deducted)
                                     tr(ng-if="shipment.coupon_amount > 0")
                                       td Coupon Reward
                                       td (-)₹ {{shipment.coupon_amount}}
