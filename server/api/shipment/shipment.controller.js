@@ -1105,9 +1105,7 @@ exports.payResponse = async (req, res, next) => {
         amount,
       };
 
-      res.redirect(`${sucessURL}?${stringify({
-        params,
-      })}`);
+      res.redirect(`${sucessURL}?${stringify(params)}`);
     } else {
       await updateShipmentState({
         shipment,
