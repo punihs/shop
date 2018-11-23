@@ -93,7 +93,7 @@ exports.show = async (req, res, next) => {
   }
 };
 
-const addFollowers = async ({ userIds, objectId }) => {
+const addFollowers = async ({ userIds, objectId, next }) => {
   try {
     const followers = userIds
       .map(followerId => ({
@@ -140,8 +140,8 @@ exports.create = async (req, res, next) => {
           userIds: [
             req.user.id,
             req.body.customer_id,
-            next,
           ],
+          next,
         });
 
         const charges = { id };
