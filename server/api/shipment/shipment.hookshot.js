@@ -7,6 +7,8 @@ const { User } = require('../../conn/sqldb');
 
 const { SHIPMENT_STATE_ID_NAMES_MAP } = require('../../config/constants');
 
+const toJSON = object => (object.toJSON ? object.toJSON() : object);
+
 exports.stateChange = async ({
   actingUser, shipment, packages, nextStateId, address, paymentGateway, gateway, next
 }) => {
@@ -24,10 +26,10 @@ exports.stateChange = async ({
       before: null,
       nextStateId,
       nextStateName: SHIPMENT_STATE_ID_NAMES_MAP[nextStateId],
-      shipment: { ...shipment },
+      shipment: { ...toJSON(shipment) },
       paymentGateway,
       packages,
-      customer: customer.toJSON(),
+      customer: toJSON(customer),
       actingUser,
       ENV: viewConfig,
       address,
