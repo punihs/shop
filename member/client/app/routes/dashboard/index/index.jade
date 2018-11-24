@@ -57,9 +57,9 @@ div
 
           a.m-l-sm(
             target='_blank'
-            href='https://www.shoppre.com/offers/diwali-shopping-and-courier-from-india-shipping-offer/'
+            href='{{$ctrl.currentOffer.link}}'
           )
-            | Diwali Offer
+           span(ng-bind='$ctrl.currentOffer.name')
 
       div(style='position: fixed;right: 5px;z-index: 9;margin-top: 9px;')
         ul.nav.nav-pills.nav-sm
