@@ -7,7 +7,7 @@ const { User, Store } = require('../../conn/sqldb');
 
 const log = debug('s-api-package-notification');
 
-const toJSON = object => (object.toJSON ? object.toJSON() : object)
+const toJSON = object => (object.toJSON ? object.toJSON() : object);
 
 exports.stateChange = async ({
   actingUser, pkg, nextStateId, lastStateId, next,
@@ -16,7 +16,8 @@ exports.stateChange = async ({
     const customer = await User
       .findById(pkg.customer_id, {
         attributes: [
-          'id', 'name', 'salutation', 'first_name', 'last_name', 'email', 'virtual_address_code', 'phone',
+          'id', 'name', 'salutation', 'first_name', 'last_name', 'email',
+          'virtual_address_code', 'phone',
         ],
       });
 
@@ -38,6 +39,8 @@ exports.stateChange = async ({
         customer: toJSON(customer),
         ENV: viewConfig,
       }, headers);
+
+    return null;
   } catch (err) {
     return next(err);
   }

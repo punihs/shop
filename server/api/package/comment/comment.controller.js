@@ -2,8 +2,6 @@ const debug = require('debug');
 
 const { OBJECT_TYPES: { PACKAGE } } = require('../../../config/constants');
 
-const logger = require('../../../components/logger');
-
 const db = require('../../../conn/sqldb');
 
 const {

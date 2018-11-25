@@ -13,7 +13,7 @@ const {
     DAMAGED,
     IN_REVIEW,
   },
-  PHOTO_REQUEST_TYPES: { BASIC, ADVANCED },
+  PHOTO_REQUEST_TYPES: { STANDARD, ADVANCED },
   PHOTO_REQUEST_STATES: { COMPLETED },
   GROUPS: { OPS, CUSTOMER },
   PACKAGE_TYPES: { INCOMING },
@@ -22,8 +22,6 @@ const {
   PACKAGE: { STANDARD_PHOTO, ADVANCED_PHOTO },
 } = require('../../config/constants/charges');
 const { packageCreate } = require('./package.schema');
-
-const logger = require('../../components/logger');
 
 const db = require('../../conn/sqldb');
 
@@ -243,19 +241,6 @@ exports.state = async (req, res, next) => {
     }
 
     if ([READY_TO_SHIP].includes(stateId)) {
-      const photoRequest = await Package
-        .findById(req.params.id, {
-          attributes: ['id'],
-          include: [{
-            model: PackageState,
-            where: { state_id: [STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST] },
-          }],
-        });
-
-      // if (!photoRequest) {
-      //   return res.status(400).json({ message: 'Please check and update the Photo Request Status !' });
-      // }
-
       if (!pkg.weight) {
         return res.status(400).json({ message: 'Please update weight of the package' });
       }
@@ -263,7 +248,7 @@ exports.state = async (req, res, next) => {
       if (!pkg.price_amount) {
         return res.status(400).json({ message: 'Please update package value' });
       }
-    } else if ([STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST].includes(req.body.state_id)) {
+    } else if ([STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST].includes(stateId)) {
       const { id: packageId } = req.params;
       const { type } = req.body;
       const IS_BASIC_PHOTO = type === 'standard_photo';
@@ -304,7 +289,7 @@ exports.state = async (req, res, next) => {
 
       await PhotoRequest.create({
         package_id: packageId,
-        type: IS_BASIC_PHOTO ? BASIC : ADVANCED,
+        type: IS_BASIC_PHOTO ? STANDARD : ADVANCED,
         status: COMPLETED,
         charge_amount: CHARGE,
       });

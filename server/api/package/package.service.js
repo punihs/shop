@@ -37,7 +37,9 @@ const log = debug('s-api-package-service');
 
 const kvmap = (arr, key, value) => arr.reduce((nxt, x) => ({ ...nxt, [x[key]]: x[value] }), {});
 
-exports.index = async ({ query, params, user: actingUser, next }) => {
+exports.index = async ({
+  query, params, user: actingUser, next,
+}) => {
   try {
     // - Locker Page or Member Dashboard
     const IS_CUSTOMER_PAGE = !!params.customerId;
@@ -204,11 +206,11 @@ exports.index = async ({ query, params, user: actingUser, next }) => {
               customer_id: actingUser.id,
             },
           })
-          .then(packages => PackageState
+          .then(pkgs => PackageState
             .findAll({
               attributes: [[sequelize.fn('count', 1), 'cnt'], 'state_id'],
               where: {
-                id: packages.map(x => x.package_state_id),
+                id: pkgs.map(x => x.package_state_id),
               },
               group: ['state_id'],
               raw: true,
@@ -218,7 +220,7 @@ exports.index = async ({ query, params, user: actingUser, next }) => {
             const stateIdCountMap = kvmap(packageStateGroups, 'state_id', 'cnt');
 
             // grouping based on buckets
-            const facets = Object
+            const facetsMap = Object
               .keys(BUCKET)
               .reduce((nxt, buck) => {
                 const aggregate = BUCKET[buck]
@@ -226,7 +228,8 @@ exports.index = async ({ query, params, user: actingUser, next }) => {
 
                 return { ...nxt, [buck]: aggregate };
               }, {});
-            return facets;
+
+            return facetsMap;
           }),
 
       ]);

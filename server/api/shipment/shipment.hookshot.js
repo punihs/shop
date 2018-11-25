@@ -10,7 +10,7 @@ const { SHIPMENT_STATE_ID_NAMES_MAP } = require('../../config/constants');
 const toJSON = object => (object.toJSON ? object.toJSON() : object);
 
 exports.stateChange = async ({
-  actingUser, shipment, packages, nextStateId, address, paymentGateway, gateway, next
+  actingUser, shipment, packages, nextStateId, address, paymentGateway, gateway, next,
 }) => {
   try {
     const customer = await User

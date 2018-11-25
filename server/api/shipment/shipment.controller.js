@@ -562,15 +562,21 @@ exports.shipQueue = async (req, res, next) => {
         model: ShipmentState,
         attributes: ['state_id'],
         where: {
-          state_id: [PACKAGING_REQUESTED, PAYMENT_REQUESTED, INVOICE_REQUESTED,
-            PAYMENT_COMPLETED, PAYMENT_FAILED, PAYMENT_CONFIRMED, UPSTREAM_SHIPMENT_REQUEST_CREATED],
+          state_id: [
+            PACKAGING_REQUESTED, PAYMENT_REQUESTED, INVOICE_REQUESTED,
+            PAYMENT_COMPLETED, PAYMENT_FAILED, PAYMENT_CONFIRMED,
+            UPSTREAM_SHIPMENT_REQUEST_CREATED,
+          ],
         },
       }, {
         model: Package,
         attributes: ['id', 'created_at', 'weight', 'price_amount'],
         include: [{
           model: PackageItem,
-          attributes: ['id', 'quantity', 'price_amount', 'total_amount', 'object', 'name'],
+          attributes: [
+            'id', 'quantity', 'price_amount', 'total_amount',
+            'object', 'name',
+          ],
         }, {
           model: Store,
           attributes: ['id', 'name'],

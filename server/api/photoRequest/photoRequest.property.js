@@ -1,6 +1,6 @@
 const {
   PHOTO_REQUEST_STATES: { PENDING, COMPLETED },
-  PHOTO_REQUEST_TYPES: { BASIC, ADVANCED },
+  PHOTO_REQUEST_TYPES: { STANDARD, ADVANCED },
 } = require('../../config/constants');
 
 module.exports = DataTypes => ({
@@ -14,7 +14,7 @@ module.exports = DataTypes => ({
   },
   type: {
     type: DataTypes.ENUM,
-    values: [BASIC, ADVANCED],
+    values: [STANDARD, ADVANCED],
   },
   status: {
     type: DataTypes.ENUM,

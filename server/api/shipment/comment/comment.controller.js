@@ -2,7 +2,6 @@ const debug = require('debug');
 
 const log = debug('shipment');
 
-const logger = require('../../../components/logger');
 const db = require('../../../conn/sqldb');
 const { OBJECT_TYPES: { SHIPMENT } } = require('../../../config/constants');
 

@@ -79,15 +79,13 @@ exports.create = async (req, res, next) => {
 
     const { is_default: isDefault } = req.body;
 
-    let address = Promise.resolve({});
-
     if (isDefault) {
       const where = {
         is_default: true,
         customer_id: req.user.id,
       };
 
-      address = await Address
+      await Address
         .count({ where })
         .then((found) => {
           if (!found) return Promise.resolve();
