@@ -43,6 +43,13 @@ class PackagesIndexController {
     this.user = this.Session.read('userinfo');
     this.PACKAGE_STATE_IDS = this.CONFIG.PACKAGE_STATE_IDS;
     this.buckets = this.CONFIG.PACKAGE_STATES.map(x => x.replace(/ /g, '_').toUpperCase());
+    this.bucketIcons = {
+      0: 'fa-rocket',
+      1: 'fa-scanner',
+      2: 'fa-exclamation-circle',
+      3: 'fa-shopping-cart',
+      4: 'fa-ballot-check',
+    };
 
     // Set default bucket to ALL
     if (!this.buckets.includes(this.$stateParams.bucket)) {

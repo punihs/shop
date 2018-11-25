@@ -17,14 +17,20 @@ div
       style='position:fixed;z-index: 6;height: 42px;'
     )
       ul.nav.nav-pills.nav-sm.m-t-xs.shoppre-nav-pills
-        li(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active" ng-show="$ctrl.buckets")
+        li.hidden-xs(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active" ng-show="$ctrl.buckets")
           a(
            ui-sref='packages.index({ bucket: bucket })'
            style='padding: 6px 9px;'
           )
             span(ng-bind='$ctrl.replaceCharWithSpace(bucket, "_")')
             span.badge.bg-info.pull-right(ng-bind='$ctrl.facets[bucket]')
-
+        li.hidden-sm.hidden-md.hidden-lg.xs(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active" ng-show="$ctrl.buckets")
+          a(
+            ui-sref='packages.index({ bucket: bucket })'
+            style='padding: 6px 9px;'
+          )
+            span.fas(ng-class='$ctrl.bucketIcons[$index]')
+            span.badge.bg-info.pull-right(ng-bind='$ctrl.facets[bucket]')
     div(style='position: fixed;right: 5px;z-index: 9;margin-top: 5px;')
       a.btn-info.btn.btn-sm(
         ui-sref='packages.create'
