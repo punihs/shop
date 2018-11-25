@@ -50,24 +50,38 @@
 
 
     ul.nav.navbar-nav.navbar-right
-      li
+      li.hidden-xs
+        form(action='https://ship.shoppre.com')
+          i.nav-serach-icon.fa.fa-search(title='Search')
+          input.col-xs-12.search-box(type="text" id="txtSearch" name="s" placeholder="Search..")
+      li.hidden-lg.hidden-md.hidden-sm
         .topnav
           .search-container.text-black
             form(action='https://ship.shoppre.com')
               i.nav-serach-icon.fa.fa-search(title='Search')
-              input.search-box(type="text" id="txtSearch" name="s" placeholder="Search..")
+              input.search-box.w-full(type="text" id="txtSearch" name="s" placeholder="Search..")
+      li.hidden-lg.hidden-md.hidden-sm
+        a(href='https://staging-ship.shoppre.com')
+          span Help
+      li.hidden-lg.hidden-md.hidden-sm
+        a(ui-sref='users.profile') My Accounts
+      li.hidden-lg.hidden-md.hidden-sm
+        a(ui-sref='users.password()') Change Password
+      li.hidden-lg.hidden-md.hidden-sm
+        a(ng-click='logout.$onInit()') Logout
       li
-        a.n-hv(
+        a.n-hv.hidden-xs(
           uib-popover-template='"components/navbar/popover.html"'
           popover-trigger='"outsideClick"'
           popover-placement='bottom-right'
-          popover-is-open='NavBar.isOpen')
+          popover-is-open='NavBar.isOpen'
+        )
           i.fa.fa-lg.fa-th.text-white.th-scale-y
       li.hide.nav-menu-item
         a.n-hv(ui-sref='notifications', title='Notifications', href='/notifications')
           notify-count
       li
-        a.no-hv.m-t-sm.m-r-sm(
+        a.no-hv.m-t-sm.m-r-sm.hidden-xs(
           uib-popover-template='"components/navbar/profile-popover.html"'
           popover-trigger='"outsideClick"'
           popover-placement='bottom-right'
