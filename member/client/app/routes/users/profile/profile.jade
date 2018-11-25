@@ -58,7 +58,7 @@ div
                         option Mrs
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.salutation.$dirty && profileForm.salutation.$invalid') Please select Title
 
-                  .col-md-2.col-sm-5.col-xs-12.no-padder
+                  .col-md-2.col-sm-5.col-xs-12
                     label.col-xs-12.input-group
                       | First Name
                       input.form.form-control(
@@ -123,7 +123,7 @@ div
                   .col-md-12.col-sm-12.col-xs-12
                     h5 PHONE NUMBERS
                 .row
-                  .col-xs-6
+                  .col-xs-12.col-sm-6
                     .col-md-6.col-sm-6.col-xs-12.no-padder-left
                       label.col-xs-12.input-group
                         | Primary Phone / Mobile Number
@@ -131,7 +131,7 @@ div
                       span.help-block(ng-show='profileForm.phone.$pristine && profileForm.phone.$touched') Please type a telephone number
                       span.help-block(ng-show='profileForm.phone.$invalid && profileForm.phone.$touched') Invalid :(
                       span.help-block(ng-show='profileForm.phone.$valid && profileForm.phone.$touched') Valid :)
-                    .col-md-6.col-sm-6.col-xs-12
+                    .col-md-6.col-sm-6.col-xs-12.no-padder-left
                       label.col-xs-12.input-group
                         | Secondary Phone / Mobile Number
                       input#tel1.form-control(type='text', name='secondary_phone', ng-model='$ctrl.data.secondary_phone', ng-intl-tel-input='')
