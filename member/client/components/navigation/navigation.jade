@@ -12,7 +12,7 @@ ul.nav
     a.auto(href='' ng-click='$ctrl.toggle("packages")')
       span.pull-right.text-muted
         i.fa.fa-fw.fa-angle-right.text
-      i.fas.fa-cubes.text-danger-dk
+      i.fas.fa-cubes.text-white
       span.font-bold Packages
     ul.nav.nav-sub.dk
       li(ui-sref-active='active')
@@ -29,7 +29,7 @@ ul.nav
     a.auto(href='' ng-click='$ctrl.toggle("shipments")')
       span.pull-right.text-muted
         i.fa.fa-fw.fa-angle-right.text
-      i.fas.fa-plane-departure.text-success-dker
+      i.fas.fa-plane-departure.text-white
       span.font-bold Shipments
     ul.nav.nav-sub.dk
       li(ui-sref-active='active')
@@ -43,7 +43,7 @@ ul.nav
     a.text-white.auto(href='' ng-click='$ctrl.toggle("personal-shopper")')
       span.pull-right.text-muted
         i.fa.fa-fw.fa-angle-right.text
-      i.fas.fa-shopping-cart.text-success-dker
+      i.fas.fa-shopping-cart.text-white
       span.font-bold Personal Shopper
     ul.nav.nav-sub.dk
       li(ui-sref-active='active')
@@ -63,14 +63,14 @@ ul.nav
 
   li.hide
     a.auto(ui-sref='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/loyalty-points')
-      i.fas.fa-rupee-sign.text-warning-dker
+      i.fas.fa-rupee-sign.text-white
       span.font-bold My Loyalty Points
 
   li.hide(ng-class='$ctrl.active === "offers" ? "active" : ""')
     a.auto(ng-click='$ctrl.toggle("offers")')
       span.pull-right.text-muted
         i.fa.fa-fw.fa-angle-right.text
-      i.fa.fa-gift.text-warning-dker
+      i.fa.fa-gift.text-white
       span.font-bold Offers
     ul.nav.nav-sub.dk
       li(ui-sref-active='active')
@@ -102,7 +102,7 @@ ul.nav
     a.auto(ng-click='$ctrl.toggle("stores")')
       span.pull-right.text-muted
         i.fa.fa-fw.fa-angle-right.text
-      i.fas.fa-store.text-info-dker
+      i.fas.fa-store.text-white
       span.font-bold Stores
     ul.nav.nav-sub.dk
       li(ui-sref-active='active')
@@ -136,15 +136,15 @@ ul.nav
     span Help
   li
     a(ng-href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/country-guide' target='_blank')
-      i.fas.fa-atlas.text-info
+      i.fas.fa-atlas.text-white
       span.font-bold  Country Guides
   li
     a(ng-href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/services' target='_blank')
-      i.fas.fa-globe-americas.text-info
+      i.fas.fa-globe-americas.text-white
       span.font-bold  Our Services
   li
     a.auto(target='_blank' ng-href='https://blog.{{App.URLS.DOMAIN}}')
-      i.fab.fa-blogger.text-info-dker
+      i.fab.fa-blogger.text-white
       span.font-bold Blog
 
   li.line.dk.hidden-folded
@@ -152,25 +152,25 @@ ul.nav
     span Your Stuff
   li
     a(ui-sref='users.preferences')
-      i.fas.fa-tasks.text-success-lter
-      span Shipping Preferences
+      i.fas.fa-tasks.text-white
+      span.font-bold Shipping Preferences
   li
     a(ui-sref='users.profile')
-      i.fas.fa-user-circle.text-success-lter
+      i.fas.fa-user-circle.text-white
       //b.badge.bg-success.pull-right 30%
-      span Profile
+      span.font-bold Profile
   li
     a(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/refer-a-friend')
-      i.fas.fa-user-friends.text-info-lter
-      span Refer a Friend
+      i.fas.fa-user-friends.text-white
+      span.font-bold Refer a Friend
   li
     a(ui-sref='users.address-index')
-      i.fas.fa-address-book.text-info-lter
-      span Address Book
+      i.fas.fa-address-book.text-white
+      span.font-bold Address Book
   li
     a(ui-sref='users.documents')
-      i.fas.fa-id-card.text-info-lter
-      span Documents
+      i.fas.fa-id-card.text-white
+      span.font-bold Documents
 
 
 
