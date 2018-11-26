@@ -18,7 +18,7 @@ npm run email-deploy;
 kill -HUP $(/usr/sbin/lsof -i:5004 -t);
 cd ..
 
-cd chicken;
+cd engage;
 npm i --production;
 npm run migrate;
 npm run seed;
