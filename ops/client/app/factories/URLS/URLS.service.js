@@ -14,6 +14,7 @@ angular.module('uiGenApp')
 
       API: `${PREFIX}api.${DOMAIN}`,
       PARCEL_API: `${PREFIX}${project}-api.${DOMAIN}`,
+      PAY_API: `${PREFIX}pay-api.${DOMAIN}`,
       CHICKEN_API: `${PREFIX}chicken-api.${DOMAIN}`,
 
       OAUTH: `${PREFIX}accounts.${DOMAIN}/authorise?client_id=ops&response_type=code&` +

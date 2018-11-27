@@ -2,7 +2,7 @@ class shipmentsShowController {
   /* @ngInject */
   constructor(
     $http, $stateParams, URLS, $sce, $state, $window, Page, Session, $q, ChangeShipmentState,
-    pkg, ListModal, toaster) {
+    pkg, ListModal, toaster, $httpParamSerializer) {
     this.Number = Number;
     this.URLS = URLS;
     this.$sce = $sce;
@@ -10,6 +10,7 @@ class shipmentsShowController {
     this.$state = $state;
     this.Page = Page;
     this.Session = Session;
+    this.$httpParamSerializer = $httpParamSerializer;
     this.$q = $q;
     this.$stateParams = $stateParams;
     this.toaster = toaster;
@@ -31,6 +32,7 @@ class shipmentsShowController {
     this.modal = {};
     this.states = this.Session.read('shipment-states');
     this.user = this.Session.read('userinfo');
+    this.paymentMode(this.data);
   }
 
   setMessage(description) {
@@ -68,6 +70,26 @@ class shipmentsShowController {
         this.toaster
           .pop('error', 'There was problem loading data. Please contact ShoppRe team');
       });
+  }
+  paymentMode(data) {
+    if (data.transaction_id) {
+      const params = {
+        object_id: data.order_code,
+        customer_id: data.customer_id,
+      };
+
+      const qs = this.$httpParamSerializer(params);
+      this
+        .$http
+        .get(`$/transactions/${data.transaction_id}/transaction?${qs}`)
+        .then((transaction) => {
+          this.transaction = transaction;
+        })
+        .catch(() => {
+          this.toaster
+            .pop('error', 'There was problem loading data. Please contact ShoppRe team');
+        });
+    }
   }
 
   deleteShipment(shipmentid) {

@@ -92,12 +92,24 @@
               a.text-muted.font-thin Destination Address
               div.text-center(ng-bind='$ctrl.data.address')
 
-          .clear.wrapper-xs(ng-if='$ctrl.data.payment_gateway_id')
+          .clear.wrapper-xs(
+          uib-tooltip="{{$ctrl.data.created_at | date:'MMM d, y'}} IST {{$ctrl.data.created_at | date:'h:mm a'}}"
+          tooltip-placement='right'
+          tooltip-append-to-body='true'
+          )
+            a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
+              i.fa.fa-clock-o.text-muted.fa-lg
+            div
+              a.text-muted.font-thin Shipment Creation Date
+              div
+                span(ng-bind='$ctrl.moment($ctrl.data.created_at).fromNow()')
+
+          .clear.wrapper-xs(ng-if='$ctrl.transaction.data.PaymentGateway.value')
             a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
               i.fa.fa-money.text-muted.fa-lg
-            div
+            div.text-danger
               a.text-muted.font-thin Payment Mode
-              div(ng-bind='$ctrl.data.PaymentGateway.value')
+              div(ng-bind='$ctrl.transaction.data.PaymentGateway.value')
 
           .clear.wrapper-xs(ng-if='$ctrl.data.price_amount')
             a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
@@ -114,18 +126,6 @@
               a.text-muted.font-thin Gift Note
               div
                 span(ng-bind='$ctrl.data.ShipmentMetum.gift_note_text')
-
-          .clear.wrapper-xs(
-          uib-tooltip="{{$ctrl.data.created_at | date:'MMM d, y'}} IST {{$ctrl.data.created_at | date:'h:mm a'}}"
-          tooltip-placement='right'
-          tooltip-append-to-body='true'
-          )
-            a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
-              i.fa.fa-clock-o.text-muted.fa-lg
-            div
-              a.text-muted.font-thin Date & Time of Receive
-              div
-                span(ng-bind='$ctrl.moment($ctrl.data.created_at).fromNow()')
 
           .clear.wrapper-xs(ng-if='$ctrl.data.ShipmentMetum.mark_personal_use')
             a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
