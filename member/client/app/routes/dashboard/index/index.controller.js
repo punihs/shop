@@ -15,7 +15,7 @@ class DashboardIndexController {
 
     this.Page.setTitle('Dashboard');
     this.$http
-      .get('https://cp.shoppre.com/offers/current.json')
+      .get('https://cp.shoppre.com/offers/current.json/')
       .then((offer) => {
         this.currentOffer = offer.data;
       });
