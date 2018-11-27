@@ -254,7 +254,7 @@ exports.state = async (req, res, next) => {
       const IS_BASIC_PHOTO = type === 'standard_photo';
 
       const CHARGE = IS_BASIC_PHOTO ? STANDARD_PHOTO : ADVANCED_PHOTO;
-      const REVEW_TEXT = IS_BASIC_PHOTO ? 'Basic' : 'Advanced';
+      const REVEW_TEXT = IS_BASIC_PHOTO ? 'Standard' : 'Advanced';
       let status = '';
 
       if (!packageId && !Number(packageId)) {
@@ -279,7 +279,7 @@ exports.state = async (req, res, next) => {
           attributes: ['id'],
           where: {
             package_id: packageId,
-            type: IS_BASIC_PHOTO ? BASIC : ADVANCED,
+            type: IS_BASIC_PHOTO ? STANDARD : ADVANCED,
           },
         });
 
