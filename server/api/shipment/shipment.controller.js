@@ -673,9 +673,9 @@ exports.cancelRequest = async (req, res, next) => {
     const { id: customerId } = req.user;
     const { id: shipmentId } = req.params;
 
-    const shipment = Shipment
+    const shipment = await Shipment
       .find({
-        attributes: ['id', 'created_at', 'order_code'],
+        attributes: ['id', 'created_at', 'order_code', 'customer_id'],
         where: {
           customer_id: customerId,
           id: shipmentId,
