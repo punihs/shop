@@ -251,10 +251,10 @@ exports.state = async (req, res, next) => {
     } else if ([STANDARD_PHOTO_REQUEST, ADVANCED_PHOTO_REQUEST].includes(stateId)) {
       const { id: packageId } = req.params;
       const { type } = req.body;
-      const IS_BASIC_PHOTO = type === 'standard_photo';
+      const IS_STANDARD_PHOTO = type === 'standard_photo';
 
-      const CHARGE = IS_BASIC_PHOTO ? STANDARD_PHOTO : ADVANCED_PHOTO;
-      const REVEW_TEXT = IS_BASIC_PHOTO ? 'Basic' : 'Advanced';
+      const CHARGE = IS_STANDARD_PHOTO ? STANDARD_PHOTO : ADVANCED_PHOTO;
+      const REVEW_TEXT = IS_STANDARD_PHOTO ? 'Standard' : 'Advanced';
       let status = '';
 
       if (!packageId && !Number(packageId)) {
@@ -279,7 +279,7 @@ exports.state = async (req, res, next) => {
           attributes: ['id'],
           where: {
             package_id: packageId,
-            type: IS_BASIC_PHOTO ? BASIC : ADVANCED,
+            type: IS_STANDARD_PHOTO ? STANDARD : ADVANCED,
           },
         });
 
@@ -289,7 +289,7 @@ exports.state = async (req, res, next) => {
 
       await PhotoRequest.create({
         package_id: packageId,
-        type: IS_BASIC_PHOTO ? STANDARD : ADVANCED,
+        type: IS_STANDARD_PHOTO ? STANDARD : ADVANCED,
         status: COMPLETED,
         charge_amount: CHARGE,
       });
@@ -297,7 +297,7 @@ exports.state = async (req, res, next) => {
       await PackageCharge
         .upsert({ id: packageId, [`${type}_amount`]: CHARGE });
 
-      if (!IS_BASIC_PHOTO) {
+      if (!IS_STANDARD_PHOTO) {
         status = !packg.PackageItems[0].object_advanced
           ? 'pending'
           : 'completed';
