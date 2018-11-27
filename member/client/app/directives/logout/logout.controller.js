@@ -9,19 +9,14 @@ class LogoutController {
 
   $onInit() {
     this.notify = this.Session.read('notify');
-    if (!this.Session.read('oneSignalPlayerId')) {
-      return this.$http
-        .delete(`/notificationSubscriptions/${this.Session.read('oneSignalPlayerId')}`)
-        .then(() => this.Auth
-          .logout())
-        .then(() => this.cleanup(), () => this.cleanup())
-        .catch(() => this.cleanup());
-    } else {
-      return this.Auth
-        .logout()
-        .then(() => this.cleanup(), () => this.cleanup())
-        .catch(() => this.cleanup());
+    if (this.Session.read('oneSignalPlayerId')) {
+      this.$http
+        .delete(`/notificationSubscriptions/${this.Session.read('oneSignalPlayerId')}`);
     }
+    return this.Auth
+      .logout()
+      .then(() => this.cleanup(), () => this.cleanup())
+      .catch(() => this.cleanup());
   }
 
   cleanup() {
