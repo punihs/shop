@@ -13,9 +13,14 @@ class PreferencesController {
     this.defaultAddress = {};
     this.$http
       .get(`/users/${this.Session.read('userinfo').id}/shippingPreference`)
-      .then(({ data: { shippingPreference } }) => {
-        this.defaultAddress = shippingPreference.User.Addresses[0];
+      .then(({ data: { shippingPreference, userAddress } }) => {
+        this.shippingPreference = shippingPreference;
+        this.userAddress = userAddress.Addresses[0];
         this.data = shippingPreference;
+      }).catch(() => {
+        this
+          .toaster
+          .pop('error', 'error in updating shipping preference');
       });
   }
 
