@@ -1,10 +1,10 @@
 const WebHooks = require('node-webhooks');
-const { root, env } = require('../config/environment');
+const { root } = require('../config/environment');
 
 const { log } = console;
 
 const hookshot = new WebHooks({
-  db: `${root}/${env}-subscriptions.json`,
+  db: `${root}/subscriptions.json`,
   DEBUG: true,
 });
 
