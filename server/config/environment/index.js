@@ -16,7 +16,7 @@ const config = {
     URLS_API: `${env.PREFIX}api.${env.DOMAIN}`,
     URLS_PARCEL: `${env.PREFIX}parcel.${env.DOMAIN}`,
     URLS_WWW: `${env.PREFIX}www.${env.DOMAIN}`,
-    URLS_SHIP: `${env.PREFIX}logistics-api.${env.DOMAIN}`,
+    URLS_SHIP: `${env.PREFIX}ship-api.${env.DOMAIN}`,
     PREFIX: `${env.PREFIX}`,
     DOMAIN: `${env.DOMAIN}`,
     auth: {
