@@ -81,7 +81,7 @@ class shipmentsShowController {
       const qs = this.$httpParamSerializer(params);
       this
         .$http
-        .get(`$/transactions/${data.transaction_id}/transaction?${qs}`)
+        .get(`$/transactions/${data.transaction_id}/response?${qs}`)
         .then((transaction) => {
           this.transaction = transaction;
         })
