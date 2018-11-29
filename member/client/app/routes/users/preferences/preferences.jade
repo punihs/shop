@@ -31,25 +31,27 @@ div
                   .row
                     .col-md-8
                       h5.font-bold.no-padder.no-margin-top.no-margin-bottom DEFAULT SHIPPING ADDRESS
-                      a.text-info(ui-sref='users.address-new', ng-if='$ctrl.defaultAddress == ""') + Add A Shipping Address
-                      .well.m-t-sm.m-l.bg-light.col-md-4.hover-wrap.no-margin-left(ng-class='dker', ng-if='$ctrl.defaultAddress != ""')
+                      a.text-info(ui-sref='users.address-create', ng-if='!$ctrl.userAddress')
+                        br
+                        p + Add A Shipping Address
+                      .well.m-t-sm.m-l.bg-light.col-md-4.hover-wrap.no-margin-left(ng-class='dker', ng-if='$ctrl.userAddress')
                         .row
                           .wrapper-sm
                             .h4
-                              span.h4.font-thin(ng-bind='($ctrl.defaultAddress.city ? $ctrl.defaultAddress.city.toUpperCase() : "") + " Address"')
+                              span.h4.font-thin(ng-bind='($ctrl.userAddress.city ? $ctrl.userAddress.city.toUpperCase() : "") + " Address"')
                               span.flag-icon.m-l-xs(
-                              ng-class='"flag-icon-"+ $ctrl.defaultAddress.Country.iso2.toLowerCase()'
+                              ng-class='"flag-icon-"+ $ctrl.userAddress.Country.iso2.toLowerCase()'
                               )
-                            strong(ng-bind='$ctrl.defaultAddress.first_name + " " + $ctrl.defaultAddress.last_name')
+                            strong(ng-bind='$ctrl.userAddress.first_name + " " + $ctrl.userAddress.last_name')
 
                             p
-                              small.block(ng-bind='$ctrl.defaultAddress.line1')
-                              small.block(ng-bind='$ctrl.defaultAddress.line2')
-                              small.block(ng-bind='$ctrl.defaultAddress.city + ", " + $ctrl.defaultAddress.state')
-                              small.block(ng-bind='$ctrl.defaultAddress.Country.name + " - " + $ctrl.defaultAddress.pincode')
+                              small.block(ng-bind='$ctrl.userAddress.line1')
+                              small.block(ng-bind='$ctrl.userAddress.line2')
+                              small.block(ng-bind='$ctrl.userAddress.city + ", " + $ctrl.userAddress.state')
+                              small.block(ng-bind='$ctrl.userAddress.Country.name + " - " + $ctrl.userAddress.pincode')
                               small.block(
-                              ng-if='$ctrl.defaultAddress.phone'
-                              ng-bind='$ctrl.defaultAddress.phone'
+                              ng-if='$ctrl.userAddress.phone'
+                              ng-bind='$ctrl.userAddress.phone'
                               )
                               span.label.pull-left.padding-5.m-t-xs.bg-primary DEFAULT SHIPPING ADDRESS
                       .line.line-dashed.b-b.m-t.m-b.pull-in
