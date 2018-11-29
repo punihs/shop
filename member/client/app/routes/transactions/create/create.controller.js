@@ -67,10 +67,11 @@ class TransactionCreateController {
 
   applyPromoCode() {
     if (this.couponApplied) {
-      return this.message = `Coupon ${this.couponCode} already Applied`;
+      this.couponCode = this.couponCodeApplied;
+      return this.success = `Coupon Code ${this.couponCodeApplied} already Applied`;
     }
     if (this.couponCode) {
-      this.couponCodeApplied = this.couponCode;
+      this.couponCodeApplied = this.couponCode.toString().toUpperCase();
       const querystring = `amount=${this.amount}&coupon_code=${this.couponCode}`;
       this.$http
         .put(`$/api/coupon?${querystring}`)
@@ -81,13 +82,15 @@ class TransactionCreateController {
           this.couponApplied = true;
           this.selectedGateway();
           console.log('after amount', this.amount);
-          this.message = `Coupon Code  ${this.couponCode} Applied `;
+          this.message = '';
+          this.success = `Coupon Code  ${this.couponCodeApplied} Applied `;
         })
         .catch((err) => {
           this
             .toaster
             .pop('error', err.data.message);
           this.message = err.data.message;
+          this.success = '';
         });
     } else {
       this.message = 'Enter Coupon Code';

@@ -43,6 +43,8 @@ div
                     .col-sm-12
                       div.text-center.invalid-promo(ng-if="$ctrl.message")
                         | {{$ctrl.message}}
+                      div.text-center.valid-promo(ng-if="$ctrl.success")
+                        | {{$ctrl.success}}
                       div.promo-success.text-center(ng-if="$ctrl.promoStatus === 'cashback_success'")
                         | Promo code {{$ctrl.promoStatus}} applied INR  {{$ctrl.couponAmount}} will be credit in your wallet after shipment dispatched.
                       div.promo-success.text-center(ng-if="$ctrl.promoStatus === 'discount_success'")
@@ -52,7 +54,7 @@ div
                   .clearfix
                   .row
                     .col-sm-8
-                      input.form-control(type='text', name='promocode', ng-model="$ctrl.couponCode", placeholder='Enter Promo Code', style='font-size: 11px;')
+                      input.form-control.text-uppercase(type='text', name='promocode', ng-model="$ctrl.couponCode", placeholder='Enter Promo Code', style='font-size: 11px;')
                     .col-sm-4
                       button.btn.btn-shoppreng(ng-click='$ctrl.applyPromoCode()')
                         | Apply
