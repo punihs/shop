@@ -17,6 +17,8 @@ class TransactionCreateController {
   $onInit() {
     this.data = {};
     this.paymentGateways = [];
+    this.couponApplied = false;
+    this.couponCodeApplied = null;
     this.shipment = {};
     this.Page.setTitle('ShoppRe Pay');
     this.getPaymentGateways();
@@ -64,23 +66,31 @@ class TransactionCreateController {
   }
 
   applyPromoCode() {
+    if (this.couponApplied) {
+      return this.message = `Coupon ${this.couponCode} already Applied`;
+    }
     if (this.couponCode) {
-      const querystring = `order_code=${this.shipment.order_code}&coupon_code=${this.couponCode}`;
+      this.couponCodeApplied = this.couponCode;
+      const querystring = `amount=${this.amount}&coupon_code=${this.couponCode}`;
       this.$http
-        .put(`/redemptions/apply?${querystring}`)
-        .then(({ data: { message } }) => {
-          this.message = message;
-          const params =
-            `&payment_gateway_id=${this.data.paymentGateway}&wallet=${this.params.wallet}`;
-          this.getList(params);
+        .put(`$/api/coupon?${querystring}`)
+        .then(({ data: { finalAmountAfterDiscount, discountAmount } }) => {
+          this.amount = finalAmountAfterDiscount;
+          this.data.amount = finalAmountAfterDiscount;
+          this.data.discountAmount = discountAmount;
+          this.couponApplied = true;
+          this.selectedGateway();
+          console.log('after amount', this.amount);
+          this.message = `Coupon Code  ${this.couponCode} Applied `;
         })
         .catch((err) => {
           this
             .toaster
             .pop('error', err.data.message);
+          this.message = err.data.message;
         });
     } else {
-      this.message = 'Enter Promocode';
+      this.message = 'Enter Coupon Code';
     }
   }
 
@@ -98,6 +108,8 @@ class TransactionCreateController {
       is_wallet: 0,
       payment_gateway_id: this.data.paymentGateway,
       paymentGatewayFeeAmount: this.data.paymentGatewayFeeAmount,
+      coupon_code: this.couponCodeApplied,
+      coupon_amount: this.data.discountAmount,
     };
     const method = 'get';
     return this
