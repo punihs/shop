@@ -171,7 +171,7 @@ class PackagesIndexController {
   replaceCharWithSpace(input, char) {
     if (!input) return '';
 
-    const text = input.replace(new RegExp(char, 'g'), ' ');
+    const text = (input || '').replace(new RegExp(char, 'g'), ' ');
 
     return text;
   }
