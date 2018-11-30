@@ -70,9 +70,11 @@ class TransactionCreateController {
       this.couponCode = this.couponCodeApplied;
       return this.success = `Coupon Code ${this.couponCodeApplied} already Applied`;
     }
+
     if (this.couponCode) {
       this.couponCodeApplied = this.couponCode.toString().toUpperCase();
       const querystring = `amount=${this.amount}&coupon_code=${this.couponCode}`;
+
       this.$http
         .put(`$/api/coupon?${querystring}`)
         .then(({ data: { finalAmountAfterDiscount, discountAmount } }) => {
@@ -80,8 +82,9 @@ class TransactionCreateController {
           this.data.amount = finalAmountAfterDiscount;
           this.data.discountAmount = discountAmount;
           this.couponApplied = true;
+
           this.selectedGateway();
-          console.log('after amount', this.amount);
+
           this.message = '';
           this.success = `Coupon Code  ${this.couponCodeApplied} Applied `;
         })
@@ -104,6 +107,7 @@ class TransactionCreateController {
         .pop('error', 'Select payment Gateway');
     }
     if (this.submitting) return null;
+
     this.params = {
       estimated: this.data.amount,
       object_id: this.data.object_id,
@@ -114,6 +118,7 @@ class TransactionCreateController {
       coupon_code: this.couponCodeApplied,
       coupon_amount: this.data.discountAmount,
     };
+
     const method = 'get';
     return this
       .$http[method]('$/api/transactions/create', { params: this.params })

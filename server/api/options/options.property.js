@@ -6,4 +6,6 @@ module.exports = DataTypes => ({
     allowNull: false,
     unique: true,
   },
+  key: DataTypes.STRING,
+  value: DataTypes.JSON,
 });
