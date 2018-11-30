@@ -17,6 +17,8 @@ class TransactionCreateController {
   $onInit() {
     this.data = {};
     this.paymentGateways = [];
+    this.couponApplied = false;
+    this.couponCodeApplied = null;
     this.shipment = {};
     this.Page.setTitle('ShoppRe Pay');
     this.getPaymentGateways();
@@ -64,23 +66,37 @@ class TransactionCreateController {
   }
 
   applyPromoCode() {
+    if (this.couponApplied) {
+      this.couponCode = this.couponCodeApplied;
+      return this.success = `Coupon Code ${this.couponCodeApplied} already Applied`;
+    }
+
     if (this.couponCode) {
-      const querystring = `order_code=${this.shipment.order_code}&coupon_code=${this.couponCode}`;
+      this.couponCodeApplied = this.couponCode.toString().toUpperCase();
+      const querystring = `amount=${this.amount}&coupon_code=${this.couponCode}`;
+
       this.$http
-        .put(`/redemptions/apply?${querystring}`)
-        .then(({ data: { message } }) => {
-          this.message = message;
-          const params =
-            `&payment_gateway_id=${this.data.paymentGateway}&wallet=${this.params.wallet}`;
-          this.getList(params);
+        .put(`$/api/coupon?${querystring}`)
+        .then(({ data: { finalAmountAfterDiscount, discountAmount } }) => {
+          this.amount = finalAmountAfterDiscount;
+          this.data.amount = finalAmountAfterDiscount;
+          this.data.discountAmount = discountAmount;
+          this.couponApplied = true;
+
+          this.selectedGateway();
+
+          this.message = '';
+          this.success = `Coupon Code  ${this.couponCodeApplied} Applied `;
         })
         .catch((err) => {
           this
             .toaster
             .pop('error', err.data.message);
+          this.message = err.data.message;
+          this.success = '';
         });
     } else {
-      this.message = 'Enter Promocode';
+      this.message = 'Enter Coupon Code';
     }
   }
 
@@ -91,6 +107,7 @@ class TransactionCreateController {
         .pop('error', 'Select payment Gateway');
     }
     if (this.submitting) return null;
+
     this.params = {
       estimated: this.data.amount,
       object_id: this.data.object_id,
@@ -98,7 +115,10 @@ class TransactionCreateController {
       is_wallet: 0,
       payment_gateway_id: this.data.paymentGateway,
       paymentGatewayFeeAmount: this.data.paymentGatewayFeeAmount,
+      coupon_code: this.couponCodeApplied,
+      coupon_amount: this.data.discountAmount,
     };
+
     const method = 'get';
     return this
       .$http[method]('$/api/transactions/create', { params: this.params })
