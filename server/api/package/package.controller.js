@@ -121,7 +121,9 @@ exports.create = async (req, res, next) => {
           'price_amount',
           'customer_id',
           'content_type',
+          'total_quantity',
         ];
+        req.body.total_quantity = 0;
 
         const pkg = _.pick(req.body, allowed);
 
@@ -187,6 +189,7 @@ exports.create = async (req, res, next) => {
         pkg.created_by = req.user.id;
         pkg.package_type = INCOMING;
         pkg.invoice = pkg.object;
+        pkg.total_quantity = 0;
 
         if (!IS_OPS) pkg.customer_id = req.user.id;
 
@@ -226,7 +229,7 @@ exports.state = async (req, res, next) => {
 
     const pkg = await Package
       .findById(req.params.id, {
-        attributes: ['id', 'weight', 'price_amount', 'customer_id'],
+        raw: true,
       });
 
     if ([AWAITING_VERIFICATION, DAMAGED].includes(stateId)) {
