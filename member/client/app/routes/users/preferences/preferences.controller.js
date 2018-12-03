@@ -10,13 +10,13 @@ class PreferencesController {
 
   $onInit() {
     this.Page.setTitle('Shipment Preferences');
-    this.defaultAddress = {};
     this.$http
       .get(`/users/${this.Session.read('userinfo').id}/shippingPreference`)
       .then(({ data: { shippingPreference, userAddress } }) => {
-        this.shippingPreference = shippingPreference;
-        this.userAddress = userAddress.Addresses[0];
         this.data = shippingPreference;
+        if (userAddress) {
+          this.userAddress = userAddress.Addresses[0];
+        }
       }).catch(() => {
         this
           .toaster
