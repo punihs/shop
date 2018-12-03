@@ -36,7 +36,7 @@ exports.return = async (req, res, next) => {
 
     await updateState({
       nextStateId: RETURN_REQUEST_FROM_CUSTOMER,
-      pkg: { id: returnPackid },
+      pkg,
       actingUser: req.user,
       comments: 'Return to sender requested',
       next,
@@ -70,7 +70,7 @@ exports.split = async (req, res, next) => {
 
     await updateState({
       nextStateId: SPLIT_PACKAGE,
-      pkg: { id: splitPackid },
+      pkg,
       actingUser: req.user,
       comments: 'Split Package requested',
       next,
@@ -97,7 +97,7 @@ exports.abandon = async (req, res, next) => {
 
     await updateState({
       nextStateId: DISCARD_REQUESTED,
-      pkg: { id: abandonPackid },
+      pkg: { id: abandonPackid, customer_id: req.user.id },
       actingUser: req.user,
       comments: 'Abandon Package requested',
       next,

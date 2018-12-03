@@ -6,6 +6,9 @@ const hookshot = require('./shipment.hookshot');
 
 const log = debug('s.api.shipment.controller');
 const { updateState } = require('../package/package.service');
+const {
+  SUPPORT_EMAIL_ID, SUPPORT_EMAIL_FIRST_NAME, SUPPORT_EMAIL_LAST_NAME,
+} = require('../../config/environment');
 
 const {
   Shipment, User, Locker, ShipmentState, Address, ShipmentMeta,
@@ -364,11 +367,24 @@ exports.updateShipmentState = async ({
     const { address } = shipment;
     log('gateway', [gateway]);
 
+    const IS_CUSTOMER = actingUser.group_id === CUSTOMER;
+    let opsUser = null;
+
+    if (IS_CUSTOMER) {
+      opsUser = {
+        first_name: SUPPORT_EMAIL_FIRST_NAME,
+        last_name: SUPPORT_EMAIL_LAST_NAME,
+        email: SUPPORT_EMAIL_ID,
+      };
+    } else {
+      opsUser = actingUser;
+    }
+
     hookshot
       .stateChange({
         nextStateId,
         shipment,
-        actingUser,
+        actingUser: opsUser,
         packages: [],
         gateway,
         paymentGateway,

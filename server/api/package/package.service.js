@@ -1,5 +1,8 @@
 const debug = require('debug');
 const sequelize = require('sequelize');
+const {
+  SUPPORT_EMAIL_ID, SUPPORT_EMAIL_FIRST_NAME, SUPPORT_EMAIL_LAST_NAME,
+} = require('../../config/environment');
 
 const {
   APPS, GROUPS: { CUSTOMER, OPS },
@@ -288,13 +291,26 @@ exports.updateState = async ({
       }
     }
 
+    const IS_CUSTOMER = actingUser.group_id === CUSTOMER;
+    let opsUser = null;
+
+    if (IS_CUSTOMER) {
+      opsUser = {
+        first_name: SUPPORT_EMAIL_FIRST_NAME,
+        last_name: SUPPORT_EMAIL_LAST_NAME,
+        email: SUPPORT_EMAIL_ID,
+      };
+    } else {
+      opsUser = actingUser;
+    }
+
     if (!([IN_REVIEW, AWAITING_VERIFICATION, ADDED_SHIPMENT].includes(nextStateId))) {
       hookshot
         .stateChange({
           nextStateId,
           lastStateId,
           pkg,
-          actingUser,
+          actingUser: opsUser,
           next,
         })
         .catch(err => logger.error('statechange notification', nextStateId, pkg, err));
