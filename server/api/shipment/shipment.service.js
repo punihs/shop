@@ -369,6 +369,7 @@ exports.updateShipmentState = async ({
 
     const IS_CUSTOMER = actingUser.group_id === CUSTOMER;
     let opsUser = null;
+
     if (IS_CUSTOMER) {
       opsUser = {
         first_name: SUPPORT_EMAIL_FIRST_NAME,
