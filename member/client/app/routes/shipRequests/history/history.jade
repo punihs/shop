@@ -15,8 +15,7 @@ div
     )
       div.m-t-sm.m-l-md
         .h5
-          | If you would like to alert us about any of your future incoming items that will be
-          | arriving at your locker in our facility, you can provide the details now!
+          | You can Track & find tracking details of your Shipments
           span(ng-bind='" " + $ctrl.TITLE')
 
     // - Content Area
@@ -214,6 +213,7 @@ div
                                           td.footable-visible {{packageItem.quantity}}
                                           td.footable-visible {{packageItem.price_amount}}
                                           td.footable-visible {{packageItem.quantity * packageItem.price_amount}}
-
+                    h3.text-center.text-info(ng-if='$ctrl.shipments.length=== 0')
+                      | No Shipments
 
           .clearfix
