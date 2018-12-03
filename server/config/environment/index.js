@@ -19,6 +19,7 @@ const config = {
     URLS_SHIP: `${env.PREFIX}ship-api.${env.DOMAIN}`,
     PREFIX: `${env.PREFIX}`,
     DOMAIN: `${env.DOMAIN}`,
+    URLS_MYACCOUNT: `${env.PREFIX}myaccount.${env.DOMAIN}`,
     auth: {
       google: {
         scope: 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.email',

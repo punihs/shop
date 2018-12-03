@@ -1,4 +1,5 @@
 const debug = require('debug');
+const sequelize = require('sequelize');
 
 const minio = require('../../../conn/minio');
 const {
@@ -40,14 +41,16 @@ exports.index = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
   try {
-    log('create', req.body);
-
     const pkgItem = await PackageItem
       .create({
         ...req.body,
         package_id: req.params.packageId,
         created_by: req.user.id,
       });
+
+    await Package.update({
+      total_quantity: sequelize.literal('total_quantity + 1') }
+      , { where: { id: req.params.packageId } });
 
     return res.json(pkgItem.id);
   } catch (err) {
