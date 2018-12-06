@@ -144,20 +144,27 @@
               a.font-thin Tax ID
               div
                 span(ng-bind='$ctrl.data.ShipmentMetum.invoice_tax_id')
-          .clear.wrapper-xs(ng-if='$ctrl.data.final_amount')
+          .clear.wrapper-xs(ng-if='$ctrl.transaction.data.amount')
             a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
               i.fa.fa-gift.text-muted.fa-lg
             div.text-danger
               a.font-thin Final Amount
               div
-                span(ng-bind='$ctrl.data.final_amount')
-          .clear.wrapper-xs(ng-if='$ctrl.data.payment_gateway_fee_amount')
+                span(ng-bind='$ctrl.transaction.data.amount')
+          .clear.wrapper-xs(ng-if='$ctrl.transaction.data.payment_gateway_fee_amount')
             a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
               i.fa.fa-gift.text-muted.fa-lg
             div.text-danger
               a.font-thin Payment Gateway Fee
               div
-                span(ng-bind='$ctrl.data.payment_gateway_fee_amount')
+                span(ng-bind='$ctrl.transaction.data.payment_gateway_fee_amount')
+          .clear.wrapper-xs(ng-if='$ctrl.transaction.data.coupon_amount')
+            a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
+              i.fa.fa-gift.text-muted.fa-lg
+            div.text-danger
+              a.font-thin Coupon Rewards
+              div
+                span(ng-bind='$ctrl.transaction.data.coupon_amount')
         uib-tab(index='1' heading='Charges(₹)')
           .clear.wrapper-xs
             div(ng-if='$ctrl.data.ShipmentMetum.repacking_charge_amount > 0')

@@ -1,11 +1,13 @@
 class ShipmentCreateController {
-  constructor(Page, $state, $stateParams, $http, toaster, customer, shipment, Session) {
+  constructor(Page, $state, $stateParams, $http, toaster, customer, shipment,
+    Session, $httpParamSerializer) {
     this.Session = Session;
     this.Page = Page;
     this.$http = $http;
     this.$state = $state;
     this.customer = customer;
     this.$stateParams = $stateParams;
+    this.$httpParamSerializer = $httpParamSerializer;
     this.toaster = toaster;
     this.Number = Number;
     this.$ = $;
@@ -23,6 +25,7 @@ class ShipmentCreateController {
     this.TITLE = `${this.EDIT ? 'Edit' : 'Add New'} Shipment`;
     this.Page.setTitle(this.TITLE);
     this.shipmentTypes = this.Session.read('shipment-types');
+    this.paymentMode(this.data);
   }
 
   reset(newShipmentForm) {
@@ -143,6 +146,27 @@ class ShipmentCreateController {
 
         this.error = err.data;
       });
+  }
+
+  paymentMode(data) {
+    if (data.transaction_id) {
+      const params = {
+        object_id: data.order_code,
+        customer_id: data.customer_id,
+      };
+
+      const qs = this.$httpParamSerializer(params);
+      this
+        .$http
+        .get(`$/transactions/${data.transaction_id}/response?${qs}`)
+        .then((transaction) => {
+          this.transaction = transaction;
+        })
+        .catch(() => {
+          this.toaster
+            .pop('error', 'There was problem loading data. Please contact ShoppRe team');
+        });
+    }
   }
 }
 

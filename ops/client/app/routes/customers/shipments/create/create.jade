@@ -230,7 +230,7 @@ div.m-t-xl.no-margin
                       type='number'
                       name='loyalty_amount'
                       placeholder='eg. 1000'
-                      ng-model='$ctrl.data.loyalty_amount'
+                      ng-model='$ctrl.transaction.data.loyalty_amount'
                       disabled,
                       )
                   .col-md-6.col-sm-5.col-xs-12
@@ -242,7 +242,7 @@ div.m-t-xl.no-margin
                       text=0
                       name='payment_gateway_fee_amount'
                       placeholder='eg. 200'
-                      ng-model='$ctrl.data.payment_gateway_fee_amount'
+                      ng-model='$ctrl.transaction.data.payment_gateway_fee_amount'
                       disabled,
                       )
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
@@ -256,7 +256,7 @@ div.m-t-xl.no-margin
                       type='number'
                       name='wallet_amount'
                       placeholder='eg. 1000'
-                      ng-model='$ctrl.data.wallet_amount'
+                      ng-model='$ctrl.transaction.data.wallet_amount'
                       disabled,
                       )
                   .col-md-6.col-sm-5.col-xs-12
@@ -265,9 +265,9 @@ div.m-t-xl.no-margin
                       span.text-danger *
                       input.form.form-control(
                       type='number'
-                      name='final_amount'
+                      name='amount'
                       placeholder='eg. 200'
-                      ng-model='$ctrl.data.final_amount'
+                      ng-model='$ctrl.transaction.data.amount'
                       disabled,
                       )
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
@@ -281,7 +281,7 @@ div.m-t-xl.no-margin
                       type='number'
                       name='coupon_amount'
                       placeholder='eg. 1000'
-                      ng-model='$ctrl.data.coupon_amount'
+                      ng-model='$ctrl.transaction.data.coupon_amount'
                       disabled,
                       )
                   .col-md-6.col-sm-5.col-xs-12
