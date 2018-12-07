@@ -118,6 +118,9 @@ div
                           th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.bucket==='ALL'")
                             | Status
                             span.footable-sort-indicator
+                          th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.bucket==='MY_ORDERS'")
+                            | Delete
+                            span.footable-sort-indicator
                           th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'" )
                             .checkbox.no-margin
                               label.i-checks
@@ -150,6 +153,8 @@ div
                             a(ng-click='$ctrl.viewPhotos($index, package)')
                               u.text-blue Photos
                           td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='ALL'" ng-bind='package.PackageState.State.name' )
+                          td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='MY_ORDERS'" ng-click="$ctrl.deletePackage(package.id)")
+                            i.m-t-sm.wrapper-xs.fa.fa-trash
                           td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'")
                             .checkbox.no-margin
                               label.i-checks

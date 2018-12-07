@@ -376,9 +376,9 @@ exports.destroy = async (req, res, next) => {
     await Package
       .destroy({ where: { id } });
 
-    res.status(200).json({ message: 'Deleted successfully' });
-  } catch (e) {
-    next(e);
+    return res.json({ message: 'Deleted successfully' });
+  } catch (err) {
+    return next(err);
   }
 };
 

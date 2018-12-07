@@ -277,6 +277,26 @@ class PackagesIndexController {
     this.$state.reload();
   }
 
+  deletePackage(packageid) {
+    const c = confirm;
+    const ok = c('Are you sure? Deleting Your Package');
+    if (!ok) return null;
+
+    return this
+      .$http
+      .delete(`/packages/${packageid}`)
+      .then(({ data: { message } }) => {
+        this.toaster
+          .pop('success', message);
+        this.packages.splice(this.packages.findIndex(l => (l.id === packageid)), 1);
+        this.facets.MY_ORDERS -= 1;
+      })
+      .catch(() => {
+        this.toaster
+          .pop('error', 'There was problem deleting package');
+      });
+  }
+
   viewPhotos(index, packageDetail) {
     const modal = this.PhotoService.open(index, packageDetail);
     modal
