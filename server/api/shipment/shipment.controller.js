@@ -58,7 +58,7 @@ exports.show = async (req, res, next) => {
         const shipment = await Shipment
           .find({
             attributes: ['id', 'value_amount', 'address', 'customer_id', 'weight', 'payment_gateway_id',
-              'order_code', 'final_amount', 'package_level_charges_amount', 'customer_name', 'phone'],
+              'order_code', 'final_amount', 'package_level_charges_amount', 'customer_name', 'phone', 'estimated_amount'],
             where: { order_code: id, customer_id: customerId },
             include: [{
               model: User,
@@ -92,7 +92,7 @@ exports.show = async (req, res, next) => {
         }, {
           model: ShipmentMeta,
           attributes: ['sticker_charge_amount', 'original', 'mark_personal_use', 'invoice_tax_id', 'repacking_charge_amount', 'extra_packing_charge_amount', 'original_ship_box_charge__amount',
-            'consolidation_charge_amount', 'gift_wrap_charge_amount', 'gift_note_charge_amount', 'gift_note_text',
+            'consolidation_charge_amount', 'gift_wrap_charge_amount', 'gift_note_charge_amount', 'gift_note_text', 'other_charge_amount',
             'insurance_amount', 'liquid_charge_amount', 'overweight_charge_amount'],
           where: { id: req.params.id },
         }, {
@@ -157,11 +157,11 @@ exports.update = async (req, res, next) => {
 
     const shipment = await Shipment
       .find({
-        attributes: ['id', 'package_level_charges_amount'],
+        attributes: ['id', 'package_level_charges_amount', 'estimated_amount'],
         where: { id },
         include: [{
           model: ShipmentMeta,
-          attributes: ['id', 'liquid_charge_amount', 'overweight_charge_amount', 'is_liquid'],
+          attributes: ['id', 'liquid_charge_amount', 'overweight_charge_amount', 'is_liquid', 'other_charge_amount'],
           where: { id },
         }],
       });
@@ -169,6 +169,7 @@ exports.update = async (req, res, next) => {
     const updateShipment = req.body;
     const updateMeta = {};
     let packageLevelCharges = shipment.package_level_charges_amount;
+    const otherChargeAmount = req.body.other_charge_amount || 0;
 
     if (shipment.ShipmentMetum.is_liquid === 1) {
       packageLevelCharges -= shipment.ShipmentMetum.liquid_charge_amount || 0;
@@ -191,6 +192,7 @@ exports.update = async (req, res, next) => {
       updateMeta.overweight = '0';
       updateMeta.overweight_charge_amount = 0;
     }
+    updateMeta.other_charge_amount = otherChargeAmount;
 
     await ShipmentMeta.update(updateMeta, { where: { id } });
 
@@ -203,15 +205,16 @@ exports.update = async (req, res, next) => {
     const discountAmount = req.body.discount_amount;
     const pickUpChargeAmount = req.body.pick_up_charge_amount || 0;
     const estimatedAmount =
-      (subTotalAmount - discountAmount) + packageLevelCharges + pickUpChargeAmount;
+      (subTotalAmount - discountAmount) + packageLevelCharges + pickUpChargeAmount
+      + otherChargeAmount;
 
     updateShipment.sub_total_amount = subTotalAmount;
     updateShipment.discount_amount = discountAmount;
     updateShipment.estimated_amount = estimatedAmount;
 
-    const status = await Shipment.update(updateShipment, { where: { id } });
+    await Shipment.update(updateShipment, { where: { id } });
 
-    return res.json(status);
+    return res.json(updateShipment);
   } catch (err) {
     return next(err);
   }

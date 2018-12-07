@@ -101,6 +101,8 @@ class ShipmentCreateController {
 
     const data = Object.assign({ }, this.data);
     Object.assign(data, { liquid_charge_amount: this.data.ShipmentMetum.liquid_charge_amount });
+    Object.assign(data, { other_charge_amount: this.data.ShipmentMetum.other_charge_amount });
+
     if (!form) return (this.submitting = false);
 
     const { shipmentId, id: customerId } = this.$stateParams;
@@ -112,25 +114,22 @@ class ShipmentCreateController {
       'package_level_charges_amount', 'pick_up_charge_amount', 'liquid_charge_amount',
       'estimated_amount', 'coupon_amount', 'loyalty_amount', 'is_axis_banned_item',
       'payment_gateway_fee_amount', 'wallet_amount', 'final_amount', 'shipment_type_id',
-
+      'other_charge_amount',
     ];
+
     const method = 'put';
 
     return this
       .$http[method](`/shipments${shipmentId ? `/${shipmentId}` : ''}`, _.pick(data, allowed))
-      .then(({ data: shipment }) => {
-        this.shipment = shipment;
-        const { Locker = {} } = shipment;
+      .then(({ data: updateShipment }) => {
+        this.data.estimated_amount = updateShipment.estimated_amount;
         this.submitting = false;
 
-        if (!this.customer.Locker) this.customer.Locker = Locker;
         this
           .toaster
           .pop('success', `#${shipmentId} Shipment ${this.EDIT ?
             'Updated'
             : 'Created'} Successfully.`, '');
-        if (this.EDIT) return this.$state.go('shipment.show', { id: shipmentId });
-        return this.reset(newShipmentForm);
       })
       .catch((err) => {
         this.submitting = false;

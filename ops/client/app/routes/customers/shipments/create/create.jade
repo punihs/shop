@@ -169,7 +169,7 @@ div.m-t-xl.no-margin
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
               .row(ng-if='$ctrl.EDIT')
                 .col-md-12
-                  .col-md-6.col-sm-5.col-xs-12.no-padder
+                  .col-md-4.col-sm-5.col-xs-12.no-padder
                     label.col-xs-12.input-group
                       | Package Level charges
                       span.text-danger *
@@ -181,7 +181,7 @@ div.m-t-xl.no-margin
                       required
                       )
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.package_level_charges_amount.$dirty && newShipmentForm.package_level_charges_amount.$invalid') Please enter package level charges
-                  .col-md-6.col-sm-5.col-xs-12
+                  .col-md-4.col-sm-5.col-xs-12
                     label.col-xs-12.input-group
                       | Pickup charges
                       span.text-danger *
@@ -193,6 +193,17 @@ div.m-t-xl.no-margin
                       required
                       )
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.pick_up_charge_amount.$dirty && newShipmentForm.pick_up_charge_amount.$invalid') Please enter pick up charge
+                  .col-md-4.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Other charges
+                      span.text-danger *
+                      input.form.form-control(
+                      ng-init= '$ctrl.data.ShipmentMetum.other_charge_amount = $ctrl.data.ShipmentMetum.other_charge_amount ? $ctrl.data.ShipmentMetum.other_charge_amount: 0'
+                      type='number'
+                      name='other_charge_amount'
+                      placeholder='eg. 200'
+                      ng-model='$ctrl.data.ShipmentMetum.other_charge_amount'
+                      )
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
               .row(ng-if='$ctrl.EDIT')
                 .col-md-12

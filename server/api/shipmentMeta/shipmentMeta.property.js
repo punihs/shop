@@ -27,6 +27,7 @@ module.exports = DataTypes => ({
   insurance_amount: DataTypes.DOUBLE,
   is_liquid: DataTypes.TINYINT,
   liquid_charge_amount: DataTypes.DOUBLE,
+  other_charge_amount: DataTypes.DECIMAL(8, 2),
   overweight: DataTypes.TINYINT,
   overweight_charge_amount: DataTypes.DOUBLE,
   invoice_tax_id: DataTypes.STRING,
