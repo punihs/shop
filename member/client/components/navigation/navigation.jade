@@ -130,6 +130,22 @@ ul.nav
         href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/browse-categories'
         )
           span Browse All
+  li.line.dk
+  li.hidden-folded.padder.m-t.m-b-sm.text-muted.text-xs
+    span Courier
+  li(ng-class='$ctrl.active === "Courier" ? "active" : ""')
+    a.auto(href='' ng-click='$ctrl.toggle("Courier")')
+      span.pull-right.text-muted
+        i.fa.fa-fw.fa-angle-right.text
+      i.fas.fa-plane-departure.text-white
+      span.font-bold Courier
+    ul.nav.nav-sub.dk
+      li(ui-sref-active='active')
+        a(
+        target='_blank'
+        href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/schedule-pickup'
+        )
+          span Schedule Pickup
 
   li.line.dk
   li.hidden-folded.padder.m-t.m-b-sm.text-muted.text-xs
