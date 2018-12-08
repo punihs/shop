@@ -39,13 +39,21 @@ class ChangeShipmentStateController {
 
   ok() {
     if (this.submitting) return;
+    const paymentConfirmed = 22;
     this.submitting = true;
+
     this
       .$http
       .put(`/shipments/${this.shipment.id}/state`, this.data)
       .then(() => {
         this.$uibModalInstance.close(this.data);
+        if (this.data.state_id === paymentConfirmed) {
+          this
+            .$http
+            .put(`$/transactions/${this.shipment.transaction_id}?status=success`);
+        }
         this.submitting = false;
+
         return location.reload(true);
       })
       .catch((response) => {

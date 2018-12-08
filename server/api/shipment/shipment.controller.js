@@ -58,7 +58,8 @@ exports.show = async (req, res, next) => {
         const shipment = await Shipment
           .find({
             attributes: ['id', 'value_amount', 'address', 'customer_id', 'weight', 'payment_gateway_id',
-              'order_code', 'final_amount', 'package_level_charges_amount', 'customer_name', 'phone', 'estimated_amount'],
+              'order_code', 'final_amount', 'package_level_charges_amount', 'customer_name', 'phone',
+              'transaction_id'],
             where: { order_code: id, customer_id: customerId },
             include: [{
               model: User,
@@ -84,7 +85,8 @@ exports.show = async (req, res, next) => {
         attributes: req.query.fl
           ? req.query.fl.split(',')
           : ['id', 'customer_id', 'created_at', 'weight', 'final_weight', 'packages_count',
-            'pick_up_charge_amount', 'payment_gateway_fee_amount', 'final_amount', 'shipment_type_id'],
+            'pick_up_charge_amount', 'payment_gateway_fee_amount', 'final_amount', 'shipment_type_id',
+            'transaction_id'],
         include: [{
           model: ShipmentState,
           attributes: ['id', 'state_id'],
@@ -555,10 +557,10 @@ exports.shipQueue = async (req, res, next) => {
   try {
     const options = {
       attributes: [
-        'id', 'order_code', 'customer_name', 'address', 'payment_gateway_id',
+        'id', 'order_code', 'customer_name', 'address',
         'phone', 'packages_count', 'final_weight', 'wallet_amount', 'package_level_charges_amount',
-        'coupon_amount', 'loyalty_amount', 'estimated_amount', 'created_at', 'payment_status',
-        'final_amount', 'payment_gateway_fee_amount',
+        'loyalty_amount', 'estimated_amount', 'created_at', 'payment_status',
+        'final_amount', 'payment_gateway_fee_amount', 'transaction_id', 'customer_id',
       ],
       where: { customer_id: req.user.id },
       include: [{
@@ -1091,6 +1093,7 @@ exports.payResponse = async (req, res, next) => {
       payment_gateway_id: req.query.pg,
       final_amount: req.query.amount,
       payment_gateway_fee_amount: req.query.pgAmount || 0,
+      payment_status: 'success',
     }, { where: { order_code: req.params.id } });
 
     const SUCCESS = '6';

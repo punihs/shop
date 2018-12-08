@@ -41,6 +41,27 @@ class ShipRequestsIndexController {
 
           return shipment;
         });
+
+        const transactionIds = this.shipments.map(x => x.transaction_id);
+        let transactionId = '';
+        this.$http
+          .get(`$/api/transactions?transactionIds=${transactionIds}`)
+          .then(({ data: transactions }) => {
+            this.transactions = transactions;
+
+            transactionId = transactions.map(x => x.id);
+
+            this.shipments.forEach((ship) => {
+              if (transactionId.includes(ship.transaction_id)) {
+                this.transactions.map((trans) => {
+                  if (ship.transaction_id === trans.id) {
+                    Object.assign(ship, { payment_gate_id: trans.payment_gateway_id });
+                    Object.assign(ship, { payment_status: trans.payment_status });
+                  }
+                });
+              }
+            });
+          });
       })
       .catch((err) => {
         this

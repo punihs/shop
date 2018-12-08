@@ -98,16 +98,16 @@ div
                                     p
                                       a.summary-order(ui-sref='shipRequest.confirm({orderCode: shipment.order_code})') Submit Payment
                                   div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PAYMENT_COMPLETED')
-                                    span(ng-if="$ctrl.payment_gate_id != $ctrl.PAYMENT_GATEWAY.WIRE && $ctrl.payment_gate_id != $ctrl.PAYMENT_GATEWAY.CASH && shipment.payment_status != 'success'")
+                                    span(ng-if="shipment.payment_gate_id != $ctrl.PAYMENT_GATEWAY.WIRE && shipment.payment_gate_id != $ctrl.PAYMENT_GATEWAY.CASH && shipment.payment_status != 'success'")
                                     span(ng-if="shipment.payment_status != 'success'")
                                       p Awaiting Payment
                                       p It might take upto 24 Hours to reflect your payments into our account.
                                       p
                                         a.summary-order(ui-sref='shipRequest.confirm({orderCode: shipment.order_code})') Change Payment Method
-                                    span(ng-if="shipment.payment_status === 'success' && ($ctrl.payment_gate_id == $ctrl.PAYMENT_GATEWAY.CARD || $ctrl.payment_gate_id == $ctrl.PAYMENT_GATEWAY.PAYPAL || $ctrl.payment_gate_id == $ctrl.PAYMENT_GATEWAY.PAYTM)")
+                                    span(ng-if="shipment.payment_status === 'success' && (shipment.payment_gate_id == $ctrl.PAYMENT_GATEWAY.CARD || shipment.payment_gate_id == $ctrl.PAYMENT_GATEWAY.PAYPAL || $ctrl.shipment.payment_gate_id == $ctrl.PAYMENT_GATEWAY.PAYTM)")
                                       p Awaiting Payment
                                       p It might take upto 24 Hours to reflect your payments into our account.
-                                    span(ng-if="shipment.payment_status === 'success' && ($ctrl.payment_gate_id == $ctrl.PAYMENT_GATEWAY.WALLET)")
+                                    span(ng-if="shipment.payment_status === 'success' && (shipment.payment_gate_id == $ctrl.PAYMENT_GATEWAY.WALLET)")
                                       p Awaiting Payment
                                       p It might take upto 24 Hours to confirm your payment from our team.
                                   div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PAYMENT_FAILED')
