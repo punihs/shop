@@ -39,7 +39,7 @@ exports.index = async (req, res, next) => {
 
     log('testing all the requirements');
 
-    return res.json(result);
+    return res.status(201).json(result);
   } catch (err) {
     return next(err);
   }
@@ -409,13 +409,18 @@ exports.invoice = async (req, res, next) => {
   }
 };
 
-exports.damaged = async (req, res) => {
-  const { packageIds } = req.query;
+exports.damaged = async (req, res, next) => {
+  try {
+    const { packageIds } = req.query;
 
-  await PackageState
-    .findAll({
-      attributes: ['id', 'package_id'],
-      where: { package_id: packageIds.split(','), state_id: DAMAGED },
-    }).then(packageStates =>
-      res.json({ packageStates }));
+    const packageStates = await PackageState
+      .findAll({
+        attributes: ['id', 'package_id'],
+        where: { package_id: packageIds.split(','), state_id: DAMAGED },
+      });
+
+    return res.status(201).json({ packageStates });
+  } catch (err) {
+    return next();
+  }
 };
