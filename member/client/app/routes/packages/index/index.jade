@@ -2,7 +2,7 @@ div
   .hbox(style="position:relative")
 
     // - Primary Header
-    .bg-white-only.w-full.b-b(style='position: fixed;z-index: 6;height: 40px;')
+    .bg-white-only.w-full.b-b.p-h
       .pull-left.wrapper-sm.no-padder-top
         span.h4
           i.fas.fa-cubes.m-r
@@ -13,21 +13,19 @@ div
 
 
     // - Secondary Header
-    .bg-light.b-b.padder.w-full.bg-white-only.m-t-xl(
-      style='position:fixed;z-index: 6;height: 42px;'
-    )
+    .bg-light.b-b.padder.w-full.bg-white-only.m-t-xl.s-h
       ul.nav.nav-pills.nav-sm.m-t-xs.shoppre-nav-pills
         li.hidden-xs(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active" ng-show="$ctrl.buckets")
           a(
            ui-sref='packages.index({ bucket: bucket })'
-           style='padding: 6px 9px;'
+           style='padding: 6px 6px;'
           )
             span(ng-bind='$ctrl.replaceCharWithSpace(bucket, "_")')
             span.badge.bg-info.pull-right(ng-bind='$ctrl.facets[bucket]')
-        li.hidden-sm.hidden-md.hidden-lg.xs(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active" ng-show="$ctrl.buckets")
+        li.hidden-sm.hidden-md.hidden-lg.xs.xs-li-m(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active" ng-show="$ctrl.buckets")
           a(
             ui-sref='packages.index({ bucket: bucket })'
-            style='padding: 6px 9px;'
+            style='padding: 6px 6px;'
           )
             span.fas(ng-class='$ctrl.bucketIcons[$index]')
             span.badge.bg-info.pull-right(ng-bind='$ctrl.facets[bucket]')
@@ -86,7 +84,7 @@ div
                           span.badge.bg-warning.pull-right.no-margin.m-t-xs(ng-show='$index === 2' ng-bind='$ctrl.replaceCharWithSpace($ctrl.facets.ACTION_REQUIRED, "_")')
                           span.badge.bg-warning.pull-right.no-margin.m-t-xs(ng-show='$index === 3' ng-bind='$ctrl.replaceCharWithSpace($ctrl.facets.ALL, "_")')
               .full-width
-                .panel.panel-default
+                .panel.panel-default(style="overflow:auto")
                   div
                     .panel-heading
                       | Select Package to Ship
@@ -166,11 +164,11 @@ div
                               table#DataTables_Table_1.table.table-bordered.m-b-none
                                 thead
                                   tr(role='row')
-                                    th.sorting_asc.text-u-c(style='width: 186px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Package Details
-                                    th.sorting.text-u-c(style='width: 242px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') QTY
-                                    th.sorting.text-u-c(style='width: 241px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Value per Unit
-                                    th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending')  Total Value
-                                tbody
+                                    th.sorting_asc.text-u-c(style='', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Package Details
+                                    th.sorting.text-u-c(style='', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') QTY
+                                    th.sorting.text-u-c(style='', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Value per Unit
+                                    th.sorting.text-u-c(style=';', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending')  Total Value
+                                tbody.scroll
                                   tr.odd(role='row' ng-repeat="item in package.PackageItems")
                                     td.item-v-align(ng-bind='item.name')
                                     td.item-v-align(ng-bind='item.quantity')
@@ -182,11 +180,13 @@ div
                                     td.item-v-align(ng-bind='item.quantity * item.price_amount | number: 2')
                                   tr
                                     td(colspan=8)
-                                      p.m-t-md
-                                        | **Values shown are obtained from the merchant invoices, when available. Researched values based on current market prices have been provided above for any items that arrived without invoices. The values should be updated to reflect the actual price paid for each item, and must be confirmed.
-                                      p.m-t-xs
-                                        button.no-padder.btn-link.text-warning.m-r-xs(ng-click='$ctrl.open(package.id, $index)') Add your notes
-                                        | to the package, this is for your use only, Shoppre will not review this area.
+                                      .col-md-12.col-xs12
+                                        p.m-t-md
+                                          | **Values shown are obtained from the merchant invoices, when available. Researched values based on current market prices have been provided above for any items that arrived without invoices. The values should be updated to reflect the actual price paid for each item, and must be confirmed.
+                                      .col-md-12.col-xs12
+                                        p.m-t-xs
+                                          button.no-padder.btn-link.text-warning.m-r-xs(ng-click='$ctrl.open(package.id, $index)') Add your notes
+                                          | to the package, this is for your use only, Shoppre will not review this area.
                                       .col-sm-5.pull-right.right-pad-0
                                         ul.nav.nav-pills.nav-sm.package-submit-ul
                                           li.m-r-xs.pull-right.ng-scope

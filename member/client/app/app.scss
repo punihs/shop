@@ -240,16 +240,7 @@ $fa-font-path: "../bower_components/font-awesome/webfonts";
 .left-padding-5 {
   padding-left: 5px;
 }
-
-@media (max-width: 768px) {
-  .fix-truncate {
-    width: 330px;
-  }
-
-  .fix-min-width {
-    min-width: 420px;
-  }
-}
+.s-h-btn{position:fixed;z-index: 6;height: 42px;}
 
 .truncate {
   white-space: nowrap;
@@ -286,13 +277,6 @@ $fa-font-path: "../bower_components/font-awesome/webfonts";
 .table-jobs > tfoot > tr > td {
   padding: 2px 2px;
 }
-
-@media (max-width: 992px) {
-  .col-divider > div {
-    border-left: 2px solid transparent;
-  }
-}
-
 .no-banner-announcement {
   .banner {
     position: fixed;
@@ -820,20 +804,6 @@ li.dndPlaceholder {
   font-size: 15px;
   text-align: left;
 }
-
-@media only screen and (max-width: 600px) {
-  .invoice-box table tr.top table td {
-    width: 100%;
-    display: block;
-    text-align: center;
-  }
-
-  .invoice-box table tr.information table td {
-    width: 100%;
-    display: block;
-    text-align: center;
-  }
-}
 .invoice-from-width{
   width:25%;
 }
@@ -1122,4 +1092,44 @@ li.dndPlaceholder {
 
 .ship-create-sidebar {
   padding: 10px 15px;
+}
+//
+.p-h{position: fixed;z-index: 6;height: 40px;}
+.s-h{position:fixed;z-index: 6;height: 42px;}
+.xs-li-m{margin-left:0 }
+.scroll{overflow:auto}
+//@media queries
+@media only screen and (max-width: 1024px) {
+
+
+}
+@media (max-width: 992px) {
+  .col-divider > div {
+    border-left: 2px solid transparent;
+  }
+}
+@media (max-width: 768px) {
+  .fix-truncate {
+    width: 330px;
+  }
+
+  .fix-min-width {
+    min-width: 420px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .invoice-box table tr.top table td {
+    width: 100%;
+    display: block;
+    text-align: center;
+  }
+
+  .invoice-box table tr.information table td {
+    width: 100%;
+    display: block;
+    text-align: center;
+  }
+  .xs-li-m{margin-left: 25px;}
+  .h4 {font-size: 12px;}
 }
