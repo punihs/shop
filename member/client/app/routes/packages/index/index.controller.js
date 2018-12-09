@@ -42,7 +42,8 @@ class PackagesIndexController {
 
     this.user = this.Session.read('userinfo');
     this.PACKAGE_STATE_IDS = this.CONFIG.PACKAGE_STATE_IDS;
-    this.buckets = this.CONFIG.PACKAGE_STATES.map(x => x.replace(/ /g, '_').toUpperCase());
+    this.buckets = this.CONFIG.PACKAGE_STATES
+      .map(x => x.toString().replace(/ /g, '_').toUpperCase());
     this.bucketIcons = {
       0: 'fa-rocket',
       1: 'fa-scanner',
