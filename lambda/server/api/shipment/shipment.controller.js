@@ -17,6 +17,10 @@ exports.notification = async (req, res, next) => {
       paymentGateway,
       ENV,
     } = req.body;
+
+    customer.first_name = customer.first_name.charAt(0).toUpperCase() +
+      customer.first_name.slice(1);
+
     const TemplateData = JSON.stringify({
       nextStateId,
       nextStateName,

@@ -17,6 +17,9 @@ exports.notifications = (req, res) => {
     OPS: 'OPS',
   };
 
+  customer.first_name = customer.first_name.charAt(0).toUpperCase() +
+    customer.first_name.slice(1);
+
   event
     .fire({
       ses: [{
