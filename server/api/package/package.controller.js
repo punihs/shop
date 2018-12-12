@@ -12,6 +12,8 @@ const {
     AWAITING_VERIFICATION,
     DAMAGED,
     IN_REVIEW,
+    CUSTOMER_INPUT,
+    UPLOAD_INVOICE_REQUESTED,
   },
   PHOTO_REQUEST_TYPES: { STANDARD, ADVANCED },
   PHOTO_REQUEST_STATES: { COMPLETED },
@@ -243,7 +245,7 @@ exports.state = async (req, res, next) => {
       }
     }
 
-    if ([READY_TO_SHIP].includes(stateId)) {
+    if ([READY_TO_SHIP, CUSTOMER_INPUT, UPLOAD_INVOICE_REQUESTED].includes(stateId)) {
       if (!pkg.weight) {
         return res.status(400).json({ message: 'Please update weight of the package' });
       }
