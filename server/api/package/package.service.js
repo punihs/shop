@@ -172,20 +172,18 @@ exports.index = async ({
           .findAll(options),
         Package
           .count({ where: options.where, include: options.include }),
-        !options.include
-          ? Promise.resolve([])
-          : PackageState
-            .findAll({
-              attributes: [[sequelize.fn('count', 1), 'cnt'], 'state_id'],
-              where: { state_id: BUCKET[bucket] },
-              include: [{
-                where: options.where,
-                model: Package,
-                attributes: [],
-              }],
-              group: ['state_id'],
-              raw: true,
-            }),
+        await PackageState
+          .findAll({
+            attributes: [[sequelize.fn('count', 1), 'cnt'], 'state_id'],
+            where: { state_id: BUCKET[bucket] },
+            include: [{
+              where: options.where,
+              model: Package,
+              attributes: [],
+            }],
+            group: ['state_id'],
+            raw: true,
+          }),
         Shipment
           .count({
             where: { customer_id: actingUser.id },
@@ -242,7 +240,9 @@ exports.index = async ({
         .map(x => (x.PackageState ? ({ ...x.toJSON(), state_id: x.PackageState.state_id }) : x)),
       total,
       facets: newfacets,
-      oldfacets: facets,
+      oldfacets: {
+        state_id: kvmap(facets, 'state_id', 'cnt'),
+      },
       queueCount,
       paymentCount,
     });

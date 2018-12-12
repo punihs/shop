@@ -146,7 +146,7 @@ class PackagesIndexController {
 
     this.$http
       .get('/packages', { params: this.params })
-      .then(({ data: { packages: current, total } }) => {
+      .then(({ data: { packages: current, total, oldfacets } }) => {
         const packages = current;
         // Handle error for php error
         if (typeof packages === 'undefined') {
@@ -196,6 +196,11 @@ class PackagesIndexController {
 
         // increment offset for next loading of results
         this.params.offset = this.params.offset + this.params.limit;
+
+        if (oldfacets) {
+          this.facets.stateIds = Object.keys(oldfacets.state_id)
+            .filter(key => Number(oldfacets.state_id[key])).map(Number);
+        }
       })
       .catch(() => {
         if (!!refresh) this.packages = [];
