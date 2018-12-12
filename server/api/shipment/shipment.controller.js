@@ -593,7 +593,7 @@ exports.shipQueue = async (req, res, next) => {
     const shipments = await Shipment
       .findAll(options);
 
-    return res.json({ shipments });
+    return res.status(201).json({ shipments });
   } catch (err) {
     return next(err);
   }
