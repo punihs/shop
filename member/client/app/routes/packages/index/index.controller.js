@@ -212,7 +212,7 @@ class PackagesIndexController {
   getList() {
     let packageIds = null;
     this.$http
-      .get('/packages', { params: { bucket: this.$stateParams.bucket } })
+      .get('/packages', { params: { bucket: this.$stateParams.bucket, limit: 100 } })
       .then(({ data: { packages, facets, queueCount, paymentCount } }) => {
         packageIds = packages.map((x) => x.id);
 
