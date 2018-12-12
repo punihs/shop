@@ -163,7 +163,7 @@ exports.update = async (req, res, next) => {
         where: { id },
         include: [{
           model: ShipmentMeta,
-          attributes: ['id', 'liquid_charge_amount', 'overweight_charge_amount', 'is_liquid', 'other_charge_amount'],
+          attributes: ['id', 'liquid_charge_amount', 'is_liquid', 'other_charge_amount'],
           where: { id },
         }],
       });
@@ -178,29 +178,12 @@ exports.update = async (req, res, next) => {
       updateMeta.liquid_charge_amount = req.body.liquid_charge_amount;
     }
 
-    if (shipment.ShipmentMetum.overweight === '1') {
-      packageLevelCharges -= shipment.ShipmentMetum.overweight_charge_amount || 0;
-
-      if (req.body.weight > 30) {
-        updateMeta.overweight_charge_amount = 2500.00;
-      } else {
-        updateMeta.overweight = '0';
-        updateMeta.overweight_charge_amount = 0;
-      }
-    } else if (req.body.weight > 30) {
-      updateMeta.overweight = '1';
-      updateMeta.overweight_charge_amount = 2500.00;
-    } else {
-      updateMeta.overweight = '0';
-      updateMeta.overweight_charge_amount = 0;
-    }
     updateMeta.other_charge_amount = otherChargeAmount;
 
     await ShipmentMeta.update(updateMeta, { where: { id } });
 
     packageLevelCharges = Number(packageLevelCharges);
     packageLevelCharges += Number(updateMeta.liquid_charge_amount) || 0;
-    packageLevelCharges += Number(updateMeta.overweight_charge_amount) || 0;
     updateShipment.package_level_charges_amount = packageLevelCharges;
 
     const subTotalAmount = req.body.sub_total_amount;
