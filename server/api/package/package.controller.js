@@ -249,7 +249,7 @@ exports.state = async (req, res, next) => {
       if (!pkg.weight) {
         return res.status(400).json({ message: 'Please update weight of the package' });
       }
-
+    } else if ([READY_TO_SHIP].includes(stateId)) {
       if (!pkg.price_amount) {
         return res.status(400).json({ message: 'Please update package value' });
       }
