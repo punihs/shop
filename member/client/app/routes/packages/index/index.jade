@@ -129,7 +129,7 @@ div
                           td.footable-visible.footable-first-column.text-blue(ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]')
                             i.fa.fa-chevron-circle-down
                           td.footable-visible
-                            a(ui-sref='package.show({ id: package.id })' ng-bind='package.Store.name' title='{{package.id}}')
+                            span.text-info(ng-bind='package.Store.name' title='{{package.id}}')
                             br
                             span.text-info(ng-bind='package.invoice_code')
                             span.badge.bg-success.m-l-xs.text-white(ng-if='package.content_type === "2"') SPECIAL
