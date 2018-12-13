@@ -21,7 +21,7 @@
     a.navbar-brand.text-lt(
       style='line-height: 47px;'
       ng-class="{'company-logo' : App.app.settings.isAdmin, 'consultant-logo': !App.app.settings.isAdmin}"
-      ui-sref='{{App.$state.current.name !== "extension" ? "dash.packages" : ""}}'
+      ui-sref='{{App.$state.current.name !== "extension" ? "dashboard.index" : ""}}'
     )
       img.pull-left(
         style='width: 30px;margin-top: 7px;margin-left: 15px;'
