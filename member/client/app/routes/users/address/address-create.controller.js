@@ -32,7 +32,8 @@ class AddressesCreateController {
       setId: () => {
         const [country] = (this.Country.lastSearchResults || [])
           .filter(item =>
-            (item.name.toString().toLowerCase() === this.Country.model.toString().toLowerCase()));
+            ((item.name || '').toString().toLowerCase() ===
+              (this.Country.model || '').toString().toLowerCase()));
         if (country) this.Country.select(country);
       },
 
