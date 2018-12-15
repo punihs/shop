@@ -15,7 +15,7 @@ exports.index = async (req, res, next) => {
 
     const followers = await Follower
       .findAll({
-        attributes: ['id', 'object_type_id', 'object_id', 'shared_by', 'updater', 'user_id'],
+        attributes: ['id', 'object_type_id', 'object_id', 'shared_by', 'updated_by', 'user_id'],
         where: { object_id: req.params.packageId },
       });
 
