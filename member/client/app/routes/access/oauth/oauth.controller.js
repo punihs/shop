@@ -27,7 +27,7 @@ class OAuthCtrl {
           // Used for updating session
           location.href = query.state
             ? `${location.origin}${query.state}`
-            : $state.href('packages.index', { absolute: true });
+            : $state.href('dashboard.index', { absolute: true });
         }))
       .catch(() => {
         location.href = URLS.OAUTH;
