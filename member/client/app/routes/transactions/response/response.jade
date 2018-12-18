@@ -31,7 +31,7 @@ div
                     strong
                       | Also, it may take up to 7 business days for the amount to reflect in our account, especially in case of International Wire Transfers.
                     |  In such a case, we advise you to opt for an alternative payment method if your shipment is urgent or if you don’t want to be charged with storage cost. Please click here if you wish to
-                    a.summary-order.text-info(ui-sref='transaction.create({ object_id: $ctrl.transaction.object_id, amount: $ctrl.transaction.amount, customer_id: $ctrl.transaction.customer_id })')&nbsp; change the payment method.
+                    a.summary-order.text-info(ui-sref='shipRequest.confirm({ orderCode: $ctrl.transaction.object_id })')&nbsp; change the payment method.
                   .bg-light.well.m-b-xs
                     h4 Account Name: INDIANSHOPPRE LLP
                     p Account Number: 918020022874771
@@ -44,7 +44,7 @@ div
               .col-sm-12.no-padder-left(ng-show = "$ctrl.transaction.payment_gateway_id === $ctrl.paymentGatewayCashID")
                   p.info
                     | We will process your order once your payment is confirmed. In such a case, we advise you to opt for an alternative payment method if your order is urgent or if you don’t want to be charged with storage cost. Please click here if you wish to
-                    a.summary-order.text-info(ui-sref='transaction.create({ orderCode: $ctrl.transaction.object_id, amount: $ctrl.transaction.amount })')&nbsp; change the payment method.
+                    a.summary-order.text-info(ui-sref='shipRequest.confirm({orderCode: $ctrl.transaction.object_id})')&nbsp; change the payment method.
               .clearfix
               .alert.alert-warning.text-center.m-t-xs.m-b-xs(role='alert')
                 h4

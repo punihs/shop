@@ -31,7 +31,7 @@ const {
     SHIPMENT_DELIVERED, SHIPMENT_DELETED, SHIPMENT_REJECTED_BY_CUSTOMER, RETURN_TO_ORIGIN,
     CUSTOMER_ACKNOWLEDGEMENT_RECEIVED, AMOUNT_RECEIVED_FROM_UPSTREAM, INVOICE_REQUESTED,
   },
-  SHIPMENT_HISTORY,
+  SHIPMENT_HISTORY, SHIPMENT_COUNT,
   PACKAGE_STATE_IDS: { READY_TO_SHIP },
   GROUPS: { CUSTOMER },
 } = require('../../config/constants');
@@ -136,6 +136,25 @@ exports.show = async (req, res, next) => {
       ...shipment.toJSON(),
       state_id: shipment.ShipmentState && shipment.ShipmentState.state_id,
     });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.indexCount = async (req, res, next) => {
+  try {
+    const { customerId } = req.params;
+
+    const count = await Shipment
+      .count({
+        where: { customer_id: customerId },
+        include: [{
+          model: ShipmentState,
+          where: { state_id: SHIPMENT_COUNT },
+        }],
+      });
+
+    return res.json(count);
   } catch (err) {
     return next(err);
   }
@@ -1071,7 +1090,7 @@ exports.payResponse = async (req, res, next) => {
     // - Todo: Security issue
     const customer = await User.findById(req.query.uid, { raw: true });
 
-    Shipment.update({
+    await Shipment.update({
       transaction_id: req.query.transaction_id,
       payment_gateway_id: req.query.pg,
       final_amount: req.query.amount,

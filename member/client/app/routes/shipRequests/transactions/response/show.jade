@@ -6,7 +6,7 @@ div
       .pull-left.wrapper-sm.no-padder-top.text-info
         span.h4
           i.fas.fa-rupee-sign.m-r-xs-md
-          | Payment Success
+          | Your Order Details
 
     // - Content Area
   .bg-white(style='min-height: 400px;')
@@ -15,9 +15,6 @@ div
       .wrapper-md.bg-white-only.wrapper-parcel(style='float:left;margin-bottom:45px')
         .col-md-12
           .row
-          p.info.alert.alert-info.m-t-lg
-            | We will dispatch your shipment once your payment is confirmed. In such a case, we advise you to opt for an alternative payment method if your shipment is urgent or if you don’t want to be charged with storage cost. Please click here if you wish to
-            a.summary-order(ui-sref='shipRequest.confirm({orderCode: $ctrl.shipment.order_code})')&nbsp; change the payment method.
           .col-sm-6.no-padder-left
             .splitbox.no-margin-top(style='padding:15px;margin:0px;min-height: 180px;')
               h4.no-margin Sent to:

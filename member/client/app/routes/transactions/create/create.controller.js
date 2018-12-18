@@ -11,6 +11,7 @@ class TransactionCreateController {
     this.$stateParams = $stateParams;
     this.$uibModal = $uibModal;
     this.CONFIG = CONFIG;
+    this.couponFirstTime = 'FRST50';
     this.$onInit();
   }
 
@@ -22,7 +23,7 @@ class TransactionCreateController {
     this.shipment = {};
     this.Page.setTitle('ShoppRe Pay');
     this.getPaymentGateways();
-    this.data.amount = this.$stateParams.amount;
+    this.data.amount = Math.round(this.$stateParams.amount);
     this.amount = this.$stateParams.amount;
     this.data.object_id = this.$stateParams.object_id;
     this.data.customer_id = this.$stateParams.customer_id;
@@ -55,10 +56,10 @@ class TransactionCreateController {
       if (Number(x.id) === Number(this.data.paymentGateway)) {
         if (x.fee) {
           const paymentGatewayFeeAmount = (finalAmountWithoutPGFee * (x.fee / 100));
-          this.data.amount = finalAmountWithoutPGFee + paymentGatewayFeeAmount;
+          this.data.amount = Math.round(finalAmountWithoutPGFee + paymentGatewayFeeAmount);
           this.data.paymentGatewayFeeAmount = paymentGatewayFeeAmount;
         } else {
-          this.data.amount = finalAmountWithoutPGFee;
+          this.data.amount = Math.round(finalAmountWithoutPGFee);
           this.data.paymentGatewayFeeAmount = 0;
         }
       }
@@ -72,32 +73,51 @@ class TransactionCreateController {
     }
 
     if (this.couponCode) {
-      this.couponCodeApplied = this.couponCode.toString().toUpperCase();
-      const querystring = `amount=${this.amount}&coupon_code=${this.couponCode}`;
+      const customerid = this.$stateParams.customer_id;
 
-      this.$http
-        .put(`$/api/coupon?${querystring}`)
-        .then(({ data: { finalAmountAfterDiscount, discountAmount } }) => {
-          this.amount = finalAmountAfterDiscount;
-          this.data.amount = finalAmountAfterDiscount;
-          this.data.discountAmount = discountAmount;
-          this.couponApplied = true;
-
-          this.selectedGateway();
-
-          this.message = '';
-          this.success = `Coupon Code  ${this.couponCodeApplied} Applied `;
-        })
-        .catch((err) => {
-          this
-            .toaster
-            .pop('error', err.data.message);
-          this.message = err.data.message;
-          this.success = '';
-        });
+      if (this.couponFirstTime === this.couponCode.toString().toUpperCase()) {
+        this.$http
+          .get(`/users/${customerid}/shipments/count`)
+          .then(({ data: count }) => {
+            if (count > 0) {
+              return this
+                .toaster
+                .pop('error', 'This Coupon is applicable only for First time shipment ');
+            } else {
+              return this.promoCode();
+            }
+          });
+      } else {
+        return this.promoCode();
+      }
     } else {
       this.message = 'Enter Coupon Code';
     }
+  }
+
+  promoCode() {
+    const querystring = `amount=${this.amount}&coupon_code=${this.couponCode}`;
+    this.$http
+      .put(`$/api/coupon?${querystring}`)
+      .then(({ data: { finalAmountAfterDiscount, discountAmount } }) => {
+        this.amount = finalAmountAfterDiscount;
+        this.data.amount = Math.round(finalAmountAfterDiscount);
+        this.data.discountAmount = discountAmount;
+        this.couponApplied = true;
+
+        this.selectedGateway();
+        this.couponCodeApplied = this.couponCode.toString().toUpperCase();
+
+        this.message = '';
+        this.success = `Coupon Code  ${this.couponCodeApplied} Applied `;
+      })
+      .catch((err) => {
+        this
+          .toaster
+          .pop('error', err.data.message);
+        this.message = err.data.message;
+        this.success = '';
+      });
   }
 
   submitPayment() {
@@ -115,8 +135,8 @@ class TransactionCreateController {
       is_wallet: 0,
       payment_gateway_id: this.data.paymentGateway,
       paymentGatewayFeeAmount: this.data.paymentGatewayFeeAmount,
-      coupon_code: this.couponCodeApplied,
-      coupon_amount: this.data.discountAmount,
+      coupon_code: this.couponApplied ? this.couponCodeApplied : 0,
+      coupon_amount: this.couponApplied ? this.data.discountAmount : 0,
     };
 
     const method = 'get';
