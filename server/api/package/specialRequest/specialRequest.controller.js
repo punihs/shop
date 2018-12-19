@@ -1,6 +1,6 @@
 const debug = require('debug');
 const {
-  Package,
+  Package, Store,
 } = require('../../../conn/sqldb');
 
 const log = debug('s.api.package.specialRequest');
@@ -95,9 +95,20 @@ exports.abandon = async (req, res, next) => {
       { where: { id: abandonPackid } },
     );
 
+    const pkg = await Package
+      .find({
+        attributes: ['id', 'customer_id'],
+        include: [{
+          model: Store,
+          attributes: ['name'],
+        }],
+        where: { id: abandonPackid },
+        raw: true,
+      });
+
     await updateState({
       nextStateId: DISCARD_REQUESTED,
-      pkg: { id: abandonPackid, customer_id: req.user.id },
+      pkg,
       actingUser: req.user,
       comments: 'Abandon Package requested',
       next,
