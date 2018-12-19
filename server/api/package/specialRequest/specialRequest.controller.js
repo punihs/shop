@@ -97,13 +97,8 @@ exports.abandon = async (req, res, next) => {
 
     const pkg = await Package
       .find({
-        attributes: ['id', 'customer_id'],
-        include: [{
-          model: Store,
-          attributes: ['name'],
-        }],
+        attributes: ['id', 'customer_id', 'store_id'],
         where: { id: abandonPackid },
-        raw: true,
       });
 
     await updateState({
