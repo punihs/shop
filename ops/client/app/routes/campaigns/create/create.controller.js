@@ -10,7 +10,6 @@ class CampaignCreateController {
     this.S3 = S3;
     this.moment = moment;
     this.data = campaign || {};
-    console.log({data: this.data});
     this.$onInit();
   }
 
@@ -50,7 +49,6 @@ class CampaignCreateController {
     startUpload(ctrl, file)
     {
       ctrl.S3.upload(file, ctrl.data, ctrl);
-      console.log(this.data);
     }
 
 
@@ -60,9 +58,6 @@ class CampaignCreateController {
       if (this.submitting) return null;
       this.submitting = true;
       this.clickUpload = true;
-      console.log('edit', this.EDIT);
-      console.log('clickUpload', this.clickUpload);
-      console.log(this.data);
 
       if (!this.data.discount_code && !this.data.cashback_code) {
         this.message = 'Please Enter Discount Code OR Cashback Code';

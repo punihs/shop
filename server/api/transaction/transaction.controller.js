@@ -7,9 +7,8 @@ const { URLS_MYACCOUNT } = require('../../config/environment');
 
 exports.walletShow = async (req, res) => {
   const { customer_id } = req.query;
-  console.log({ customer_id });
+
   const wallet_amount = await this.getWallet({ customer_id });
-  console.log({ wallet_amount });
 
   return res.json(wallet_amount);
 };
@@ -44,16 +43,15 @@ exports.setWallet = async ({ customer_id, amount }) => {
 
 exports.loyaltyShow = async (req, res) => {
   const { customer_id } = req.query;
-  console.log(customer_id);
 
   const { loyalty, history, points } = await this.getLoyalty({ customer_id });
-  console.log({ loyalty, history, points });
 
   return res.json({ loyalty, history, points });
 };
 
 exports.loyaltyUpdate = async (req, res) => {
   const { customer_id, points } = req.query;
+
   const status = await this.setLoyalty({ customer_id, points });
 
   return res.json(status);

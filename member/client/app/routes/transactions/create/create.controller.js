@@ -46,17 +46,11 @@ class TransactionCreateController {
     this.$http.get(`$/api/phpApi/getWalletAndLoyalty?customer_id=${this.$stateParams.customer_id}`)
       .then(({ data: { walletAmount, loyaltyAmount } }) => {
         this.walletBalanceAmount = Number(walletAmount);
-        console.log({ loyaltyAmount, walletAmount })
         this.data.loyaltyAmount = loyaltyAmount;
         this.showWallet = true;
-        // if (Number(amount)) {
-        //   // this.isWalletChecked = true;
-        //   // this.calculateFinalAmount();
-        // }
+
         if (Number(this.walletBalanceAmount) < 0) {
           this.amount = Number(this.amount) + Math.abs(Number(this.walletBalanceAmount));
-          console.log('abs', Math.abs(Number(this.walletBalanceAmount)));
-          console.log('abs amount', this.amount);
         }
 
         if (this.data.loyaltyAmount > 0) {
@@ -192,9 +186,6 @@ class TransactionCreateController {
       loyaltyAmount: this.data.loyaltyAmount,
       is_discount: this.data.isDiscount,
     };
-
-    // console.log(this.params);
-    // return;
 
     const method = 'get';
     return this

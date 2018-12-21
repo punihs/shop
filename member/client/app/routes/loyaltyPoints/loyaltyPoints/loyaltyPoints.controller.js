@@ -28,7 +28,6 @@ class loyaltyPointsController {
         this.loyaltyHistory = loyaltyHistory;
         this.redeemHistory = redeemHistory;
         this.loyaltyPoints = loyaltyPoints;
-        console.log({ loyaltyPoints, redeemHistory, loyaltyHistory });
       });
   }
 

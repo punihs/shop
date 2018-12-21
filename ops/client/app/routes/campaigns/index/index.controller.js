@@ -27,7 +27,6 @@ class CampaignIndexController {
     this.$http.get(`$/campaigns?bucket=${this.$stateParams.bucket}`)
       .then(({data: campaigns }) => {
         this.campaigns = campaigns;
-        console.log({ campaigns });
       });
   }
 }
