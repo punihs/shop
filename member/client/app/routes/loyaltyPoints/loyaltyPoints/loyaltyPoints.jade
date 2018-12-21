@@ -1,0 +1,223 @@
+.container
+  .hbox
+    .wrapper-md.bg-white-only
+      ul.nav.nav-tabs(role='tablist')
+        li(ng-class='$ctrl.rewards ? "loyalty-menu-active" : ""')
+          a(id='rewards' href='#', ng-class='$ctrl.rewards ? "loyalty-menu-active" : ""',  ng-click='$ctrl.loyalty("Rewards")') Rewards
+        li(ng-class='$ctrl.history ? "loyalty-menu-active" : ""')
+          a(id='points_his' href='#', ng-class='$ctrl.history ? "loyalty-menu-active" : ""',  ng-click='$ctrl.loyalty("Points History")') Points History
+        li(ng-class='$ctrl.redeem ? "loyalty-menu-active" : ""')
+          a(id='history' href='#', ng-class='$ctrl.redeem ? "loyalty-menu-active" : ""',  ng-click='$ctrl.loyalty("Redeem History")') Redeem History
+      .clearfix
+    .wrapper-md.bg-white-only.tab-content(ng-if='$ctrl.rewards')
+      h4.text-center It’s never a dull moment with Shoppre. We believe in the idea of return gifts, which is why you always get to take back a little extra, every time you shop with Shoppre.
+      .row
+        .text-center.user-category
+          h2.font-bold YOU ARE A
+            span.left-padding-5(ng-if = '$ctrl.loyaltyPoints.level == 1') BRONZE SHIPPR
+              br
+              | Earn {{1000 - Number($ctrl.loyaltyPoints.total)}} points to level up and become a Silver Shippr
+            span.left-padding-5(ng-if = '$ctrl.loyaltyPoints.level == 2') SILVER SHIPPR
+              br
+              | Earn {{6000 - Number($ctrl.loyaltyPoints.total)}} points to level up and become a Gold Shippr
+            span.left-padding-5(ng-if = '$ctrl.loyaltyPoints.level == 3') GOLD SHIPPR
+              br
+              | Earn {{26000 - Number($ctrl.loyaltyPoints.total)}} points to level up and become a Platinum Shippr
+            span.left-padding-5(ng-if = '$ctrl.loyaltyPoints.level == 4') PLATINUM SHIPPR
+              br
+              | You are a Premium Shippr. Enjoy the Amazing benefits!
+
+      .row.text-center.m-t-lg
+        .col-md-2.col-md-offset-5.text-center.loyalty-points
+          h2.font-bold(ng-if = '$ctrl.loyaltyPoints.level != 4')  {{$ctrl.loyaltyPoints.total}}/1000
+          h2.font-bold(ng-if = '$ctrl.loyaltyPoints.level == 4')  ENJOY
+        .clearfix
+        img.loyalty-image(src='assets/images/loyatlypoints.png')
+      percent-circle(percent='myPercentModel', colors="{center:'green'}")
+      .row.text-center.m-t-lg
+        .col-md-2
+        .col-md-2.text-center.loyalty-types
+          h3 FREE
+          p loyalty points to every Shoppre member
+        .col-md-1
+        .col-md-2.text-center.loyalty-types
+          h3 REDEEM
+          p your points for future shipments
+        .col-md-1
+        .col-md-2.text-center.loyalty-types
+          h3 SO EASY
+          p Use the credit for your  future  Shoppre shipments
+      .row
+        .col-md-12.howto-earn
+          h3.text-u-c.font-bold HOW TO EARN SHOPPRE LOYALTY POINTS?
+          h4.m-t-xs  Earn Shoppre Loyalty Points and get real Cash Discounts for your shipments! Higher level Shopprees have surprise benefits!
+          ul.m-t-md
+            li
+              h4.font-bold.m-t-xs.m-b-xs SHIPPING REWARDS
+              p.no-margin  Earn Shoppre Loyalty Points whenever you ship a package
+              p  Get rewarded each time you ship a package. A Bronze Shippr earns loyalty points worth 5% of the shipment value. As you level up, you earn points faster!
+            li.m-t-md
+              h4.font-bold.m-t-xs.m-b-xs SHOPPING REWARDS
+              p.no-margin
+              | Shop from any of our
+              a.left-padding-5.right-padding-5.font-bold(href='') Featured Sellers
+              |and earn 50 loyalty points for every shipment.
+            li.m-t-md
+              h4.font-bold.m-t-xs.m-b-xs REFER A FRIEND
+              p.no-margin
+                a.left-padding-5.right-padding-5.font-bold(href='') Refer
+                | a friend to Shoppre and earn 200 loyalty points whenever he joins our family and makes his first shipment.
+            li.m-t-md
+              h4.font-bold.m-t-xs.m-b-xs PARTICIPATION REWARDS
+              p.no-margin  Participate in our social media surveys and earn anything up to 500 loyalty points! You shall be notified via e-mail so that you don’t miss out on a single point!
+
+      .row
+        .col-md-12.pointsto-cash
+          h3.text-u-c.font-bold TURN YOUR POINTS INTO CASH!
+          h4.m-t-xs For every 1,000 Shoppre Loyalty Points you earn, a credit of INR 100 will automatically be applied to your next shipment.
+          h4.m-t-xs No limit on the number of loyalty points you can earn so start shopping and shipping with Shoppre!
+            img(src='assets/images/loyalty.png')
+    .wrapper-md.bg-white-only(ng-if='$ctrl.history')
+      div
+        .h1.font-thin.h3
+          | LOYALTY POINTS HISTORY
+      hr.no-margin-bottom
+      .row
+        .wrapper-md.col-md-12
+          .panel.panel-default
+            .panel-heading
+              | HISTORY
+            .table-responsive
+              #DataTables_Table_0_wrapper.dataTables_wrapper.form-inline.dt-bootstrap.no-footer
+                .row.hide
+                  .col-xs-6
+                    #DataTables_Table_0_length.dataTables_length
+                      label
+                        | Show
+                        select.form-control.input-sm(name='DataTables_Table_0_length', aria-controls='DataTables_Table_0')
+                          option(value='10') 10
+                          option(value='25') 25
+                          option(value='50') 50
+                          option(value='100') 100
+                        |  entries
+                  .col-xs-6
+                    #DataTables_Table_0_filter.dataTables_filter
+                      label
+                        | Search:
+                        input.form-control.input-sm(type='search', aria-controls='DataTables_Table_0')
+                table#DataTables_Table_0.table.table-striped.m-b-none.dataTable.no-footer(ui-jq='dataTable', ui-options="{\
+                          sAjaxSource: 'vendor/jquery/datatables/datatable.json',\
+                          aoColumns: [\
+                          { mData: 'engine' },\
+                          { mData: 'browser' },\
+                          { mData: 'platform' },\
+                          { mData: 'version' },\
+                          { mData: 'grade' }\
+                          ]\
+                          }", role='grid', aria-describedby='DataTables_Table_0_info')
+                  thead
+                    tr(role='row')
+                      th.sorting_asc(style='width: 186px;', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Date
+                      th.sorting(style='width: 242px;', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') Description
+                      th.sorting(style='width: 241px;', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Points
+                  tbody(ng-repeat = 'history in $ctrl.loyaltyHistory')
+                    tr.odd(role='row')
+                      td.sorting_1 {{history.created_at}}
+                      td {{history.info}}
+                      td {{history.points}}
+
+
+                .row.hide
+                  .col-xs-6
+                    #DataTables_Table_0_info.dataTables_info(role='status', aria-live='polite') Showing 1 to 10 of 57 entries
+                  .col-xs-6
+                    #DataTables_Table_0_paginate.dataTables_paginate.paging_simple_numbers
+                      ul.pagination
+                        li#DataTables_Table_0_previous.paginate_button.previous.disabled(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') Previous
+                        li.paginate_button.active(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') 1
+                        li.paginate_button(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') 2
+                        li.paginate_button(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') 3
+                        li.paginate_button(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') 4
+                        li.paginate_button(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') 5
+                        li.paginate_button(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') 6
+                        li#DataTables_Table_0_next.paginate_button.next(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') Next
+    .wrapper-md.bg-white-only(ng-if='$ctrl.redeem')
+      div
+        .h1.font-thin.h3
+          | REDEEM POINTS HISTORY
+      hr.no-margin-bottom
+      .row
+        .wrapper-md.col-md-12
+          .panel.panel-default
+            .panel-heading
+              | HISTORY
+            .table-responsive
+              #DataTables_Table_0_wrapper.dataTables_wrapper.form-inline.dt-bootstrap.no-footer
+                .row.hide
+                  .col-xs-6
+                    #DataTables_Table_0_length.dataTables_length
+                      label
+                        | Show
+                        select.form-control.input-sm(name='DataTables_Table_0_length', aria-controls='DataTables_Table_0')
+                          option(value='10') 10
+                          option(value='25') 25
+                          option(value='50') 50
+                          option(value='100') 100
+                        |  entries
+                  .col-xs-6
+                    #DataTables_Table_0_filter.dataTables_filter
+                      label
+                        | Search:
+                        input.form-control.input-sm(type='search', aria-controls='DataTables_Table_0')
+                table#DataTables_Table_0.table.table-striped.m-b-none.dataTable.no-footer(ui-jq='dataTable', ui-options="{\
+                          sAjaxSource: 'vendor/jquery/datatables/datatable.json',\
+                          aoColumns: [\
+                          { mData: 'engine' },\
+                          { mData: 'browser' },\
+                          { mData: 'platform' },\
+                          { mData: 'version' },\
+                          { mData: 'grade' }\
+                          ]\
+                          }", role='grid', aria-describedby='DataTables_Table_0_info')
+                  thead
+                    tr(role='row')
+                      th.sorting_asc(style='width: 186px;', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Loyalty Points
+                      th.sorting(style='width: 242px;', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') Achieved on
+                      th.sorting(style='width: 241px;', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Redeemed Rs.100 on
+                  tbody(ng-repeat = 'redeemHistory in $ctrl.redeemHistory')
+                    tr.odd(role='row')
+                      td.sorting_1(ng-bind='redeemHistory.points')
+                      td {{redeemHistory.redeemed}}
+                      td {{redeemHistory.points}}
+
+
+                .row.hide
+                  .col-xs-6
+                    #DataTables_Table_0_info.dataTables_info(role='status', aria-live='polite') Showing 1 to 10 of 57 entries
+                  .col-xs-6
+                    #DataTables_Table_0_paginate.dataTables_paginate.paging_simple_numbers
+                      ul.pagination
+                        li#DataTables_Table_0_previous.paginate_button.previous.disabled(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') Previous
+                        li.paginate_button.active(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') 1
+                        li.paginate_button(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') 2
+                        li.paginate_button(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') 3
+                        li.paginate_button(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') 4
+                        li.paginate_button(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') 5
+                        li.paginate_button(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') 6
+                        li#DataTables_Table_0_next.paginate_button.next(aria-controls='DataTables_Table_0', tabindex='0')
+                          a(href='#') Next

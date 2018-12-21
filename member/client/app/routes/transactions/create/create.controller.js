@@ -1,6 +1,6 @@
 class TransactionCreateController {
   constructor(
-    $http, Page, $stateParams, $location, toaster, $uibModal,
+    $http, Page, $stateParams, $location, toaster, $uibModal, URLS,
     $window, CONFIG
   ) {
     this.$http = $http;
@@ -11,6 +11,7 @@ class TransactionCreateController {
     this.$stateParams = $stateParams;
     this.$uibModal = $uibModal;
     this.CONFIG = CONFIG;
+    this.URLS = URLS;
     this.couponFirstTime = 'FRST50';
     this.$onInit();
   }
@@ -21,9 +22,12 @@ class TransactionCreateController {
     this.couponApplied = false;
     this.couponCodeApplied = null;
     this.shipment = {};
+    this.submitting = true;
+    this.loyaltyAmount = null;
     this.Page.setTitle('ShoppRe Pay');
+    this.getWallet();
     this.getPaymentGateways();
-    this.data.amount = Math.round(this.$stateParams.amount);
+    this.data.payAmount = Math.round(this.$stateParams.amount);
     this.amount = this.$stateParams.amount;
     this.data.object_id = this.$stateParams.object_id;
     this.data.customer_id = this.$stateParams.customer_id;
@@ -36,6 +40,33 @@ class TransactionCreateController {
       PAYPAL: 5,
       WALLET: 6,
     };
+  }
+
+  getWallet() {
+    this.$http.get(`$/api/phpApi/getWalletAndLoyalty?customer_id=${this.$stateParams.customer_id}`)
+      .then(({ data: { walletAmount, loyaltyAmount } }) => {
+        this.walletBalanceAmount = Number(walletAmount);
+        console.log({ loyaltyAmount, walletAmount })
+        this.data.loyaltyAmount = loyaltyAmount;
+        this.showWallet = true;
+        // if (Number(amount)) {
+        //   // this.isWalletChecked = true;
+        //   // this.calculateFinalAmount();
+        // }
+        if (Number(this.walletBalanceAmount) < 0) {
+          this.amount = Number(this.amount) + Math.abs(Number(this.walletBalanceAmount));
+          console.log('abs', Math.abs(Number(this.walletBalanceAmount)));
+          console.log('abs amount', this.amount);
+        }
+
+        if (this.data.loyaltyAmount > 0) {
+          this.data.payAmount = this.amount - this.data.loyaltyAmount;
+        }
+      });
+  }
+
+  walletClicked() {
+    this.calculateFinalAmount();
   }
 
   getPaymentGateways() {
@@ -51,19 +82,20 @@ class TransactionCreateController {
   }
 
   selectedGateway() {
-    const finalAmountWithoutPGFee = Number(this.amount);
-    this.paymentGateways.forEach((x) => {
-      if (Number(x.id) === Number(this.data.paymentGateway)) {
-        if (x.fee) {
-          const paymentGatewayFeeAmount = (finalAmountWithoutPGFee * (x.fee / 100));
-          this.data.amount = Math.round(finalAmountWithoutPGFee + paymentGatewayFeeAmount);
-          this.data.paymentGatewayFeeAmount = paymentGatewayFeeAmount;
-        } else {
-          this.data.amount = Math.round(finalAmountWithoutPGFee);
-          this.data.paymentGatewayFeeAmount = 0;
-        }
+    if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAY.WALLET)) {
+      this.isWalletChecked = false;
+      this.showWallet = false;
+      this.data.walletUsed = this.data.payAmount;
+      this.data.remainingWallet = this.walletBalanceAmount - this.data.payAmount;
+      this.data.payAmount = 0;
+    } else {
+      if (this.amount < this.walletBalanceAmount) {
+        this.isWalletChecked = false;
+        this.showWallet = false;
       }
-    });
+      this.data.remainingWallet = 0;
+      this.calculateFinalAmount();
+    }
   }
 
   applyPromoCode() {
@@ -73,6 +105,7 @@ class TransactionCreateController {
     }
 
     if (this.couponCode) {
+      this.showWallet = true;
       const customerid = this.$stateParams.customer_id;
 
       if (this.couponFirstTime === this.couponCode.toString().toUpperCase()) {
@@ -98,12 +131,16 @@ class TransactionCreateController {
   promoCode() {
     const querystring = `amount=${this.amount}&coupon_code=${this.couponCode}`;
     this.$http
-      .put(`$/api/coupon?${querystring}`)
-      .then(({ data: { finalAmountAfterDiscount, discountAmount } }) => {
-        this.amount = finalAmountAfterDiscount;
-        this.data.amount = Math.round(finalAmountAfterDiscount);
+      .put(`$/api/campaigns?${querystring}`)
+      .then(({ data: { IS_DISCOUNT,
+        discountAmount,
+        cashbackAmount,
+      } }) => {
         this.data.discountAmount = discountAmount;
+        this.data.cashbackAmount = cashbackAmount;
+        this.data.isDiscount = IS_DISCOUNT;
         this.couponApplied = true;
+
 
         this.selectedGateway();
         this.couponCodeApplied = this.couponCode.toString().toUpperCase();
@@ -121,23 +158,43 @@ class TransactionCreateController {
   }
 
   submitPayment() {
+    if (Number(this.data.payAmount) === 0) {
+      this.data.paymentGateway = Number(this.PAYMENT_GATEWAY.WALLET);
+    }
+
     if (!this.data.paymentGateway) {
       return this
         .toaster
         .pop('error', 'Select payment Gateway');
     }
-    if (this.submitting) return null;
+
+    if (!this.submitting) return null;
+    let walletAmount = 0;
+
+    if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAY.WALLET)) {
+      walletAmount = this.walletBalanceAmount > this.amount ?
+        this.data.walletUsed : this.walletBalanceAmount;
+    } else if (this.isWalletChecked) {
+      walletAmount = this.walletBalanceAmount;
+    }
 
     this.params = {
-      estimated: this.data.amount,
+      payAmount: this.data.payAmount,
       object_id: this.data.object_id,
       uid: this.data.customer_id,
-      is_wallet: 0,
+      is_wallet: this.isWalletChecked,
+      wallet_amount: walletAmount,
       payment_gateway_id: this.data.paymentGateway,
       paymentGatewayFeeAmount: this.data.paymentGatewayFeeAmount,
       coupon_code: this.couponApplied ? this.couponCodeApplied : 0,
-      coupon_amount: this.couponApplied ? this.data.discountAmount : 0,
+      discount_amount: this.couponApplied ? this.data.discountAmount : 0,
+      cashback_amount: this.couponApplied ? this.data.cashbackAmount : 0,
+      loyaltyAmount: this.data.loyaltyAmount,
+      is_discount: this.data.isDiscount,
     };
+
+    // console.log(this.params);
+    // return;
 
     const method = 'get';
     return this
@@ -165,6 +222,74 @@ class TransactionCreateController {
 
         this.error = err.data;
       });
+  }
+
+  calculatePaymentGatewayfee(amountForPaymentGateway) {
+    if (amountForPaymentGateway > 0) {
+      const pgFee = this.paymentGateways
+        .filter(x => x.id === Number(this.data.paymentGateway))
+        .reduce((y) => {
+          if (y) {
+            return y;
+          }
+          return 0;
+        });
+
+      if (pgFee) {
+        return (amountForPaymentGateway * (pgFee.fee / 100));
+      }
+      return 0;
+    }
+    return 0;
+  }
+
+
+  calculateFinalAmount() {
+    const amount = Number(this.amount);
+    let amountForPaymentGateway = 0;
+
+    if (this.isWalletChecked) {
+      if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAY.CASH) ||
+        Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAY.WIRE)) {
+        this.data.paymentGatewayFeeAmount = 0;
+        this.showWallet = false;
+        this.isWalletChecked = false;
+      } else if (this.data.paymentGateway) {
+        this.showWallet = true;
+
+        amountForPaymentGateway = this.amount;
+        const pgFeeAmount = this.calculatePaymentGatewayfee(amountForPaymentGateway);
+        this.data.paymentGatewayFeeAmount = pgFeeAmount;
+      } else {
+        this.data.paymentGatewayFeeAmount = 0;
+      }
+
+      this.data.payAmount = Math.round(amount +
+        Number(this.data.paymentGatewayFeeAmount || 0) - Number(this.data.loyaltyAmount || 0)
+        - Number(this.data.discountAmount || 0) - Number(this.walletBalanceAmount || 0));
+    } else {
+      this.showWallet = true;
+
+      if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAY.CASH) ||
+        Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAY.WIRE)) {
+        this.isWalletChecked = false;
+        this.showWallet = false;
+        this.data.paymentGatewayFeeAmount = 0;
+      } else if (this.data.paymentGateway) {
+        this.showWallet = true;
+
+        amountForPaymentGateway = this.amount;
+
+        const pgFeeAmount = this.calculatePaymentGatewayfee(amountForPaymentGateway);
+        this.data.paymentGatewayFeeAmount = pgFeeAmount;
+      } else {
+        this.data.paymentGatewayFeeAmount = 0;
+      }
+
+      this.data.payAmount = Math.round(amount +
+        Number(this.data.paymentGatewayFeeAmount || 0) - Number(this.data.loyaltyAmount || 0)
+        - Number(this.data.discountAmount || 0));
+    }
   }
 }
 

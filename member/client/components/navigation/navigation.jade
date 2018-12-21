@@ -20,7 +20,7 @@ ul.nav
           span In Locker
       li(ui-sref-active='active')
         a(
-          ui-sref='packages.create'
+          ui-sref='loyaltypoints.rewards'
           title='Alert Shoppre about my incoming Packages (Optional)'
         )
           span.text-white Your Orders
@@ -61,10 +61,16 @@ ul.nav
           )
           span Assisted Purchase
 
-  li.hide
-    a.auto(ui-sref='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/loyalty-points')
-      i.fas.fa-rupee-sign.text-white
-      span.font-bold My Loyalty Points
+  li(ng-class='$ctrl.active === "loyalty" ? "active" : ""')
+    a.auto(href='' ng-click='$ctrl.toggle("loyalty")')
+      span.pull-right.text-muted
+        i.fa.fa-fw.fa-angle-right.text
+      i.fas.fa-cubes.text-white
+      span.font-bold Loyalty Points
+    ul.nav.nav-sub.dk
+      li(ui-sref-active='active')
+        a.text-white(ui-sref='loyaltyPoints.rewards({ customer_id: $ctrl.user.id })')
+          span Loyalty History
 
   li.hide(ng-class='$ctrl.active === "offers" ? "active" : ""')
     a.auto(ng-click='$ctrl.toggle("offers")')

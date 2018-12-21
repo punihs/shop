@@ -6,6 +6,8 @@ const hookshot = require('./shipment.hookshot');
 
 const log = debug('s.api.shipment.controller');
 const { updateState } = require('../package/package.service');
+const cashback = require('../shipment/components/cashback');
+const transaction = require('../transaction/transaction.controller');
 const {
   SUPPORT_EMAIL_ID, SUPPORT_EMAIL_FIRST_NAME, SUPPORT_EMAIL_LAST_NAME,
 } = require('../../config/environment');
@@ -20,7 +22,7 @@ const {
   APPS, GROUPS: { OPS, CUSTOMER },
   SHIPMENT_STATE_IDS: {
     PAYMENT_COMPLETED, PAYMENT_FAILED, PAYMENT_REQUESTED, SHIPMENT_CANCELLED, SHIPMENT_DELIVERED,
-    DISPATCHED, DELIVERED, INTRANSIT, CUSTOM_HOLD, LOST, WRONG_DELIVERY, PAYMENT_CONFIRMED,
+    DISPATCHED, DELIVERED, INTRANSIT, CUSTOM_HOLD, LOST, SHIPMENT_HANDED, PAYMENT_CONFIRMED,
   },
   PACKAGE_STATE_IDS: { READY_TO_SHIP, DAMAGED },
   PAYMENT_GATEWAY: {
@@ -226,7 +228,7 @@ exports.show = async (req, res, next) => {
     const packages = await Package
       .findAll(optionsPackage);
 
-    const estimated = shipment.estimated_amount;
+    let estimated = shipment.estimated_amount;
 
     const paymentGatewayId = req.query.payment_gateway_id ?
       Number(req.query.payment_gateway_id) : null;
@@ -254,7 +256,6 @@ const stateIdcommentMap = {
   [LOST]: 'lost',
   [DELIVERED]: 'Shipment is delivered',
   [DAMAGED]: 'damaged',
-  [WRONG_DELIVERY]: 'wrong_delivery',
   [PAYMENT_CONFIRMED]: 'payment confirmed',
 };
 
@@ -325,6 +326,27 @@ exports.updateShipmentState = async ({
             where: { shipment_id: shipment.id },
           },
         );
+        break;
+      } case SHIPMENT_HANDED: {
+        log('state changed SHIPMENT_HANDED', SHIPMENT_HANDED);
+
+        const {
+          cashback_amount: cashbackAmount,
+        } = await cashback
+          .cashback({
+            object_id: shipment.order_code,
+            customer_id: shipment.customer_id,
+            transactionId: shipment.transaction_id,
+          });
+        log({ cashbackAmount });
+
+        if (cashbackAmount > 0) {
+          await transaction
+            .setWallet({
+              customer_id: shipment.customer_id,
+              amount: cashbackAmount,
+            });
+        }
         break;
       }
       default: {

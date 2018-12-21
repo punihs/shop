@@ -3,6 +3,7 @@
  */
 const express = require('express');
 
+
 const { name, version } = require('../package.json');
 
 const oAuth = require('./components/oauth');
@@ -21,6 +22,7 @@ const userShippingPreference = require('./api/user/shippingPreference');
 const packageItemCategory = require('./api/packageItemCategory');
 const shipment = require('./api/shipment');
 const shipmentComment = require('./api/shipment/comment');
+const transaction = require('./api/transaction');
 const shipmentPackage = require('./api/shipment/package');
 const address = require('./api/address');
 const user = require('./api/user');
@@ -51,6 +53,7 @@ module.exports = (app) => {
     follower,
   );
   app.use('/api/addresses', authenticate(), address);
+  app.use('/api/transactions', transaction);
   app.use('/api/public/shipments', shipment);
   app.use(
     '/api/shipments',

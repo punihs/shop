@@ -1,0 +1,50 @@
+div
+  .hbox
+    div
+      .bg-white-only.b-b(style='position: fixed;width: 100%; height: 44px;')
+        ul.nav.nav-pills.nav-sm.m-t-xs
+          li(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active")
+            a(
+            ui-sref='campaigns.index({ bucket: bucket })'
+            ng-bind="bucket" ng-hide="bucket == 'Bookmarked' && App.app.settings.isAdmin"
+            )
+          li.m-r-xs.pull-right
+            a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
+            ui-sref='campaigns.create()'
+            popover-trigger="'mouseenter'"
+            popover-placement='bottom'
+            popover-append-to-body='true'
+            )
+              span Create campaign
+    .m-t-xl(style='padding-bottom: 4px;')
+    scrollable-table(table-offset="110")
+      table.table.m-b-none
+        thead
+          tr.m-l-xs-md
+            th.col-xs-1 ID
+            th.col-xs-2 Name
+            th.col-xs-2 Start Date
+            th.col-xs-2 Expiry Date
+            th.col-xs-1 Campaign Code
+            th.col-xs-1 Discount/Cashback
+            th.col-xs-2 Maximum Discount
+      .col-xs-12(style='padding: 10px;')
+        .col-xs-12(ng-show='$ctrl.campaigns.length === 0')
+          td(colspan="5"): h1.text-center.text-muted No Campaigns Created
+        .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='campaign in $ctrl.campaigns')
+          .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs
+            a(ui-sref='campaigns.create({ id: campaign.id })') {{campaign.id}}
+          .col-xs-2.wrapper-sm.m-t-xs
+            a(ui-sref='campaigns.create({ id: campaign.id })') {{campaign.name}}
+          .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="campaign.start_date")
+          .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="campaign.expiry_date")
+          .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="campaign.discount_code ? campaign.discount_code : campaign.cashback_code")
+          .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="campaign.discount_code ? 'Discount' : 'Cashback'")
+          .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="campaign.maximum_discount_amount")
+
+          a.btn.active.m-t-xs(ng-if="$ctrl.ui.loading")
+            i.fa.fa-circle-o-notch.fa-spin
+            strong &nbsp;Loading
+          a.btn.btn-primary.m-t-xs(ng-if="$ctrl.ui.lazyLoad" ng-click="$ctrl.loadPackages()")
+            i.fa.fa-plus-circle
+            strong &nbsp;Load More

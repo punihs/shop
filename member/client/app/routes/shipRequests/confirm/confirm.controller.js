@@ -24,8 +24,6 @@ class ShipRequestConfirmController {
     this.orderCode = this.$stateParams.orderCode;
     this.status = '';
     this.message = '';
-    this.promoStatus = '';
-    this.couponAmount = '';
     this.couponCode = '';
     this.totalpackagePriceAmount = 0;
     this.paymentGateways = [];
@@ -67,7 +65,7 @@ class ShipRequestConfirmController {
     url
       .then(({
         data: {
-          shipment, packages, payment, promoStatus, couponAmount,
+          shipment, packages, payment,
         },
       }) => {
         this.packages = [];
@@ -79,8 +77,6 @@ class ShipRequestConfirmController {
         this.shipmentMeta = shipmentMeta[0].ShipmentMetum;
         this.packageCharges = packages;
         this.payment = payment;
-        this.promoStatus = promoStatus;
-        this.couponAmount = couponAmount;
         this.data.paymentGateway = payment.payment_gateway_id;
         this.totalpackagePriceAmount = 0;
         this.data = {

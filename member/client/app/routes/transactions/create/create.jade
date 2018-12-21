@@ -22,15 +22,15 @@ div
                     h2.m-n.alert.bg-primary.text-white.font-bold PAYMENT SUMMARY
                     .panel-body.text-primary.padding-10
                       .radio.no-margin-top(ng-repeat="paymentgateway in $ctrl.paymentGateways")
-                        label.i-checks.no-margin-top(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value === "wallet" && $ctrl.shipment.Customer.wallet_balance_amount > $ctrl.shipment.estimated_amount')
+                        label.i-checks.no-margin-top(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value === "wallet" && $ctrl.walletBalanceAmount > $ctrl.amount')
                           input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", type='radio', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
                           i
-                          | {{paymentgateway.name}} {{paymentgateway.description}} (₹{{$ctrl.shipment.Customer.wallet_balance_amount | number : 2}})
+                          | {{paymentgateway.name}} {{paymentgateway.description}} (₹{{$ctrl.walletBalanceAmount | number : 2}})
                         label.i-checks.m-t-xs(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value !== "wallet"')
                           input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", ng-disabled='$ctrl.data.axis_banned == "true" && paymentgateway.value === "card" ' type='radio', name='a', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
                           i
                           .inline(ng-bind='paymentgateway.name')
-                          em.text-muted(ng-hide='$ctrl.data.axis_banned == "true" && paymentgateway.value === "card" ' ng-bind='paymentgateway.description')
+                          em.text-muted(ng-hide='$ctrl.data.axis_banned == "true" && paymentgateway.value === "card" '  ng-bind='paymentgateway.description')
                         i.fa.fa-info-circle.m-l-xs(
                         ng-show='$ctrl.data.axis_banned == "true" && paymentgateway.value === "card" '
                         uib-popover='You cannot use this payment gateway for this shipment - Read FAQ to know more \n'
@@ -59,33 +59,45 @@ div
                       button.btn.btn-info(ng-click='$ctrl.applyPromoCode()')
                         | Apply
                   h5 Promo Code Applicable on Basic Shipping Costs
-                  //
-                  //ul.list-group.list-group-lg.m-b-none.list-unstyled.chkbox_background(ng-if="$ctrl.shipment.Customer.wallet_balance_amount && $ctrl.shipment.Customer.wallet_balance_amount < $ctrl.shipment.estimated_amount && $ctrl.shipment.Customer.wallet_balance_amount !== 0")
-                  //  li
-                  //    .checkbox
-                  //      label.i-checks(ng-if="$ctrl.shipment.Customer.wallet_balance_amount")
-                  //        input(
-                  //        ng-model='$ctrl.isWalletChecked'
-                  //        type='checkbox',
-                  //        ng-change="$ctrl.walletClicked()",
-                  //        ng-checked ="$ctrl.isWalletChecked"
-                  //        )
-                  //        i
-                  //        | Shoppre Wallet
-                  //      label.i-checks(ng-if="$ctrl.shipment.Customer.wallet_balance_amount < 0")
-                  //        input(
-                  //        ng-model='$ctrl.isWalletChecked'
-                  //        type='checkbox',
-                  //        ng-change="$ctrl.walletClicked()",
-                  //        ng-checked='true'
-                  //        ng-disabled="$ctrl.status = 'disabled'"
-                  //        )
-                  //        i
-                  //        | Shoppre Wallet
-                  //      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.Customer.wallet_balance_amount| number : 2}}
+
+                  ul.list-group.list-group-lg.m-b.list-unstyled.chkbox_background(ng-if="$ctrl.showWallet && $ctrl.walletBalanceAmount && $ctrl.walletBalanceAmount < $ctrl.amount && $ctrl.walletBalanceAmount !== 0")
+                    li
+                      .checkbox
+                        label.i-checks(ng-if="$ctrl.walletBalanceAmount > 0")
+                          input(
+                          ng-model='$ctrl.isWalletChecked'
+                          type='checkbox',
+                          ng-change="$ctrl.walletClicked()",
+                          ng-checked ="$ctrl.isWalletChecked"
+                          )
+                          i
+                          | Shoppre Wallet
+                        label.i-checks(ng-if="$ctrl.walletBalanceAmount < 0")
+                          input(
+                          ng-model='$ctrl.isWalletChecked'
+                          type='checkbox',
+                          ng-change="$ctrl.walletClicked()",
+                          ng-checked='true'
+                          ng-disabled="$ctrl.status = 'disabled'"
+                          )
+                          i
+                          | Shoppre Wallet
+                        span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.walletBalanceAmount | number : 2}}
+                  ul.list-group.list-group-lg.m-b.list-unstyled.chkbox_background(ng-if="$ctrl.data.discountAmount")
+                    li
+                      .p Discount Amount
+                        span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.discountAmount | number : 2}}
+                  ul.list-group.list-group-lg.m-b.list-unstyled.chkbox_background(ng-if="$ctrl.data.loyaltyAmount")
+                    li
+                      .p Loyalty Amount Deducted
+                        span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.loyaltyAmount | number : 2}}
+                  ul.list-group.list-group-lg.m-b.list-unstyled.chkbox_background(ng-if="$ctrl.amount")
+                    li
+                      .p Shipping charge Amount
+                        span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.amount | number : 2}}
                   .final-ship-charge.text-primary.no-margin-top
                     h4 Final Shipping Charges *
-                      h4.fa.fa-rupee.font-bold &nbsp;₹ {{$ctrl.data.amount| number : 2}}
+                      h4.fa.fa-rupee.font-bold &nbsp;₹ {{$ctrl.data.payAmount| number : 2}}
 
                   button.btn.btn-info.font-bold.r-x.text-lg.w-full(
                     type='submit'
