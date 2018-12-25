@@ -23,7 +23,7 @@ exports.walletUpdate = async (req, res) => {
 
 exports.getWallet = async ({ customer_id }) => {
   const wallet_amount = await rp({
-    uri: `http://localhost:8000/admin/wallet?user_id=${customer_id}`,
+    uri: `${URLS_MYACCOUNT}/admin/wallet?user_id=${customer_id}`,
     json: true,
   });
 
@@ -59,7 +59,7 @@ exports.loyaltyUpdate = async (req, res) => {
 
 exports.getLoyalty = async ({ customer_id }) => {
   const loyalty = await rp({
-    uri: `http://localhost:8000/admin/loyalty?user_id=${customer_id}`,
+    uri: `${URLS_MYACCOUNT}/admin/loyalty?user_id=${customer_id}`,
     json: true,
   });
   return loyalty;
