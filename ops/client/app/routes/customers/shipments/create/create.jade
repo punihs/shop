@@ -179,6 +179,7 @@ div.m-t-xl.no-margin
                       placeholder='eg. 1000'
                       ng-model='$ctrl.data.package_level_charges_amount'
                       required
+                      disabled
                       )
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.package_level_charges_amount.$dirty && newShipmentForm.package_level_charges_amount.$invalid') Please enter package level charges
                   .col-md-4.col-sm-5.col-xs-12
@@ -285,14 +286,23 @@ div.m-t-xl.no-margin
               .row(ng-if='$ctrl.EDIT')
                 .col-md-12
                   .col-md-6.col-sm-5.col-xs-12.no-padder
-                    label.col-xs-12.input-group
-                      | Coupon Rewards
+                    label.col-xs-12.input-group(ng-if ='$ctrl.transaction.data.cashback_amount')
+                      | CashBack Rewards
                       span.text-danger *
                       input.form.form-control(
                       type='number'
-                      name='coupon_amount'
-                      placeholder='eg. 1000'
-                      ng-model='$ctrl.transaction.data.coupon_amount'
+                      name= 'cashback_amount'
+                      placeholder = 'eg. 1000'
+                      ng-model= '$ctrl.transaction.data.cashback_amount'
+                      disabled,
+                      )
+                    label.col-xs-12.input-group(ng-if ='$ctrl.transaction.data.discount_amount')
+                      | Discount Rewards
+                      input.form.form-control(
+                      type='number'
+                      name= 'discount_amount'
+                      placeholder = 'eg. 1000'
+                      ng-model= '$ctrl.transaction.data.discount_amount'
                       disabled,
                       )
                   .col-md-6.col-sm-5.col-xs-12
