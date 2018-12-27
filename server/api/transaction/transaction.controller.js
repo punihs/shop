@@ -21,9 +21,9 @@ exports.walletUpdate = async (req, res) => {
   return res.json(status);
 };
 
-exports.getWallet = async ({ customer_id }) => {
+exports.getWallet = async ({ customer_id: customerID }) => {
   const wallet_amount = await rp({
-    uri: `${URLS_MYACCOUNT}/admin/wallet?user_id=${customer_id}`,
+    uri: `${URLS_MYACCOUNT}/admin/wallet?user_id=${customerID}`,
     json: true,
   });
 
@@ -57,21 +57,34 @@ exports.loyaltyUpdate = async (req, res) => {
   return res.json(status);
 };
 
-exports.getLoyalty = async ({ customer_id }) => {
+exports.getLoyalty = async ({ customer_id: customerID }) => {
   const loyalty = await rp({
-    uri: `${URLS_MYACCOUNT}/admin/loyalty?user_id=${customer_id}`,
+    uri: `${URLS_MYACCOUNT}/admin/loyalty?user_id=${customerID}`,
     json: true,
   });
   return loyalty;
 };
 
-exports.setLoyalty = async ({ customer_id, points }) => {
+exports.setLoyalty = async ({ customer_id, loyaltyAmount }) => {
+  log('trans', { customer_id, loyaltyAmount });
+
   const status = await rp({
     uri: `${URLS_MYACCOUNT}/admin/loyaltyUpdate`,
-    qs: { user_id: customer_id, points },
+    qs: { customer_id, loyaltyAmount },
     json: true,
   });
 
   log(status);
+  return status;
+};
+
+exports.addLoyalty = async ({ customer_id, finalAmount }) => {
+  const status = await rp({
+    uri: `${URLS_MYACCOUNT}/admin/loyaltyCreate`,
+    qs: { customer_id, final_amount: finalAmount, info: 'Shipping rewards' },
+    json: true,
+  });
+
+  log({ status });
   return status;
 };

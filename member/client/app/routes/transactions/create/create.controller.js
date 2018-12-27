@@ -29,6 +29,7 @@ class TransactionCreateController {
     this.getPaymentGateways();
     this.data.payAmount = Math.round(this.$stateParams.amount);
     this.amount = this.$stateParams.amount;
+    this.shippingCharge = this.$stateParams.amount;
     this.data.object_id = this.$stateParams.object_id;
     this.data.customer_id = this.$stateParams.customer_id;
     this.data.axis_banned = this.$stateParams.axis_banned;
@@ -51,6 +52,7 @@ class TransactionCreateController {
 
         if (Number(this.walletBalanceAmount) < 0) {
           this.amount = Number(this.amount) + Math.abs(Number(this.walletBalanceAmount));
+          this.calculateFinalAmount();
         }
 
         if (this.data.loyaltyAmount > 0) {
@@ -136,13 +138,15 @@ class TransactionCreateController {
         this.couponApplied = true;
 
 
-        this.selectedGateway();
+        // this.selectedGateway();
         this.couponCodeApplied = this.couponCode.toString().toUpperCase();
 
         this.message = '';
         this.success = `Coupon Code  ${this.couponCodeApplied} Applied `;
+        this.calculateFinalAmount();
       })
       .catch((err) => {
+        this.calculateFinalAmount();
         this
           .toaster
           .pop('error', err.data.message);
@@ -250,6 +254,7 @@ class TransactionCreateController {
 
         amountForPaymentGateway = this.amount;
         const pgFeeAmount = this.calculatePaymentGatewayfee(amountForPaymentGateway);
+
         this.data.paymentGatewayFeeAmount = pgFeeAmount;
       } else {
         this.data.paymentGatewayFeeAmount = 0;
@@ -257,7 +262,11 @@ class TransactionCreateController {
 
       this.data.payAmount = Math.round(amount +
         Number(this.data.paymentGatewayFeeAmount || 0) - Number(this.data.loyaltyAmount || 0)
-        - Number(this.data.discountAmount || 0) - Number(this.walletBalanceAmount || 0));
+        - Number(this.data.discountAmount || 0));
+
+      if (Number(this.walletBalanceAmount > 0)) {
+        this.data.payAmount += -Number(this.walletBalanceAmount || 0);
+      }
     } else {
       this.showWallet = true;
 
@@ -280,6 +289,11 @@ class TransactionCreateController {
       this.data.payAmount = Math.round(amount +
         Number(this.data.paymentGatewayFeeAmount || 0) - Number(this.data.loyaltyAmount || 0)
         - Number(this.data.discountAmount || 0));
+    }
+
+    if (this.walletBalanceAmount < 0) {
+      this.showWallet = true;
+      this.isWalletChecked = true;
     }
   }
 }

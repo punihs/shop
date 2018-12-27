@@ -7,7 +7,7 @@ const hookshot = require('./shipment.hookshot');
 const log = debug('s.api.shipment.controller');
 const { updateState } = require('../package/package.service');
 const cashback = require('../shipment/components/cashback');
-const transaction = require('../transaction/transaction.controller');
+const transactionCtrl = require('../transaction/transaction.controller');
 const {
   SUPPORT_EMAIL_ID, SUPPORT_EMAIL_FIRST_NAME, SUPPORT_EMAIL_LAST_NAME,
 } = require('../../config/environment');
@@ -268,6 +268,7 @@ exports.updateShipmentState = async ({
 }) => {
   try {
     log('updateShipmentState', nextStateId);
+    let paymentGatewayID = 0;
 
     const shipment = current;
     log('shp', shipment);
@@ -289,6 +290,22 @@ exports.updateShipmentState = async ({
 
     switch (nextStateId) {
       case PAYMENT_CONFIRMED: {
+        const {
+          payment_gateway_id,
+          final_amount: finalAmount,
+          loyalty_amount: loyaltyAmount,
+        } = await this.transaction(shipment);
+
+        paymentGatewayID = payment_gateway_id;
+
+        log({ payment_gateway_id, finalAmount, loyaltyAmount });
+
+        await transactionCtrl
+          .addLoyalty({
+            customer_id: shipment.customer_id,
+            finalAmount,
+          });
+
         if (!shipment.tracking) {
           const tracking = {};
           tracking.dispatch_date = moment();
@@ -328,24 +345,38 @@ exports.updateShipmentState = async ({
         );
         break;
       } case SHIPMENT_HANDED: {
-        log('state changed SHIPMENT_HANDED', SHIPMENT_HANDED);
-
         const {
+          payment_gateway_id,
           cashback_amount: cashbackAmount,
-        } = await cashback
-          .cashback({
-            object_id: shipment.order_code,
-            customer_id: shipment.customer_id,
-            transactionId: shipment.transaction_id,
-          });
+          loyalty_amount: loyaltyAmount,
+        } = await this.transaction(shipment);
+
+        log({ cashbackAmount, loyaltyAmount });
+
+        log({ paymentGatewayID });
+
+        paymentGatewayID = payment_gateway_id;
+
+        log('state changed SHIPMENT_HANDED', SHIPMENT_HANDED);
         log({ cashbackAmount });
 
         if (cashbackAmount > 0) {
-          await transaction
+          await transactionCtrl
             .setWallet({
               customer_id: shipment.customer_id,
               amount: cashbackAmount,
             });
+        }
+
+        if (paymentGatewayID === CASH ||
+          paymentGatewayID === WIRE) {
+          if (loyaltyAmount > 0) {
+            await transactionCtrl
+              .setLoyalty({
+                customer_id: shipment.customer_id,
+                loyaltyAmount,
+              });
+          }
         }
         break;
       }
@@ -360,7 +391,7 @@ exports.updateShipmentState = async ({
       shipment.delivered_date = moment();
     }
 
-    switch (Number(shipment.payment_gateway_id)) {
+    switch (Number(paymentGatewayID)) {
       case CASH: {
         gateway = PAYMENT_GATEWAY_NAMES.CASH; break;
       }
@@ -383,9 +414,11 @@ exports.updateShipmentState = async ({
         gateway = null; break;
       }
     }
+
     const paymentGateway = {
       name: gateway,
     };
+
     const { address } = shipment;
     log('gateway', [gateway]);
 
@@ -425,4 +458,15 @@ exports.updateShipmentState = async ({
   } catch (err) {
     return next();
   }
+};
+
+exports.transaction = async (shipment) => {
+  const transaction = await cashback
+    .transaction({
+      object_id: shipment.order_code,
+      customer_id: shipment.customer_id,
+      transactionId: shipment.transaction_id,
+    });
+
+  return transaction;
 };

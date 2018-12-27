@@ -91,10 +91,10 @@ div
                     li
                       .p Loyalty Amount Deducted
                         span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.loyaltyAmount | number : 2}}
-                  ul.list-group.list-group-lg.m-b.list-unstyled.chkbox_background(ng-if="$ctrl.amount")
+                  ul.list-group.list-group-lg.m-b.list-unstyled.chkbox_background(ng-if="$ctrl.shippingCharge")
                     li
                       .p Shipping charge Amount
-                        span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.amount | number : 2}}
+                        span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shippingCharge | number : 2}}
                   .final-ship-charge.text-primary.no-margin-top
                     h4 Final Shipping Charges *
                       h4.fa.fa-rupee.font-bold &nbsp;₹ {{$ctrl.data.payAmount| number : 2}}
