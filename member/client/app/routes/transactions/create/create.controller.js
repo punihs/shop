@@ -85,6 +85,12 @@ class TransactionCreateController {
       this.data.remainingWallet = this.walletBalanceAmount - this.data.payAmount;
       this.data.payAmount = 0;
     } else {
+      if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAY.CASH ||
+          Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAY.WIRE))) {
+        this.isWalletChecked = false;
+        this.showWallet = false;
+      }
+
       if (this.amount < this.walletBalanceAmount) {
         this.isWalletChecked = false;
         this.showWallet = false;
@@ -242,6 +248,12 @@ class TransactionCreateController {
   calculateFinalAmount() {
     const amount = Number(this.amount);
     let amountForPaymentGateway = 0;
+
+    if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAY.CASH) ||
+      Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAY.WIRE)) {
+      this.showWallet = false;
+      this.isWalletChecked = false;
+    }
 
     if (this.isWalletChecked) {
       if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAY.CASH) ||
