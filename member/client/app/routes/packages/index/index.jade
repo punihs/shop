@@ -132,6 +132,9 @@ div
                             span.text-info(ng-bind='package.Store.name' title='{{package.id}}')
                             br
                             span.text-info(ng-bind='package.invoice_code')
+                            span (
+                            span.text-info(ng-bind='package.id')
+                            span )
                             span.badge.bg-success.m-l-xs.text-white(ng-if='package.content_type === "2"') SPECIAL
                             span.badge.bg-danger.m-l-xs.text-white(ng-if='package.damaged') DAMAGED
 
