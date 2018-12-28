@@ -233,13 +233,7 @@ class TransactionCreateController {
   calculatePaymentGatewayfee(amountForPaymentGateway) {
     if (amountForPaymentGateway > 0) {
       const pgFee = this.paymentGateways
-        .filter(x => x.id === Number(this.data.paymentGateway))
-        .reduce((y) => {
-          if (y) {
-            return y;
-          }
-          return 0;
-        });
+        .filter(x => x.id === Number(this.data.paymentGateway));
 
       if (pgFee) {
         return (amountForPaymentGateway * (pgFee.fee / 100));
