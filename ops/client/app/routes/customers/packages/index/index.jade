@@ -56,8 +56,8 @@ div
                     i.fa.fa-balance-scale
                     |  {{package.weight}} KG
                   .col-xs-4.text-ellipsis(ng-show='package.content_type')
-                    i.fa.fa-tint
-                    |  {{package.content_type === '1' ? 'Normal' : 'Special'}}
+                    i.fa.fa-tint(ng-class="package.content_type == '1' ? 'text-success' : 'text-danger'")
+                    span(ng-class="package.content_type == '1' ? 'text-success' : 'text-danger'") {{package.content_type === '1' ? 'Normal' : 'Special'}}
                   .col-xs-4.text-ellipsis
                     i.fa(ng-class="package.is_doc ? 'fa-book' : 'fa-archive'")
                     |  {{package.is_doc ? 'Document' : 'Non Document'}}
