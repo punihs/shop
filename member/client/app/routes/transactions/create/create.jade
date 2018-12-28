@@ -19,10 +19,10 @@ div
               .row
                 .col-md-7
                   div.div-border-create
-                    h2.m-n.alert.bg-primary.text-white.font-bold PAYMENT SUMMARY
+                    h2.m-n.alert.bg-primary.text-white.font-bold PAYMENT SUMMARY {{$ctrl.isWalletChecked}}
                     .panel-body.text-primary.padding-10
                       .radio.no-margin-top(ng-repeat="paymentgateway in $ctrl.paymentGateways")
-                        label.i-checks.no-margin-top(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value === "wallet" && $ctrl.walletBalanceAmount > $ctrl.amount')
+                        label.i-checks.no-margin-top(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value === "wallet" && $ctrl.walletBalanceAmount > $ctrl.data.payAmount && !$ctrl.isWalletChecked')
                           input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", type='radio', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
                           i
                           | {{paymentgateway.name}} {{paymentgateway.description}} (₹{{$ctrl.walletBalanceAmount | number : 2}})
@@ -60,7 +60,7 @@ div
                         | Apply
                   h5 Promo Code Applicable on Basic Shipping Costs
 
-                  ul.list-group.list-group-lg.m-b.list-unstyled.chkbox_background(ng-if="$ctrl.showWallet && $ctrl.walletBalanceAmount && $ctrl.walletBalanceAmount < $ctrl.amount && $ctrl.walletBalanceAmount !== 0")
+                  ul.list-group.list-group-lg.m-b.list-unstyled.chkbox_background(ng-if="$ctrl.showWallet && $ctrl.walletBalanceAmount && $ctrl.walletBalanceAmount < $ctrl.data.payAmount && $ctrl.walletBalanceAmount !== 0")
                     li
                       .checkbox
                         label.i-checks(ng-if="$ctrl.walletBalanceAmount > 0")
