@@ -27,7 +27,7 @@ div
           i.fas.fa-user-lock.text-light-dker.m-r-xs
           span.font-bold(ng-bind='$ctrl.user.virtual_address_code')
         .pull-left.wrapper-sm.no-padder-top(title='Email')
-          i.fa.fa-md.fa-at.text-light-dker
+          i.fa.fa-envelope.text-light-dker
           span &nbsp;&nbsp;
           a(ng-href='mailto:{{$ctrl.user.email}}')
             span.m-l-xs(ng-bind='$ctrl.user.email')
@@ -200,86 +200,121 @@ div
                           ng-click='$ctrl.copied()'
                         ) copy
 
-                div(ng-if='$ctrl.store !== "Amazon"')
+                div(ng-if='$ctrl.store === "Flipkart"')
                   #virtual
-                    h4.copy-wrap.line-spacing
+                    h4.copy-wrap
                       span#name(ng-bind='$ctrl.user.name')
-                      span.m-l-xs.copy-button.text-primary.pointer(
-                        ngclipboard='',
-                        data-clipboard-target='#name'
-                        ng-click='$ctrl.copied()'
+                      small.m-l-xs.copy-button.text-primary.pointer(
+                      ngclipboard='',
+                      data-clipboard-target='#name'
+                      ng-click='$ctrl.copied()'
                       ) copy
                     p
                       span.copy-wrap.line-spacing
-                        span.text-muted Address Line 1:
+                        span.text-muted.address-tab Mobile Number
+                        | :&nbsp;
+                        span#phone
+                          span 8040944077
+                        span.m-l-xs.copy-button.text-primary.pointer(
+                        ngclipboard='',
+                        data-clipboard-target='#phone'
+                        ng-click='$ctrl.copied()'
+                        ) copy
+                      span.copy-wrap.line-spacing
+                        span.text-muted.address-tab Pincode
+                        | :&nbsp;
+                        span#pincode
+                          span 560034
+                        span.m-l-xs.copy-button.text-primary.pointer(
+                        ngclipboard='',
+                        data-clipboard-target='#pincode'
+                        ng-click='$ctrl.copied()'
+                        ) copy
+                      span.copy-wrap.line-spacing
+                        span.text-muted.address-tab Locality
+                        | :&nbsp;
+                        span#locality
+                          span Bengaluru
+                        span.m-l-xs.copy-button.text-primary.pointer(
+                        ngclipboard='',
+                        data-clipboard-target='#locality'
+                        ng-click='$ctrl.copied()'
+                        ) copy
+                      span.copy-wrap.line-spacing
+                        span.text-muted.address-tab Address Line 1
+                        | :&nbsp;
                         span#addressline1
-                          strong(ng-bind='" " + $ctrl.user.virtual_address_code')
+                          strong(ng-bind=' $ctrl.user.virtual_address_code')
                           span , #181, 1st Floor, 2nd Cross Rd
                         span.m-l-xs.copy-button.text-primary.pointer(
-                          ngclipboard='',
-                          data-clipboard-target='#addressline1'
-                          ng-click='$ctrl.copied()'
+                        ngclipboard='',
+                        data-clipboard-target='#addressline1'
+                        ng-click='$ctrl.copied()'
                         ) copy
                       span.copy-wrap.line-spacing
-                        span.text-muted Address Line 2:
+                        span.text-muted.address-tab Address Line 2
+                        | :&nbsp;
                         span#addressline2
-                          span &nbsp;7th Main, Koramangala 1st Block
+                          span 7th Main, Koramangala 1st Block
                         span.m-l-xs.copy-button.text-primary.pointer(
-                          ngclipboard='',
-                          data-clipboard-target='#addressline2'
-                          ng-click='$ctrl.copied()'
+                        ngclipboard='',
+                        data-clipboard-target='#addressline2'
+                        ng-click='$ctrl.copied()'
                         ) copy
                       span.copy-wrap.line-spacing
-                        span.text-muted City:
+                        span.text-muted.address-tab City
+                        | :&nbsp;
                         span#city
-                          span &nbsp;Bengaluru
+                          span Bengaluru
                         span.m-l-xs.copy-button.text-primary.pointer(
-                          ngclipboard='',
-                          data-clipboard-target='#city'
-                          ng-click='$ctrl.copied()'
+                        ngclipboard='',
+                        data-clipboard-target='#city'
+                        ng-click='$ctrl.copied()'
                         ) copy
                       span.copy-wrap.line-spacing
-                        span.text-muted State/Province:
+                        span.text-muted.address-tab State/Province
+                        | :&nbsp;
                         span#state
-                          span &nbsp;Karnataka
-                        span.m-l-xs.copy-button.text-primary.pointer(
+                          span Karnataka
+                          span.m-l-xs.copy-button.text-primary.pointer(
                           ngclipboard='',
                           data-clipboard-target='#state'
                           ng-click='$ctrl.copied()'
-                        ) copy
+                          ) copy
                       span.copy-wrap.line-spacing
-                        span.text-muted Pincode:
-                        span#pincode
-                          span &nbsp;560034
-                        span.m-l-xs.copy-button.text-primary.pointer(
-                          ngclipboard='',
-                          data-clipboard-target='#pincode'
-                          ng-click='$ctrl.copied()'
-                        ) copy
-                      span.copy-wrap.line-spacing
-                        span.text-muted Phone:
-                        span#phone
-                          span &nbsp;080 4094 4077
-                        span.m-l-xs.copy-button.text-primary.pointer(
-                          ngclipboard='',
-                          data-clipboard-target='#phone'
-                          ng-click='$ctrl.copied()'
-                        ) copy
-                      span.copy-wrap.line-spacing
-                        span.text-muted Email:
-                        span#email
-                          span(ng-bind='" " + $ctrl.user.email')
-                        span.m-l-xs.copy-button.text-primary.pointer(
-                          ngclipboard='',
-                          data-clipboard-target='#phone'
-                          ng-click='$ctrl.copied()'
-                        ) copy
-                      span.copy-wrap.line-spacing
-                        span.text-muted Landmark:
+                        span.text-muted.address-tab Landmark
+                        | :&nbsp;
                         span#landmark
-                          span &nbsp;Near Seema English Nursery School
+                          span Near Seema English Nursery School
                         span.m-l-xs.copy-button.text-primary.pointer(
-                          ngclipboard='',
-                          data-clipboard-target='#landmark'
-                          ng-click='$ctrl.copied()'
+                        ngclipboard='',
+                        data-clipboard-target='#landmark'
+                        ng-click='$ctrl.copied()'
+                        ) copy
+                      span.copy-wrap.line-spacing
+                        span.text-muted.address-tab Email
+                        | :&nbsp;
+                        span#email
+                          span(ng-bind='$ctrl.user.email')
+                        span.m-l-xs.copy-button.text-primary.pointer(
+                        ngclipboard='',
+                        data-clipboard-target='#email'
+                        ng-click='$ctrl.copied()'
+                        ) copy
+                      span.copy-wrap.line-spacing
+                        span.text-muted.address-tab Address Type
+                        | :&nbsp;
+                        span#addrType
+                          span Home
+                        span(
+                        uib-popover = "If you select HOME, Amazon delivers from morning 7AM to 9PM. Shoppre Facility is Open 24/7"
+                        popover-trigger="'mouseenter'"
+                        popover-placement='right'
+                        popover-append-to-body='true'
+                        )
+                          i.m-l.fa.fa-info-circle
+                        span.m-l-xs.copy-button.text-primary.pointer(
+                        ngclipboard='',
+                        data-clipboard-target='#addrType'
+                        ng-click='$ctrl.copied()'
                         ) copy

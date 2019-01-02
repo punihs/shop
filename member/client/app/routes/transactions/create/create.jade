@@ -22,7 +22,7 @@ div
                     h2.m-n.alert.bg-primary.text-white.font-bold PAYMENT SUMMARY
                     .panel-body.text-primary.padding-10
                       .radio.no-margin-top(ng-repeat="paymentgateway in $ctrl.paymentGateways")
-                        label.i-checks.no-margin-top(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value === "wallet" && $ctrl.walletBalanceAmount > $ctrl.data.payAmount && !$ctrl.isWalletChecked')
+                        label.i-checks.no-margin-top(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value === "wallet" && $ctrl.walletBalanceAmount >= $ctrl.data.payAmount && !$ctrl.isWalletChecked')
                           input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", type='radio', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
                           i
                           | {{paymentgateway.name}} {{paymentgateway.description}} (₹{{$ctrl.walletBalanceAmount | number : 2}})
@@ -91,9 +91,13 @@ div
                     li
                       .p Loyalty Amount Deducted
                         span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.loyaltyAmount | number : 2}}
+                  ul.list-group.list-group-lg.m-b.list-unstyled.chkbox_background(ng-if="$ctrl.walletUsed && $ctrl.walletBalanceAmount > 0 && $ctrl.data.paymentGateway != $ctrl.PAYMENT_GATEWAY.WALLET")
+                    li
+                      .p Wallet Amount Deducted
+                        span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.walletUsed | number : 2}}
                   ul.list-group.list-group-lg.m-b.list-unstyled.chkbox_background(ng-if="$ctrl.shippingCharge")
                     li
-                      .p Shipping charge Amount
+                      .p Total Shipping charge Amount
                         span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shippingCharge | number : 2}}
                   .final-ship-charge.text-primary.no-margin-top
                     h4 Final Shipping Charges *

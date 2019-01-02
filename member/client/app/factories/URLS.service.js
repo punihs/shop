@@ -11,7 +11,7 @@ angular.module('uiGenApp')
       CDN: `${PREFIX}cdn.${DOMAIN}`,
       ACCOUNTS: `${PREFIX}accounts.${DOMAIN}`,
       PARCEL: `${PREFIX}parcel.${DOMAIN}`,
-      HELP: `${PREFIX}ship.${DOMAIN}`,
+      HELP: `${PREFIX}ship.shoppre.com`,
 
       API: `${PREFIX}api.${DOMAIN}`,
       PARCEL_API: `${PREFIX}${project}-api.${DOMAIN}`,

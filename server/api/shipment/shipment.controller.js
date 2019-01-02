@@ -15,7 +15,7 @@ const db = require('../../conn/sqldb');
 
 const {
   Country, Shipment, Package, Address, PackageCharge, ShipmentMeta,
-  PackageState, User, Locker,
+  PackageState, User, Locker, ShippingPreference,
   ShipmentState, Store,
   PackageItem, PhotoRequest,
 } = db;
@@ -883,8 +883,11 @@ exports.createShipment = async (req, res, IsShippingAddress, next) => {
     const customer = await User
       .find(optionsCustomer);
 
+    const shippingPreference = await ShippingPreference
+      .find({ where: { customer_id: customer.id } });
+
     return res.json({
-      customer, packages, shipmentMeta, IS_LIQUID, IsShippingAddress,
+      customer, packages, shipmentMeta, IS_LIQUID, IsShippingAddress, shippingPreference,
     });
   } catch (err) {
     return next(err);

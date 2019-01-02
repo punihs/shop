@@ -27,83 +27,95 @@ class CampaignCreateController {
     }
   }
 
-    reset(newPackageForm)
-    {
-      this.data = {};
-      newPackageForm.$setPristine();
+  reset(newPackageForm)
+  {
+    this.data = {};
+    newPackageForm.$setPristine();
+  }
+
+  validateForm(form)
+  {
+    this.$stateParams.autofocus = '';
+    Object.keys(form).filter(x => !x.startsWith('$')).forEach((f) => {
+      if (form[f] && form[f].$invalid) {
+        if (!this.$stateParams.autofocus) this.$stateParams.autofocus = f;
+        form[f].$setDirty();
+      }
+    });
+    return form.$valid;
+  }
+
+
+  startUpload(ctrl, file)
+  {
+    ctrl.S3.upload(file, ctrl.data, ctrl);
+  }
+
+
+  create(newCampaignForm)
+  {
+    this.message = '';
+    if (this.submitting) return null;
+    this.submitting = true;
+    this.clickUpload = true;
+
+    if (!this.data.discount_code && !this.data.cashback_code) {
+      this.message = 'Please Enter Discount Code OR Cashback Code';
+      this.submitting = false;
+      return;
     }
 
-    validateForm(form)
-    {
-      this.$stateParams.autofocus = '';
-      Object.keys(form).filter(x => !x.startsWith('$')).forEach((f) => {
-        if (form[f] && form[f].$invalid) {
-          if (!this.$stateParams.autofocus) this.$stateParams.autofocus = f;
-          form[f].$setDirty();
-        }
-      });
-      return form.$valid;
+    if (!this.data.discount_percentage && !this.data.cashback_percentage) {
+      this.message = 'Please Enter Discount Percentage OR Cashback Percentage';
+      this.submitting = false;
+      return;
+    }
+    if (this.moment(this.data.expiry_date) < this.moment(this.data.start_date)) {
+      this.message = 'Enter valid Expiry Date';
+      this.submitting = false;
+      return;
     }
 
+    const form = this.validateForm(newCampaignForm);
 
-    startUpload(ctrl, file)
-    {
-      ctrl.S3.upload(file, ctrl.data, ctrl);
+    const data = Object.assign({}, this.data);
+    if (!form) return (this.submitting = false);
+    if (data.discount_code) {
+      Object.assign(data, {discount_code: data.discount_code.toString().toUpperCase()});
+    }
+    if (data.cashback_code) {
+      Object.assign(data, { cashback_code: data.cashback_code.toString().toUpperCase()})
     }
 
+    const method = this.EDIT ? 'put' : 'post';
+    const url = this.EDIT ?
+      `$/campaigns/${this.$stateParams.id}` :
+      '$/campaigns/';
 
-    create(newCampaignForm)
-    {
-      this.message = '';
-      if (this.submitting) return null;
-      this.submitting = true;
-      this.clickUpload = true;
-
-      if (!this.data.discount_code && !this.data.cashback_code) {
-        this.message = 'Please Enter Discount Code OR Cashback Code';
+    return this
+      .$http[method](url, data)
+      .then(({ data: status }) => {
         this.submitting = false;
-        return;
-      }
-
-      if (!this.data.discount_percentage && !this.data.cashback_percentage) {
-        this.message = 'Please Enter Discount Percentage OR Cashback Percentage';
+        const message = this.EDIT ? 'Updated' : 'Created';
+        this
+          .toaster
+          .pop('success', `${this.data.name} Campaign ${message}`);
+        this.reset(newCampaignForm);
+      })
+      .catch((err) => {
         this.submitting = false;
-        return;
-      }
-      if (this.moment(this.data.expiry_date) < this.moment(this.data.start_date)) {
-        this.message = 'Enter valid Expiry Date';
-        this.submitting = false;
-        return;
-      }
-
-      const form = this.validateForm(newCampaignForm);
-
-      const data = Object.assign({}, this.data);
-      if (!form) return (this.submitting = false);
-
-      const method = this.EDIT ? 'put' : 'post';
-      const url = this.EDIT ?
-       `$/campaigns/${this.$stateParams.id}` :
-        '$/campaigns/';
-
-      return this
-        .$http[method](url, data)
-        .then(({data: status}) => {
-          this.submitting = false;
-          const message = this.EDIT ? 'Updated' : 'Created';
+        if (err.status === 409) {
           this
             .toaster
-            .pop('success', `${this.data.name} Campaign ${message}`);
-          this.reset(newCampaignForm);
-        })
-        .catch((err) => {
-          this.submitting = false;
+            .pop('error', err.data.message);
+        } else {
           this
             .toaster
             .pop('error', 'There was problem while updating Campaign');
-        });
-    }
+        }
+      });
   }
+}
 
 angular.module('uiGenApp')
   .controller('CampaignCreateController', CampaignCreateController);

@@ -79,7 +79,7 @@ class ShipRequestsCreateController {
       .get(`/shipments/redirectShipment?packageIds=${this.$packageIds}`)
       .then(({
         data: {
-          customer, packages, shipmentMeta, IS_LIQUID, IsShippingAddress,
+          customer, packages, shipmentMeta, IS_LIQUID, IsShippingAddress, shippingPreference,
         },
       }) => {
         this.shipments = packages;
@@ -101,18 +101,18 @@ class ShipRequestsCreateController {
         this.customer = customer;
         this.shipmentMeta = shipmentMeta;
         this.data = {
-          repack: false,
-          sticker: false,
-          extra_packing: false,
-          original: false,
-          gift_wrap: false,
+          repack: shippingPreference.is_repacking,
+          sticker: shippingPreference.is_sticker,
+          extra_packing: shippingPreference.is_extra_packing,
+          original: shippingPreference.is_original_box,
+          gift_wrap: shippingPreference.is_gift_wrap,
           gift_note: false,
           gift_note_text: null,
           is_liquid: IS_LIQUID,
           max_weight: 0,
-          invoice_tax_id: null,
-          mark_personal_use: false,
-          invoice_include: false,
+          invoice_tax_id: shippingPreference.tax_id,
+          mark_personal_use: shippingPreference.is_mark_personal_use,
+          invoice_include: shippingPreference.is_include_invoice,
         };
         this.IsShippingAddress = IsShippingAddress;
         if (!IsShippingAddress && !customer.Addresses.length) {

@@ -20,7 +20,7 @@ class PreferencesController {
       }).catch(() => {
         this
           .toaster
-          .pop('error', 'error in updating shipping preference');
+          .pop('error', 'error in Loading shipping preference');
       });
   }
 

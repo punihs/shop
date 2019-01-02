@@ -279,7 +279,7 @@ class PackagesIndexController {
 
   deletePackage(packageid) {
     const c = confirm;
-    const ok = c('Are you sure? Deleting Your Package');
+    const ok = c('Are you sure you want to delete this Package?');
     if (!ok) return null;
 
     return this

@@ -91,7 +91,7 @@ class AddressesCreateController {
 
         this
           .toaster
-          .pop('success', `${data.city} Shipping Address Created Successfully.`, '');
+          .pop('success', `${data.city} Shipping Address ${id ? 'Updated' : 'Created'} Successfully.`);
 
         return this.$state.go('users.address-index');
       })
@@ -99,14 +99,19 @@ class AddressesCreateController {
         this.submitting = false;
 
         const { field } = err.data;
+
+        if (err.status === 406) {
+          this
+            .toaster
+            .pop('error', err.data.message);
+        } else {
+          this
+            .toaster
+            .pop('error', 'There was problem creating address. Please contact Shoppre team.');
+        }
+
         newAddressForm[err.data.field].$setValidity('required', false);
         $(`input[name="${field}"]`)[0].focus();
-
-
-        this
-          .toaster
-          .pop('error', 'There was problem creating address. Please contact Shoppre team.');
-
         this.error = err.data;
       });
   }

@@ -57,7 +57,7 @@ div
                     ctrl="$ctrl"
                     required
                     )
-                span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && !$ctrl.data.file && !documentForm.file.$invalid') Please choose file
+                span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && !$ctrl.file && !documentForm.file.$invalid') Please choose file
                 span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && documentForm.file.$invalid') Please choose supported file
                 span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && documentForm.file.$dirty && documentForm.file.$invalid') Please choose supported file
 

@@ -14,6 +14,7 @@ class DocumentController {
 
   $onInit() {
     this.Number = Number;
+    this.file = {};
     this.submitting = false;
     this.data = {};
     this.userDocuments = [];
@@ -84,6 +85,9 @@ class DocumentController {
         };
         this.userDocuments.push(document);
         this.data = {};
+        this.file = {};
+        this.submitting = false;
+        this.reset(documentForm);
         this
           .toaster
           .pop('success', 'Document Uploaded Successfully.', '');
@@ -101,6 +105,11 @@ class DocumentController {
 
         this.error = err.data;
       });
+  }
+
+  reset(documentForm) {
+    this.data = {};
+    documentForm.$setPristine();
   }
 
   deleteDocument(documentId, index) {

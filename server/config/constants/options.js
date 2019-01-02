@@ -1,4 +1,5 @@
 module.exports = {
   VIRTUAL_ADDRESS_PREFIX: 'SHPR',
   NUMBER_OF_LOCKERS: 50,
+  ADDRESS_COUNT: 5,
 };

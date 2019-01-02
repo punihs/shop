@@ -3,6 +3,7 @@ const _ = require('lodash');
 const { GROUPS: { CUSTOMER } } = require('./../../config/constants');
 const { ajv, transform } = require('./../../components/ajv');
 const { Address, Country } = require('./../../conn/sqldb');
+const { ADDRESS_COUNT } = require('./../../config/constants/options');
 
 exports.index = async (req, res, next) => {
   try {
@@ -78,6 +79,13 @@ exports.create = async (req, res, next) => {
     }
 
     const { is_default: isDefault } = req.body;
+
+    const count = await Address
+      .count({ where: { customer_id: req.user.id } });
+
+    if (count >= ADDRESS_COUNT) {
+      return res.status(406).json({ message: `Address limit exceeded only ${ADDRESS_COUNT} address can be stored ` });
+    }
 
     if (isDefault) {
       const where = {

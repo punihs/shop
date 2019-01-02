@@ -56,12 +56,14 @@ div
                       input.form.form-control(
                         type='text'
                         name='first_name'
-                        placeholder='eg. Aditya'
+                      ng-pattern="/^[a-zA-Z]*$/"
+                      placeholder='eg. Aditya'
                         ng-model='$ctrl.data.first_name'
                         autofocus
                         required
                       )
-                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.first_name.$dirty && newAddressForm.first_name.$invalid') Please enter First Name
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.first_name.$error.required') Please enter First Name
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.first_name.$dirty && newAddressForm.first_name.$error.pattern') Please enter Alphabets only
                   .col-md-6.col-sm-5.col-xs-12
                     label.col-xs-12.input-group
                       | Last Name
@@ -134,9 +136,11 @@ div
                       input.form.form-control(
                       type='text'
                       name='pincode'
+                      ng-pattern="/^[a-zA-Z0-9]*$/"
                       placeholder='eg. 94114'
                       ng-model='$ctrl.data.pincode'
                       )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.pincode.$dirty && newAddressForm.pincode.$error.pattern') Special Characters are not allowed
                   .col-md-6.col-sm-5.col-xs-12
                     label.col-xs-12.input-group
                       | Country
