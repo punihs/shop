@@ -56,7 +56,7 @@ div
                         option Mr
                         option Ms
                         option Mrs
-                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.salutation.$dirty && profileForm.salutation.$invalid') Please select Title
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.salutation.$dirty && profileForm.salutation.$invalid') Select Title
 
                   .col-md-2.col-sm-5.col-xs-12
                     label.col-xs-12.input-group
@@ -66,10 +66,12 @@ div
                         name='first_name'
                         placeholder='eg. Aditya'
                         ng-model='$ctrl.data.first_name' q-text-maxlength="60"
+                      ng-pattern="/^[a-zA-Z ]*$/"
                         autofocus
                         required
                       )
-                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.first_name.$dirty && profileForm.first_name.$invalid') Please enter First Name
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload  && profileForm.first_name.$error.required') Enter First Name
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.first_name.$dirty && profileForm.first_name.$error.pattern') Enter Alphabets only
                   .col-md-2.col-sm-5.col-xs-12
                     label.col-xs-12.input-group
                       | Last Name
@@ -78,12 +80,13 @@ div
                       name='last_name'
                       placeholder='eg. Sharma'
                       ng-model='$ctrl.data.last_name'
+                      ng-pattern="/^[a-zA-Z ]*$/"
                       q-text-maxlength='60'
                       autofocus
                       required
                       )
-                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.last_name.$dirty && profileForm.last_name.$invalid') Please enter Last Name
-
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.last_name.$dirty && profileForm.last_name.$error.required') Enter Last Name
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && profileForm.last_name.$dirty && profileForm.last_name.$error.pattern') Enter Alphabets only
                 .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
                 .row
                   .col-md-12.col-sm-12.col-xs-12
@@ -104,8 +107,8 @@ div
                       )
                       span.wrapper-xs.text-xs.text-danger(
                       ng-show='$ctrl.clickUpload && profileForm.email.$dirty && profileForm.email.$invalid'
-                      ) Please enter Email
-                  .col-md-2.col-sm-5.col-xs-12.no-padder-right
+                      ) Enter Email
+                  .col-md-3.col-sm-5.col-xs-12.no-padder-right
                     label.col-xs-12.input-group
                       | Alternate Email
                       input.form.form-control(
@@ -117,7 +120,7 @@ div
                       )
                       span.wrapper-xs.text-xs.text-danger(
                       ng-show='$ctrl.clickUpload && profileForm.alternate_email.$dirty && profileForm.alternate_email.$invalid'
-                      ) Please enter Alternate Email
+                      ) Enter Alternate Email
                 .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
                 .row
                   .col-md-12.col-sm-12.col-xs-12
@@ -128,14 +131,14 @@ div
                       label.col-xs-12.input-group
                         | Primary Phone / Mobile Number
                       input#tel.form-control(type='text', name='phone', ng-model='$ctrl.data.phone', ng-intl-tel-input='')
-                      span.help-block(ng-show='profileForm.phone.$pristine && profileForm.phone.$touched') Please type a telephone number
+                      span.help-block(ng-show='profileForm.phone.$pristine && profileForm.phone.$touched') Type a telephone number
                       span.help-block(ng-show='profileForm.phone.$invalid && profileForm.phone.$touched') Invalid :(
                       span.help-block(ng-show='profileForm.phone.$valid && profileForm.phone.$touched') Valid :)
                     .col-md-6.col-sm-6.col-xs-12.no-padder-left
                       label.col-xs-12.input-group
                         | Secondary Phone / Mobile Number
                       input#tel1.form-control(type='text', name='secondary_phone', ng-model='$ctrl.data.secondary_phone', ng-intl-tel-input='')
-                      span.help-block(ng-show='profileForm.secondary_phone.$pristine && profileForm.secondary_phone.$touched') Please type a telephone number
+                      span.help-block(ng-show='profileForm.secondary_phone.$pristine && profileForm.secondary_phone.$touched') Type a telephone number
                       span.help-block(ng-show='profileForm.secondary_phone.$invalid && profileForm.secondary_phone.$touched') Invalid :(
                       span.help-block(ng-show='profileForm.secondary_phone.$valid && profileForm.secondary_phone.$touched') Valid :)
                 br

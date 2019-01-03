@@ -154,6 +154,10 @@ div
                             p.font-bold
                               | Pickup Charge
                               span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.shipment.pick_up_charge_amount| number : 2}}
+                          li(ng-if="$ctrl.shipmentMeta.other_charge_amount > 0")
+                            p.font-bold
+                              | Other Charge Amount
+                              span.totalvalue.pull-right &nbsp;{{$ctrl.shipmentMeta.other_charge_amount| number : 2}}
                           li
                             hr
                             p.font-bold

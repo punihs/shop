@@ -56,8 +56,8 @@ div
                       input.form.form-control(
                         type='text'
                         name='first_name'
-                      ng-pattern="/^[a-zA-Z]*$/"
-                      placeholder='eg. Aditya'
+                        ng-pattern="/^[a-zA-Z ]*$/"
+                        placeholder='eg. Aditya'
                         ng-model='$ctrl.data.first_name'
                         autofocus
                         required
@@ -72,11 +72,12 @@ div
                       type='text'
                       name='last_name'
                       placeholder='eg. Sharma'
+                      ng-pattern="/^[a-zA-Z ]*$/"
                       ng-model='$ctrl.data.last_name'
                       required
                       )
-                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.last_name.$dirty && newAddressForm.last_name.$invalid') Please enter Last Name
-
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.last_name.$error.required') Please enter Last Name
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newAddressForm.last_name.$dirty && newAddressForm.last_name.$error.pattern') Please enter Alphabets only
                 .line.line-dashed.b-b.line-lg.pull-in(style='margin: 15px 0;')
                 .row
                   .col-md-6.col-sm-5.col-xs-12.no-padder-right

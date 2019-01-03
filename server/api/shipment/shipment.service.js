@@ -186,7 +186,7 @@ exports.show = async (req, res, next) => {
       include: [{
         model: ShipmentMeta,
         attributes: ['id', 'repacking_charge_amount', 'sticker_charge_amount', 'extra_packing_charge_amount', 'original_ship_box_charge__amount',
-          'consolidation_charge_amount', 'gift_wrap_charge_amount', 'gift_note_charge_amount', 'insurance_amount',
+          'consolidation_charge_amount', 'gift_wrap_charge_amount', 'gift_note_charge_amount', 'insurance_amount', 'other_charge_amount',
           'liquid_charge_amount', 'overweight_charge_amount', 'shipment_id'],
       }, {
         model: ShipmentState,
