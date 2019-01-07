@@ -14,55 +14,62 @@ div
         popover-trigger="'mouseenter'"
         popover-placement='bottom'
         popover-append-to-body='true'
+        ng-disabled='$ctrl.addressCount < $ctrl.addressLimit ? false : true'
       )
         i.fas.fa-plus.m-r-sm
         span Add New Shipping Address
 
 
     // - Secondary Header
-    .bg-light.padder.w-full.bg-white-only.m-t-xl.hidden(
+    .bg-light.padder.w-full.bg-white-only.m-t-xl.b-b(
       style='position:fixed;z-index: 6;height: 42px;'
     )
+      div.m-t-xs.m-l-md
+        .h4.text-danger(ng-if = '$ctrl.addressCount < $ctrl.addressLimit')
+          | Only {{$ctrl.addressLimit}} Address you can store in your profile
 
     // - Content Area
-    .bg-white-only(style='min-height: 200px;')
-      .m-b-md(style='height: 1px;')
-      .m-t-xxl.m-b-md(style='height: 1px;')
-        .hbox
-          .wrapper-md.bg-white-only.m-t-n-md
-            .col-xs-12(ng-show='$ctrl.addresses.length === 0 && !$ctrl.ui.loading')
-              td(colspan="5")
-                h1.text-center.text-muted Start Adding Addresses to your Address Book
+    .bg-light(style='min-height: 200px;')
+      .m-t-xxl.m-b-lg(style='height: 1px;')
+      .hbox
+        .wrapper-md.bg-white-only.wrapper-parcel
+          .col-md-12
+            .row
+              .col-md-12.col-sm-12.col-xs-12
+                .clearfix
+                  .row
+                    .col-xs-12(ng-show='$ctrl.addresses.length === 0 && !$ctrl.ui.loading')
+                      td(colspan="5")
+                        h1.text-center.text-muted Start Adding Addresses to your Address Book
 
-            //hr
-            .well.col-md-4.m-t.m-l.bg-info.hover-wrap.address-box-height(style='min-height: 205px;' ng-repeat='address in $ctrl.addresses' ng-class='address.is_default ? "dker": "lt"')
-              h4.no-margin-top
-                span.font-thin(ng-bind='(address.city ? address.city.toUpperCase() : "") + " Address"')
-                span.flag-icon.m-l-xs(
-                  ng-class='"flag-icon-"+ address.Country.iso2.toLowerCase()'
-                )
-                span.pull-right.font-thin.pointer.m-t.display-on-hover(ui-sref='users.address-edit({ id: address.id })')
-                  span.fa.fa-edit.m-l-xs
-                  | &nbsp;EDIT
+                    //hr
+                    .well.col-md-4.m-t.m-l.bg-info.hover-wrap.address-box-height(style='min-height: 205px;' ng-repeat='address in $ctrl.addresses' ng-class='address.is_default ? "dker": "lt"')
+                      h4.no-margin-top
+                        span.font-thin(ng-bind='(address.city ? address.city.toUpperCase() : "") + " Address"')
+                        span.flag-icon.m-l-xs(
+                          ng-class='"flag-icon-"+ address.Country.iso2.toLowerCase()'
+                        )
+                        span.pull-right.font-thin.pointer.m-t.display-on-hover(ui-sref='users.address-edit({ id: address.id })')
+                          span.fa.fa-edit.m-l-xs
+                          | &nbsp;EDIT
 
-              strong(ng-bind='address.first_name + " " + address.last_name')
+                      strong(ng-bind='address.first_name + " " + address.last_name')
+                      p
+                        small.block(ng-bind='address.line1')
+                        small.block(ng-bind='address.line2')
+                        small.block(ng-bind='address.city + ", " + address.state')
+                        small(ng-bind='address.Country.name')
+                        span(
+                          ng-if='address.pincode'
+                          ng-bind='" - " + address.pincode'
+                        )
+                        small.block(
+                          ng-if='address.phone'
+                          ng-bind='address.phone'
+                        )
+                        span.label.pull-left.padding-5.m-t-xs.bg-primary.text-white(ng-if='address.is_default') DEFAULT SHIPPING ADDRESS
+                        button.pull-right.m-t-xxs.btn-xs.btn-info(ng-click='$ctrl.destroy(address, $index)')
+                          i.fas.fa-trash
 
-              p
-                small.block(ng-bind='address.line1')
-                small.block(ng-bind='address.line2')
-                small.block(ng-bind='address.city + ", " + address.state')
-                small(ng-bind='address.Country.name')
-                span(
-                  ng-if='address.pincode'
-                  ng-bind='" - " + address.pincode'
-                )
-                small.block(
-                  ng-if='address.phone'
-                  ng-bind='address.phone'
-                )
-                span.label.pull-left.padding-5.m-t-xs.bg-primary.text-white(ng-if='address.is_default') DEFAULT SHIPPING ADDRESS
-                button.pull-right.m-t-xxs.btn-xs.btn-info(ng-click='$ctrl.destroy(address, $index)')
-                  i.fas.fa-trash
-
-            .clearfix.bg-white-only
-          .clearfix
+                    .clearfix.bg-white-only
+                  .clearfix

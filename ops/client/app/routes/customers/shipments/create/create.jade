@@ -30,7 +30,7 @@ div.m-t-xl.no-margin
       )
         .row
           .col-md-10.col-sm-10.col-xs-10
-            .col-md-7
+            .col-md-10
               .row(ng-if='$ctrl.EDIT')
                 .col-md-12
                   .col-md-6.col-sm-5.col-xs-12.no-padder
@@ -169,7 +169,7 @@ div.m-t-xl.no-margin
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
               .row(ng-if='$ctrl.EDIT')
                 .col-md-12
-                  .col-md-4.col-sm-5.col-xs-12.no-padder
+                  .col-md-3.col-sm-5.col-xs-12.no-padder
                     label.col-xs-12.input-group
                       | Package Level charges
                       span.text-danger *
@@ -182,7 +182,7 @@ div.m-t-xl.no-margin
                       disabled
                       )
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.package_level_charges_amount.$dirty && newShipmentForm.package_level_charges_amount.$invalid') Please enter package level charges
-                  .col-md-4.col-sm-5.col-xs-12
+                  .col-md-3.col-sm-5.col-xs-12
                     label.col-xs-12.input-group
                       | Pickup charges
                       span.text-danger *
@@ -194,7 +194,7 @@ div.m-t-xl.no-margin
                       required
                       )
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.pick_up_charge_amount.$dirty && newShipmentForm.pick_up_charge_amount.$invalid') Please enter pick up charge
-                  .col-md-4.col-sm-5.col-xs-12
+                  .col-md-3.col-sm-5.col-xs-12
                     label.col-xs-12.input-group
                       | Other charges
                       span.text-danger *
@@ -282,6 +282,44 @@ div.m-t-xl.no-margin
                       ng-model='$ctrl.transaction.data.amount'
                       disabled,
                       )
+              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
+              .row(ng-if='$ctrl.EDIT')
+                .col-md-12
+                  .col-md-4.col-sm-5.col-xs-12.no-padder
+                    label.col-xs-12.input-group
+                      | Upstream Cost
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='upstream_cost'
+                      placeholder='eg. 1000'
+                      ng-model='$ctrl.data.upstream_cost'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.upstream_cost.$dirty && newShipmentForm.upstream_cost.$invalid') Please Enter Upstream
+                  .col-md-4.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Fuel Sur Charge
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='fuel_sur_charge'
+                      placeholder='eg. 200'
+                      ng-model='$ctrl.data.fuel_sur_charge'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.fuel_sur_charge.$dirty && newShipmentForm.fuel_sur_charge.$invalid') Please Enter fuel Sur Charge
+                  .col-md-4.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | GST Amount
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='gst_amount'
+                      placeholder='eg. 200'
+                      ng-model='$ctrl.data.gst_amount'
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.gst_amount.$dirty && newShipmentForm.gst_amount.$invalid') Please Enter GST Amount
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
               .row(ng-if='$ctrl.EDIT')
                 .col-md-12
@@ -444,6 +482,33 @@ div.m-t-xl.no-margin
                         ng-model='$ctrl.data.dispatch_date'
                         disabled
                         )
+                .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
+                .row
+                  .col-md-12
+                    .col-md-6.col-sm-5.col-xs-12.no-padder
+                      label.col-xs-12.input-group
+                        | Select Carton Box
+                      ul.nav(ng-repeat='carton in $ctrl.cartonBox')
+                        li
+                          input(
+                          type="radio"
+                          ng-model="$ctrl.data.carton_box_used"
+                          name='carton_box_used'
+                          value="{{carton.kg}}"
+                          ng-click= '$ctrl.data.carton_box_Amount = carton.amount'
+                          )
+                          | {{carton.kg}} KG - INR {{carton.amount}}
+                    .col-md-6.col-sm-5.col-xs-12
+                      label.col-xs-12.input-group
+                        | Carton Box Amount
+                        span.text-danger *
+                        input.form.form-control(
+                        type='number'
+                        name='carton_box_Amount'
+                        placeholder='45.5'
+                        ng-model='$ctrl.data.carton_box_Amount'
+                        )
+                        span.wrapper-xs.text-xs.text-danger(ng-show='trackingForm.carton_box_Amount.$dirty && trackingForm.carton_box_Amount.$invalid') Please Enter Carton Box Amount
                 .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
 
                 .row

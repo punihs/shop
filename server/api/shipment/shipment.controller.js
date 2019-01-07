@@ -487,6 +487,7 @@ exports.create = async (req, res, next) => {
         volumetric_weight: 0,
 
         customer_id: userId,
+        country_id: address.country_id,
         customer_name: `${address.first_name} ${address.last_name}`,
         address: addressStringify(address),
         phone: address.phone,
@@ -1157,7 +1158,8 @@ exports.shipRequestResponse = async (req, res, next) => {
 exports.trackingUpdate = async (req, res, next) => {
   try {
     const shipment = req.body;
-    shipment.dispatch_date = moment();
+    shipment.dispatch_date = req.body.dispatch_date ? req.body.dispatch_date : moment()
+    shipment.dispatch_date = req.body.dispatch_date === null ? moment() : req.body.dispatch_date
     const { id } = req.params;
 
     const status = await Shipment.update(shipment, { where: { id } });

@@ -32,7 +32,10 @@ exports.index = async (req, res, next) => {
     const addresses = await Address
       .findAll(options);
 
-    return res.json(addresses);
+    const count = await Address
+      .count({ where: { customer_id: options.where.customer_id } });
+
+    return res.json({ addresses, count, addressLimit: ADDRESS_COUNT });
   } catch (err) {
     return next(err);
   }

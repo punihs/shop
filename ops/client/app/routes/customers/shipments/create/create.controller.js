@@ -1,5 +1,5 @@
 class ShipmentCreateController {
-  constructor(Page, $state, $stateParams, $http, toaster, customer, shipment,
+  constructor(Page, $state, $stateParams, $http, toaster, customer, shipment, QCONFIG,
     Session, $httpParamSerializer) {
     this.Session = Session;
     this.Page = Page;
@@ -10,6 +10,7 @@ class ShipmentCreateController {
     this.$httpParamSerializer = $httpParamSerializer;
     this.toaster = toaster;
     this.Number = Number;
+    this.QCONFIG = QCONFIG;
     this.$ = $;
     this.shipment = shipment;
 
@@ -26,6 +27,8 @@ class ShipmentCreateController {
     this.Page.setTitle(this.TITLE);
     this.shipmentTypes = this.Session.read('shipment-types');
     this.paymentMode(this.data);
+
+    this.cartonBox = this.QCONFIG.CARTON_BOX;
   }
 
   reset(newShipmentForm) {
@@ -65,7 +68,7 @@ class ShipmentCreateController {
 
     const allowed = [
       'shipping_carrier', 'number_of_packages', 'weight_by_shipping_partner', 'tracking_code',
-      'tracking_url',
+      'tracking_url', 'carton_box_used', 'carton_box_Amount', 'dispatch_date',
     ];
     const { shipmentId, id: customerId } = this.$stateParams;
     data.customer_id = customerId;
@@ -114,7 +117,7 @@ class ShipmentCreateController {
       'package_level_charges_amount', 'pick_up_charge_amount', 'liquid_charge_amount',
       'estimated_amount', 'coupon_amount', 'loyalty_amount', 'is_axis_banned_item',
       'payment_gateway_fee_amount', 'wallet_amount', 'final_amount', 'shipment_type_id',
-      'other_charge_amount',
+      'other_charge_amount', 'upstream_cost', 'fuel_sur_charge', 'gst_amount',
     ];
 
     const method = 'put';

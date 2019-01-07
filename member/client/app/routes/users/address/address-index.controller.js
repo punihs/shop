@@ -12,11 +12,15 @@ class AddressesIndexController {
 
     this.ui = { lazyLoad: true, loading: false }; // ui states
     this.addresses = [];
+    this.addressCount = 0;
+    this.addressLimit = 0;
 
     this
       .$http
       .get('/addresses')
-      .then(({ data: addresses }) => {
+      .then(({ data: { addresses, count, addressLimit } }) => {
+        this.addressCount = count;
+        this.addressLimit = addressLimit;
         this.addresses.push(...addresses);
       });
   }
@@ -28,7 +32,10 @@ class AddressesIndexController {
     return this
       .$http
       .delete(`/addresses/${address.id}`)
-      .then(() => this.addresses.splice(index, 1));
+      .then(() => {
+        this.addresses.splice(index, 1);
+        this.addressCount = this.addressCount - 1;
+      });
   }
 }
 

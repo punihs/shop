@@ -48,4 +48,9 @@ module.exports = DataTypes => ({
   dispatch_date: DataTypes.DATE,
   carton_box_type: DataTypes.STRING,
   comments: DataTypes.STRING,
+  upstream_cost: DataTypes.DECIMAL(8, 2),
+  fuel_sur_charge: DataTypes.DECIMAL(8, 2),
+  gst_amount: DataTypes.DECIMAL(8, 2),
+  carton_box_used: DataTypes.STRING,
+  carton_box_Amount: DataTypes.DECIMAL(8, 2),
 });
