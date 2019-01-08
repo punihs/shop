@@ -294,11 +294,22 @@ exports.updateShipmentState = async ({
           payment_gateway_id,
           final_amount: finalAmount,
           loyalty_amount: loyaltyAmount,
+          wallet_amount: walletAmount,
         } = await this.transaction(shipment);
 
         paymentGatewayID = payment_gateway_id;
 
         log({ payment_gateway_id, finalAmount, loyaltyAmount });
+
+        if (paymentGatewayID == CASH || paymentGatewayID == WIRE) {
+          if (walletAmount < 0) {
+            await transactionCtrl.setWallet({
+              customer_id: shipment.customer_id,
+              amount: -walletAmount,
+              description: `Wallet Amount deducted for shipment ${shipment.id}`,
+            });
+          }
+        }
 
         await transactionCtrl
           .addLoyalty({
