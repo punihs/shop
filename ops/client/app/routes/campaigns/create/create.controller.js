@@ -81,11 +81,14 @@ class CampaignCreateController {
     const data = Object.assign({}, this.data);
     if (!form) return (this.submitting = false);
     if (data.discount_code) {
-      Object.assign(data, {discount_code: data.discount_code.toString().toUpperCase()});
+      Object.assign(data, { discount_code: data.discount_code.toString().toUpperCase() });
     }
     if (data.cashback_code) {
-      Object.assign(data, { cashback_code: data.cashback_code.toString().toUpperCase()})
+      Object.assign(data, { cashback_code: data.cashback_code.toString().toUpperCase() });
     }
+
+    Object.assign(data, { start_date: this.moment(data.start_date).format('YYYY-MM-DD') });
+    Object.assign(data, { expiry_date: this.moment(data.expiry_date).format('YYYY-MM-DD') });
 
     const method = this.EDIT ? 'put' : 'post';
     const url = this.EDIT ?
