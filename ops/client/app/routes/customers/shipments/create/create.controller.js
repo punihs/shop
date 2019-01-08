@@ -150,6 +150,11 @@ class ShipmentCreateController {
       });
   }
 
+  cartonValue() {
+    const carton = this.cartonBox.filter(x => x.kg === this.data.carton_box_used);
+    this.data.carton_box_Amount = carton[0].amount;
+  }
+
   paymentMode(data) {
     if (data.transaction_id) {
       const params = {

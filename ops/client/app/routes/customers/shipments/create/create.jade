@@ -488,16 +488,12 @@ div.m-t-xl.no-margin
                     .col-md-6.col-sm-5.col-xs-12.no-padder
                       label.col-xs-12.input-group
                         | Select Carton Box
-                      ul.nav(ng-repeat='carton in $ctrl.cartonBox')
-                        li
-                          input(
-                          type="radio"
-                          ng-model="$ctrl.data.carton_box_used"
-                          name='carton_box_used'
-                          value="{{carton.kg}}"
-                          ng-click= '$ctrl.data.carton_box_Amount = carton.amount'
-                          )
-                          | {{carton.kg}} KG - INR {{carton.amount}}
+                        select.form.form-control(
+                        ng-model='$ctrl.data.carton_box_used'
+                        name='carton_box_used'
+                        ng-options='carton.kg as carton.kg for carton in $ctrl.cartonBox'
+                        ng-click= '$ctrl.cartonValue(carton.kg)'
+                        )
                     .col-md-6.col-sm-5.col-xs-12
                       label.col-xs-12.input-group
                         | Carton Box Amount
