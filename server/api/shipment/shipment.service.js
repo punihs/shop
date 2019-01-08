@@ -365,6 +365,7 @@ exports.updateShipmentState = async ({
             .setWallet({
               customer_id: shipment.customer_id,
               amount: cashbackAmount,
+              description: `CashBack for Shipment id ${shipment.id}`,
             });
         }
 

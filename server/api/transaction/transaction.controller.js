@@ -30,10 +30,10 @@ exports.getWallet = async ({ customer_id: customerID }) => {
   return wallet_amount;
 };
 
-exports.setWallet = async ({ customer_id, amount }) => {
+exports.setWallet = async ({ customer_id, amount, description }) => {
   const status = await rp({
     uri: `${URLS_MYACCOUNT}/admin/walletUpdate`,
-    qs: { user_id: customer_id, amount },
+    qs: { user_id: customer_id, amount, description },
     json: true,
   });
 
