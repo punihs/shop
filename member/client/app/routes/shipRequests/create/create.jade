@@ -174,7 +174,7 @@
                         input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.repack')
                         i
                         | Discard Shoe boxes
-                      label.i-checks(ng-if='$ctrl.data.repack === false')
+                      label.i-checks(ng-if='!$ctrl.data.repack')
                         input(type='checkbox',  checked='false' value='' ng-model='$ctrl.data.repack')
                         i
                         | Discard Shoe boxes
@@ -190,7 +190,7 @@
                         input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.extra_packing')
                         i
                         | Add extra packing material
-                      label.i-checks(ng-if='$ctrl.data.extra_packing === false')
+                      label.i-checks(ng-if='!$ctrl.data.extra_packing')
                         input(type='checkbox',  value='' ng-model='$ctrl.data.extra_packing')
                         i
                         | Add extra packing material
@@ -206,7 +206,7 @@
                         input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.original')
                         i
                         | Ship in original boxes(do not repack)
-                      label.i-checks(ng-if='$ctrl.data.original === false')
+                      label.i-checks(ng-if='!$ctrl.data.original')
                         input(type='checkbox',  value='' ng-model='$ctrl.data.original')
                         i
                         | Ship in original boxes(do not repack)
@@ -222,7 +222,7 @@
                         input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.gift_wrap')
                         i
                         | Gift Wrap
-                      label.i-checks(ng-if='$ctrl.data.gift_wrap === false')
+                      label.i-checks(ng-if='!$ctrl.data.gift_wrap')
                         input(type='checkbox',  value='' ng-model='$ctrl.data.gift_wrap')
                         i
                         | Gift Wrap
@@ -238,7 +238,7 @@
                         input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.gift_note')
                         i
                         | Gift Note
-                      label.i-checks(ng-if='$ctrl.data.gift_note === false' ng-click='$ctrl.giftNoteShow = true')
+                      label.i-checks(ng-if='!$ctrl.data.gift_note' ng-click='$ctrl.giftNoteShow = true')
                         input(type='checkbox',  value='' ng-model='$ctrl.data.gift_note' )
                         i
                         | Gift Note
@@ -276,7 +276,7 @@
                         input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.mark_personal_use')
                         i
                         | Mark items for personal use only
-                      label.i-checks(ng-if='$ctrl.data.mark_personal_use === false')
+                      label.i-checks(ng-if='!$ctrl.data.mark_personal_use')
                         input(type='checkbox',  checked='false' value='' ng-model='$ctrl.data.mark_personal_use')
                         i
                         | Mark items for personal use only
@@ -292,7 +292,7 @@
                         input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.invoice_include')
                         i
                         | Please include a printed proforma invoice with in my shipment
-                      label.i-checks(ng-if='$ctrl.data.invoice_include === false')
+                      label.i-checks(ng-if='!$ctrl.data.invoice_include')
                         input(type='checkbox',  checked='false' value='' ng-model='$ctrl.data.invoice_include')
                         i
                         | Please include a printed proforma invoice with in my shipment
