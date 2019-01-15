@@ -319,7 +319,6 @@ exports.updateShipmentState = async ({
 
         if (!shipment.tracking) {
           const tracking = {};
-          tracking.dispatch_date = moment();
           tracking.number_of_packages = shipment.packages_count;
           tracking.weight_by_shipping_partner = shipment.final_weight;
           tracking.value_by_shipping_partner = shipment.value_amount;
@@ -390,6 +389,10 @@ exports.updateShipmentState = async ({
               });
           }
         }
+        await Shipment.update(
+          { dispatch_date: moment() },
+          { where: { id: shipment.id } },
+        );
         break;
       }
       default: {

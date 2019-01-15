@@ -1158,8 +1158,6 @@ exports.shipRequestResponse = async (req, res, next) => {
 exports.trackingUpdate = async (req, res, next) => {
   try {
     const shipment = req.body;
-    shipment.dispatch_date = req.body.dispatch_date ? req.body.dispatch_date : moment()
-    shipment.dispatch_date = req.body.dispatch_date === null ? moment() : req.body.dispatch_date
     const { id } = req.params;
 
     const status = await Shipment.update(shipment, { where: { id } });
