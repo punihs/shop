@@ -56,7 +56,7 @@ angular.module('uiGenApp')
               'tracking_url', 'number_of_packages', 'weight_by_shipping_partner',
               'shipping_carrier', 'dispatch_date', 'is_axis_banned_item', 'transaction_id',
               'upstream_cost', 'fuel_sur_charge', 'gst_amount', 'carton_box_Amount',
-              'carton_box_used',
+              'carton_box_used', 'carton_box_weight',
             ].join(',');
 
             return $http

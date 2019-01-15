@@ -61,6 +61,17 @@ class ShipmentCreateController {
     if (this.submittingTracking) return null;
     this.submittingTracking = true;
     this.clickUpload = true;
+
+    if (this.data.carton_box_used !== 'Other') {
+      this.data.carton_box_weight = null;
+    } else if (this.data.carton_box_used === 'Other' && !this.data.carton_box_weight) {
+      this
+        .toaster
+        .pop('error', 'Enter Carton Box Weight');
+      this.submittingTracking = false;
+      return;
+    }
+
     const form = this.validateForm(trackingForm);
 
     const data = Object.assign({ }, this.data);
@@ -68,7 +79,7 @@ class ShipmentCreateController {
 
     const allowed = [
       'shipping_carrier', 'number_of_packages', 'weight_by_shipping_partner', 'tracking_code',
-      'tracking_url', 'carton_box_used', 'carton_box_Amount', 'dispatch_date',
+      'tracking_url', 'carton_box_used', 'carton_box_Amount', 'carton_box_weight',
     ];
     const { shipmentId, id: customerId } = this.$stateParams;
     data.customer_id = customerId;
@@ -86,7 +97,7 @@ class ShipmentCreateController {
           .pop('success', 'Shipment Tracking Updated');
       })
       .catch((err) => {
-        this.submitting = false;
+        this.submittingTracking = false;
         this
           .toaster
           .pop('error', 'There was problem while updating Tracking');

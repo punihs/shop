@@ -506,6 +506,19 @@ div.m-t-xl.no-margin
                         )
                         span.wrapper-xs.text-xs.text-danger(ng-show='trackingForm.carton_box_Amount.$dirty && trackingForm.carton_box_Amount.$invalid') Please Enter Carton Box Amount
                 .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
+                .row
+                  .col-md-12
+                    .col-md-6.col-sm-5.col-xs-12.no-padder(ng-show="$ctrl.data.carton_box_used === 'Other'")
+                      label.col-xs-12.input-group
+                        | Carton Box Weight
+                        span.text-danger *
+                        input.form.form-control(
+                        type='number'
+                        name='carton_box_weight'
+                        placeholder='15'
+                        ng-model='$ctrl.data.carton_box_weight'
+                        )
+                .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT && $ctrl.data.carton_box_used === "Other"')
 
                 .row
                   h4(ng-bind="$ctrl.error.message" style="color:red;")
