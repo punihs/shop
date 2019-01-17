@@ -1020,7 +1020,7 @@ exports.state = async (req, res, next) => {
       .findById(req.params.id, { raw: true });
 
     if (SHIPMENT_HANDED === req.body.state_id) {
-      if (!shipment.dispatch_date || !shipment.shipping_carrier || !shipment.number_of_packages ||
+      if (!shipment.shipping_carrier || !shipment.number_of_packages ||
         !shipment.weight_by_shipping_partner || !shipment.tracking_code) {
         return res.status(400).json({
           message: 'You must update Shipment Tracking Information to send dispatch notification!',
