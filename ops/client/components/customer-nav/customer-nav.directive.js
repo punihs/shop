@@ -31,14 +31,14 @@ class CustomerNavController {
     this.customers = {
       shipments: [],
       packages: [],
-      // orders: [],
+      orders: [],
       customers: [],
     };
 
     this.collapse = {
       shipments: false,
       packages: false,
-      // orders: true,
+      orders: true,
       customers: false,
     };
 

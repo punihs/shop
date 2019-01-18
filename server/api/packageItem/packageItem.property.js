@@ -28,6 +28,7 @@ module.exports = DataTypes => ({
   color: DataTypes.STRING,
   size: DataTypes.STRING,
   note: DataTypes.STRING,
+  package_order_code: DataTypes.STRING,
   if_item_unavailable: DataTypes.STRING,
   status: DataTypes.STRING,
   is_image_resized: DataTypes.BOOLEAN,

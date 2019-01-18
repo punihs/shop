@@ -5,6 +5,7 @@ const authenticate = require('../../../components/oauth/authenticate');
 
 const router = express.Router();
 
+// router.get('/personalShopper/items', authenticate(), controller.personalindex);
 router.get('/:packageId/items', authenticate(), controller.index);
 router.post('/:packageId/items', authenticate(), controller.create);
 router.put('/:packageId/items/:id/', authenticate(), controller.update);

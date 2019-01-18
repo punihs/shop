@@ -1,7 +1,11 @@
 //- list
 ul.nav.navbar-nav.navbar-left
-  li.hide.nav-menu-item(ui-sref-active='active' uib-dropdown)
-    a.hv(uib-dropdown-toggle ui-sref='orders.list({status: "All"})')
+  li.hidden-folded.padder.m-t.m-b-sm.text-muted.text-xs Navigation
+  li.hide.nav-menu-item(ui-sref-active='active'): a.hv(ui-sref='dashboard')
+    i.fa.fa-dashboard.text-white
+    span DASHBOARD
+  li.nav-menu-item(ui-sref-active='active' uib-dropdown)
+    a.hv(uib-dropdown-toggle ui-sref='orders.index({bucket: "All"})')
       i.fa.fa-list-alt.text-white
       span ORDERS
   li.nav-menu-item(ui-sref-active='active'): a.hv(ui-sref='packages.index({ bucket: "All"})')

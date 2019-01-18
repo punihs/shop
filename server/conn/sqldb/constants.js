@@ -28,7 +28,9 @@ const constants = {};
   { name: 'package_item_category' },
   { name: 'store', keyMap: false },
   { name: 'state', keyMap: false },
+  { name: 'personal-shopper-state', keyMap: false },
   { name: 'actionable_state', keyMap: false },
+  { name: 'personal-shopper-actionable-state', keyMap: false },
   { name: 'locker', keyMap: false },
 ]
   .forEach(({ name, keyMap = true }) => {

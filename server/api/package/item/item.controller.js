@@ -6,6 +6,8 @@ const {
   PackageItem, PackageItemCategory, Package, PackageState,
 } = require('../../../conn/sqldb');
 
+const { getPersonalShopperItems } = require('../item/item.service');
+
 const {
   PACKAGE_STATE_IDS: {
     READY_TO_SHIP, ADDED_SHIPMENT,
@@ -16,14 +18,34 @@ const log = debug('package');
 
 exports.index = async (req, res, next) => {
   try {
+    const { packageId } = req.params;
+    const customerId = 3151;
+    const { type } = req.query;
+
+    const options = {
+      where: {},
+    };
+
+    if (type === 'psCustomerSide') {
+      const personalShopperItems = await getPersonalShopperItems(customerId);
+      return res.json(personalShopperItems);
+    }
+
+    if (type !== 'ps') {
+      options.where.package_id = packageId;
+    } else {
+      options.where.package_order_code = packageId;
+    }
+
     log('index', req.query);
 
     const packageItems = await PackageItem
       .findAll({
-        where: { package_id: req.params.packageId },
+        where: options.where,
         attributes: [
           'id', 'name', 'quantity', 'price_amount', 'total_amount', 'object',
-          'object_invoice',
+          'object_invoice', 'color', 'size', 'note', 'url', 'status',
+          'if_item_unavailable', 'updated_at',
         ],
         include: [{
           model: PackageItemCategory,
@@ -61,11 +83,26 @@ exports.create = async (req, res, next) => {
 exports.update = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const packageItem = req.body;
-    packageItem.total = packageItem.price_amount * packageItem.quantity;
+    const { type } = req.query;
+    const { itemIds } = req.body;
+    let packageItem = {};
+
+    const options = {
+      where: {},
+    };
+
+    if (type !== 'ps') {
+      options.where.id = id;
+      packageItem = req.body;
+      packageItem.total = packageItem.price_amount * packageItem.quantity;
+    } else {
+      options.where.id = itemIds;
+      packageItem.package_id = req.body.packId.pack_id.data.id;
+      packageItem.status = 'addedtopackage';
+    }
 
     const status = await PackageItem
-      .update(packageItem, { where: { id } });
+      .update(packageItem, { where: options.where });
 
     return res.json(status);
   } catch (err) {

@@ -38,6 +38,11 @@
     }
   }
 
+
+  .bg-primary .nav > li > a:hover {
+    background-color: red !important;
+  }
+
   .nav-menu-item:hover .title {
     color: white;
     background-color: #069974;

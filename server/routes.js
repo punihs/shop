@@ -13,6 +13,7 @@ const authenticate = require('./components/oauth/authenticate');
 // - Routers
 const search = require('./api/search');
 const packages = require('./api/package');
+const personalShopperPackage = require('./api/package/personalShopperPackage');
 const packageComment = require('./api/package/comment');
 const packageItem = require('./api/packageItem');
 const packageItems = require('./api/package/item');
@@ -48,6 +49,7 @@ module.exports = (app) => {
     authenticate(),
     packageItems,
     packageComment,
+    personalShopperPackage,
     packageCharge,
     specialRequest,
     follower,

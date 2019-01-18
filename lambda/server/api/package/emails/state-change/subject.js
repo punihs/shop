@@ -1,4 +1,6 @@
-module.exports = ({ nextStateName, pkg, targetUser }) => ({
+module.exports = ({
+  nextStateName, pkg, targetUser, paymentGateway,
+}) => ({
   PACKAGE_ITEMS_UPLOAD_PENDING: 'Your Package Has Just Arrived at Our Facility!',
   CUSTOMER_INPUT: 'Please Input the Product Costs of Your Purchase',
   READY_TO_SHIP: `Your Package Is Ready to be Shipped | Package ID: ${pkg.id}`,
@@ -15,14 +17,15 @@ module.exports = ({ nextStateName, pkg, targetUser }) => ({
   ADVANCED_PHOTO_REQUEST: targetUser.MEMBER === 'MEMBER' ? 'We Have Received Your Request for Advanced Photos' : 'Customer Has Requested Advanced Photos',
   PS_RETURN_REQUESTED: '',
   PS_REFUND_RECIEVED: '',
-  ORDER_CREATED: '',
-  ORDER_CANCELLED: '',
-  PAYMENT_INITIATED: '',
-  PAYMENT_FAILED: '',
-  PAYMENT_COMPLETED: '',
-  ORDER_PLACED: '',
-  OUT_OF_STOCK: '',
-  REFUNDED_TO_WALLET: '',
-  REFUNDED_TO_BANK_ACCOUNT: '',
+  PAYMENT_COMPLETED: `You have Chosen to Pay via ${paymentGateway.name} |Order ${pkg.order_code} Created`,
+  ORDER_CANCELLED: `Your Personal Shopper Order ${pkg.id} Has Been Cancelled`,
+  PRICE_CHANGED: 'Item(s) Have changed Price',
+  PAYMENT_FAILED: `Transaction Attempt Failed: Using your ${paymentGateway.name} | Order ID: ${pkg.order_code}`,
+  PAYMENT_CONFIRMED: `We Have Received Your Payment on Personal Shopper Order ${pkg.order_code}`,
+  ORDER_PLACED: 'We Have Successfully Placed Your Order',
+  OUT_OF_STOCK: 'Item(s) Have Went Out of Stock',
+  REFUNDED_TO_WALLET: `We've Finished Refunding Your Payment for the Order ${pkg.order_code}`,
+  REFUNDED_TO_BANK_ACCOUNT: `We've Finished Refunding Your Payment for the Order ${pkg.order_code}`,
+  ORDER_COMPLETED: `All Items on Your Personal Shopper Order ${pkg.order_code} Have Arrived`,
   AWAITING_PACKAGE: '',
 }[nextStateName]);

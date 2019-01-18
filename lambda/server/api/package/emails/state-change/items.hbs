@@ -1,58 +1,90 @@
 <tr>
-  <td colspan="2" style="width:640px"> <p style="font:18px Arial,sans-serif;color:#cc6600;border-bottom:1px solid #ccc;margin:10px 20px 3px 20px;padding:0 0 3px 0"> Package Contents </p> </td>
+  {{#if INCOMING}}
+    <td colspan="2" style="width:640px"> <p style="font:18px Arial,sans-serif;color:#cc6600;border-bottom:1px solid #ccc;margin:10px 20px 3px 20px;padding:0 0 3px 0"> Package Contents </p> </td>
+  {{/if}}
 </tr>
 <tr>
-  <td colspan="2" style="padding:16px 40px;width:640px">
-    <table width="560" cellspacing="0" cellpadding="0">
-      <tbody>
-      {{#if packageItems}}
-        {{#each packageItems}}
+  {{#if INCOMING}}
+    <td colspan="2" style="padding:16px 40px;width:640px">
+      <table width="560" cellspacing="0" cellpadding="0">
+        <tbody>
+        {{#if packageItems}}
+          {{#each packageItems}}
+            <tr>
+              <!--<td align="center" valign="top" style="width:150px;height:115px">-->
+                <!--<a href="{{ENV.URLS_PARCEL}}/packages/{{pkg.id}}?packageItemId={{id}}"-->
+                <!--style="margin:0 20px 0 0"-->
+                <!--title="ItemImage"-->
+                <!--target="_blank" >-->
+                <!--<img width="150px" src="{{object}}">-->
+                <!--</a>-->
+              <!--</td>-->
+              <td align="center" style="color:#666;padding:10px 10px 0 10px;width:410px;height:115px">
+                <p style="margin:0 0 0 7px;padding:0">
+                  <a href="{{ENV.URLS_PARCEL}}/packages/{{pkg.id}}?packageItemId={{id}}"
+                  style="font:14px Arial,sans-serif;text-decoration:none;color:#006699"
+                  target="_blank" >
+                  {{name}} -
+                  Quantity: {{quantity}} Pcs<br>
+                  Price Per Unit: ₹{{quantity}}<br>
+                  Total: ₹{{total_amount}}
+                  Category: {{PackageItemCategory.name}}
+                  </a>
+                </p>Your profile details .
+
+
+                <p> </p></td>
+            </tr>
+          {{/each}}
+        {{else}}
           <tr>
             <!--<td align="center" valign="top" style="width:150px;height:115px">-->
-              <!--<a href="{{ENV.URLS_PARCEL}}/packages/{{pkg.id}}?packageItemId={{id}}"-->
-              <!--style="margin:0 20px 0 0"-->
-              <!--title="ItemImage"-->
-              <!--target="_blank" >-->
-              <!--<img width="150px" src="{{object}}">-->
-              <!--</a>-->
+              <!--<a href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW" style="margin:0 20px 0 0" title="ItemImage" target="_blank" >-->
+                <!--<img src="https://www.activebarcode.com/images/pictos/barcode1d.png"> -->
+              <!--</a> -->
             <!--</td>-->
             <td align="center" style="color:#666;padding:10px 10px 0 10px;width:410px;height:115px">
               <p style="margin:0 0 0 7px;padding:0">
-                <a href="{{ENV.URLS_PARCEL}}/packages/{{pkg.id}}?packageItemId={{id}}"
-                style="font:14px Arial,sans-serif;text-decoration:none;color:#006699"
-                target="_blank" >
-                {{name}} -
-                Quantity: {{quantity}} Pcs<br>
-                Price Per Unit: ₹{{quantity}}<br>
-                Total: ₹{{total_amount}}
-                Category: {{PackageItemCategory.name}}
+                <a href="{{ENV.URLS_PARCEL}}/users/profile" style="font:14px Arial,sans-serif;text-decoration:none;color:#006699" target="_blank" >
+                  Shoppre Shipping Team processing your package...
                 </a>
-              </p>Your profile details .
-
-
-              <p> </p></td>
-          </tr>
-        {{/each}}
-      {{else}}
-        <tr>
-          <!--<td align="center" valign="top" style="width:150px;height:115px">-->
-            <!--<a href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW" style="margin:0 20px 0 0" title="ItemImage" target="_blank" >-->
-              <!--<img src="https://www.activebarcode.com/images/pictos/barcode1d.png"> -->
-            <!--</a> -->
-          <!--</td>-->
-          <td align="center" style="color:#666;padding:10px 10px 0 10px;width:410px;height:115px">
-            <p style="margin:0 0 0 7px;padding:0">
-              <a href="{{ENV.URLS_PARCEL}}/users/profile" style="font:14px Arial,sans-serif;text-decoration:none;color:#006699" target="_blank" >
-                Shoppre Shipping Team processing your package...
-              </a>
+              </p>
+              <p>
             </p>
-            <p>
-          </p>
-        </td>
-        </tr>
-      {{/if}}
-
-
-      </tbody>
-    </table> </td>
+          </td>
+          </tr>
+        {{/if}}
+        </tbody>
+      </table> </td>
+  {{else if ORDER_ITEMS}}
+     <tr>
+        <td colspan="2" style="width:640px"> <p style="font:18px Arial,sans-serif;color:#cc6600;border-bottom:1px solid #ccc;margin:10px 20px 3px 20px;padding:0 0 3px 0"> Order Contents </p> </td>
+     </tr>
+     <tr>
+       <td colspan="2" style="padding:16px 40px;width:640px;">
+         <table border="1" style="border-collapse:collapse;border: 0;width:640px;">
+            <tr>
+              <th>Item Name</th>
+              <th>URL</th>
+              <th>Qty</th>
+              <th>Each Price</th>
+              <th>Total Price</th>
+              <th>Status</th>
+            </tr>
+            {{#if packageItems}}
+              {{#each packageItems}}
+                <tr style="text-align: center">
+                  <td>{{name}}</td>
+                  <td>{{url}}</td>
+                  <td>{{quantity}}</td>
+                  <td>{{price_amount}}</td>
+                  <td>{{total_amount}}</td>
+                  <td>{{status}}</td>
+                </tr>
+              {{/each}}
+            {{/if}}
+         </table>
+       </td>
+     </tr>
+  {{/if}}
 </tr>

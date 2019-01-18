@@ -27,7 +27,8 @@ const { packageCreate } = require('./package.schema');
 
 const db = require('../../conn/sqldb');
 
-const { index, updateState } = require('./package.service');
+const { index, updateState, updatePackageOptions } = require('./package.service');
+const { getPersonalShopperItems } = require('../package/item/item.service');
 
 const {
   Package, PackageItem, User, Follower, PhotoRequest,
@@ -49,13 +50,26 @@ exports.index = async (req, res, next) => {
 
 exports.show = async (req, res, next) => {
   try {
-    log('show', req.query);
+    const { type } = req.query;
+    const { id } = req.params;
+
+    const options = {
+      where: {},
+    };
+
+    if (type !== 'ps') {
+      options.where.id = id;
+    } else {
+      options.where.order_code = id;
+    }
 
     const pkg = await Package
-      .findById(req.params.id, {
+      .findOne({
         attributes: req.query.fl
           ? req.query.fl.split(',')
-          : ['id', 'customer_id', 'created_at', 'weight', 'content_type'],
+          : ['id', 'customer_id', 'created_at', 'weight', 'content_type', 'store_id', 'price_amount',
+            'personal_shopper_cost', 'delivery_charge', 'sales_tax', 'payment_gateway_fee', 'sub_total'],
+        where: options.where,
         include: [{
           model: PackageState,
           attributes: ['id', 'state_id'],
@@ -344,17 +358,39 @@ exports.update = async (req, res, next) => {
     'is_doc',
     'content_type',
     'notes',
+    'seller_invoice',
+    'amount_paid',
   ];
 
+  const { id: customerId } = req.user;
+
   try {
+    const { type } = req.query;
     const { id } = req.params;
-    const { id: customerId } = req.user;
+    const body = req.body;
+
+    const options = {
+      where: {},
+    };
+
+    if (type === 'psCustomerSide') {
+      const status = await updatePackageOptions(body);
+      const packageItems = await getPersonalShopperItems(customerId);
+
+      return res.json(packageItems);
+    }
+
+    if (type !== 'ps') {
+      options.where.id = id;
+    } else {
+      options.where.order_code = id;
+    }
 
     const pkg = _.pick(req.body, allowed);
     pkg.updated_by = customerId;
 
     await Package
-      .update(pkg, { where: { id } });
+      .update(pkg, { where: options.where });
 
     return res.json({ id });
   } catch (e) {

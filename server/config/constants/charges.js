@@ -4,5 +4,6 @@ module.exports = {
     STANDARD_PHOTO: 20,
     ADVANCED_PHOTO: 500,
     SPLIT_PACKAGE: 200,
+    PERSONAL_SHOPPER_PERCENTAGE: 10,
   },
 };

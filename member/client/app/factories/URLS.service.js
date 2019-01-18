@@ -15,6 +15,7 @@ angular.module('uiGenApp')
 
       API: `${PREFIX}api.${DOMAIN}`,
       PARCEL_API: `${PREFIX}${project}-api.${DOMAIN}`,
+      // PARCEL_API: 'http://parcel-api.shoppre.test',
       PAY_API: `${PREFIX}pay-api.${DOMAIN}`,
       CHICKEN_API: `${PREFIX}chicken-api.${DOMAIN}`,
 

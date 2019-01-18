@@ -22,6 +22,7 @@ const {
 } = require('../../config/constants/charges');
 const BUCKETS = require('./../../config/constants/buckets');
 
+let BUCKET = '';
 const logger = require('../../components/logger');
 
 const {
@@ -46,7 +47,13 @@ exports.index = async ({
   try {
     // - Locker Page or Member Dashboard
     const IS_CUSTOMER_PAGE = !!params.customerId;
-    const BUCKET = BUCKETS.PACKAGE[actingUser.group_id];
+    const { type } = query;
+
+    if (type === 'ORDER') {
+      BUCKET = BUCKETS.ORDER[actingUser.group_id];
+    } else {
+      BUCKET = BUCKETS.PACKAGE[actingUser.group_id];
+    }
 
     const { bucket } = query;
     let orderSort = '';
@@ -71,7 +78,7 @@ exports.index = async ({
 
     switch (true) {
       case (actingUser.app_id === APPS.MEMBER && actingUser.group_id === CUSTOMER): {
-        options.attributes = ['id', 'created_at', 'weight', 'price_amount',
+        options.attributes = ['id', 'created_at', 'weight', 'price_amount', 'order_code',
           'store_id', 'content_type', 'invoice_code', 'notes'];
         options.where.customer_id = actingUser.id;
         options.include = [{
@@ -99,7 +106,7 @@ exports.index = async ({
       case (actingUser.app_id === APPS.OPS && actingUser.group_id === OPS): {
         if (IS_CUSTOMER_PAGE) options.where.customer_id = params.customerId;
         options.attributes = ['id', 'customer_id', 'created_at', 'weight', 'price_amount', 'store_id', 'invoice_code',
-          'content_type', 'updated_at'];
+          'content_type', 'updated_at', 'order_code'];
         options.include = [{
           where: {},
           model: PackageState,
@@ -327,4 +334,13 @@ exports.updateState = async ({
   } catch (err) {
     return next(err);
   }
+};
+
+exports.updatePackageOptions = async (body) => {
+  body.forEach((item) => {
+    Package
+      .update(item, { where: { id: item.id } });
+  });
+
+  return 'success';
 };

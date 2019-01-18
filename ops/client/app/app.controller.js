@@ -90,6 +90,7 @@ class AppController {
     this.showCustomerSideBar = function showNavJobs() {
       return [
         'packages.index',
+        'orders.index',
         'customer.view',
         'customer.packages.index',
         'customer.packages.create',

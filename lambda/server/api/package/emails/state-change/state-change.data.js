@@ -2,16 +2,22 @@ const packageItems = [{
   id: 9,
   name: 'Hello Box',
   quantity: 2,
-  price_amount: 2,
-  total_amount: 4,
+  price_amount: 200,
+  total_amount: 400,
   object: 'https://staging-cdn.shoppre.com/shoppre/2018/6/8a854b15-7cc5-4553-b8ae-a6fd49fe89ee.png',
   package_item_category_id: 18,
   PackageItemCategory: {
     name: 'Good Category',
   },
   package_id: '10',
+  status: 'pending',
+  url: 'https://staging-cdn.shoppre.com',
   created_by: 1,
 }];
+
+const paymentGateway = {
+  name: 'wire',
+};
 
 const OPS = {
   id: 1,
@@ -28,8 +34,12 @@ const pkg = {
     name: 'Amazon.in',
   },
   created_at: '19-07-2018',
+  updated_at: '19-07-2018',
   price_amount: '250',
+  sub_total: '500',
   total_quantity: '2',
+  order_code: 'PS7658',
+  buy_if_price_changed: '100 below',
 };
 
 const customer = {
@@ -50,6 +60,7 @@ const ENV = {
 module.exports = {
   PACKAGE_ITEMS_UPLOAD_PENDING: {
     PACKAGE_ITEMS_UPLOAD_PENDING: true,
+    INCOMING: true,
     pkg,
     customer,
     actingUser: OPS,
@@ -58,6 +69,7 @@ module.exports = {
   },
   CUSTOMER_INPUT: {
     CUSTOMER_INPUT: true,
+    INCOMING: true,
     pkg,
     customer,
     actingUser: OPS,
@@ -67,6 +79,7 @@ module.exports = {
   },
   READY_TO_SHIP: {
     READY_TO_SHIP: true,
+    INCOMING: true,
     pkg,
     customer,
     actingUser: OPS,
@@ -76,6 +89,7 @@ module.exports = {
   },
   DAMAGED: {
     DAMAGED: true,
+    INCOMING: true,
     pkg,
     customer,
     actingUser: OPS,
@@ -85,6 +99,7 @@ module.exports = {
   },
   RETURN_REQUEST_FROM_CUSTOMER: {
     RETURN_REQUEST_FROM_CUSTOMER: true,
+    INCOMING: true,
     pkg,
     customer,
     actingUser: OPS,
@@ -94,6 +109,7 @@ module.exports = {
   },
   RETURN_PICKUP_DONE: {
     RETURN_PICKUP_DONE: true,
+    INCOMING: true,
     pkg,
     customer,
     actingUser: OPS,
@@ -103,6 +119,7 @@ module.exports = {
   },
   UPLOAD_INVOICE_REQUESTED: {
     UPLOAD_INVOICE_REQUESTED: true,
+    INCOMING: true,
     pkg,
     customer,
     actingUser: OPS,
@@ -113,6 +130,7 @@ module.exports = {
   SPLIT_PACKAGE: {
     SPLIT_PACKAGE: true,
     nextStateName: 'SPLIT_PACKAGE',
+    INCOMING: true,
     pkg,
     customer,
     actingUser: OPS,
@@ -122,6 +140,7 @@ module.exports = {
   },
   SPLIT_PACKAGE_PROCESSED: {
     SPLIT_PACKAGE_PROCESSED: true,
+    INCOMING: true,
     pkg,
     customer,
     actingUser: OPS,
@@ -131,6 +150,7 @@ module.exports = {
   },
   DISCARDED: {
     DISCARDED: true,
+    INCOMING: true,
     pkg,
     customer,
     actingUser: OPS,
@@ -140,6 +160,7 @@ module.exports = {
   },
   DISCARD_REQUESTED: {
     DISCARD_REQUESTED: true,
+    INCOMING: true,
     pkg,
     customer,
     actingUser: OPS,
@@ -149,6 +170,7 @@ module.exports = {
   },
   STANDARD_PHOTO_REQUEST: {
     STANDARD_PHOTO_REQUEST: true,
+    INCOMING: true,
     pkg,
     customer,
     actingUser: OPS,
@@ -158,6 +180,7 @@ module.exports = {
   },
   ADVANCED_PHOTO_REQUEST: {
     ADVANCED_PHOTO_REQUEST: true,
+    INCOMING: true,
     pkg,
     customer,
     actingUser: OPS,
@@ -183,80 +206,106 @@ module.exports = {
     packageItems,
     subject: '',
   },
-  ORDER_CREATED: {
-    ORDER_CREATED: true,
+  PAYMENT_COMPLETED: {
+    PAYMENT_COMPLETED: true,
+    PERSONAL_SHOPPER: true,
+    ORDER_ITEMS: true,
     pkg,
     customer,
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: '',
+    subject: `You have Chosen to Pay via ${paymentGateway.name} |Order ${pkg.order_code} Created`,
+    paymentGateway,
   },
   ORDER_CANCELLED: {
     ORDER_CANCELLED: true,
+    PERSONAL_SHOPPER: true,
     pkg,
     customer,
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: '',
+    subject: `Your Personal Shopper Order ${pkg.order_code} Has Been Cancelled`,
   },
-  PAYMENT_INITIATED: {
-    PAYMENT_INITIATED: true,
+  PRICE_CHANGED: {
+    PRICE_CHANGED: true,
+    PERSONAL_SHOPPER: true,
+    ORDER_ITEMS: true,
     pkg,
     customer,
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: '',
+    subject: 'Item(s) Have changed Price',
   },
   PAYMENT_FAILED: {
     PAYMENT_FAILED: true,
+    PERSONAL_SHOPPER: true,
     pkg,
     customer,
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: '',
+    subject: `Transaction Attempt Failed: Using your ${paymentGateway.name} | ORDER ID: ${pkg.order_code}`,
+    paymentGateway,
   },
-  PAYMENT_COMPLETED: {
-    PAYMENT_COMPLETED: true,
+  PAYMENT_CONFIRMED: {
+    PAYMENT_CONFIRMED: true,
+    PERSONAL_SHOPPER: true,
     pkg,
     customer,
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: '',
+    subject: `We Have Received Your Payment on Personal Shopper Order ${pkg.order_code}`,
+    paymentGateway,
   },
   ORDER_PLACED: {
     ORDER_PLACED: true,
+    PERSONAL_SHOPPER: true,
+    ORDER_ITEMS: true,
     pkg,
     customer,
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: '',
+    subject: 'We Have Successfully Placed Your Order',
   },
   OUT_OF_STOCK: {
     OUT_OF_STOCK: true,
+    PERSONAL_SHOPPER: true,
+    ORDER_ITEMS: true,
     pkg,
     customer,
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: '',
+    subject: 'Item(s) Have Went Out of Stock',
   },
   REFUNDED_TO_WALLET: {
     REFUNDED_TO_WALLET: true,
+    PERSONAL_SHOPPER: true,
     pkg,
     customer,
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: '',
+    subject: `We've Finished Refunding Your Payment for the Order ${pkg.order_code}`,
   },
   REFUNDED_TO_BANK_ACCOUNT: {
     REFUNDED_TO_BANK_ACCOUNT: true,
+    PERSONAL_SHOPPER: true,
+    pkg,
+    customer,
+    actingUser: OPS,
+    ENV,
+    packageItems,
+    subject: `We've Finished Refunding Your Payment for the Order ${pkg.order_code}`,
+  },
+  AWAITING_PACKAGE: {
+    AWAITING_PACKAGE: true,
+    PERSONAL_SHOPPER: true,
     pkg,
     customer,
     actingUser: OPS,
@@ -264,13 +313,14 @@ module.exports = {
     packageItems,
     subject: '',
   },
-  AWAITING_PACKAGE: {
-    AWAITING_PACKAGE: true,
+  ORDER_COMPLETED: {
+    ORDER_COMPLETED: true,
+    PERSONAL_SHOPPER: true,
     pkg,
     customer,
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: '',
+    subject: `All Items on Your Personal Shopper Order ${pkg.order_code} Have Arrived`,
   },
 };

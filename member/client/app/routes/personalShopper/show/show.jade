@@ -1,0 +1,68 @@
+.col-md-12.ps-main
+  div.col-md-6
+    h1.f-s-1.f-c-d-gray Order Details
+  div
+    .col-md-6(style='padding-top: 20px;')
+      ul.nav.nav-pills.nav-sm.pull-right
+        li.m-r-xs.pull-right
+          a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
+          ui-sref='personalShopper.index'
+          popover-trigger="'mouseenter'"
+          popover-placement='bottom'
+          popover-append-to-body='true'
+          )
+            span.fa.fa-backward
+            span  Go Back
+  .clearfix
+  .ps-mainidiv
+    table#orders-history
+        tr
+          td
+            .col-sm-8
+              h4
+                strong Items Lists:
+              table.table.table-bordered.default.footable-loaded.footable
+                thead
+                  tr
+                    th Id
+                    th Name
+                    th Quantity
+                    th Price Amount
+                    th Total Amount
+                    th Status
+                tr(ng-repeat="packageItem in $ctrl.packageItems")
+                  td  {{packageItem.id}}
+                  td
+                   a(ng-href ='{{packageItem.url}}' ng-bind = "packageItem.name" target='_blank')
+                  td  {{packageItem.quantity}}
+                  td ₹ {{packageItem.price_amount | number: 2}}
+                  td ₹ {{packageItem.total_amount | number: 2}}
+                  td  {{packageItem.status}}
+
+            div(ng-if="$ctrl.data.sub_total != 0")
+            .col-sm-4
+              h4
+                strong Payment Details:
+              table.table.table-bordered.default.footable-loaded.footable
+                thead
+                  tr
+                    th Details
+                    th Amount
+                tr(ng-if="$ctrl.packages.price_amount > 0")
+                  td Total price of Items
+                  td ₹ {{$ctrl.packages.price_amount | number: 2}}
+                tr(ng-if="$ctrl.packages.personal_shopper_cost > 0")
+                  td Personal Shopper Fee
+                  td ₹ {{$ctrl.packages.personal_shopper_cost | number: 2}}
+                tr(ng-if="$ctrl.packages.delivery_charge > 0")
+                  td Delivery Charge
+                  td ₹ {{$ctrl.packages.delivery_charge | number: 2}}
+                tr(ng-if="$ctrl.packages.sales_tax > 0")
+                  td Sales Tax
+                  td ₹ {{$ctrl.packages.sales_tax | number: 2}}
+                tr(ng-if="$ctrl.packages.payment_gateway_fee > 0")
+                  td Payment Gateway (PG) Fee
+                  td ₹ {{$ctrl.packages.payment_gateway_fee | number: 2}}
+                tr(ng-if="$ctrl.packages.sub_total > 0")
+                  td.text-blue Total Amount
+                  td.text-black ₹ {{$ctrl.packages.sub_total | number: 2}}

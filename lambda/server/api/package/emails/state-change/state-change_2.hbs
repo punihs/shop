@@ -275,94 +275,108 @@
         <br>
       </p> </td>
   </tr>
-{{else if ORDER_CREATED}}
+{{else if PAYMENT_COMPLETED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
-      <p style="margin:4px 20px 18px 20px;width:640px">
-        Customer Created Order. PackageId is<span class="il">{{pkg.id}}</span>.
-        <br>
-        <br>
-      </p> </td>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
+        <p style="margin:4px 20px 18px 20px;width:640px">
+            We'd like to acknowledge that you've chosen to make payment for your Personal Shopper Order <span class="il">{{pkg.order_code}}</span> via
+            <span class="il">{{paymentGateway.name}}</span>
+            and your order is successfully created on <span class="il">{{pkg.Store.name}}</span>.
+            <br><br>
+            Appreciate you paying up so soon!.
+        </p> </td>
   </tr>
 {{else if ORDER_CANCELLED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Customer Cancelled Order. PackageId is<span class="il">{{pkg.id}}</span>.
-        <br>
-        <br>
+        We regret to inform you that the order <span class="il">{{pkg.order_code}}</span> you placed with our Personal Shopper has been cancelled as per your request,
+        A refund of Rs.<span class="il">{{pkg.sub_total}}</span> will be initiated in 48 hours to your bank account/wallet.
+        <br><br>
+        Please confirm the same on your ShoppRe <a href="{{ENV.URLS_PARCEL}}/dashboard">Dashboard</a>.
       </p> </td>
   </tr>
-{{else if PAYMENT_INITIATED}}
+{{else if PRICE_CHANGED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Payment Intiated. PackageId is<span class="il">{{pkg.id}}</span>.
-        <br>
-        <br>
+        This is to inform you that the price of the item[s] in your order <span class="il">{{pkg.order_code}}</span> on <span class="il">{{pkg.Store.name}}</span> has been
+        increased to Amount.<br><br>
+        Since you have chosen to <span class="il">{{pkg.buy_if_price_changed}}</span> the item[s] when you placed the order in such a case; can we go ahead & proceed with <a href="{{ENV.URLS_PARCEL}}/personalShopper/index">shopping/cancelling</a> this item?
+        <br><br>
+        Please confirm as soon as you can to avoid any delays.
       </p> </td>
   </tr>
 {{else if PAYMENT_FAILED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Payment Failed Please try again, PackageId is<span class="il">{{pkg.id}}</span>.
+        Unfortunately, your transaction attempt using your <span class="il">{{paymentGateway.name}}</span> to pay INR <span class="il">{{pkg.sub_total}}</span> for your Order ID <span class="il">{{pkg.order_code}}</span> has been failed.
         <br>
+        You can either <a href="{{ENV.URLS_PARCEL}}/personalShopper/{{pkg.order_code}}/confirm">retry your payment</a> or <a href="{{ENV.URLS_PARCEL}}/personalShopper/{{pkg.order_code}}/confirm">try another payment method</a>.
         <br>
+        In case if the amount has been deducted from your account, the same will be credited back within 7 working days.
+        <br><br>
+        Kindly contact us immediately in case you need help, to prevent any further delay.
       </p> </td>
   </tr>
-{{else if PAYMENT_COMPLETED}}
+{{else if PAYMENT_CONFIRMED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Payment Completed. PackageId is<span class="il">{{pkg.id}}</span>.
-        <br>
-        <br>
+        This is to inform you that we've received your payment on Personal Shopper Order <span class="il">{{pkg.order_code}}</span> via <span class="il">{{paymentGateway.name}}</span>,
+        and your order is being processed to the next step.
+        <br><br>
+        Appreciate you paying up so soon!
       </p> </td>
   </tr>
 {{else if ORDER_PLACED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Order Placed Successfully. PackageId is<span class="il">{{pkg.id}}</span>.
-        <br>
-        <br>
+        We're so glad to inform you that your Personal Shopper Order <span class="il">{{pkg.order_code}}</span> has been successfully placed on <span class="il">{{pkg.Store.name}}</span>!
+        <br><br>
+        You can confirm & track the status of the same on your <a href="{{ENV.URLS_PARCEL}}/dashboard">Dashboard</a>.
       </p> </td>
   </tr>
 {{else if OUT_OF_STOCK}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Items Are Out-of-stock. PackageId is<span class="il">{{pkg.id}}</span>.
-        <br>
-        <br>
+        We regret to inform you that the item(s) in your Personal Shopper Order <span class="il">{{pkg.order_code}}</span> went out of stock.
+        <br><br>
+        You can confirm the same on your <a href="{{ENV.URLS_PARCEL}}/dashboard">Dashboard</a> under Order Details.The cost of the item(s) will be excluded from the final bill you have to pay.
       </p> </td>
   </tr>
 {{else if REFUNDED_TO_WALLET}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Package Refund Added to Wallet. PackageId is<span class="il">{{pkg.id}}</span>.
-        <br>
-        <br>
+        We had initiated the refund on <span class="il">{{pkg.order_code}}</span> on <span class="il">{{pkg.updated_at}}</span>;
+        and we found that the amount <span class="il">{{pkg.sub_total}}</span>
+        has reflected in your Wallet just now.
+        <br><br>
+        You can go to <a href="{{ENV.URLS_PARCEL}}/dashboard">Dashboard</a> and confirm the same from your end.
       </p> </td>
   </tr>
 {{else if REFUNDED_TO_BANK_ACCOUNT}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Package Refund Added to Bank Account. PackageId is<span class="il">{{pkg.id}}</span>.
-        <br>
-        <br>
+        We had initiated the refund on <span class="il">{{pkg.order_code}}</span> on <span class="il">{{pkg.updated_at}}</span>;
+        and we found that the amount <span class="il">{{pkg.sub_total}}</span>
+        has reflected in your Bank Account just now.
+        <br><br>
+        You can go online and confirm the same from your end.
       </p> </td>
   </tr>
 {{else if AWAITING_PACKAGE}}
@@ -370,9 +384,20 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        We Are awaiting for your Packages. PackageId is<span class="il">{{pkg.id}}</span>.
+        We Are awaiting for your Packages. PackageId is<span class="il">{{pkg.order_code}}</span>.
         <br>
         <br>
+      </p> </td>
+  </tr>
+{{else if ORDER_COMPLETED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        We're glad to let you know that all the items on your the Personal Shopper Order <span class="il">{{pkg.order_code}}</span> have arrived
+        here at our facility and are safe in your locker <span class="il">{{customer.virtual_address_code}}</span>.
+        <br><br>
+        You can go ahead, confirm the status and the order details & pay now to make a Ship Request.
       </p> </td>
   </tr>
 {{/if}}
