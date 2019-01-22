@@ -160,7 +160,7 @@ class CreateController {
     // if (!form) return (this.submitting = false);
     this.$http
       .post('/packages/personalShopperPackage', data)
-      .then(({ data: packageItems }) => {
+      .then(({ data: { packageItems, personalShop } }) => {
         this.submitting = false;
 
         const packItems = {
@@ -184,8 +184,10 @@ class CreateController {
 
         if (storeExist === false) {
           const pkg = {
-            sub_total: data.sub_total,
-            price_amount: data.price_amount,
+            id: personalShop.id,
+            sub_total: personalShop.sub_total,
+            personal_shopper_cost: personalShop.personal_shopper_cost,
+            price_amount: personalShop.price_amount,
             Store: {
               id: data.store_id,
               name: this.Stores.model,

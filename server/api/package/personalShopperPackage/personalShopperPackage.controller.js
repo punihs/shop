@@ -184,7 +184,7 @@ exports.create = async (req, res, next) => {
       },
     });
 
-  return res.json(packageItems);
+  return res.json({ packageItems, personalShop });
 
 };
 
