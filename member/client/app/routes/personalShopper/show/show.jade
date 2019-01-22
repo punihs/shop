@@ -60,9 +60,6 @@
                 tr(ng-if="$ctrl.packages.sales_tax > 0")
                   td Sales Tax
                   td ₹ {{$ctrl.packages.sales_tax | number: 2}}
-                tr(ng-if="$ctrl.packages.payment_gateway_fee > 0")
-                  td Payment Gateway (PG) Fee
-                  td ₹ {{$ctrl.packages.payment_gateway_fee | number: 2}}
                 tr(ng-if="$ctrl.packages.sub_total > 0")
-                  td.text-blue Total Amount
+                  td.text-blue  Sub Total
                   td.text-black ₹ {{$ctrl.packages.sub_total | number: 2}}

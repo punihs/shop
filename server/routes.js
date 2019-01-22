@@ -43,6 +43,7 @@ module.exports = (app) => {
   app.use('/api/health', health);
   app.use('/api/minio', authenticate(), minio);
   app.use('/api/search', search);
+  app.use('/api/public/packages', personalShopperPackage);
   app.use(
     '/api/packages',
     packages, // auth did in router ie., api/package/index.js

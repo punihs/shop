@@ -58,4 +58,5 @@ module.exports = DataTypes => ({
   notes: DataTypes.STRING,
   order_code: DataTypes.STRING,
   buy_if_price_changed: DataTypes.STRING,
+  transaction_id: DataTypes.INTEGER,
 });

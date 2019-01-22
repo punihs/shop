@@ -68,7 +68,7 @@ exports.show = async (req, res, next) => {
         attributes: req.query.fl
           ? req.query.fl.split(',')
           : ['id', 'customer_id', 'created_at', 'weight', 'content_type', 'store_id', 'price_amount',
-            'personal_shopper_cost', 'delivery_charge', 'sales_tax', 'payment_gateway_fee', 'sub_total'],
+            'personal_shopper_cost', 'delivery_charge', 'sales_tax', 'payment_gateway_fee', 'sub_total', 'transaction_id'],
         where: options.where,
         include: [{
           model: PackageState,

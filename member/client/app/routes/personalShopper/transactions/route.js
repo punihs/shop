@@ -8,7 +8,7 @@ angular.module('uiGenApp')
         template: '<div ui-view=""></div>',
       })
       .state('personalShopper.transaction.response', {
-        url: '/response',
+        url: '/response?object_id',
         templateUrl: 'app/routes/personalShopper/transactions/response/show.html',
         controller: 'PersonalShopperTransactionResponseController',
         controllerAs: '$ctrl',

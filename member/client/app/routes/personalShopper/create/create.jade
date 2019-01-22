@@ -49,7 +49,7 @@
                             h1.f-s-1.f-c-blue  Price: 10%
                    .col-md-12.text-center
                      br
-                     button.btn.btn-s-r.btn-b-r.btn-l(ng-click='btnToggleOrderType()')
+                     button.btn.btn-s-r.btn-b-r.btn-l(ng-click='$ctrl.btnToggleCartSection($ctrl.cartSection)')
                       | NEXT
           .panel.panel-default
             #headingTwo.panel-heading.active(role='tab', ng-click='$ctrl.toggleCartSection($ctrl.cartSection)')
@@ -167,12 +167,13 @@
                             | + Save Item
                         .col-md-4.col-xs-6.div-align-items-r
                           br
-                          button.btn.btn-s-r.btn-b-r.btn-l(ng-click='btnToggleCart()')
+                          button.btn.btn-s-r.btn-b-r.btn-l(ng-click='$ctrl.btnToggleOptionsSection($ctrl.optionsSection)')
                             | NEXT
                 .packages-div(ng-repeat='psPackage in $ctrl.packageData')
                   table.items(style='width:100%')
                     tbody
                       tr
+                        th Seller
                         th Name
                         th Quantity
                         th Price
@@ -180,6 +181,7 @@
                         //th Edit
                         th Delete
                       tr(ng-repeat='item in psPackage.PackageItems')
+                        td(ng-bind='psPackage.Store.name')
                         td(ng-bind='item.name')
                         td(ng-bind='item.quantity')
                         td(ng-bind='item.price_amount')
@@ -236,7 +238,7 @@
                     | SAVE
                 .col-md-4.col-xs-4.div-align-items-r
                   br
-                  button.btn.btn-s-r.btn-b-r.btn-l(ng-click='btnToggleOptions()')
+                  button.btn.btn-s-r.btn-b-r.btn-l(ng-click='$ctrl.btnToggleSummarySection($ctrl.summarySection)')
                     | NEXT
           .panel.panel-default
             #headingFour.panel-heading.active(role='tab', ng-click='$ctrl.toggleSummarySection($ctrl.summarySection)')
@@ -285,7 +287,7 @@
                             label.f-c-gray.f-s-9 ₹ {{$ctrl.deliveryCharge}}
                         .row
                           .col-md-8
-                            label.f-c-gray.f-s-9 Item Cost:
+                            label.f-c-gray.f-s-9 ItemTotal Cost:
                           .col-md-4
                             label.f-c-gray.f-s-9 ₹ {{$ctrl.itemTotalCost}}
                         .row
@@ -304,13 +306,9 @@
                             label.f-c-blue.f-s-9 Estimated Total Cost:
                           .col-md-4
                             label.f-c-blue.f-s-9 ₹ {{$ctrl.totalAmount}}
-                      br
-                      .row
-                        .col-md-12.col-xs-12
-                          label.f-c-d-gray.f-s-10 Would you like us to let you know if any Price Changes happen?
                   .col-md-10.col-xs-10.div-align-items-r
                     br
-                    button.btn.btn-s-r.btn-b-r.btn-l(ng-click='btnToggleSummary()')
+                    button.btn.btn-s-r.btn-b-r.btn-l(ng-click='$ctrl.makePayment()')
                       | Make Payment
 
 script(type='text/javascript').

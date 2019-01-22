@@ -1,7 +1,7 @@
 class ShipRequestConfirmController {
   constructor(
     $http, Page, $stateParams, $location, toaster, $state, $uibModal,
-    $window, CONFIG
+    $window, CONFIG,
   ) {
     this.$http = $http;
     this.Page = Page;
@@ -118,6 +118,7 @@ class ShipRequestConfirmController {
       object_id: this.shipment.order_code,
       customer_id: this.shipment.customer_id,
       axis_banned: this.shipment.is_axis_banned_item,
+      type: 'shipment',
     });
   }
 }

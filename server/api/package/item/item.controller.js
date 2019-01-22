@@ -19,8 +19,7 @@ const log = debug('package');
 exports.index = async (req, res, next) => {
   try {
     const { packageId } = req.params;
-    const customerId = 3151;
-    const { type } = req.query;
+    const { type, customerId } = req.query;
 
     const options = {
       where: {},

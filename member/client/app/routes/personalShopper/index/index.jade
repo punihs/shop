@@ -9,6 +9,11 @@
       button.btn-l.btn-b-r.btn-s-r.pull-right.f-s-9
         | Place an Order
   .clearfix
+  div.col-md-12.text-center.text-danger.bg-white-only.m-t-lg
+    alert.alert-warning(role='alert', ng-show='$ctrl.error')
+      h4.text-danger(style='margin-top: 10px; margin-bottom: 10px;') {{$ctrl.message}}
+  .clearfix
+  br
   .ps-mainidiv
     table#orders-history
       thead
@@ -51,8 +56,17 @@
               div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.ORDER_COMPLETED')
                 p {{package.PackageState.State.name}}
               div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.PAYMENT_COMPLETED')
-                p Awaiting Payment
-                p It might take upto 24 Hours to reflect your payments into our account.
+                span(ng-if="shipment.payment_status != 'success'")
+                  p Awaiting Payment
+                  p It might take upto 24 Hours to reflect your payments into our account.
+                  p
+                    a.summary-order(ui-sref='transaction.create({id: package.id, amount: package.sub_total, object_id: package.id.toString(), customer_id: $ctrl.customerId, axis_banned: false, type: "ps"})') Change Payment Method
+                span(ng-if="package.payment_status === 'success' && (package.payment_gate_id == $ctrl.PAYMENT_GATEWAY.CARD || package.payment_gate_id == $ctrl.PAYMENT_GATEWAY.PAYPAL || $ctrl.package.payment_gate_id == $ctrl.PAYMENT_GATEWAY.PAYTM)")
+                  p Awaiting Payment
+                  p It might take upto 24 Hours to reflect your payments into our account.
+                span(ng-if="package.payment_status === 'success' && (package.payment_gate_id == $ctrl.PAYMENT_GATEWAY.WALLET)")
+                  p Awaiting Payment
+                  p It might take upto 24 Hours to confirm your payment from our team.
               div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.ORDER_PLACED')
                 p {{package.PackageState.State.name}}
               div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.REFUNDED_TO_WALLET')
@@ -70,7 +84,7 @@
               div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.PAYMENT_CONFIRMED')
                 p Payment Received
                 p(ng-if='package.totalHours < 1')
-                  a.summary-order(ng-click="$ctrl.cancel(package.id, $index)") Cancel Shipment
+                  a.summary-order(ng-click="$ctrl.cancel(package.id, $index)") Cancel Order
                   i.fa.fa-info-circle.m-l-xs(
                   uib-popover='Shoppre offers a one-hour window to cancel your  order. Once your order has been prepared, you can no longer cancel your order. The status will change to Order placed.'
                   popover-trigger="'mouseenter'"
@@ -97,7 +111,7 @@
                   a.summary-order(ng-click="$ctrl.itemsProceed(package.id, $index)") Proceed with Other Items
               div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.PAYMENT_FAILED')
                 p
-                  a.summary-order(ui-sref='') Retry Payment
+                  a.summary-order(ui-sref='transaction.create({id: package.id, amount: package.sub_total, object_id: package.id.toString(), customer_id: $ctrl.customerId, axis_banned: false, type: "ps"})') Retry Payment
               div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.OUT_OF_STOCK')
                 p {{package.PackageState.State.name}}
                   i.fa.fa-info-circle.m-l-xs(

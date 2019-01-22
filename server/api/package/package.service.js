@@ -338,6 +338,9 @@ exports.updateState = async ({
 
 exports.updatePackageOptions = async (body) => {
   body.forEach((item) => {
+    const subTotal = item.delivery_charge + item.sales_tax +
+      item.personal_shopper_cost + item.price_amount;
+    Object.assign(item, { sub_total: subTotal });
     Package
       .update(item, { where: { id: item.id } });
   });

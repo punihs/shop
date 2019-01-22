@@ -34,6 +34,7 @@ class TransactionCreateController {
     this.data.object_id = this.$stateParams.object_id;
     this.data.customer_id = this.$stateParams.customer_id;
     this.data.axis_banned = this.$stateParams.axis_banned;
+    this.data.type = this.$stateParams.type;
     this.PAYMENT_GATEWAY = {
       WIRE: 1,
       CASH: 2,
@@ -48,7 +49,11 @@ class TransactionCreateController {
     this.$http.get(`$/api/phpApi/getWalletAndLoyalty?customer_id=${this.$stateParams.customer_id}`)
       .then(({ data: { walletAmount, loyaltyAmount } }) => {
         this.walletBalanceAmount = Number(walletAmount);
-        this.data.loyaltyAmount = loyaltyAmount;
+        if(this.data.type === 'shipment') {
+          this.data.loyaltyAmount = loyaltyAmount;
+        } else {
+          this.data.loyaltyAmount = 0;
+        }
         this.showWallet = true;
 
         if (Number(this.walletBalanceAmount) < 0) {
@@ -90,7 +95,7 @@ class TransactionCreateController {
       this.calculateFinalAmount();
     } else {
       if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAY.CASH ||
-          Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAY.WIRE))) {
+        Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAY.WIRE))) {
         this.isWalletChecked = false;
         this.showWallet = false;
       }
@@ -133,7 +138,7 @@ class TransactionCreateController {
   }
 
   promoCode() {
-    const querystring = `amount=${this.amount}&coupon_code=${this.couponCode}`;
+    const querystring = `amount=${this.amount}&coupon_code=${this.couponCode}&type=${this.data.type}`;
     this.$http
       .put(`$/api/campaigns?${querystring}`)
       .then(({ data: { IS_DISCOUNT,
@@ -234,6 +239,7 @@ class TransactionCreateController {
       cashback_amount: this.couponApplied ? this.data.cashbackAmount : 0,
       loyaltyAmount: this.data.loyaltyAmount,
       is_discount: this.data.isDiscount,
+      type: this.data.type,
     };
 
     const method = 'get';

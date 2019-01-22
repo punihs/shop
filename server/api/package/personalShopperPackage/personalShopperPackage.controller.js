@@ -742,17 +742,18 @@ exports.history = async (req, res, next) => {
 
 exports.paymentSuccess = async (req, res, next) => {
   const customerId = req.user.id;
+  const id = req.query.object_id;
 
   const packages = await Package
     .findAll({
       where: {
         customer_id: customerId,
         package_type: PERSONAL_SHOPPER,
+        id,
       },
       include: [{
         model: PackageState,
         attributes: ['id', 'state_id', 'package_id'],
-        where: { state_id: PAYMENT_COMPLETED },
         include: [{
           model: State,
           attributes: ['id', 'name'],
