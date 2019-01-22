@@ -56,7 +56,7 @@
               div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.ORDER_COMPLETED')
                 p {{package.PackageState.State.name}}
               div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.PAYMENT_COMPLETED')
-                span(ng-if="shipment.payment_status != 'success'")
+                span(ng-if="package.payment_status != 'success'")
                   p Awaiting Payment
                   p It might take upto 24 Hours to reflect your payments into our account.
                   p
