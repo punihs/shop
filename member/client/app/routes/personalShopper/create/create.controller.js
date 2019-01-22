@@ -227,9 +227,9 @@ class CreateController {
 
   reset(newItemForm) {
     this.data = {};
-    this.Store.model = '';
+    this.data.store_id = '';
     newItemForm.$setPristine();
-    this.focus('store_id');
+    this.Stores.model = '';
   }
 
   validateForm(form) {
