@@ -14,6 +14,7 @@ class CampaignCreateController {
   }
 
   $onInit() {
+    this.types = [{ type: 'shipment', value: 'shipment' }, { type: 'Personal Shopper', value: 'ps' }];
     this.EDIT = !!this.$stateParams.id && this.$stateParams.id !== '';
     this.uploadingPhotos = false;
 

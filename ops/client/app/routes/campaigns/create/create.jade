@@ -124,6 +124,18 @@ div.m-t-xl.no-margin
                       )
                       span.wrapper-xs.text-xs.text-danger(ng-show='newCampaignForm.expiry_date.$dirty && newCampaignForm.expiry_date.$invalid') Please Enter Campaign Expiry date
           .col-md-10.col-sm-10.col-xs-10
+            .col-md-7
+              .row
+                .col-md-12
+                  .col-md-6.col-sm-5.col-xs-12.no-padder
+                    label.col-xs-12.input-group
+                      | Select Campaign Type
+                      select.form.form-control(
+                      ng-model='$ctrl.data.type'
+                      name='type'
+                      ng-options='type.value as type.type for type in $ctrl.types'
+                      )
+          .col-md-10.col-sm-10.col-xs-10
             .col-md-5.col-sm-5.col-xs-5
               .hbox
                 label.col
