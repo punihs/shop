@@ -31,6 +31,7 @@ const constants = {};
   { name: 'personal-shopper-state', keyMap: false },
   { name: 'actionable_state', keyMap: false },
   { name: 'personal-shopper-actionable-state', keyMap: false },
+  { name: 'shipment-actionable-state', keyMap: false },
   { name: 'locker', keyMap: false },
 ]
   .forEach(({ name, keyMap = true }) => {
