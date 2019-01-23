@@ -12,7 +12,7 @@ angular.module('uiGenApp')
       ACCOUNTS: `${PREFIX}accounts.${DOMAIN}`,
       PARCEL: `${PREFIX}parcel.${DOMAIN}`,
       HELP: 'https://ship.shoppre.com',
-
+      URLS_SHIP: `${PREFIX}ship-api.${DOMAIN}`,
       API: `${PREFIX}api.${DOMAIN}`,
       PARCEL_API: `${PREFIX}${project}-api.${DOMAIN}`,
       // PARCEL_API: 'http://parcel-api.shoppre.test',

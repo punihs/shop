@@ -7,6 +7,10 @@ ul.nav
     a.auto(ui-sref='dashboard.index')
       i.fas.fa-th-large.text-white
       span.font-bold Dashboard
+  li
+    a.auto(ui-sref='pricing.index')
+      i.fas.fa-th-large.text-white
+      span.font-bold Pricing
 
   li(ng-class='$ctrl.active === "packages" ? "active" : ""')
     a.auto(href='' ng-click='$ctrl.toggle("packages")')
