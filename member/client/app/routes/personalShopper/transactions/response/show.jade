@@ -8,7 +8,7 @@
     .container
       h2.text-center.text-info(ng-if="$ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.WIRE")
         | Thanks for placing the order!
-      h2.text-center.text-info(ng-if="!$ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.WIRE")
+      h2.text-center.text-info(ng-if="$ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.CARD || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.WALLET || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.PAYPAL || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.PAYTM || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.CASH")
         | Payment Successful
     br
     .container(ng-if="$ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.WIRE")
@@ -16,7 +16,7 @@
       h4 the payment, we'll make your purchase in just 24 hours; any difference in product costs at the time of us placing the order will be settled at the end.
       br
       h4.text-center You'll be notified via email once the order is placed or if we run into any issue with your order.
-    .container(ng-if="!$ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.WIRE")
+    .container(ng-if="$ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.CARD || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.WALLET || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.PAYPAL || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.PAYTM || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.CASH")
       h4.text-center Your order is being processed. It will be placed within 24 hours.
       br
       h4.text-center You'll be notified via email once the order is placed or if we run into any issue with your order.
@@ -63,7 +63,7 @@
         br
         br
     br
-    .container.centerFlex(ng-if="!$ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.WIRE")
+    .container.centerFlex(ng-if="$ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.CARD || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.WALLET || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.PAYPAL || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.PAYTM || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.CASH")
       .col-md-4.div-bg.no-padder
         div.div-pad-20
         center

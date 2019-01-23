@@ -1,10 +1,11 @@
 class CreateController {
-  constructor($http, Page, Session, $state, toaster) {
+  constructor($http, Page, Session, $state, toaster, $stateParams) {
     this.$http = $http;
     this.Page = Page;
     this.Session = Session;
     this.toaster = toaster;
     this.$state = $state;
+    this.$stateParams = $stateParams;
     this.$onInit();
   }
 
@@ -35,6 +36,7 @@ class CreateController {
       'personal_shopper_cost',
       'price_amount',
       'sub_total',
+      'buy_if_price_changed',
     ];
 
     this.if_item_unavailable = [
@@ -139,6 +141,24 @@ class CreateController {
     this.summarySection = false;
   }
   btnToggleSummarySection(currentStatus) {
+    let price = false;
+
+    this.packageOptions.forEach((x) => {
+      if (!x.buy_if_price_changed) {
+        price = true;
+
+        return this
+          .toaster
+          .pop('error', 'Please Select Choice of Would it be OK to buy it if when we shop, the item cost has gone up by', '');
+      }
+
+      return null;
+    });
+
+    if (price) {
+      return;
+    }
+
     this.summarySection = currentStatus === false ? true : true;
     this.orderTypeSection = false;
     this.cartSection = false;
@@ -153,11 +173,13 @@ class CreateController {
     }
     if (this.submitting) return null;
     this.submitting = true;
+    this.clickUpload = true;
 
-    // const form = this.validateForm(newItemForm);
+
+    const form = this.validateForm(newItemForm);
 
     const data = Object.assign({ }, this.data);
-    // if (!form) return (this.submitting = false);
+    if (!form) return (this.submitting = false);
     this.$http
       .post('/packages/personalShopperPackage', data)
       .then(({ data: { packageItems, personalShop } }) => {
@@ -268,6 +290,24 @@ class CreateController {
   }
 
   updatePackageOption() {
+    let price = false;
+
+    this.packageOptions.forEach((x) => {
+      if (!x.buy_if_price_changed) {
+        price = true;
+
+        return this
+          .toaster
+          .pop('error', 'Please Select Choice of Would it be OK to buy it if when we shop, the item cost has gone up by', '');
+      }
+
+      return null;
+    });
+
+    if (price) {
+      return;
+    }
+
     const data = _.map(this.packageOptions, (item) =>
       _.pick(item, this.packageFields)
     );

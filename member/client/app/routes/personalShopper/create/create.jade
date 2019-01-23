@@ -85,76 +85,81 @@
                             autocomplete = "off"
                             required
                             )
-                          span.wrapper-xs.text-xs.text-danger(ng-show='newItemForm.store.$dirty && newItemForm.store.$invalid') Please Select Store
+                            span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.store.$dirty && newItemForm.store.$invalid') Please Select Store
                         .col-md-4.col-xs-12
-                          label.f-c-d-gray.f-s-10 Item URL
-                          span.f-c-red *
-                          span.f-c-gray.glyphicon.glyphicon-info-sign
-                          br
-                          input.input-group.form-control(type='text',
+                          label.col-xs-12.input-group Item URL
+                            span.f-c-red *
+                            span.f-c-gray.glyphicon.glyphicon-info-sign
+                            br
+                            input.input-group.form-control(type='text',
                             ng-model='$ctrl.data.url',
                             name='url'
                             placeholder='eg: https://www.amazon.in/OnePlus-Mirror-Black-128GB'
+                            required
                             )
-                          span.wrapper-xs.text-xs.text-danger(ng-show='newItemForm.url.$dirty && newItemForm.url.$invalid') Please Enter Item Link
+                            span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.url.$dirty && newItemForm.url.$invalid') Please Enter Item Link
                         .col-md-2.col-xs-4
                           label.f-c-d-gray.f-s-10 Qty
-                          span.f-c-red *
-                          br
-                          input.input-group.form-control(type='number',
+                            span.f-c-red *
+                            br
+                            input.input-group.form-control(type='number',
                             ng-model='$ctrl.data.quantity',
                             placeholder='eg: 2',
                             name='quantity'
+                            required
                             )
-                          span.wrapper-xs.text-xs.text-danger(ng-show='newItemForm.quantity.$dirty && newItemForm.quantity.$invalid') Please Enter Quantity
+                            span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.quantity.$dirty && newItemForm.quantity.$invalid') Please Enter Quantity
                         .col-md-3.col-xs-7
                           label.f-c-d-gray.f-s-10 Name
                             span.f-c-red *
                             br
                             input.input-group.form-control(type='text',
-                              ng-model='$ctrl.data.name',
-                              placeholder='eg: T-shirt'
-                              name='name'
-                              )
-                            span.wrapper-xs.text-xs.text-danger(ng-show='newItemForm.name.$dirty && newItemForm.name.$invalid') Please Enter Product Name
+                            ng-model='$ctrl.data.name',
+                            placeholder='eg: T-shirt'
+                            name='name'
+                            required
+                            )
+                            span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.name.$dirty && newItemForm.name.$invalid') Please Enter Product Name
                         .col-md-1.col-xs-1
                           br
                       br
                       .row
                         .col-md-2.col-xs-4
                           label.f-c-d-gray.f-s-10 Size
-                          br
-                          input.input-group.form-control(type='text',
+                            br
+                            input.input-group.form-control(type='text',
                             ng-model='$ctrl.data.size',
                             name='size',
                             placeholder='eg: M/L/S/32/36'
                             )
-                          span.wrapper-xs.text-xs.text-danger(ng-show='newItemForm.size.$dirty && newItemForm.size.$invalid') Please Enter Size
+                            span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.size.$dirty && newItemForm.size.$invalid') Please Enter Size
                         .col-md-2.col-xs-4
                           label.f-c-d-gray.f-s-10 Color
-                          br
-                          input.input-group.form-control(type='text',
+                            br
+                            input.input-group.form-control(type='text',
                             ng-model='$ctrl.data.color',
                             name='color',
                             placeholder='eg: Blue')
-                          span.wrapper-xs.text-xs.text-danger(ng-show='newItemForm.color.$dirty && newItemForm.color.$invalid') Please Enter Color
+                            span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.color.$dirty && newItemForm.color.$invalid') Please Enter Color
                         .col-md-2.col-xs-4
                           label.f-c-d-gray.f-s-10  Item Price(In INR)
-                          span.f-c-red *
-                          br
-                          input.input-group.form-control(type='number',
+                            span.f-c-red *
+                            br
+                            input.input-group.form-control(type='number',
                             ng-model='$ctrl.data.price_amount',
                             name='price_amount',
-                            placeholder='eg: 1050 ₹'
+                            placeholder='eg: ₹ 1050 '
+                            required
                             )
-                          span.wrapper-xs.text-xs.text-danger(ng-show='newItemForm.price.$dirty && newItemForm.price.$invalid') Please Enter Price
-                        .col-md-6.col-xs-6
-                          label.f-c-d-gray.f-s-10 If this item is not available * (Choose an alternative)
-                          br
-                          select.selectpicker.form-control(name='if_item_unavailable', ng-model='$ctrl.data.if_item_unavailable')
-                            option(value='', selected='selected') ---------- Select ----------
-                            option(value='{{item.value}}', ng-repeat='item in $ctrl.if_item_unavailable', ng-bind='item.value')
-                          span.wrapper-xs.text-xs.text-danger(ng-show='newItemForm.if_item_unavailable.$dirty && newItemForm.if_item_unavailable.$invalid') Please Select Choice
+                            span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.price_amount.$dirty && newItemForm.price_amount.$invalid') Please Enter Price
+                        .col-md-6.col-xs-4
+                          label.col-xs-12.input-group If this item is not available (Choose an alternative)
+                            span.f-c-red *
+                            br
+                            select.selectpicker.form-control(name='if_item_unavailable', ng-model='$ctrl.data.if_item_unavailable' required)
+                              option(value='', selected='selected') ---------- Select ----------
+                              option(value='{{item.value}}', ng-repeat='item in $ctrl.if_item_unavailable', ng-bind='item.value')
+                              span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.if_item_unavailable.$dirty && newItemForm.if_item_unavailable.$invalid') Please Select Choice
                           br
                           br
                         .footer-line.left-padding-15.right-padding-20
@@ -214,10 +219,11 @@
                         input.input-group.form-control(type='number', ng-model='orderPackage.delivery_charge', name='delivery_charge', placeholder=' ₹50')
                       .col-md-6
                         label.f-c-d-gray.f-s-10 Would it be OK to buy it if when we shop, the item cost has gone up by
+                          span.f-c-red *
                           br
-                        select.selectpicker.form-control(name='buy_if_price_changed', ng-model='orderPackage.buy_if_price_changed')
-                          option(value='', selected='selected') ---------- Select ----------
-                          option(value='{{item}}', ng-repeat='item in $ctrl.purchasePriceOption', ng-bind='item')
+                          select.selectpicker.form-control(name='buy_if_price_changed', ng-model='orderPackage.buy_if_price_changed' required)
+                            option(value='', selected='selected') ---------- Select ----------
+                            option(value='{{item}}', ng-repeat='item in $ctrl.purchasePriceOption', ng-bind='item')
                     .row
                       .col-md-3
                         label.f-c-d-gray.f-s-10 Promotional Code
