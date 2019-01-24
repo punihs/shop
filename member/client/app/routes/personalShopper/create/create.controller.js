@@ -50,6 +50,7 @@ class CreateController {
       '750',
       '1000',
       '1000+',
+      'Cancel if the cost is increased',
     ];
 
     this.getPackageItem();
