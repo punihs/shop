@@ -10,6 +10,11 @@ class PricingIndexController {
   $onInit() {
     this.prices = [];
     this.packageType = [{ types: 'doc' }, { types: 'nondoc' }];
+
+    this.$http.get('/countries?limit=500')
+      .then(({ data: countries }) => {
+        this.countries = countries;
+      });
   }
   getPrice() {
     const params = {
@@ -23,7 +28,6 @@ class PricingIndexController {
 
     this.$http.get(`%/api/pricing?${qs}`)
       .then(({ data: { prices } }) => {
-        console.log(prices);
         this.prices = prices;
       });
   }

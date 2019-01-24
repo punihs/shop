@@ -3,15 +3,20 @@
     h1.text-center Shipping Calculator
     hr
     label.m-l
-      | Enter Country Code
-      input.m-l-xs-md(type='text' name='country' ng-model='$ctrl.data.countryCode')
-
+      | Select The Country
+      span.text-danger *
+      select.form.form-control(
+      ng-model='$ctrl.data.countryCode'
+      name='countryCode'
+      ng-options='country.iso2 as country.name for country in $ctrl.countries'
+      )
     label.m-l
-      | Enter Weight
-      input.m-l-xs-md(type='text' name='weight' ng-model='$ctrl.data.weight')
-
+      | Weight
+      span.text-danger *
+      input.form-control(type='text' name='weight' ng-model='$ctrl.data.weight')
     label.m-l
       | Select Type
+      span.text-danger *
       select.form.form-control(
       ng-model='$ctrl.data.packageType'
       name='packageType'
