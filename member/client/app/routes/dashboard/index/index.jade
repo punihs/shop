@@ -35,6 +35,12 @@ div
           i.fa.fa-phone
           a(ng-href='tel:{{$ctrl.user.phone}}')
             span.m-l-xs(ng-bind='$ctrl.user.phone')
+        .pull-left.wrapper-sm.no-padder-top(title='Shoppre Wallet Balance in Account')
+          i.fa.fa-wallet
+          a(ng-href='tel:{{$ctrl.walletBalanceAmount}}')
+            span.text-success(class='{{$ctrl.walletBalanceAmount > 0 ? "text-success" : "text-danger" }}') &nbsp; Shoppre wallet &nbsp;&nbsp;
+              i.fa.fa-rupee-sign
+              b.m-l-xs(ng-bind='$ctrl.walletBalanceAmount')
         uib-progressbar.w-full.bg-light.dker.progress-striped.active.m-t-xl(
           ng-init='max=20;elapsed=$ctrl.moment().diff($ctrl.moment($ctrl.user.Locker.allocated_at), "days")'
           ng-if='$ctrl.user.Locker'

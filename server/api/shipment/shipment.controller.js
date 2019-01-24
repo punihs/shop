@@ -33,6 +33,7 @@ const {
   },
   SHIPMENT_HISTORY, SHIPMENT_COUNT,
   PACKAGE_STATE_IDS: { READY_TO_SHIP },
+  PAYMENT_GATEWAY: { RAZOR },
   GROUPS: { CUSTOMER },
 } = require('../../config/constants');
 const { URLS_PARCEL } = require('../../config/environment');
@@ -1105,6 +1106,7 @@ exports.payResponse = async (req, res, next) => {
     const SUCCESS = '6';
     log(req.query.status);
     log(req.query);
+
     if (req.query.status === SUCCESS) {
       await updateShipmentState({
         shipment,
@@ -1123,20 +1125,28 @@ exports.payResponse = async (req, res, next) => {
         amount,
       };
 
-      res.redirect(`${sucessURL}?${stringify(params)}`);
-    } else {
-      await updateShipmentState({
-        shipment,
-        actingUser: customer,
-        nextStateId: PAYMENT_FAILED,
-        comments: 'payment failed',
-        next,
-      });
+      if (RAZOR === Number(req.query.pg)) {
+        return res.json(`${sucessURL}?${stringify(params)}`);
+      }
 
-      res.redirect(`${failedURL}?error='failed'&message=${msg}`);
+      return res.redirect(`${sucessURL}?${stringify(params)}`);
     }
+
+    await updateShipmentState({
+      shipment,
+      actingUser: customer,
+      nextStateId: PAYMENT_FAILED,
+      comments: 'payment failed',
+      next,
+    });
+
+    if (RAZOR === Number(req.query.pg)) {
+      return res.json(`${failedURL}?error='failed'&message=${msg}`);
+    }
+
+    return res.redirect(`${failedURL}?error='failed'&message=${msg}`);
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 

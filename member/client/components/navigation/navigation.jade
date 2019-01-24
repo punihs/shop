@@ -9,7 +9,7 @@ ul.nav
       span.font-bold Dashboard
   li
     a.auto(ui-sref='pricing.index')
-      i.fas.fa-th-large.text-white
+      i.fas.fa-usd-square.text-white
       span.font-bold Pricing
 
   li(ng-class='$ctrl.active === "packages" ? "active" : ""')
@@ -145,8 +145,8 @@ ul.nav
     a.auto(href='' ng-click='$ctrl.toggle("Courier")')
       span.pull-right.text-muted
         i.fa.fa-fw.fa-angle-right.text
-      i.fas.fa-plane-departure.text-white
-      span.font-bold Courier
+      i.fas.fa-truck-pickup.text-white
+      span.font-bold Send Courier
     ul.nav.nav-sub.dk
       li(ui-sref-active='active')
         a(

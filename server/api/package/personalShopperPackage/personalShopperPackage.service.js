@@ -7,6 +7,7 @@ const db = require('./../../../conn/sqldb');
 
 const {
   PACKAGE_STATE_IDS: { PAYMENT_COMPLETED, PAYMENT_FAILED },
+  PAYMENT_GATEWAY: { RAZOR },
 }
 = require('../../../config/constants');
 
@@ -43,6 +44,7 @@ exports.payResponse = async (req, res, next) => {
     const SUCCESS = '6';
     log(req.query.status);
     log(req.query);
+
     if (req.query.status === SUCCESS) {
       const ids = objectId.split(',');
       ids.forEach((x) => {
@@ -55,7 +57,6 @@ exports.payResponse = async (req, res, next) => {
         });
       });
 
-
       const { amount } = req.query;
       const params = {
         object_id: req.query.object_id,
@@ -65,7 +66,11 @@ exports.payResponse = async (req, res, next) => {
         amount,
       };
 
-      res.redirect(`${sucessURL}?${stringify(params)}`);
+      if (RAZOR === Number(req.query.pg)) {
+        res.json(`${sucessURL}?${stringify(params)}`);
+      } else {
+        res.redirect(`${sucessURL}?${stringify(params)}`);
+      }
     } else {
       const ids = objectId.split(',');
       ids.forEach((x) => {
@@ -77,7 +82,12 @@ exports.payResponse = async (req, res, next) => {
           next,
         });
       });
-      res.redirect(`${failedURL}?error='failed'&message=${msg}`);
+
+      if (RAZOR === Number(req.query.pg)) {
+        res.json(`${failedURL}?error='failed'&message=${msg}`);
+      } else {
+        res.redirect(`${failedURL}?error='failed'&message=${msg}`);
+      }
     }
   } catch (err) {
     next(err);

@@ -16,14 +16,7 @@ class ShipRequestsIndexController {
 
   $onInit() {
     this.inreview = false;
-    this.PAYMENT_GATEWAY = {
-      WIRE: 1,
-      CASH: 2,
-      CARD: 3,
-      PAYTM: 4,
-      PAYPAL: 5,
-      WALLET: 6,
-    };
+    this.PAYMENT_GATEWAYS = this.CONFIG.PAYMENT_GATEWAY;
     this.SHIPMENT_STATE_IDS = this.CONFIG.SHIPMENT_STATE_IDS;
     this.$http
       .get('/shipments/queue')

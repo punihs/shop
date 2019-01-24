@@ -152,6 +152,7 @@ const constants = {
     PAYTM: 4,
     PAYPAL: 5,
     WALLET: 6,
+    RAZOR: 7,
   },
   PAYMENT_GATEWAY_NAMES: {
     WIRE: 'wire',
@@ -160,6 +161,7 @@ const constants = {
     PAYTM: 'paytm',
     PAYPAL: 'paypal',
     WALLET: 'wallet',
+    RAZOR: 'razor',
   },
 };
 
