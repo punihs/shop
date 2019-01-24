@@ -10,6 +10,7 @@ exports.notifications = (req, res) => {
     customer,
     pkg,
     ENV,
+    paymentGateway,
   } = req.body;
 
   const targetUser = {
@@ -32,7 +33,7 @@ exports.notifications = (req, res) => {
         TemplateData: JSON.stringify({
           nextStateId,
           [nextStateName]: true,
-          subject: subjectMap({ nextStateName, pkg, targetUser }),
+          subject: subjectMap({ nextStateName, pkg, targetUser, paymentGateway }),
           pkg: { ...pkg },
           customer,
           actingUser,

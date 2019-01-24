@@ -3,6 +3,7 @@ const sequelize = require('sequelize');
 const {
   SUPPORT_EMAIL_ID, SUPPORT_EMAIL_FIRST_NAME, SUPPORT_EMAIL_LAST_NAME,
 } = require('../../config/environment');
+const cashback = require('../shipment/components/cashback');
 
 const {
   APPS, GROUPS: { CUSTOMER, OPS },
@@ -14,6 +15,11 @@ const {
     PACKAGE_ITEMS_UPLOAD_PENDING, SPLIT_PACKAGE_PROCESSED, AWAITING_VERIFICATION, IN_REVIEW,
     ADDED_SHIPMENT,
   },
+
+  PAYMENT_GATEWAY: {
+    WIRE, CASH, CARD, PAYTM, PAYPAL, WALLET, RAZOR,
+  },
+  PAYMENT_GATEWAY_NAMES,
 } = require('./../../config/constants');
 const {
   PACKAGE: {
@@ -311,6 +317,44 @@ exports.updateState = async ({
       opsUser = actingUser;
     }
 
+    let gateway = null;
+    if (pkg.transaction_id) {
+      const {
+        payment_gateway_id: paymentGatewayID,
+      } = await this.transaction(pkg);
+
+      switch (Number(paymentGatewayID)) {
+        case CASH: {
+          gateway = PAYMENT_GATEWAY_NAMES.CASH; break;
+        }
+        case CARD: {
+          gateway = PAYMENT_GATEWAY_NAMES.CARD; break;
+        }
+        case WIRE: {
+          gateway = PAYMENT_GATEWAY_NAMES.WIRE; break;
+        }
+        case PAYPAL: {
+          gateway = PAYMENT_GATEWAY_NAMES.PAYPAL; break;
+        }
+        case PAYTM: {
+          gateway = PAYMENT_GATEWAY_NAMES.PAYTM; break;
+        }
+        case WALLET: {
+          gateway = PAYMENT_GATEWAY_NAMES.WALLET; break;
+        }
+        case RAZOR: {
+          gateway = PAYMENT_GATEWAY_NAMES.RAZOR; break;
+        }
+        default: {
+          gateway = null; break;
+        }
+      }
+    }
+
+    const paymentGateway = {
+      name: gateway,
+    };
+
     if (!([IN_REVIEW, AWAITING_VERIFICATION, ADDED_SHIPMENT].includes(nextStateId))) {
       hookshot
         .stateChange({
@@ -319,6 +363,7 @@ exports.updateState = async ({
           pkg,
           actingUser: opsUser,
           next,
+          paymentGateway,
         })
         .catch(err => logger.error('statechange notification', nextStateId, pkg, err));
     }
@@ -335,6 +380,19 @@ exports.updateState = async ({
     return next(err);
   }
 };
+
+
+exports.transaction = async (pkg) => {
+  const transaction = await cashback
+    .transaction({
+      object_id: pkg.order_code,
+      customer_id: pkg.customer_id,
+      transactionId: pkg.transaction_id,
+    });
+
+  return transaction;
+};
+
 
 exports.updatePackageOptions = async (body) => {
   body.forEach((item) => {

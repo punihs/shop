@@ -26,7 +26,7 @@ const {
   },
   PACKAGE_STATE_IDS: { READY_TO_SHIP, DAMAGED },
   PAYMENT_GATEWAY: {
-    WIRE, CASH, CARD, PAYTM, PAYPAL, WALLET,
+    WIRE, CASH, CARD, PAYTM, PAYPAL, WALLET, RAZOR,
   },
   PAYMENT_GATEWAY_NAMES,
 } = require('./../../config/constants');
@@ -424,6 +424,9 @@ exports.updateShipmentState = async ({
       }
       case WALLET: {
         gateway = PAYMENT_GATEWAY_NAMES.WALLET; break;
+      }
+      case RAZOR: {
+        gateway = PAYMENT_GATEWAY_NAMES.RAZOR; break;
       }
       default: {
         gateway = null; break;

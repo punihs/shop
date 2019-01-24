@@ -28,7 +28,13 @@ class PricingIndexController {
 
     this.$http.get(`%/api/pricing?${qs}`)
       .then(({ data: { prices } }) => {
-        this.prices = prices;
+        if (prices) {
+          this.prices = prices;
+        } else {
+          this.prices = null;
+        }
+      }).catch((e) => {
+        this.prices = null;
       });
   }
 }

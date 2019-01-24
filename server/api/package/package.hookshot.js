@@ -10,7 +10,7 @@ const log = debug('s-api-package-notification');
 const toJSON = object => (object.toJSON ? object.toJSON() : object);
 
 exports.stateChange = async ({
-  actingUser, pkg, nextStateId, lastStateId, next,
+  actingUser, pkg, nextStateId, lastStateId, next, paymentGateway,
 }) => {
   try {
     const customer = await User
@@ -38,6 +38,7 @@ exports.stateChange = async ({
         pkg: { ...toJSON(pkg), Store: store },
         customer: toJSON(customer),
         ENV: viewConfig,
+        paymentGateway,
       }, headers);
 
     return null;
