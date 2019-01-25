@@ -1,7 +1,7 @@
 class TransactionCreateController {
   constructor(
     $http, Page, $stateParams, $location, toaster, $uibModal, URLS, Session,
-    $window, CONFIG,
+    $window, CONFIG, RAZOR_PAY,
   ) {
     this.$http = $http;
     this.Page = Page;
@@ -14,6 +14,7 @@ class TransactionCreateController {
     this.CONFIG = CONFIG;
     this.URLS = URLS;
     this.couponFirstTime = 'FRST50';
+    this.RAZOR_PAY = RAZOR_PAY;
     this.$onInit();
   }
 
@@ -268,7 +269,7 @@ class TransactionCreateController {
   razorPayClick(e, parmas) {
     this.paymentid = '';
     const options = {
-      key: this.CONFIG.RAZOR_PAY,
+      key: this.RAZOR_PAY.key,
       amount: this.data.payAmount * 100,  // 2000 paise = INR 20
       name: 'Indian Shoppre',
       description: 'Shoppre Payment',
