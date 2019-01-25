@@ -39,6 +39,12 @@ class ShipRequestInvoiceController {
           this.Charges.wrong_address_amount += item.PackageCharge.wrong_address_amount;
           this.Charges.split_amount += item.PackageCharge.split_package_amount;
         });
+        const transactionId = this.shipment.transaction_id;
+        this.$http
+          .get(`$/api/transactions?transactionIds=${transactionId}`)
+          .then(({ data: transactions }) => {
+            this.transactions = transactions;
+          });
       })
       .catch((err) => {
         this

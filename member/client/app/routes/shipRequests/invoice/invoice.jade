@@ -146,16 +146,28 @@ section.ship_response.m-t-md.m-b-md
                   td(colspan='2')
                   td Liquid Clearance Charge :
                   td INR {{$ctrl.shipment.ShipmentMetum.liquid_charge_amount| number: 2}}
-            tr.item(ng-if="$ctrl.shipment.coupon_amount > 0")
+            tr.item(ng-if="$ctrl.transactions[0].discount_amount > 0")
               td(colspan='2')
               td Coupon Discount :
-              td (-) INR {{$ctrl.shipment.coupon_amount| number: 2}}
-            tr.item(ng-if="$ctrl.shipment.payment_gateway_fee_amount > 0")
+              td (-) INR {{$ctrl.transactions[0].discount_amount| number: 2}}
+            tr.item(ng-if="$ctrl.transactions[0].loyalty_amount > 0")
+              td(colspan='2')
+              td Loyalty Amount :
+              td (-) INR {{$ctrl.transactions[0].loyalty_amount| number: 2}}
+            tr.item(ng-if="$ctrl.transactions[0].wallet_amount > 0")
+              td(colspan='2')
+              td Wallet Amount :
+              td (-) INR {{$ctrl.transactions[0].wallet_amount| number: 2}}
+            tr.item(ng-if="$ctrl.transactions[0].wallet_amount < 0")
+              td(colspan='2')
+              td Wallet Amount :
+              td (+) INR {{$ctrl.transactions[0].wallet_amount| number: 2}}
+            tr.item(ng-if="$ctrl.transactions[0].payment_gateway_fee_amount > 0")
               td(colspan='2')
               td Payment Gateway Fee :
-              td INR {{$ctrl.shipment.payment_gateway_fee_amount| number: 2}}
+              td INR {{$ctrl.transactions[0].payment_gateway_fee_amount| number: 2}}
             tr.total
               td(colspan='2')
               td(colspan='') Total Cost :
-              td INR {{$ctrl.shipment.final_amount| number: 2}}
+              td INR {{$ctrl.transactions[0].final_amount| number: 2}}
 
