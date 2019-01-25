@@ -28,4 +28,6 @@ module.exports = ({
   REFUNDED_TO_BANK_ACCOUNT: `We've Finished Refunding Your Payment for the Order ${pkg.order_code}`,
   ORDER_COMPLETED: `All Items on Your Personal Shopper Order ${pkg.order_code} Have Arrived`,
   AWAITING_PACKAGE: '',
+  PACKAGE_STORAGE: 'FREE storage is about to expire! Request to Ship soon!',
+  PACKAGE_STORAGE_EXCEEDED: 'FREE storage has expired! Request to ship immediately!',
 }[nextStateName]);

@@ -129,6 +129,14 @@
       <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
         <span style="font:20px Arial,san-serif">Awaiting Package</span>
       </td>
+    {{else if PACKAGE_STORAGE}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">FREE storage is about to expire! Request to Ship soon!</span>
+      </td>
+    {{else if PACKAGE_STORAGE_EXCEEDED}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">FREE storage has expired! Request to ship immediately!</span>
+      </td>
     {{/if}}
       </tr>
       <tr>
@@ -231,6 +239,14 @@
               <a
                 href="{{ENV.URLS_PARCEL}}/personalShopper/index"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
+            {{else if PACKAGE_STORAGE}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if PACKAGE_STORAGE_EXCEEDED}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
             {{/if}}
               <br> </span>
         </td>

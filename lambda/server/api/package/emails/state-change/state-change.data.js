@@ -40,6 +40,8 @@ const pkg = {
   total_quantity: '2',
   order_code: 'PS7658',
   buy_if_price_changed: '100 below',
+  storage_limit: 20,
+  storage_charge: 100,
 };
 
 const customer = {
@@ -322,5 +324,25 @@ module.exports = {
     ENV,
     packageItems,
     subject: `All Items on Your Personal Shopper Order ${pkg.order_code} Have Arrived`,
+  },
+  PACKAGE_STORAGE: {
+    PACKAGE_STORAGE: true,
+    INCOMING: true,
+    pkg,
+    customer,
+    actingUser: OPS,
+    ENV,
+    packageItems,
+    subject: 'FREE storage is about to expire! Request to Ship soon!',
+  },
+  PACKAGE_STORAGE_EXCEEDED: {
+    PACKAGE_STORAGE_EXCEEDED: true,
+    INCOMING: true,
+    pkg,
+    customer,
+    actingUser: OPS,
+    ENV,
+    packageItems,
+    subject: 'FREE storage has expired! Request to ship immediately!',
   },
 };

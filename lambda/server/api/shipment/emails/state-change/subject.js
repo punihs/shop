@@ -11,4 +11,6 @@ module.exports = ({ nextStateName, shipment, paymentGateway }) => ({
   SHIPMENT_DELIVERED: `Shipment Delivered | Earn 150 Loyalty Points! | ShipmentID: ${shipment.id}`,
   SHIPMENT_CANCELLED: `Shipment Cancelled! | Shipment ID: ${shipment.id}`,
   WRONG_ADDRESS: 'Shipment Wrong Address',
+  PAYMENT_DELAY: 'You Havent Made Payment Yet! Last 2 Days',
+  PAYMENT_DELAY_EXCEEDED: 'Grace period has expired! Make payment immediately',
 }[nextStateName]);
