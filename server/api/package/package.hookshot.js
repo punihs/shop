@@ -2,7 +2,10 @@ const debug = require('debug');
 
 const hookshot = require('../../conn/hookshot');
 const viewConfig = require('../../view.config');
-const { PACKAGE_STATE_ID_NAMES_MAP } = require('../../config/constants');
+const {
+  PACKAGE_STATE_ID_NAMES_MAP,
+  PACKAGE_TYPES: { INCOMING, PERSONAL_SHOPPER },
+} = require('../../config/constants');
 const { User, Store } = require('../../conn/sqldb');
 
 const log = debug('s-api-package-notification');
@@ -10,7 +13,7 @@ const log = debug('s-api-package-notification');
 const toJSON = object => (object.toJSON ? object.toJSON() : object);
 
 exports.stateChange = async ({
-  actingUser, pkg, nextStateId, lastStateId, next, paymentGateway,
+  actingUser, pkg, nextStateId, lastStateId, next, paymentGateway, packageItems,
 }) => {
   try {
     const customer = await User
@@ -39,6 +42,10 @@ exports.stateChange = async ({
         customer: toJSON(customer),
         ENV: viewConfig,
         paymentGateway,
+        INCOMING: pkg.package_type === INCOMING ? true : false,
+        PERSONAL_SHOPPER: pkg.package_type === PERSONAL_SHOPPER ? true : false,
+        ORDER_ITEMS: pkg.package_type === PERSONAL_SHOPPER ? true : false,
+        packageItems,
       }, headers);
 
     return null;

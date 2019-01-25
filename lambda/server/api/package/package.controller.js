@@ -11,13 +11,16 @@ exports.notifications = (req, res) => {
     pkg,
     ENV,
     paymentGateway,
+    INCOMING,
+    PERSONAL_SHOPPER,
+    ORDER_ITEMS,
+    packageItems,
   } = req.body;
 
   const targetUser = {
     MEMBER: 'MEMBER',
     OPS: 'OPS',
   };
-
   customer.first_name = customer.first_name.charAt(0).toUpperCase() +
     customer.first_name.slice(1);
 
@@ -38,6 +41,11 @@ exports.notifications = (req, res) => {
           customer,
           actingUser,
           ENV,
+          INCOMING,
+          PERSONAL_SHOPPER,
+          paymentGateway,
+          ORDER_ITEMS,
+          packageItems,
         }),
       }],
       // oneSignal: [{

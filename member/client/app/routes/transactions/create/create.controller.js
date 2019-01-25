@@ -268,10 +268,9 @@ class TransactionCreateController {
   razorPayClick(e, parmas) {
     this.paymentid = '';
     const options = {
-      // key: 'rzp_live_M6Qsxy6ugbs8u4',
-      key: 'rzp_test_wCWbs0SkDqq9ht',
+      key: this.CONFIG.RAZOR_PAY,
       amount: this.data.payAmount * 100,  // 2000 paise = INR 20
-      name: 'Merchant Name',
+      name: 'Indian Shoppre',
       description: 'Shoppre Payment',
       image: 'https://www.shoppre.com/img/images/logo@2x.png',
       http: this.$http,

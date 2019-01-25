@@ -60,6 +60,9 @@ angular
     address: 'NO. 9, M.G. ROAD, BLOCK-A',
     swift_code: 'AXISINBB009',
   })
+  .constant('RAZOR_PAY', {
+    key: 'rzp_live_M6Qsxy6ugbs8u4',    // - Dont change this Key to test Mode for testing also
+  })
   // - todo: Raven to moved to factor
   // do not rethrow the exception - breaks the digest cycle, (exception, cause)
   .factory('$exceptionHandler', () => (exception) => Raven.captureException(exception))

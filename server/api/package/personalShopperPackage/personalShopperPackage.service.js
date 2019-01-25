@@ -12,7 +12,7 @@ const {
 = require('../../../config/constants');
 
 const {
-  Package, User,
+  Package, User, PackageItem,
 } = db;
 
 const log = debug('personal shopper');
@@ -45,13 +45,21 @@ exports.payResponse = async (req, res, next) => {
     log(req.query.status);
     log(req.query);
 
+    const ids = objectId.split(',');
+    const pkg = await Package.findAll({
+      where: { id: ids },
+      include: [{
+        model: PackageItem,
+        attributes: ['id', 'name', 'price_amount', 'quantity', 'total_amount', 'url', 'status'],
+      }],
+    });
+
     if (req.query.status === SUCCESS) {
-      const ids = objectId.split(',');
-      ids.forEach((x) => {
+      pkg.forEach((x) => {
         updateState({
           lastStateId: null,
           nextStateId: PAYMENT_COMPLETED,
-          pkg: { id: x },
+          pkg: x,
           actingUser: customer,
           next,
         });
@@ -72,12 +80,11 @@ exports.payResponse = async (req, res, next) => {
         res.redirect(`${sucessURL}?${stringify(params)}`);
       }
     } else {
-      const ids = objectId.split(',');
-      ids.forEach((x) => {
+      pkg.forEach((x) => {
         updateState({
           lastStateId: null,
           nextStateId: PAYMENT_FAILED,
-          pkg: { id: x },
+          pkg: x,
           actingUser: customer,
           next,
         });

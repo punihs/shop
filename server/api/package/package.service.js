@@ -364,6 +364,7 @@ exports.updateState = async ({
           actingUser: opsUser,
           next,
           paymentGateway,
+          packageItems: pkg.PackageItems,
         })
         .catch(err => logger.error('statechange notification', nextStateId, pkg, err));
     }
