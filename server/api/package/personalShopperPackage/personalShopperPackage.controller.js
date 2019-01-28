@@ -734,6 +734,7 @@ exports.history = async (req, res, next) => {
           attributes: ['id', 'name'],
         }],
       }],
+      order: [['updated_at', 'desc']],
     })
     .catch(next);
 
