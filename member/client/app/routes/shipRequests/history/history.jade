@@ -17,6 +17,13 @@ div
         .h5
           | You can Track & find tracking details of your Shipments
           span(ng-bind='" " + $ctrl.TITLE')
+          a.summary-order(
+          title='History'
+          target='_blank'
+          ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/shipping/history'
+          )
+            span - TRACK YOUR OLD SHIPMENTS HERE
+
 
     // - Content Area
     .bg-light(style='min-height: 200px;')
