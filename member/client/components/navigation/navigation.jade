@@ -51,17 +51,33 @@ ul.nav
       span.font-bold Personal Shopper
     ul.nav.nav-sub.dk
       li(ui-sref-active='active')
-        a(ui-sref='personalShopper.workFlow')
-          span How It works
+        a.text-white(
+        title='We pay on your request'
+        target='_blank'
+        ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/personal-shopper'
+        )
+          span Cash on Delivery
       li(ui-sref-active='active')
-        a(ui-sref='personalShopper.create')
-          span Place an Order
-      li(ui-sref-active='active')
-        a(ui-sref='personalShopper.index')
-          span Order History
-      //li(ui-sref-active='active')
-      //  a(ui-sref='personalShopper.balance')
-      //    span ShoppRe Balances
+        a(
+        title='We buy on your request'
+        target='_blank'
+        ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/personal-shopper'
+        )
+          span Assisted Purchase
+      //ul.nav.nav-sub.dk
+      //  li(ui-sref-active='active')
+      //    a(ui-sref='personalShopper.workFlow')
+      //      span How It works
+      //  li(ui-sref-active='active')
+      //    a(ui-sref='personalShopper.create')
+      //      span Place an Order
+      //  li(ui-sref-active='active')
+      //    a(ui-sref='personalShopper.index')
+      //      span Order History
+      //  li(ui-sref-active='active')
+      //    a(ui-sref='personalShopper.balance')
+      //      span ShoppRe Balances
+
 
   li(ng-class='$ctrl.active === "loyalty" ? "active" : ""')
     a.auto(href='' ng-click='$ctrl.toggle("loyalty")')
