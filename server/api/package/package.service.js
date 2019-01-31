@@ -160,7 +160,7 @@ exports.index = async ({
             },
           },
         };
-      } else if (bucket === 'FEEDBACK') {
+      } else if (bucket === 'FEEDBACK' && type !== 'ORDER') {
         options.include[0].where = {
           $or: {
             state_id: BUCKET[bucket].filter(x => (x !== AWAITING_VERIFICATION)),
