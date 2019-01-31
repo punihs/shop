@@ -116,6 +116,8 @@ div
                                 p Cancelled
                               div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.CUSTOMER_DOCUMENT_RESOLVED')
                                 p Customer Document Resolved
+                              div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.SHIPMENT_ABANDON')
+                                p Shipment Abandon
                           td.footable-visible(ng-show='shipment.ShipmentState.state_id != $ctrl.SHIPMENT_STATE_IDS.SHIPMENT_CANCELLED')
                             a.summary-order(ui-sref='shipRequest.invoice({ orderCode: shipment.order_code })', target='_blank') {{shipment.order_code}}
                           td.footable-visible(ng-show='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.SHIPMENT_CANCELLED')
