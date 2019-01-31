@@ -274,13 +274,13 @@ class CreateController {
     console.log('data', this.data);
   }
 
-  deleteItem(item) {
+  deleteItem(item, psPackage) {
     const c = confirm;
     const ok = c('Are you sure? Deleting your item');
     if (!ok) return null;
 
     return this.$http
-      .delete(`/packages/personalShopperPackage/${item.package_id}/item/${item.id}`)
+      .delete(`/packages/personalShopperPackage/${psPackage.id}/item/${item.id}`)
       .then(({ data: packageItems }) => {
         this.packageData = packageItems;
         this.packageOptions = packageItems;
