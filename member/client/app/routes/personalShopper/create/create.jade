@@ -68,10 +68,10 @@
                     )
                       .row
                         .col-md-2.col-xs-12
-                          label.col-xs-12.input-group
-                            | Store
-                            span.text-danger *
-                            input.form-control(
+                          label.col-xs-12.input-group Store
+                            span.f-c-red *
+                            br
+                            input.input-group.form-control(
                             type='text'
                             name="store"
                             ng-model='$ctrl.Stores.model'
@@ -89,7 +89,6 @@
                         .col-md-4.col-xs-12
                           label.col-xs-12.input-group Item URL
                             span.f-c-red *
-                            span.f-c-gray.glyphicon.glyphicon-info-sign
                             br
                             input.input-group.form-control(type='text',
                             ng-model='$ctrl.data.url',
@@ -99,10 +98,10 @@
                             )
                             span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.url.$dirty && newItemForm.url.$invalid') Please Enter Item Link
                         .col-md-2.col-xs-4
-                          label.f-c-d-gray.f-s-10 Qty
+                          label.col-xs-12.input-group Qty
                             span.f-c-red *
                             br
-                            input.input-group.form-control(type='number',
+                            input.input-group.form-control(type='number', max="1000", min="1",
                             ng-model='$ctrl.data.quantity',
                             placeholder='eg: 2',
                             name='quantity'
@@ -142,10 +141,10 @@
                             placeholder='eg: Blue')
                             span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.color.$dirty && newItemForm.color.$invalid') Please Enter Color
                         .col-md-2.col-xs-4
-                          label.f-c-d-gray.f-s-10  Item Price(In INR)
+                          label.col-xs-12.input-group  Item Price(In INR)
                             span.f-c-red *
                             br
-                            input.input-group.form-control(type='number',
+                            input.input-group.form-control(type='number', max="1000000", min="1",
                             ng-model='$ctrl.data.price_amount',
                             name='price_amount',
                             placeholder='eg: ₹ 1050 '
@@ -212,11 +211,11 @@
                       .col-md-3
                         label.f-c-d-gray.f-s-10 Sales Tax charged by the seller
                         br
-                        input.input-group.form-control(type='number', ng-model='orderPackage.sales_tax', name='sales_tax', placeholder=' ₹10.5')
+                        input.input-group.form-control(type='number', min="0", max="10000", ng-model='orderPackage.sales_tax', name='sales_tax', placeholder=' ₹10.5')
                       .col-md-3
                         label.f-c-d-gray.f-s-10 Delivery Charges to Bengaluru
                         br
-                        input.input-group.form-control(type='number', ng-model='orderPackage.delivery_charge', name='delivery_charge', placeholder=' ₹50')
+                        input.input-group.form-control(type='number', min="0", max="10000", ng-model='orderPackage.delivery_charge', name='delivery_charge', placeholder=' ₹50')
                       .col-md-6
                         label.f-c-d-gray.f-s-10 Would it be OK to buy it if when we shop, the item cost has gone up by
                           span.f-c-red *

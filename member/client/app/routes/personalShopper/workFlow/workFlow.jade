@@ -28,8 +28,7 @@
       img(src='https://d2njzkuk16ywue.cloudfront.net/cdn/img/svg/dot.svg', alt='')
       span.f-c-d-gray We’ll Shop For You:
       |  All you have to do is, let us know what you intend         to buy; we’ll make the purchase for you.
-    h6.f-s-9.f-c-blue How much does it cost you?
-    a.f-s-9.f-c-blue(href='https://www.shoppre.com/terms-and-conditions') Terms & Conditions
+    a.f-s-9.f-c-blue(href='https://www.shoppre.com/terms-and-conditions' target='_blank') Terms & Conditions
 
   .col-md-12.col-xs-12.ps-des-div
     center
@@ -85,7 +84,11 @@
       br
       br
       center
-        a(ui-sref='personalShopper.create')
+        a(ui-sref-active='active'
+          title='We pay on your request'
+          target='_blank'
+          ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/personal-shopper/order'
+          )
           button.btn.btn-s-r.btn-b-r.btn-xl(type='submit') Place Your Order Now!
       br
 
