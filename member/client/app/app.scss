@@ -1006,6 +1006,11 @@ li.dndPlaceholder {
   }
 }
 
+.terms-and-conditions-popover {
+  div[uib-popover-template-popup] {
+    min-width: 80%;
+  }
+}
 
 .bg-primary {
   .nav > {

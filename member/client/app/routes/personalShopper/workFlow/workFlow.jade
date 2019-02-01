@@ -28,7 +28,26 @@
       img(src='https://d2njzkuk16ywue.cloudfront.net/cdn/img/svg/dot.svg', alt='')
       span.f-c-d-gray We’ll Shop For You:
       |  All you have to do is, let us know what you intend         to buy; we’ll make the purchase for you.
-    a.f-s-9.f-c-blue(href='https://www.shoppre.com/terms-and-conditions' target='_blank') Terms & Conditions
+    p
+    .input-group-btn.dropdown.open.full-width(uib-dropdown='', style='')
+      button.btn.btn-default.full-width.dropdown-toggle.text-left.m-b-md(type='button', uib-dropdown-toggle='', aria-haspopup='true', aria-expanded='true')
+        span.text-u-c.m-r-xs What is the Personal Shopper service cost?
+      .list-group.list-group-lg.no-bg.auto.dropdown-menu.full-width.position-relative
+        p &nbsp; Personal Shopper Service Cost is applied per order, not per item. If you request multiple items from a single seller, you will have to pay only one service cost. Orders with items from multiple sellers will be charged a service cost for each seller.
+        p.font-bold &nbsp;  Personal Shopper Service Costs/Payment Methods
+        p &nbsp; &nbsp; 1. Netbanking/ Credit Card/ PayPal/ Cash on Delivery: 10%   &nbsp;   of the order total(minimum INR 200.00)
+        p &nbsp; &nbsp; 2. Personal Shopper orders with more than 15 items per online seller will incur an INR 50 per item cost for every additional item over 15.
+        p &nbsp; Any difference in amount while we made your purchase will be settled at the end, which you can view under your Shoppre Wallet on the right side of your Locker.
+    .copy-wrap-out.terms-and-conditions-popover
+      .m-t-n-xs
+        a.text-u-l(
+        uib-popover-template='"app/routes/personalShopper/workFlow/terms-and-conditions-popover.html"'
+        popover-trigger='"outsideClick"'
+        popover-placement='bottom-left'
+        popover-is-open='$ctrl.isOpen'
+        )
+          i.fas.fa-info-circle.m-r-xs
+          span Terms & Conditions
 
   .col-md-12.col-xs-12.ps-des-div
     center
