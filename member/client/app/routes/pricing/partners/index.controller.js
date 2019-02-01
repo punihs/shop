@@ -37,6 +37,28 @@ class PricingIndexController {
         this.prices = null;
       });
   }
+  getPriceSlab() {
+    const params = {
+      country: this.data.countryCode,
+      type: this.data.packageType,
+      weight: 1,
+      rateType: 'slab',
+      all: true,
+    };
+
+    const qs = this.$httpParamSerializer(params);
+
+    this.$http.get(`%/api/pricing/slab?${qs}`)
+      .then(({ data: { prices } }) => {
+        if (prices) {
+          this.prices = prices;
+        } else {
+          this.prices = null;
+        }
+      }).catch((e) => {
+        this.prices = null;
+      });
+  }
 }
 
 angular
