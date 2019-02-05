@@ -20,7 +20,7 @@ const config = {
     URLS_SHIP: `${env.PREFIX}ship-api.${env.DOMAIN}`,
     PREFIX: `${env.PREFIX}`,
     DOMAIN: `${env.DOMAIN}`,
-    URLS_MYACCOUNT: env.NODE_ENV === 'development' ? 'http://localhost:8000' : `${env.PREFIX}myaccount.${env.DOMAIN}`,
+    URLS_MYACCOUNT: env.NODE_ENV === 'development' ? 'http://localhost:8001' : `${env.PREFIX}www.${env.DOMAIN}`,
     auth: {
       google: {
         scope: 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.email',
