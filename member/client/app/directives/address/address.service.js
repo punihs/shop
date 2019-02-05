@@ -91,16 +91,21 @@ class AddAddressController {
       })
       .catch((err) => {
         this.submitting = false;
+        //
+        // const { field } = err.data;
+        // newAddressForm[err.data.field].$setValidity('required', false);
+        // $(`input[name="${field}"]`)[0].focus();
+        if (err.status === 406) {
+          this
+            .toaster
+            .pop('error', err.data.message);
+        } else {
+          this
+            .toaster
+            .pop('error', 'There was problem creating address. Please contact Shoppre team.');
 
-        const { field } = err.data;
-        newAddressForm[err.data.field].$setValidity('required', false);
-        $(`input[name="${field}"]`)[0].focus();
-
-        this
-          .toaster
-          .pop('error', 'There was problem creating address. Please contact Shoppre team.');
-
-        this.error = err.data;
+          this.error = err.data;
+        }
       });
   }
 
