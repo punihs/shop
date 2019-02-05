@@ -79,7 +79,7 @@ class ShipmentCreateController {
 
     const allowed = [
       'shipping_carrier', 'number_of_packages', 'weight_by_shipping_partner', 'tracking_code',
-      'tracking_url', 'carton_box_used', 'carton_box_Amount', 'carton_box_weight',
+      'tracking_url',
     ];
     const { shipmentId, id: customerId } = this.$stateParams;
     data.customer_id = customerId;
@@ -128,7 +128,7 @@ class ShipmentCreateController {
       'package_level_charges_amount', 'pick_up_charge_amount', 'liquid_charge_amount',
       'estimated_amount', 'coupon_amount', 'loyalty_amount', 'is_axis_banned_item',
       'payment_gateway_fee_amount', 'wallet_amount', 'final_amount', 'shipment_type_id',
-      'other_charge_amount', 'upstream_cost', 'fuel_sur_charge', 'gst_amount',
+      'other_charge_amount',
     ];
 
     const method = 'put';
@@ -164,6 +164,38 @@ class ShipmentCreateController {
   cartonValue() {
     const carton = this.cartonBox.filter(x => x.kg === this.data.carton_box_used);
     this.data.carton_box_Amount = carton[0].amount;
+  }
+
+  getUpstreamPrice() {
+    const docType = this.data.is_doc === true ? 'doc' : 'nondoc';
+    const countryCode = this.shipment.Country.iso2;
+    const params = `all=true&country=${countryCode}&weight=${this.data.final_weight}&type=${docType}`;
+
+    this.$http.get(`%/pricing/?${params}`)
+      .then(({ data: { prices }}) => {
+        if (prices) {
+          this.data.upstream_cost = prices[0].base_cost_from_upstream;
+          this.data.fuel_sur_charge = prices[0].fuel_surcharge;
+          this.data.gst_amount = prices[0].gst;
+        } else {
+          this.toaster
+            .pop('error', 'Price not found');
+        }
+      });
+  }
+  updateUpstreamPrice() {
+    const allowed = ['carton_box_Amount', 'is_doc', 'upstream_cost', 'fuel_sur_charge',
+      'gst_amount', 'carton_box_used', 'carton_box_Amount', 'carton_box_weight'];
+
+    const { shipmentId } = this.$stateParams;
+    return this.$http.put(`/shipments/${shipmentId}/tracking`, _.pick(this.data, allowed))
+      .then(() => {
+        this.toaster
+          .pop('success', 'Upstream price Updated');
+      }).catch((e) => {
+        this.toaster
+          .pop('error', 'Error updating Upstream price');
+      });
   }
 
   paymentMode(data) {

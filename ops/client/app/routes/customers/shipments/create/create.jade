@@ -282,44 +282,7 @@ div.m-t-xl.no-margin
                       ng-model='$ctrl.transaction.data.amount'
                       disabled,
                       )
-              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
-              .row(ng-if='$ctrl.EDIT')
-                .col-md-12
-                  .col-md-4.col-sm-5.col-xs-12.no-padder
-                    label.col-xs-12.input-group
-                      | Upstream Cost
-                      span.text-danger *
-                      input.form.form-control(
-                      type='number'
-                      name='upstream_cost'
-                      placeholder='eg. 1000'
-                      ng-model='$ctrl.data.upstream_cost'
-                      required
-                      )
-                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.upstream_cost.$dirty && newShipmentForm.upstream_cost.$invalid') Please Enter Upstream
-                  .col-md-4.col-sm-5.col-xs-12
-                    label.col-xs-12.input-group
-                      | Fuel Sur Charge
-                      span.text-danger *
-                      input.form.form-control(
-                      type='number'
-                      name='fuel_sur_charge'
-                      placeholder='eg. 200'
-                      ng-model='$ctrl.data.fuel_sur_charge'
-                      required
-                      )
-                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.fuel_sur_charge.$dirty && newShipmentForm.fuel_sur_charge.$invalid') Please Enter fuel Sur Charge
-                  .col-md-4.col-sm-5.col-xs-12
-                    label.col-xs-12.input-group
-                      | GST Amount
-                      span.text-danger *
-                      input.form.form-control(
-                      type='number'
-                      name='gst_amount'
-                      placeholder='eg. 200'
-                      ng-model='$ctrl.data.gst_amount'
-                      )
-                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.gst_amount.$dirty && newShipmentForm.gst_amount.$invalid') Please Enter GST Amount
+
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
               .row(ng-if='$ctrl.EDIT')
                 .col-md-12
@@ -334,7 +297,7 @@ div.m-t-xl.no-margin
                       ng-model= '$ctrl.transaction.data.cashback_amount'
                       disabled,
                       )
-                    label.col-xs-12.input-group(ng-if ='$ctrl.transaction.data.discount_amount')
+                    label.col-xs-12.input-group(ng-if ='!$ctrl.transaction.data.cashback_amount')
                       | Discount Rewards
                       input.form.form-control(
                       type='number'
@@ -345,7 +308,7 @@ div.m-t-xl.no-margin
                       )
                   .col-md-6.col-sm-5.col-xs-12
                     label.col-xs-12.input-group
-                      | Is Axis Banned Items
+                      | Is Axis Banned Items {{$ctrl.transaction.data.discount_amount}}
                       .fa.fa-info-circle.m-l-xs(
                       uib-popover='Axis Banned Items are Alcohol,organs or other body parts,Adult goods and services,Bulk marketing tools,Drugs,Tobacco,Weapons,Wholesale currency,Traffic devices,financial products,Government IDs,Illegal goodsCopyrighted software, Copyrighted media,Copyright unlocking devices etc.'
                       popover-trigger="'mouseenter'"
@@ -484,6 +447,96 @@ div.m-t-xl.no-margin
                         )
                 .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
                 .row
+                  h4(ng-bind="$ctrl.error.message" style="color:red;")
+                  button.btn.btn-success(type='submit' ng-disabled="$ctrl.submittingTracking || (!$ctrl.submittingTracking && !trackingForm.$dirty)")
+                    span.fa.fa-forward.m-r-sm
+                    span.text-white(ng-if='!$ctrl.submitting') Update Tracking
+                    span(ng-if='$ctrl.submittingTracking')
+                      i.fa.fa-spin.fa-circle-o-notch
+                      span.text-white &nbsp;&nbsp;Submitting...
+    br
+    .wrapper-md.bg-white-only
+      .h1.m-l-md.font-thin.h3
+        | Update Shipment Upstream Cost.
+      div
+        br
+        form.form.form-validation.form-horizontal.wrapper-md(
+        name="upstreamCost"
+        novalidate
+        autocomplete='off'
+        )
+          .row
+            .col-md-10.col-sm-10.col-xs-10
+              .col-md-7
+                .row(ng-if='$ctrl.EDIT')
+                  .col-md-4.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Weight
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='final_weight'
+                      placeholder='eg. 2'
+                      ng-model='$ctrl.data.final_weight'
+                      required
+                      disabled
+                      )
+                  .col-md-4.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Shipment Type
+                    .col-xs-12: ul.nav
+                      li.inline: label.i-checks.i-checks-sm
+                        input(
+                        type="checkbox"
+                        ng-model="$ctrl.data.is_doc"
+                        )
+                        i
+                        .hide
+                        | Document
+                        .fa.fa-info-circle.m-l-xs(
+                        uib-popover='Check if the shipment is Document'
+                        popover-trigger="'mouseenter'"
+                        popover-placement='bottom'
+                        popover-append-to-body='true'
+                        )
+                .row(ng-if='$ctrl.EDIT')
+                  .col-md-12
+                    .col-md-4.col-sm-5.col-xs-12.no-padder
+                      label.col-xs-12.input-group
+                        | Upstream Cost
+                        span.text-danger *
+                        input.form.form-control(
+                        type='number'
+                        name='upstream_cost'
+                        placeholder='eg. 1000'
+                        ng-model='$ctrl.data.upstream_cost'
+                        required
+                        )
+                        span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.upstream_cost.$dirty && newShipmentForm.upstream_cost.$invalid') Please Enter Upstream
+                    .col-md-4.col-sm-5.col-xs-12
+                      label.col-xs-12.input-group
+                        | Fuel Sur Charge
+                        span.text-danger *
+                        input.form.form-control(
+                        type='number'
+                        name='fuel_sur_charge'
+                        placeholder='eg. 200'
+                        ng-model='$ctrl.data.fuel_sur_charge'
+                        required
+                        )
+                        span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.fuel_sur_charge.$dirty && newShipmentForm.fuel_sur_charge.$invalid') Please Enter fuel Sur Charge
+                    .col-md-4.col-sm-5.col-xs-12
+                      label.col-xs-12.input-group
+                        | GST Amount
+                        span.text-danger *
+                        input.form.form-control(
+                        type='number'
+                        name='gst_amount'
+                        placeholder='eg. 200'
+                        ng-model='$ctrl.data.gst_amount'
+                        )
+                        span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.gst_amount.$dirty && newShipmentForm.gst_amount.$invalid') Please Enter GST Amount
+                .row
                   .col-md-12
                     .col-md-6.col-sm-5.col-xs-12.no-padder
                       label.col-xs-12.input-group
@@ -519,12 +572,10 @@ div.m-t-xl.no-margin
                         ng-model='$ctrl.data.carton_box_weight'
                         )
                 .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT && $ctrl.data.carton_box_used === "Other"')
-
                 .row
-                  h4(ng-bind="$ctrl.error.message" style="color:red;")
-                  button.btn.btn-success(type='submit' ng-disabled="$ctrl.submittingTracking || (!$ctrl.submittingTracking && !trackingForm.$dirty)")
-                    span.fa.fa-forward.m-r-sm
-                    span.text-white(ng-if='!$ctrl.submitting') Update Tracking
-                    span(ng-if='$ctrl.submittingTracking')
-                      i.fa.fa-spin.fa-circle-o-notch
-                      span.text-white &nbsp;&nbsp;Submitting...
+                  .col-md-4.col-sm-5.col-xs-12
+                    button.btn.btn-success(ng-click = '$ctrl.getUpstreamPrice()')
+                      span.text-white &nbsp;&nbsp;Get Upstream Price
+                  .col-md-4.col-sm-5.col-xs-12
+                    button.btn.btn-success(ng-click = '$ctrl.updateUpstreamPrice()')
+                      span.text-white &nbsp;&nbsp;Update Upstream Price

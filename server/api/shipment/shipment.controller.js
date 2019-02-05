@@ -66,6 +66,9 @@ exports.show = async (req, res, next) => {
               model: User,
               as: 'Customer',
               attributes: ['id', 'email'],
+            }, {
+              model: Country,
+              attributes: ['iso2'],
             }],
           });
 

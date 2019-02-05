@@ -16,6 +16,7 @@ angular.module('uiGenApp')
       PARCEL_API: `${PREFIX}${project}-api.${DOMAIN}`,
       PAY_API: `${PREFIX}pay-api.${DOMAIN}`,
       CHICKEN_API: `${PREFIX}chicken-api.${DOMAIN}`,
+      SHIP_API: `${PREFIX}ship-api.${DOMAIN}`,
 
       OAUTH: `${PREFIX}accounts.${DOMAIN}/authorise?client_id=ops&response_type=code&` +
       `redirect_uri=${PREFIX}parcel-ops.${DOMAIN}/access/oauth`,

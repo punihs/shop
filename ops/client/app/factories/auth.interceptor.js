@@ -13,6 +13,7 @@ angular
       if (config.url[0] === '~') config.url = `${URLS.API}/api${config.url.substr(1)}`;
       if (config.url[0] === '/') config.url = `${URLS.PARCEL_API}/api${config.url}`;
       if (config.url[0] === '$') config.url = `${URLS.PAY_API}/api${config.url.substr(1)}`;
+      if (config.url[0] === '%') config.url = `${URLS.SHIP_API}/api${config.url.substr(1)}`;
       return config;
     },
   }))
