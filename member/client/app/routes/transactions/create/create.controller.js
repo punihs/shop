@@ -44,6 +44,7 @@ class TransactionCreateController {
     this.$http.get(`$/api/phpApi/getWalletAndLoyalty?customer_id=${this.$stateParams.customer_id}`)
       .then(({ data: { walletAmount, loyaltyAmount } }) => {
         this.walletBalanceAmount = Number(walletAmount);
+        this.data.walletUsed = Number(walletAmount);
         if (this.data.type === 'shipment') {
           this.data.loyaltyAmount = loyaltyAmount;
         } else {
@@ -88,19 +89,20 @@ class TransactionCreateController {
       this.showWallet = false;
       this.data.walletUsed = this.data.payAmount;
       this.calculateFinalAmount();
-    } else {
-      if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.CASH ||
-        Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.WIRE))) {
-        this.isWalletChecked = false;
-        this.showWallet = false;
-      }
+    }
+      // else {
+      // if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.CASH ||
+      //   Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.WIRE))) {
+      //   this.isWalletChecked = false;
+      //   this.showWallet = false;
+      // }
 
       if (this.amount < this.walletBalanceAmount) {
         this.isWalletChecked = false;
         this.showWallet = false;
       }
       this.calculateFinalAmount();
-    }
+    // }
   }
 
   applyPromoCode() {
@@ -123,56 +125,67 @@ class TransactionCreateController {
                   .toaster
                   .pop('error', 'This Coupon is applicable only for First time shipment ');
               }
+              return this.promoCode();
             });
         }
+        return this.promoCode();
+      } else {
+        return this.promoCode();
       }
-      return this.promoCode();
-
     } else {
       this.message = 'Enter Coupon Code';
     }
   }
 
   promoCode() {
-    const querystring = `amount=${this.amount}&coupon_code=${this.couponCode}&type=${this.data.type}`;
-    this.$http
-      .put(`$/api/campaigns?${querystring}`)
-      .then(({ data: { IS_DISCOUNT,
-        discountAmount,
-        cashbackAmount,
-      } }) => {
-        this.data.discountAmount = discountAmount;
-        this.data.cashbackAmount = cashbackAmount;
-        this.data.isDiscount = IS_DISCOUNT;
-        this.couponApplied = true;
+    if (this.amount > 0) {
+      const querystring = `amount=${this.amount}&coupon_code=${this.couponCode}&type=${this.data.type}`;
+      this.$http
+        .put(`$/api/campaigns?${querystring}`)
+        .then(({
+          data: {
+            IS_DISCOUNT,
+            discountAmount,
+            cashbackAmount,
+          }
+        }) => {
+          this.data.discountAmount = discountAmount;
+          this.data.cashbackAmount = cashbackAmount;
+          this.data.isDiscount = IS_DISCOUNT;
+          this.couponApplied = true;
 
-        this.couponCodeApplied = this.couponCode.toString().toUpperCase();
+          this.couponCodeApplied = this.couponCode.toString().toUpperCase();
 
-        this.message = '';
-        this.success = `Coupon Code  ${this.couponCodeApplied} Applied `;
-        this.calculateFinalAmount();
-      })
-      .catch((err) => {
-        if (err.status === 406) {
-          if (this.couponApplied) {
-            this.couponCode = this.couponCodeApplied;
-            this.success = `Coupon Code ${this.couponCodeApplied} already Applied`;
+          this.message = '';
+          this.success = `Coupon Code  ${this.couponCodeApplied} Applied `;
+          this.calculateFinalAmount();
+        })
+        .catch((err) => {
+          if (err.status === 406) {
+            if (this.couponApplied) {
+              this.couponCode = this.couponCodeApplied;
+              this.success = `Coupon Code ${this.couponCodeApplied} already Applied`;
+            } else {
+              this.message = err.data.message;
+              this.success = '';
+            }
+            this
+              .toaster
+              .pop('error', err.data.message);
           } else {
+            this
+              .toaster
+              .pop('error', err.data.message);
             this.message = err.data.message;
             this.success = '';
           }
-          this
-            .toaster
-            .pop('error', err.data.message);
-        } else {
-          this
-            .toaster
-            .pop('error', err.data.message);
-          this.message = err.data.message;
-          this.success = '';
-        }
-        this.calculateFinalAmount();
-      });
+          this.calculateFinalAmount();
+        });
+    } else {
+      this
+        .toaster
+        .pop('error', 'Pay Amount is not greater than Zero');
+    }
   }
 
   getFinalWalletUsed() {
@@ -204,9 +217,12 @@ class TransactionCreateController {
 
     if (!this.submitting) return null;
     let walletAmount = 0;
+
     if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.WALLET)) {
+
       walletAmount = Number(this.walletBalanceAmount) > Number(this.data.payAmount) ?
-        this.data.walletUsed : this.walletBalanceAmount;
+        this.data.walletUsed : this.data.walletUsed;
+
       if (this.data.payAmount == 0) {
         if (this.showWallet) {
           walletAmount = this.data.walletUsed;
@@ -215,8 +231,13 @@ class TransactionCreateController {
             (Number(this.amount || 0) - Number(this.data.loyaltyAmount || 0));
         }
       }
+
     } else if (this.isWalletChecked) {
-      walletAmount = this.walletBalanceAmount;
+      if (this.walletBalanceAmount && this.couponApplied && this.data.payAmount <= 0) {
+        walletAmount = this.data.walletUsed;
+      } else {
+          walletAmount = this.data.walletUsed;
+      }
     }
 
     this.params = {
@@ -234,6 +255,7 @@ class TransactionCreateController {
       is_discount: this.data.isDiscount,
       type: this.data.type,
     };
+
     let razorPayId = '';
 
     if (this.data.paymentGateway == this.PAYMENT_GATEWAYS.RAZOR) {
@@ -313,19 +335,21 @@ class TransactionCreateController {
     const amount = Number(this.amount);
     let amountForPaymentGateway = 0;
 
-    if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.CASH) ||
-      Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.WIRE)) {
-      this.showWallet = false;
-      this.isWalletChecked = false;
-    }
+    // if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.CASH) ||
+    //   Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.WIRE)) {
+    //   this.showWallet = false;
+    //   this.isWalletChecked = false;
+    // }
 
     if (this.isWalletChecked) {
       if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.CASH) ||
         Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.WIRE)) {
         this.data.paymentGatewayFeeAmount = 0;
-        this.showWallet = false;
-        this.isWalletChecked = false;
-      } else if (this.data.paymentGateway) {
+        // this.showWallet = false;
+        // this.isWalletChecked = false;
+      } else
+
+        if (this.data.paymentGateway) {
         this.showWallet = true;
       } else {
         this.data.paymentGatewayFeeAmount = 0;
@@ -343,13 +367,35 @@ class TransactionCreateController {
 
       this.data.paymentGatewayFeeAmount = pgFeeAmount;
       this.data.payAmount += Math.round(Number(this.data.paymentGatewayFeeAmount || 0));
+
+      if (this.walletBalanceAmount && this.couponApplied && this.data.payAmount < 0) {
+        this.data.payAmount = Math.round(amount - Number(this.data.loyaltyAmount || 0)
+          - Number(this.data.discountAmount || 0));
+
+        if (Number(this.walletBalanceAmount > 0)) {
+          this.data.payAmount += -(Number(this.walletBalanceAmount || 0) - Number(this.data.discountAmount || 0));
+        }
+
+        this.data.walletUsed = (Number(this.walletBalanceAmount || 0) - Number(this.data.discountAmount || 0));
+
+        amountForPaymentGateway = this.data.payAmount;
+        const pgFeeAmount = this.calculatePaymentGatewayfee(amountForPaymentGateway);
+
+        this.data.paymentGatewayFeeAmount = pgFeeAmount;
+        this.data.payAmount += Math.round(Number(this.data.paymentGatewayFeeAmount || 0));
+      }
+
     } else {
       this.showWallet = true;
 
+      if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.WALLET) && this.couponApplied) {
+        this.data.walletUsed = this.data.walletUsed - this.data.discountAmount;
+      }
+
       if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.CASH) ||
         Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.WIRE)) {
-        this.isWalletChecked = false;
-        this.showWallet = false;
+        // this.isWalletChecked = false;
+        // this.showWallet = false;
         this.data.paymentGatewayFeeAmount = 0;
       } else if (this.data.paymentGateway) {
         this.showWallet = true;

@@ -60,7 +60,7 @@ div
                         | Apply
                   h5 Promo Code Applicable on Basic Shipping Costs
 
-                  ul.list-group.list-group-lg.m-b.list-unstyled.chkbox_background(ng-if="$ctrl.showWallet && $ctrl.walletBalanceAmount && $ctrl.walletBalanceAmount < $ctrl.data.payAmount && $ctrl.walletBalanceAmount !== 0")
+                  ul.list-group.list-group-lg.m-b.list-unstyled.chkbox_background(ng-if="$ctrl.showWallet && $ctrl.walletBalanceAmount || $ctrl.walletBalanceAmount < $ctrl.data.payAmount && $ctrl.walletBalanceAmount !== 0")
                     li
                       .checkbox
                         label.i-checks(ng-if="$ctrl.walletBalanceAmount > 0")
@@ -71,7 +71,7 @@ div
                           ng-checked ="$ctrl.isWalletChecked"
                           )
                           i
-                          | Shoppre Wallet
+                          | ShoppRe Wallet
                         label.i-checks(ng-if="$ctrl.walletBalanceAmount < 0")
                           input(
                           ng-model='$ctrl.isWalletChecked'
@@ -81,7 +81,7 @@ div
                           ng-disabled="$ctrl.status = 'disabled'"
                           )
                           i
-                          | Shoppre Wallet
+                          | ShoppRe Wallet
                         span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.walletBalanceAmount | number : 2}}
                   ul.list-group.list-group-lg.m-b.list-unstyled.chkbox_background(ng-if="$ctrl.data.discountAmount")
                     li
@@ -91,10 +91,10 @@ div
                     li
                       .p Loyalty Amount Deducted
                         span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.data.loyaltyAmount | number : 2}}
-                  ul.list-group.list-group-lg.m-b.list-unstyled.chkbox_background(ng-if="$ctrl.walletUsed && $ctrl.walletBalanceAmount > 0 && $ctrl.data.paymentGateway != $ctrl.PAYMENT_GATEWAYS.WALLET")
-                    li
-                      .p Wallet Amount Deducted
-                        span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.walletUsed | number : 2}}
+                  //ul.list-group.list-group-lg.m-b.list-unstyled.chkbox_background(ng-if="$ctrl.walletUsed && $ctrl.walletBalanceAmount > 0 && $ctrl.data.paymentGateway != $ctrl.PAYMENT_GATEWAYS.WALLET")
+                  //  li
+                  //    .p Wallet Amount Deducted
+                  //      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.walletUsed | number : 2}}
                   ul.list-group.list-group-lg.m-b.list-unstyled.chkbox_background(ng-if="$ctrl.shippingCharge")
                     li
                       .p Total Shipping charge Amount
