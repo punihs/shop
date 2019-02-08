@@ -25,7 +25,7 @@ class TransactionCreateController {
     this.couponCodeApplied = null;
     this.shipment = {};
     this.submitting = true;
-    this.walletUsed = '';
+    this.pgWalletEnabled = false;
     this.loyaltyAmount = null;
     this.Page.setTitle('ShoppRe Pay');
     this.getPaymentGateways();
@@ -54,8 +54,8 @@ class TransactionCreateController {
 
         if (Number(this.walletBalanceAmount) < 0) {
           this.amount = Number(this.amount) + Math.abs(Number(this.walletBalanceAmount));
+          this.data.walletUsed = this.walletBalanceAmount;
         }
-
         this.calculateFinalAmount();
       });
   }
@@ -73,36 +73,17 @@ class TransactionCreateController {
   }
 
   walletClicked() {
-    this.paymentGateways.forEach((x) => {
-      if (x.id === this.data.paymentGateway) {
-        if (this.showWallet) {
-          x.status = 0;
-        }
-      }
-    });
     this.calculateFinalAmount();
   }
 
   selectedGateway() {
     if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.WALLET)) {
       this.isWalletChecked = false;
-      this.showWallet = false;
       this.data.walletUsed = this.data.payAmount;
       this.calculateFinalAmount();
     }
-      // else {
-      // if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.CASH ||
-      //   Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.WIRE))) {
-      //   this.isWalletChecked = false;
-      //   this.showWallet = false;
-      // }
 
-      if (this.amount < this.walletBalanceAmount) {
-        this.isWalletChecked = false;
-        this.showWallet = false;
-      }
-      this.calculateFinalAmount();
-    // }
+    this.calculateFinalAmount();
   }
 
   applyPromoCode() {
@@ -112,14 +93,13 @@ class TransactionCreateController {
     }
 
     if (this.couponCode) {
-      this.showWallet = true;
       const customerid = this.$stateParams.customer_id;
 
       if (this.data.type === 'shipment') {
         if (this.couponFirstTime === this.couponCode.toString().toUpperCase()) {
           this.$http
             .get(`/users/${customerid}/shipments/count`)
-            .then(({data: count}) => {
+            .then(({ data: count }) => {
               if (count > 0) {
                 return this
                   .toaster
@@ -147,7 +127,7 @@ class TransactionCreateController {
             IS_DISCOUNT,
             discountAmount,
             cashbackAmount,
-          }
+          },
         }) => {
           this.data.discountAmount = discountAmount;
           this.data.cashbackAmount = cashbackAmount;
@@ -191,20 +171,20 @@ class TransactionCreateController {
   getFinalWalletUsed() {
     let walletAmount = 0;
     if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.WALLET)) {
-      walletAmount = Number(this.walletBalanceAmount) > Number(this.data.payAmount) ?
-        this.data.walletUsed : this.walletBalanceAmount;
-      if (this.data.payAmount == 0) {
-        walletAmount = this.walletBalanceAmount -
-          (Number(this.amount || 0) - Number(this.data.loyaltyAmount || 0));
-      }
+      walletAmount = this.data.payAmount;
     } else if (this.isWalletChecked) {
       walletAmount = this.walletBalanceAmount;
     }
-    this.walletUsed = walletAmount;
+
+    if (this.walletBalanceAmount < 0) {
+      walletAmount = this.walletBalanceAmount;
+    }
+
     this.data.walletUsed = walletAmount;
   }
 
   submitPayment(e) {
+    this.getFinalWalletUsed();
     if (Number(this.data.payAmount) === 0) {
       this.data.paymentGateway = Number(this.PAYMENT_GATEWAYS.WALLET);
     }
@@ -218,27 +198,7 @@ class TransactionCreateController {
     if (!this.submitting) return null;
     let walletAmount = 0;
 
-    if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.WALLET)) {
-
-      walletAmount = Number(this.walletBalanceAmount) > Number(this.data.payAmount) ?
-        this.data.walletUsed : this.data.walletUsed;
-
-      if (this.data.payAmount == 0) {
-        if (this.showWallet) {
-          walletAmount = this.data.walletUsed;
-        } else {
-          walletAmount = this.walletBalanceAmount -
-            (Number(this.amount || 0) - Number(this.data.loyaltyAmount || 0));
-        }
-      }
-
-    } else if (this.isWalletChecked) {
-      if (this.walletBalanceAmount && this.couponApplied && this.data.payAmount <= 0) {
-        walletAmount = this.data.walletUsed;
-      } else {
-          walletAmount = this.data.walletUsed;
-      }
-    }
+    walletAmount = this.data.walletUsed;
 
     this.params = {
       payAmount: this.data.payAmount,
@@ -259,7 +219,7 @@ class TransactionCreateController {
     let razorPayId = '';
 
     if (this.data.paymentGateway == this.PAYMENT_GATEWAYS.RAZOR) {
-      razorPayId  = this.razorPayClick(e, this.params);
+      razorPayId = this.razorPayClick(e, this.params);
     }
 
     const method = 'get';
@@ -331,26 +291,15 @@ class TransactionCreateController {
   }
 
   calculateFinalAmount() {
-    this.getFinalWalletUsed();
     const amount = Number(this.amount);
     let amountForPaymentGateway = 0;
 
-    // if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.CASH) ||
-    //   Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.WIRE)) {
-    //   this.showWallet = false;
-    //   this.isWalletChecked = false;
-    // }
 
     if (this.isWalletChecked) {
       if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.CASH) ||
         Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.WIRE)) {
         this.data.paymentGatewayFeeAmount = 0;
-        // this.showWallet = false;
-        // this.isWalletChecked = false;
-      } else
-
-        if (this.data.paymentGateway) {
-        this.showWallet = true;
+      } else if (this.data.paymentGateway) {
       } else {
         this.data.paymentGatewayFeeAmount = 0;
       }
@@ -367,74 +316,53 @@ class TransactionCreateController {
 
       this.data.paymentGatewayFeeAmount = pgFeeAmount;
       this.data.payAmount += Math.round(Number(this.data.paymentGatewayFeeAmount || 0));
-
-      if (this.walletBalanceAmount && this.couponApplied && this.data.payAmount < 0) {
-        this.data.payAmount = Math.round(amount - Number(this.data.loyaltyAmount || 0)
-          - Number(this.data.discountAmount || 0));
-
-        if (Number(this.walletBalanceAmount > 0)) {
-          this.data.payAmount += -(Number(this.walletBalanceAmount || 0) - Number(this.data.discountAmount || 0));
-        }
-
-        this.data.walletUsed = (Number(this.walletBalanceAmount || 0) - Number(this.data.discountAmount || 0));
-
-        amountForPaymentGateway = this.data.payAmount;
-        const pgFeeAmount = this.calculatePaymentGatewayfee(amountForPaymentGateway);
-
-        this.data.paymentGatewayFeeAmount = pgFeeAmount;
-        this.data.payAmount += Math.round(Number(this.data.paymentGatewayFeeAmount || 0));
-      }
-
     } else {
-      this.showWallet = true;
-
-      if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.WALLET) && this.couponApplied) {
-        this.data.walletUsed = this.data.walletUsed - this.data.discountAmount;
-      }
-
       if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.CASH) ||
         Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.WIRE)) {
-        // this.isWalletChecked = false;
-        // this.showWallet = false;
         this.data.paymentGatewayFeeAmount = 0;
       } else if (this.data.paymentGateway) {
         this.showWallet = true;
       } else {
         this.data.paymentGatewayFeeAmount = 0;
       }
-
       this.data.payAmount = Math.round(amount - Number(this.data.loyaltyAmount || 0)
         - Number(this.data.discountAmount || 0));
 
       amountForPaymentGateway = this.data.payAmount;
-      const pgFeeAmount = this.calculatePaymentGatewayfee(amountForPaymentGateway);
+      let pgFeeAmount = 0;
+      if (amountForPaymentGateway) {
+        pgFeeAmount = this.calculatePaymentGatewayfee(amountForPaymentGateway);
+      }
       this.data.paymentGatewayFeeAmount = pgFeeAmount;
       this.data.payAmount += Math.round(Number(this.data.paymentGatewayFeeAmount || 0));
-    }
-
-    if (this.walletBalanceAmount < 0) {
-      this.showWallet = true;
-      this.isWalletChecked = true;
     }
 
     if (Number(this.data.loyaltyAmount) > Number(this.amount)) {
       this.data.payAmount = 0;
       this.data.loyaltyAmount = this.amount;
     }
+    this.enableWalletOption();
+  }
 
-    if (Number(this.data.payAmount) == 0) {
-      this.paymentGateways.forEach((x) => {
-        if (x.id === this.data.paymentGateway) {
-          x.status = 0;
-          this.showWallet = false;
-          this.isWalletChecked = false;
-        }
-      });
+  enableWalletOption() {
+    const payAmount = this.shippingCharge - Number(this.data.discountAmount || 0) -
+      Number(this.data.loyaltyAmount || 0);
+    if (payAmount > this.walletBalanceAmount) {
+      this.showWallet = true;
+      this.pgWalletEnabled = false;
+      this.isPGWalletChecked = false;
+    } else {
+      this.showWallet = false;
+      this.isWalletChecked = false;
+      this.pgWalletEnabled = true;
+      if (this.data.paymentGateway === this.paymentGateways.WALLET) {
+        this.data.payAmount = payAmount;
+      }
     }
   }
 
   calculatePaymentGatewayfee(amountForPaymentGateway) {
-    if (amountForPaymentGateway > 0) {
+    if (amountForPaymentGateway > 0 && this.data.paymentGateway) {
       const pgFee = this.paymentGateways
         .filter(x => x.id === Number(this.data.paymentGateway))
         .reduce((y) => {
@@ -443,7 +371,6 @@ class TransactionCreateController {
           }
           return null;
         });
-
       if (pgFee) {
         return (amountForPaymentGateway * (pgFee.fee / 100));
       }
