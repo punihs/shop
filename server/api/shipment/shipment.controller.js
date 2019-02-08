@@ -1098,19 +1098,20 @@ exports.payResponse = async (req, res, next) => {
     // - Todo: Security issue
     const customer = await User.findById(req.query.uid, { raw: true });
 
-    await Shipment.update({
-      transaction_id: req.query.transaction_id,
-      payment_gateway_id: req.query.pg,
-      final_amount: req.query.amount,
-      payment_gateway_fee_amount: req.query.pgAmount || 0,
-      payment_status: 'success',
-    }, { where: { order_code: req.params.id } });
 
     const SUCCESS = '6';
     log(req.query.status);
     log(req.query);
 
     if (req.query.status === SUCCESS) {
+      await Shipment.update({
+        transaction_id: req.query.transaction_id,
+        payment_gateway_id: req.query.pg,
+        final_amount: req.query.amount,
+        payment_gateway_fee_amount: req.query.pgAmount || 0,
+        payment_status: 'success',
+      }, { where: { order_code: req.params.id } });
+
       await updateShipmentState({
         shipment,
         actingUser: customer,
