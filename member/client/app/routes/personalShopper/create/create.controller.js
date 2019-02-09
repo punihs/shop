@@ -12,6 +12,7 @@ class CreateController {
   $onInit() {
     this.Page.setTitle('Shipment Request Create');
     this.orderTypeSection = true;
+    this.loading = false;
     this.cartSection = false;
     this.optionsSection = false;
     this.summarySection = false;
@@ -91,6 +92,7 @@ class CreateController {
   }
 
   getPackageItem() {
+    this.loading = true;
     const customerId = this.Session.read('userinfo').id;
     this.$http
       .get(`/packages/0/items?type=psCustomerSide&customerId=${customerId}`)
@@ -98,6 +100,7 @@ class CreateController {
         this.packageData = data;
         this.packageOptions = data;
         this.calculateAmount(data);
+        this.loading = false;
       });
   }
 
@@ -127,6 +130,10 @@ class CreateController {
     this.orderTypeSection = false;
     this.cartSection = false;
     this.optionsSection = false;
+
+    if (this.summarySection) {
+      this.getPackageItem();
+    }
   }
 
   btnToggleCartSection(currentStatus) {
@@ -164,18 +171,16 @@ class CreateController {
     this.orderTypeSection = false;
     this.cartSection = false;
     this.optionsSection = false;
+
+    if (this.summarySection) {
+      this.getPackageItem();
+    }
   }
 
   create(newItemForm) {
-    if (this.isEdit) {
-      console.log('Editing Mode', this.data);
-    } else {
-      console.log('Creation Mode', this.data);
-    }
     if (this.submitting) return null;
     this.submitting = true;
     this.clickUpload = true;
-
 
     const form = this.validateForm(newItemForm);
 
@@ -195,6 +200,7 @@ class CreateController {
         };
 
         let storeExist = false;
+
         this.packageData.map((x) => {
           if (x.Store.id === this.data.store_id) {
             storeExist = true;
@@ -271,7 +277,6 @@ class CreateController {
     this.data = item;
     this.data.store_id = store.id;
     this.Stores.model = store.name;
-    console.log('data', this.data);
   }
 
   deleteItem(item, psPackage) {
@@ -337,11 +342,17 @@ class CreateController {
       this.deliveryCharge += pkg.delivery_charge || 0;
       this.personalShopperCost += pkg.personal_shopper_cost || 0;
       this.itemTotalCost += pkg.price_amount || 0;
-      this.totalAmount += pkg.sub_total;
+      this.totalAmount += pkg.sub_total || 0;
     });
   }
 
   makePayment() {
+    if (this.loading) {
+      this
+        .toaster
+        .pop('error', 'Loading please Wait');
+    }
+
     const id = this.packageData.map(x => x.id);
 
     this.$state.go('transaction.create', {

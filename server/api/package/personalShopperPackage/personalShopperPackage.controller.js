@@ -512,8 +512,8 @@ exports.destroyItem = async (req, res, next) => {
       psCost = 200;
     }
 
-    if (personalShopperPackage.total_quantity > 15) {
-      psCost += (personalShopperPackage.total_quantity - 15) * 50;
+    if (newQty > 15) {
+      psCost += (newQty - 15) * 50;
     }
 
     subtotal = newPrice + psCost;
