@@ -1,4 +1,6 @@
-const { Package, PackageItem, PackageState, Store } = require('../../../conn/sqldb');
+const {
+  Package, PackageItem, PackageState, Store,
+} = require('../../../conn/sqldb');
 
 const {
   PACKAGE_TYPES: {
@@ -28,7 +30,7 @@ exports.getPersonalShopperItems = async (customerId) => {
 
   const packageIds = await packages.map(y => y.id);
 
-  const packageItems = await Package
+  const pkg = await Package
     .findAll({
       attributes: [
         'id',
@@ -56,7 +58,9 @@ exports.getPersonalShopperItems = async (customerId) => {
       ],
     });
 
-  console.log('Store with name', JSON.stringify(packageItems));
+  if (pkg[0].PackageItem) {
+    return pkg;
+  }
 
-  return packageItems;
+  return null;
 };
