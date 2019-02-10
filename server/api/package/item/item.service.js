@@ -58,5 +58,9 @@ exports.getPersonalShopperItems = async (customerId) => {
       ],
     });
 
-  return pkg;
+  if (pkg[0].PackageItems) {
+    return pkg;
+  }
+
+  return null;
 };
