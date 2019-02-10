@@ -131,9 +131,9 @@ class CreateController {
     this.cartSection = false;
     this.optionsSection = false;
 
-    if (this.summarySection) {
-      this.getPackageItem();
-    }
+    // if (this.summarySection) {
+    //   this.getPackageItem();
+    // }
   }
 
   btnToggleCartSection(currentStatus) {
@@ -171,10 +171,10 @@ class CreateController {
     this.orderTypeSection = false;
     this.cartSection = false;
     this.optionsSection = false;
-
-    if (this.summarySection) {
-      this.getPackageItem();
-    }
+    //
+    // if (this.summarySection) {
+    //   this.getPackageItem();
+    // }
   }
 
   create(newItemForm) {
@@ -188,51 +188,53 @@ class CreateController {
     if (!form) return (this.submitting = false);
     this.$http
       .post('/packages/personalShopperPackage', data)
-      .then(({ data: { packageItems, personalShop } }) => {
+      .then(() => {
         this.submitting = false;
 
-        const packItems = {
-          id: packageItems[0].id,
-          name: data.name,
-          quantity: data.quantity,
-          price_amount: data.price_amount,
-          total_amount: data.quantity * data.price_amount,
-        };
+        // const packItems = {
+        //   id: packageItems[0].id,
+        //   name: data.name,
+        //   quantity: data.quantity,
+        //   price_amount: data.price_amount,
+        //   total_amount: data.quantity * data.price_amount,
+        // };
+        //
+        // let storeExist = false;
+        //
+        // this.packageData.map((x) => {
+        //   if (x.Store.id === this.data.store_id) {
+        //     storeExist = true;
+        //
+        //     return x.PackageItems.push(packItems);
+        //   }
+        //
+        //   return null;
+        // });
+        //
+        // if (storeExist === false) {
+        //   const pkg = {
+        //     id: personalShop.id,
+        //     sub_total: personalShop.sub_total,
+        //     personal_shopper_cost: personalShop.personal_shopper_cost,
+        //     price_amount: personalShop.price_amount,
+        //     Store: {
+        //       id: data.store_id,
+        //       name: this.Stores.model,
+        //     },
+        //     PackageItems: [{
+        //       id: packageItems[0].id,
+        //       name: data.name,
+        //       quantity: data.quantity,
+        //       price_amount: data.price_amount,
+        //       total_amount: data.quantity * data.price_amount,
+        //     }],
+        //   };
+        //   this.packageData.push(pkg);
+        // }
 
-        let storeExist = false;
+        this.getPackageItem();
 
-        this.packageData.map((x) => {
-          if (x.Store.id === this.data.store_id) {
-            storeExist = true;
-
-            return x.PackageItems.push(packItems);
-          }
-
-          return null;
-        });
-
-        if (storeExist === false) {
-          const pkg = {
-            id: personalShop.id,
-            sub_total: personalShop.sub_total,
-            personal_shopper_cost: personalShop.personal_shopper_cost,
-            price_amount: personalShop.price_amount,
-            Store: {
-              id: data.store_id,
-              name: this.Stores.model,
-            },
-            PackageItems: [{
-              id: packageItems[0].id,
-              name: data.name,
-              quantity: data.quantity,
-              price_amount: data.price_amount,
-              total_amount: data.quantity * data.price_amount,
-            }],
-          };
-          this.packageData.push(pkg);
-        }
-
-        this.calculateAmount(this.packageData);
+        // this.calculateAmount(this.packageData);
 
         this
           .toaster
@@ -289,6 +291,9 @@ class CreateController {
       .then(({ data: packageItems }) => {
         this.packageData = packageItems;
         this.packageOptions = packageItems;
+
+        this.getPackageItem();
+
         this
           .toaster
           .pop('success', 'Item Deleted Successfully.', '');
