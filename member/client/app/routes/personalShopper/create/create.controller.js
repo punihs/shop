@@ -59,8 +59,8 @@ class CreateController {
     this.Stores = {
       select: ($item) => {
         this.data.store_id = $item.id;
+        this.Stores.previousValue = this.Stores.model;
         this.Stores.model = $item.name;
-        this.Stores.previousValue = $item.name;
       },
 
       setId: () => {
@@ -71,6 +71,9 @@ class CreateController {
       },
 
       blur: () => {
+        if (this.Stores.model.toLowerCase() !== this.Stores.previousValue.toLowerCase()) {
+          this.data.store_id = '';
+        }
         if (!this.Stores.lastSearchResults) {
           return this.Stores.get(this.Stores.model).then(() => this.Stores.setId());
         }
@@ -131,9 +134,9 @@ class CreateController {
     this.cartSection = false;
     this.optionsSection = false;
 
-    // if (this.summarySection) {
-    //   this.getPackageItem();
-    // }
+    if (this.summarySection) {
+      this.getPackageItem();
+    }
   }
 
   btnToggleCartSection(currentStatus) {
@@ -171,13 +174,19 @@ class CreateController {
     this.orderTypeSection = false;
     this.cartSection = false;
     this.optionsSection = false;
-    //
-    // if (this.summarySection) {
-    //   this.getPackageItem();
-    // }
+
+    if (this.summarySection) {
+      this.getPackageItem();
+    }
   }
 
   create(newItemForm) {
+    if (!this.data.store_id) {
+      this.Stores.model = '';
+      return this
+        .toaster
+        .pop('error', 'Please select store from the list.', '');
+    }
     if (this.submitting) return null;
     this.submitting = true;
     this.clickUpload = true;
@@ -188,53 +197,47 @@ class CreateController {
     if (!form) return (this.submitting = false);
     this.$http
       .post('/packages/personalShopperPackage', data)
-      .then(() => {
+      .then(({ data: { packageItems, personalShop } }) => {
         this.submitting = false;
 
-        // const packItems = {
-        //   id: packageItems[0].id,
-        //   name: data.name,
-        //   quantity: data.quantity,
-        //   price_amount: data.price_amount,
-        //   total_amount: data.quantity * data.price_amount,
-        // };
-        //
-        // let storeExist = false;
-        //
-        // this.packageData.map((x) => {
-        //   if (x.Store.id === this.data.store_id) {
-        //     storeExist = true;
-        //
-        //     return x.PackageItems.push(packItems);
-        //   }
-        //
-        //   return null;
-        // });
-        //
-        // if (storeExist === false) {
-        //   const pkg = {
-        //     id: personalShop.id,
-        //     sub_total: personalShop.sub_total,
-        //     personal_shopper_cost: personalShop.personal_shopper_cost,
-        //     price_amount: personalShop.price_amount,
-        //     Store: {
-        //       id: data.store_id,
-        //       name: this.Stores.model,
-        //     },
-        //     PackageItems: [{
-        //       id: packageItems[0].id,
-        //       name: data.name,
-        //       quantity: data.quantity,
-        //       price_amount: data.price_amount,
-        //       total_amount: data.quantity * data.price_amount,
-        //     }],
-        //   };
-        //   this.packageData.push(pkg);
-        // }
+        let storeExist = false;
+        if (this.packageData) {
+          this.packageData.map((x) => {
+            if (x.Store.id === this.data.store_id) {
+              storeExist = true;
 
-        this.getPackageItem();
+              return Object.assign(x, { PackageItems: packageItems });
+            }
 
-        // this.calculateAmount(this.packageData);
+            return null;
+          });
+        }
+
+        if (storeExist === false) {
+          const pkg = {
+            id: personalShop.id,
+            sub_total: personalShop.sub_total,
+            personal_shopper_cost: personalShop.personal_shopper_cost,
+            price_amount: personalShop.price_amount,
+            Store: {
+              id: data.store_id,
+              name: this.Stores.model,
+            },
+            PackageItems: [{
+              id: packageItems[0].id,
+              name: data.name,
+              quantity: data.quantity,
+              price_amount: data.price_amount,
+              total_amount: data.quantity * data.price_amount,
+            }],
+          };
+
+          if (!this.packageData) {
+            this.packageData = [];
+          }
+
+          this.packageData.push(pkg);
+        }
 
         this
           .toaster

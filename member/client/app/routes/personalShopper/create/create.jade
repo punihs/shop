@@ -80,6 +80,7 @@
                             typeahead-loading='$ctrl.Stores.loadingStores'
                             typeahead-no-results='$ctrl.Stores.noResults'
                             typeahead-on-select='$ctrl.Stores.select($item)'
+                            ng-blur='$ctrl.Stores.blur($item)'
                             typeahead-wait-ms="10"
                             autofocus=
                             autocomplete = "off"
@@ -185,7 +186,7 @@
                         //th Edit
                         th Delete
                       tr(ng-repeat='item in psPackage.PackageItems')
-                        td(style='width:20%' ng-bind='psPackage.Store.name')
+                        td(style='width:25%' ng-bind='psPackage.Store.name')
                         td(ng-bind='item.name')
                         td(ng-bind='item.quantity')
                         td(ng-bind='item.price_amount')

@@ -19,7 +19,7 @@ div
               .row
                 .col-md-7
                   div.div-border-create
-                    h2.m-n.alert.bg-primary.text-white.font-bold PAYMENT SUMMARY {{$ctrl.pgWalletEnabled}}
+                    h2.m-n.alert.bg-primary.text-white.font-bold PAYMENT SUMMARY
                     .panel-body.text-primary.padding-10
                       .radio.no-margin-top(ng-repeat="paymentgateway in $ctrl.paymentGateways")
                         label.i-checks.no-margin-top(ng-if = 'paymentgateway.status && $ctrl.pgWalletEnabled === true' ng-show = 'paymentgateway.value === "wallet" && !$ctrl.isWalletChecked')

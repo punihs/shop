@@ -105,7 +105,7 @@ exports.create = async (req, res, next) => {
       personalShopper = Package
         .find({ where: { order_code: orderCode } });
     }
-    while (personalShopper.length);
+    while (!personalShopper);
 
     personalShopperPackage.order_code = orderCode;
     personalShopperPackage.total_quantity = req.body.quantity;
@@ -170,6 +170,12 @@ exports.create = async (req, res, next) => {
         attributes: ['id', 'state_id'],
         where: {
           state_id: ORDER_CREATED,
+        },
+      }, {
+        model: Store,
+        attributes: ['id'],
+        where: {
+          id: storeId,
         },
       }],
     });
