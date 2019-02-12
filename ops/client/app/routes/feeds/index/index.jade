@@ -1,0 +1,46 @@
+h4 Welcome to dashboard {{$ctrl.comments.length}}
+div
+  .hbox
+    div
+      .bg-white-only.b-b(style='position: fixed;width: 100%; height: 44px;')
+        ul.nav.nav-pills.nav-sm.m-t-xs
+          li(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active")
+            a(
+            ui-sref='feeds.index({ bucket: bucket })'
+            ng-bind="bucket"
+            )
+    .m-t-xl(style='padding-bottom: 4px;')
+    scrollable-table(table-offset="110")
+      table.table.m-b-none
+        thead
+          tr.m-l-xs-md
+            th.col-md-1.col-xs-1 ID
+            th.col-md-1.col-xs-1 Comment
+            th.col-md-2.col-xs-2 Customer Name
+            th.col-md-2.col-xs-2 Acting User
+            th.col-md-2.col-xs-1 Created At
+      .col-xs-12(style='padding: 10px;')
+        .col-xs-12(ng-show='$ctrl.comments.length === 0')
+          td(colspan="5"): h1.text-center.text-muted No Comments
+        .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='comment in $ctrl.comments')
+          .col-md-1.col-xs-1.wrapper-sm.m-t-xs
+            a.m-l {{comment.ID}}
+          .col-md-2.col-xs-1.wrapper-sm.text-ellipsis.m-t-xs(
+          ng-bind="comment.comments"
+          )
+          .col-md-3.col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(
+          ng-bind="comment.customerName"
+          )
+          .col-md-2.col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(
+          ng-bind="comment.actingUser"
+          )
+          .col-md-3.col-xs-2.wrapper-sm.text-ellipsis.m-t-xs
+            span.text-success
+              |  {{comment.created_at | date:'MMM d, y'}} IST {{comment.created_at | date:'h:mm a'}}
+
+      //    a.btn.active.m-t-xs(ng-if="$ctrl.ui.loading")
+      //      i.fa.fa-circle-o-notch.fa-spin
+      //      strong &nbsp;Loading
+      //    a.btn.btn-primary.m-t-xs(ng-if="$ctrl.ui.lazyLoad" ng-click="$ctrl.loadPackages()")
+      //      i.fa.fa-plus-circle
+      //      strong &nbsp;Load More

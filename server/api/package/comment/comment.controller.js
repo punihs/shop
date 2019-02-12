@@ -5,12 +5,54 @@ const { OBJECT_TYPES: { PACKAGE } } = require('../../../config/constants');
 const db = require('../../../conn/sqldb');
 
 const {
-  Comment, User, PackageState, Follower,
+  Comment, User, PackageState, Follower, Package
 } = db;
 
 const log = debug('package');
 
 exports.index = async (req, res, next) => {
+  try {
+
+    const data = await db.sequelize.query('Select ' +
+      'package_states.package_id as ID, ' +
+      'package_states.comments, ' +
+      'users.first_name as customerName, ' +
+      'actors.first_name as actingUser, ' +
+      'package_states.created_at ' +
+      'from ' +
+      'package_states ' +
+      'JOIN packages on packages.id = package_states.package_id ' +
+      'join users on users.id = packages.customer_id ' +
+      'join users as actors on actors.id = package_states.user_id ' +
+      'where ' +
+      'package_states.comments is not null ' +
+      'union ' +
+      'Select ' +
+      'comments.object_id as ID, ' +
+      'comments.comments, ' +
+      'users.first_name as customerName, ' +
+      'actors.first_name as actingUser, ' +
+      'comments.created_at ' +
+      'from ' +
+      'comments ' +
+      'JOIN packages on packages.id = comments.object_id ' +
+      'join users on users.id = packages.customer_id ' +
+      'join users as actors on actors.id = comments.user_id ' +
+      'where ' +
+      'comments.comments is not null ' +
+      'and ' +
+      'comments.type = 1 ' +
+      'order by ' +
+      'ID desc ', { type: db.sequelize.QueryTypes.SELECT });
+
+    return res
+      .json(data);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.show = async (req, res, next) => {
   try {
     log('index', req.query);
     const { packageId } = req.params;

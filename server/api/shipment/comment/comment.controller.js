@@ -11,6 +11,49 @@ const {
 
 exports.index = async (req, res, next) => {
   try {
+
+    const data = await db.sequelize.query('Select ' +
+      'shipment_states.shipment_id as ID, ' +
+      'shipment_states.comments, ' +
+      'users.first_name as customerName, ' +
+      'actors.first_name as actingUser, ' +
+      'shipment_states.created_at ' +
+      'from ' +
+      'shipment_states ' +
+      'JOIN shipments on shipments.id = shipment_states.shipment_id ' +
+      'join users on users.id = shipments.customer_id ' +
+      'join users as actors on actors.id = shipment_states.user_id ' +
+      'where ' +
+      'shipment_states.comments is not null ' +
+      'union ' +
+      'Select ' +
+      'comments.object_id as ID, ' +
+      'comments.comments, ' +
+      'users.first_name as customerName, ' +
+      'actors.first_name as actingUser, ' +
+      'comments.created_at ' +
+      'from ' +
+      'comments ' +
+      'JOIN shipments on shipments.id = comments.object_id ' +
+      'join users on users.id = shipments.customer_id ' +
+      'join users as actors on actors.id = comments.user_id ' +
+      'where ' +
+      'comments.comments is not null ' +
+      'and ' +
+      'comments.type = 2 ' +
+      'order by ' +
+      'ID desc ' +
+      'Limit 10 ', { type: db.sequelize.QueryTypes.SELECT });
+
+    return res
+      .json(data);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.show = async (req, res, next) => {
+  try {
     log('index', req.query);
     const { shipmentId } = req.params;
     const include = [{
