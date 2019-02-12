@@ -15,13 +15,14 @@ class FeedIndexController {
 
   $onInit() {
     this.buckets = ['PACKAGE', 'SHIPMENT'];
-    this.comments = '';
-    console.log('Bucket', this.$stateParams.bucket);
+    this.redirectUrl = '';
+    this.currentBucket = this.$stateParams.bucket;
 
     if (this.$stateParams.bucket === 'PACKAGE') {
+      this.redirectUrl = 'package.show';
       this.getPackageComments();
     } else {
-      console.log('Shipment Comments');
+      this.redirectUrl = 'shipment.show';
       this.getShipmentComments();
     }
   }

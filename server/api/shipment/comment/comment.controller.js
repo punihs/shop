@@ -42,8 +42,7 @@ exports.index = async (req, res, next) => {
       'and ' +
       'comments.type = 2 ' +
       'order by ' +
-      'ID desc ' +
-      'Limit 10 ', { type: db.sequelize.QueryTypes.SELECT });
+      'ID desc ', { type: db.sequelize.QueryTypes.SELECT });
 
     return res
       .json(data);
