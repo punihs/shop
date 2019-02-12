@@ -34,7 +34,7 @@
                     //      span.f-s-10.f-c-gray ( Paying For You )
                     //      br
                     //      h1.f-s-1.f-c-blue  Price: 7%
-                    .col-md-6.col-xs-6.col-md-offset-3.col-xs-offset-3
+                    .col-md-6.col-xs-12.col-md-offset-3
                       //div
                       //  .checkbox
                       //    label.i-checks
@@ -49,7 +49,7 @@
                           h1.f-s-1.f-c-blue  Price: 10%
                   .col-md-12.text-center
                     br
-                    button.btn.btn-s-r.btn-b-r.btn-l(ng-click='$ctrl.btnToggleCartSection($ctrl.cartSection)')
+                    button.btn.btn-s-r.btn-b-r.btn-l.m-t-xs-md(ng-click='$ctrl.btnToggleCartSection($ctrl.cartSection)')
                       | NEXT
           .panel.panel-default
             #headingTwo.panel-heading.active(role='tab', ng-click='$ctrl.toggleCartSection($ctrl.cartSection)')
@@ -98,7 +98,7 @@
                             required
                             )
                             span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.url.$dirty && newItemForm.url.$invalid') Please Enter Item Link
-                        .col-md-2.col-xs-4
+                        .col-md-2.col-xs-5
                           label.col-xs-12.input-group Qty
                             span.f-c-red *
                             br
@@ -124,7 +124,7 @@
                           br
                       br
                       .row
-                        .col-md-2.col-xs-4
+                        .col-md-2.col-xs-6
                           label.f-c-d-gray.f-s-10 Size
                             br
                             input.input-group.form-control(type='text',
@@ -133,7 +133,7 @@
                             placeholder='eg: M/L/S/32/36'
                             )
                             span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.size.$dirty && newItemForm.size.$invalid') Please Enter Size
-                        .col-md-2.col-xs-4
+                        .col-md-2.col-xs-6
                           label.f-c-d-gray.f-s-10 Color
                             br
                             input.input-group.form-control(type='text',
@@ -141,7 +141,7 @@
                             name='color',
                             placeholder='eg: Blue')
                             span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.color.$dirty && newItemForm.color.$invalid') Please Enter Color
-                        .col-md-2.col-xs-4
+                        .col-md-2.col-xs-12
                           label.col-xs-12.input-group  Item Price(In INR)
                             span.f-c-red *
                             br
@@ -152,25 +152,25 @@
                             required
                             )
                             span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.price_amount.$dirty && newItemForm.price_amount.$invalid') Please Enter Price
-                        .col-md-6.col-xs-4
+                        .col-md-6.col-xs-12
                           label.col-xs-12.input-group If this item is not available (Choose an alternative)
                             span.f-c-red *
                             br
                             select.selectpicker.form-control(name='if_item_unavailable', ng-model='$ctrl.data.if_item_unavailable' required)
                               option(value='', selected='selected') ---------- Select ----------
                               option(value='{{item.value}}', ng-repeat='item in $ctrl.if_item_unavailable', ng-bind='item.value')
-                              span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.if_item_unavailable.$dirty && newItemForm.if_item_unavailable.$invalid') Please Select Choice
+                            span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.if_item_unavailable.$dirty && newItemForm.if_item_unavailable.$invalid') Please Select Choice
                           br
                           br
                         .footer-line.left-padding-15.right-padding-20
                           .line.line-dashed.b-b.m-t.m-b.pull-in.no-margin-left
                       br
                       .row
-                        .col-md-6.col-xs-6.div-align-items-l
+                        .col-md-6.col-xs-12
                           br
-                          button.btn.btn-s-r.btn-b-b.btn-l(type='submit', ng-disabled="$ctrl.submitting || (!$ctrl.submitting && !newItemForm.$dirty)")
+                          button.btn.btn-s-r.btn-b-b.btn-l.col-xs-10.col-xs-push-2(type='submit', ng-disabled="$ctrl.submitting || (!$ctrl.submitting && !newItemForm.$dirty)")
                             | + Save Item
-                        .col-md-4.col-xs-6.div-align-items-r
+                        .col-md-4.col-xs-12.div-align-items-r
                           br
                           button.btn.btn-s-r.btn-b-r.btn-l(ng-click='$ctrl.btnToggleOptionsSection($ctrl.optionsSection)')
                             | NEXT
@@ -186,7 +186,7 @@
                         //th Edit
                         th Delete
                       tr(ng-repeat='item in psPackage.PackageItems')
-                        td(style='width:25%' ng-bind='psPackage.Store.name')
+                        td(style='width:30%' ng-bind='psPackage.Store.name')
                         td(ng-bind='item.name')
                         td(ng-bind='item.quantity')
                         td(ng-bind='item.price_amount')
@@ -238,13 +238,13 @@
                         br
                         input.input-group.form-control(type='text', ng-model='orderPackage.if_promo_unavailable', name='if_promo_unavailable', placeholder='Enter')
                     br
-                .col-md-2.col-xs-2
+                .col-md-6.col-xs-12
                   br
-                  button.btn.btn-s-r.btn-b-b.btn-l(ng-click='$ctrl.updatePackageOption()')
+                  button.btn.btn-s-r.btn-b-b.btn-l.col-xs-10.col-xs-push-2(ng-click='$ctrl.updatePackageOption()')
                     | SAVE
-                .col-md-4.col-xs-4.div-align-items-r
+                .col-md-4.col-xs-12.div-align-items-r
                   br
-                  button.btn.btn-s-r.btn-b-r.btn-l(ng-click='$ctrl.btnToggleSummarySection($ctrl.summarySection)')
+                  button.btn.btn-s-r.btn-b-r.btn-l.col-xs-10.col-xs-push-2(ng-click='$ctrl.btnToggleSummarySection($ctrl.summarySection)')
                     | NEXT
           .panel.panel-default
             #headingFour.panel-heading.active(role='tab', ng-click='$ctrl.toggleSummarySection($ctrl.summarySection)')
@@ -254,9 +254,9 @@
             #collapseFour.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingThree' ng-show="$ctrl.summarySection")
               .panel-body
                 div
-                  .col-md-12
+                  .col-md-12(style="padding: 0;")
                     br
-                    .col-md-7.col-xs-6
+                    .col-md-7.col-xs-12
                       .packages-div(ng-repeat='psPackage in $ctrl.packageData')
                         label.f-c-blue.f-s-10(ng-bind='psPackage.Store.name')
                         table.items(style='width:100%')
@@ -271,48 +271,48 @@
                               td(ng-bind='item.quantity')
                               td(ng-bind='item.price_amount')
                               td(ng-bind='item.total_amount')
-                    .col-md-5.col-xs-6
+                    .col-md-5.col-xs-12(style="padding: 0;")
                       .div-sum-ps
                         .row
-                          .col-md-8
+                          .col-md-8.col-xs-8
                             br
                             label.f-c-blue.f-s-9 Each
-                          .col-md-4
+                          .col-md-4.col-xs-4
                             br
                             label.f-c-blue.f-s-9 Price
                         br
                         .row
-                          .col-md-8
+                          .col-md-8.col-xs-8
                             label.f-c-gray.f-s-9 Sales Tax:
-                          .col-md-4
+                          .col-md-4.col-xs-4
                             label.f-c-gray.f-s-9 ₹ {{$ctrl.saleTax}}
                         .row
-                          .col-md-8
+                          .col-md-8.col-xs-8
                             label.f-c-gray.f-s-9 Shipping to Bengaluru:
-                          .col-md-4
+                          .col-md-4.col-xs-4
                             label.f-c-gray.f-s-9 ₹ {{$ctrl.deliveryCharge}}
                         .row
-                          .col-md-8
+                          .col-md-8.col-xs-8
                             label.f-c-gray.f-s-9 ItemTotal Cost:
-                          .col-md-4
+                          .col-md-4.col-xs-4
                             label.f-c-gray.f-s-9 ₹ {{$ctrl.itemTotalCost}}
                         .row
-                          .col-md-8
+                          .col-md-8.col-xs-8
                             label.f-c-gray.f-s-9 Personal ShoppRe Cost:
-                          .col-md-4
+                          .col-md-4.col-xs-4
                             label.f-c-gray.f-s-9 ₹ {{$ctrl.personalShopperCost}}
                         .row
-                          .col-md-8
+                          .col-md-8.col-xs-8
                             label.f-c-gray.f-s-9 Merchant Total:
-                          .col-md-4
+                          .col-md-4.col-xs-4
                             label.f-c-gray.f-s-9 ₹ {{$ctrl.totalAmount}}
                         br
                         .row
-                          .col-md-8
+                          .col-md-8.col-xs-8
                             label.f-c-blue.f-s-9 Estimated Total Cost:
-                          .col-md-4
+                          .col-md-4.col-xs-4
                             label.f-c-blue.f-s-9 ₹ {{$ctrl.totalAmount}}
-                  .col-md-10.col-xs-10.div-align-items-r
+                  .col-md-10.col-xs-12.div-align-items-r
                     br
                     button.btn.btn-s-r.btn-b-r.btn-l(ng-click='$ctrl.makePayment()')
                       | Make Payment
