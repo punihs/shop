@@ -48,7 +48,7 @@ module.exports = (app) => {
   app.use(
     '/api/packages',
     packages, // auth did in router ie., api/package/index.js
-    // authenticate(),
+    authenticate(),
     packageItems,
     packageComment,
     personalShopperPackage,
