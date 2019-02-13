@@ -85,7 +85,9 @@ class PackageItemsController {
     };
 
     if (this.EDIT) {
-      this.PackageItemCategory.model = this.data.PackageItemCategory.name;
+      if (this.data.PackageItemCategory) {
+        this.PackageItemCategory.model = this.data.PackageItemCategory.name;
+      }
       const imagePath = `${this.URLS.CDN}/shoppre/${this.data.object}`;
       this.data.object_thumb = imagePath;
       if (this.data.object_advanced) {

@@ -38,7 +38,7 @@
           p.font-15
             strong MICR Code:
             span {{$ctrl.account.micr_code}}
-        .col-md-6
+        .col-md-6.no-padder
           p.font-15
             strong Branch:
             span {{$ctrl.account.branch}}
@@ -51,7 +51,7 @@
           p.font-15
             strong Swift Code:
             span {{$ctrl.account.swift_code}}
-      .col-md-4.div-bg.no-padder.pull-right
+      .col-md-4.col-xs-12.div-bg.no-padder.pull-right
         div.div-pad-20
         center
           h3.text-white Pay
@@ -64,7 +64,7 @@
         br
     br
     .container.centerFlex(ng-if="$ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.CARD || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.WALLET || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.PAYPAL || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.PAYTM || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.CASH")
-      .col-md-4.div-bg.no-padder
+      .col-md-4.col-xs-8.div-bg.no-padder
         div.div-pad-20
         center
           h3.text-white You paid:
