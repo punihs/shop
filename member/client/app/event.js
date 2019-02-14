@@ -22,7 +22,7 @@ angular.module('uiGenApp')
         event.preventDefault();
         // return $state.go('packages.index');
         const locationSearch = $window.location.search.split('&')[1];
-        if (locationSearch.split('=')[1] === 'personalShopperCreate') {
+        if (locationSearch.split('=')[1] === '/personalShopperCreate') {
           return $state.go('personalShopper.create');
         } else {
           return $state.go('packages.index');
