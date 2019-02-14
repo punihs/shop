@@ -1134,21 +1134,21 @@ exports.payResponse = async (req, res, next) => {
       }
 
       return res.redirect(`${sucessURL}?${stringify(params)}`);
+    } else {
+      await updateShipmentState({
+        shipment,
+        actingUser: customer,
+        nextStateId: PAYMENT_FAILED,
+        comments: 'payment failed',
+        next,
+      });
+
+      if (RAZOR === Number(req.query.pg)) {
+        return res.json(`${failedURL}?error='failed'&message=${msg}`);
+      }
+
+      return res.redirect(`${failedURL}?error='failed'&message=${msg}`);
     }
-
-    await updateShipmentState({
-      shipment,
-      actingUser: customer,
-      nextStateId: PAYMENT_FAILED,
-      comments: 'payment failed',
-      next,
-    });
-
-    if (RAZOR === Number(req.query.pg)) {
-      return res.json(`${failedURL}?error='failed'&message=${msg}`);
-    }
-
-    return res.redirect(`${failedURL}?error='failed'&message=${msg}`);
   } catch (err) {
     return next(err);
   }
