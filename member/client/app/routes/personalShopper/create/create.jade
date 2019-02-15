@@ -172,7 +172,7 @@
                             | + Save Item
                         .col-md-4.col-xs-12.div-align-items-r
                           br
-                          button.btn.btn-s-r.btn-b-r.btn-l(ng-click='$ctrl.btnToggleOptionsSection($ctrl.optionsSection)')
+                          button.btn.btn-s-r.btn-b-r.btn-l(type='button', ng-click='$ctrl.btnToggleOptionsSection($ctrl.optionsSection)')
                             | NEXT
                 .packages-div(ng-repeat='psPackage in $ctrl.packageData')
                   table.items(style='width:100%')

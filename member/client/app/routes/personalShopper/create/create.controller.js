@@ -126,6 +126,9 @@ class CreateController {
     this.orderTypeSection = false;
     this.cartSection = false;
     this.summarySection = false;
+    if (this.optionsSection) {
+      this.getPackageItem();
+    }
   }
 
   toggleSummarySection(currentStatus) {
@@ -150,6 +153,9 @@ class CreateController {
     this.orderTypeSection = false;
     this.cartSection = false;
     this.summarySection = false;
+    if (this.optionsSection) {
+      this.getPackageItem();
+    }
   }
   btnToggleSummarySection(currentStatus) {
     let price = false;
