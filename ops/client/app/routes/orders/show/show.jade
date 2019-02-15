@@ -121,6 +121,22 @@
               div
                 span(ng-bind='$ctrl.data.buy_if_price_changed')
 
+          .clear.wrapper-xs(ng-if='$ctrl.transactions[0].PaymentGateway.value')
+            a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
+              i.fa.fa-money.text-muted.fa-lg
+            div.text-danger
+              a.text-muted.font-thin Payment Method
+              div
+                span(ng-bind='$ctrl.transactions[0].PaymentGateway.value')
+
+          .clear.wrapper-xs(ng-if='$ctrl.transactions[0].payment_gateway_fee_amount')
+            a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
+              i.fa.fa-inr.text-muted.fa-lg
+            div.text-danger
+              a.text-muted.font-thin Payment Gateway Fee
+              div
+                span(ng-bind='$ctrl.transactions[0].payment_gateway_fee_amount')
+
           .clear.wrapper-xs(
           uib-tooltip="{{$ctrl.data.created_at | date:'MMM d, y'}} IST {{$ctrl.data.created_at | date:'h:mm a'}}"
           tooltip-placement='right'
@@ -239,7 +255,7 @@
                   .col-xs-6.text-ellipsis(ng-show='packageItem.size')
                     span.text-blue Size - &nbsp;
                     strong  {{packageItem.size}}
-                  .col-xs-8.text-ellipsis(ng-show='packageItem.if_item_unavailable')
+                  .col-xs-12.text-ellipsis(ng-show='packageItem.if_item_unavailable')
                     span.text-blue If Item Unavailable - &nbsp;
                     strong  {{packageItem.if_item_unavailable}}
                   .col-xs-12.text-ellipsis(ng-show='packageItem.note')
@@ -257,7 +273,7 @@
                     )
             .col-xs-12.col-md-2.no-padder
               .m-none.wrapper-lg.w-full.w-auto-xs
-                button.col-xs-7.btn.btn-sm.btn-success.m-b-xs.text-u-c(
+                button.col-xs-12.btn.btn-sm.btn-success.m-b-xs.text-u-c(
                 type='submit',
                 ng-click="$ctrl.updateItem(packageItem.id, packageItem.status)"
                 ) Save

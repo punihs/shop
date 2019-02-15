@@ -29,7 +29,7 @@ angular.module('uiGenApp')
               'id', 'customer_id', 'if_promo_unavailable', 'created_at', 'price_amount',
               'instruction', 'promo_info', 'promo_discount', 'promo_code', 'sales_tax',
               'delivery_charge', 'personal_shopper_cost', 'sub_total', 'total_quantity',
-              'comments', 'store_name', 'seller_invoice', 'order_code', 'store_id', 'amount_paid', 'buy_if_price_changed',
+              'comments', 'store_name', 'seller_invoice', 'order_code', 'store_id', 'amount_paid', 'buy_if_price_changed', 'transaction_id',
             ];
 
             const params = {

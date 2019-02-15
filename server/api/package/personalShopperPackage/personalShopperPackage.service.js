@@ -37,10 +37,6 @@ exports.payResponse = async (req, res, next) => {
 
     const customer = await User.findById(req.query.uid, { raw: true });
 
-    await Package.update({
-      transaction_id: req.query.transaction_id,
-    }, { where: { id: objectId.split(',') } });
-
     const SUCCESS = '6';
     log(req.query.status);
     log(req.query);
@@ -55,6 +51,10 @@ exports.payResponse = async (req, res, next) => {
     });
 
     if (req.query.status === SUCCESS) {
+      await Package.update({
+        transaction_id: req.query.transaction_id,
+      }, { where: { id: objectId.split(',') } });
+
       pkg.forEach((x) => {
         updateState({
           lastStateId: null,

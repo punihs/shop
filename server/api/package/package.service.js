@@ -112,7 +112,7 @@ exports.index = async ({
       case (actingUser.app_id === APPS.OPS && actingUser.group_id === OPS): {
         if (IS_CUSTOMER_PAGE) options.where.customer_id = params.customerId;
         options.attributes = ['id', 'customer_id', 'created_at', 'weight', 'price_amount', 'store_id', 'invoice_code',
-          'content_type', 'updated_at', 'order_code'];
+          'content_type', 'updated_at', 'order_code', 'transaction_id'];
         options.include = [{
           where: {},
           model: PackageState,

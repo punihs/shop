@@ -56,6 +56,14 @@ class OrderShowController {
       .$http
       .get(`/packages/${this.$stateParams.id}/items?type=ps`)
       .then(({ data: packageItems }) => (this.packageItems.push(...packageItems)));
+
+    const transactionId = this.pkg.transaction_id;
+
+    this.$http
+      .get(`$/transactions?transactionIds=${transactionId}`)
+      .then(({ data: transactions }) => {
+        this.transactions = transactions;
+      });
   }
 
   create() {
