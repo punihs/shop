@@ -150,7 +150,7 @@ exports.index = async ({
       options.include[0].where.state_id = query.sid.split(',');
     } else if (states.includes(bucket) && options.include && options.include.length) {
       // - uploaded person can't do verification
-      if (bucket === 'TASKS') {
+      if (bucket === 'TASKS' && type !== 'ORDER') {
         options.include[0].where = {
           $or: {
             state_id: BUCKET[bucket].filter(x => (x !== AWAITING_VERIFICATION)),
