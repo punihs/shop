@@ -52,7 +52,12 @@ exports.create = async (req, res, next) => {
         where: {
           state_id: ORDER_CREATED,
         },
-      }],
+      },
+      {
+        model: PackageItem,
+        attributes: ['id', 'quantity', 'package_order_code'],
+      },
+      ],
     });
 
   let shopPackageId = '';
@@ -64,6 +69,8 @@ exports.create = async (req, res, next) => {
 
     log(checkPersonalShopperPackages);
     const personalShopPackage = {};
+
+    const totalItems = checkPersonalShopperPackages.PackageItems.length;
 
     const shopperPackage = await Package
       .find({
@@ -80,8 +87,8 @@ exports.create = async (req, res, next) => {
 
     if (psCost < 200) { psCost = 200; }
 
-    if (personalShopPackage.total_quantity > 15) {
-      psCost += (personalShopPackage.total_quantity - 15) * 50;
+    if (totalItems + 1 > 15) {
+      psCost += ((totalItems + 1) - 15) * 50;
     }
 
     personalShopPackage.personal_shopper_cost = psCost;
@@ -116,10 +123,6 @@ exports.create = async (req, res, next) => {
     psCost = Math.round(psCost);
 
     if (psCost < 200) { psCost = 200; }
-
-    if (personalShopperPackage.total_quantity > 15) {
-      psCost += (personalShopperPackage.total_quantity - 15) * 50;
-    }
 
     personalShopperPackage.personal_shopper_cost = psCost;
 
@@ -180,7 +183,7 @@ exports.create = async (req, res, next) => {
       }],
     });
 
-  const order_codes = await  packages.map(y => y.order_code);
+  const order_codes = await packages.map(y => y.order_code);
 
   const packageItems = await PackageItem
     .findAll({
@@ -191,7 +194,6 @@ exports.create = async (req, res, next) => {
     });
 
   return res.json({ packageItems, personalShop });
-
 };
 
 exports.editItem = async (req, res, next) => {
@@ -480,10 +482,16 @@ exports.destroyItem = async (req, res, next) => {
   const optionsItems = {
     attributes: ['id', 'price_amount', 'total_quantity', 'store_id', 'customer_id', 'order_code'],
     where: { id: packageId },
+    include: [{
+      model: PackageItem,
+      attributes: ['id', 'quantity', 'package_order_code'],
+    }],
   };
 
   const personalShopperPackage = await Package
     .findOne(optionsItems);
+
+  const totalItems = personalShopperPackage.PackageItems.length;
 
   const packageItem = await PackageItem
     .find({
@@ -518,8 +526,8 @@ exports.destroyItem = async (req, res, next) => {
       psCost = 200;
     }
 
-    if (newQty > 15) {
-      psCost += (newQty - 15) * 50;
+    if (totalItems - 1 > 15) {
+      psCost += ((totalItems - 1) - 15) * 50;
     }
 
     subtotal = newPrice + psCost;

@@ -166,7 +166,8 @@ class CreateController {
 
         return this
           .toaster
-          .pop('error', 'Please Select Choice of Would it be OK to buy it if when we shop, the item cost has gone up by', '');
+          .pop('error', 'Please Select Choice of Would it be OK to' +
+            ' buy it if when we shop, the item cost has gone up by', '');
       }
 
       return null;
