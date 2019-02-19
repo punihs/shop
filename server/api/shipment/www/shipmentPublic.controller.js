@@ -31,9 +31,9 @@ exports.index = async (req, res) => {
       model: Country,
       attributes: ['name'],
     }],
-    // limit: 10,
+    limit: 10,
     order: [['id', 'desc']],
   });
 
-  res.json(shipment);
+  res.json({ shipment });
 };
