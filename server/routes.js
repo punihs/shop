@@ -22,6 +22,7 @@ const specialRequest = require('./api/package/specialRequest');
 const userShippingPreference = require('./api/user/shippingPreference');
 const packageItemCategory = require('./api/packageItemCategory');
 const shipment = require('./api/shipment');
+const shipmentPublic = require('./api/shipment/www');
 const shipmentComment = require('./api/shipment/comment');
 const transaction = require('./api/transaction');
 const shipmentPackage = require('./api/shipment/package');
@@ -68,6 +69,7 @@ module.exports = (app) => {
     shipmentComment,
     shipmentFollower,
   );
+  app.use('/api/www/shipments', shipmentPublic);
   app.use('/api/userDocuments', authenticate(), userDocument);
   app.use('/api/countries', country);
   app.use('/api/packageItems', authenticate(), packageItem);
