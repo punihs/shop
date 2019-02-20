@@ -85,16 +85,19 @@ class CustomerViewController {
         _.pick(data, allowed))
       .then(() => {
         if (method === 'post') {
-          const walletTransaction = {
-            amount: data.amount,
-            created_at: Date.now(),
-            description: data.description,
-          };
-          this.transactions.push(walletTransaction);
+          // const walletTransaction = {
+          //   amount: data.amount,
+          //   created_at: Date.now(),
+          //   description: data.description,
+          // };
+          // this.transactions.push(walletTransaction);
+          this.data.description = '';
+          this.data.amount = '';
         } else {
           this.transactions[this.editWalletIndex].amount = data.amount;
           this.transactions[this.editWalletIndex].description = data.description;
         }
+        this.reset(walletForm);
         this.submitWallet = false;
         this.editWallet = false;
         const message = method === 'post' ? 'Added' : 'Updated';
@@ -272,6 +275,11 @@ class CustomerViewController {
           .pop('error', message);
       });
   }
+
+  reset(formData) {
+    formData.$setPristine();
+  }
+
   deleteWalletTransaction(customerId, transactionId, amount, type, index) {
     this
       .$http

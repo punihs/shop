@@ -4,6 +4,22 @@ const rp = require('request-promise');
 const log = debug('cash back');
 
 const { URLS_MYACCOUNT } = require('../../config/environment');
+const transactionCtrl = require('../transaction/transaction.controller');
+
+exports.create = async (req, res) => {
+  const { customer_id: customerID, amount, description } = req.body;
+
+  if (amount > 0) {
+    await transactionCtrl
+      .setWallet({
+        customer_id: customerID,
+        amount,
+        description,
+      });
+  }
+
+  return res.json({ message: 'wellet amount added successfully' });
+};
 
 exports.walletShow = async (req, res) => {
   const { customer_id } = req.query;

@@ -280,79 +280,81 @@ div.m-t-xl.no-margin
                   .clearfix
 
       // - todo -wallet transction required in IPFS 4.0
-      //div
-      //  .h1.m-l-md.font-thin.h3
-      //    b Wallet Balance: {{$ctrl.data.wallet_balance_amount}}
-      //
-      //hr
-      //form.form.form-validation.form-horizontal.wrapper-md(
-      //name="walletForm"
-      //novalidate
-      //ng-submit='$ctrl.postWallet(walletForm)'
-      //)
-      //  .well.m-t.m-l.bg-light.hover-wrap
-      //    .row
-      //      .col-md-12.col-sm-12.col-xs-12
-      //        h4
-      //          strong Wallet Transactions
-      //
-      //    .row
-      //      .col-md-4.col-sm-2.col-xs-12
-      //        label.col-xs-12.input-group
-      //          | Description
-      //          span.text-danger *
-      //          input.form.form-control(
-      //          type='text'
-      //          name='description'
-      //          placeholder='eg. for feedback'
-      //          ng-model='$ctrl.data.description'
-      //          required
-      //          )
-      //          span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && wallet.description.$dirty && wallet.description.$invalid') Please enter description
-      //
-      //      .col-md-4.col-sm-2.col-xs-12
-      //        label.col-xs-12.input-group
-      //          | Amount
-      //          span.text-danger *
-      //          input.form.form-control(
-      //          type='number'
-      //          name='amount'
-      //          placeholder='eg. 2'
-      //          ng-model='$ctrl.data.amount'
-      //          required
-      //          )
-      //          span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && wallet.amount.$dirty && wallet.amount.$invalid') Please enter amount
-      //
-      //      .col-md-2.col-sm-2.col-xs-12.save
-      //        h4(ng-bind="$ctrl.error.message" style="color:red;")
-      //        button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitWallet")
-      //          span.fa.fa-forward.m-r-sm
-      //          span.text-white(ng-if='!$ctrl.submitWallet') Save Changes
-      //          span(ng-if='$ctrl.submitWallet')
-      //            i.fa.fa-spin.fa-circle-o-notch
-      //            span.text-white &nbsp;&nbsp;submittingWallet...
-      //    .row
-      //      .col-md-12.no-padder-right
-      //        table.table.m-b-none
-      //          thead
-      //            tr
-      //              th.col-xs-3 Date
-      //              th.col-xs-3 Description
-      //              th.col-xs-3 Amount
-      //              th.col-xs-1 Delete
-      //              th.col-xs-2 Edit
-      //
-      //        .col-xs-12(style='padding: 10px;')
-      //          .col-xs-12(ng-show='$ctrl.transactions.length === 0')
-      //            td(colspan="5")
-      //              h2.text-center.text-muted No Wallet Transaction Details
-      //
-      //          .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='transaction in $ctrl.transactions' )
-      //            .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs {{ transaction.created_at | date:'MMM d, y' }} IST {{ transaction.created_at | date:'h:mm a' }}
-      //            .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='transaction.description')
-      //            .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='transaction.amount')
-      //            .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-trash(ng-click="$ctrl.deleteWalletTransaction($ctrl.$stateParams.id, transaction.id, transaction.amount, transaction.type, $index)")
-      //            .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-edit(ng-click="$ctrl.editWalletTransaction($ctrl.$stateParams.id, transaction.id, transaction.amount, transaction.description, $index)")
+      div
+        .h1.m-l-md.font-thin.h3
+          b Wallet Balance: {{$ctrl.data.wallet_balance_amount}}
+
+      hr
+      form.form.form-validation.form-horizontal.wrapper-md(
+      name="walletForm"
+      novalidate
+      ng-submit='$ctrl.postWallet(walletForm)'
+      )
+        .well.m-t.m-l.bg-light.hover-wrap
+          .row
+            .col-md-12.col-sm-12.col-xs-12
+              h4
+                strong Wallet Transactions
+
+          .row
+            .col-md-4.col-sm-2.col-xs-12
+              label.col-xs-12.input-group
+                | Description
+                span.text-danger *
+                input.form.form-control(
+                type='text'
+                name='description'
+                placeholder='eg. for feedback'
+                ng-model='$ctrl.data.description'
+                required
+                )
+                span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && wallet.description.$dirty && wallet.description.$invalid') Please enter description
+
+            .col-md-4.col-sm-2.col-xs-12
+              label.col-xs-12.input-group
+                | Amount
+                span.text-danger *
+                input.form.form-control(
+                type='number'
+                name='amount'
+                placeholder='eg. 2'
+                ng-model='$ctrl.data.amount'
+                required
+                )
+                span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && wallet.amount.$dirty && wallet.amount.$invalid') Please enter amount
+
+            .col-md-2.col-sm-2.col-xs-12.save
+              h4(ng-bind="$ctrl.error.message" style="color:red;")
+              button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitWallet")
+                span.fa.fa-forward.m-r-sm
+                span.text-white(ng-if='!$ctrl.submitWallet') Save Changes
+                span(ng-if='$ctrl.submitWallet')
+                  i.fa.fa-spin.fa-circle-o-notch
+                  span.text-white &nbsp;&nbsp;submittingWallet...
+          //.row
+          //  .col-md-12.no-padder-right
+          //    table.table.m-b-none
+          //      thead
+          //        tr
+          //          th.col-xs-3 Date
+          //          th.col-xs-3 Description
+          //          th.col-xs-3 Amount
+          //          th.col-xs-1 Delete
+          //          th.col-xs-2 Edit
+          //
+          //    .col-xs-12(style='padding: 10px;')
+          //      .col-xs-12(ng-show='$ctrl.transactions.length === 0')
+          //        td(colspan="5")
+          //          h2.text-center.text-muted No Wallet Transaction Details
+          //
+          //      .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='transaction in $ctrl.transactions' )
+          //        .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs {{ transaction.created_at | date:'MMM d, y' }} IST {{ transaction.created_at | date:'h:mm a' }}
+          //        .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='transaction.description')
+          //        .col-xs-3.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='transaction.amount')
+          //        .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-trash(ng-click="$ctrl.deleteWalletTransaction($ctrl.$stateParams.id, transaction.id, transaction.amount, transaction.type, $index)")
+          //        .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-edit(ng-click="$ctrl.editWalletTransaction($ctrl.$stateParams.id, transaction.id, transaction.amount, transaction.description, $index)")
+
+
       //div
       //  .h1.m-l-md.font-thin.h3
       //    b Miscellaneous Rewards

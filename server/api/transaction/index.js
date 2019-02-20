@@ -7,5 +7,6 @@ const router = express.Router();
 // router.get('/loyalty', controller.loyaltyShow);
 // router.put('/', controller.walletUpdate);
 // router.put('/loyalty', controller.loyaltyUpdate);
+router.post('/', controller.create);
 
 module.exports = router;
