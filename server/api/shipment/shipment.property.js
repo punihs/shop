@@ -54,6 +54,7 @@ module.exports = DataTypes => ({
   carton_box_used: DataTypes.STRING,
   carton_box_Amount: DataTypes.DECIMAL(8, 2),
   carton_box_weight: DataTypes.DECIMAL(8, 2),
+  afterShip_slug: DataTypes.STRING,
   is_doc: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,

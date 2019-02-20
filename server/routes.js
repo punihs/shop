@@ -13,6 +13,7 @@ const authenticate = require('./components/oauth/authenticate');
 // - Routers
 const search = require('./api/search');
 const packages = require('./api/package');
+const afterShipCarriers = require('./api/afterShipCarriers');
 const personalShopperPackage = require('./api/package/personalShopperPackage');
 const packageComment = require('./api/package/comment');
 const packageItem = require('./api/packageItem');
@@ -72,6 +73,7 @@ module.exports = (app) => {
   app.use('/api/www/shipments', shipmentPublic);
   app.use('/api/userDocuments', authenticate(), userDocument);
   app.use('/api/countries', country);
+  app.use('/api/afterShipCarriers', afterShipCarriers);
   app.use('/api/packageItems', authenticate(), packageItem);
   app.use('/api/packageItemCategories', authenticate(), packageItemCategory);
   app.use('/api/users/public', userPublic);

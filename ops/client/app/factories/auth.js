@@ -94,6 +94,9 @@ angular.module('qui.core')
         $http
           .get('/users/states?type=SHIPMENT')
           .then(response => Session.create('shipment-states', response.data)),
+        $http
+          .get('/afterShipCarriers')
+          .then(response => Session.create('afterShipCarriers', response.data)),
       ]);
 
       return authService;

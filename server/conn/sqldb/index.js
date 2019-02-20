@@ -40,7 +40,7 @@ const db = {
 
   'PhotoRequest',
 
-  'Shipment', 'ShipmentMeta', 'ShipmentState',
+  'Shipment', 'ShipmentMeta', 'ShipmentState', 'AfterShipCarriers',
 
   // - Notifications
   'Comment',

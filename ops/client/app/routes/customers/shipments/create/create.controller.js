@@ -26,6 +26,7 @@ class ShipmentCreateController {
     this.TITLE = `${this.EDIT ? 'Edit' : 'Add New'} Shipment`;
     this.Page.setTitle(this.TITLE);
     this.shipmentTypes = this.Session.read('shipment-types');
+    this.afterShipCarriers = this.Session.read('afterShipCarriers');
     this.paymentMode(this.data);
 
     this.cartonBox = this.QCONFIG.CARTON_BOX;
@@ -62,24 +63,21 @@ class ShipmentCreateController {
     this.submittingTracking = true;
     this.clickUpload = true;
 
-    if (this.data.carton_box_used !== 'Other') {
-      this.data.carton_box_weight = null;
-    } else if (this.data.carton_box_used === 'Other' && !this.data.carton_box_weight) {
-      this
-        .toaster
-        .pop('error', 'Enter Carton Box Weight');
-      this.submittingTracking = false;
-      return;
-    }
-
     const form = this.validateForm(trackingForm);
 
+    const afterShipSlug = this.afterShipCarriers
+      .filter((x) => {
+        if (x.carrier === this.data.shipping_carrier)
+          return x;
+      });
+
     const data = Object.assign({ }, this.data);
+    Object.assign(data, { afterShip_slug: afterShipSlug[0].slug } );
     if (!form) return (this.submittingTracking = false);
 
     const allowed = [
       'shipping_carrier', 'number_of_packages', 'weight_by_shipping_partner', 'tracking_code',
-      'tracking_url',
+      'tracking_url', 'afterShip_slug',
     ];
     const { shipmentId, id: customerId } = this.$stateParams;
     data.customer_id = customerId;
@@ -186,6 +184,16 @@ class ShipmentCreateController {
   updateUpstreamPrice() {
     const allowed = ['carton_box_Amount', 'is_doc', 'upstream_cost', 'fuel_sur_charge',
       'gst_amount', 'carton_box_used', 'carton_box_Amount', 'carton_box_weight'];
+
+    if (this.data.carton_box_used !== 'Other') {
+      this.data.carton_box_weight = null;
+    } else if (this.data.carton_box_used === 'Other' && !this.data.carton_box_weight) {
+      this
+        .toaster
+        .pop('error', 'Enter Carton Box Weight');
+      this.submittingTracking = false;
+      return;
+    }
 
     const { shipmentId } = this.$stateParams;
     return this.$http.put(`/shipments/${shipmentId}/tracking`, _.pick(this.data, allowed))

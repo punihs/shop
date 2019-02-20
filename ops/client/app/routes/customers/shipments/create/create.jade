@@ -369,16 +369,12 @@ div.m-t-xl.no-margin
                   .col-md-12
                     .col-md-6.col-sm-5.col-xs-12.no-padder
                       label.col-xs-12.input-group
-                        | Carrier
-                        span.text-danger *
-                        input.form.form-control(
-                        type='text'
-                        name='shipping_carrier'
-                        placeholder='eg. DHL'
+                        | Select Carrier
+                        select.form.form-control(
                         ng-model='$ctrl.data.shipping_carrier'
-                        required
+                        name='carton_box_used'
+                        ng-options='afterShip.carrier as afterShip.carrier for afterShip in $ctrl.afterShipCarriers'
                         )
-                        span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && trackingForm.shipping_carrier.$dirty && trackingForm.shipping_carrier.$invalid') Please enter shipping Carrier
                     .col-md-6.col-sm-5.col-xs-12
                       label.col-xs-12.input-group
                         | No Of Boxes

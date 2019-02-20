@@ -5,4 +5,5 @@ angular.module('qui.core')
     get shipmentStates() { return Session.read('shipment-states'); },
     get shipmentTypes() { return Session.read('shipment-types'); },
     get orderStates() { return Session.read('order-types'); },
+    get afterShipCarriers() { return Session.read('afterShipCarriers'); },
   }));

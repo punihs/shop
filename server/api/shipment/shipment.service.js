@@ -9,8 +9,10 @@ const log = debug('s.api.shipment.controller');
 const { updateState } = require('../package/package.service');
 const cashback = require('../shipment/components/cashback');
 const transactionCtrl = require('../transaction/transaction.controller');
+const aftershipController = require('./../afterShipCarriers/afterShipCarriers.controller');
+
 const {
-  SUPPORT_EMAIL_ID, SUPPORT_EMAIL_FIRST_NAME, SUPPORT_EMAIL_LAST_NAME,
+  SUPPORT_EMAIL_ID, SUPPORT_EMAIL_FIRST_NAME, SUPPORT_EMAIL_LAST_NAME, env,
 } = require('../../config/environment');
 
 const {
@@ -386,21 +388,23 @@ exports.updateShipmentState = async ({
           { where: { id: shipment.id } },
         );
 
-        const shipmentDispacthed = await Shipment
-          .find({
-            attributes: ['country_id', 'dispatch_date', 'tracking_code'],
-            where: { id: shipment.id },
-            include: [{
-              model: User,
-              as: 'Customer',
-              attributes: ['first_name', 'last_name', 'email'],
-            }, {
-              model: Country,
-              attributes: ['name'],
-            }],
-          });
-
-        this.asanaTask(shipmentDispacthed);
+        if (env.NODE_ENV === 'production') {
+          const shipmentDispacthed = await Shipment
+            .find({
+              attributes: ['country_id', 'afterShip_slug', 'dispatch_date', 'tracking_code'],
+              where: { id: shipment.id },
+              include: [{
+                model: User,
+                as: 'Customer',
+                attributes: ['first_name', 'last_name', 'email'],
+              }, {
+                model: Country,
+                attributes: ['name'],
+              }],
+            });
+          this.asanaTask(shipmentDispacthed);
+          aftershipController.create(shipmentDispacthed);
+        }
         break;
       }
       default: {

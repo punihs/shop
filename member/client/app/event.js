@@ -21,7 +21,6 @@ angular.module('uiGenApp')
       if (Session.isAuthenticated() && (next.name === 'access.oauth')) {
         event.preventDefault();
         // return $state.go('packages.index');
-        debugger;
         const locationSearch = $window.location.search.split('&')[1];
         if (locationSearch.split('=')[1] === 'personalShopperCreate') {
           return $state.go('personalShopper.create');
