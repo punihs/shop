@@ -17,6 +17,18 @@ const {
 
 const log = debug('personal shopper');
 
+
+const getPackages = async (ids) => {
+  const pkg = await Package.findAll({
+    where: { id: ids },
+    include: [{
+      model: PackageItem,
+      attributes: ['id', 'name', 'price_amount', 'quantity', 'total_amount', 'url', 'status'],
+    }],
+  });
+  return pkg;
+};
+
 exports.payResponse = async (req, res, next) => {
   try {
     const failedURL = `${URLS_PARCEL}/personalShopper/index`;
@@ -42,18 +54,12 @@ exports.payResponse = async (req, res, next) => {
     log(req.query);
 
     const ids = objectId.split(',');
-    const pkg = await Package.findAll({
-      where: { id: ids },
-      include: [{
-        model: PackageItem,
-        attributes: ['id', 'name', 'price_amount', 'quantity', 'total_amount', 'url', 'status'],
-      }],
-    });
+    await Package.update({
+      transaction_id: req.query.transaction_id,
+    }, { where: { id: objectId.split(',') } });
 
     if (req.query.status === SUCCESS) {
-      await Package.update({
-        transaction_id: req.query.transaction_id,
-      }, { where: { id: objectId.split(',') } });
+      const pkg = await getPackages(ids);
 
       pkg.forEach((x) => {
         updateState({
@@ -80,6 +86,8 @@ exports.payResponse = async (req, res, next) => {
         res.redirect(`${sucessURL}?${stringify(params)}`);
       }
     } else {
+      const pkg = await getPackages(ids);
+
       pkg.forEach((x) => {
         updateState({
           lastStateId: null,

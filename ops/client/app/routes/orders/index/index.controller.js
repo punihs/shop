@@ -79,7 +79,7 @@ class OrdersIndexController {
     // $emit coming from directive
     this.$scope.$on('loadMore', () => this.loadPackages());
 
-    this.loadPackages();
+    this.loadPackages(this.$stateParams.type);
   }
 
   sort(sortBy) {
@@ -117,20 +117,7 @@ class OrdersIndexController {
   }
 
 
-  loadPackages(refresh) {
-    if (refresh) {
-      this.params.offset = 0;
-      this.ui.lazyLoad = true;
-      this.packages = [];
-
-      // Move to top if fresh request required
-      this.$window.scrollTo(0, 0);
-    }
-
-    if (!this.ui.lazyLoad) return; // if no more packages to get
-    this.ui = { lazyLoad: false, loading: true };
-    this.params.q = this.xquery || '';
-
+  loadPackages(psType) {
     if (this.$stateParams.bucket === 'Interview') {
       this.params.interview_time = [
         this.moment().startOf('day').toISOString(),
@@ -143,16 +130,22 @@ class OrdersIndexController {
       this.params.type = 'ORDER';
     }
 
+    let shopperType = '';
+
+    if (psType === 'self_purchased') {
+      shopperType = 'cod';
+      this.cod = true;
+      this.ps = false;
+    } else if (psType === 'assisted_purchased') {
+      shopperType = 'ps';
+      this.ps = true;
+      this.cod = false;
+    }
+
     this.$http
-      .get('/packages', { params: this.params })
+      .get(`/packages?shopperType=${shopperType}`, { params: this.params })
       .then(({ data: { packages: current, total, oldfacets } }) => {
         const packages = current;
-        // Handle error for php error
-        if (typeof packages === 'undefined') {
-          if (!!refresh) this.packages = [];
-          this.ui.lazyLoad = false;
-          return;
-        }
 
         if (!packages.length && this.$rootScope.previousState === 'access.oauth') {
           this.$state.go('orders.index', { bucket: 'ALL' });
@@ -177,8 +170,6 @@ class OrdersIndexController {
         }
       })
       .catch(() => {
-        if (!!refresh) this.packages = [];
-        this.ui.lazyLoad = false;
       });
   }
 }

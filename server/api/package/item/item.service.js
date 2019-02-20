@@ -3,21 +3,18 @@ const {
 } = require('../../../conn/sqldb');
 
 const {
-  PACKAGE_TYPES: {
-    PERSONAL_SHOPPER,
-  },
   PACKAGE_STATE_IDS: {
     ORDER_CREATED,
   },
 } = require('../../../config/constants/index');
 
-exports.getPersonalShopperItems = async (customerId) => {
+exports.getPersonalShopperItems = async (customerId, packageType) => {
   const packages = await Package
     .findAll({
       attributes: ['id', 'order_code', 'store_id'],
       where: {
         customer_id: customerId,
-        package_type: PERSONAL_SHOPPER,
+        package_type: packageType,
       },
       include: [{
         model: PackageState,
@@ -43,13 +40,15 @@ exports.getPersonalShopperItems = async (customerId) => {
         'price_amount',
         'sub_total',
         'buy_if_price_changed',
+        'seller_invoice',
       ],
       where: {
         id: packageIds,
       },
       include: [{
         model: PackageItem,
-        attributes: ['id', 'name', 'quantity', 'price_amount', 'total_amount', 'package_id', 'if_item_unavailable', 'color', 'url', 'size'],
+        attributes: ['id', 'name', 'quantity', 'price_amount', 'total_amount',
+          'package_id', 'if_item_unavailable', 'color', 'url', 'size'],
       },
       {
         model: Store,

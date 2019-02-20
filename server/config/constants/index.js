@@ -56,6 +56,7 @@ const constants = {
     AWAITING_FOR_STOCK: 67,
     ORDER_COMPLETED: 68,
     OTHER_ITEMS_PROCEED: 69,
+    AWAITING_FOR_ORDER: 70,
   },
   SHIPMENT_COUPON_STATES: {
     PENDING: 'pending',

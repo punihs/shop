@@ -211,6 +211,7 @@ module.exports = {
   PAYMENT_COMPLETED: {
     PAYMENT_COMPLETED: true,
     PERSONAL_SHOPPER: true,
+    COD: true,
     ORDER_ITEMS: true,
     pkg,
     customer,
@@ -223,12 +224,13 @@ module.exports = {
   ORDER_CANCELLED: {
     ORDER_CANCELLED: true,
     PERSONAL_SHOPPER: true,
+    COD: true,
     pkg,
     customer,
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: `Your Personal Shopper Order ${pkg.order_code} Has Been Cancelled`,
+    subject: `Your Order ${pkg.order_code} Has Been Cancelled`,
   },
   PRICE_CHANGED: {
     PRICE_CHANGED: true,
@@ -244,6 +246,7 @@ module.exports = {
   PAYMENT_FAILED: {
     PAYMENT_FAILED: true,
     PERSONAL_SHOPPER: true,
+    COD: true,
     pkg,
     customer,
     actingUser: OPS,
@@ -255,12 +258,13 @@ module.exports = {
   PAYMENT_CONFIRMED: {
     PAYMENT_CONFIRMED: true,
     PERSONAL_SHOPPER: true,
+    COD: true,
     pkg,
     customer,
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: `We Have Received Your Payment on Personal Shopper Order ${pkg.order_code}`,
+    subject: `We Have Received Your Payment on Order ${pkg.order_code}`,
     paymentGateway,
   },
   ORDER_PLACED: {
@@ -288,6 +292,7 @@ module.exports = {
   REFUNDED_TO_WALLET: {
     REFUNDED_TO_WALLET: true,
     PERSONAL_SHOPPER: true,
+    COD: true,
     pkg,
     customer,
     actingUser: OPS,
@@ -298,6 +303,7 @@ module.exports = {
   REFUNDED_TO_BANK_ACCOUNT: {
     REFUNDED_TO_BANK_ACCOUNT: true,
     PERSONAL_SHOPPER: true,
+    COD: true,
     pkg,
     customer,
     actingUser: OPS,
@@ -318,12 +324,13 @@ module.exports = {
   ORDER_COMPLETED: {
     ORDER_COMPLETED: true,
     PERSONAL_SHOPPER: true,
+    COD: true,
     pkg,
     customer,
     actingUser: OPS,
     ENV,
     packageItems,
-    subject: `All Items on Your Personal Shopper Order ${pkg.order_code} Have Arrived`,
+    subject: `All Items on Your Order ${pkg.order_code} Have Arrived`,
   },
   PACKAGE_STORAGE: {
     PACKAGE_STORAGE: true,

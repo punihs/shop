@@ -8,7 +8,7 @@ angular.module('uiGenApp')
         template: '<div ui-view></div>',
       })
       .state('orders.index', {
-        url: '?bucket&sid&uid',
+        url: '?bucket&sid&uid&type',
         templateUrl: 'app/routes/orders/index/index.html',
         controller: 'OrdersIndexController',
         controllerAs: '$ctrl',

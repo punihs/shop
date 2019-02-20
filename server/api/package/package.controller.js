@@ -18,7 +18,7 @@ const {
   PHOTO_REQUEST_TYPES: { STANDARD, ADVANCED },
   PHOTO_REQUEST_STATES: { COMPLETED },
   GROUPS: { OPS, CUSTOMER },
-  PACKAGE_TYPES: { INCOMING },
+  PACKAGE_TYPES: { INCOMING, PERSONAL_SHOPPER, COD },
 } = require('../../config/constants');
 const {
   PACKAGE: { STANDARD_PHOTO, ADVANCED_PHOTO },
@@ -365,9 +365,11 @@ exports.update = async (req, res, next) => {
   const { id: customerId } = req.user;
 
   try {
-    const { type } = req.query;
+    const { type, shopperType } = req.query;
     const { id } = req.params;
     const body = req.body;
+
+    const packageType = shopperType === 'cod' ? COD : PERSONAL_SHOPPER;
 
     const options = {
       where: {},
@@ -375,7 +377,7 @@ exports.update = async (req, res, next) => {
 
     if (type === 'psCustomerSide') {
       const status = await updatePackageOptions(body);
-      const packageItems = await getPersonalShopperItems(customerId);
+      const packageItems = await getPersonalShopperItems(customerId, packageType);
 
       return res.json(packageItems);
     }

@@ -4,7 +4,7 @@ const hookshot = require('../../conn/hookshot');
 const viewConfig = require('../../view.config');
 const {
   PACKAGE_STATE_ID_NAMES_MAP,
-  PACKAGE_TYPES: { INCOMING, PERSONAL_SHOPPER },
+  PACKAGE_TYPES: { INCOMING, PERSONAL_SHOPPER, COD },
 } = require('../../config/constants');
 const { User, Store } = require('../../conn/sqldb');
 
@@ -44,10 +44,10 @@ exports.stateChange = async ({
         paymentGateway,
         INCOMING: pkg.package_type === INCOMING ? true : false,
         PERSONAL_SHOPPER: pkg.package_type === PERSONAL_SHOPPER ? true : false,
-        ORDER_ITEMS: pkg.package_type === PERSONAL_SHOPPER ? true : false,
+        COD: pkg.package_type === COD ? true : false,
+        ORDER_ITEMS: [PERSONAL_SHOPPER, COD].includes(pkg.package_type) ? true : false,
         packageItems,
       }, headers);
-
     return null;
   } catch (err) {
     return next(err);

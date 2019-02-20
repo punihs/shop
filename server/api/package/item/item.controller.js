@@ -12,6 +12,9 @@ const {
   PACKAGE_STATE_IDS: {
     READY_TO_SHIP, ADDED_SHIPMENT,
   },
+  PACKAGE_TYPES: {
+    PERSONAL_SHOPPER, COD,
+  },
 } = require('../../../config/constants');
 
 const log = debug('package');
@@ -19,14 +22,16 @@ const log = debug('package');
 exports.index = async (req, res, next) => {
   try {
     const { packageId } = req.params;
-    const { type, customerId } = req.query;
+    const { type, customerId, shopperType } = req.query;
+
+    const packageType = shopperType === 'cod' ? COD : PERSONAL_SHOPPER;
 
     const options = {
       where: {},
     };
 
     if (type === 'psCustomerSide') {
-      const personalShopperItems = await getPersonalShopperItems(customerId);
+      const personalShopperItems = await getPersonalShopperItems(customerId, packageType);
       return res.json(personalShopperItems);
     }
 

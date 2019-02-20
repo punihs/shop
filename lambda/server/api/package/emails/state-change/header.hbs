@@ -17,6 +17,8 @@
                 <td> <a href="{{ENV.URLS_PARCEL}}/packages?bucket=ALL" style="text-decoration:none;color:rgb(0,102,153);font-family:Arial,san-serif" target="_blank">Your Packages</a> </td>
               {{else if PERSONAL_SHOPPER}}
                 <td> <a href="{{ENV.URLS_PARCEL}}/personalShopper/index" style="text-decoration:none;color:rgb(0,102,153);font-family:Arial,san-serif" target="_blank">Your Orders</a> </td>
+              {{else if COD}}
+                <td> <a href="{{ENV.URLS_PARCEL}}/personalShopper/index" style="text-decoration:none;color:rgb(0,102,153);font-family:Arial,san-serif" target="_blank">Your Orders</a> </td>
               {{/if}}
               <td> <span style="text-decoration:none;color:#ccc;font:15px Arial,san-serif">&nbsp;|&nbsp;</span> </td>
               <td> <a href="{{ENV.URLS_WWW}}" style="text-decoration:none;color:rgb(0,102,153);font-family:Arial,san-serif" target="_blank"> <span class="il">ShoppRe</span>.com</a> </td>
@@ -144,6 +146,8 @@
           {{#if INCOMING}}
             <span style="font-size:12px"> Package ID: </span>
           {{else if PERSONAL_SHOPPER}}
+            <span style="font-size:12px"> Order ID: </span>
+          {{else if COD}}
             <span style="font-size:12px"> Order ID: </span>
           {{/if}}
           <span style="font-size:12px">

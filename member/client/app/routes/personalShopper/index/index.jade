@@ -9,6 +9,14 @@
       button.btn-l.btn-b-r.btn-s-r.pull-right.f-s-9
         | Place an Order
   .clearfix
+  br
+  .wrapper-md.bg-white-only
+    ul.nav.nav-tabs(role='tablist')
+      li(ng-class='$ctrl.ps ? "ps-menu-active" : ""')
+        a(href='#', ng-class='$ctrl.ps ? "ps-menu-active" : ""',  ng-click="$ctrl.getList('assisted_purchased')")  Assisted Purchase
+      li(ng-class='$ctrl.cod ? "ps-menu-active" : ""')
+        a(href='#', ng-class='$ctrl.cod ? "ps-menu-active" : ""',  ng-click="$ctrl.getList('self_purchased')") Self Purchase
+    .clearfix
   div.col-md-12.text-center.text-danger.bg-white-only.m-t-lg
     alert.alert-warning(role='alert', ng-show='$ctrl.error')
       h4.text-danger(style='margin-top: 10px; margin-bottom: 10px;') {{$ctrl.message}}
@@ -45,7 +53,7 @@
           td.footable-visible {{package.order_code}}
           td.footable-visible {{package.Store.name}}
           td.footable-visible {{package.created_at | date:'MMM d, y'}} IST {{package.created_at | date:'h:mm a'}}
-          td.footable-visible {{package.package_type === 3 ? 'COD' : 'PERSONAL SHOPPER'}}
+          td.footable-visible {{package.package_type === '3' ? 'PERSONAL SHOPPER' : 'COD'}}
           td.footable-visible {{package.sub_total | number: 2}}
           td.footable-visible
             div
@@ -60,7 +68,7 @@
                   p Awaiting Payment
                   p It might take upto 24 Hours to reflect your payments into our account.
                   p
-                    a.summary-order(ui-sref='transaction.create({id: package.id, amount: package.sub_total, object_id: package.id.toString(), customer_id: $ctrl.customerId, axis_banned: false, type: "ps"})') Change Payment Method
+                    a.summary-order(ui-sref='transaction.create({id: package.id, amount: package.sub_total, object_id: package.id.toString(), customer_id: $ctrl.customerId, axis_banned: false, type: $ctrl.packageType})') Change Payment Method
                 span(ng-if="package.payment_status === 'success' && (package.payment_gate_id == $ctrl.PAYMENT_GATEWAY.CARD || package.payment_gate_id == $ctrl.PAYMENT_GATEWAY.PAYPAL || $ctrl.package.payment_gate_id == $ctrl.PAYMENT_GATEWAY.PAYTM)")
                   p Awaiting Payment
                   p It might take upto 24 Hours to reflect your payments into our account.
@@ -111,7 +119,7 @@
                   a.summary-order(ng-click="$ctrl.itemsProceed(package.id, $index)") Proceed with Other Items
               div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.PAYMENT_FAILED')
                 p
-                  a.summary-order(ui-sref='transaction.create({id: package.id, amount: package.sub_total, object_id: package.id.toString(), customer_id: $ctrl.customerId, axis_banned: false, type: "ps"})') Retry Payment
+                  a.summary-order(ui-sref='transaction.create({id: package.id, amount: package.sub_total, object_id: package.id.toString(), customer_id: $ctrl.customerId, axis_banned: false, type: $ctrl.packageType})') Retry Payment
               div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.OUT_OF_STOCK')
                 p {{package.PackageState.State.name}}
                   i.fa.fa-info-circle.m-l-xs(

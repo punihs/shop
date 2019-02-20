@@ -58,9 +58,12 @@
       </table> </td>
   {{else if ORDER_ITEMS}}
      <tr>
-        <td colspan="2" style="width:640px"> <p style="font:18px Arial,sans-serif;color:#cc6600;border-bottom:1px solid #ccc;margin:10px 20px 3px 20px;padding:0 0 3px 0"> Order Contents </p> </td>
+     {{#if packageItems}}
+         <td colspan="2" style="width:640px"> <p style="font:18px Arial,sans-serif;color:#cc6600;border-bottom:1px solid #ccc;margin:10px 20px 3px 20px;padding:0 0 3px 0"> Order Contents </p> </td>
+     {{/if}}
      </tr>
      <tr>
+     {{#if packageItems}}
        <td colspan="2" style="padding:16px 40px;width:640px;">
          <table border="1" style="border-collapse:collapse;border: 0;width:640px;">
             <tr>
@@ -71,7 +74,6 @@
               <th>Total Price</th>
               <th>Status</th>
             </tr>
-            {{#if packageItems}}
               {{#each packageItems}}
                 <tr style="text-align: center">
                   <td>{{name}}</td>
@@ -82,9 +84,9 @@
                   <td>{{status}}</td>
                 </tr>
               {{/each}}
-            {{/if}}
          </table>
        </td>
+     {{/if}}
      </tr>
   {{/if}}
 </tr>

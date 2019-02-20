@@ -32,6 +32,8 @@ const constants = {};
   { name: 'actionable_state', keyMap: false },
   { name: 'personal-shopper-actionable-state', keyMap: false },
   { name: 'shipment-actionable-state', keyMap: false },
+  { name: 'cod-actionable-state', keyMap: false },
+  { name: 'cod-state', keyMap: false },
   { name: 'locker', keyMap: false },
   { name: 'after-ship-carriers', keyMap: false },
 ]

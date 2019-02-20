@@ -25,12 +25,26 @@ class IndexController {
     this.PACKAGE_STATE_IDS = this.CONFIG.PACKAGE_STATE_IDS;
     this.Page.setTitle('Order History');
     this.packages = [];
-    this.getList();
+    this.getList('assisted_purchased');
   }
 
-  getList() {
+  getList(type) {
+    let shopperType = '';
+
+    if (type === 'self_purchased') {
+      shopperType = 'cod';
+      this.cod = true;
+      this.ps = false;
+      this.packageType = 'cod';
+    } else if (type === 'assisted_purchased') {
+      shopperType = 'ps';
+      this.ps = true;
+      this.cod = false;
+      this.packageType = 'ps';
+    }
+
     this.$http
-      .get('/packages/personalShopperPackage/history')
+      .get(`/packages/personalShopperPackage/history?shopperType=${shopperType}`)
       .then(({ data: { packages } }) => {
         this.packages = packages;
 

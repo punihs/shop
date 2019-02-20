@@ -1,16 +1,20 @@
 class CreateController {
-  constructor($http, Page, Session, $state, toaster, $stateParams) {
+  constructor($http, Page, Session, $state, toaster, $stateParams, S3, URLS) {
     this.$http = $http;
     this.Page = Page;
     this.Session = Session;
     this.toaster = toaster;
     this.$state = $state;
+    this.S3 = S3;
     this.$stateParams = $stateParams;
+    this.URLS = URLS;
     this.$onInit();
   }
 
   $onInit() {
     this.Page.setTitle('Shipment Request Create');
+    this.uploadingPhotos = false;
+    this.file = {};
     this.orderTypeSection = true;
     this.loading = false;
     this.cartSection = false;
@@ -38,6 +42,7 @@ class CreateController {
       'price_amount',
       'sub_total',
       'buy_if_price_changed',
+      'seller_invoice',
     ];
 
     this.if_item_unavailable = [
@@ -53,8 +58,6 @@ class CreateController {
       '1000+',
       'Cancel if the cost is increased',
     ];
-
-    this.getPackageItem();
 
     this.Stores = {
       select: ($item) => {
@@ -94,17 +97,38 @@ class CreateController {
     };
   }
 
+  startUpload(ctrl, file) {
+    ctrl.S3.uploadCod(file, ctrl.data, ctrl);
+  }
+
   getPackageItem() {
     this.loading = true;
     const customerId = this.Session.read('userinfo').id;
+    let shopperType = '';
+
+    if (this.self_purchased) {
+      shopperType = 'cod';
+    } else if (this.assisted_purchased) {
+      shopperType = 'ps';
+    }
     this.$http
-      .get(`/packages/0/items?type=psCustomerSide&customerId=${customerId}`)
+      .get(`/packages/0/items?type=psCustomerSide&customerId=${customerId}&shopperType=${shopperType}`)
       .then(({ data }) => {
         this.packageData = data;
         this.packageOptions = data;
         this.calculateAmount(data);
         this.loading = false;
       });
+  }
+
+  orderTypeSelected() {
+    if (!this.self_purchased && !this.assisted_purchased) {
+      this
+        .toaster
+        .pop('error', 'Please select ps type.', '');
+      return false;
+    }
+    return true;
   }
 
   toggleOrderTypeSection(currentStatus) {
@@ -115,13 +139,24 @@ class CreateController {
   }
 
   toggleCartSection(currentStatus) {
+    if (!this.orderTypeSelected()) {
+      return false;
+    }
     this.cartSection = currentStatus === false ? true : false;
     this.orderTypeSection = false;
     this.optionsSection = false;
     this.summarySection = false;
+
+    if (this.cartSection) {
+      this.getPackageItem();
+    }
+    return null;
   }
 
   toggleOptionsSection(currentStatus) {
+    if (!this.orderTypeSelected()) {
+      return false;
+    }
     this.optionsSection = currentStatus === false ? true : false;
     this.orderTypeSection = false;
     this.cartSection = false;
@@ -129,9 +164,13 @@ class CreateController {
     if (this.optionsSection) {
       this.getPackageItem();
     }
+    return null;
   }
 
   toggleSummarySection(currentStatus) {
+    if (!this.orderTypeSelected()) {
+      return false;
+    }
     this.summarySection = currentStatus === false ? true : false;
     this.orderTypeSection = false;
     this.cartSection = false;
@@ -140,19 +179,28 @@ class CreateController {
     if (this.summarySection) {
       this.getPackageItem();
     }
+    return null;
   }
 
   btnToggleCartSection(currentStatus) {
+    if (!this.orderTypeSelected()) {
+      return false;
+    }
     this.cartSection = currentStatus === false ? true : true;
     this.orderTypeSection = false;
     this.optionsSection = false;
     this.summarySection = false;
+    if (this.cartSection) {
+      this.getPackageItem();
+    }
+    return null;
   }
   btnToggleOptionsSection(currentStatus) {
     this.optionsSection = currentStatus === false ? true : true;
     this.orderTypeSection = false;
     this.cartSection = false;
     this.summarySection = false;
+
     if (this.optionsSection) {
       this.getPackageItem();
     }
@@ -161,7 +209,7 @@ class CreateController {
     let price = false;
 
     this.packageOptions.forEach((x) => {
-      if (!x.buy_if_price_changed) {
+      if (!x.buy_if_price_changed && this.assisted_purchased) {
         price = true;
 
         return this
@@ -194,6 +242,13 @@ class CreateController {
         .toaster
         .pop('error', 'Please select store from the list.', '');
     }
+    let shopperType = '';
+
+    if (this.self_purchased) {
+      shopperType = 'cod';
+    } else if (this.assisted_purchased) {
+      shopperType = 'ps';
+    }
     if (this.submitting) return null;
     this.submitting = true;
     this.clickUpload = true;
@@ -201,6 +256,7 @@ class CreateController {
     const form = this.validateForm(newItemForm);
 
     const data = Object.assign({ }, this.data);
+    Object.assign(data, { shopperType });
     if (!form) return (this.submitting = false);
     this.$http
       .post('/packages/personalShopperPackage', data)
@@ -311,15 +367,30 @@ class CreateController {
   }
 
   updatePackageOption() {
+    this.clickUpload = true;
     let price = false;
+    let shopperType = '';
+
+    if (this.self_purchased) {
+      shopperType = 'cod';
+    } else if (this.assisted_purchased) {
+      shopperType = 'ps';
+    }
 
     this.packageOptions.forEach((x) => {
-      if (!x.buy_if_price_changed) {
+      if (!x.buy_if_price_changed && this.assisted_purchased) {
         price = true;
 
         return this
           .toaster
-          .pop('error', 'Please Select Choice of Would it be OK to buy it if when we shop, the item cost has gone up by', '');
+          .pop('error', 'Please Select Choice of Would it be OK to buy it if when we shop, the item cost has gone up by and save', '');
+      }
+      if (!x.seller_invoice && this.self_purchased) {
+        price = true;
+
+        return this
+          .toaster
+          .pop('error', 'Please Upload invoice of your order and save', '');
       }
 
       return null;
@@ -333,8 +404,10 @@ class CreateController {
       _.pick(item, this.packageFields)
     );
 
+    Object.assign(data, { seller_invoice: data.object });
+
     this.$http
-      .put('/packages/0?type=psCustomerSide', data)
+      .put(`/packages/0?type=psCustomerSide&shopperType=${shopperType}`, data)
       .then(({ data: packageItems }) => {
         this.packageOptions = packageItems;
         this.calculateAmount(packageItems);
@@ -362,6 +435,14 @@ class CreateController {
   }
 
   makePayment() {
+    let shopperType = '';
+
+    if (this.self_purchased) {
+      shopperType = 'cod';
+    } else if (this.assisted_purchased) {
+      shopperType = 'ps';
+    }
+
     if (this.loading) {
       this
         .toaster
@@ -376,7 +457,7 @@ class CreateController {
       object_id: id.toString(),
       customer_id: this.Session.read('userinfo').id,
       axis_banned: false,
-      type: 'ps',
+      type: shopperType,
     });
   }
 }

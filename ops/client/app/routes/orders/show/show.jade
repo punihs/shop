@@ -129,7 +129,7 @@
               div
                 span(ng-bind='$ctrl.transactions[0].PaymentGateway.value')
 
-          .clear.wrapper-xs(ng-if='$ctrl.transactions[0].payment_gateway_fee_amount')
+          .clear.wrapper-xs(ng-if='$ctrl.transactions[0].payment_gateway_fee_amount && ["success", "pending"].includes($ctrl.transactions[0].payment_status)')
             a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
               i.fa.fa-inr.text-muted.fa-lg
             div.text-danger
@@ -137,7 +137,7 @@
               div
                 span(ng-bind='$ctrl.transactions[0].payment_gateway_fee_amount')
 
-          .clear.wrapper-xs(ng-if='$ctrl.transactions[0].final_amount')
+          .clear.wrapper-xs(ng-if='$ctrl.transactions[0].final_amount && ["success", "pending"].includes($ctrl.transactions[0].payment_status)')
             a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
               i.fa.fa-inr.text-muted.fa-lg
             div.text-danger
@@ -145,7 +145,7 @@
               div
                 span(ng-bind='$ctrl.transactions[0].final_amount')
 
-          .clear.wrapper-xs(ng-if='$ctrl.data.transaction_id')
+          .clear.wrapper-xs(ng-if='$ctrl.data.transaction_id && ["success", "pending"].includes($ctrl.transactions[0].payment_status)')
             a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
               i.fa.fa-inr.text-muted.fa-lg
             div.text-danger

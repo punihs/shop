@@ -13,6 +13,7 @@ exports.notifications = (req, res) => {
     paymentGateway,
     INCOMING,
     PERSONAL_SHOPPER,
+    COD,
     ORDER_ITEMS,
     packageItems,
   } = req.body;
@@ -45,6 +46,7 @@ exports.notifications = (req, res) => {
           ENV,
           INCOMING,
           PERSONAL_SHOPPER,
+          COD,
           paymentGateway,
           ORDER_ITEMS,
           packageItems,

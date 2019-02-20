@@ -6,7 +6,7 @@ const { getPersonalShopperItems } = require('../item/item.service');
 
 const {
   PACKAGE_TYPES: {
-    PERSONAL_SHOPPER,
+    PERSONAL_SHOPPER, COD,
   },
   PACKAGE_STATE_IDS: {
     ORDER_CREATED,
@@ -20,7 +20,7 @@ const {
 
 const {
   PACKAGE: {
-    PERSONAL_SHOPPER_PERCENTAGE,
+    PERSONAL_SHOPPER_PERCENTAGE, SELF_SHOPPER_PERCENTAGE,
   },
 } = require('../../../config/constants/charges');
 
@@ -33,6 +33,12 @@ exports.create = async (req, res, next) => {
 
   const price = req.body.price_amount;
   const storeId = req.body.store_id;
+  const { shopperType } = req.body;
+
+  const packageType = shopperType === 'cod' ? COD : PERSONAL_SHOPPER;
+
+  const psFee = packageType === PERSONAL_SHOPPER ? PERSONAL_SHOPPER_PERCENTAGE : SELF_SHOPPER_PERCENTAGE;
+
   let totalPrice = '';
   let orderId = '';
   let packageOrderCode = '';
@@ -44,7 +50,7 @@ exports.create = async (req, res, next) => {
       where: {
         store_id: storeId,
         customer_id: customerId,
-        package_type: PERSONAL_SHOPPER,
+        package_type: packageType,
       },
       include: [{
         model: PackageState,
@@ -82,7 +88,7 @@ exports.create = async (req, res, next) => {
     totalPrice = (req.body.quantity * price) + shopperPackage.price_amount;
 
     personalShopPackage.price_amount = totalPrice;
-    let psCost = (PERSONAL_SHOPPER_PERCENTAGE / 100) * totalPrice;
+    let psCost = (psFee / 100) * totalPrice;
     psCost = Math.round(psCost);
 
     if (psCost < 200) { psCost = 200; }
@@ -107,7 +113,11 @@ exports.create = async (req, res, next) => {
     let personalShopper = '';
 
     do {
-      orderCode = `PS${customerId}${parseInt((Math.random() * (1000 - 100)) + 100, 10)}`;
+      if (packageType === PERSONAL_SHOPPER) {
+        orderCode = `PS${customerId}${parseInt((Math.random() * (1000 - 100)) + 100, 10)}`;
+      } else {
+        orderCode = `COD${customerId}${parseInt((Math.random() * (1000 - 100)) + 100, 10)}`;
+      }
 
       personalShopper = Package
         .find({ where: { order_code: orderCode } });
@@ -119,7 +129,7 @@ exports.create = async (req, res, next) => {
     totalPrice = req.body.quantity * price;
     personalShopperPackage.price_amount = totalPrice;
 
-    let psCost = (PERSONAL_SHOPPER_PERCENTAGE / 100) * totalPrice;
+    let psCost = (psFee / 100) * totalPrice;
     psCost = Math.round(psCost);
 
     if (psCost < 200) { psCost = 200; }
@@ -127,7 +137,7 @@ exports.create = async (req, res, next) => {
     personalShopperPackage.personal_shopper_cost = psCost;
 
     personalShopperPackage.sub_total = totalPrice + psCost;
-    personalShopperPackage.package_type = PERSONAL_SHOPPER;
+    personalShopperPackage.package_type = packageType;
 
     personalShop = await Package
       .create(personalShopperPackage);
@@ -166,7 +176,7 @@ exports.create = async (req, res, next) => {
       attributes: ['order_code'],
       where: {
         customer_id: customerId,
-        package_type: PERSONAL_SHOPPER,
+        package_type: packageType,
       },
       include: [{
         model: PackageState,
@@ -479,6 +489,12 @@ exports.destroyItem = async (req, res, next) => {
   const packageId = req.params.id;
   const { itemId } = req.params;
 
+  const { shopperType } = req.body;
+
+  const packageType = shopperType === 'cod' ? COD : PERSONAL_SHOPPER;
+
+  const psFee = packageType === 'PERSONAL_SHOPPER' ? PERSONAL_SHOPPER_PERCENTAGE : SELF_SHOPPER_PERCENTAGE;
+
   const optionsItems = {
     attributes: ['id', 'price_amount', 'total_quantity', 'store_id', 'customer_id', 'order_code'],
     where: { id: packageId },
@@ -519,7 +535,7 @@ exports.destroyItem = async (req, res, next) => {
     personalShopPackage.price_amount = newPrice;
     personalShopPackage.total_quantity = newQty;
 
-    let psCost = (PERSONAL_SHOPPER_PERCENTAGE / 100) * newPrice;
+    let psCost = (psFee / 100) * newPrice;
     psCost = Math.round(psCost);
 
     if (psCost < 200) {
@@ -647,7 +663,6 @@ exports.cancelOrder = async (req, res, next) => {
       where: {
         customer_id: customerId,
         id: orderId,
-        package_type: PERSONAL_SHOPPER,
       },
       limit: Number(req.query.limit) || 1,
     });
@@ -682,7 +697,6 @@ exports.proceed = async (req, res, next) => {
       where: {
         customer_id: customerId,
         id: orderId,
-        package_type: PERSONAL_SHOPPER,
       },
       limit: Number(req.query.limit) || 1,
     });
@@ -710,7 +724,6 @@ exports.itemsProceed = async (req, res, next) => {
       where: {
         customer_id: customerId,
         id: orderId,
-        package_type: PERSONAL_SHOPPER,
       },
       limit: Number(req.query.limit) || 1,
     });
@@ -730,12 +743,13 @@ exports.itemsProceed = async (req, res, next) => {
 
 exports.history = async (req, res, next) => {
   const customerId = req.user.id;
-
+  const { shopperType } = req.query;
+  const packageType = shopperType === 'cod' ? COD : PERSONAL_SHOPPER;
   const packages = await Package
     .findAll({
       where: {
         customer_id: customerId,
-        package_type: PERSONAL_SHOPPER,
+        package_type: packageType,
       },
       include: [{
         model: Store,
@@ -763,7 +777,6 @@ exports.paymentSuccess = async (req, res, next) => {
     .findAll({
       where: {
         customer_id: customerId,
-        package_type: PERSONAL_SHOPPER,
         id,
       },
       include: [{

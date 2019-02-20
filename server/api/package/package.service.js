@@ -14,7 +14,10 @@ const {
   },
   PACKAGE_STATE_IDS: {
     PACKAGE_ITEMS_UPLOAD_PENDING, SPLIT_PACKAGE_PROCESSED, AWAITING_VERIFICATION, IN_REVIEW,
-    ADDED_SHIPMENT,
+    ADDED_SHIPMENT, AWAITING_FOR_ORDER, ORDER_CREATED,
+  },
+  PACKAGE_TYPES: {
+    PERSONAL_SHOPPER, COD,
   },
 
   PAYMENT_GATEWAY: {
@@ -56,6 +59,8 @@ exports.index = async ({
     // - Locker Page or Member Dashboard
     const IS_CUSTOMER_PAGE = !!params.customerId;
     const { type } = query;
+    const { shopperType } = query;
+    const packageType = shopperType === 'cod' ? COD : PERSONAL_SHOPPER;
 
     if (type === 'ORDER') {
       BUCKET = BUCKETS.ORDER[actingUser.group_id];
@@ -113,8 +118,10 @@ exports.index = async ({
       }
       case (actingUser.app_id === APPS.OPS && actingUser.group_id === OPS): {
         if (IS_CUSTOMER_PAGE) options.where.customer_id = params.customerId;
+        if (type === 'ORDER') options.where.package_type = packageType;
+
         options.attributes = ['id', 'customer_id', 'created_at', 'weight', 'price_amount', 'store_id', 'invoice_code',
-          'content_type', 'updated_at', 'order_code', 'transaction_id'];
+          'content_type', 'updated_at', 'order_code', 'transaction_id', 'package_type'];
         options.include = [{
           where: {},
           model: PackageState,
@@ -362,7 +369,8 @@ exports.updateState = async ({
       name: gateway,
     };
 
-    if (!([IN_REVIEW, AWAITING_VERIFICATION, ADDED_SHIPMENT].includes(nextStateId))) {
+    if (!([IN_REVIEW, AWAITING_VERIFICATION, ADDED_SHIPMENT,
+      AWAITING_FOR_ORDER, ORDER_CREATED].includes(nextStateId))) {
       hookshot
         .stateChange({
           nextStateId,

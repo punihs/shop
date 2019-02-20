@@ -12,14 +12,23 @@
         | Payment Successful
     br
     .container(ng-if="$ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.WIRE")
-      h4 We have received your Personal Shopper order.  We're only one step away from placing your order; you'd have to make payment.Once we confirm
-      h4 the payment, we'll make your purchase in just 24 hours; any difference in product costs at the time of us placing the order will be settled at the end.
+      h4(ng-if="$ctrl.transactions[0].object_name === 'ps'")
+        | We have received your Assisted Purchase order.  We're only one step away from placing your order; you'd have to make payment.Once we confirm
+      h4(ng-if="$ctrl.transactions[0].object_name === 'ps'")
+        |   the payment, we'll make your purchase in just 24 hours; any difference in product costs at the time of us placing the order will be settled at the end.
+      h4(ng-if="$ctrl.transactions[0].object_name === 'cod'")
+        | We have received your Self Purchase order.  We're only awaiting for receiving your order; you'd have to make payment.Once we confirm
+      h4(ng-if="$ctrl.transactions[0].object_name === 'cod'")
+        |   the payment, we'll accept your order; any difference in product costs at the time of receiving the order will be settled at the end.
       br
-      h4.text-center You'll be notified via email once the order is placed or if we run into any issue with your order.
+      h4.text-center(ng-if="$ctrl.transactions[0].object_name === 'ps'") You'll be notified via email once the order is placed or if we run into any issue with your order.
+      h4.text-center(ng-if="$ctrl.transactions[0].object_name === 'cod'") You'll be notified via email once the order is recieved or if we run into any issue with your order.
     .container(ng-if="$ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.CARD || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.WALLET || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.PAYPAL || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.PAYTM || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.CASH")
-      h4.text-center Your order is being processed. It will be placed within 24 hours.
+      h4.text-center(ng-if="$ctrl.transactions[0].object_name === 'ps'") Your order is being processed. It will be placed within 24 hours.
+      h4.text-center(ng-if="$ctrl.transactions[0].object_name === 'cod'") Thank you ,Your Self Purchase order is Placed
       br
-      h4.text-center You'll be notified via email once the order is placed or if we run into any issue with your order.
+      h4.text-center(ng-if="$ctrl.transactions[0].object_name === 'ps'") You'll be notified via email once the order is placed or if we run into any issue with your order.
+      h4.text-center(ng-if="$ctrl.transactions[0].object_name === 'cod'") You'll be notified via email once the order is recieved or if we run into any issue with your order.
     br
     .container.div-br.no-padder(ng-if="$ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.WIRE")
       .col-md-8.div-pad-20

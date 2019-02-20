@@ -19,31 +19,31 @@
             #collapseOne.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingOne' ng-if="$ctrl.orderTypeSection")
               .panel-body
                 div.no-padder
-                  .col-md-12.no-padder
-                    //.col-md-5.col-md-offset-1.col-xs-06
-                    //  div
-                    //    .checkbox
-                    //      label.i-checks
-                    //        input(type='checkbox', value='')
-                    //        i
-                    //        |                 Self Purchased
-                    //
-                    //  div.div-sp
-                    //    center
-                    //      h5.f-s-5.f-c-red  Self Purchased
-                    //      span.f-s-10.f-c-gray ( Paying For You )
-                    //      br
-                    //      h1.f-s-1.f-c-blue  Price: 7%
-                    .col-md-6.col-xs-12.col-md-offset-3
-                      //div
-                      //  .checkbox
-                      //    label.i-checks
-                      //      input(type='checkbox', value='')
-                      //      i
-                      //      |                 Personal Shopper
+                  .col-md-12.col-xs-12.no-padder
+                    .col-md-6.col-xs-6
+                      div
+                        .checkbox
+                          label.i-checks
+                            input(type='checkbox', value='' ng-model='$ctrl.self_purchased' ng-click ='$ctrl.assisted_purchased =false')
+                            i
+                            |                 Self Purchased
+
+                      div.div-sp
+                        center
+                          h5.f-s-5.f-c-red  Self Purchased
+                          span.f-s-10.f-c-gray ( Paying For You )
+                          br
+                          h1.f-s-1.f-c-blue  Price: 7%
+                    .col-md-6.col-xs-6
+                      div
+                        .checkbox
+                          label.i-checks
+                            input(type='checkbox', value='' ng-model='$ctrl.assisted_purchased' ng-click ='$ctrl.self_purchased = false')
+                            i
+                            |                 Assisted Purchase
                       div.div-ps
                         center
-                          h5.f-s-5.f-c-blue  Personal Shopper
+                          h5.f-s-5.f-c-blue  Assisted Purchase
                           span.f-s-10.f-c-gray ( Shopping For You )
                           br
                           h1.f-s-1.f-c-blue  Price: 10%
@@ -152,7 +152,7 @@
                             required
                             )
                             span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.price_amount.$dirty && newItemForm.price_amount.$invalid') Please Enter Price
-                        .col-md-6.col-xs-12
+                        .col-md-6.col-xs-12(ng-if='$ctrl.assisted_purchased')
                           label.col-xs-12.input-group If this item is not available (Choose an alternative)
                             span.f-c-red *
                             br
@@ -217,7 +217,7 @@
                         label.f-c-d-gray.f-s-10 Delivery Charges to Bengaluru
                         br
                         input.input-group.form-control(type='number', min="0", max="10000", ng-model='orderPackage.delivery_charge', name='delivery_charge', placeholder=' ₹50')
-                      .col-md-6
+                      .col-md-6(ng-if='$ctrl.assisted_purchased')
                         label.f-c-d-gray.f-s-10 Would it be OK to buy it if when we shop, the item cost has gone up by
                           span.f-c-red *
                           br
@@ -225,18 +225,59 @@
                             option(value='', selected='selected') ---------- Select ----------
                             option(value='{{item}}', ng-repeat='item in $ctrl.purchasePriceOption', ng-bind='item')
                     .row
-                      .col-md-3
+                      .col-md-3(ng-if='$ctrl.assisted_purchased')
                         label.f-c-d-gray.f-s-10 Promotional Code
                         br
                         input.input-group.form-control(type='text', ng-model='orderPackage.promo_code', name='promo_code', placeholder='ADCDSA12')
-                      .col-md-3
+                      .col-md-3(ng-if='$ctrl.assisted_purchased')
                         label.f-c-d-gray.f-s-10 Promotional Description
                         br
                         input.input-group.form-control(type='text', ng-model='orderPackage.promo_info', name='', placeholder='Enter')
-                      .col-md-3
+                      .col-md-3(ng-if='$ctrl.assisted_purchased')
                         label.f-c-d-gray.f-s-10 If this promotion is not available
                         br
                         input.input-group.form-control(type='text', ng-model='orderPackage.if_promo_unavailable', name='if_promo_unavailable', placeholder='Enter')
+                    .row
+                      .col-md-4(ng-if='$ctrl.self_purchased')
+                        label.f-c-d-gray.f-s-10 Invoice
+                          span.text-danger *
+                          .btn-file-wrapper(ng-class="$ctrl.file[$index].$touched && $ctrl.file[$index].$valid ? 'input-file-danger':''" drag-drop-toggle ng-click= '$ctrl.index1 = $index')
+                            .btn-file
+                              span
+                                span.text-muted(ng-bind="$ctrl.file[$index].name")
+                              p.no-margin(ng-hide="($ctrl.file[$index].$touched && $ctrl.file[$index].$valid) || $ctrl.data.file[$index]")
+                                span.text-bold Choose a file
+                                |  or Drag it here.
+                              span.file-support(ng-hide="($ctrl.file[$index].$touched && $ctrl.file[$index].$valid) || $ctrl.data.file[$index]") Supported Formats: .png, .jpeg, .jpg, .bmp, .pdf'
+                              input.form-control(
+                              accept="image/*"
+                              type="file"
+                              ng-model='$ctrl.file[$index]'
+                              name='file'
+                              ngf-pattern="'.png,.jpeg,.jpg,.bmp,.pdf'"
+                              ngf-max-size="15MB"
+                              ngf-max-files="1"
+                              ngf-select='$ctrl.uploadingPhotos=true;'
+                              onclick="this.value = null"
+                              ng-image-compress
+                              image="myAwesomeImage"
+                              ctrl="$ctrl"
+                              upload-fn="$ctrl.startUpload"
+                              resize-max-height="1000"
+                              resize-max-width="1000"
+                              resize-quality="0.7"
+                              resize-type="image/jpg"
+                              required
+                              )
+                          span.wrapper-xs.text-xs.text-danger(ng-show='($ctrl.file[$index].$touched && $ctrl.file[$index].$valid) && $ctrl.clickUpload') Please choose file
+                          span.wrapper-xs.text-xs.text-danger(ng-show='($ctrl.file[$index].$touched && $ctrl.file[$index].$valid) && $ctrl.clickUpload') Please choose supported file
+                          span.wrapper-xs.text-xs.text-danger(ng-show='($ctrl.file[$index].$touched && $ctrl.file[$index].$valid) && $ctrl.clickUpload') Please choose supported file
+                      .col-xs-1.wrapper-sm.m-t-xs
+                        img.pull-left.m-r(
+                        ng-if='orderPackage.seller_invoice'
+                        ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + orderPackage.seller_invoice}}'
+                        style='height: 85px;width: 80px;'
+                        )
                     br
                 .col-md-6.col-xs-12
                   br
