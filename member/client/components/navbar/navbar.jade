@@ -34,7 +34,7 @@
         title='{{App.app.name}}'
       )
   //- navbar collapse
-  .collapse.pos-rlt.navbar-collapse.box-shadow(
+  .collapse.pos-rlt.navbar-collapse.box-shadow.text-right(
     class='{{App.app.settings.navbarCollapseColor}}'
     ng-class="{ show: App.app.settings.mobileHeader, 'company-header' : App.app.settings.isAdmin}"
   )
@@ -47,8 +47,13 @@
     //ng-focus="App.openSearchCandidate($event)"
 
     .col-sm-5.col-md-2.hide: form.w-full.navbar-form.no-padder(role='search' ng-if="!App.userinfo.isBlocked")
-
-
+    a.btn.btn-sm.m-t-xs-md.m-r-xs-md(
+    style='color: #fff;background-color: #f39c12;border-color: #f39c12;'
+    href='https://shoppretracking.aftership.com'
+    data-toggle="popover" data-placement="bottom" title="Track Your shipment with shoppRe given Tracking ID"
+    target='_blank'
+    )
+      span Tracking
     ul.nav.navbar-nav.navbar-right
       li.hidden-xs
         form(action='https://ship.shoppre.com')

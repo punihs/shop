@@ -1,13 +1,10 @@
 div
   .hbox(style="position:relative")
-
-    // - Primary Header
     .bg-white-only.w-full.b-b(style='position: fixed;z-index: 6;height: 40px;')
       .pull-left.wrapper-sm.no-padder-top
         span.h4.text-info
           i.fas.fa-history.m-r-xs-md
           | Shipments History
-    //.bg-light
 
     // - Secondary Header
     .bg-light.b-b.padder.w-full.bg-white-only.m-t-xl(
@@ -23,7 +20,6 @@ div
           ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/shipping/history'
           )
             span - TRACK YOUR OLD SHIPMENTS HERE
-
 
     // - Content Area
     .bg-light(style='min-height: 200px;')
@@ -57,6 +53,9 @@ div
                             span.footable-sort-indicator
                           th.footable-visible.footable-last-column.footable-sortable
                             | INVOICE
+                            span.footable-sort-indicator
+                          th.footable-visible.footable-last-column.footable-sortable
+                            | Tracking
                             span.footable-sort-indicator
                       tbody.odd(ng-repeat="shipment in $ctrl.shipments")
                         tr.footable-even(style='display: table-row;')
@@ -122,6 +121,9 @@ div
                             a.summary-order(ui-sref='shipRequest.invoice({ orderCode: shipment.order_code })', target='_blank') {{shipment.order_code}}
                           td.footable-visible(ng-show='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.SHIPMENT_CANCELLED')
                             | ---
+                          td.summary-order.footable-visible(ng-show='shipment.afterShip_slug')
+                            a.summary-order.txt-underline(target='_blank' href='https://shoppretracking.aftership.com/{{shipment.tracking_code}}')
+                              | {{shipment.tracking_code}}
                         tr
                           td(colspan=8 ng-if='shipment.open')
                             .col-sm-7
