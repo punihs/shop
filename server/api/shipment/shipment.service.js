@@ -2,6 +2,7 @@ const debug = require('debug');
 const moment = require('moment');
 const sequelize = require('sequelize');
 const request = require('request');
+const _ = require('lodash');
 const hookshot = require('./shipment.hookshot');
 
 const log = debug('s.api.shipment.controller');
@@ -29,6 +30,7 @@ const {
     WIRE, CASH, CARD, PAYTM, PAYPAL, WALLET, RAZOR,
   },
   PAYMENT_GATEWAY_NAMES,
+  SHIPMENT_STATE_IDS: SHIP_STATE_IDS,
 } = require('./../../config/constants');
 
 
@@ -248,17 +250,6 @@ exports.show = async (req, res, next) => {
   }
 };
 
-const stateIdcommentMap = {
-  [INQUEUE]: 'shipment under queue after payment',
-  [DISPATCHED]: 'Shipment is dispatched',
-  [INTRANSIT]: 'intransit',
-  [CUSTOM_HOLD]: 'custom_hold',
-  [LOST]: 'lost',
-  [DELIVERED]: 'Shipment is delivered',
-  [DAMAGED]: 'damaged',
-  [PAYMENT_CONFIRMED]: 'payment confirmed',
-};
-
 exports.updateShipmentState = async ({
   nextStateId,
   shipment: current,
@@ -281,10 +272,11 @@ exports.updateShipmentState = async ({
 
     log({ options });
 
-    if (stateIdcommentMap[nextStateId]) options.comments = stateIdcommentMap[nextStateId];
-
-    if (comments) options.comments = comments || stateIdcommentMap[nextStateId];
-
+    if (comments) {
+      options.comments = comments;
+    } else {
+      options.comments = _.startCase(((_.invert(SHIP_STATE_IDS))[nextStateId]).toLowerCase());
+    }
     const shipmentState = await ShipmentState
       .create(options);
 

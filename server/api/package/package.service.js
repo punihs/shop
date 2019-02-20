@@ -1,5 +1,6 @@
 const debug = require('debug');
 const sequelize = require('sequelize');
+const _ = require('lodash');
 const {
   SUPPORT_EMAIL_ID, SUPPORT_EMAIL_FIRST_NAME, SUPPORT_EMAIL_LAST_NAME,
 } = require('../../config/environment');
@@ -20,6 +21,7 @@ const {
     WIRE, CASH, CARD, PAYTM, PAYPAL, WALLET, RAZOR,
   },
   PAYMENT_GATEWAY_NAMES,
+  PACKAGE_STATE_IDS: PKG_STATE_IDS,
 } = require('./../../config/constants');
 const {
   PACKAGE: {
@@ -38,10 +40,10 @@ const {
 
 const hookshot = require('./package.hookshot');
 
-const stateIdcommentMap = {
-  [PACKAGE_ITEMS_UPLOAD_PENDING]: 'Package Recieved',
-  [SPLIT_PACKAGE_PROCESSED]: 'Package Splitted!', // email sending is pending
-};
+// const stateIdcommentMap = {
+//   [PACKAGE_ITEMS_UPLOAD_PENDING]: 'Package Recieved',
+//   [SPLIT_PACKAGE_PROCESSED]: 'Package Splitted!', // email sending is pending
+// };
 
 const log = debug('s-api-package-service');
 
@@ -278,9 +280,14 @@ exports.updateState = async ({
       state_id: nextStateId,
     };
 
-    if (stateIdcommentMap[nextStateId]) options.comments = stateIdcommentMap[nextStateId];
+    // if (stateIdcommentMap[nextStateId]) options.comments = stateIdcommentMap[nextStateId];
 
-    if (comments) options.comments = comments || stateIdcommentMap[nextStateId];
+    if (comments) {
+      options.comments = comments;
+    } else {
+      // const comment =  Object.keys(PKG_STATE_IDS)[nextStateId];
+      options.comments = _.startCase(((_.invert(PKG_STATE_IDS))[nextStateId]).toLowerCase());
+    }
 
     const packageState = await PackageState
       .create(options);
