@@ -22,8 +22,6 @@ class PackagesIndexController {
   $onInit() {
     this.isPaymentSubmit = false;
     this.MoreOption = false;
-    this.allChecked = false;
-
     this.store = 'Amazon';
 
     this.totalItemAmount = 0;
@@ -73,6 +71,7 @@ class PackagesIndexController {
 
     this.getList();
     this.loadMessages();
+    this.shipType = this.$stateParams.bucket;
   }
 
   loadMessages() {
@@ -216,7 +215,19 @@ class PackagesIndexController {
       .then(({ data: { packages, facets, queueCount, paymentCount } }) => {
         packageIds = packages.map((x) => x.id);
 
-        this.master.push(...packages);
+        this.allChecked = true;
+        let allPackages = packages;
+        if (this.$stateParams.bucket === 'READY_TO_SEND') {
+          allPackages = allPackages.map((item) => {
+            const items = item;
+            items.isChecked = true;
+            return item;
+          });
+        }
+
+        this.totalSelectedPackages = allPackages.length;
+
+        this.master.push(...allPackages);
         this.queueCount = queueCount;
         this.isPaymentSubmit = !!paymentCount;
 
@@ -234,6 +245,8 @@ class PackagesIndexController {
             });
 
             this.packages = angular.copy(this.master);
+
+            console.log('pkg', this.packages);
           });
       });
   }
@@ -350,7 +363,7 @@ class PackagesIndexController {
     }
     const packageIds = this.packages.filter(x => x.isChecked).map(x => x.id);
     this.$state
-      .go('shipRequests.create', { packageIds });
+      .go('shipRequests.create', { packageIds: packageIds.toString() });
   }
 }
 

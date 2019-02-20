@@ -21,8 +21,10 @@ section.ship_response.toreview
             | P.S. Cancel your shipment right now if you wish to do so, before we start processing your shipment.
           p.text-orange.summary-order.m-t
             | Please remember that once your package is ready to be shipped and your final cost is updated, KINDLY SUBMIT YOUR PAYMENT WITHIN 7 DAYS. From the 8th day, your parcel will start accumulating Storage fees of INR 100/day which you can view in your Shoppre wallet.
-          .text-center
+          .text-center.hidden-xs
             a.btn.btn-success(ui-sref='shipRequests.index', style='border-radius: 5px;margin-top: 15px;')&nbsp; I WILL BE AWAITING YOUR NOTIFICATION EMAIL TO SUBMIT MY PAYMENT
+          a.text-success.hidden-md.hidden-lg.hidden-sm(ui-sref='shipRequests.index', style='border-radius: 5px;margin-top: 15px;')
+            u I WILL BE AWAITING YOUR NOTIFICATION EMAIL TO SUBMIT MY PAYMENT
           .splitbox.alert-info
             h3 Shipment Details:
             p # {{$ctrl.shipment.order_code}}
@@ -37,13 +39,13 @@ section.ship_response.toreview
             img(src='/assets/images/dashico1.png')
           .col-md-6
             .h4.text-u-c
-              a(ng-href='{{$ctrl.URLS.PREFIX}}myaccount.{{$ctrl.URLS.DOMAIN}}/country-guide') Country Guides
+              a(ng-href='{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/country-guide') Country Guides
         .col-md-6.sidebarSpecial
           .col-md-2.no-padder
             img(src='/assets/images/dashico2.png')
           .col-md-9
             .h4.text-u-c
-              a(ng-href='{{$ctrl.URLS.PREFIX}}myaccount.{{$ctrl.URLS.DOMAIN}}/browse-categories') Brands you love
+              a(ng-href='{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/browse-categories') Brands you love
         .col-md-6.sidebarSpecial.m-t-xs.white-border
           .col-md-2.no-padder
             img(src='/assets/images/dashico3.png')
@@ -55,7 +57,7 @@ section.ship_response.toreview
             img(src='/assets/images/dashico4.png')
           .col-md-9
             .h4.text-u-c
-              a(ng-href='{{$ctrl.URLS.PREFIX}}myaccount.{{$ctrl.URLS.DOMAIN}}/personal-shopper') Personal Shopper
+              a(ui-sref='personalShopper.create') Personal Shopper
         .col-md-6.sidebarSpecial.m-t-xs.white-border
           .col-md-2.no-padder
             img(src='/assets/images/dashico5.png')
@@ -73,11 +75,11 @@ section.ship_response.toreview
             img(src='/assets/images/dashico7.png')
           .col-md-9
             .h4.text-u-c
-              a(ng-href='{{$ctrl.URLS.PREFIX}}myaccount.{{$ctrl.URLS.DOMAIN}}/address') Address Book
+              a(ng-href='{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/address') Address Book
         .col-md-6.sidebarSpecial.m-t-xs
           .col-md-2.no-padder
             img(src='/assets/images/dashico8.png')
           .col-md-9
             .h4.text-u-c.top-margin-10
-              a(ng-href='{{$ctrl.URLS.PREFIX}}blog.{{$ctrl.URLS.DOMAIN}}') Blog
+              a(ng-href='{{$ctrl.URLS.PREFIX}}blog.shoppre.com') Blog
 

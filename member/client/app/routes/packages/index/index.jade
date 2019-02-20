@@ -13,7 +13,7 @@ div
 
 
     // - Secondary Header
-    .bg-light.b-b.padder.w-full.bg-white-only.m-t-xl.s-h
+    .bg-light.b-b.w-full.bg-white-only.m-t-xl.s-h
       ul.nav.nav-pills.nav-sm.m-t-xs.shoppre-nav-pills
         li.hidden-xs(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active" ng-show="$ctrl.buckets")
           a(
@@ -87,7 +87,7 @@ div
                 .panel.panel-default(style="overflow:auto")
                   div
                     .panel-heading
-                      | Select Package to Ship
+                      span(ng-bind='$ctrl.replaceCharWithSpace($ctrl.shipType, "_")')
                     table.table.table-bordered.m-b-none.default.footable-loaded.footable(
                      ui-jq='footable', data-filter='#filter', data-page-size='5')
                       thead.bg-primary.text-white
@@ -98,8 +98,8 @@ div
                             | From
                             span.footable-sort-indicator
                             span.footable-sort-indicator
-                          th.footable-visible.footable-sortable(data-hide='phone,tablet', data-name='Date Of Birth')
-                            | Date Recieved
+                          th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.bucket !=='MY_ORDERS'" )
+                            | Photos
                             span.footable-sort-indicator
                           th.footable-visible.footable-last-column.footable-sortable.bg-warning.text-u-c(ng-if="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'")
                             | ACTION REQUIRED
@@ -110,8 +110,8 @@ div
                           th.footable-visible.footable-last-column.footable-sortable(ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'")
                             | Weight
                             span.footable-sort-indicator
-                          th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.bucket !=='MY_ORDERS'" )
-                            | Photos
+                          th.footable-visible.footable-sortable(data-hide='phone,tablet', data-name='Date Of Birth')
+                            | Date Recieved
                             span.footable-sort-indicator
                           th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.bucket==='ALL'")
                             | Status
@@ -138,11 +138,9 @@ div
                             span.badge.bg-success.m-l-xs.text-white(ng-if='package.content_type === "2"') SPECIAL
                             span.badge.bg-danger.m-l-xs.text-white(ng-if='package.damaged') DAMAGED
 
-                          td.footable-visible(
-                            uib-tooltip="{{$ctrl.moment(package.created_at).fromNow()}} IST {{package.created_at | date:'h:mm a'}}"
-                            tooltip-placement='right'
-                            tooltip-append-to-body='true'
-                          ) {{package.created_at | date:'MMM d, y'}}
+                          td.footable-visible(ng-if="$ctrl.$stateParams.bucket !=='MY_ORDERS'" )
+                            a(ng-click='$ctrl.viewPhotos($index, package)' ng-if="$ctrl.PACKAGE_STATE_IDS.INCOMING_PACKAGE !== package.state_id" )
+                              u.text-blue Photos
                           td.footable-visible(
                             ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'"
                           ) {{package.price_amount | number : 2}}
@@ -150,16 +148,18 @@ div
                             p.no-margin Provide Item Values
                             p.no-margin As required by Customs
                           td.footable-visible(ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'"){{package.weight | number : 2}} KG
-                          td.footable-visible(ng-if="$ctrl.$stateParams.bucket !=='MY_ORDERS'" )
-                            a(ng-click='$ctrl.viewPhotos($index, package)' ng-if="$ctrl.PACKAGE_STATE_IDS.INCOMING_PACKAGE !== package.state_id" )
-                              u.text-blue Photos
+                          td.footable-visible(
+                          uib-tooltip="{{$ctrl.moment(package.created_at).fromNow()}} IST {{package.created_at | date:'h:mm a'}}"
+                          tooltip-placement='right'
+                          tooltip-append-to-body='true'
+                          ) {{package.created_at | date:'MMM d, y'}}
                           td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='ALL'" ng-bind='package.PackageState.State.name' )
                           td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='MY_ORDERS'" ng-click="$ctrl.deletePackage(package.id)")
                             i.m-t-sm.wrapper-xs.fa.fa-trash
                           td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'")
                             .checkbox.no-margin
                               label.i-checks
-                                input(type='checkbox', ng-model = 'package.isChecked', ng-change='$ctrl.selectPackages()', ng-checked='all', value='')
+                                input(type='checkbox', ng-model = 'package.isChecked', ng-change='$ctrl.selectPackages()', value='')
                                 i
                         tr
                           form.form-validation(name="form" ng-submit='$ctrl.submitValue()')
