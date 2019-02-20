@@ -4,6 +4,6 @@
       {"slug":"usps","name":"USPS","phone":"+1 800-275-8777","other_name":"United States Postal Service","web_url":"https://www.usps.com","required_fields":[],"optional_fields":[],"default_language":"en","support_languages":["en"],"service_from_country_iso3":["USA"]},
       {"slug":"ups","name":"UPS","phone":"+1 800 742 5877","other_name":"United Parcel Service","web_url":"http://www.ups.com","required_fields":[],"optional_fields":[],"default_language":"en","support_languages":["en"],"service_from_country_iso3":[]},
       {"slug":"fedex","name":"FedEx","phone":"1 800 463 3339 / 03456 070809 / 1800 419 4343","other_name":"Federal Express","web_url":"http://www.fedex.com/","required_fields":[],"optional_fields":[],"default_language":"en","support_languages":["en"],"service_from_country_iso3":[]},
-      {"slug":"dhl","name":"DHL Express","phone":"+1 800 225 5345","other_name":"DHL International","web_url":"http://www.dhl.com/","required_fields":[],"optional_fields":["tracking_destination_country","tracking_origin_country"],"default_language":"en","support_languages":["en"],"service_from_country_iso3":[]}.
+      {"slug":"dhl","name":"DHL Express","phone":"+1 800 225 5345","other_name":"DHL International","web_url":"http://www.dhl.com/","required_fields":[],"optional_fields":["tracking_destination_country","tracking_origin_country"],"default_language":"en","support_languages":["en"],"service_from_country_iso3":[]}
     ]
 }
