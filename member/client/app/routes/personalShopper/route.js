@@ -14,7 +14,7 @@ angular.module('uiGenApp')
         controllerAs: '$ctrl',
       })
       .state('personalShopper.create', {
-        url: '/create',
+        url: '/create?type',
         templateUrl: 'app/routes/personalShopper/create/create.html',
         controller: 'CreateController',
         controllerAs: '$ctrl',

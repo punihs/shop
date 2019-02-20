@@ -95,6 +95,12 @@ class CreateController {
       noResults: false,
       loadingStores: false,
     };
+
+    if (this.$stateParams.type === 'COD') {
+      this.self_purchased = true;
+    } else if (this.$stateParams.type === 'PS') {
+      this.assisted_purchased = true;
+    }
   }
 
   startUpload(ctrl, file) {

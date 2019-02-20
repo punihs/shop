@@ -104,11 +104,7 @@
       br
       br
       center
-        a(ui-sref-active='active'
-          title='We pay on your request'
-          target='_blank'
-          ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/personal-shopper/order'
-          )
+        a(ui-sref='personalShopper.create({type: "COD"})')
           button.btn.btn-s-r.btn-b-r.btn-xl(type='submit') Place Your Order Now!
       br
 
@@ -162,7 +158,7 @@
       br
       br
       center
-        a(ui-sref='personalShopper.create')
+        a(ui-sref='personalShopper.create({type: "PS"})')
           button.btn.btn-s-b.btn-b-b.btn-xl(type='submit') Place Your Order Now!
       br
 
