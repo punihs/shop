@@ -56,6 +56,8 @@ const constants = {
     AWAITING_FOR_STOCK: 67,
     ORDER_COMPLETED: 68,
     OTHER_ITEMS_PROCEED: 69,
+    PACKAGE_STORAGE: 1002,
+    PACKAGE_STORAGE_EXCEEDED: 1003,
     AWAITING_FOR_ORDER: 70,
   },
   SHIPMENT_COUPON_STATES: {
@@ -92,6 +94,9 @@ const constants = {
     SHIPMENT_DELETED: 55,
     CUSTOMER_DOCUMENT_RESOLVED: 60,
     SHIPMENT_ABANDON: 61,
+
+    PAYMENT_DELAY_EXCEEDED: 1000,
+    PAYMENT_DELAY: 1001,
   },
   SHIPMENT_HISTORY: [24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 61],
   SHIPMENT_COUNT: [23, 24, 25, 26, 27, 28, 29, 30, 31,
@@ -164,6 +169,12 @@ const constants = {
     WALLET: 'wallet',
     RAZOR: 'razor',
   },
+  CRON_STATES: {
+    PAYMENT_DELAY_EXCEEDED: 1000,
+    PAYMENT_DELAY: 1001,
+    PACKAGE_STORAGE: 1002,
+    PACKAGE_STORAGE_EXCEEDED: 1003,
+  },
 };
 
 constants.PACKAGE_STATE_ID_NAMES_MAP = Object
@@ -172,6 +183,7 @@ constants.PACKAGE_STATE_ID_NAMES_MAP = Object
     ...nxt,
     [constants.PACKAGE_STATE_IDS[stateName]]: stateName,
   }), {});
+
 constants.SHIPMENT_STATE_ID_NAMES_MAP = Object
   .keys(constants.SHIPMENT_STATE_IDS)
   .reduce((nxt, stateName) => ({

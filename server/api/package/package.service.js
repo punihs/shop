@@ -1,4 +1,5 @@
 const debug = require('debug');
+const moment = require('moment');
 const sequelize = require('sequelize');
 const _ = require('lodash');
 const {
@@ -32,6 +33,7 @@ const {
   },
 } = require('../../config/constants/charges');
 const BUCKETS = require('./../../config/constants/buckets');
+const { PACKAGE_STORAGE_NUMBER_OF_DAYS } = require('./../../config/constants/options');
 
 let BUCKET = '';
 const logger = require('../../components/logger');
@@ -311,6 +313,10 @@ exports.updateState = async ({
       case PACKAGE_ITEMS_UPLOAD_PENDING: {
         await Locker
           .allocation({ customerId: pkg.customer_id });
+        await Package.update(
+          { package_received_date: moment() },
+          { where: { id: pkg.id } },
+        );
         break;
       }
       default: {
@@ -420,4 +426,39 @@ exports.updatePackageOptions = async (body) => {
   });
 
   return 'success';
+};
+
+exports.packageStorageExceededEmail = async () => {
+  const today = moment();
+  const expiredDate = moment(today, 'DD-MM-YYYY').add('days', (-PACKAGE_STORAGE_NUMBER_OF_DAYS));
+  const pkg = await Package.findAll({
+    where: { package_received_date: { $lt: expiredDate } },
+    attributes: ['id', 'customer_id', 'package_received_date'],
+    include: [{
+      model: PackageState,
+      attributes: ['id'],
+      where: { state_id: [1, 2, 3, 4, 5, 6] },
+    }],
+  });
+
+  return pkg;
+};
+
+exports.packageStorageEmail = async () => {
+  const today = moment();
+  const expiringDate1 = moment(today, 'DD-MM-YYYY').add('days', (-15));
+  const expiringDate2 = moment(today, 'DD-MM-YYYY').add('days', (-19));
+  const pkg = await Package.findAll({
+    where: {
+      $and: [{ package_received_date: { $lte: expiringDate1 } }, { package_received_date: { $gte: expiringDate2 } }],
+    },
+    attributes: ['id', 'customer_id', 'package_received_date'],
+    include: [{
+      model: PackageState,
+      attributes: ['id'],
+      where: { state_id: [1, 2, 3, 4, 5, 6] },
+    }],
+  });
+
+  return pkg;
 };

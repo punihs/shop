@@ -407,7 +407,7 @@
       <p style="margin:4px 20px 18px 20px;width:640px">
         This is to inform you that your package <span class="il">{{pkg.id}}</span> has left only a few days of FREE storage at our facility.
         <br><br>
-        You will be charged an additional fee of Rs.<span class="il">{{pkg.storage_charge}}</span>/- per day until the day you make a ship request and pay for the shipment, when it expires.
+        You will be charged an additional fee of Rs.<span class="il">{{packageStorageExceededCharge}}</span>/- per day until the day you make a ship request and pay for the shipment, when it expires.
         <br><br>
         Hope you'd hurry up!
       </p> </td>
@@ -417,11 +417,12 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        This is to inform you that your package <span class="il">{{pkg.id}}</span> has exceeded the <span class="il">{{pkg.storage_limit}}</span> days of FREE storage period at our facility.
+        This is to inform you that your package <span class="il">{{pkg.id}}</span> has exceeded the <span class="il">{{packageStorageLimit}}</span> days of FREE storage period at our facility.
         <br><br>
-        You will be charged an additional fee of Rs.<span class="il">{{pkg.storage_charge}}</span>/- per day until the day you make a ship request and pay for the shipment.
+        You will be charged an additional fee of Rs.<span class="il">{{packageStorageExceededCharge}}</span>/- per day until the day you make a ship request and pay for the shipment.
         <br><br>
         Hope you'd hurry up!
-      </p> </td>
+      </p>
+    </td>
   </tr>
 {{/if}}

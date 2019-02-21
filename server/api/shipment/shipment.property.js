@@ -46,6 +46,7 @@ module.exports = DataTypes => ({
 
   shipping_carrier: DataTypes.STRING,
   dispatch_date: DataTypes.DATE,
+  payment_submit_date: DataTypes.DATE,
   carton_box_type: DataTypes.STRING,
   comments: DataTypes.STRING,
   upstream_cost: DataTypes.DECIMAL(8, 2),

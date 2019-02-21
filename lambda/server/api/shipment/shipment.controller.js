@@ -16,6 +16,8 @@ exports.notification = async (req, res, next) => {
       actingUser,
       paymentGateway,
       ENV,
+      paymentDelayCharge,
+      paymentDelayLimit,
     } = req.body;
 
     customer.first_name = customer.first_name.charAt(0).toUpperCase() +
@@ -33,6 +35,8 @@ exports.notification = async (req, res, next) => {
       actingUser,
       paymentGateway,
       ENV,
+      paymentDelayCharge,
+      paymentDelayLimit,
     });
 
     log('---------------\n\n');

@@ -383,7 +383,7 @@
       <p style="margin:4px 20px 18px 20px;width:640px">
         This is to inform you that you haven't made payment for the order <span class="il">{{shipment.id}}</span> after creating the Ship Request for the same.
         <br><br>
-        You'd have to pay in the next 2 days or since then you'll have to pay an additional fee of Rs.<span class="il">{{shipment.payment_delay_charge}}</span>/- per day.
+        You'd have to pay in the next 2 days or since then you'll have to pay an additional fee of Rs.<span class="il">{{paymentDelayCharge}}</span>/- per day.
       </p> </td>
   </tr>
 {{else if PAYMENT_DELAY_EXCEEDED}}
@@ -391,9 +391,9 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        This is to inform you that you have exceeded the <span class="il">{{shipment.payment_delay_limit}}</span> days of grace period you had for making payment for the order <span class="il">{{shipment.id}}</span>.
+        This is to inform you that you have exceeded the <span class="il">{{paymentDelayLimit}}</span> days of grace period you had for making payment for the order <span class="il">{{shipment.id}}</span>.
         <br><br>
-        Since you haven't made the payment yet, you will be charged an additional fee of Rs.<span class="il">{{shipment.payment_delay_charge}}</span>/- per day until the day you pay for the same order.
+        Since you haven't made the payment yet, you will be charged an additional fee of Rs.<span class="il">{{paymentDelayCharge}}</span>/- per day until the day you pay for the same order.
         <br><br>
         Hope you'd hurry up.
       </p> </td>

@@ -15,7 +15,8 @@ exports.notifications = (req, res) => {
     PERSONAL_SHOPPER,
     COD,
     ORDER_ITEMS,
-    packageItems,
+    packageStorageLimit,
+    packageStorageExceededCharge,
   } = req.body;
 
   const targetUser = {
@@ -49,7 +50,8 @@ exports.notifications = (req, res) => {
           COD,
           paymentGateway,
           ORDER_ITEMS,
-          packageItems,
+          packageStorageLimit,
+          packageStorageExceededCharge,
         }),
       }],
       // oneSignal: [{

@@ -35,8 +35,8 @@ const {
   SHIPMENT_STATE_IDS: SHIP_STATE_IDS,
 } = require('./../../config/constants');
 
-
 const BUCKETS = require('./../../config/constants/buckets');
+const { PAYMENT_SUBMIT_NUMBER_OF_DAYS } = require('./../../config/constants/options');
 
 const kvmap = (arr, key, value) => arr.reduce((nxt, x) => ({ ...nxt, [x[key]]: x[value] }), {});
 
@@ -283,6 +283,13 @@ exports.updateShipmentState = async ({
       .create(options);
 
     switch (nextStateId) {
+      case PAYMENT_REQUESTED: {
+        await Shipment.update(
+          { payment_submit_date: moment() },
+          { where: { id: shipment.id } },
+        );
+        break;
+      }
       case PAYMENT_CONFIRMED: {
         const {
           payment_gateway_id,
@@ -528,4 +535,41 @@ exports.transaction = async (shipment) => {
     });
 
   return transaction;
+};
+
+exports.paymentSubmitDelayExceededEmail = async () => {
+  const today = moment();
+  const expiredDate = moment(today, 'DD-MM-YYYY').add('days', (-PAYMENT_SUBMIT_NUMBER_OF_DAYS));
+
+  const shipment = await Shipment.findAll({
+    where: { payment_submit_date: { $lt: expiredDate } },
+    attributes: ['id', 'customer_name', 'address', 'phone', 'order_code', 'customer_id', 'payment_submit_date'],
+    include: [{
+      model: ShipmentState,
+      attributes: ['id'],
+      where: { state_id: [18, 19, 21] },
+    }],
+  });
+
+  return shipment;
+};
+
+exports.paymentSubmitDelayEmail = async () => {
+  const today = moment();
+  const expiringDate1 = moment(today, 'DD-MM-YYYY').add('days', (-5));
+  const expiringDate2 = moment(today, 'DD-MM-YYYY').add('days', (-6));
+
+  const shipment = await Shipment.findAll({
+    where: {
+      $and: [{ payment_submit_date: { $lte: expiringDate1 } }, { payment_submit_date: { $gte: expiringDate2 } }],
+    },
+    attributes: ['id', 'customer_name', 'address', 'phone', 'order_code', 'customer_id', 'payment_submit_date'],
+    include: [{
+      model: ShipmentState,
+      attributes: ['id'],
+      where: { state_id: [18, 19, 21] },
+    }],
+  });
+
+  return shipment;
 };

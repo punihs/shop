@@ -16,8 +16,6 @@ const shipment = {
   shipping_carrier: 'DHL',
   dispatch_date: '2018-08-20',
   delivered_date: '2018-08-20',
-  payment_delay_limit: 7,
-  payment_delay_charge: 100,
 };
 
 const paymentGateway = {
@@ -332,6 +330,8 @@ module.exports = {
     ENV,
     subject: 'You Havent Made Payment Yet! Last 2 Days',
     shipment,
+    paymentDelayLimit: 7,
+    paymentDelayCharge: 100,
   },
   PAYMENT_DELAY_EXCEEDED: {
     PAYMENT_DELAY_EXCEEDED: true,
@@ -342,5 +342,7 @@ module.exports = {
     ENV,
     subject: 'Grace period has expired! Make payment immediately',
     shipment,
+    paymentDelayLimit: 7,
+    paymentDelayCharge: 100,
   },
 };
