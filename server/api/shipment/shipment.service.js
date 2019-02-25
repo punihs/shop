@@ -395,7 +395,7 @@ exports.updateShipmentState = async ({
           { where: { id: shipment.id } },
         );
 
-        if (env.NODE_ENV === 'production') {
+        if (env === 'production') {
           const shipmentDispacthed = await Shipment
             .find({
               attributes: ['country_id', 'afterShip_slug', 'dispatch_date', 'tracking_code'],
@@ -499,7 +499,7 @@ exports.updateShipmentState = async ({
 
 exports.asanaTask = (shipment) => {
   const bearer = '0/ba27afb04779fc44282d1f5c2f97b866';
-  const name = `${shipment.Customer.first_name} to ${shipment.Country.name}`;
+  const name = `${shipment.Customer.first_name} ${shipment.Customer.last_name} to ${shipment.Country.name || ''}`;
   const notes = `Dispatch date ${shipment.dispatch_date},\nTracking ID= ${shipment.tracking_code} `;
 
   const options = {
