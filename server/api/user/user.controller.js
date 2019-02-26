@@ -11,8 +11,11 @@ const log = debug('s.user.controller');
 
 const {
   STATE_TYPES,
-  PACKAGE_STATE_IDS: { INCOMING_PACKAGE },
-  PACKAGE_TYPES: { INCOMING },
+  PACKAGE_STATE_IDS: {
+    INCOMING_PACKAGE, PAYMENT_COMPLETED,
+    ORDER_PLACED, PAYMENT_CONFIRMED, IN_TRANSIT, AWAITING_FOR_ORDER,
+  },
+  PACKAGE_TYPES: { INCOMING, PERSONAL_SHOPPER, COD },
 } = require('../../config/constants');
 
 exports.index = async (req, res, next) => {
@@ -195,7 +198,22 @@ exports.show = async (req, res, next) => {
         },
       });
 
-    return res.json({ ...user.toJSON(), packageCount });
+    const personalShopperCount = await Package
+      .count({
+        include: [{
+          model: PackageState,
+          where: {
+            state_id: [PAYMENT_COMPLETED, ORDER_PLACED, PAYMENT_CONFIRMED,
+              IN_TRANSIT, AWAITING_FOR_ORDER],
+          },
+        }],
+        where: {
+          customer_id: req.params.id,
+          package_type: [PERSONAL_SHOPPER, COD],
+        },
+      });
+
+    return res.json({ ...user.toJSON(), packageCount, personalShopperCount });
   } catch (err) {
     return next(err);
   }
