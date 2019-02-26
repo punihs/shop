@@ -47,7 +47,7 @@ div
           td(colspan="5"): h1.text-center.text-muted No Orders
         .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='package in $ctrl.packages')
           .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs
-            a(ui-sref='order.show({ id: package.order_code, profilePhotoUrl: package.Customer.profile_photo_url })' target="_blank") {{package.package_type}}
+            a(ui-sref='order.show({ id: package.order_code, profilePhotoUrl: package.Customer.profile_photo_url })' target="_blank") {{package.id}}
           .col-xs-2.wrapper-sm.m-t-xs
             a(ui-sref='order.show({ id: package.order_code, profilePhotoUrl: package.Customer.profile_photo_url })' target="_blank") {{package.Store.name}}
               span.badge.bg-success.m-l-xs(ng-if='package.content_type === "2"') SPECIAL

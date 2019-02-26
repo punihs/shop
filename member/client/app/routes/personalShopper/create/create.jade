@@ -300,6 +300,8 @@
                     .col-md-7.col-xs-12
                       .packages-div(ng-repeat='psPackage in $ctrl.packageData')
                         label.f-c-blue.f-s-10(ng-bind='psPackage.Store.name')
+                        br
+                        label.f-c-blue.f-s-10 Personal Shopper cost: {{psPackage.personal_shopper_cost}}
                         table.items(style='width:100%')
                           tbody
                             tr
@@ -339,7 +341,7 @@
                             label.f-c-gray.f-s-9 ₹ {{$ctrl.itemTotalCost}}
                         .row
                           .col-md-8.col-xs-8
-                            label.f-c-gray.f-s-9 Personal ShoppRe Cost:
+                            label.f-c-gray.f-s-9 Total Personal Shopper Cost:
                           .col-md-4.col-xs-4
                             label.f-c-gray.f-s-9 ₹ {{$ctrl.personalShopperCost}}
                         .row
