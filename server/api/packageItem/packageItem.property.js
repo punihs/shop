@@ -32,4 +32,6 @@ module.exports = DataTypes => ({
   if_item_unavailable: DataTypes.STRING,
   status: DataTypes.STRING,
   is_image_resized: DataTypes.BOOLEAN,
+  ecommerce_link: DataTypes.STRING,
+  object_ecommerce: DataTypes.STRING,
 });

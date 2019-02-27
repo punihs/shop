@@ -72,7 +72,8 @@ exports.show = async (req, res, next) => {
   try {
     const packageItem = await PackageItem
       .find({
-        attributes: ['id', 'quantity', 'price_amount', 'total_amount', 'object', 'object_advanced', 'name', 'object_invoice'],
+        attributes: ['id', 'quantity', 'price_amount', 'total_amount', 'object', 'object_advanced',
+          'name', 'object_invoice', 'object_ecommerce', 'ecommerce_link'],
         where: { id: req.params.id },
         include: [{
           model: Package,

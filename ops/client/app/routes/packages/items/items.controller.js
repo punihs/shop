@@ -35,6 +35,10 @@ class PackageItemsController {
     ctrl.S3.uploadInvoice(invoiceFile, ctrl.data, ctrl);
   }
 
+  startEcommerceUpload(ctrl, ecommerceFile) {
+    ctrl.S3.uploadEcommerce(ecommerceFile, ctrl.data, ctrl);
+  }
+
   $onInit() {
     this.uploadingPhotos = false;
     this.EDIT = !!this.$stateParams.packageItemId && this.$stateParams.packageItemId !== '';
@@ -97,6 +101,10 @@ class PackageItemsController {
       if (this.data.object_invoice) {
         const invoicePath = `${this.URLS.CDN}/shoppre/${this.data.object_invoice}`;
         this.data.object_thumb = invoicePath;
+      }
+      if (this.data.object_ecommerce) {
+        const ecommercePath = `${this.URLS.CDN}/shoppre/${this.data.object_ecommerce}`;
+        this.data.object_thumb = ecommercePath;
       }
       this.file = 'Nothing';
     }
@@ -163,6 +171,8 @@ class PackageItemsController {
       'object_advanced',
       'object_invoice',
       'package_item_category_id',
+      'object_ecommerce',
+      'ecommerce_link',
     ];
 
     const method = packageItemId ? 'put' : 'post';

@@ -250,6 +250,51 @@ div.m-t-xl.no-margin
                       disabled
                       )
               .row
+                .col-md-6.col-sm-5.col-xs-12
+                  label.col-xs-12.input-group
+                    | Ecommerce Link
+                    span
+                    input.form.form-control(
+                    type='text'
+                    name='ecommerce_link'
+                    placeholder='eg. https://www.amazon.in/Redmi-Note-Pro-Black-Storage'
+                    ng-model='$ctrl.data.ecommerce_link'
+                    )
+                .col-md-5.col-sm-5.col-xs-5.no-padder-right
+                  .hbox
+                    label.col
+                      | Ecommerce Photo
+                      span
+                          input.form-control(
+                          accept="image/*"
+                          type="file"
+                          ng-model='$ctrl.ecommerceFile'
+                          name='ecommerceFile'
+                          ngf-pattern="'.png,.jpeg,.jpg,.bmp,.pdf'"
+                          ngf-max-size="15MB"
+                          ngf-max-files="1"
+                          ngf-select='$ctrl.uploadingPhotos=true;'
+                          onclick="this.value = null"
+                          ng-image-compress
+                          image="myAwesomeImage"
+                          ctrl="$ctrl"
+                          upload-fn="$ctrl.startEcommerceUpload"
+                          resize-max-height="1000"
+                          resize-max-width="1000"
+                          resize-quality="0.7"
+                          resize-type="image/jpg"
+                          required
+                          )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && !$ctrl.data.ecommerceFile && !newPackageItemForm.ecommerceFile.$invalid') Please choose file
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageItemForm.ecommerceFile.$invalid') Please choose supported file
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageItemForm.ecommerceFile.$dirty && newPackageItemForm.ecommerceFile.$invalid') Please choose supported file
+                .col-xs-1.wrapper-sm.m-t-xs
+                  img.pull-left.m-r(
+                  ng-if='$ctrl.data.object_ecommerce'
+                  ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.object_ecommerce}}'
+                  style='height: 85px;width: 80px;'
+                  )
+              .row
                 .col-md-8
                   .text-danger.font-bold(ng-if="newPackageItemForm.file.$error.maxSize") Please select file less than 5MB
                 .col-md-12.col-xs-12
