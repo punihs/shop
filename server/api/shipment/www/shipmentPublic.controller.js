@@ -12,7 +12,7 @@ const {
 
 exports.index = async (req, res) => {
   const shipment = await Shipment.findAll({
-    attributes: ['id', 'address', 'country_id', 'weight', 'value_amount'],
+    attributes: ['id', 'address', 'country_id', 'weight', 'sub_total_amount', 'discount_amount', 'value_amount'],
     include: [{
       model: ShipmentState,
       attributes: ['id'],
