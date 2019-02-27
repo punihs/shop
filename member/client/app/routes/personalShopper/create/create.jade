@@ -7,7 +7,7 @@
       span.f-c-gray  > Place an Order?
 
   .clearfix
-  .ps-mainidiv
+  .ps-mainidiv(style='padding:0px')
     div.no-padder
       .wrapper.center-block
         #accordion.panel-group(role='tablist', aria-multiselectable='true')
@@ -47,7 +47,7 @@
                           span.f-s-10.f-c-gray ( Shopping For You )
                           br
                           h1.f-s-1.f-c-blue  Price: 10%
-                  .col-md-12.text-center
+                  .text-center
                     br
                     button.btn.btn-s-r.btn-b-r.btn-l.m-t-xs-md(ng-click='$ctrl.btnToggleCartSection($ctrl.cartSection)')
                       | NEXT
@@ -60,34 +60,14 @@
               .panel-body
                 div.no-padder
                   .col-md-12.no-padder
-                    form.form.form-validation.form-horizontal.wrapper-md(
+                    form.form.form-validation.form-horizontal(
                     name="newItemForm"
                     novalidate
                     ng-submit='$ctrl.create(newItemForm)'
                     autocomplete='off'
                     )
                       .row
-                        .col-md-2.col-xs-12
-                          label.col-xs-12.input-group Store
-                            span.f-c-red *
-                            br
-                            input.input-group.form-control(
-                            type='text'
-                            name="store"
-                            ng-model='$ctrl.Stores.model'
-                            placeholder='eg: Amazon.in'
-                            uib-typeahead='region.name for region in $ctrl.Stores.get($viewValue)'
-                            typeahead-loading='$ctrl.Stores.loadingStores'
-                            typeahead-no-results='$ctrl.Stores.noResults'
-                            typeahead-on-select='$ctrl.Stores.select($item)'
-                            ng-blur='$ctrl.Stores.blur($item)'
-                            typeahead-wait-ms="10"
-                            autofocus=
-                            autocomplete = "off"
-                            required
-                            )
-                            span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.store.$dirty && newItemForm.store.$invalid') Please Select Store
-                        .col-md-4.col-xs-12
+                        .col-md-6.col-xs-12
                           label.col-xs-12.input-group Item URL
                             span.f-c-red *
                             br
@@ -152,7 +132,7 @@
                             required
                             )
                             span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.price_amount.$dirty && newItemForm.price_amount.$invalid') Please Enter Price
-                        .col-md-6.col-xs-12(ng-if='$ctrl.assisted_purchased')
+                        .col-md-4.col-xs-12(ng-if='$ctrl.assisted_purchased')
                           label.col-xs-12.input-group If this item is not available (Choose an alternative)
                             span.f-c-red *
                             br
@@ -161,10 +141,8 @@
                               option(value='{{item.value}}', ng-repeat='item in $ctrl.if_item_unavailable', ng-bind='item.value')
                             span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.if_item_unavailable.$dirty && newItemForm.if_item_unavailable.$invalid') Please Select Choice
                           br
-                          br
                         .footer-line.left-padding-15.right-padding-20
                           .line.line-dashed.b-b.m-t.m-b.pull-in.no-margin-left
-                      br
                       .row
                         .col-md-6.col-xs-12
                           br

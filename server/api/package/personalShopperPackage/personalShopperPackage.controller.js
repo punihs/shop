@@ -1,4 +1,5 @@
 const debug = require('debug');
+const extractDomain = require('extract-domain');
 
 const log = debug('s.personalShopperPackage.controller');
 const { updateState } = require('../package.service');
@@ -28,16 +29,40 @@ const {
   Package, PackageItem, PackageState, Store, State,
 } = require('../../../conn/sqldb/index');
 
+
+const fetchStoreIdOrCreate = async (storeName) => {
+  const store = await Store
+    .find({
+      attributes: ['id'],
+      where: { name: storeName },
+    });
+  if (store) {
+    return store.id;
+  } else {
+    const newStore = await Store
+      .create({ name: storeName, type: 'web' });
+
+    return newStore.id;
+  }
+};
+
 exports.create = async (req, res, next) => {
   const customerId = req.user.id;
 
   const price = req.body.price_amount;
-  const storeId = req.body.store_id;
+  // const storeId = req.body.store_id;
   const { shopperType } = req.body;
 
   const packageType = shopperType === 'cod' ? COD : PERSONAL_SHOPPER;
+  //
+  const { url } = req.body;
 
-  const psFee = packageType === PERSONAL_SHOPPER ? PERSONAL_SHOPPER_PERCENTAGE : SELF_SHOPPER_PERCENTAGE;
+  const hostname = extractDomain(url);
+
+  const storeId = await fetchStoreIdOrCreate(hostname);
+
+  const psFee = packageType === PERSONAL_SHOPPER ?
+    PERSONAL_SHOPPER_PERCENTAGE : SELF_SHOPPER_PERCENTAGE;
 
   let totalPrice = '';
   let orderId = '';
@@ -203,8 +228,9 @@ exports.create = async (req, res, next) => {
       },
     });
 
-  return res.json({ packageItems, personalShop });
+  return res.json({ packageItems, personalShop, hostname, storeId });
 };
+
 
 exports.editItem = async (req, res, next) => {
   let newQty = '';
@@ -363,7 +389,7 @@ exports.editItem = async (req, res, next) => {
           }],
         });
 
-      console.log('Pkgs', updatePersonalShopperPackages);
+      log('Pkgs', updatePersonalShopperPackages);
 
       if (updatePersonalShopperPackages) {
         log(updatePersonalShopperPackages);

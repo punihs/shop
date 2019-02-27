@@ -59,43 +59,6 @@ class CreateController {
       'Cancel if the cost is increased',
     ];
 
-    this.Stores = {
-      select: ($item) => {
-        this.data.store_id = $item.id;
-        this.Stores.previousValue = this.Stores.model;
-        this.Stores.model = $item.name;
-      },
-
-      setId: () => {
-        const storeName = this.Stores.model.toLowerCase();
-        const [region] = (this.Stores.lastSearchResults || [])
-          .filter(item => (item.region.toLowerCase() === storeName));
-        if (region) this.Stores.select(region);
-      },
-
-      blur: () => {
-        if (this.Stores.model.toLowerCase() !== this.Stores.previousValue.toLowerCase()) {
-          this.data.store_id = '';
-        }
-        if (!this.Stores.lastSearchResults) {
-          return this.Stores.get(this.Stores.model).then(() => this.Stores.setId());
-        }
-        return this.Stores.setId();
-      },
-
-      get: (search) => this.$http
-        .get('/search', {
-          params: {
-            type: 'Store',
-            q: search,
-          },
-        })
-        .then(({ data: { items } }) => items),
-
-      noResults: false,
-      loadingStores: false,
-    };
-
     if (this.$stateParams.type === 'COD') {
       this.self_purchased = true;
     } else if (this.$stateParams.type === 'PS') {
@@ -131,7 +94,7 @@ class CreateController {
     if (!this.self_purchased && !this.assisted_purchased) {
       this
         .toaster
-        .pop('error', 'Please select ps type.', '');
+        .pop('error', 'Please select personal shopper type.', '');
       return false;
     }
     return true;
@@ -242,12 +205,6 @@ class CreateController {
   }
 
   create(newItemForm) {
-    if (!this.data.store_id) {
-      this.Stores.model = '';
-      return this
-        .toaster
-        .pop('error', 'Please select store from the list.', '');
-    }
     let shopperType = '';
 
     if (this.self_purchased) {
@@ -266,13 +223,13 @@ class CreateController {
     if (!form) return (this.submitting = false);
     this.$http
       .post('/packages/personalShopperPackage', data)
-      .then(({ data: { packageItems, personalShop } }) => {
+      .then(({ data: { packageItems, personalShop, hostname, storeId } }) => {
         this.submitting = false;
 
         let storeExist = false;
         if (this.packageData) {
           this.packageData.map((x) => {
-            if (x.Store.id === this.data.store_id) {
+            if (x.Store.id === storeId) {
               storeExist = true;
 
               return Object.assign(x, { PackageItems: packageItems });
@@ -289,8 +246,8 @@ class CreateController {
             personal_shopper_cost: personalShop.personal_shopper_cost,
             price_amount: personalShop.price_amount,
             Store: {
-              id: data.store_id,
-              name: this.Stores.model,
+              id: storeId,
+              name: hostname,
             },
             PackageItems: [{
               id: packageItems[0].id,
@@ -330,9 +287,7 @@ class CreateController {
 
   reset(newItemForm) {
     this.data = {};
-    this.data.store_id = '';
     newItemForm.$setPristine();
-    this.Stores.model = '';
   }
 
   validateForm(form) {
@@ -349,8 +304,6 @@ class CreateController {
   editItem(item, store) {
     this.isEdit = true;
     this.data = item;
-    this.data.store_id = store.id;
-    this.Stores.model = store.name;
   }
 
   deleteItem(item, psPackage) {
