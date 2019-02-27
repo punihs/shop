@@ -148,9 +148,9 @@
                           br
                           button.btn.btn-s-r.btn-b-b.btn-l.col-xs-10.col-xs-push-2(type='submit', ng-disabled="$ctrl.submitting || (!$ctrl.submitting && !newItemForm.$dirty)")
                             | + Add More Items
-                        .col-md-4.col-xs-12.div-align-items-r
+                        .col-md-4.col-xs-12
                           br
-                          button.btn.btn-s-r.btn-b-r.btn-l(type='button', ng-click='$ctrl.btnToggleOptionsSection($ctrl.optionsSection)')
+                          button.btn.btn-s-r.btn-b-r.btn-l.col-xs-10.col-xs-push-2(type='button', ng-click='$ctrl.btnToggleOptionsSection($ctrl.optionsSection)')
                             | NEXT
                 .packages-div(ng-repeat='psPackage in $ctrl.packageData')
                   table.items(style='width:100%')
