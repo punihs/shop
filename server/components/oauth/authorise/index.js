@@ -4,6 +4,7 @@ const {
 } = require('../../../config/environment');
 
 module.exports = (username) => {
+  console.log({ MASTER_TOKEN, URLS_API });
   return rp({
     method: 'POST',
     uri: `${URLS_API}/authorise?token=${MASTER_TOKEN}`,

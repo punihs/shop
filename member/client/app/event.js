@@ -6,7 +6,6 @@ angular.module('uiGenApp')
     // In Future: assign to variable to destroy during the $destroy event
     const location = $window.location;
     if (!Session.isAuthenticated() && $location.search().otp) {
-      debugger;
       const continueURL = $location.absUrl().split('?')[0];
       location.href = `${URLS.PARCEL_API}/api/users/authorise?otp=${$location.search().otp}&continue=${continueURL}`;
       return location.href;
