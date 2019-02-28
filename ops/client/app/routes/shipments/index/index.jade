@@ -99,6 +99,10 @@ div
             )
               span(ng-bind='$ctrl.moment(shipment.updated_at).fromNow()')
 
+            span.pull-right
+              a(href='{{shipment.tracking_url}}' target="_blank")
+                span.text-primary-lt &nbsp; {{shipment.tracking_code}} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+
         .col-xs-12.text-center
           a.btn.active.m-t-xs(ng-if="$ctrl.ui.loading")
             i.fa.fa-circle-o-notch.fa-spin

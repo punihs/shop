@@ -58,7 +58,7 @@ div
                   .col-xs-4.text-ellipsis(ng-show='shipment.final_amount')
                     i.fa.fa-inr
                     |  Rs. {{shipment.final_amount}}
-                  .col-xs-4.text-ellipsis(ng-show='shipment.final_amount')
+                  .col-xs-4.text-ellipsis(ng-show='shipment.tracking_url')
                     i.fa.fa-truck
                     a(href='{{shipment.tracking_url}}' target="_blank")
                       span.text-primary-lt &nbsp; {{shipment.tracking_code}} &nbsp; &nbsp;{{shipment.shipping_carrier}}
