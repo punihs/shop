@@ -45,6 +45,7 @@ exports.index = async (req, res, next) => {
       }],
       where: {},
       limit: Number(req.query.limit) || 10,
+      offset: Number(req.query.offset) || 10,
       order: [['created_at', 'desc']],
     };
 
@@ -289,12 +290,9 @@ exports.updateChangePassword = async (req, res, next) => {
 };
 
 exports.authorise = async (req, res, next) => {
-  console.log('authorise');
   try {
     const { email } = jsonwebtoken.verify(req.query.otp, MASTER_TOKEN);
-    console.log({  email });
     const url = await authorise(email);
-    console.log({ url });
     if (req.query.continue) res.redirect(`${url}&continue=${req.query.continue}`);
     else res.redirect(url);
 

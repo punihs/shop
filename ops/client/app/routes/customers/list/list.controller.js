@@ -44,7 +44,7 @@ class CustomersListController {
 
     this.list = [];
     this.ui = { lazyLoad: false, loading: false };
-    this.params = { start: 0, offset: 0, limit: 10, q: '', group_id: this.groupId };
+    this.params = { start: 0, offset: 1, limit: 10, q: '', group_id: this.groupId };
 
     this.loadFacets();
     return this.getCustomers(true);
@@ -70,7 +70,7 @@ class CustomersListController {
     if (refresh) {
       this.list = [];
       this.params.start = 0;
-      this.params.offset = 0;
+      this.params.offset = 10;
       this.ui.lazyLoad = true;
       this.ui.loading = false;
       this.$window.scrollTo(0, 0);
@@ -106,11 +106,13 @@ class CustomersListController {
           // data has been loaded
           this.ui.loading = false;
 
-          // check for returned results count and set lazy loadLoad false if less
-          this.ui.lazyLoad = angular.equals(this.list.length, this.params.limit);
-
           // increment offset for next loading of results
           this.params.offset = this.params.offset + this.params.limit;
+          // this.params.offset = this.params.offset + this.params.limit;
+
+          // check for returned results count and set lazy loadLoad false if less
+          this.ui.lazyLoad = angular.equals(customers.length, this.params.limit);
+          this.params.start = this.params.start + this.params.limit;
         })
         .catch(() => {
           this.ui.loading = false;
