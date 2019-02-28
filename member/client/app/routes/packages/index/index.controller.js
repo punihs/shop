@@ -245,8 +245,6 @@ class PackagesIndexController {
             });
 
             this.packages = angular.copy(this.master);
-
-            console.log('pkg', this.packages);
           });
       });
   }

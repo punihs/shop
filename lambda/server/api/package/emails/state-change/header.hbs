@@ -14,11 +14,11 @@
             <tbody>
             <tr style="padding:5px 0px 5px 0px;white-space:nowrap;border-collapse:collapse;text-align:right;width:490px">
               {{#if INCOMING}}
-                <td> <a href="{{ENV.URLS_PARCEL}}/packages?bucket=ALL" style="text-decoration:none;color:rgb(0,102,153);font-family:Arial,san-serif" target="_blank">Your Packages</a> </td>
+                <td> <a href="{{ENV.URLS_PARCEL}}/packages?bucket=ALL&otp={{otp}}" style="text-decoration:none;color:rgb(0,102,153);font-family:Arial,san-serif" target="_blank">Your Packages</a> </td>
               {{else if PERSONAL_SHOPPER}}
-                <td> <a href="{{ENV.URLS_PARCEL}}/personalShopper/index" style="text-decoration:none;color:rgb(0,102,153);font-family:Arial,san-serif" target="_blank">Your Orders</a> </td>
+                <td> <a href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}" style="text-decoration:none;color:rgb(0,102,153);font-family:Arial,san-serif" target="_blank">Your Orders</a> </td>
               {{else if COD}}
-                <td> <a href="{{ENV.URLS_PARCEL}}/personalShopper/index" style="text-decoration:none;color:rgb(0,102,153);font-family:Arial,san-serif" target="_blank">Your Orders</a> </td>
+                <td> <a href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}" style="text-decoration:none;color:rgb(0,102,153);font-family:Arial,san-serif" target="_blank">Your Orders</a> </td>
               {{/if}}
               <td> <span style="text-decoration:none;color:#ccc;font:15px Arial,san-serif">&nbsp;|&nbsp;</span> </td>
               <td> <a href="{{ENV.URLS_WWW}}" style="text-decoration:none;color:rgb(0,102,153);font-family:Arial,san-serif" target="_blank"> <span class="il">ShoppRe</span>.com</a> </td>
@@ -153,103 +153,103 @@
           <span style="font-size:12px">
             {{#if PACKAGE_ITEMS_UPLOAD_PENDING}}
               <a
-                href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW"
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW&otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
             {{else if CUSTOMER_INPUT}}
               <a
-                href="{{ENV.URLS_PARCEL}}/packages?bucket=ACTION_REQUIRED"
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=ACTION_REQUIRED&otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
             {{else if UPLOAD_INVOICE_REQUESTED}}
               <a
-                href="{{ENV.URLS_PARCEL}}/packages?bucket=ACTION_REQUIRED"
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=ACTION_REQUIRED&otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
             {{else if READY_TO_SHIP}}
               <a
-                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND"
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND&otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
             {{else if DAMAGED}}
               <a
-                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND"
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND&otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
             {{else if RETURN_REQUEST_FROM_CUSTOMER}}
               <a
-                href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW"
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW&otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
             {{else if RETURN_PICKUP_DONE}}
               <a
-                href="{{ENV.URLS_PARCEL}}/packages?bucket=ALL"
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=ALL&otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
             {{else if SPLIT_PACKAGE}}
               <a
-                href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW"
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW&otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
             {{else if SPLIT_PACKAGE_PROCESSED}}
               <a
-                href="{{ENV.URLS_PARCEL}}/packages?bucket=ALL"
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=ALL&otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
             {{else if DISCARDED}}
               <a
-                href="{{ENV.URLS_PARCEL}}/packages?bucket=ALL"
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=ALL&otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
             {{else if DISCARD_REQUESTED}}
               <a
-                href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW"
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW&otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
             {{else if STANDARD_PHOTO_REQUEST}}
               <a
-                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND"
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND&otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
             {{else if ADVANCED_PHOTO_REQUEST}}
               <a
-                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND"
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND&otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
             {{else if PAYMENT_COMPLETED}}
               <a
-                href="{{ENV.URLS_PARCEL}}/personalShopper/index"
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
             {{else if ORDER_CANCELLED}}
               <a
-                href="{{ENV.URLS_PARCEL}}/personalShopper/index"
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
             {{else if PRICE_CHANGED}}
               <a
-                href="{{ENV.URLS_PARCEL}}/personalShopper/index"
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index"?otp={{otp}}
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
             {{else if PAYMENT_FAILED}}
               <a
-                href="{{ENV.URLS_PARCEL}}/personalShopper/index"
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
             {{else if PAYMENT_CONFIRMED}}
               <a
-                href="{{ENV.URLS_PARCEL}}/personalShopper/index"
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
             {{else if ORDER_PLACED}}
               <a
-                href="{{ENV.URLS_PARCEL}}/personalShopper/index"
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
             {{else if OUT_OF_STOCK}}
               <a
-                href="{{ENV.URLS_PARCEL}}/personalShopper/index"
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
             {{else if REFUNDED_TO_WALLET}}
               <a
-                href="{{ENV.URLS_PARCEL}}/personalShopper/index"
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
             {{else if REFUNDED_TO_BANK_ACCOUNT}}
               <a
-                href="{{ENV.URLS_PARCEL}}/personalShopper/index"
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
             {{else if ORDER_COMPLETED}}
               <a
-                href="{{ENV.URLS_PARCEL}}/personalShopper/index"
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
             {{else if PACKAGE_STORAGE}}
               <a
-                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND"
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND&otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
             {{else if PACKAGE_STORAGE_EXCEEDED}}
               <a
-                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND"
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND&otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
             {{/if}}
               <br> </span>

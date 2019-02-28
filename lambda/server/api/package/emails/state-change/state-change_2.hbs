@@ -10,7 +10,7 @@
       <br><br>
       Please be patient while your package is undergoing several quality checks & documentation to ensure it is not
       damaged and is meeting the export quality requirements. And, further details would be updated in your <a
-      href="{{ENV.URLS_PARCEL}}/dashboard">Dashboard</a> within 24 hours.
+      href="{{ENV.URLS_PARCEL}}/dashboard?otp={{otp}}">Dashboard</a> within 24 hours.
       <br>
       <br>
       Your package is shipped by <span class="il">{{pkg.Store.name}}</span> and the reference ID is {{pkg.invoice_code}}.
@@ -28,11 +28,11 @@
         that we've just received did not make the cost of the item(s) clear.
         <br>
         <br>
-        Hence, we request you to update the same in your <a href="{{ENV.URLS_PARCEL}}/dashboard">Dashboard</a>;
+        Hence, we request you to update the same in your <a href="{{ENV.URLS_PARCEL}}/dashboard?otp={{otp}}">Dashboard</a>;
         so that we can prepare to ship without any delay.
         <br>
         <br>
-        1. Visit your <a href="{{ENV.URLS_PARCEL}}/packages?bucket=ACTION_REQUIRED">Action Required</a> tab
+        1. Visit your <a href="{{ENV.URLS_PARCEL}}/packages?bucket=ACTION_REQUIRED&otp={{otp}}">Action Required</a> tab
         <br>
         2. Enter the price you paid for the item(s) in the field provided
         <br>
@@ -57,7 +57,7 @@
         <br>
         The steps are:
         <br>
-        1. Visit the <a href="{{ENV.URLS_PARCEL}}/packages?bucket=ACTION_REQUIRED">Action Required</a> tab on your Dashboard
+        1. Visit the <a href="{{ENV.URLS_PARCEL}}/packages?bucket=ACTION_REQUIRED&otp={{otp}}">Action Required</a> tab on your Dashboard
         2. Select “Upload Invoice”
         3. Choose the invoice from your computer & confirm
         <br>
@@ -89,8 +89,8 @@
         Cost of the Package:<span class="il">{{pkg.price_amount}}</span>
         <br>
         <br>
-        Feel free to <a href="{{ENV.URLS_MYACCOUNT}}/login">Sign in </a>to your ShoppRe account & review/edit
-        the product costs or  <a href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND">View the Photo</a> of your packages at a discounted rate of
+        Feel free to <a href="{{ENV.URLS_WWW}}/customer/login">Sign in </a>to your ShoppRe account & review/edit
+        the product costs or  <a href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND&otp={{otp}}">View the Photo</a> of your packages at a discounted rate of
         <strike>₹100</strike> ₹50, before making a request to ship.
       </p>
     </td>
@@ -103,7 +103,7 @@
         We're afraid the package with id:<span class="il">{{pkg.id}}</span> you purchased from <span class="il">{{pkg.Store.name}}</span> has arrived at our facility with a damage.
         <br>
         <br>
-        Go to your <a href="{{ENV.URLS_PARCEL}}/dashboard">Dashboard</a> to let us know how to proceed. You can choose to Return or Discard the item.
+        Go to your <a href="{{ENV.URLS_PARCEL}}/dashboard?otp={{otp}}">Dashboard</a> to let us know how to proceed. You can choose to Return or Discard the item.
         <br>
         Do reach out to us at <a href="mail:support@shoppre.com">support@shoppre.com</a> in case of any query.
         <br>
@@ -295,7 +295,7 @@
         We regret to inform you that the order <span class="il">{{pkg.order_code}}</span> you placed with our Personal Shopper has been cancelled as per your request,
         A refund of Rs.<span class="il">{{pkg.sub_total}}</span> will be initiated in 48 hours to your bank account/wallet.
         <br><br>
-        Please confirm the same on your ShoppRe <a href="{{ENV.URLS_PARCEL}}/dashboard">Dashboard</a>.
+        Please confirm the same on your ShoppRe <a href="{{ENV.URLS_PARCEL}}/dashboard?otp={{otp}}">Dashboard</a>.
       </p> </td>
   </tr>
 {{else if PRICE_CHANGED}}
@@ -305,7 +305,7 @@
       <p style="margin:4px 20px 18px 20px;width:640px">
         This is to inform you that the price of the item[s] in your order <span class="il">{{pkg.order_code}}</span> on <span class="il">{{pkg.Store.name}}</span> has been
         increased to Amount.<br><br>
-        Since you have chosen to <span class="il">{{pkg.buy_if_price_changed}}</span> the item[s] when you placed the order in such a case; can we go ahead & proceed with <a href="{{ENV.URLS_PARCEL}}/personalShopper/index">shopping/cancelling</a> this item?
+        Since you have chosen to <span class="il">{{pkg.buy_if_price_changed}}</span> the item[s] when you placed the order in such a case; can we go ahead & proceed with <a href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}">shopping/cancelling</a> this item?
         <br><br>
         Please confirm as soon as you can to avoid any delays.
       </p> </td>
@@ -317,7 +317,7 @@
       <p style="margin:4px 20px 18px 20px;width:640px">
         Unfortunately, your transaction attempt using your <span class="il">{{paymentGateway.name}}</span> to pay INR <span class="il">{{pkg.sub_total}}</span> for your Order ID <span class="il">{{pkg.order_code}}</span> has been failed.
         <br>
-        You can either <a href="{{ENV.URLS_PARCEL}}/personalShopper/{{pkg.order_code}}/confirm">retry your payment</a> or <a href="{{ENV.URLS_PARCEL}}/personalShopper/{{pkg.order_code}}/confirm">try another payment method</a>.
+        You can either <a href="{{ENV.URLS_PARCEL}}/personalShopper/{{pkg.order_code}}/confirm?otp={{otp}}">retry your payment</a> or <a href="{{ENV.URLS_PARCEL}}/personalShopper/{{pkg.order_code}}/confirm?otp={{otp}}">try another payment method</a>.
         <br>
         In case if the amount has been deducted from your account, the same will be credited back within 7 working days.
         <br><br>
@@ -342,7 +342,7 @@
       <p style="margin:4px 20px 18px 20px;width:640px">
         We're so glad to inform you that your Personal Shopper Order <span class="il">{{pkg.order_code}}</span> has been successfully placed on <span class="il">{{pkg.Store.name}}</span>!
         <br><br>
-        You can confirm & track the status of the same on your <a href="{{ENV.URLS_PARCEL}}/dashboard">Dashboard</a>.
+        You can confirm & track the status of the same on your <a href="{{ENV.URLS_PARCEL}}/dashboard?otp={{otp}}">Dashboard</a>.
       </p> </td>
   </tr>
 {{else if OUT_OF_STOCK}}
@@ -352,7 +352,7 @@
       <p style="margin:4px 20px 18px 20px;width:640px">
         We regret to inform you that the item(s) in your Personal Shopper Order <span class="il">{{pkg.order_code}}</span> went out of stock.
         <br><br>
-        You can confirm the same on your <a href="{{ENV.URLS_PARCEL}}/dashboard">Dashboard</a> under Order Details.The cost of the item(s) will be excluded from the final bill you have to pay.
+        You can confirm the same on your <a href="{{ENV.URLS_PARCEL}}/dashboard?otp={{otp}}">Dashboard</a> under Order Details.The cost of the item(s) will be excluded from the final bill you have to pay.
       </p> </td>
   </tr>
 {{else if REFUNDED_TO_WALLET}}
@@ -364,7 +364,7 @@
         and we found that the amount <span class="il">{{pkg.sub_total}}</span>
         has reflected in your Wallet just now.
         <br><br>
-        You can go to <a href="{{ENV.URLS_PARCEL}}/dashboard">Dashboard</a> and confirm the same from your end.
+        You can go to <a href="{{ENV.URLS_PARCEL}}/dashboard?otp={{otp}}">Dashboard</a> and confirm the same from your end.
       </p> </td>
   </tr>
 {{else if REFUNDED_TO_BANK_ACCOUNT}}

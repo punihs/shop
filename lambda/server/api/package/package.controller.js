@@ -17,6 +17,7 @@ exports.notifications = (req, res) => {
     ORDER_ITEMS,
     packageStorageLimit,
     packageStorageExceededCharge,
+    otp,
   } = req.body;
 
   const targetUser = {
@@ -52,6 +53,7 @@ exports.notifications = (req, res) => {
           ORDER_ITEMS,
           packageStorageLimit,
           packageStorageExceededCharge,
+          otp,
         }),
       }],
       // oneSignal: [{

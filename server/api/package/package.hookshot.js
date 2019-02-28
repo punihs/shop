@@ -1,7 +1,9 @@
 const debug = require('debug');
+const jwt = require('jsonwebtoken');
 
 const hookshot = require('../../conn/hookshot');
 const viewConfig = require('../../view.config');
+const env = require('../../config/environment');
 const {
   PACKAGE_STATE_ID_NAMES_MAP,
   PACKAGE_TYPES: { INCOMING, PERSONAL_SHOPPER, COD },
@@ -23,6 +25,8 @@ exports.stateChange = async ({
           'virtual_address_code', 'phone',
         ],
       });
+
+    const otp = jwt.sign({ email: customer.email }, env.MASTER_TOKEN);
 
     const store = await Store
       .findById(pkg.store_id, { raw: true, attributes: ['name'] });
@@ -47,6 +51,7 @@ exports.stateChange = async ({
         COD: pkg.package_type === COD ? true : false,
         ORDER_ITEMS: [PERSONAL_SHOPPER, COD].includes(pkg.package_type) ? true : false,
         packageItems,
+        otp,
       }, headers);
     return null;
   } catch (err) {

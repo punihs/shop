@@ -66,6 +66,7 @@ module.exports = {
     actingUser: OPS,
     ENV,
     subject: 'Your Package Has Just Arrived at Our Facility!',
+    otp: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlY2guc2hvcHByZUBnbWFpbC5jb20iLCJpYXQiOjE1NTEyODM1MzR9.Ywy0Dm8NWDP6HlO4f7tTzfLN1p_7iFrDKWCJcDeOqHk',
   },
   CUSTOMER_INPUT: {
     CUSTOMER_INPUT: true,
@@ -78,6 +79,7 @@ module.exports = {
     subject: 'Please Input the Product Costs of Your Purchase',
   },
   READY_TO_SHIP: {
+    otp: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InB1bml0aC5oczkwQGdtYWlsLmNvbSIsImlhdCI6MTU1MTMzMTc2OX0.Dwf-UrtOIK95Nu2REt6Yky9r0bmNRKH6gC19aQKpcSg',
     READY_TO_SHIP: true,
     INCOMING: true,
     pkg,
@@ -88,6 +90,7 @@ module.exports = {
     subject: `Your Package Is Ready to be Shipped | Package ID: ${pkg.id}`,
   },
   DAMAGED: {
+    otp: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InB1bml0aC5oczkwQGdtYWlsLmNvbSIsImlhdCI6MTU1MTMzMTc2OX0.Dwf-UrtOIK95Nu2REt6Yky9r0bmNRKH6gC19aQKpcSg',
     DAMAGED: true,
     INCOMING: true,
     pkg,
@@ -98,6 +101,7 @@ module.exports = {
     subject: 'Seems Your Item Had Arrived Here With a Damage!',
   },
   RETURN_REQUEST_FROM_CUSTOMER: {
+    otp: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InB1bml0aC5oczkwQGdtYWlsLmNvbSIsImlhdCI6MTU1MTMzMTc2OX0.Dwf-UrtOIK95Nu2REt6Yky9r0bmNRKH6gC19aQKpcSg',
     RETURN_REQUEST_FROM_CUSTOMER: true,
     INCOMING: true,
     pkg,

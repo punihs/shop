@@ -1,3 +1,6 @@
+const jwt = require('jsonwebtoken');
+
+const { MASTER_TOKEN } = require('../../../../config/environment');
 
 const shipment = {
   id: 9,
@@ -85,6 +88,7 @@ module.exports = {
     ENV,
     subject: `Make Payment | Your Shipment ID: ${shipment.id} Is Packed & Weighed`,
     shipment,
+    otp: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlY2guc2hvcHByZUBnbWFpbC5jb20iLCJpYXQiOjE1NTEyODM1MzR9.Ywy0Dm8NWDP6HlO4f7tTzfLN1p_7iFrDKWCJcDeOqHk',
   },
   PAYMENT_INITIATED: {
     PAYMENT_INITIATED: true,
@@ -313,6 +317,7 @@ module.exports = {
   },
   SHIPMENT_CANCELLED: {
     SHIPMENT_CANCELLED: true,
+    // otp: jwt({ email: 'manjeshpv@gmail.com' }, MASTER_TOKEN),
     packages,
     customer,
     address,

@@ -35,6 +35,7 @@
     "express": "^4.16.4",
     "fastq": "^1.6.0",
     "handlebars": "^4.0.12",
+    "jsonwebtoken": "^8.5.0",
     "lodash": "^4.17.11",
     "mailcomposer": "^4.0.2",
     "minio": "^5.0.2",

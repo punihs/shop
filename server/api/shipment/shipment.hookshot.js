@@ -1,8 +1,10 @@
 const debug = require('debug');
+const jwt = require('jsonwebtoken');
 const hookshot = require('../../conn/hookshot');
 const viewConfig = require('../../view.config');
 
 const log = debug('s-api-shipment-notification');
+const env = require('../../config/environment');
 const { User } = require('../../conn/sqldb');
 
 const { SHIPMENT_STATE_ID_NAMES_MAP } = require('../../config/constants');
@@ -20,6 +22,8 @@ exports.stateChange = async ({
         ],
       });
 
+    const otp = jwt.sign({ email: customer.email }, env.MASTER_TOKEN);
+
     log({ paymentGateway });
 
     return hookshot.trigger('shipment:stateChange', {
@@ -34,6 +38,7 @@ exports.stateChange = async ({
       ENV: viewConfig,
       address,
       [gateway]: true,
+      otp,
     });
   } catch (err) {
     return next(err);

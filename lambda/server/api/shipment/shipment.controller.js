@@ -18,6 +18,7 @@ exports.notification = async (req, res, next) => {
       ENV,
       paymentDelayCharge,
       paymentDelayLimit,
+      otp,
     } = req.body;
 
     customer.first_name = customer.first_name.charAt(0).toUpperCase() +
@@ -37,6 +38,7 @@ exports.notification = async (req, res, next) => {
       ENV,
       paymentDelayCharge,
       paymentDelayLimit,
+      otp,
     });
 
     log('---------------\n\n');

@@ -1,5 +1,9 @@
 const _ = require('lodash');
 const debug = require('debug');
+const jsonwebtoken = require('jsonwebtoken');
+
+const authorise = require('../../components/oauth/authorise');
+const { MASTER_TOKEN } = require('../../config/environment');
 
 const {
   User, State, ActionableState, GroupState, Shipment, Country, Package, PackageState,
@@ -283,3 +287,18 @@ exports.updateChangePassword = async (req, res, next) => {
     return next(err);
   }
 };
+
+exports.authorise = async (req, res, next) => {
+  log('authorise');
+  try {
+    const { email } = jsonwebtoken.verify(req.query.otp, MASTER_TOKEN);
+    const url = await authorise(email);
+    if (req.query.continue) res.redirect(`${url}&continue=${req.query.continue}`);
+    else res.redirect(url);
+
+    return email;
+  } catch (err) {
+    return next(err);
+  }
+};
+
