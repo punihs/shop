@@ -45,7 +45,7 @@ exports.index = async (req, res, next) => {
       }],
       where: {},
       limit: Number(req.query.limit) || 10,
-      offset: Number(req.query.offset) || 10,
+      offset: Number(req.query.offset) || 0,
       order: [['created_at', 'desc']],
     };
 
