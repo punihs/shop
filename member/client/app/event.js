@@ -25,9 +25,7 @@ angular.module('uiGenApp')
         event.preventDefault();
         return $state.go(User.userinfo.whatBlocked[0].state);
       }
-
       if (Session.isAuthenticated() && (next.name === 'access.oauth')) {
-        event.preventDefault();
         // return $state.go('packages.index');
         const locationSearch = $window.location.search.split('&')[1];
         if (locationSearch.split('=')[1] === 'personalShopperCreate') {
