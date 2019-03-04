@@ -44,7 +44,7 @@ class CustomersListController {
 
     this.list = [];
     this.ui = { lazyLoad: false, loading: false };
-    this.params = { start: 0, offset: 0, limit: 2, q: '', group_id: this.groupId };
+    this.params = { start: 0, offset: 0, limit: 10, q: '', group_id: this.groupId };
 
     this.loadFacets();
     return this.getCustomers(true);
@@ -85,7 +85,6 @@ class CustomersListController {
     this.$timeout.cancel(this.timeout); // cancel the last timeout
 
     // to avoid calling loadMore() on loading of page
-    debugger;
     this.timeout = this.$timeout(() => {
       this
         .$http
