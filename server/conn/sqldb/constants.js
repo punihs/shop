@@ -49,4 +49,15 @@ const constants = {};
     if (keyMap !== false) constants[name.toUpperCase()] = keyValueMap(name, data, map[name] || 'name', 'id');
   });
 
+[
+  { name: 'package-discard-actionable-state', keyMap: false },
+]
+  .forEach(({ name, keyMap = true }) => {
+    const data = r(`./../../api/seedingFiles/${_.camelCase(name)}.seed`)(constants);
+    // - used for dependency injection
+    constants[_.camelCase(name)] = data;
+    // - for writing contant names instead of number like instead of 1 for group_id we write OPS
+    if (keyMap !== false) constants[name.toUpperCase()] = keyValueMap(name, data, map[name] || 'name', 'id');
+  });
+
 module.exports = constants;

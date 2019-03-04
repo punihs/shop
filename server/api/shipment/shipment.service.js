@@ -26,6 +26,7 @@ const {
   SHIPMENT_STATE_IDS: {
     PAYMENT_COMPLETED, PAYMENT_FAILED, PAYMENT_REQUESTED, SHIPMENT_CANCELLED, SHIPMENT_DELIVERED,
     DISPATCHED, DELIVERED, INTRANSIT, CUSTOM_HOLD, LOST, SHIPMENT_HANDED, PAYMENT_CONFIRMED,
+    SHIPMENT_IN_ACTIVE,
   },
   PACKAGE_STATE_IDS: { READY_TO_SHIP, DAMAGED },
   PAYMENT_GATEWAY: {
@@ -195,7 +196,7 @@ exports.show = async (req, res, next) => {
       }, {
         model: ShipmentState,
         attributes: ['id', 'shipment_id'],
-        where: { state_id: [PAYMENT_REQUESTED, PAYMENT_FAILED, PAYMENT_COMPLETED] },
+        where: { state_id: [PAYMENT_REQUESTED, PAYMENT_FAILED, PAYMENT_COMPLETED, SHIPMENT_IN_ACTIVE] },
       }],
     };
 

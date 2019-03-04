@@ -99,7 +99,7 @@ div
                                     popover-placement='top'
                                     popover-append-to-body='true'
                                     )
-                                div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PAYMENT_REQUESTED')
+                                div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PAYMENT_REQUESTED || shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.SHIPMENT_IN_ACTIVE')
                                   p
                                     a.summary-order(ui-sref='shipRequest.confirm({orderCode: shipment.order_code})') Submit Payment
                                 div(ng-if='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.PAYMENT_COMPLETED')
