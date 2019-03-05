@@ -405,11 +405,11 @@ div.m-t-xl.no-margin
                         span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && trackingForm.weight_by_shipping_partner.$dirty && trackingForm.weight_by_shipping_partner.$invalid') Please enter Weight
                     .col-md-6.col-sm-5.col-xs-12
                       label.col-xs-12.input-group
-                        | Tracking Code
+                        | Live Tracking Code
                         span.text-danger *
                         input.form.form-control(
                         type='text'
-                        name='phone'
+                        name='tracking_code'
                         placeholder='eg. 3203915982'
                         ng-model='$ctrl.data.tracking_code'
                         required
@@ -432,6 +432,19 @@ div.m-t-xl.no-margin
                         span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && trackingForm.tracking_url.$dirty && trackingForm.tracking_url.$invalid') Please enter Tracking URL
                     .col-md-6.col-sm-5.col-xs-12
                       label.col-xs-12.input-group
+                        | Connecting Tracking Code
+                        span.text-danger *
+                        input.form.form-control(
+                        type='text'
+                        name='connecting_tracking_code'
+                        placeholder='eg. 2018-08-12'
+                        ng-model='$ctrl.data.connecting_tracking_code'
+                        )
+                .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
+                .row
+                  .col-md-12
+                    .col-md-6.col-sm-5.col-xs-12.no-padder
+                      label.col-xs-12.input-group
                         | Dispatch Date
                         span.text-danger *
                         input.form.form-control(
@@ -450,6 +463,13 @@ div.m-t-xl.no-margin
                     span(ng-if='$ctrl.submittingTracking')
                       i.fa.fa-spin.fa-circle-o-notch
                       span.text-white &nbsp;&nbsp;Submitting...
+
+                  button.btn.btn-success.m-l-xs-md(ng-click='$ctrl.updateAfterShip()')
+                    span.fa.fa-forward.m-r-sm
+                    span.text-white Update AfterShip Tracking code
+                    //span(ng-if='$ctrl.submittingTracking')
+                    //  i.fa.fa-spin.fa-circle-o-notch
+                    //  span.text-white &nbsp;&nbsp;Submitting...
     br
     .wrapper-md.bg-white-only
       .h1.m-l-md.font-thin.h3

@@ -8,6 +8,7 @@ const ship = require('./components/ship');
 const { addressStringify } = require('./components/util');
 const { stringify } = require('querystring');
 const { calcPackageLevelCharges, calcLiquidCharges } = require('./components/shipRequest');
+const aftershipController = require('./../afterShipCarriers/afterShipCarriers.controller');
 
 const hookshot = require('./shipment.hookshot');
 const packageService = require('../package/package.service');
@@ -37,7 +38,7 @@ const {
   PAYMENT_GATEWAY: { RAZOR },
   GROUPS: { CUSTOMER },
 } = require('../../config/constants');
-const { URLS_PARCEL } = require('../../config/environment');
+const { URLS_PARCEL, env } = require('../../config/environment');
 
 const BUCKETS = require('../../config/constants/buckets');
 
@@ -1223,13 +1224,35 @@ exports.shipRequestResponse = async (req, res, next) => {
 
 exports.trackingUpdate = async (req, res, next) => {
   try {
-    const shipment = req.body;
+    const { body } = req;
     const { id } = req.params;
+    if (env === 'production') {
+      const shipment = Shipment
+        .find({
+          attributes: ['country_id', 'afterShip_slug', 'dispatch_date', 'tracking_code'],
+          where: { id },
+          include: [{
+            model: User,
+            as: 'Customer',
+            attributes: ['first_name', 'last_name', 'email'],
+          }, {
+            model: Country,
+            attributes: ['name'],
+          }],
+        });
 
-    const status = await Shipment.update(shipment, { where: { id } });
+      if (body.tracking_code) {
+        if (body.tracking_code !== shipment.tracking_code) {
+          aftershipController.create(shipment);
+        }
+      }
+    }
+
+    const status = await Shipment.update(body, { where: { id } });
 
     return res.json(status);
   } catch (err) {
     return next(err);
   }
 };
+
