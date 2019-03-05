@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 module.exports = {
   up: (queryInterface) => {
     queryInterface.addColumn(
-      'package_items',
+      'users',
       'is_courier_migrated',
       {
         type: Sequelize.STRING,
