@@ -144,14 +144,14 @@
                         .footer-line.left-padding-15.right-padding-20
                           .line.line-dashed.b-b.m-t.m-b.pull-in.no-margin-left
                       .row
-                        .col-md-6.col-xs-12
+                        .col-md-2.col-xs-12
                           br
                           button.btn.btn-s-r.btn-b-b.btn-l.col-xs-10.col-xs-push-2(type='submit', ng-disabled="$ctrl.submitting || (!$ctrl.submitting && !newItemForm.$dirty)")
                             | + Add More Items
-                        .col-md-4.col-xs-12
+                        .col-md-3.col-xs-12
                           br
-                          button.btn.btn-s-r.btn-b-r.btn-l.col-xs-10.col-xs-push-2(type='button', ng-click='$ctrl.btnToggleOptionsSection($ctrl.optionsSection)')
-                            | NEXT
+                          button.btn.btn-s-r.btn-b-r.btn-l.col-xs-10.col-xs-push-2(ng-click='$ctrl.btnToggleOptionsSection($ctrl.optionsSection)')
+                            | SAVE & NEXT
                 .packages-div(ng-repeat='psPackage in $ctrl.packageData')
                   table.items(style='width:100%')
                     tbody
