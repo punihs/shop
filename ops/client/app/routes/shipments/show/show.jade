@@ -246,6 +246,8 @@
               ng-change='$ctrl.uploadFiles($ctrl.documentfile)'
               multiple base-sixty-four-input
               )
+        button.btn.btn-md.btn-default
+          a(ui-sref='proformaInvoice.dhl({ orderCode: $ctrl.data.order_code })', target='_blank') Proforma
 
     //- Shipment Skills
     .wrapper-xs.m-l-sm.m-t-sm.b-t(ng-if="$ctrl.data.skills.length>0")

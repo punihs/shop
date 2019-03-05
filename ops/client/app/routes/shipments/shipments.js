@@ -31,7 +31,8 @@ angular.module('uiGenApp')
           pkg($http, $stateParams, $state) {
             const fl = [
               'id', 'customer_id', 'created_at', 'weight', 'final_amount',
-              'packages_count', 'final_weight', 'address', 'order_code', 'transaction_id',
+              'packages_count', 'final_weight', 'address', 'order_code',
+              'transaction_id', 'order_code',
             ];
             const params = {
               fl: fl.join(','),

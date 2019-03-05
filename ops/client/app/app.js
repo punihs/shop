@@ -58,6 +58,13 @@ angular.module('uiGenApp', [
 
     $locationProvider.html5Mode(true);
   })
+  .constant('ADDRESS', {
+    name: 'Indian shoppre LLP,',
+    line1: '#181, 1st Floor, 2nd Cross Rd,',
+    line2: '7th Main, 1st Block Koramangala,',
+    line3: 'Bengaluru, Karnataka,560034',
+    phone: '+91 9148351414',
+  })
   // .factory('$exceptionHandler', () => (exception) => Raven.captureException(exception))
   // .factory('errorHttpInterceptor', ($q) => ({
   //   responseError: function responseError(rejection) {

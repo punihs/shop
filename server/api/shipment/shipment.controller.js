@@ -1,6 +1,7 @@
 const debug = require('debug');
 const moment = require('moment');
 const _ = require('lodash');
+const numberWords = require('npm-number-to-word');
 
 const logger = require('../../components/logger');
 const ship = require('./components/ship');
@@ -60,7 +61,7 @@ exports.show = async (req, res, next) => {
           .find({
             attributes: ['id', 'value_amount', 'address', 'customer_id', 'weight', 'payment_gateway_id',
               'order_code', 'final_amount', 'package_level_charges_amount', 'customer_name', 'phone',
-              'transaction_id'],
+              'transaction_id', 'order_code'],
             where: { order_code: id, customer_id: customerId },
             include: [{
               model: User,
@@ -769,6 +770,57 @@ exports.invoice = async (req, res, next) => {
     return res.json({
       shipment,
       packages,
+    });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.proformaInvoice = async (req, res, next) => {
+  try {
+    const { orderCode: order_code } = req.params;
+
+    const shipment = await Shipment
+      .find({
+        where: { order_code },
+        include: [{
+          model: User,
+          as: 'Customer',
+          attributes: ['first_name', 'last_name', 'virtual_address_code'],
+        }, {
+          model: Package,
+          include: [{
+            model: PackageItem,
+            attributes: ['id', 'quantity', 'price_amount', 'total_amount', 'object', 'name'],
+          }, {
+            model: Store,
+            attributes: ['id', 'name'],
+          }],
+        }, {
+          model: Country,
+          attributes: ['id', 'name'],
+        }],
+      });
+
+    if (!shipment) return res.status(400).end();
+
+    const PackItems = [];
+    let totalAmount = 0;
+    const { Packages } = shipment;
+
+    await Packages.forEach((pack) => {
+      const pkg = pack;
+      const { PackageItems } = pkg;
+      PackageItems.forEach((items) => {
+        PackItems.push(items);
+        totalAmount += items.total_amount;
+      });
+    });
+
+    const words = numberWords(totalAmount);
+
+    return res.json({
+      shipment, words, totalAmount,
     });
   } catch (err) {
     return next(err);

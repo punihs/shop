@@ -23,6 +23,7 @@ router.put('/:id/state', controller.state);
 router.get('/:id/response', controller.payResponse);
 router.get('/:orderCode/request/shipRequestResponse', controller.shipRequestResponse);
 router.put('/:id/tracking', controller.trackingUpdate);
+router.get('/:orderCode/proformaInvoice', controller.proformaInvoice);
 
 module.exports = router;
 
