@@ -6,6 +6,7 @@ angular.module('uiGenApp')
     const DOMAIN = `${host.substr(host.indexOf('.') + 1)}`;
 
     const project = 'parcel';
+    const courier = 'courier';
 
     return {
       CDN: `${PREFIX}cdn.${DOMAIN}`,
@@ -14,6 +15,7 @@ angular.module('uiGenApp')
 
       API: `${PREFIX}api.${DOMAIN}`,
       PARCEL_API: `${PREFIX}${project}-api.${DOMAIN}`,
+      COURIER_API: `${PREFIX}${courier}-api.${DOMAIN}`,
       PAY_API: `${PREFIX}pay-api.${DOMAIN}`,
       CHICKEN_API: `${PREFIX}chicken-api.${DOMAIN}`,
       SHIP_API: `${PREFIX}ship-api.${DOMAIN}`,

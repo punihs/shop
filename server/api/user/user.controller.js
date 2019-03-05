@@ -94,7 +94,7 @@ exports.me = async (req, res, next) => {
         attributes: [
           'id', 'salutation', 'first_name', 'last_name', 'email', 'alternate_email', 'group_id',
           'phone', 'secondary_phone', 'profile_photo_url',
-          'virtual_address_code',
+          'virtual_address_code', 'is_courier_migrated',
         ],
         limit: Number(req.query.limit) || 20,
       });
@@ -179,7 +179,7 @@ exports.show = async (req, res, next) => {
           ? req.query.fl.split(',')
           : [
             'id', 'name', 'first_name', 'last_name', 'salutation', 'virtual_address_code',
-            'phone', 'email',
+            'phone', 'email', 'is_courier_migrated',
             'secondary_phone', 'alternate_email',
           ],
         include: [{

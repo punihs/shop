@@ -40,4 +40,8 @@ module.exports = DataTypes => ({
   phone: DataTypes.STRING,
 
   secondary_phone: DataTypes.STRING,
+  is_courier_migrated: {
+    type: DataTypes.STRING,
+    defaultValue: 0,
+  },
 });
