@@ -4,6 +4,7 @@ const extractDomain = require('extract-domain');
 const log = debug('s.personalShopperPackage.controller');
 const { updateState } = require('../package.service');
 const { getPersonalShopperItems } = require('../item/item.service');
+const { taskCreate } = require('../../../components/asana/asana');
 
 const {
   PACKAGE_TYPES: {
@@ -26,7 +27,7 @@ const {
 } = require('../../../config/constants/charges');
 
 const {
-  Package, PackageItem, PackageState, Store, State,
+  Package, PackageItem, PackageState, Store, State, User,
 } = require('../../../conn/sqldb/index');
 
 
@@ -169,6 +170,28 @@ exports.create = async (req, res, next) => {
 
     shopPackageId = personalShop.id;
     shopPackageOrderCode = personalShop.order_code;
+
+    const orderDetails = await Package
+      .find({
+        attributes: ['order_code', 'store_id'],
+        where: { id: shopPackageId },
+        include: [{
+          model: User,
+          as: 'Customer',
+          attributes: ['first_name', 'last_name', 'email', 'id', 'phone'],
+        }, {
+          model: Store,
+          attributes: ['name'],
+        }],
+      });
+
+    const name = `${orderDetails.Customer.first_name} ${orderDetails.Customer.last_name} - ${orderDetails.order_code}`;
+    const notes = `Seller Name - ${orderDetails.Store.name},Phone NO - ${orderDetails.Customer.phone},\n Email - ${orderDetails.Customer.email}, CustomerId - ${orderDetails.Customer.id} `;
+    const bearer = '0/76d37fb13148c2dfa9999734bfcdbb1e';
+    const projects = '1106432437090454';
+    const workspace = '413352110377780';
+
+    taskCreate(name, notes, bearer, projects, workspace);
 
     await updateState({
       pkg: personalShop,

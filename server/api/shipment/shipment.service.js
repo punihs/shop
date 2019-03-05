@@ -1,7 +1,6 @@
 const debug = require('debug');
 const moment = require('moment');
 const sequelize = require('sequelize');
-const request = require('request');
 const _ = require('lodash');
 const hookshot = require('./shipment.hookshot');
 
@@ -10,6 +9,7 @@ const { updateState } = require('../package/package.service');
 const cashback = require('../shipment/components/cashback');
 const transactionCtrl = require('../transaction/transaction.controller');
 const aftershipController = require('./../afterShipCarriers/afterShipCarriers.controller');
+const { taskCreate } = require('./../../components/asana/asana');
 
 const {
   SUPPORT_EMAIL_ID, SUPPORT_EMAIL_FIRST_NAME, SUPPORT_EMAIL_LAST_NAME, env,
@@ -410,7 +410,13 @@ exports.updateShipmentState = async ({
                 attributes: ['name'],
               }],
             });
-          this.asanaTask(shipmentDispacthed);
+
+          const name = `${shipmentDispacthed.Customer.first_name} ${shipmentDispacthed.Customer.last_name} to ${shipmentDispacthed.Country.name || ''}`;
+          const notes = `Dispatch date ${shipmentDispacthed.dispatch_date}, \n Tracking ID= ${shipmentDispacthed.tracking_code} `;
+          const bearer = '0/ba27afb04779fc44282d1f5c2f97b866';
+          const projects = '1109255069338501';
+          const workspace = '413352110377780';
+          taskCreate(name, notes, bearer, projects, workspace);
           aftershipController.create(shipmentDispacthed);
         }
         break;
@@ -497,35 +503,6 @@ exports.updateShipmentState = async ({
     return next();
   }
 };
-
-exports.asanaTask = (shipment) => {
-  const bearer = '0/ba27afb04779fc44282d1f5c2f97b866';
-  const name = `${shipment.Customer.first_name} ${shipment.Customer.last_name} to ${shipment.Country.name || ''}`;
-  const notes = `Dispatch date ${shipment.dispatch_date},\nTracking ID= ${shipment.tracking_code} `;
-
-  const options = {
-    method: 'POST',
-    url: 'https://app.asana.com/api/1.0/tasks',
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded',
-      'postman-token': '3da371ea-f20d-3bde-ee75-7e6e7a107407',
-      'cache-control': 'no-cache',
-      authorization: `Bearer ${bearer}`,
-    },
-    form: {
-      notes: notes,
-      projects: '1109255069338501',
-      name: name,
-      workspace: '413352110377780',
-    },
-  };
-
-  request(options, (error, response, body) => {
-    if (error) throw new Error(error);
-
-    log(body);
-  });
-}
 
 exports.transaction = async (shipment) => {
   const transaction = await cashback
