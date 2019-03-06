@@ -56,6 +56,8 @@ module.exports = DataTypes => ({
   payment_status: DataTypes.STRING,
   invoice: DataTypes.STRING,
   notes: DataTypes.STRING,
+  return_send: DataTypes.STRING,
+  splitting_directions: DataTypes.STRING,
   order_code: DataTypes.STRING,
   buy_if_price_changed: DataTypes.STRING,
   transaction_id: DataTypes.INTEGER,
