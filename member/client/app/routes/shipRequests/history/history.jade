@@ -63,9 +63,20 @@ div
                             i.fa.fa-chevron-circle-down.text-info
                           td.footable-visible {{shipment.customer_name}}
                           td.footable-visible(ng-show='shipment.ShipmentState.state_id != $ctrl.SHIPMENT_STATE_IDS.SHIPMENT_CANCELLED')
-                            | Shipped {{shipment.number_of_packages}} Parcel(s) via: {{shipment.shipping_carrier}} to {{shipment.Customer.Country.iso2}} {{shipment.weight_by_shipping_partner}} Kg Tracking#
-                            a(href='{{shipment.tracking_url}}', target="_blank")
-                              span.summary-order &nbsp;{{shipment.tracking_code}}
+                            p(ng-show ='!shipment.connecting_tracking_code') Shipped {{shipment.number_of_packages}} Parcel(s) via: {{shipment.shipping_carrier}} to {{shipment.Country.name}} {{shipment.weight_by_shipping_partner}} Kg Tracking#
+
+                            p(ng-show ='shipment.connecting_tracking_code') Shipped {{shipment.number_of_packages}} Parcel(s) via: {{shipment.shipping_carrier}}
+                            ul
+                              li(style="color: #4caf50;" ng-show ='shipment.connecting_tracking_code')
+                                div(style="color:black") Transit Shipment to Mumbai- Tracking: {{shipment.connecting_tracking_code}}
+                                  a(href='{{shipment.tracking_url}}', target="_blank")
+                                    span.summary-order &nbsp;{{shipment.connecting_tracking_code}}
+                              li(style="border-left:1px solid #4caf50;list-style-type:none;margin-left:-13px;color: yellow;" ng-show ='shipment.connecting_tracking_code')
+                                div(style='visibility: hidden;') .
+                              li(style="color: #4caf50;" ng-show ='shipment.connecting_tracking_code')
+                                div(style="color:black") Transit Shipment from Mumbai to {{shipment.Country.name}}- Tracking:
+                                 a(href='{{shipment.tracking_url}}', target="_blank")
+                                   span.summary-order &nbsp;{{shipment.tracking_code}}
                           td.footable-visible(ng-show='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.SHIPMENT_CANCELLED')
                             | Canceled
                           td.footable-visible(

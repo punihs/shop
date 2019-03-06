@@ -60,6 +60,7 @@ exports.update = async (req, res, next) => {
     if (req.body.msg.tag.toLowerCase() === 'delivered') {
       const shipment = await Shipment.find({
         where: { after_ship_id: trackingId },
+        raw: true,
       });
 
       Shipment.update({ admin_info: 'received from aftership' }, { where: { id: shipment.id } });

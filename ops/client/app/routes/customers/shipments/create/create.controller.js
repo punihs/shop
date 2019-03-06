@@ -197,7 +197,9 @@ class ShipmentCreateController {
 
     const { shipmentId } = this.$stateParams;
     return this.$http.put(`/shipments/${shipmentId}/tracking`, _.pick(this.data, allowed))
-      .then(() => {
+      .then(({ data: { liveCode, connectingCode } }) => {
+        this.data.tracking_url = liveCode;
+        this.data.connecting_tracking_code = connectingCode;
         this.toaster
           .pop('success', 'Upstream price Updated');
       }).catch((e) => {

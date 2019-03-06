@@ -640,9 +640,13 @@ exports.history = async (req, res, next) => {
         'coupon_amount', 'loyalty_amount', 'estimated_amount', 'created_at', 'payment_status',
         'final_amount', 'payment_gateway_fee_amount', 'tracking_code', 'tracking_url', 'afterShip_slug',
         'number_of_packages', 'weight_by_shipping_partner', 'value_by_shipping_partner', 'shipping_carrier',
+        'connecting_tracking_code', 'country_id',
       ],
       where: { customer_id: req.user.id },
       include: [{
+        model: Country,
+        attributes: ['iso2', 'name'],
+      }, {
         model: Package,
         attributes: ['id', 'created_at', 'weight', 'price_amount'],
         include: [{
@@ -661,7 +665,7 @@ exports.history = async (req, res, next) => {
         attributes: ['id'],
         include: [{
           model: Country,
-          attributes: ['iso2'],
+          attributes: ['iso2', 'name'],
         }],
       }, {
         model: ShipmentState,
@@ -1226,31 +1230,52 @@ exports.trackingUpdate = async (req, res, next) => {
   try {
     const { body } = req;
     const { id } = req.params;
-    if (env === 'production') {
-      const shipment = Shipment
-        .find({
-          attributes: ['country_id', 'afterShip_slug', 'dispatch_date', 'tracking_code'],
-          where: { id },
-          include: [{
-            model: User,
-            as: 'Customer',
-            attributes: ['first_name', 'last_name', 'email'],
-          }, {
-            model: Country,
-            attributes: ['name'],
-          }],
-        });
+    let connectingCode = '';
+    let liveCode = '';
+    let createAfterShip = false;
 
-      if (body.tracking_code) {
-        if (body.tracking_code !== shipment.tracking_code) {
-          aftershipController.create(shipment);
-        }
+    if (body.tracking_code.indexOf('/') >= 0) {
+      connectingCode = body.tracking_code.split('/')[0];
+      liveCode = body.tracking_code.split('/')[1];
+    }
+
+    const shipment = await Shipment
+      .find({
+        attributes: ['country_id', 'afterShip_slug', 'dispatch_date', 'tracking_code'],
+        where: { id },
+        include: [{
+          model: User,
+          as: 'Customer',
+          attributes: ['first_name', 'last_name', 'email'],
+        }, {
+          model: Country,
+          attributes: ['name'],
+        }],
+      });
+
+    if (liveCode && connectingCode) {
+      body.tracking_code = liveCode;
+      body.connecting_tracking_code = connectingCode;
+    }
+
+    if (shipment.tracking_code !== body.tracking_code) {
+      createAfterShip = true;
+    }
+
+    log({ ship: shipment.tracking_code, body: body.tracking_code });
+    log({ createAfterShip });
+
+    const status = await Shipment.update(body, { where: { id } });
+    if (env === 'production') {
+      if (createAfterShip) {
+        aftershipController.create(shipment);
       }
     }
 
-    const status = await Shipment.update(body, { where: { id } });
-
-    return res.json(status);
+    return res.json({
+      liveCode: body.tracking_code,
+      connectingCode: body.connecting_tracking_code,
+    });
   } catch (err) {
     return next(err);
   }
