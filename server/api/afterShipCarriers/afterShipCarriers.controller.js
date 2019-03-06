@@ -86,6 +86,6 @@ exports.update = async (req, res, next) => {
     }
     return res.status(200).json({ message: 'success' });
   } catch (e) {
-    //log({ e });
+    return next;
   }
 };
