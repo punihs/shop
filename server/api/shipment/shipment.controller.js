@@ -19,7 +19,7 @@ const {
   Country, Shipment, Package, Address, PackageCharge, ShipmentMeta,
   PackageState, User, Locker, ShippingPreference,
   ShipmentState, Store,
-  PackageItem, PhotoRequest,
+  PackageItem, PhotoRequest, PackageItemCategory,
 } = db;
 
 const {
@@ -796,7 +796,11 @@ exports.proformaInvoice = async (req, res, next) => {
           model: Package,
           include: [{
             model: PackageItem,
-            attributes: ['id', 'quantity', 'price_amount', 'total_amount', 'object', 'name'],
+            attributes: ['id', 'quantity', 'price_amount', 'total_amount', 'object', 'name', 'package_item_category_id'],
+            include: [{
+              model: PackageItemCategory,
+              attributes: ['id', 'name'],
+            }],
           }, {
             model: Store,
             attributes: ['id', 'name'],

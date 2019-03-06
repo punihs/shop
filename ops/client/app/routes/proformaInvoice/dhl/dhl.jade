@@ -79,7 +79,12 @@
           td(colspan='1' style="border: 1px solid; width: 15%;")
             h1.blank
           td(colspan='5' rowspan='3' style="border: 1px solid; vertical-align: bottom;")
-            h4.text-center Personal use
+            h4.text-center
+              input(
+              style="text-align: center; border: 0px;"
+              type='text'
+              value='Personal use'
+              )
         tr
           td(colspan='1' style="border: 1px solid; width: 15%;")
           td(colspan='2' style="border: 1px solid; width: 30%;")
@@ -110,13 +115,28 @@
           td(colspan='1' style="border: 1px solid; width: 15%;")
             h4.text-center {{$index+1}}
           td(colspan='3' style="border: 1px solid;")
-            h4 {{item.name}}
+            h4
+              input(
+              style="text-align: center; border: 0px;"
+              type='text'
+              ng-model='item.PackageItemCategory.name'
+              )
           td(colspan='1' style="border: 1px solid; width: 5%;")
             h4.text-center {{item.quantity}}
           td(colspan='1' style="border: 1px solid;width: 15%;")
-            h4.text-center {{item.price_amount}}
+            h4
+              input(
+              style="text-align: center; border: 0px;"
+              type='text'
+              ng-model='item.price_amount'
+              )
           td(colspan='1' style="border: 1px solid;width: 15%;")
-            h4.text-center {{item.total_amount}}
+            h4
+              input(
+              style="text-align: center; border: 0px;"
+              type='text'
+              ng-model='item.total_amount'
+              )
         tr
           td(colspan='1' style="border: 1px solid; width: 15%;")
           td(colspan='1' style="border: 1px solid; width: 15%;")
@@ -124,10 +144,21 @@
           td(colspan='1' style="border: 1px solid; width: 5%;")
           td(colspan='1' style="border: 1px solid;width: 15%;")
           td(colspan='1' style="border: 1px solid;width: 15%;")
-            h4 {{ $ctrl.Charges.total_amount }}
+            h4
+              input(
+              style="text-align: center; border: 0px;"
+              type='text'
+              ng-model='$ctrl.Charges.total_amount'
+              )
         tr
           td(colspan='4' style="border: 1px solid; width: 60%;")
-            h4 Amount in words : {{$ctrl.amountWords}}
+            h4
+              | Amount in words :
+              input(
+              style="text-align: center; border: 0px;"
+              type='text'
+              ng-model='$ctrl.amountWords'
+              )
           td(colspan='4' rowspan='4' style="border: 1px solid; width: 40%; vertical-align: bottom;")
             h4.text-center Seal & singnature
         tr
@@ -141,8 +172,8 @@
             h4 described and that all particulars are true & correct
         tr
           td.text-center.font-bold(colspan='3')
-            h4 #181 2nd cross Rd, Koramangala 1st Block
-            h4  Koramangala,Bengaluru - 560034
+            h4  #181 2nd cross Rd, Koramangala 1st Block
+            h4  Bengaluru - 560034
           td.font-bold(colspan='1')
             h4 serviceteam@shoppre.com
             h4 Tel : +91 8040944077

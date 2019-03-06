@@ -36,6 +36,29 @@ class dhlController {
             this.PackItems.push(items);
           });
         });
+
+        const packageItems = [];
+        let found = false;
+
+        this.PackItems.forEach((x) => {
+          found = false;
+          if (packageItems.length) {
+            packageItems.forEach((y) => {
+              if (y.package_item_category_id === x.package_item_category_id) {
+                found = true;
+                y.price_amount += x.price_amount;
+                y.total_amount += x.total_amount;
+                y.quantity += x.quantity;
+              }
+            });
+          }
+          if (!found) {
+            packageItems.push(x);
+          }
+        });
+
+        this.PackItems = [];
+        this.PackItems = packageItems;
         this.Charges.total_amount = totalAmount;
         this.amountWords = `${words} only`;
       })
