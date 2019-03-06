@@ -62,6 +62,8 @@ exports.update = async (req, res, next) => {
         where: { after_ship_id: trackingId },
       });
 
+      Shipment.update({ admin_info: 'received from aftership' }, { where: { id: shipment.id } });
+
       if (shipment) {
         const opsUser = {
           id: 1,
