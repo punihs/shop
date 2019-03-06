@@ -54,28 +54,35 @@ exports.create = async (shipment) => {
   });
 };
 
-exports.update = async (req, res) => {
-  if (req.body) {
-    const trackingId = req.body.data.tracking.id;
-
-    const shipment = Shipment.find({
-      where: { after_ship_id: trackingId },
-    });
-
-    if (shipment) {
-      const opsUser = {
-        first_name: SUPPORT_EMAIL_FIRST_NAME,
-        last_name: SUPPORT_EMAIL_LAST_NAME,
-        email: SUPPORT_EMAIL_ID,
-      };
-
-      updateShipmentState({
-        nextStateId: SHIPMENT_DELIVERED,
-        shipment,
-        actingUser: opsUser,
-        comments: 'Shipment Delivered- AfterShip',
+exports.update = async (req, res, next) => {
+  try {
+    const trackingId = req.body.msg.id;
+    if (req.body.msg.tag.toLowerCase() === 'delivered') {
+      const shipment = await Shipment.find({
+        where: { after_ship_id: trackingId },
       });
+
+      if (shipment) {
+        const opsUser = {
+          id: 1,
+          group_id: 1,
+          first_name: SUPPORT_EMAIL_FIRST_NAME,
+          last_name: SUPPORT_EMAIL_LAST_NAME,
+          email: SUPPORT_EMAIL_ID,
+
+        };
+
+        await updateShipmentState({
+          nextStateId: SHIPMENT_DELIVERED,
+          shipment,
+          actingUser: opsUser,
+          comments: 'Shipment Delivered- AfterShip',
+          next,
+        });
+      }
     }
+    return res.status(200).json({ message: 'success' });
+  } catch (e) {
+    //log({ e });
   }
-  res.status(200).json({ message: 'success' });
 };
