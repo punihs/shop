@@ -9,7 +9,7 @@ const transactionCtrl = require('../transaction/transaction.controller');
 exports.create = async (req, res) => {
   const { customer_id: customerID, amount, description } = req.body;
 
-  if (amount > 0) {
+  if (amount !== 0) {
     await transactionCtrl
       .setWallet({
         customer_id: customerID,
