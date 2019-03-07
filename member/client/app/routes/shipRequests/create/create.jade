@@ -440,6 +440,22 @@
                   .clearfix
                   .panel.panel-info.m-t-md
                     .ship-create-sidebar.font-bold.text-u-c SHIPPING CHARGES
+                      li
+                        .checkbox(ng-click='$ctrl.updateCharges()')
+                          label.i-checks(ng-if='$ctrl.data.express_processing')
+                            input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.express_processing')
+                            i
+                            | Express Processing
+                          label.i-checks(ng-if='!$ctrl.data.express_processing')
+                            input(type='checkbox',  value='' ng-model='$ctrl.data.express_processing')
+                            i
+                            | Express Processing
+                          i.fa.fa-info-circle.m-l-xs(
+                          uib-popover='With Express Processing your package will jump to the front of the processing queues. This means your package gets VIP treatment.Faster consolidation,special requests and out the door quickly.'
+                          popover-trigger="'mouseenter'"
+                          popover-placement='top'
+                          popover-append-to-body='true'
+                          )
                     center.panel-body
                       p To be estimated after we pack your items
                       button.btn.btn-sm.btn-success.m-t-xs.m-t(ng-click='$ctrl.create(newShipmentForm)') Confirm Your Ship Request *

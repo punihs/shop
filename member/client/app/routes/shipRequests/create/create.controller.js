@@ -68,8 +68,9 @@ class ShipRequestsCreateController {
     const originalAmount = 0;
     const giftwrapAmount = (this.data.gift_wrap === true) ? 100.00 : 0;
     const giftnoteAmount = (this.data.gift_note === true) ? 50.00 : 0;
+    const expressprocessingAmount = (this.data.express_processing === true) ? 200.00 : 0;
     this.charges = repackAmount + stickerAmount +
-      extrapackAmount + originalAmount + giftwrapAmount + giftnoteAmount;
+      extrapackAmount + originalAmount + giftwrapAmount + giftnoteAmount + expressprocessingAmount;
     this.totalChargeAmount = this.charges + this.totalAmount_from_api;
     this.operationsAmount = this.charges;
   }

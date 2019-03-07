@@ -100,7 +100,7 @@ exports.show = async (req, res, next) => {
         }, {
           model: ShipmentMeta,
           attributes: ['sticker_charge_amount', 'original', 'mark_personal_use', 'invoice_tax_id', 'repacking_charge_amount', 'extra_packing_charge_amount', 'original_ship_box_charge__amount',
-            'consolidation_charge_amount', 'gift_wrap_charge_amount', 'gift_note_charge_amount', 'gift_note_text', 'other_charge_amount',
+            'consolidation_charge_amount', 'gift_wrap_charge_amount', 'gift_note_charge_amount', 'gift_note_text', 'other_charge_amount', 'express_processing_charge_amount',
             'insurance_amount', 'liquid_charge_amount', 'overweight_charge_amount'],
           where: { id: req.params.id },
         }, {
@@ -338,6 +338,7 @@ const additionKeysMap = {
   original_ship_box_charge_amount: true,
   gift_wrap_charge_amount: true,
   gift_note_charge_amount: true,
+  express_processing_charge_amount: true,
 };
 
 const calculataPackingCharge = obj => Object
@@ -410,6 +411,7 @@ const getShipmentMetaMap = ({ body, NUMBER_OF_PACKAGES, next }) => {
       gift_wrap_charge_amount: body.gift_wrap ? 100.00 : 0,
       gift_note_charge_amount: body.gift_note ? 50.00 : 0,
       extra_packing_charge_amount: body.extra_packing ? 500.00 : 0,
+      express_processing_charge_amount: body.express_processing ? 200.00 : 0,
     };
 
     if (NUMBER_OF_PACKAGES > 1) {

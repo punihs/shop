@@ -200,6 +200,10 @@
               a.text-muted.font-thin Gift Note Charge amount
               div
                 span(ng-bind='"₹" + $ctrl.data.ShipmentMetum.gift_note_charge_amount')
+            div(ng-if='$ctrl.data.ShipmentMetum.express_processing_charge_amount > 0')
+              a.text-muted.font-thin Express Processing amount
+              div
+                span(ng-bind='"₹" + $ctrl.data.ShipmentMetum.express_processing_charge_amount')
             div(ng-if='$ctrl.data.ShipmentMetum.insurance_amount > 0')
               a.text-muted.font-thin Insurence Amount
               div

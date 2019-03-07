@@ -195,6 +195,10 @@ div
                             p
                               | Gift note
                               span.totalvalue.pull-right &nbsp;{{$ctrl.shipmentMeta.gift_note_charge_amount| number : 2}}
+                          li(ng-if="$ctrl.shipmentMeta.express_processing_charge_amount > 0")
+                            p
+                              | Express Processing Fee
+                              span.totalvalue.pull-right &nbsp;{{$ctrl.shipmentMeta.express_processing_charge_amount| number : 2}}
                           li(ng-if="$ctrl.shipmentMeta.consolidation_charge_amount > 0")
                             p
                               | Package consolidation

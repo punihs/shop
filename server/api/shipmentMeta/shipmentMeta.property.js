@@ -33,4 +33,6 @@ module.exports = DataTypes => ({
   invoice_tax_id: DataTypes.STRING,
   mark_personal_use: DataTypes.TINYINT,
   invoice_include: DataTypes.TINYINT,
+  express_processing: DataTypes.TINYINT,
+  express_processing_charge_amount: DataTypes.DOUBLE,
 });
