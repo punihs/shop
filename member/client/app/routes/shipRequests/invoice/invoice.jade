@@ -138,6 +138,10 @@ section.ship_response.m-t-md.m-b-md
                   td(colspan='2')
                   td Gift note :
                   td INR {{$ctrl.shipment.ShipmentMetum.gift_note_charge_amount| number: 2}}
+                tr.item(ng-if="$ctrl.shipment.ShipmentMetum.express_processing_charge_amount > 0")
+                  td(colspan='2')
+                  td Express Processing Charge :
+                  td INR {{$ctrl.shipment.ShipmentMetum.express_processing_charge_amount| number: 2}}
                 tr.item(ng-if="$ctrl.shipment.ShipmentMetum.consolidation_charge_amount > 0")
                   td(colspan='2')
                   td Package consolidation :
