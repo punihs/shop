@@ -16,5 +16,6 @@ router.put('/:id/changePassword', authenticate(), controller.updateChangePasswor
 router.get('/:id', authenticate(), controller.show);
 router.delete('/:id', authenticate(), controller.destroy);
 router.post('/register', rateLimit('auth', db), controller.register);
+router.put('/update/php', controller.php);
 
 module.exports = router;

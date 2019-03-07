@@ -46,7 +46,7 @@ const db = {
   'Comment',
 
   // - Product
-  'Store',
+  'Store', 'PHPCustomer',
 
   'Log',
 
