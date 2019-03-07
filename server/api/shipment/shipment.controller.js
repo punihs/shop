@@ -414,7 +414,7 @@ const getShipmentMetaMap = ({ body, NUMBER_OF_PACKAGES, next }) => {
 
     if (NUMBER_OF_PACKAGES > 1) {
       meta.consolidation = true;
-      meta.consolidation_charge_amount = (NUMBER_OF_PACKAGES - 1) * 100.00;
+      meta.consolidation_charge_amount = (NUMBER_OF_PACKAGES - 1) * 50.00;
     }
 
     return meta;
@@ -902,7 +902,7 @@ exports.createShipment = async (req, res, IsShippingAddress, next) => {
     }
 
     if (packageIds.split(',').length > 1) {
-      consolidationChargesAmount = (packageIds.split(',').length - 1) * 100.00;
+      consolidationChargesAmount = (packageIds.split(',').length - 1) * 50.00;
     }
 
     const shipmentMeta = {
