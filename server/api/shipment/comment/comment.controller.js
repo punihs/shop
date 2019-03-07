@@ -1,4 +1,5 @@
 const debug = require('debug');
+const _ = require('lodash');
 
 const log = debug('shipment');
 
@@ -80,7 +81,10 @@ exports.show = async (req, res, next) => {
       include,
     });
 
-    return res.json(comments.concat(shipmentStates));
+    const allComments = comments.concat(shipmentStates);
+    const shortedComments = _.orderBy(allComments, ['created_at'], ['desc']);
+
+    return res.json(shortedComments);
   } catch (err) {
     return next(err);
   }

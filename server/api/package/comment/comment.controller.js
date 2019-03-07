@@ -1,4 +1,5 @@
 const debug = require('debug');
+const _ = require('lodash');
 
 const { OBJECT_TYPES: { PACKAGE } } = require('../../../config/constants');
 
@@ -85,9 +86,10 @@ exports.show = async (req, res, next) => {
       include,
     });
 
+    const allComments = comments.concat(packageStates);
+    const shortedComments = _.orderBy(allComments, ['created_at'], ['desc']);
     return res
-      .json(comments
-        .concat(packageStates));
+      .json(shortedComments);
   } catch (err) {
     return next(err);
   }
