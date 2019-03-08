@@ -1273,7 +1273,7 @@ exports.trackingUpdate = async (req, res, next) => {
 
     await Shipment.update(body, { where: { id } });
     if (env === 'production') {
-      if (createAfterShip && !shipment.tracking_code) {
+      if (createAfterShip && shipment.tracking_code) {
         aftershipController.create(shipment);
       }
     }
