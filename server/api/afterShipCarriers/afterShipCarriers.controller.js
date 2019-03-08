@@ -50,7 +50,7 @@ exports.create = async (shipment) => {
     if (error) throw new Error(error);
 
     log(body);
-    Shipment.update({ after_ship_id: body.tracking.id }, { where: { id: shipment.id } });
+    Shipment.update({ after_ship_id: body.data.tracking.id }, { where: { id: shipment.id } });
   });
 };
 

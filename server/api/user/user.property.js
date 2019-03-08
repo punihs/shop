@@ -38,8 +38,6 @@ module.exports = DataTypes => ({
   profile_photo_url: DataTypes.STRING,
 
   phone: DataTypes.STRING,
-  shipment_count: DataTypes.INTEGER,
-  is_old_active_customer: DataTypes.INTEGER,
 
   secondary_phone: DataTypes.STRING,
   is_courier_migrated: {

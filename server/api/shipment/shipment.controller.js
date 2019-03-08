@@ -1271,9 +1271,9 @@ exports.trackingUpdate = async (req, res, next) => {
     log({ ship: shipment.tracking_code, body: body.tracking_code });
     log({ createAfterShip });
 
-    const status = await Shipment.update(body, { where: { id } });
+    await Shipment.update(body, { where: { id } });
     if (env === 'production') {
-      if (createAfterShip) {
+      if (createAfterShip && !shipment.tracking_code) {
         aftershipController.create(shipment);
       }
     }

@@ -301,14 +301,3 @@ exports.authorise = async (req, res, next) => {
     return next(err);
   }
 };
-
-exports.php = async (req, res) => {
-  const phpCustomer = await PHPCustomer
-    .findAll({ attribute: ['id', 'shipment_count'] });
-
-  phpCustomer.forEach((x) => {
-    User.update({ is_old_active_customer: true, shipment_count: x.shipment_count }, { where: { id: x.id } });
-  });
-
-  res.json({ message: 'success' }).status(200);
-};
