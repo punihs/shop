@@ -1,10 +1,11 @@
 (() => {
   class DirectiveCustomerHeaderController {
     /*  @ngInject  */
-    constructor($http, $log, Session) {
+    constructor($http, $log, Session, LoginAs) {
       this.$http = $http;
       this.$log = $log;
       this.Session = Session;
+      this.LoginAs = LoginAs;
       this.moment = moment;
       this.$onInit();
     }
