@@ -41,7 +41,13 @@ exports.create = async (shipment) => {
             tracking_number: shipment.tracking_code,
             title: shipment.Customer.first_name,
             order_id: shipment.order_code,
-            order_id_path: 'www.shoppre.com',
+            order_id_path: 'https://parcel.shoppre.com',
+            smses: [
+              shipment.phone,
+            ],
+            emails: [
+              shipment.Customer.email,
+            ],
             // custom_fields: { product_name: 'iPhone Case', product_price: 'USD19.99' },
             language: 'en' } },
     json: true };
