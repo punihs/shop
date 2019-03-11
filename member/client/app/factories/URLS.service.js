@@ -10,6 +10,7 @@ angular.module('uiGenApp')
 
       CDN: `${PREFIX}cdn.${DOMAIN}`,
       ACCOUNTS: `${PREFIX}accounts.${DOMAIN}`,
+      WWW: `${PREFIX}www.${DOMAIN}`,
       PARCEL: `${PREFIX}parcel.${DOMAIN}`,
       HELP: 'https://ship.shoppre.com',
       URLS_SHIP: `${PREFIX}ship-api.${DOMAIN}`,

@@ -11,6 +11,12 @@ angular.module('uiGenApp')
       return location.href;
     }
 
+    if (!Session.isAuthenticated()) {
+      const continueURL = $location.absUrl().split('?')[0];
+      location.href = `${URLS.WWW}/customer/login?continue=${continueURL}`;
+      return location.href;
+    }
+
 
     $rootScope.$on('$stateChangeStart', (event, next) => {
       if (!Session.isAuthenticated() && (next.name.split('.')[0] !== 'access')) {
@@ -27,12 +33,7 @@ angular.module('uiGenApp')
       }
       if (Session.isAuthenticated() && (next.name === 'access.oauth')) {
         // return $state.go('packages.index');
-        const locationSearch = $window.location.search.split('&')[1];
-        if (locationSearch.split('=')[1] === 'personalShopperCreate') {
-          return $state.go('personalShopper.create');
-        } else {
-          return $state.go('packages.index');
-        }
+        return $state.go('packages.index');
       }
 
       return $rootScope.$broadcast('show-announcement', next);

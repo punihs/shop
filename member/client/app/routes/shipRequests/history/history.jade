@@ -64,6 +64,8 @@ div
                           td.footable-visible {{shipment.customer_name}}
                           td.footable-visible(ng-show='shipment.ShipmentState.state_id != $ctrl.SHIPMENT_STATE_IDS.SHIPMENT_CANCELLED')
                             p(ng-show ='!shipment.connecting_tracking_code') Shipped {{shipment.number_of_packages}} Parcel(s) via: {{shipment.shipping_carrier}} to {{shipment.Country.name}} {{shipment.weight_by_shipping_partner}} Kg Tracking#
+                              a(href='{{shipment.tracking_url}}', target="_blank")
+                                span.summary-order &nbsp;{{shipment.tracking_code}}
 
                             p(ng-show ='shipment.connecting_tracking_code') Shipped {{shipment.number_of_packages}} Parcel(s) via: {{shipment.shipping_carrier}}
                             ul
