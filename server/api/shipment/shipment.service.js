@@ -399,7 +399,7 @@ exports.updateShipmentState = async ({
         if (env === 'production') {
           const shipmentDispacthed = await Shipment
             .find({
-              attributes: ['country_id', 'afterShip_slug', 'dispatch_date', 'tracking_code'],
+              attributes: ['id', 'country_id', 'afterShip_slug', 'dispatch_date', 'tracking_code'],
               where: { id: shipment.id },
               include: [{
                 model: User,
