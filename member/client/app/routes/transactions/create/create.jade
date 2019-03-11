@@ -27,7 +27,11 @@ div
                           input(ng-checked ="$ctrl.isPGWalletChecked", type='radio', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
                           i
                           | {{paymentgateway.name}} {{paymentgateway.description}} (₹{{$ctrl.walletBalanceAmount | number : 2}})
-                        label.i-checks.m-t-xs(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value !== "wallet"')
+                        label.i-checks.no-margin-top(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value === "cash" && $ctrl.data.type !== "cod" && $ctrl.data.type !== "ps"')
+                          input(ng-checked ="$ctrl.isPGWalletChecked", type='radio', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
+                          i
+                          | {{paymentgateway.name}} {{paymentgateway.description}}
+                        label.i-checks.m-t-xs(ng-if = 'paymentgateway.status' ng-show = 'paymentgateway.value !== "wallet" && paymentgateway.value !== "cash"')
                           input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", ng-disabled='$ctrl.data.axis_banned == "true" && paymentgateway.value === "card" ' type='radio', name='a', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
                           i
                           .inline(ng-bind='paymentgateway.name')
