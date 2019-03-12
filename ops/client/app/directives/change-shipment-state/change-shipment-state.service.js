@@ -80,7 +80,7 @@ class ChangeShipmentStateController {
 
     this.error = null;
     let invalidKey;
-    const valid = Object.keys(validations).every(key => {
+    const valid = Object.keys(validations || {}).every(key => {
       invalidKey = key;
       return validations[key];
     });
