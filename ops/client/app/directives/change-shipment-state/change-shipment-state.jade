@@ -1,7 +1,30 @@
 .modal-header
+  .close(ng-click='$ctrl.$uibModalInstance.dismiss("close")') ×
   .modal-title
+    div(ng-if='$ctrl.data.state_id === 17')
+      div
+        span.alert.alert-success(ng-if='$ctrl.validations[$ctrl.stateId].allPackageItemsScanned') All Packages Scanned.
+        span.alert.alert-danger(ng-bind='$ctrl.error' ng-if='$ctrl.error')
+        br
+        label.col-xs-12.input-group
+          | Item Id: &nbsp;
+          input(ng-model='$ctrl.package_item_id' ng-keypress='$ctrl.scan($event, $ctrl.package_item_id);')
+      br
+      table(style='width: 100%;background-color: #ffddb28f;')
+        thead
+          tr
+            th Item ID
+            th Package ID
+            th Store
+            th Item Name
+        tbody
+          tr(ng-repeat='packageItem in $ctrl.packageItems' ng-class="{invert: packageItem.scanned }")
+            td(ng-bind='packageItem.id')
+            td(ng-bind='packageItem.Package.id')
+            td(ng-bind='packageItem.Package.Store.name')
+            td(ng-bind='packageItem.name')
+     hr
     .h4.text-info Change Status of Shipment- # {{$ctrl.shipment.id}}
-      .close(ng-click='$ctrl.$uibModalInstance.dismiss("close")') ×
 form.form-validation(name="form" ng-submit='$ctrl.ok()')
   .modal-body
     //- by default angular doesn't set value to module
@@ -10,16 +33,6 @@ form.form-validation(name="form" ng-submit='$ctrl.ok()')
       select.form.form-control(ng-model='$ctrl.data.state_id' ng-disabled='$ctrl.states[$ctrl.stateId].Childs.length===1' ng-if='$ctrl.stateId !== 12')
         option(ng-repeat='state in $ctrl.states[$ctrl.stateId].Childs' ng-value='state.state_id' ng-selected='$first') {{$ctrl.states[state.state_id].action}}
       //- Customized Selction of states for Interview Confirm
-      div: .btn-group.text-center(ng-init="$ctrl.data.state_id = $ctrl.package._root_.is_drive ? 8 : 5" ng-if='$ctrl.stateId === 12')
-        label.w-xs.btn.btn-sm.btn-success(ng-model='$ctrl.data.state_id', uib-btn-radio="5" ng-disabled='$ctrl.package._root_.is_drive')
-          i.fa.fa-check.text-active
-          | Telephonic
-        label.w-xs.btn.btn-sm.btn-primary(ng-model='$ctrl.data.state_id', uib-btn-radio="8")
-          i.fa.fa-check.text-active
-          | Personal
-        label.w-xs.btn.btn-sm.btn-info(ng-model='$ctrl.data.state_id', uib-btn-radio="17" ng-disabled='$ctrl.package._root_.is_drive')
-          i.fa.fa-check.text-active
-          | Video
     label.input-group(ng-if='$ctrl.states[$ctrl.stateId].config.scheduled_on')
       strong {{$ctrl.states[$ctrl.stateId].config.scheduled_on}}
       .input-group

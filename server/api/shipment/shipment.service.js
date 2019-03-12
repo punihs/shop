@@ -413,7 +413,7 @@ exports.updateShipmentState = async ({
 
           const name = `${shipmentDispacthed.Customer.first_name} ${shipmentDispacthed.Customer.last_name} to ${shipmentDispacthed.Country.name || ''}`;
           const notes = `Dispatch date ${shipmentDispacthed.dispatch_date}, \n Tracking ID= ${shipmentDispacthed.tracking_code} `;
-          const bearer = '0/ba27afb04779fc44282d1f5c2f97b866';
+          const bearer = '0/1c22ce13a6b96e3d331e6fce13e51832';
           const projects = '1109255069338501';
           const workspace = '413352110377780';
           taskCreate(name, notes, bearer, projects, workspace);

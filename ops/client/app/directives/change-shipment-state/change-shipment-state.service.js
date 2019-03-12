@@ -13,6 +13,15 @@ class ChangeShipmentStateController {
   }
 
   $onInit() {
+    this.errors = {
+      allPackageItemsScanned: 'Please scan barcode of all the items',
+    };
+
+    this.validations = {
+      17: {
+        allPackageItemsScanned: false,
+      },
+    };
     this.states = this.Session.read('shipment-states');
     this.today = new Date();
     this.ui = { checking: false };
@@ -23,6 +32,9 @@ class ChangeShipmentStateController {
         .set('hour', 10),
     };
     this.preChecksDone = true;
+
+    if (this.stateId === 17) this.getPackageItemsForValidation();
+
     switch (this.stateId) {
       case 2: {
         this.preChecksDone = false;
@@ -37,10 +49,47 @@ class ChangeShipmentStateController {
     }
   }
 
+  scan($event) {
+    this.error = null;
+    const packageItemId = this.package_item_id;
+    if ($event.keyCode === 13) {
+      const index = this.packageItems
+        .findIndex(packageItem => (packageItem.id === Number(packageItemId)));
+
+      if (index !== -1) this.packageItems[index].scanned = true;
+      else this.error = `You scanned #${packageItemId}.Item not belongs to this ship request`;
+      this.package_item_id = '';
+    }
+
+    this.validations[this.stateId].allPackageItemsScanned = this.packageItems.every(x => x.scanned);
+  }
+
+  getPackageItemsForValidation() {
+    this.$http
+      .get(`/shipments/${this.shipment.id}/validate`)
+      .then(({ data: packageItems }) => {
+        this.packageItems = packageItems
+      });
+  }
+
   ok() {
     if (this.submitting) return;
     const paymentConfirmed = 22;
     this.submitting = true;
+    const validations = this.validations[this.stateId];
+
+    this.error = null;
+    let invalidKey;
+    const valid = Object.keys(validations).every(key => {
+      invalidKey = key;
+      return validations[key];
+    });
+
+    if(!valid) {
+      this.error = this.errors[invalidKey];
+      this.submitting = false;
+      return
+    }
 
     this
       .$http

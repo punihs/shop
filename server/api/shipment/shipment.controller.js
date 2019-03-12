@@ -51,6 +51,35 @@ exports.index = (req, res, next) => index(req, next)
   .then(result => res.json(result))
   .catch(next);
 
+exports.validate = async (req, res, next) => {
+  try {
+    const packageItems = await PackageItem
+      .findAll({
+        attributes: ['id', 'name'],
+        include: [{
+          model: Package,
+          attributes: ['id', 'store_id'],
+          required: true,
+          include: [{
+            model: Shipment,
+            attributes: ['id'],
+            required: true,
+            where: {
+              id: req.params.id,
+            },
+          }, {
+            model: Store,
+            attributes: ['id', 'name'],
+          }],
+        }],
+      });
+
+    return res.json(packageItems);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 exports.show = async (req, res, next) => {
   try {
     const { id } = req.params;
