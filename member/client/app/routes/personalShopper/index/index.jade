@@ -17,11 +17,29 @@
       li(ng-class='$ctrl.cod ? "ps-menu-active" : ""')
         a(href='#', ng-class='$ctrl.cod ? "ps-menu-active" : ""',  ng-click="$ctrl.getList('self_purchased')") Self Purchase
     .clearfix
+  .wrapper-md.bg-white-only
+     .h5(ng-if='$ctrl.ps')
+       | You can Track your Old Personal Shopper Orders
+       span(ng-bind='" " + $ctrl.TITLE')
+       a.summary-order(
+       title='History'
+       target='_blank'
+       ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/personal-shopper/history'
+       )
+         span - TRACK YOUR OLD ASSISTED PURCHASE ORDERS HERE
+     .h5(ng-if='$ctrl.cod')
+       | You can Track your Old Cod Orders
+       span(ng-bind='" " + $ctrl.TITLE')
+       a.summary-order(
+       title='History'
+       target='_blank'
+       ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/personal-shopper/self/order/history'
+       )
+         span - TRACK YOUR OLD SELF PURCHASE ORDERS HERE
   div.col-md-12.text-center.text-danger.bg-white-only.m-t-lg
     alert.alert-warning(role='alert', ng-show='$ctrl.error')
       h4.text-danger(style='margin-top: 10px; margin-bottom: 10px;') {{$ctrl.message}}
   .clearfix
-  br
   .ps-mainidiv(style='max-width: 100%;overflow-x: scroll;')
     table#orders-history
       thead
