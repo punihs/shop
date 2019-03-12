@@ -30,7 +30,7 @@ class OAuthCtrl {
           } else if (query.continue) {
             location.href = `${query.continue}`;
           } else {
-            $state.href('dashboard.index', { absolute: true });
+            location.href = $state.href('dashboard.index', { absolute: true });
           }
         }))
       .catch(() => {

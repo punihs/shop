@@ -11,14 +11,13 @@ angular.module('uiGenApp')
       return location.href;
     }
 
-    if (!Session.isAuthenticated()) {
-      const continueURL = $location.absUrl().split('?')[0];
-      location.href = `${URLS.WWW}/customer/login?continue=${continueURL}`;
-      return location.href;
-    }
-
-
     $rootScope.$on('$stateChangeStart', (event, next) => {
+      if (!Session.isAuthenticated() && next.name !== 'access.oauth') {
+        const continueURL = $location.absUrl().split('?')[0];
+        location.href = `${URLS.WWW}/customer/login?continue=${continueURL}`;
+        return location.href;
+      }
+
       if (!Session.isAuthenticated() && (next.name.split('.')[0] !== 'access')) {
         event.preventDefault();
         $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
@@ -44,7 +43,9 @@ angular.module('uiGenApp')
       return angular.noop(data);
     });
 
-    return $rootScope.$on(AUTH_EVENTS.loginRequired, () => {
+
+
+    $rootScope.$on(AUTH_EVENTS.loginRequired, () => {
       if (Session.isAuthenticated()) {
         // Refresh token autimatically if token expires
         Auth.refreshToken().then(
