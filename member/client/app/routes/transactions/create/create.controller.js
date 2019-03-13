@@ -254,7 +254,7 @@ class TransactionCreateController {
       key: this.RAZOR_PAY.key,
       amount: this.data.payAmount * 100,  // 2000 paise = INR 20
       name: 'Indian Shoppre',
-      description: 'Shoppre Payment',
+      description: this.Session.read('userinfo').email,
       image: 'https://www.shoppre.com/img/images/logo@2x.png',
       http: this.$http,
       window: this.$window,
