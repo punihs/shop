@@ -6,23 +6,38 @@
         span.alert.alert-success(ng-if='$ctrl.validations[$ctrl.stateId].allPackageItemsScanned') All Packages Scanned.
         span.alert.alert-danger(ng-bind='$ctrl.error' ng-if='$ctrl.error')
         br
-        label.col-xs-12.input-group
-          | Item Id: &nbsp;
-          input(ng-model='$ctrl.package_item_id' ng-keypress='$ctrl.scan($event, $ctrl.package_item_id);')
+        .col-xs-6
+          label.input-group
+            | Item Id: &nbsp;
+            input(ng-model='$ctrl.package_item_id' ng-keypress='$ctrl.scan($event, $ctrl.package_item_id);')
+        .col-xs-6
+          h3.no-margin
+            span(ng-bind='$ctrl.scanCompletedCount')
+            span /
+            span(ng-bind='$ctrl.packageItems.length')
       br
       table(style='width: 100%;background-color: #ffddb28f;')
         thead
           tr
+            th Store
             th Item ID
             th Package ID
-            th Store
             th Item Name
         tbody
-          tr(ng-repeat='packageItem in $ctrl.packageItems' ng-class="{invert: packageItem.scanned }")
-            td(ng-bind='packageItem.id')
-            td(ng-bind='packageItem.Package.id')
+          tr(
+            ng-mouseenter='packageItem.hover = true'
+            ng-mouseleave='packageItem.hover = false'
+            ng-repeat='packageItem in $ctrl.packageItems | orderBy: "-scanned"' ng-class="{invert: packageItem.scanned, hover: packageItem.hover }"
+            tooltip-placement="left"
+            uib-tooltip-html='"<img width=250 src=+"$ctrl.URLS.CDN"+/shoppre/"+ packageItem.object +">"'
+          )
             td(ng-bind='packageItem.Package.Store.name')
+            td
+              a(href='{{$ctrl.URLS.CDN + "/shoppre/" + packageItem.object}}' target='_blank' ng-bind='packageItem.id' )
+            td
+              a(href='{{$ctrl.URLS.CDN + "/shoppre/" + packageItem.object}}' target='_blank' ng-bind='packageItem.Package.id')
             td(ng-bind='packageItem.name')
+
      hr
     .h4.text-info Change Status of Shipment- # {{$ctrl.shipment.id}}
 form.form-validation(name="form" ng-submit='$ctrl.ok()')

@@ -55,7 +55,7 @@ exports.validate = async (req, res, next) => {
   try {
     const packageItems = await PackageItem
       .findAll({
-        attributes: ['id', 'name'],
+        attributes: ['id', 'name', 'object'],
         include: [{
           model: Package,
           attributes: ['id', 'store_id'],

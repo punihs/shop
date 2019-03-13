@@ -1,7 +1,7 @@
 
 class ChangeShipmentStateController {
   /*  @ngInject   */
-  constructor($uibModalInstance, $http, shipment, Session, stateId, moment, customerId, toaster) {
+  constructor($uibModalInstance, $http, shipment, Session, stateId, moment, customerId, toaster, URLS) {
     this.$uibModalInstance = $uibModalInstance;
     this.$http = $http;
     this.shipment = shipment;
@@ -10,9 +10,32 @@ class ChangeShipmentStateController {
     this.stateId = stateId;
     this.moment = moment;
     this.customerId = customerId;
+    this.URLS = URLS;
+    // browsers limit the number of concurrent audio contexts, so you better re-use'em
+    this.a = new AudioContext();
+  }
+
+  buzzer(type) {
+    const [vol, freq, duration] = {
+      beep: [999, 520, 25],
+      boop: [999, 220, 300],
+      noise: [999, 210, 800],
+    }[type];
+
+    const { a } = this;
+    const v = a.createOscillator();
+    const u = a.createGain();
+    v.connect(u);
+    v.frequency.value = freq;
+    v.type = 'square';
+    u.connect(a.destination);
+    u.gain.value = vol * 0.01;
+    v.start(a.currentTime);
+    v.stop(a.currentTime + duration * 0.001);
   }
 
   $onInit() {
+    this.scanCompletedCount = 0;
     this.errors = {
       allPackageItemsScanned: 'Please scan barcode of all the items',
     };
@@ -56,12 +79,22 @@ class ChangeShipmentStateController {
       const index = this.packageItems
         .findIndex(packageItem => (packageItem.id === Number(packageItemId)));
 
-      if (index !== -1) this.packageItems[index].scanned = true;
-      else this.error = `You scanned #${packageItemId}.Item not belongs to this ship request`;
+      if (index !== -1 && !this.packageItems[index].scanned) {
+        this.buzzer('beep');
+        this.packageItems[index].scanned = true;
+        this.scanCompletedCount++;
+      } else {
+        this.buzzer('boop');
+        this.error = `You scanned #${packageItemId}.Item not belongs to this ship request`;
+      }
       this.package_item_id = '';
     }
 
     this.validations[this.stateId].allPackageItemsScanned = this.packageItems.every(x => x.scanned);
+
+    if (this.validations[this.stateId].allPackageItemsScanned) {
+      this.buzzer('noise');
+    }
   }
 
   getPackageItemsForValidation() {
