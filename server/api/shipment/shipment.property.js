@@ -62,4 +62,7 @@ module.exports = DataTypes => ({
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
+  box_length: DataTypes.DECIMAL(8, 2),
+  box_height: DataTypes.DECIMAL(8, 2),
+  box_width: DataTypes.DECIMAL(8, 2),
 });

@@ -126,7 +126,7 @@ class ShipmentCreateController {
       'package_level_charges_amount', 'pick_up_charge_amount', 'liquid_charge_amount',
       'estimated_amount', 'coupon_amount', 'loyalty_amount', 'is_axis_banned_item',
       'payment_gateway_fee_amount', 'wallet_amount', 'final_amount', 'shipment_type_id',
-      'other_charge_amount',
+      'other_charge_amount', 'box_length', 'box_height', 'box_width',
     ];
 
     const method = 'put';

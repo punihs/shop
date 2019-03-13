@@ -110,7 +110,36 @@ div
                               span.totalvalue.pull-right &nbsp;{{$ctrl.shipment.value_amount | number : 2}}
                           li
                             p
-                              | Total Weight
+                              | Actual Weight
+                              span.totalvalue.pull-right &nbsp;{{$ctrl.shipment.weight | number : 2}} kg
+                          li
+                            p
+                              | Box Dimensions
+                              span.totalvalue.pull-right &nbsp;{{$ctrl.shipment.box_length | number : 2}} x {{$ctrl.shipment.box_height | number : 2}} x {{$ctrl.shipment.box_width | number : 2}} cm
+                              span(
+                              uib-popover = 'Box Dimensions = Length x Height x Width (in cm)'
+                              popover-trigger="'mouseenter'"
+                              popover-placement='right'
+                              popover-append-to-body='true'
+                              )
+                                i.m-l.fa.fa-info-circle
+                          li
+                            p
+                              | Volumetric Weight
+                              span.totalvalue.pull-right &nbsp; {{$ctrl.shipment.volumetric_weight | number :2}} kg
+                              span(
+                              uib-popover = 'For International Shipments:' +
+                              'Dimensional Weight = Length x Width x Height (in cm) / 5000' +
+                              'For Domestic Shipments:' +
+                              'Dimensional Weight = Length x Width x Height (in cm) / 4000'
+                              popover-trigger="'mouseenter'"
+                              popover-placement='right'
+                              popover-append-to-body='true'
+                              )
+                                i.m-l.fa.fa-info-circle
+                          li
+                            p
+                              | Final Chargeable Weight
                               span.totalvalue.pull-right &nbsp; {{$ctrl.shipment.final_weight | number :2}} kg
                               span(
                               uib-popover = 'All International carriers base their billable shipping rates on the greater of Actual Weight and Dimensional Weight.'+

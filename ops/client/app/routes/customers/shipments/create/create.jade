@@ -141,6 +141,45 @@ div.m-t-xl.no-margin
 
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
               .row(ng-if='$ctrl.EDIT')
+                .col-md-4.col-sm-5.col-xs-12
+                  label.col-xs-12.input-group
+                    |  Box Length
+                    span.text-danger *
+                    input.form.form-control(
+                    type='number'
+                    name='box_length'
+                    placeholder='eg. 12 '
+                    ng-model='$ctrl.data.box_length'
+                    required
+                    )
+                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.box_length.$dirty && newShipmentForm.box_length.$invalid') Please enter Box Length
+                .col-md-4.col-sm-5.col-xs-12
+                  label.col-xs-12.input-group
+                    |  Box Height
+                    span.text-danger *
+                    input.form.form-control(
+                    type='number'
+                    name='box_height'
+                    placeholder='eg. 20  '
+                    ng-model='$ctrl.data.box_height'
+                    required
+                    )
+                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.box_height.$dirty && newShipmentForm.box_height.$invalid') Please enter Box Height
+                .col-md-4.col-sm-5.col-xs-12
+                  label.col-xs-12.input-group
+                    |  Box Width
+                    span.text-danger *
+                    input.form.form-control(
+                    type='number'
+                    name='box_width'
+                    placeholder='eg. 5 '
+                    ng-model='$ctrl.data.box_width'
+                    required
+                    )
+                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.box_width.$dirty && newShipmentForm.box_width.$invalid') Please enter Box Width
+
+              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
+              .row(ng-if='$ctrl.EDIT')
                 .col-md-12
                   .col-md-6.col-sm-5.col-xs-12.no-padder
                     label.col-xs-12.input-group

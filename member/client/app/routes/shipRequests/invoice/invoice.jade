@@ -74,9 +74,27 @@ section.ship_response.m-t-md.m-b-md
               td
                 span(ng-bind='package.weight | number: 2')
                 span &nbsp;kg
+            tr.item(ng-if="$ctrl.shipment.weight > 0")
+              td(colspan='2')
+              td Actual Weight :
+              td
+                span(ng-bind='$ctrl.shipment.weight | number: 2')
+                span &nbsp;kg
+            tr.item
+              td(colspan='2')
+              td  Box Dimensions :
+              td
+                span {{$ctrl.shipment.box_length | number : 2}} x {{$ctrl.shipment.box_height | number : 2}} x {{$ctrl.shipment.box_width | number : 2}}
+                span &nbsp;cm
+            tr.item(ng-if="$ctrl.shipment.volumetric_weight > 0")
+              td(colspan='2')
+              td Volumetric Weight :
+              td
+                span(ng-bind='$ctrl.shipment.volumetric_weight | number: 2')
+                span &nbsp;kg
             tr.item(ng-if="$ctrl.shipment.final_weight > 0")
               td(colspan='2')
-              td Total Weight :
+              td Final Chargeable Weight :
               td
                 span(ng-bind='$ctrl.shipment.final_weight | number: 2')
                 span &nbsp;kg
