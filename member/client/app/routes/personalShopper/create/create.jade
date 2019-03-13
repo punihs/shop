@@ -27,12 +27,20 @@
                             input(type='checkbox', value='' ng-model='$ctrl.self_purchased' ng-click ='$ctrl.assisted_purchased =false')
                             i
                             |                 Self Purchased
+                          i.fa.fa-info-circle.m-l-xs(
+                          uib-popover='DO YOU WANT TO PLACE THE ORDERS YOURSELF? \n'+
+                           'Make your purchase on different websites and choose COD as mode of payment,\n' +
+                           'Submit the payment to us immediately so that we can receive your parcels,\n' +
+                           'and we shall notify you!'
+                          popover-trigger="'mouseenter'"
+                          popover-placement='top'
+                          popover-append-to-body='true'
+                          )
 
                       div.div-sp
                         center
                           h5.f-s-5.f-c-red  Self Purchased
-                          span.f-s-10.f-c-gray ( Paying For You )
-                          br
+                          h6 ( DO YOU WANT TO PLACE THE ORDERS YOURSELF?)
                           h1.f-s-1.f-c-blue  Price: 7%
                     .col-md-6.col-xs-6
                       div
@@ -41,11 +49,20 @@
                             input(type='checkbox', value='' ng-model='$ctrl.assisted_purchased' ng-click ='$ctrl.self_purchased = false')
                             i
                             |                 Assisted Purchase
+                          i.fa.fa-info-circle.m-l-xs(
+                          uib-popover='DO YOU WANT SHOPPRE TO PLACE THE ORDERS FOR YOU?\n' +
+                          'Fill up the order form,\n' +
+                          'All your items will go into the Shopping Cart,\n' +
+                          'Submit the payment to us,\n' +
+                          'and we shall process the purchase and notify you!'
+                          popover-trigger="'mouseenter'"
+                          popover-placement='top'
+                          popover-append-to-body='true'
+                          )
                       div.div-ps
                         center
                           h5.f-s-5.f-c-blue  Assisted Purchase
-                          span.f-s-10.f-c-gray ( Shopping For You )
-                          br
+                          h6 ( DO YOU WANT SHOPPRE TO PLACE THE ORDERS FOR YOU? )
                           h1.f-s-1.f-c-blue  Price: 10%
                   .text-center
                     br
