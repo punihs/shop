@@ -143,6 +143,17 @@ class ShipmentsIndexController {
       .get('/shipments', { params: this.params })
       .then(({ data: { shipments, total, facets } }) => {
         // Handle error for php error
+        shipments.map((x) => {
+          const filtered = _.pick(x.ShipmentMetum, value => value);
+
+          const filteredLength = Object.keys(filtered).length;
+          if (filteredLength) {
+            return Object.assign(x, { preference: true });
+          } else {
+            return Object.assign(x, { preference: false });
+          }
+        });
+
         if (typeof shipments === 'undefined') {
           if (!!refresh) this.shipments = [];
           this.ui.lazyLoad = false;

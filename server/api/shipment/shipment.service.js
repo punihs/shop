@@ -87,6 +87,11 @@ exports.index = async ({
           model: Package,
           attributes: ['id'],
         }, {
+          model: ShipmentMeta,
+          attributes: ['express_processing', 'extra_packing', 'gift_note', 'gift_wrap', 'invoice_include',
+            'invoice_tax_id', 'is_liquid', 'mark_personal_use',
+            'max_weight', 'original', 'overweight', 'repack', 'sticker'],
+        }, {
           model: Country,
           attributes: ['id', 'name'],
         }, {
