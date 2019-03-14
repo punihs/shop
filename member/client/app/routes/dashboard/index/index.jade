@@ -3,6 +3,34 @@ div
     //div.m-t-xl(style='position: fixed;right: 5px;z-index: 9;padding-top: 2px;')
     //  ul.nav.nav-pills.nav-sm.m-t-xs
     //    li.m-r-xs.pull-right: a(ng-if='$ctrl.packages.length') {{$ctrl.packages.length}} of {{$ctrl.total}} Packages(s)
+    .mobile-verification-popup.col-md-12.col-sm-12.col-xs-12(ng-if='$ctrl.verifyPhone')
+      .whitebox
+        br
+        br
+        h3 Verify Your mobile number
+        p To continue to your profile
+        form.mobileform(style='width: 80%' name="newPhoneForm" ng-submit='$ctrl.updatePhoneNumber(newPhoneForm)')
+          .row
+            .col-md-12.col-sm-12.col-xs-12
+              label.col-xs-12.input-group
+                | Phone / Mobile Number
+                span.text-danger *
+          .row
+            .col-md-12.col-sm-12.col-xs-12
+              input#tel.form-control(type='tel', name='phone', ng-model='$ctrl.data.phone', ng-intl-tel-input='' required)
+              span.help-block.text-danger(ng-show='newPhoneForm.phone.$pristine && newPhoneForm.phone.$touched') Please type a telephone number
+              span.help-block.text-danger(ng-show='newPhoneForm.phone.$invalid && newPhoneForm.phone.$touched') Invalid :(
+              span.help-block.text-success(ng-show='newPhoneForm.phone.$valid && newPhoneForm.phone.$touched') Valid :)
+          .row
+            .col-md-12.col-sm-12.col-xs-12
+              h4(ng-bind="$ctrl.error.message" style="color:red;")
+              button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting")
+                span.fa.fa-forward.m-r-sm
+                span.text-white(ng-if='!$ctrl.submitting') Save Phone Number
+                span(ng-if='$ctrl.submitting')
+                  i.fa.fa-spin.fa-circle-o-notch
+                  span.text-white &nbsp;&nbsp;Submitting...
+
 
     div.hover-wrap
       // - Primary Header

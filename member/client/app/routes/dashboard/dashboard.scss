@@ -1,0 +1,36 @@
+.mobile-verification-popup{
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 93%;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.mobile-verification-popup .whitebox{
+  width: 60%;
+  max-width: 720px;
+  background: #fff;
+  margin: 50px auto 0;
+  padding: 20px 30px 40px;
+  text-align: center;
+}
+.mobile-verification-popup .whitebox h3{
+  margin: 0 0 15px;
+  font-weight: 700;
+  color: #424040;
+}
+.mobile-verification-popup .whitebox p{
+  font-size: 20px;
+  font-weight: 300;
+}
+.mobile-verification-popup .whitebox form.mobileform{
+  width: 50%;
+  margin: 20px auto;
+}
+.mobile-verification-popup .whitebox form.mobileform .btn{
+  font-weight: 400;
+  margin-top: 15px;
+  font-size: 13px;
+  padding: 8px 30px;
+}
