@@ -107,6 +107,8 @@
                 p In Review
               div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.IN_TRANSIT')
                 p {{package.PackageState.State.name}}
+              div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.AWAITING_FOR_ORDER')
+                p {{package.PackageState.State.name}}
               div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.PAYMENT_CONFIRMED')
                 p Payment Received
                 p(ng-if='package.totalHours < 1')

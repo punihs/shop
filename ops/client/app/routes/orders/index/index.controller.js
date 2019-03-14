@@ -79,7 +79,7 @@ class OrdersIndexController {
     // $emit coming from directive
     this.$scope.$on('loadMore', () => this.loadPackages());
 
-    this.loadPackages(this.$stateParams.type);
+    this.loadPackages();
   }
 
   sort(sortBy) {
@@ -117,7 +117,7 @@ class OrdersIndexController {
   }
 
 
-  loadPackages(psType) {
+  loadPackages() {
     if (this.$stateParams.bucket === 'Interview') {
       this.params.interview_time = [
         this.moment().startOf('day').toISOString(),
@@ -130,6 +130,7 @@ class OrdersIndexController {
       this.params.type = 'ORDER';
     }
 
+    const psType = this.$stateParams.type;
     let shopperType = '';
 
     if (psType === 'self_purchased') {
