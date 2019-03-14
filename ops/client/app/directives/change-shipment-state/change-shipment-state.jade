@@ -29,7 +29,7 @@
             ng-mouseleave='packageItem.hover = false'
             ng-repeat='packageItem in $ctrl.packageItems | orderBy: "-scanned"' ng-class="{invert: packageItem.scanned, hover: packageItem.hover }"
             tooltip-placement="left"
-            uib-tooltip-html='"<img width=250 src=+"$ctrl.URLS.CDN"+/shoppre/"+ packageItem.object +">"'
+            uib-tooltip-html='"<img width=250 src=" + $ctrl.URLS.CDN + "/shoppre/" + packageItem.object + ">"'
           )
             td(ng-bind='packageItem.Package.Store.name')
             td
