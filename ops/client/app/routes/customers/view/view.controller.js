@@ -85,12 +85,12 @@ class CustomerViewController {
         _.pick(data, allowed))
       .then(() => {
         if (method === 'post') {
-          // const walletTransaction = {
-          //   amount: data.amount,
-          //   created_at: Date.now(),
-          //   description: data.description,
-          // };
-          // this.transactions.push(walletTransaction);
+          const walletTransaction = {
+            amount: data.amount,
+            created_at: Date.now(),
+            description: data.description,
+          };
+          this.transactions.push(walletTransaction);
           this.data.description = '';
           this.data.amount = '';
         } else {
@@ -182,12 +182,12 @@ class CustomerViewController {
       });
   }
   getWalletTransactions() {
-    // this
-    //   .$http
-    //   .get(`/transactions?customer_id=${this.id}`)
-    //   .then(({ data }) => {
-    //     this.transactions = data;
-    //   });
+    this
+      .$http
+      .get(`$/phpApi/walletIndex?customer_id=${this.id}`)
+      .then(({ data: { transactions } }) => {
+        this.transactions = transactions;
+      });
   }
   getLoyaltyRewards() {
     // this
