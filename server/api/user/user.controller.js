@@ -65,7 +65,17 @@ exports.index = async (req, res, next) => {
 
     if (email) options.where.email = email.trim();
 
-    if (req.query.q) {
+    if (req.query.q.includes(' ')) {
+      const [firstName, lastName] = req.query.q.split(' ');
+      options.where.$and = {
+        first_name: {
+          $like: `%${firstName}%`,
+        },
+        last_name: {
+          $like: `%${lastName}%`,
+        },
+      };
+    } else if (req.query.q) {
       options.where.$or = {
         first_name: {
           $like: `%${q}%`,
