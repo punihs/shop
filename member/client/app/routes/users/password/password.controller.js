@@ -12,7 +12,6 @@ class PasswordController {
   }
 
   $onInit() {
-    this.id = this.$stateParams.id;
     this.submitting = false;
     this.data = [];
   }
@@ -41,20 +40,23 @@ class PasswordController {
     const data = Object.assign({ }, this.data);
     const form = this.validateForm(formPasswordChange);
     if (!form) return (this.submitting = false);
+    const id = this.Session.read('userinfo').id;
     // return null;
     this
       .$http
-      .put(`/users/${this.id}/changePassword`, data)
-      .then(() => {
-        this
-          .toaster
-          .pop('success', 'Password changed successfully');
-        this.logOut();
+      .put(`~/api/users/${id}/changePassword`, data)
+      .then(({ data: { status } }) => {
+        if (status === 'success') {
+          this
+            .toaster
+            .pop('success', 'Your account password has been changed. Please login to continue.');
+          this.logOut();
+        }
       })
       .catch((err) => {
         this
           .toaster
-          .pop('success', err.data.message);
+          .pop('error', err.data.message);
       });
     return null;
   }
