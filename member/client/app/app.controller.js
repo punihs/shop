@@ -34,32 +34,34 @@ class AppController {
       },
     };
 
-    if (this.Session.isAuthenticated()) {
-      const OneSignal = window.OneSignal || [];
-      OneSignal.push(() => {
-        OneSignal.sendTag('key', this.userinfo.id);
-        OneSignal.init({
-          appId: 'b7792635-0674-4e60-bef9-66d31b818a92',
-          allowLocalhostAsSecureOrigin: true,
-          autoRegister: true,
-          notifyButton: {
-            enable: false,
-          },
-        });
+    // This block of code is required for onesignal integration, temporarily commented
 
-        if (!this.Session.read('oneSignalPlayerId')) {
-          OneSignal.getUserId((pid) => {
-            this
-              .$http
-              .post('#/notificationSubscriptions', {
-                player_id: pid,
-              })
-              .then(() => this.Session
-                .create('oneSignalPlayerId', pid));
-          });
-        }
-      });
-    }
+    // if (this.Session.isAuthenticated()) {
+    //   const OneSignal = window.OneSignal || [];
+    //   OneSignal.push(() => {
+    //     OneSignal.sendTag('key', this.userinfo.id);
+    //     OneSignal.init({
+    //       appId: 'b7792635-0674-4e60-bef9-66d31b818a92',
+    //       allowLocalhostAsSecureOrigin: true,
+    //       autoRegister: true,
+    //       notifyButton: {
+    //         enable: false,
+    //       },
+    //     });
+    //
+    //     if (!this.Session.read('oneSignalPlayerId')) {
+    //       OneSignal.getUserId((pid) => {
+    //         this
+    //           .$http
+    //           .post('#/notificationSubscriptions', {
+    //             player_id: pid,
+    //           })
+    //           .then(() => this.Session
+    //             .create('oneSignalPlayerId', pid));
+    //       });
+    //     }
+    //   });
+    // }
 
     // keeps track of state change and hides sidebar view for mobile
     this.$rootScope.$on('$stateChangeStart', (ev, to, toParams, from) => {

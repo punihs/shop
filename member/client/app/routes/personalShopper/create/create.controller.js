@@ -176,19 +176,19 @@ class CreateController {
   }
   btnToggleSummarySection(currentStatus) {
     let price = false;
+    if (this.packageOptions !== null) {
+      this.packageOptions.forEach((x) => {
+        if (!x.buy_if_price_changed && this.assisted_purchased) {
+          price = true;
 
-    this.packageOptions.forEach((x) => {
-      if (!x.buy_if_price_changed && this.assisted_purchased) {
-        price = true;
-
-        return this
-          .toaster
-          .pop('error', 'Please Select Choice of Would it be OK to' +
-            ' buy it if when we shop, the item cost has gone up by', '');
-      }
-
-      return null;
-    });
+          return this
+            .toaster
+            .pop('error', 'Please Select Choice of Would it be OK to' +
+              ' buy it if when we shop, the item cost has gone up by', '');
+        }
+        return null;
+      });
+    }
 
     if (price) {
       return;
@@ -336,24 +336,26 @@ class CreateController {
       shopperType = 'ps';
     }
 
-    this.packageOptions.forEach((x) => {
-      if (!x.buy_if_price_changed && this.assisted_purchased) {
-        price = true;
+    if (this.packageOptions !== null) {
+      this.packageOptions.forEach((x) => {
+        if (!x.buy_if_price_changed && this.assisted_purchased) {
+          price = true;
 
-        return this
-          .toaster
-          .pop('error', 'Please Select Choice of Would it be OK to buy it if when we shop, the item cost has gone up by and save', '');
-      }
-      if (!x.seller_invoice && this.self_purchased) {
-        price = true;
+          return this
+            .toaster
+            .pop('error', 'Please Select Choice of Would it be OK to buy it if when we shop, the item cost has gone up by and save', '');
+        }
+        if (!x.seller_invoice && this.self_purchased) {
+          price = true;
 
-        return this
-          .toaster
-          .pop('error', 'Please Upload invoice of your order and save', '');
-      }
+          return this
+            .toaster
+            .pop('error', 'Please Upload invoice of your order and save', '');
+        }
 
-      return null;
-    });
+        return null;
+      });
+    }
 
     if (price) {
       return;
@@ -383,14 +385,16 @@ class CreateController {
     this.itemTotalCost = 0;
     this.totalAmount = 0;
 
-    data.forEach((item) => {
-      const pkg = _.pick(item, this.packageFields);
-      this.saleTax += pkg.sales_tax || 0;
-      this.deliveryCharge += pkg.delivery_charge || 0;
-      this.personalShopperCost += pkg.personal_shopper_cost || 0;
-      this.itemTotalCost += pkg.price_amount || 0;
-      this.totalAmount += pkg.sub_total || 0;
-    });
+    if (data !== null) {
+      data.forEach((item) => {
+        const pkg = _.pick(item, this.packageFields);
+        this.saleTax += pkg.sales_tax || 0;
+        this.deliveryCharge += pkg.delivery_charge || 0;
+        this.personalShopperCost += pkg.personal_shopper_cost || 0;
+        this.itemTotalCost += pkg.price_amount || 0;
+        this.totalAmount += pkg.sub_total || 0;
+      });
+    }
   }
 
   makePayment() {

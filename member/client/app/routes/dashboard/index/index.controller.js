@@ -14,7 +14,7 @@ class DashboardIndexController {
     this.store = 'Amazon';
     this.user = this.Session.read('userinfo');
 
-    if (!this.user.phone) {
+    if (this.user.phone !== null) {
       this.verifyPhone = true;
     } else {
       this.verifyPhone = false;
