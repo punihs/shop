@@ -166,16 +166,21 @@ class PackageCreateController {
         return this.reset(newPackageForm);
       })
       .catch((err) => {
+        if (err.status === 403) {
+          this
+            .toaster
+            .pop('error', 'You can not add Packages to Admin Accounts');
+        } else {
+          this
+            .toaster
+            .pop('error', 'There was problem creating package. Please contact Shoppre team.');
+        }
+
         this.submitting = false;
 
         const { field } = err.data;
         newPackageForm[err.data.field].$setValidity('required', false);
         $(`input[name="${field}"]`)[0].focus();
-
-
-        this
-          .toaster
-          .pop('error', 'There was problem creating package. Please contact Shoppre team.');
 
         this.error = err.data;
       });

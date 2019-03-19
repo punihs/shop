@@ -141,6 +141,18 @@ exports.create = async (req, res, next) => {
         ];
         req.body.total_quantity = 0;
 
+        const user = await User.find({
+          attributes: ['email'],
+          raw: true,
+          where: { id: req.body.customer_id },
+        });
+
+        if (user) {
+          if (user.email.includes('@shoppre.com')) {
+            return res.status(403).json({ message: 'You can not add packages to admin accounts' });
+          }
+        }
+
         const pkg = _.pick(req.body, allowed);
 
         // - Internal user
