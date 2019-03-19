@@ -129,7 +129,7 @@
             div.text-danger
               a.text-muted.font-thin Order Code
               div
-                span(ng-bind='$ctrl.packageItems[0].package_order_code')
+                a.text-danger(ui-sref='order.show({ id: $ctrl.packageItems[0].package_order_code })' target="_blank") {{$ctrl.packageItems[0].package_order_code}}
 
           .clear.wrapper-xs(
           uib-tooltip="{{$ctrl.data.created_at | date:'MMM d, y'}} IST {{$ctrl.data.created_at | date:'h:mm a'}}"
