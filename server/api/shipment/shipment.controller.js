@@ -34,7 +34,7 @@ const {
     CUSTOMER_ACKNOWLEDGEMENT_RECEIVED, AMOUNT_RECEIVED_FROM_UPSTREAM, INVOICE_REQUESTED,
   },
   SHIPMENT_HISTORY, SHIPMENT_COUNT,
-  PACKAGE_STATE_IDS: { READY_TO_SHIP },
+  PACKAGE_STATE_IDS: { READY_TO_SHIP, INACTIVE_LOCKER },
   PAYMENT_GATEWAY: { RAZOR },
   GROUPS: { CUSTOMER },
 } = require('../../config/constants');
@@ -396,7 +396,7 @@ const getPackages = async ({ actingUser, packageIds, next }) => {
           attributes: ['id', 'package_id'],
           model: PackageState,
           where: {
-            state_id: [READY_TO_SHIP],
+            state_id: [READY_TO_SHIP, INACTIVE_LOCKER],
           },
         }],
       });
@@ -1014,7 +1014,7 @@ exports.redirectShipment = async (req, res, next) => {
           model: PackageState,
           attributes: [],
           where: {
-            state_id: [READY_TO_SHIP],
+            state_id: [READY_TO_SHIP, INACTIVE_LOCKER],
           },
         }],
       });

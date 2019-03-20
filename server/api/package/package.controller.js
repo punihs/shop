@@ -5,6 +5,7 @@ const Ajv = require('ajv');
 const {
   PACKAGE_STATE_IDS: {
     READY_TO_SHIP,
+    INACTIVE_LOCKER,
     PACKAGE_ITEMS_UPLOAD_PENDING,
     INCOMING_PACKAGE,
     STANDARD_PHOTO_REQUEST,
@@ -271,11 +272,11 @@ exports.state = async (req, res, next) => {
       }
     }
 
-    if ([READY_TO_SHIP, CUSTOMER_INPUT, UPLOAD_INVOICE_REQUESTED].includes(stateId)) {
+    if ([READY_TO_SHIP, INACTIVE_LOCKER, CUSTOMER_INPUT, UPLOAD_INVOICE_REQUESTED].includes(stateId)) {
       if (!pkg.weight) {
         return res.status(400).json({ message: 'Please update weight of the package' });
       }
-    } else if ([READY_TO_SHIP].includes(stateId)) {
+    } else if ([READY_TO_SHIP, INACTIVE_LOCKER].includes(stateId)) {
       if (!pkg.price_amount) {
         return res.status(400).json({ message: 'Please update package value' });
       }

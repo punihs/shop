@@ -10,7 +10,7 @@ const { getPersonalShopperItems } = require('../item/item.service');
 
 const {
   PACKAGE_STATE_IDS: {
-    READY_TO_SHIP, ADDED_SHIPMENT,
+    READY_TO_SHIP, ADDED_SHIPMENT, INACTIVE_LOCKER,
   },
   PACKAGE_TYPES: {
     PERSONAL_SHOPPER, COD,
@@ -129,7 +129,7 @@ exports.destroy = async (req, res, next) => {
         }, {
           model: PackageState,
           attributes: ['id'],
-          where: { state_id: [READY_TO_SHIP, ADDED_SHIPMENT] },
+          where: { state_id: [READY_TO_SHIP, INACTIVE_LOCKER, ADDED_SHIPMENT] },
         }],
       });
 
