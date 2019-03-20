@@ -277,6 +277,9 @@
                   .col-xs-12.text-ellipsis(ng-show='packageItem.note')
                     span.text-blue Note - &nbsp;
                     strong  {{packageItem.note}}
+                  .col-xs-12.text-ellipsis(ng-if = 'packageItem.status === "addedtopackage"')
+                    span.text-blue Track Package - &nbsp;
+                      a.text-danger(ui-sref='package.show({ id: packageItem.package_id })' target="_blank") {{packageItem.package_id}}
             .col-xs-12.col-md-2.no-padder
               .m-none.wrapper-lg.w-full.w-auto-xs
                 .clearfix

@@ -49,7 +49,7 @@ exports.index = async (req, res, next) => {
         attributes: [
           'id', 'name', 'quantity', 'price_amount', 'total_amount', 'object',
           'object_invoice', 'color', 'size', 'note', 'url', 'status',
-          'if_item_unavailable', 'updated_at', 'package_order_code',
+          'if_item_unavailable', 'updated_at', 'package_order_code', 'package_id',
         ],
         include: [{
           model: PackageItemCategory,
