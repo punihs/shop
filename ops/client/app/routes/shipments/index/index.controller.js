@@ -148,7 +148,11 @@ class ShipmentsIndexController {
 
           const filteredLength = Object.keys(filtered).length;
           if (filteredLength) {
-            return Object.assign(x, { preference: true });
+            if (x.ShipmentMetum.express_processing) {
+              return Object.assign(x, { preference: true });
+            } else {
+              return Object.assign(x, { preference: false });
+            }
           } else {
             return Object.assign(x, { preference: false });
           }
