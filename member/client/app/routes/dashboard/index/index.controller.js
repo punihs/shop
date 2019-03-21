@@ -50,7 +50,7 @@ class DashboardIndexController {
     if (flag) {
       user.phone = this.data.phone;
       this.Session.create('userinfo', user);
-      this.verifyPhone = false;
+      this.verifyPhone = true;
     }
   }
 
