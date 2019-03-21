@@ -54,7 +54,7 @@ div(style='position: relative;')
     )
       //"orders":"text-warning-dk"
       .m-b-md: .m-t-sm(
-        ng-repeat='(type, color) in {"shipments":"text-info-dker","packages":"text-info-dk","customers":"text-danger"}')
+        ng-repeat='(type, color) in {"shipments":"text-info-dker","packages":"text-info-dk","orders":"text-info-dker","customers":"text-danger"}')
         a: .m-l-xs(
           ng-class="{'{{color}}': !$ctrl.collapse[type], 'text-gray': $ctrl.collapse[type]}"
           ng-click='$ctrl.collapse[type] = !$ctrl.collapse[type]; !$ctrl.collapse["inactive"] && $ctrl.getList(false, true)'

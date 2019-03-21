@@ -156,6 +156,7 @@ class CustomerNavController {
       customers: 'customer.view',
       shipments: 'customer.shipments.index',
       packages: 'customer.packages.index',
+      orders: 'customer.orders.index',
     };
 
     const status = this.$state.params.bucket || 'ALL';
