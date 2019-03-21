@@ -21,7 +21,7 @@ div
                   div.div-border-create
                     h2.m-n.alert.bg-primary.text-white.font-bold PAYMENT SUMMARY
                     .panel-body.text-primary.padding-10
-                      .radio.no-margin-top(ng-repeat="paymentgateway in $ctrl.paymentGateways")
+                      .radio.no-margin-top(ng-repeat='paymentgateway in $ctrl.paymentGateways | orderBy: ["display_order"]')
                         label.i-checks.no-margin-top(ng-if = 'paymentgateway.status && $ctrl.pgWalletEnabled === true' ng-show = 'paymentgateway.value === "wallet" && !$ctrl.isWalletChecked')
                           //input(ng-checked="paymentgateway.id === $ctrl.payment.payment_gateway_id ? true : false", type='radio', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
                           input(ng-checked ="$ctrl.isPGWalletChecked", type='radio', ng-click="$ctrl.selectedGateway()", value='{{paymentgateway.id}}', ng-model='$ctrl.data.paymentGateway')
