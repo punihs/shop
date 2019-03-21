@@ -28,7 +28,6 @@ exports.index = async (req, res, next) => {
           id: followers
             .map(x => x.user_id)
             .filter(x => (x !== req.user.id)),
-          object_type_id: PACKAGE,
         },
         include: [{
           model: SocketSession,
