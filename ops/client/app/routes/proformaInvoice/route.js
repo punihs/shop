@@ -8,7 +8,7 @@ angular.module('uiGenApp')
         template: '<div ui-view=""></div>',
       })
       .state('proformaInvoice.dhl', {
-        url: '/:orderCode/dhl',
+        url: '/:orderCode/dhl?type',
         templateUrl: 'app/routes/proformaInvoice/dhl/dhl.html',
         controller: 'dhlController',
         controllerAs: '$ctrl',

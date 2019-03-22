@@ -250,8 +250,11 @@
               ng-change='$ctrl.uploadFiles($ctrl.documentfile)'
               multiple base-sixty-four-input
               )
-        button.btn.btn-md.btn-default
-          a(ui-sref='proformaInvoice.dhl({ orderCode: $ctrl.data.order_code })', target='_blank') Proforma
+        uib-tab(index='3', heading='Proforma')
+          button.btn.btn-md.btn-default
+            a(ui-sref='proformaInvoice.dhl({ orderCode: $ctrl.data.order_code,type: "item" })', target='_blank') Item &nbsp;&nbsp;&nbsp;&nbsp;
+          button.btn.btn-md.btn-default
+            a(ui-sref='proformaInvoice.dhl({ orderCode: $ctrl.data.order_code,type: "category" })', target='_blank') Category
 
     //- Shipment Skills
     .wrapper-xs.m-l-sm.m-t-sm.b-t(ng-if="$ctrl.data.skills.length>0")

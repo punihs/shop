@@ -12,6 +12,7 @@ class dhlController {
   $onInit() {
     this.Page.setTitle('Proforma Invoice Create');
     this.orderCode = this.$stateParams.orderCode;
+    this.type = this.$stateParams.type;
     this.shipments = [];
     this.Packages = [];
     this.PackageItems = [];
@@ -37,28 +38,30 @@ class dhlController {
           });
         });
 
-        const packageItems = [];
-        let found = false;
+        if (this.type === 'category') {
+          const packageItems = [];
+          let found = false;
 
-        this.PackItems.forEach((x) => {
-          found = false;
-          if (packageItems.length) {
-            packageItems.forEach((y) => {
-              if (y.package_item_category_id === x.package_item_category_id) {
-                found = true;
-                y.price_amount += x.price_amount;
-                y.total_amount += x.total_amount;
-                y.quantity += x.quantity;
-              }
-            });
-          }
-          if (!found) {
-            packageItems.push(x);
-          }
-        });
+          this.PackItems.forEach((x) => {
+            found = false;
+            if (packageItems.length) {
+              packageItems.forEach((y) => {
+                if (y.package_item_category_id === x.package_item_category_id) {
+                  found = true;
+                  y.total_amount += x.total_amount;
+                  y.quantity += x.quantity;
+                  y.price_amount = y.total_amount / y.quantity;
+                }
+              });
+            }
+            if (!found) {
+              packageItems.push(x);
+            }
+          });
+          this.PackItems = [];
+          this.PackItems = packageItems;
+        }
 
-        this.PackItems = [];
-        this.PackItems = packageItems;
         this.Charges.total_amount = totalAmount;
         this.amountWords = `${words} only`;
       })
