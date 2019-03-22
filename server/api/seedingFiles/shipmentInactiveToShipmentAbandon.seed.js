@@ -2,7 +2,7 @@ const {
   STATE_TYPES: { SHIPMENT },
 } = require('../../config/constants/index');
 
-const shipmentInactiveToAbandon = ({
+const shipmentInactiveToShipmentAbandon = ({
   GROUP: {
     OPS,
   },
@@ -12,4 +12,4 @@ const shipmentInactiveToAbandon = ({
   child_id: 61,
 }].map(x => ({ ...x, type: SHIPMENT }));
 
-module.exports = constants => shipmentInactiveToAbandon(constants);
+module.exports = constants => shipmentInactiveToShipmentAbandon(constants);
