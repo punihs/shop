@@ -857,7 +857,7 @@ exports.proformaInvoice = async (req, res, next) => {
       });
     });
 
-    const words = numberWords(totalAmount);
+    const words = _.startCase(_.toLower(numberWords(totalAmount)));
 
     return res.json({
       shipment, words, totalAmount,

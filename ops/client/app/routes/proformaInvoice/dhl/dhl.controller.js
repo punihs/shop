@@ -63,7 +63,7 @@ class dhlController {
         }
 
         this.Charges.total_amount = totalAmount;
-        this.amountWords = `${words} only`;
+        this.amountWords = `${words} Only`;
       })
       .catch((err) => {
         this
