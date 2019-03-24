@@ -293,6 +293,18 @@ div.m-t-xl.no-margin
                   ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.object_ecommerce}}'
                   style='height: 85px;width: 80px;'
                   )
+              .row(ng-if='!$ctrl.EDIT')
+                .col-md-12
+                  ul.nav
+                    li: label.i-checks.i-checks-sm
+                      input(
+                      type="checkbox"
+                      ng-model="$ctrl.isPrint"
+                      ng-change="$ctrl.changePrintMode()"
+                      )
+                      i
+                      .hide
+                      | Do You want Print
               .row
                 .col-md-8
                   .text-danger.font-bold(ng-if="newPackageItemForm.file.$error.maxSize") Please select file less than 5MB
@@ -300,11 +312,14 @@ div.m-t-xl.no-margin
                   h4(ng-bind="$ctrl.error.message" style="color:red;")
                   button.btn.btn-success(type='submit' ng-disabled="$ctrl.uploadingPhotos || $ctrl.submitting || newPackageItemForm.$pristine")
                     span.fa.fa-forward.m-r-sm
-                    span.text-white(ng-if='!$ctrl.submitting') {{$ctrl.uploadingPhotos ? 'Uploading Photo...' : 'Save ' }}
+                    span.text-white(ng-if='!$ctrl.submitting') {{$ctrl.uploadingPhotos ? 'Uploading Photo...' : 'Save' }}
                     span(ng-if='$ctrl.submitting')
                       i.fa.fa-spin.fa-circle-o-notch
                       span.text-white &nbsp;&nbsp;Submitting...
                   a.btn.btn.success(ng-click="$ctrl.open()") Create Category
+
+                  a.btn.btn-sea-green(ng-click='$ctrl.printCode()') Print
+
 
     .clearfix
 

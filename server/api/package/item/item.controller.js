@@ -2,8 +2,10 @@ const debug = require('debug');
 const sequelize = require('sequelize');
 
 const minio = require('../../../conn/minio');
+const { PACKAGE } = require('../../../config/constants/buckets');
+const { GROUPS: { CUSTOMER } } = require('../../../config/constants');
 const {
-  PackageItem, PackageItemCategory, Package, PackageState,
+  PackageItem, PackageItemCategory, Package, PackageState, Store, User,
 } = require('../../../conn/sqldb');
 
 const { getPersonalShopperItems } = require('../item/item.service');
@@ -67,18 +69,54 @@ exports.index = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
   try {
+    const { packageId } = req.params;
     const pkgItem = await PackageItem
       .create({
         ...req.body,
-        package_id: req.params.packageId,
+        package_id: packageId,
         created_by: req.user.id,
       });
 
     await Package.update({
       total_quantity: sequelize.literal('total_quantity + 1') }
-      , { where: { id: req.params.packageId } });
+      , { where: { id: packageId } });
 
-    return res.json(pkgItem.id);
+    const packageDetail = await Package
+      .find({
+        where: { id: packageId },
+        attributes: ['id'],
+        include: [{
+          model: Store,
+          attributes: ['id', 'name'],
+        },
+        {
+          model: User,
+          attributes: ['id', 'first_name', 'last_name', 'virtual_address_code'],
+          as: 'Customer',
+        },
+        ],
+      });
+
+    const packages = await Package.findAll({
+      attributes: ['id', 'customer_id'],
+      where: { customer_id: packageDetail.Customer.id },
+      include: [{
+        model: PackageState,
+        where: { state_id:  PACKAGE[CUSTOMER].ALL },
+      }],
+    });
+    console.log(packages.map(x => x.toJSON().id).join(','), packages.length);
+    const packageItems = await PackageItem
+      .count({
+        where: { package_id: packages.map(x => x.id) },
+      });
+console.log('sssssssssssssssss', packageItems)
+    return res.json({
+      ...packageDetail.toJSON(),
+      packageItemId: pkgItem.id,
+      itemName: pkgItem.name,
+      totalItems: packageItems,
+    });
   } catch (err) {
     return next(err);
   }

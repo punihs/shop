@@ -40,6 +40,8 @@ class PackageItemsController {
   }
 
   $onInit() {
+    this.isPrint = this.Session.read('isPrint');
+    qz.config = null;
     this.uploadingPhotos = false;
     this.EDIT = !!this.$stateParams.packageItemId && this.$stateParams.packageItemId !== '';
     this.quickMode = this.EDIT ? false : (this.Session.read('quickMode-items') || false);
@@ -134,6 +136,14 @@ class PackageItemsController {
     this.Session.create('quickMode-items', this.quickMode);
   }
 
+  changePrintMode() {
+    this.Session.create('isPrint', this.isPrint);
+  }
+
+  printCode() {
+    this.printHTML();
+  }
+
   validateForm(form) {
     this.$stateParams.autofocus = '';
     Object.keys(form).filter(x => !x.startsWith('$')).forEach((f) => {
@@ -178,20 +188,41 @@ class PackageItemsController {
     const method = packageItemId ? 'put' : 'post';
 
     const url = `/packages/${this.pkg.id}/items${packageItemId ? `/${packageItemId}` : ''}`;
+    console.log('Data', this.data);
 
     return this
       .$http[method](url, _.pick(data, allowed))
-      .then(({ data: packageItem }) => {
-        this.packageItem = packageItem;
-        const { id } = packageItem;
+      .then(({ data }) => {
+        console.log('res', data)
+        this.packageItem = data.packageItemId;
+        const { id } = data.packageItemId;
         this.submitting = false;
+        const itemData = {
+          id: data.packageItemId,
+          packageId: data.id,
+          customerName: data.Customer.first_name,
+          virtualAddressCode: data.Customer.virtual_address_code,
+          store: data.Store.name,
+          itemCategory: this.PackageItemCategory.model,
+          itemName: this.data.name,
+          totalItems: data.totalItems,
+          w: 1,
+          cell: 1,
+          rack: 1,
+          column: 3,
+        };
 
         this
           .toaster
           .pop('success', `#${id} Package ${this.EDIT
             ? 'Updated'
             : 'Created'} Successfully.`, '');
-
+        if (this.isPrint) {
+          this.printHTML(itemData);
+          return this.$state.go('package.show', { id: packageId });
+        } else {
+          console.log('Print option not selected', itemData);
+        }
         return this.$state.go('package.show', { id: packageId });
       })
       .catch((err) => {
@@ -201,7 +232,6 @@ class PackageItemsController {
         newPackageItemForm[err.data.field].$setValidity('required', false);
         $(`input[name="${field}"]`)[0].focus();
 
-
         this
           .toaster
           .pop('error', 'There was problem creating package. Please contact Shoppre team.');
@@ -209,6 +239,49 @@ class PackageItemsController {
         this.error = err.data;
       });
   }
+
+// / Pixel Printers ///
+  printHTML(data) {
+    // let printerName = document.getElementById("printerName");
+    const printerName = 'ZDesigner GC420t';
+
+    if (qz.websocket.isActive()) {
+      this.printData(data);
+    } else {
+      qz.websocket.connect().then(() =>
+        qz.printers.getDefault() // Pass the printer name into the next Promise
+      ).then((printer) => {
+        qz.printerConfig = qz.configs.create(printer); // Create a default config for the found printer
+        return this.printData(data);
+      })
+        .catch(e => {
+          console.log(e);
+        });
+    }
+  }
+
+  printData(itemData) {
+    const printData = [
+      { type: 'raw', format: 'plain', data:
+          'CT~~CD,~CC^~CT~\n' +
+          '^XA\n' +
+          '^PW812\n' +
+          '^FO470,62^BY3^B3N,N,75N,N^FD' + itemData.id + '^FS^PQ1\n' +
+          '^FT523,200^ADN,54,30^FH\\^FD' + itemData.id + '^FS\n' +
+          '^FT67,198^A0N,35,33^FH\\^FD' + itemData.store + '^FS\n' +
+          '^FT69,141^A0N,50,50^FH\\^FDPKG: ' + itemData.packageId + '^FS\n' +
+          '^FT67,253^A0N,35,33^FH\\^FD' + itemData.customerName + '^FS\n' +
+          '^FT524,356^A0N,35,33^FH\\^FD' + itemData.virtualAddressCode + '^FS\n' +
+          '^FT69,301^A0N,35,33^FH\\^FD' + itemData.itemCategory + ' | Rack: ^FS\n' +
+          '^FT69,356^A0N,35,33^FH\\^FD' + itemData.itemName + '^FS\n' +
+          '^FT69,82^A0N,62,60^FH\\^FDSHOPPRE.COM^FS\n' +
+          '^FT624,299^A0N,73,72^FH\\^FD#' + itemData.totalItems + '^FS\n' +
+          '^PQ1,0,1,Y^XZ' },
+    ];
+
+    return qz.print(qz.printerConfig, printData);
+  }
+
 }
 
 angular.module('uiGenApp')
