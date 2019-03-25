@@ -359,6 +359,13 @@ class PackagesIndexController {
         .pop('error', ' Packages containing special items must be chosen and shipped separately ');
       return;
     }
+    const restrictedItems = this.packages.filter(x => x.isChecked).map(x => x.is_restricted_item);
+    if (restrictedItems.includes(true)) {
+      this
+        .toaster
+        .pop('error', ' Package containing restricted items u cant ship these items');
+      return;
+    }
     const packageIds = this.packages.filter(x => x.isChecked).map(x => x.id);
     this.$state
       .go('shipRequests.create', { packageIds: packageIds.toString() });

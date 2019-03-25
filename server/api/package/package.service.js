@@ -94,7 +94,7 @@ exports.index = async ({
     switch (true) {
       case (actingUser.app_id === APPS.MEMBER && actingUser.group_id === CUSTOMER): {
         options.attributes = ['id', 'created_at', 'weight', 'price_amount', 'order_code',
-          'store_id', 'content_type', 'invoice_code', 'notes'];
+          'store_id', 'content_type', 'invoice_code', 'notes', 'is_restricted_item'];
         options.where.customer_id = actingUser.id;
         options.include = [{
           where: {},
@@ -123,7 +123,7 @@ exports.index = async ({
         if (type === 'ORDER') options.where.package_type = packageType;
 
         options.attributes = ['id', 'customer_id', 'created_at', 'weight', 'price_amount', 'store_id', 'invoice_code',
-          'content_type', 'updated_at', 'order_code', 'transaction_id', 'package_type'];
+          'content_type', 'updated_at', 'order_code', 'transaction_id', 'package_type', 'is_restricted_item'];
         options.include = [{
           where: {},
           model: PackageState,

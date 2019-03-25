@@ -137,6 +137,7 @@ div
                             span )
                             span.badge.bg-success.m-l-xs.text-white(ng-if='package.content_type === "2"') SPECIAL
                             span.badge.bg-danger.m-l-xs.text-white(ng-if='package.damaged') DAMAGED
+                            span.badge.bg-danger.m-l-xs.text-white(ng-if='package.is_restricted_item === true') Restricted Item
 
                           td.footable-visible(ng-if="$ctrl.$stateParams.bucket !=='MY_ORDERS'" )
                             a(ng-click='$ctrl.viewPhotos($index, package)' ng-if="$ctrl.PACKAGE_STATE_IDS.INCOMING_PACKAGE !== package.state_id" )
@@ -420,7 +421,7 @@ div
                     a.summary-order(href="{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/faq" ,_target='blank')&nbsp; Click here to know more.
 
                   p **
-                    | Shoppre charges a small fee of INR 100 per package that you add to the final shipment
+                    | Shoppre charges a small fee of INR 50 per package that you add to the final shipment
                     | (when you have two or more packages to consolidate).
                     | This helps you in reducing shipping charges upto 60-80%.
                     a.summary-order(href="{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/faq" _target='blank')&nbsp; Click here to know more.

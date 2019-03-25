@@ -62,4 +62,5 @@ module.exports = DataTypes => ({
   buy_if_price_changed: DataTypes.STRING,
   transaction_id: DataTypes.INTEGER,
   package_received_date: DataTypes.DATE,
+  is_restricted_item: DataTypes.BOOLEAN,
 });
