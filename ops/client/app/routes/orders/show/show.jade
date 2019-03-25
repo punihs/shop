@@ -205,9 +205,9 @@
         uib-tab(index='2', heading='Docs')
           div.col-md-6(ng-show= '$ctrl.data.seller_invoice')
             h4 Order invoice
-            a(href ='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.seller_invoice}}' target = '_blank')
+            a(href ='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.seller_invoice.toLowerCase()}}' target = '_blank')
               img.pull-left.m-r(
-              ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.seller_invoice}}'
+              ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.seller_invoice.toLowerCase()}}'
               style='height: 80px;width: 80px;'
               )
   .col
