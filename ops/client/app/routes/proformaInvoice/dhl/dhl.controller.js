@@ -50,7 +50,7 @@ class dhlController {
                   found = true;
                   y.total_amount += x.total_amount;
                   y.quantity += x.quantity;
-                  y.price_amount = y.total_amount / y.quantity;
+                  y.price_amount = Math.round(y.total_amount / y.quantity);
                 }
               });
             }
