@@ -105,12 +105,10 @@ exports.create = async (req, res, next) => {
         where: { state_id:  PACKAGE[CUSTOMER].ALL },
       }],
     });
-    console.log(packages.map(x => x.toJSON().id).join(','), packages.length);
     const packageItems = await PackageItem
       .count({
         where: { package_id: packages.map(x => x.id) },
       });
-console.log('sssssssssssssssss', packageItems)
     return res.json({
       ...packageDetail.toJSON(),
       packageItemId: pkgItem.id,

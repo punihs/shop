@@ -44,4 +44,10 @@ module.exports = DataTypes => ({
     type: DataTypes.STRING,
     defaultValue: 0,
   },
+  referer: DataTypes.STRING,
+  first_visit: DataTypes.STRING,
+  utm_campaign: DataTypes.STRING,
+  utm_source: DataTypes.STRING,
+  utm_medium: DataTypes.STRING,
+  gcl_id: DataTypes.STRING,
 });
