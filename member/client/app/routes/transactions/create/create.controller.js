@@ -107,8 +107,9 @@ class TransactionCreateController {
               }
               return this.promoCode();
             });
+        } else {
+          return this.promoCode();
         }
-        return this.promoCode();
       } else {
         return this.promoCode();
       }
