@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <g id="ic_sidebar_shipment" transform="translate(-18 34)">
+    <rect id="Rectangle_1556" data-name="Rectangle 1556" width="20" height="20" transform="translate(18 -34)" fill="none"/>
+    <path id="ic_local_airport_24px" d="M15.2,11.2V9.6l-6.4-4V1.2a1.2,1.2,0,0,0-2.4,0V5.6L0,9.6v1.6l6.4-2v4.4L4.8,14.8V16l2.8-.8,2.8.8V14.8L8.8,13.6V9.2Z" transform="translate(36 -32) rotate(90)" fill="#fff"/>
+  </g>
+</svg>

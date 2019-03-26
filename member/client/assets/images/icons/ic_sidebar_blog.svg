@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <g id="ic_sidebar_blog" transform="translate(-18 224)">
+    <rect id="Rectangle_1553" data-name="Rectangle 1553" width="20" height="20" transform="translate(18 -224)" fill="none"/>
+    <g id="ic_rss_feed_24px" transform="translate(17 -225.44)">
+      <circle id="Ellipse_9" data-name="Ellipse 9" cx="2.18" cy="2.18" r="2.18" transform="translate(4 14.08)" fill="#fff"/>
+      <path id="Path_6" data-name="Path 6" d="M4,4.44V6.986A11.454,11.454,0,0,1,15.454,18.44H18a14,14,0,0,0-14-14ZM4,9.533v2.546a6.367,6.367,0,0,1,6.361,6.361h2.546A8.9,8.9,0,0,0,4,9.533Z" fill="#fff"/>
+    </g>
+  </g>
+</svg>

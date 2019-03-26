@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <g id="ic_sidebar_offer" transform="translate(-18 135)">
+    <rect id="Rectangle_1549" data-name="Rectangle 1549" width="20" height="20" transform="translate(18 -135)" fill="none"/>
+    <path id="ic_local_offer_24px" d="M15.587,8.706l-6.3-6.3A1.391,1.391,0,0,0,8.3,2H3.4A1.4,1.4,0,0,0,2,3.4V8.3a1.4,1.4,0,0,0,.413.994l6.3,6.3A1.391,1.391,0,0,0,9.7,16a1.369,1.369,0,0,0,.987-.413l4.9-4.9A1.369,1.369,0,0,0,16,9.7,1.414,1.414,0,0,0,15.587,8.706ZM4.45,5.5A1.05,1.05,0,1,1,5.5,4.45,1.049,1.049,0,0,1,4.45,5.5Z" transform="translate(19 -134)" fill="#fff"/>
+  </g>
+</svg>

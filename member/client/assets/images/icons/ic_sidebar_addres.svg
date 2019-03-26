@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <g id="ic_sidebar_addres" transform="translate(-18 -10)">
+    <rect id="Rectangle_1548" data-name="Rectangle 1548" width="20" height="20" transform="translate(18 10)" fill="none"/>
+    <path id="ic_person_pin_circle_24px" d="M10.6,2A5.606,5.606,0,0,0,5,7.6C5,11.8,10.6,18,10.6,18s5.6-6.2,5.6-10.4A5.606,5.606,0,0,0,10.6,2Zm0,1.6A1.6,1.6,0,1,1,9,5.2,1.6,1.6,0,0,1,10.6,3.6Zm0,8A3.826,3.826,0,0,1,7.4,9.88c.016-1.056,2.136-1.64,3.2-1.64s3.184.584,3.2,1.64A3.826,3.826,0,0,1,10.6,11.6Z" transform="translate(17 10)" fill="#fff"/>
+  </g>
+</svg>
