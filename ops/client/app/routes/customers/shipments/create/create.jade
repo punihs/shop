@@ -60,7 +60,7 @@ div.m-t-xl.no-margin
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
               .row(ng-if='$ctrl.EDIT')
                 .col-md-12
-                  .col-md-12.col-sm-12.col-xs-12.no-padder
+                  .col-md-9.col-sm-9.col-xs-9.no-padder
                     label.col-xs-12.input-group
                       | Address
                       span.text-danger *
@@ -71,7 +71,17 @@ div.m-t-xl.no-margin
                       ng-model='$ctrl.data.address'
                       required
                       )
-                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.address.$dirty && newShipmentForm.address.$invalid') Please enter address
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newShipmentForm.address.$dirty && newShipmentForm.address.$invalid') Please enter address10.col-sm-10.col-xs-10.no-padder
+                  .col-md-3.col-sm-3.col-xs-3
+                    label.col-xs-12.input-group
+                      | Country
+                      input.form.form-control.text-danger(
+                      type='text'
+                      name='country'
+                      placeholder='eg. India'
+                      ng-model='$ctrl.data.Country.name'
+                      required
+                      )
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
               .row(ng-if='$ctrl.EDIT')
                 .col-md-12

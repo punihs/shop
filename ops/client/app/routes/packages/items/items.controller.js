@@ -188,7 +188,6 @@ class PackageItemsController {
     const method = packageItemId ? 'put' : 'post';
 
     const url = `/packages/${this.pkg.id}/items${packageItemId ? `/${packageItemId}` : ''}`;
-    console.log('Data', this.data);
 
     return this
       .$http[method](url, _.pick(data, allowed))
@@ -220,7 +219,6 @@ class PackageItemsController {
           this.printHTML(itemData);
           return this.$state.go('package.show', { id: packageId });
         }
-        console.log('Print option not selected', itemData);
 
         return this.$state.go('package.show', { id: packageId });
       })
@@ -255,7 +253,6 @@ class PackageItemsController {
         return this.printData(data);
       })
         .catch(e => {
-          console.log(e);
         });
     }
   }
@@ -349,7 +346,6 @@ class PackageItemsController {
         sig.init(pk);
         sig.updateString(toSign);
         const hex = sig.sign();
-        console.log(`DEBUG: \n\n${stob64(hextorstr(hex))}`);
         resolve(stob64(hextorstr(hex)));
 
         // var pk = new RSAKey();
@@ -358,7 +354,6 @@ class PackageItemsController {
         // console.log("DEBUG: \n\n" + stob64(hextorstr(hex)));
         // resolve(stob64(hextorstr(hex)));
       } catch (err) {
-        console.error(err);
         reject(err);
       }
     });

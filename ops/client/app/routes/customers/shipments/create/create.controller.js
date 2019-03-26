@@ -21,6 +21,7 @@ class ShipmentCreateController {
     this.submitting = false;
     this.submittingTracking = false;
     this.data = this.shipment || {};
+    this.data.Country.name = this.data.Country.name.toUpperCase();
     this.EDIT = !!this.$stateParams.shipmentId && this.$stateParams.shipmentId !== '';
     this.quickMode = this.EDIT ? false : (this.Session.read('quickMode') || false);
     this.TITLE = `${this.EDIT ? 'Edit' : 'Add New'} Shipment`;
