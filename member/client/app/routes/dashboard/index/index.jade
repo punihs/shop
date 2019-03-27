@@ -81,26 +81,26 @@ div
     .col-md-12.col-xs-12.no-pad(style='margin-top: 20px; margin-bottom: 20px')
       .col-md-4.col-xs-4.no-pad
         .one
-          p.f-s-26.f-c-d-greay {{$ctrl.packageCount || 0}} Packages
-          p.f-s-14.f-c-l-gray In Locker
+          p.f-s-22.f-c-d-greay {{$ctrl.packageCount || 0}} Packages
+          p.f-s-16.f-c-l-gray In Locker
       .col-md-4.col-xs-4.pad-d
         .two
-          p.f-s-26.f-c-d-greay {{$ctrl.shipmentInPackages || 0}} Packages
-          p.f-s-14.f-c-l-gray In Shipment
+          p.f-s-22.f-c-d-greay {{$ctrl.shipmentInPackages || 0}} Packages
+          p.f-s-16.f-c-l-gray In Shipment
       .col-md-4.col-xs-4.no-pad
         .three
-          p.f-s-26.f-c-d-greay {{$ctrl.shipmentDelivered || 0}} Packages
-          p.f-s-14.f-c-l-gray Total Delivered
+          p.f-s-22.f-c-d-greay {{$ctrl.shipmentDelivered || 0}} Packages
+          p.f-s-16.f-c-l-gray Total Delivered
     .col-md-12.col-xs-12.no-pad
       .col-md-12.text-center.no-padder
-        .panel.no-margin(set-ng-animate='false')
+        .panel.no-margin(set-ng-animate='false' style="border:none; border-radius:4px")
           div
             div(uib-carousel='', active='active', interval=2000, no-wrap='noWrapSlides')
-              div(uib-slide='', ng-repeat='slide in $ctrl.objects', index='$index')
-                img.view-slide-height.img-responsive(ng-src='{{slide.object}}', style='margin:auto;height: 330px;')
+              div(uib-slide='', ng-repeat='slide in $ctrl.objects', index='$index' )
+                img.view-slide-height.img-responsive(ng-src='{{slide.object}}', style='margin:auto;height:auto ;border-radius:4px')
                 .carousel-caption
   .col-md-4.col-xs-12.div-address
-    img(src='assets/images/title.png', style='width: 100%')
+    img.m-t-img(src='assets/images/title.png', style='width: 100%')
     .col-md-12.col-xs-12.div-b-w-s(style='padding:20px;')
       span.m-l-xs.copy-button-out.text-primary.pointer.pull-right(
       ngclipboard='',

@@ -26,6 +26,8 @@ $fa-font-path: "../bower_components/font-awesome/webfonts";
 @import 'routes/access/access.scss';
 @import 'routes/dashboard/dashboard.scss';
 @import 'routes/dashboard/index/hover.scss';
+@import 'routes/dashboard1/dashboard.scss';
+@import 'routes/locker/dashboard1.scss';
 @import 'routes/packages/create/create.scss';
 @import 'routes/packages/index/index.scss';
 @import 'routes/shipRequests/confirm/confirm.scss';
@@ -1065,12 +1067,26 @@ li.dndPlaceholder {
 }
 
 @media only screen and (max-width: 600px) {
+
+  .f-s-50{font-size:28px }
+  .f-s-36{font-size:24px }
+  .f-s-34{font-size:22px }
+  .f-s-32{font-size:20px }
+  .f-s-30{font-size:20px }
+  .f-s-28{font-size:20px }
+  .f-s-26{font-size:18px }
+  .f-s-24{font-size:16px }
+  .f-s-22{font-size:14px }
+  .f-s-20{font-size:14px }
+  .f-s-18{font-size:14px }
+  .f-s-16{font-size:12px }
+  .f-s-14{font-size:10px }
+
   .invoice-box table tr.top table td {
     width: 100%;
     display: block;
     text-align: center;
   }
-
   .invoice-box table tr.information table td {
     width: 100%;
     display: block;

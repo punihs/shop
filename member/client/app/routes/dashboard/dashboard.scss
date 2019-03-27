@@ -34,6 +34,8 @@
   font-size: 13px;
   padding: 8px 30px;
 }
+
+
 .f-s-50{font-size:50px }
 .f-s-45{font-size:45px }
 .f-s-40{font-size:40px }
@@ -90,18 +92,19 @@
 .div-address{padding-left:20px;padding-right: 0px;}
 
 @media only screen and (max-width: 600px) {
+
   .f-s-50{font-size:28px }
   .f-s-36{font-size:24px }
   .f-s-34{font-size:22px }
   .f-s-32{font-size:20px }
-  .f-s-30{font-size:18px }
+  .f-s-30{font-size:20px }
   .f-s-28{font-size:20px }
-  .f-s-26{font-size:20px }
-  .f-s-24{font-size:20px }
-  .f-s-22{font-size:19px }
+  .f-s-26{font-size:18px }
+  .f-s-24{font-size:16px }
+  .f-s-22{font-size:14px }
   .f-s-20{font-size:14px }
   .f-s-18{font-size:14px }
-  .f-s-16{font-size:13px }
+  .f-s-16{font-size:12px }
   .f-s-14{font-size:10px }
 
   .pad-d{padding: 0}
@@ -109,4 +112,5 @@
   .two{padding-top: 14px;}
   .three{padding-top: 14px;}
   .div-address{padding: 0}
+  .m-t-img{margin-top: 20px}
 }
