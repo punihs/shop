@@ -1,6 +1,7 @@
 const debug = require('debug');
 const ses = require('../../../engage/server/conn/email/ses');
 const whatsapp = require('./whatsapp');
+const oneSignal = require('./oneSignal');
 
 const { CURRENT_EVENT } = require('../config/environment');
 
@@ -8,6 +9,7 @@ const reqr = require;
 const providers = {
   ses,
   whatsapp,
+  oneSignal,
 };
 
 const templateFullName = CURRENT_EVENT || 'package_state-change';

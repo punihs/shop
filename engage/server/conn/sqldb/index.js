@@ -30,6 +30,7 @@ const db = {
   'User', 'Group',
 
   'NotificationSubscription',
+  'Comment', 'Follower',
 
 ].forEach((model) => {
   db[model] = db.sequelize.import(`../../api/${_.camelCase(model)}/${_.camelCase(model)}.model.js`);

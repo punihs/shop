@@ -1,13 +1,13 @@
-const raven = Raven.config('https://63923aa0ddd84099a85067b781b6b403@sentry.shoppre.com/4', {});
-
-if (localStorage.userinfo) {
-  const user = JSON.parse(localStorage.userinfo);
-  raven.setUser({
-    id: user.id,
-    email: user.email,
-  });
-}
-raven.install();
+// const raven = Raven.config('https://63923aa0ddd84099a85067b781b6b403@sentry.shoppre.com/4', {});
+//
+// if (localStorage.userinfo) {
+//   const user = JSON.parse(localStorage.userinfo);
+//   raven.setUser({
+//     id: user.id,
+//     email: user.email,
+//   });
+// }
+// raven.install();
 
 // this configs to initiated using provider
 const CUSTOMER = 2;
@@ -23,12 +23,12 @@ angular
     'toaster',
     'ngclipboard',
     'ngIntlTelInput',
-    'ngRaven',
+    // 'ngRaven',
     'http-auth-interceptor',
   ])
-  .config(($urlRouterProvider, $locationProvider, ngIntlTelInputProvider, $ravenProvider) => {
-    const dev = location.href.includes('.test');
-    $ravenProvider.development(true);
+  .config(($urlRouterProvider, $locationProvider, ngIntlTelInputProvider) => {
+    // const dev = location.href.includes('.test');
+    // $ravenProvider.development(true);
     ngIntlTelInputProvider.set({
       initialCountry: 'us',
       autoHideDialCode: true,
@@ -63,22 +63,30 @@ angular
   .constant('RAZOR_PAY', {
     key: 'rzp_live_M6Qsxy6ugbs8u4',    // - Dont change this Key to test Mode for testing also
   })
+  .constant('ONESIGNAL', {
+    development: '91cbfcb8-6ad5-4128-a0f6-a653eeeaac4c',
+    staging: '98049cea-88e2-49b5-b2a3-d6c5fe0d6dbf',
+    production: 'd0bf3fb3-1bd7-4ad8-9ba0-85ca0eb1273f',
+  })
   // - todo: Raven to moved to factor
   // do not rethrow the exception - breaks the digest cycle, (exception, cause)
-  .factory('$exceptionHandler', () => (exception) => Raven.captureException(exception))
-  .factory('errorHttpInterceptor', ($q) => ({
-    responseError: function responseError(rejection) {
-      Raven.captureException(new Error('HTTP response error'), {
-        extra: {
-          config: rejection.config,
-          status: rejection.status,
-        },
-      });
-
-      return $q.reject(rejection);
-    },
-  }))
-  .config(['$httpProvider', ($httpProvider) => {
-    $httpProvider.interceptors.push('errorHttpInterceptor');
-  }]);
+  // .factory('$exceptionHandler', () => (exception) => {
+  //   console.log(exception)
+  //   return Raven.captureException(exception)
+  // })
+  // .factory('errorHttpInterceptor', ($q) => ({
+  //   responseError: function responseError(rejection) { console.log(rejection)
+  //     Raven.captureException(new Error('HTTP response error'), {
+  //       extra: {
+  //         config: rejection.config,
+  //         status: rejection.status,
+  //       },
+  //     });
+  //
+  //     return $q.reject(rejection);
+  //   },
+  // }))
+  // .config(['$httpProvider', ($httpProvider) => {
+  //   $httpProvider.interceptors.push('errorHttpInterceptor');
+  // }]);
 

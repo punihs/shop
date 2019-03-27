@@ -382,6 +382,7 @@ exports.updateState = async ({
           nextStateId,
           lastStateId,
           pkg,
+          comments,
           actingUser: opsUser,
           next,
           paymentGateway,

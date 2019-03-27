@@ -15,7 +15,7 @@ exports.create = (req, res, next) => {
         description: 'check body',
       });
   }
-  const { userId } = req.body;
+  const { user_id: userId } = req.body;
 
   return NotificationSubscription
     .find({

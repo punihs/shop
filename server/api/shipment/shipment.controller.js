@@ -1005,7 +1005,7 @@ exports.redirectShipment = async (req, res, next) => {
 
     const packages = await Package
       .findAll({
-        attributes: ['id', 'content_type', 'created_at'],
+        attributes: ['id', 'content_type', 'created_at', 'package_received_date'],
         where: {
           id: packageIds.split(','),
           customer_id: customerId,
@@ -1045,7 +1045,7 @@ exports.redirectShipment = async (req, res, next) => {
 
     packages.map((pack) => {
       // - Calculate Package Charges if exceed  minimum storage limit days
-      const expiryDate = moment(pack.created_at).add(20, 'days');
+      const expiryDate = moment(pack.package_received_date).add(20, 'days');
       const today = moment();
 
       if (!today.isAfter(expiryDate)) return Promise.resolve();

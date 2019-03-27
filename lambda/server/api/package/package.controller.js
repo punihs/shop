@@ -18,12 +18,14 @@ exports.notifications = (req, res) => {
     packageStorageLimit,
     packageStorageExceededCharge,
     otp,
+    comments,
   } = req.body;
 
   const targetUser = {
     MEMBER: 'MEMBER',
     OPS: 'OPS',
   };
+  const { PREFIX, DOMAIN } = ENV;
   customer.first_name = customer.first_name.charAt(0).toUpperCase() +
     customer.first_name.slice(1);
 
@@ -56,14 +58,14 @@ exports.notifications = (req, res) => {
           otp,
         }),
       }],
-      // oneSignal: [{
-      //   userId: customer.id,
-      //   msg: {
-      //     title: `Your shipment arrived from ${pkg.Store.name}`,
-      //     body: 'just now',
-      //     link: `${PREFIX}member.${DOMAIN}/locker?bucket=IN_REVIEW`,
-      //   },
-      // }],
+      oneSignal: [{
+        userId: customer.id,
+        msg: {
+          title: 'Shoppre.com',
+          body: comments,
+          link: `${PREFIX}member.${DOMAIN}/locker?bucket=IN_REVIEW`,
+        },
+      }],
       // whatsapp: [{
       //   number: customer.phone,
       //   message: `Your package arrived from ${pkg.Store.name} - ${pkg.id} - \n

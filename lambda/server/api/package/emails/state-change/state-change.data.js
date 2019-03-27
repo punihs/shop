@@ -52,6 +52,8 @@ const customer = {
 };
 
 const ENV = {
+  PREFIX: 'http://',
+  DOMAIN: 'shoppre.test',
   URLS_PARCEL: 'http://parcel.shoppre.test',
   URLS_WWW: 'http://www.shoppre.test',
   URLS_MYACCOUNT: 'http://myaccount.shoppre.test',
@@ -65,6 +67,7 @@ module.exports = {
     customer,
     actingUser: OPS,
     ENV,
+    paymentGateway: {},
     subject: 'Your Package Has Just Arrived at Our Facility!',
     otp: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlY2guc2hvcHByZUBnbWFpbC5jb20iLCJpYXQiOjE1NTEyODM1MzR9.Ywy0Dm8NWDP6HlO4f7tTzfLN1p_7iFrDKWCJcDeOqHk',
   },

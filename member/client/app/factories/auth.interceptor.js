@@ -9,7 +9,7 @@ angular
         config.headers.Authorization = `Bearer ${Session.getAccessToken()}`;
       }
 
-      if (config.url[0] === '#') config.url = `${URLS.CHICKEN_API}${config.url.substr(1)}`;
+      if (config.url[0] === '#') config.url = `${URLS.ENGAGE_API}/api${config.url.substr(1)}`;
       if (config.url[0] === '$') config.url = `${URLS.PAY_API}${config.url.substr(1)}`;
       if (config.url[0] === '~') config.url = `${URLS.API}${config.url.substr(1)}`;
       if (config.url[0] === '%') config.url = `${URLS.URLS_SHIP}${config.url.substr(1)}`;
