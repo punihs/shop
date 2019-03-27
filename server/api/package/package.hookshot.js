@@ -15,7 +15,7 @@ const log = debug('s-api-package-notification');
 const toJSON = object => (object.toJSON ? object.toJSON() : object);
 
 exports.stateChange = async ({
-  actingUser, pkg, nextStateId, lastStateId, next, paymentGateway, packageItems,
+  actingUser, pkg, nextStateId, lastStateId, next, paymentGateway, packageItems, comments,
 }) => {
   try {
     const customer = await User
@@ -52,6 +52,7 @@ exports.stateChange = async ({
         ORDER_ITEMS: [PERSONAL_SHOPPER, COD].includes(pkg.package_type) ? true : false,
         packageItems,
         otp,
+        comments,
       }, headers);
     return null;
   } catch (err) {
