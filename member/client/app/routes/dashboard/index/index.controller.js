@@ -36,23 +36,29 @@ class DashboardIndexController {
     this.$http
       .get(`$/api/phpApi/getWalletAndLoyalty?customer_id=${this.user.id}`)
       .then(({ data: { walletAmount } }) => {
-      if (walletAmount) {
-        this.walletBalanceAmount = walletAmount;
-      } else {
+        if (walletAmount) {
+          this.walletBalanceAmount = walletAmount;
+        } else {
+          this.walletBalanceAmount = 0.00;
+        }
+      }).catch = () => {
         this.walletBalanceAmount = 0.00;
-  }
-  }).catch = () => {
-      this.walletBalanceAmount = 0.00;
-    };
+      };
+
+    this.$http
+      .get(`/users/${this.user.id}/count`)
+      .then(({ data: { packageCount, shipmentInPackages, shipmentDelivered } }) => {
+        this.packageCount = packageCount;
+        this.shipmentInPackages = shipmentInPackages;
+        this.shipmentDelivered = shipmentDelivered;
+      });
 
     this.$http
       .get('https://cp.shoppre.com/offers/current.json/')
       .then((offer) => {
-      this.currentOffer = offer.data;
-  });
+        this.currentOffer = offer.data;
+      });
   }
-  //
-
 
   updatePhoneNumber(newPhoneForm) {
     const user = this.Session.read('userinfo');
@@ -68,10 +74,10 @@ class DashboardIndexController {
     this.$stateParams.autofocus = '';
     Object.keys(form).filter(x => !x.startsWith('$')).forEach((f) => {
       if (form[f] && form[f].$invalid) {
-      if (!this.$stateParams.autofocus) this.$stateParams.autofocus = f;
-      form[f].$setDirty();
-    }
-  });
+        if (!this.$stateParams.autofocus) this.$stateParams.autofocus = f;
+        form[f].$setDirty();
+      }
+    });
     return form.$valid;
   }
 
@@ -92,26 +98,27 @@ class DashboardIndexController {
     return this.$http
       .put('/users/me', data)
       .then(() => {
-      this.submitting = false;
-    this
-      .toaster
-      .pop('success', 'Phone Number Updated Successfully.', '');
-    return true;
-  })
-  .catch((err) => {
-      this.submitting = false;
+        this.submitting = false;
+        this
+          .toaster
+          .pop('success', 'Phone Number Updated Successfully.', '');
+        return true;
+      })
+      .catch((err) => {
+        this.submitting = false;
 
-    const { field } = err.data;
-    newPhoneForm[err.data.field].$setValidity('required', false);
-    $(`input[name="${field}"]`)[0].focus();
+        const { field } = err.data;
+        newPhoneForm[err.data.field].$setValidity('required', false);
+        $(`input[name="${field}"]`)[0].focus();
 
-    this
-      .toaster
-      .pop('error', 'There was problem Updating Phone Number. Please contact Shoppre team.');
+        this
+          .toaster
+          .pop('error', 'There was problem Updating Phone Number. Please contact Shoppre team.');
 
-    this.error = err.data;
-    return false;
-  });
+        this.error = err.data;
+
+        return false;
+      });
   }
 }
 

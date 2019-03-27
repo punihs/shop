@@ -1,19 +1,48 @@
 div
 .col-md-12.col-xs12
-  span.f-s-20.f-c-d-greay Dashboard
+  //span.f-s-20.f-c-d-greay Dashboard
   br
   i.fas.fa-home-lg.f-c-d-greay  /Home
 
-.col-md-12(style='margin-bottom: 20px ')
-  .col-md-12.div-b-w-s(style='padding:20px;')
-    img(src='/assets/images/close.png', style='float: right;')
-    p.f-s-12.f-c-l-gray
-      span.f-c-blue Earn 5 Loyalty Points
-      | by Answering Simple Question.
-    hr
-    p(f-s-20='', f-c-d-greay='') Are you able to understand our services and pricing?
-    button.btn.btn-yes Yes
-    button.btn.btn-no(style='margin-left:20px') No
+//.col-md-12(style='margin-bottom: 20px ')
+//  .col-md-12.div-b-w-s(style='padding:20px;')
+//    img(src='/assets/images/close.png', style='float: right;')
+//    p.f-s-12.f-c-l-gray
+//      span.f-c-blue Earn 5 Loyalty Points
+//      | by Answering Simple Question.
+//    hr
+//    p(f-s-20='', f-c-d-greay='') Are you able to understand our services and pricing?
+//    button.btn.btn-yes Yes
+//    button.btn.btn-no(style='margin-left:20px') No
+
+.mobile-verification-popup.col-md-12.col-sm-12.col-xs-12(ng-if='!$ctrl.verifyPhone')
+  .whitebox
+    br
+    br
+    h3 Verify Your mobile number
+    p To continue to your profile
+    form.mobileform(style='width: 80%' name="newPhoneForm" ng-submit='$ctrl.updatePhoneNumber(newPhoneForm)')
+      .row
+        .col-md-12.col-sm-12.col-xs-12
+          label.col-xs-12.input-group
+            | Phone / Mobile Number
+            span.text-danger *
+      .row
+        .col-md-12.col-sm-12.col-xs-12
+          input#tel.form-control(type='tel', name='phone', ng-model='$ctrl.data.phone', ng-intl-tel-input='' required)
+          span.help-block.text-danger(ng-show='newPhoneForm.phone.$pristine && newPhoneForm.phone.$touched') Please type a telephone number
+          span.help-block.text-danger(ng-show='newPhoneForm.phone.$invalid && newPhoneForm.phone.$touched') Invalid :(
+          span.help-block.text-success(ng-show='newPhoneForm.phone.$valid && newPhoneForm.phone.$touched') Valid :)
+      .row
+        .col-md-12.col-sm-12.col-xs-12
+          h4(ng-bind="$ctrl.error.message" style="color:red;")
+          button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting")
+            span.fa.fa-forward.m-r-sm
+            span.text-white(ng-if='!$ctrl.submitting') Save Phone Number
+            span(ng-if='$ctrl.submitting')
+              i.fa.fa-spin.fa-circle-o-notch
+              span.text-white &nbsp;&nbsp;Submitting...
+
 
 .col-md-12(style='margin-bottom: 20px ')
   .col-md-8.col-xs-12.no-padder(style='min-height:200px;')
@@ -49,19 +78,18 @@ div
           .col-md-10.col-xs-10.no-padder
             h5.f-s-14.f-c-l-gray(style='line-height: 0.5;') Email:
             h5.f-s-18.f-c-d-greay(ng-bind='$ctrl.user.email')
-    // </div>
     .col-md-12.col-xs-12.no-pad(style='margin-top: 20px; margin-bottom: 20px')
       .col-md-4.col-xs-4.no-pad
         .one
-          p.f-s-26.f-c-d-greay 0 Package
+          p.f-s-26.f-c-d-greay {{$ctrl.packageCount || 0}} Packages
           p.f-s-14.f-c-l-gray In Locker
       .col-md-4.col-xs-4.pad-d
         .two
-          p.f-s-26.f-c-d-greay 0 Package
+          p.f-s-26.f-c-d-greay {{$ctrl.shipmentInPackages || 0}} Packages
           p.f-s-14.f-c-l-gray In Shipment
       .col-md-4.col-xs-4.no-pad
         .three
-          p.f-s-26.f-c-d-greay 0 Package
+          p.f-s-26.f-c-d-greay {{$ctrl.shipmentDelivered || 0}} Packages
           p.f-s-14.f-c-l-gray Total Delivered
     .col-md-12.col-xs-12.no-pad
       .col-md-12.text-center.no-padder
@@ -114,8 +142,6 @@ div
             ng-click='$ctrl.copied()'
             ) copy
         .form-grouphinav
-          //label.f-s-14.f-c-l-gray(for='N') Address Line 2:
-          //p.f-s-18.f-c-d-greay 7th Main, Koramangala 1st Block
           span.copy-wrap.line-spacing.f-s-14.f-c-l-gray
             label.text-muted.address-tab Address Line 2:
             | &nbsp;

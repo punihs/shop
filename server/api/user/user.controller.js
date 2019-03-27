@@ -7,7 +7,7 @@ const { MASTER_TOKEN } = require('../../config/environment');
 
 const {
   User, State, ActionableState, GroupState, Shipment, Country, Package, PackageState,
-  Locker, PHPCustomer,
+  Locker, PHPCustomer, ShipmentState,
 } = require('../../conn/sqldb');
 const service = require('./user.service');
 
@@ -15,11 +15,14 @@ const log = debug('s.user.controller');
 
 const {
   STATE_TYPES,
+  PACKAGE_COUNT,
+  PACKAGE_SHIPMENT_COUNT,
   PACKAGE_STATE_IDS: {
     INCOMING_PACKAGE, PAYMENT_COMPLETED,
     ORDER_PLACED, PAYMENT_CONFIRMED, IN_TRANSIT, AWAITING_FOR_ORDER,
   },
   PACKAGE_TYPES: { INCOMING, PERSONAL_SHOPPER, COD },
+  SHIPMENT_STATE_IDS: { SHIPMENT_DELIVERED },
 } = require('../../config/constants');
 
 exports.index = async (req, res, next) => {
@@ -308,6 +311,57 @@ exports.authorise = async (req, res, next) => {
     else res.redirect(url);
 
     return email;
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.count = async (req, res, next) => {
+  try {
+    const packageCount = await Package
+      .count({
+        include: [{
+          model: PackageState,
+          where: { state_id: PACKAGE_COUNT },
+        }],
+        where: {
+          customer_id: req.params.id,
+        },
+      });
+
+    const shipmentInPackages = await Package
+      .count({
+        include: {
+          required: true,
+          model: Shipment,
+          attributes: ['id'],
+          include: [{
+            model: ShipmentState,
+            where: { state_id: PACKAGE_SHIPMENT_COUNT },
+          }],
+        },
+        where: {
+          customer_id: req.params.id,
+        },
+      });
+
+    const shipmentDelivered = await Package
+      .count({
+        include: {
+          required: true,
+          model: Shipment,
+          attributes: ['id'],
+          include: [{
+            model: ShipmentState,
+            where: { state_id: SHIPMENT_DELIVERED },
+          }],
+        },
+        where: {
+          customer_id: req.params.id,
+        },
+      });
+
+    return res.json({ packageCount, shipmentInPackages, shipmentDelivered });
   } catch (err) {
     return next(err);
   }
