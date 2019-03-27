@@ -166,6 +166,18 @@ div
             ng-click='$ctrl.copied()'
             ) copy
         .form-group
+          span.copy-wrap.line-spacing.f-s-14.f-c-l-gray
+            label.text-muted.address-tab Phone Number:
+            | &nbsp;
+            br
+            span#phonenumber.f-s-18.f-c-d-greay
+              span +91-9148357733
+            span.m-l-xs.copy-button.text-primary.pointer(
+            ngclipboard='',
+            data-clipboard-target='#phonenumber'
+            ng-click='$ctrl.copied()'
+            ) copy
+        .form-group
           .col-md-6.col-xs-6.no-padder
             span.copy-wrap.line-spacing.f-s-14.f-c-l-gray
               label.text-muted.address-tab City:
@@ -209,7 +221,7 @@ div
               | &nbsp;
               br
               span#addressType.f-s-18.f-c-d-greay
-                span home
+                span Home
               span.m-l-xs.copy-button.text-primary.pointer(
               ngclipboard='',
               data-clipboard-target='#addressType'
