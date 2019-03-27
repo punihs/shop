@@ -1,8 +1,9 @@
 const rp = require('request-promise');
 const { NotificationSubscription } = require('../sqldb');
 const config = require('../../config/environment');
+const logger = require('../../components/logger');
 
-const ENV = config.PREFIX === 'https://staging' ? 'staging' : config.env;
+const ENV = config.PREFIX === 'https://staging-' ? 'staging' : config.env;
 
 const credentials = {
   development: {
@@ -44,7 +45,7 @@ const sendCore = ({ playerIds, msg }) => {
 
   return rp
     .post(options)
-    .catch(err => err);
+    .catch(err => logger.error('Notification Error: ', err));
 };
 
 module.exports = {

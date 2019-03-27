@@ -50,7 +50,7 @@ class CustomerNavController {
         'id,name',
       ].join(),
     });
-    if (!fromSearch) this.params.virtual_address_code = 'SHPR-';
+    if (!fromSearch) this.params.virtual_address_code = 'SHPR';
   }
 
   changeSearchType(nextSearchType) {
