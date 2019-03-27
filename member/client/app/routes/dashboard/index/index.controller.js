@@ -21,7 +21,6 @@ class DashboardIndexController {
       this.verifyPhone = false;
     }
     this.objects = [
-      { object: 'assets/images/box1.png' },
       { object: 'assets/images/box2.png' },
       { object: 'assets/images/box3.png' },
     ];
