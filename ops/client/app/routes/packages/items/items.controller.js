@@ -192,34 +192,40 @@ class PackageItemsController {
     return this
       .$http[method](url, _.pick(data, allowed))
       .then(({ data }) => {
-        this.packageItem = data.packageItemId;
-        const { id } = data.packageItemId;
-        this.submitting = false;
-        const itemData = {
-          id: data.packageItemId,
-          packageId: data.id,
-          customerName: data.Customer.first_name,
-          virtualAddressCode: data.Customer.virtual_address_code,
-          store: data.Store.name,
-          itemCategory: this.PackageItemCategory.model,
-          itemName: this.data.name,
-          totalItems: data.totalItems,
-          w: 1,
-          cell: 1,
-          rack: 1,
-          column: 3,
-        };
+        if (!this.EDIT) {
+          this.packageItem = data.packageItemId;
+          const {id} = data.packageItemId;
+          this.submitting = false;
+          const itemData = {
+            id: data.packageItemId,
+            packageId: data.id,
+            customerName: data.Customer.first_name,
+            virtualAddressCode: data.Customer.virtual_address_code,
+            store: data.Store.name,
+            itemCategory: this.PackageItemCategory.model,
+            itemName: this.data.name,
+            totalItems: data.totalItems,
+            w: 1,
+            cell: 1,
+            rack: 1,
+            column: 3,
+          };
 
+          this
+            .toaster
+            .pop('success', `#${id} Package ${this.EDIT
+              ? 'Updated'
+              : 'Created'} Successfully.`, '');
+          if (this.isPrint) {
+            this.printHTML(itemData);
+            return this.$state.go('package.show', {id: packageId});
+          }
+        }
         this
           .toaster
-          .pop('success', `#${id} Package ${this.EDIT
+          .pop('success', `#${packageItemId} Package ${this.EDIT
             ? 'Updated'
             : 'Created'} Successfully.`, '');
-        if (this.isPrint) {
-          this.printHTML(itemData);
-          return this.$state.go('package.show', { id: packageId });
-        }
-
         return this.$state.go('package.show', { id: packageId });
       })
       .catch((err) => {
