@@ -1,7 +1,7 @@
 
 class FaqController {
   /*  @ngInject   */
-  constructor($uibModalInstance, $http, Session, $stateParams,
+  constructor($uibModalInstance, $http, Session, $stateParams, URLS,
     $window, CONFIG) {
     this.$uibModalInstance = $uibModalInstance;
     this.$http = $http;
@@ -10,6 +10,7 @@ class FaqController {
     this.CONFIG = CONFIG;
     this.Session = Session;
     this.$http = $http;
+    this.URLS = URLS;
 
     this.$onInit();
   }

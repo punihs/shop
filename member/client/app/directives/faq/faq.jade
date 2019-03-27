@@ -22,6 +22,6 @@
             | If this is my Indian shipping Address, then where do I enter my destination address?
             p.f-s-16.f-c-l-gray.f-w-4
               | You can go to:
-              a(href='https://myaccount.shoppre.com/address') https://myaccount.shoppre.com/address
+              a(href='{{$ctrl.URLS.PARCEL}}/users/address' style='color: #4370af' target='_blank' ng-bind='$ctrl.URLS.PARCEL + "/users/address"')
               |  and add your address here.
 
