@@ -43,7 +43,6 @@ class AppController {
     if (this.Session.isAuthenticated()) {
       const OneSignal = window.OneSignal || [];
       OneSignal.push(() => {
-        OneSignal.sendTag('key', this.userinfo.id);
         OneSignal.init({
           appId: credentials,
           allowLocalhostAsSecureOrigin: true,
