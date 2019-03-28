@@ -25,7 +25,7 @@ exports.notifications = (req, res) => {
     MEMBER: 'MEMBER',
     OPS: 'OPS',
   };
-  const { PREFIX, DOMAIN } = ENV;
+  const { URLS_PARCEL } = ENV;
   customer.first_name = customer.first_name.charAt(0).toUpperCase() +
     customer.first_name.slice(1);
 
@@ -61,9 +61,9 @@ exports.notifications = (req, res) => {
       oneSignal: [{
         userId: customer.id,
         msg: {
-          title: 'Shoppre.com',
-          body: comments,
-          link: `${PREFIX}member.${DOMAIN}/locker?bucket=IN_REVIEW`,
+          title: comments,
+          body: 'Click here to see details',
+          link: `${URLS_PARCEL}/locker?bucket=IN_REVIEW`,
         },
       }],
       // whatsapp: [{
