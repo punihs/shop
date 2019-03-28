@@ -63,7 +63,7 @@ exports.notifications = (req, res) => {
         msg: {
           title: comments,
           body: 'Click here to see details',
-          link: `${URLS_PARCEL}/locker?bucket=IN_REVIEW`,
+          link: `${URLS_PARCEL}/packages?bucket=READY_TO_SEND`,
         },
       }],
       // whatsapp: [{
