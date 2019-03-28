@@ -283,11 +283,17 @@
             .col-xs-12.col-md-2.no-padder
               .m-none.wrapper-lg.w-full.w-auto-xs
                 .clearfix
-                  label
+                  label(ng-if='packageItem.status !== "addedtopackage"')
                     select(
                     ng-model='packageItem.status'
                     name='itemStatus.name'
                     ng-options='itemStatus.id as itemStatus.name for itemStatus in $ctrl.itemStatus'
+                    )
+                  label(ng-if ='packageItem.status === "addedtopackage"')
+                    select(
+                    ng-model='packageItem.status'
+                    name='status.name'
+                    ng-options='status.id as status.name for status in $ctrl.status'
                     ng-disabled = 'packageItem.status === "addedtopackage"'
                     )
             .col-xs-12.col-md-2.no-padder

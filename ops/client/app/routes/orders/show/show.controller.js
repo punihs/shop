@@ -35,10 +35,12 @@ class OrderShowController {
       { name: 'pending', id: 'pending' },
       { name: 'cancelled', id: 'cancelled' },
       { name: 'recieved', id: 'recieved' },
-      { name: 'addedtopackage', id: 'addedtopackage' },
       { name: 'orderplaced', id: 'orderplaced' },
       { name: 'outofstock', id: 'outofstock' },
       { name: 'pricechanged', id: 'pricechanged' },
+    ];
+    this.status = [
+      { name: 'addedtopackage', id: 'addedtopackage' },
     ];
     this.Page.setFavicon(`${this.$stateParams.profilePhotoUrl}`);
     if (this.data.Store) this.Page.setTitle(this.data.Store.name);
