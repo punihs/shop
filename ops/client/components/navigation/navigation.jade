@@ -23,7 +23,7 @@ ul.nav.navbar-nav.navbar-left
     a.hv(uib-dropdown-toggle ui-sref='campaigns.index')
       i.fa.fa-list-alt.text-white
       span CAMPAIGNS
-  li.nav-menu-item(ui-sref-active='active' uib-dropdown)
+  li.nav-menu-item(ui-sref-active='active' uib-dropdown ng-controller='AccessCourierController as $ctrl')
     a.hv(ng-click="$ctrl.accessCourier()")
       i.fa.fa-list-alt.text-white
       span ACCESS COURIER
