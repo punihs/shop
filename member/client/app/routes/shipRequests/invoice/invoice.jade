@@ -111,7 +111,7 @@ section.ship_response.m-t-md.m-b-md
               td(colspan='2')
               td Photo Charges :
               td INR {{$ctrl.Charges.photo_amount | number: 2}}
-            tr.item(ng-if="$ctrl.shipment.pick_up_charge > 0")
+            tr.item(ng-if="$ctrl.shipment.pick_up_charge_amount > 0")
               td(colspan='2')
               td Pick-up Service :
               td INR {{$ctrl.shipment.pick_up_charge_amount}}
