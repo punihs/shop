@@ -1,7 +1,7 @@
 class TransactionCreateController {
   constructor(
     $http, Page, $stateParams, $location, toaster, $uibModal, URLS, Session,
-    $window, CONFIG, RAZOR_PAY,
+    $window, CONFIG, RAZOR_PAY, WireService,
   ) {
     this.$http = $http;
     this.Page = Page;
@@ -15,6 +15,7 @@ class TransactionCreateController {
     this.URLS = URLS;
     this.couponFirstTime = 'FRST50';
     this.RAZOR_PAY = RAZOR_PAY;
+    this.WireService = WireService;
     this.$onInit();
   }
 
@@ -343,6 +344,10 @@ class TransactionCreateController {
       this.data.loyaltyAmount = this.amount;
     }
     this.enableWalletOption();
+
+    if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.WIRE)) {
+      this.WireService.open();
+    }
   }
 
   enableWalletOption() {

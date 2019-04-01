@@ -1,0 +1,10 @@
+.modal-header
+  .modal-title
+      .close(ng-click='$ctrl.cancel()') ×
+.modal-body(style='margin-top: -5px')
+    h9.f-s-16.f-c-d-greay.f-w-4(ng-if ='$ctrl.$stateParams.type ==="shipment"')
+      | Choosing the wire pay mode will cause upto 7 days delay with the payment which will lead to the delay in the shipping process. &nbsp;&nbsp;
+    h9.f-s-16.f-c-d-greay.f-w-4(ng-if ='$ctrl.$stateParams.type ==="ps" || $ctrl.$stateParams.type ==="cod"')
+      | Choosing the wire pay mode will cause upto 7 days delay with the payment which will lead to the delay in the order placing process. &nbsp;&nbsp;
+    h9.f-s-16.f-c-d-greay.f-w-4
+      | So Kindly select the other payment option.
