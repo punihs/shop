@@ -21,9 +21,9 @@ class AccessCourierController {
       .$http[method](`/users/${this.user.id}`)
       .then(({ data: user }) => {
         console.log('user', user);
-        if (user.is_courier_migrated === 1) {
+        if (Number(user.is_courier_migrated) === 1) {
           this.signup();
-        } else if (user.is_courier_migrated === 2) {
+        } else if (Number(user.is_courier_migrated) === 2) {
           this.authorise();
         }
       });
