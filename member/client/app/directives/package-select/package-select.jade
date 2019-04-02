@@ -1,0 +1,23 @@
+.modal-header
+  .modal-title
+    .h3.font-bold.text-info Package - Reminder
+      .close(ng-click='$ctrl.cancel()') ×
+.modal-body(style='margin-top: -5px')
+    h9.f-s-16.f-c-d-greay.f-w-4
+      | You have not selected all the items on the dashboard to create the Ship Request.
+    h9.f-s-16.f-c-d-greay.f-w-4
+      | Kindly confirm to proceed further.
+    br
+    br
+    center
+      button.btn.btn-success.font-bold.r-x(
+      type='submit'
+      ng-click='$ctrl.proceed()'
+      )
+        | Confirm
+
+      button.btn.btn-info.font-bold.r-x.m-l(
+      type='submit'
+      ng-click='$ctrl.cancel()'
+      )
+        | Cancel

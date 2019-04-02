@@ -1,7 +1,7 @@
 class PackagesIndexController {
   constructor(
     $http, Page, $uibModal, $stateParams, CONFIG, $location, $state, Session, S3,
-    toaster, moment, URLS, AddComment, PhotoService) {
+    toaster, moment, URLS, AddComment, PhotoService, PackageSelectService) {
     this.$http = $http;
     this.Page = Page;
     this.S3 = S3;
@@ -16,6 +16,8 @@ class PackagesIndexController {
     this.URLS = URLS;
     this.AddComment = AddComment;
     this.PhotoService = PhotoService;
+    this.PackageSelectService = PackageSelectService;
+
     return this.$onInit();
   }
 
@@ -222,11 +224,24 @@ class PackagesIndexController {
         this.allChecked = true;
         let allPackages = packages;
         if (this.$stateParams.bucket === 'READY_TO_SEND') {
-          allPackages = allPackages.map((item) => {
-            const items = item;
-            items.isChecked = true;
-            return item;
-          });
+          if (this.$stateParams.packageIds) {
+            allPackages = allPackages.map((item) => {
+              const items = item;
+              if (this.$stateParams.packageIds.includes(item.id)) {
+                items.isChecked = true;
+                return item;
+              }
+              this.allChecked = false;
+              items.isChecked = false;
+              return item;
+            });
+          } else {
+            allPackages = allPackages.map((item) => {
+              const items = item;
+              items.isChecked = true;
+              return item;
+            });
+          }
         }
 
         this.totalSelectedPackages = allPackages.length;
@@ -355,6 +370,12 @@ class PackagesIndexController {
       });
   }
 
+  proceedToShipment() {
+    const packageIds = this.packages.filter(x => x.isChecked).map(x => x.id);
+    this.$state
+      .go('shipRequests.create', { packageIds: packageIds.toString() });
+  }
+
   createShipment() {
     const specialItems = this.packages.filter(x => x.isChecked).map(x => x.content_type);
     if (specialItems.includes('1') && specialItems.includes('2')) {
@@ -370,9 +391,26 @@ class PackagesIndexController {
         .pop('error', ' Package containing restricted items u cant ship these items');
       return;
     }
-    const packageIds = this.packages.filter(x => x.isChecked).map(x => x.id);
-    this.$state
-      .go('shipRequests.create', { packageIds: packageIds.toString() });
+    let proceed = true;
+    if (this.totalSelectedPackages !== this.packages.length) {
+      const pkgNotSelected = this.packages
+        .filter(x => x.isChecked === false)
+        .map(x => x.content_type);
+      if (pkgNotSelected.includes('1') && pkgNotSelected.includes('2')) {
+        proceed = false;
+        const modal = this.PackageSelectService.open();
+        modal
+          .result
+          .then((data) => {
+            if (data.proceed) {
+              this.proceedToShipment();
+            }
+          });
+      }
+    }
+    if (proceed) {
+      this.proceedToShipment();
+    }
   }
 }
 

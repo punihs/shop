@@ -49,7 +49,7 @@
             .padding-10.pull-right.hidden-xs
               h4.hidden-xs
                 button.btn.btn-info.btn-sm(
-                ui-sref='packages.index'
+                ui-sref='packages.index({packageIds: $ctrl.$packageIds})'
                 popover-trigger="'mouseenter'"
                 popover-placement='bottom'
                 popover-append-to-body='true'
