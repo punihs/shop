@@ -33,9 +33,9 @@ class OrderShowController {
     this.customer = this.data.Customer;
     this.itemStatus = [
       { name: 'pending', id: 'pending' },
-      { name: 'cancelled', id: 'cancelled' },
-      { name: 'recieved', id: 'recieved' },
       { name: 'orderplaced', id: 'orderplaced' },
+      { name: 'recieved', id: 'recieved' },
+      { name: 'cancelled', id: 'cancelled' },
       { name: 'outofstock', id: 'outofstock' },
       { name: 'pricechanged', id: 'pricechanged' },
     ];

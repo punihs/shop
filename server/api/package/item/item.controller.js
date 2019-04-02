@@ -58,7 +58,7 @@ exports.index = async (req, res, next) => {
           attributes: ['name'],
         }],
         order: [['id', 'desc']],
-        limit: Number(req.query.limit) || 20,
+        limit: Number(req.query.limit) || 200,
       });
 
     return res.json(packageItems);
