@@ -1,26 +1,29 @@
 
 class WireController {
   /*  @ngInject   */
-  constructor($uibModalInstance, $http, Session, $stateParams, URLS,
-    $window, CONFIG) {
+  constructor($uibModalInstance, $http, Session, $stateParams, toaster) {
     this.$uibModalInstance = $uibModalInstance;
     this.$http = $http;
     this.$stateParams = $stateParams;
-    this.$window = $window;
-    this.CONFIG = CONFIG;
+    this.toaster = toaster;
     this.Session = Session;
-    this.$http = $http;
-    this.URLS = URLS;
-
     this.$onInit();
   }
 
-
   $onInit() {
-
+    this.data = {};
   }
+
+  proceed() {
+    const data = Object.assign({}, this.data);
+    return this.$uibModalInstance
+      .close(Object.assign(data, { proceed: true }));
+  }
+
   cancel() {
-    this.$uibModalInstance.dismiss('cancel');
+    const data = Object.assign({}, this.data);
+    return this.$uibModalInstance
+      .close(Object.assign(data, { proceed: false }));
   }
 }
 

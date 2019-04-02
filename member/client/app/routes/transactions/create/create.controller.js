@@ -196,7 +196,24 @@ class TransactionCreateController {
         .toaster
         .pop('error', 'Select payment Gateway');
     }
+    let proceed = true;
+    if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.WIRE)) {
+      proceed = false;
+      const modal = this.WireService.open();
+      modal
+        .result
+        .then((data) => {
+          if (data.proceed) {
+            this.createPayment(e);
+          }
+        });
+    }
+    if (proceed) {
+      this.createPayment(e);
+    }
+  }
 
+  createPayment(e) {
     if (!this.submitting) return null;
     let walletAmount = 0;
 
@@ -344,10 +361,6 @@ class TransactionCreateController {
       this.data.loyaltyAmount = this.amount;
     }
     this.enableWalletOption();
-
-    if (Number(this.data.paymentGateway) === Number(this.PAYMENT_GATEWAYS.WIRE)) {
-      this.WireService.open();
-    }
   }
 
   enableWalletOption() {

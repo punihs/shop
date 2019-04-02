@@ -1,10 +1,23 @@
 .modal-header
   .modal-title
+    .h3.font-bold.text-info Instructions
       .close(ng-click='$ctrl.cancel()') ×
 .modal-body(style='margin-top: -5px')
-    h9.f-s-16.f-c-d-greay.f-w-4(ng-if ='$ctrl.$stateParams.type ==="shipment"')
-      | Choosing the wire pay mode will cause upto 7 days delay with the payment which will lead to the delay in the shipping process. &nbsp;&nbsp;
-    h9.f-s-16.f-c-d-greay.f-w-4(ng-if ='$ctrl.$stateParams.type ==="ps" || $ctrl.$stateParams.type ==="cod"')
-      | Choosing the wire pay mode will cause upto 7 days delay with the payment which will lead to the delay in the order placing process. &nbsp;&nbsp;
-    h9.f-s-16.f-c-d-greay.f-w-4
-      | So Kindly select the other payment option.
+  h9.f-s-16.f-c-d-greay.f-w-4(ng-if ='$ctrl.$stateParams.type ==="shipment"')
+    | Please note that you have chosen “Wire Transfer” as the payment mode. This may take up to 7 days for the payment to reflect in our Bank Account. &nbsp;
+  h9.f-s-16.f-c-d-greay.f-w-4
+    | If you like to speed up the process, please choose an alternate payment mode like “Razor Pay (International or National Credit/Debit Card or UPI/Netbanking)” or “PayPal”
+  br
+  br
+  center
+    button.btn.btn-success.font-bold.r-x(
+    type='submit'
+    ng-click='$ctrl.proceed()'
+    )
+      | Proceed without changing the Payment Mode
+
+    button.btn.btn-info.font-bold.r-x.m-l(
+    type='submit'
+    ng-click='$ctrl.cancel()'
+    )
+      | Cancel and choose another Payment Mode
