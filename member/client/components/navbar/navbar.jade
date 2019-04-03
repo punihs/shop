@@ -72,7 +72,7 @@
         a(ui-sref='users.profile') My Accounts
       li.hidden-lg.hidden-md.hidden-sm
         a(ui-sref='users.password()') Change Password
-      li.hidden-lg.hidden-md.hidden-sm
+      li.hidden-lg.hidden-md.hidden-sm(ng-controller='LogoutController as logout')
         a(ng-click='logout.$onInit()') Logout
       li
         a.n-hv.hidden-xs(
