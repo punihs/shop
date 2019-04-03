@@ -95,6 +95,7 @@ class AppController {
         'customer.packages.index',
         'customer.orders.index',
         'customer.packages.create',
+        'customer.packages.bulk',
         'customer.package.update',
         'shipments.index',
         'shipment.packages.index',

@@ -479,3 +479,23 @@ exports.damaged = async (req, res, next) => {
     return next();
   }
 };
+
+exports.bulkIndex = async (req, res) => {
+  const customerId = req.query.customer_id;
+
+  const packagesList = await Package
+    .findAll({
+      where: {
+        customer_id: customerId,
+      },
+      include: [{
+        model: PackageState,
+        attributes: ['id', 'state_id'],
+        where: {
+          state_id: [PACKAGE_ITEMS_UPLOAD_PENDING, AWAITING_VERIFICATION],
+        },
+      }],
+    });
+
+  return res.json({ packagesList });
+};

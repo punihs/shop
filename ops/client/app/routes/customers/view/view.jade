@@ -14,6 +14,16 @@ div.m-t-xl.no-margin
             )
               span.fa.fa-forward.m-r-sm
               span.text-white Add Package
+          .m-r-md.pull-right
+            .a.h4.btn.btn-success(
+            ui-sref='customer.packages.bulk'
+            uib-popover="for {{$ctrl.data.virtual_address_code}} - {{$ctrl.data.first_name}}"
+            popover-trigger="'mouseenter'"
+            popover-placement='bottom'
+            popover-append-to-body='true'
+            )
+              span.fa.fa-forward.m-r-sm
+              span.text-white Bulk Package Upload
       hr.no-margin-bottom
       form.form.form-validation.form-horizontal.wrapper-md(
       name="profileForm"

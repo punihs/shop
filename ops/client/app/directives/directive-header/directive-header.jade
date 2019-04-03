@@ -70,6 +70,16 @@ div.directive-header
         popover-append-to-body='true'
         )
           span Add Package
+
+      li.m-r-xs.pull-right(ng-if='options.customer.create || !options.customer.packageCount')
+        a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
+        ui-sref='customer.packages.bulk({ customer_id: options.customer.id, create: false })'
+        uib-popover="for {{options.customer.virtual_address_code}} - {{options.customer.name}}"
+        popover-trigger="'mouseenter'"
+        popover-placement='bottom'
+        popover-append-to-body='true'
+        )
+          span Bulk Package Upload
           //i.pull-right(ng-bind='options.customer.packageCount' style='line-height:29px;width:30px;height:30px;font-style:normal')
 
 
