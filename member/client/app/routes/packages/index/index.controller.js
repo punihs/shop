@@ -392,21 +392,21 @@ class PackagesIndexController {
       return;
     }
     let proceed = true;
-    if (this.totalSelectedPackages !== this.packages.length) {
-      const pkgNotSelected = this.packages
-        .filter(x => x.isChecked === false)
-        .map(x => x.content_type);
-      if (pkgNotSelected.includes('1') && pkgNotSelected.includes('2')) {
-        proceed = false;
-        const modal = this.PackageSelectService.open();
-        modal
-          .result
-          .then((data) => {
-            if (data.proceed) {
-              this.proceedToShipment();
-            }
-          });
-      }
+    const pkgNotSelected = this.packages
+      .filter(x => x.isChecked === false)
+      .map(x => x.content_type);
+    const normalPkg = this.packages.every(x => x.content_type === '1');
+    const specialPkg = this.packages.every(x => x.content_type === '2');
+    if ((pkgNotSelected.includes('1') && normalPkg) || (specialPkg && pkgNotSelected.includes('2')) || (pkgNotSelected.includes('2') && pkgNotSelected.includes('1'))) {
+      proceed = false;
+      const modal = this.PackageSelectService.open();
+      modal
+        .result
+        .then((data) => {
+          if (data.proceed) {
+            this.proceedToShipment();
+          }
+        });
     }
     if (proceed) {
       this.proceedToShipment();

@@ -1,5 +1,8 @@
 div
   .hbox(style="position:relative")
+    div(ng-if='$ctrl.paymentProcessing' style='position: absolute;z-index: 6;height: 100%;width:100%')
+      h5
+        center Please wait for transaction to complete
 
     // - Primary Header
     .bg-white-only.w-full.b-b(style='position: fixed;z-index: 6;height: 40px;')
@@ -7,10 +10,20 @@ div
         span.h4
           i.fas.fa-rupee-sign.m-r-xs-md
           | Make Payment
+    // - Secondary Header
+    .bg-light.b-b.padder.w-full.bg-white-only.m-t-xl(
+    style='position:fixed;z-index: 6;height: 47px;overflow:auto;'
+    )
+      div.m-t-xs.m-l-md
+        .h5
+          | After Submitting Please wait for payment success page &nbsp;&nbsp;&nbsp;
+        .h5
+          a.summary-order(ng-if= '$ctrl.paymentProcessing' ui-sref='shipRequest.confirm({ orderCode: $ctrl.$stateParams.object_id })')
+            | Please click here if you are facing any issue
 
     // - Content Area
     .bg-white.m-t-n-xs-md(style='min-height: 200px;')
-      .m-t-xxl(style='height: 1px;')
+      .m-t-xxl.wrapper-md(style='height: 1px;')
       .hbox
         .wrapper-md.bg-white-only.wrapper-parcel
           .col-md-12.no-padder-left

@@ -20,6 +20,7 @@ class TransactionCreateController {
   }
 
   $onInit() {
+    this.paymentProcessing = false;
     this.data = {};
     this.paymentGateways = [];
     this.couponApplied = false;
@@ -214,6 +215,7 @@ class TransactionCreateController {
   }
 
   createPayment(e) {
+    this.paymentProcessing = false;
     if (!this.submitting) return null;
     let walletAmount = 0;
 
@@ -259,6 +261,7 @@ class TransactionCreateController {
       })
       .catch((err) => {
         this.submitting = false;
+        this.paymentProcessing = false;
         this
           .toaster
           .pop('error', 'There was problem creating Shipment. Please contact Shoppre team.');
@@ -268,6 +271,7 @@ class TransactionCreateController {
   }
 
   razorPayClick(e, parmas) {
+    this.paymentProcessing = false;
     this.paymentid = '';
     const options = {
       key: this.RAZOR_PAY.key,
@@ -278,9 +282,12 @@ class TransactionCreateController {
       http: this.$http,
       window: this.$window,
       params: this.params,
+      paymentProcessing: this.paymentProcessing,
       handler: function payReponse(response) {
         this.paymentid = response.razorpay_payment_id;
         Object.assign(options.params, { razorPayId: this.paymentid });
+        options.paymentProcessing = true;
+        console.log(options.paymentProcessing);
         options.http
           .get('$/api/transactions/create', { params : options.params })
           .then(({ data: url }) => {

@@ -1138,7 +1138,6 @@ exports.state = async (req, res, next) => {
   }
 };
 
-
 exports.paymentState = async (req, res, next) => {
   try {
     let comments = '';
@@ -1171,6 +1170,7 @@ exports.paymentState = async (req, res, next) => {
 
 exports.payResponse = async (req, res, next) => {
   try {
+    logger.info('step1 shipment payment response ', JSON.stringify(req.body));
     const failedURL = `${URLS_PARCEL}/shipRequests`;
     const sucessURL = `${URLS_PARCEL}/transactions/${req.query.transaction_id}/response`;
     const { status } = req.query;
@@ -1185,17 +1185,22 @@ exports.payResponse = async (req, res, next) => {
       6: 'success',
     }[status];
 
+    logger.info('step2 message and shipment Code', req.params.id, msg);
+
     const shipment = await Shipment
       .find({ where: { order_code: req.params.id } });
     // - Todo: Security issue
     const customer = await User.findById(req.query.uid, { raw: true });
 
+    logger.info('step3 shipment', JSON.stringify(Shipment));
 
     const SUCCESS = '6';
     log(req.query.status);
     log(req.query);
 
     if (req.query.status === SUCCESS) {
+      logger.info('step4 shipment success block');
+
       await Shipment.update({
         transaction_id: req.query.transaction_id,
         payment_gateway_id: req.query.pg,
@@ -1203,6 +1208,8 @@ exports.payResponse = async (req, res, next) => {
         payment_gateway_fee_amount: req.query.pgAmount || 0,
         payment_status: 'success',
       }, { where: { order_code: req.params.id } });
+
+      logger.info('step5 shipment success block updated success');
 
       await updateShipmentState({
         shipment,
@@ -1227,6 +1234,7 @@ exports.payResponse = async (req, res, next) => {
 
       return res.redirect(`${sucessURL}?${stringify(params)}`);
     } else {
+      logger.info('step6 shipment Payment failed');
       await updateShipmentState({
         shipment,
         actingUser: customer,
@@ -1242,6 +1250,7 @@ exports.payResponse = async (req, res, next) => {
       return res.redirect(`${failedURL}?error='failed'&message=${msg}`);
     }
   } catch (err) {
+    logger.error('error shipment payment response status Error', err);
     return next(err);
   }
 };
