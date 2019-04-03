@@ -44,10 +44,13 @@ div
               style='height: 30px;width: 30px;border-radius: 50%;'
             )
             a.m-l(ui-sref='shipment.show({ id: shipment.id })'  target="_blank") {{shipment.Customer.name}}
-          .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs(
-            ng-bind="shipment.id"
-            title="{{shipment.id}}"
-          )
+          .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs
+            span {{shipment.id}} &nbsp;
+            span.text-danger.font-bold(ng-if = 'shipment.payment_gateway_id ==="1"') (WIRE)
+            span.text-danger.font-bold(ng-if = 'shipment.payment_gateway_id ==="2"') (CASH)
+            span.text-info.font-bold(ng-if = 'shipment.payment_gateway_id ==="5"') (PAYPAL)
+            span.text-info.font-bold(ng-if = 'shipment.payment_gateway_id ==="6"') (WALLET)
+            span.text-info.font-bold(ng-if = 'shipment.payment_gateway_id ==="7"') (RAZOR)
           span.badge.bg-danger.pull-right.text-white(ng-if= 'shipment.preference') Express Shipping
           .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs(
             ng-bind="shipment.final_weight + 'Kg'"
