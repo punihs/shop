@@ -287,7 +287,6 @@ class TransactionCreateController {
         this.paymentid = response.razorpay_payment_id;
         Object.assign(options.params, { razorPayId: this.paymentid });
         options.paymentProcessing = true;
-        console.log(options.paymentProcessing);
         options.http
           .get('$/api/transactions/create', { params : options.params })
           .then(({ data: url }) => {
