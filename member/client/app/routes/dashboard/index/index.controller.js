@@ -64,6 +64,7 @@ class DashboardIndexController {
     const flag = this.update(newPhoneForm);
     if (flag) {
       user.phone = this.data.phone;
+      this.user.phone = this.data.phone;
       this.Session.create('userinfo', user);
       this.verifyPhone = true;
     }
