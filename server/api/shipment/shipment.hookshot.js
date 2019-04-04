@@ -12,13 +12,13 @@ const { SHIPMENT_STATE_ID_NAMES_MAP } = require('../../config/constants');
 const toJSON = object => (object.toJSON ? object.toJSON() : object);
 
 exports.stateChange = async ({
-  actingUser, shipment, packages, nextStateId, address, paymentGateway, gateway, next,
+  actingUser, shipment, packages, nextStateId, address, paymentGateway, gateway, next, comments,
 }) => {
   try {
     const customer = await User
       .findById(shipment.customer_id, {
         attributes: [
-          'name', 'salutation', 'first_name', 'last_name', 'email', 'virtual_address_code',
+          'id', 'name', 'salutation', 'first_name', 'last_name', 'email', 'virtual_address_code',
         ],
       });
 
@@ -39,6 +39,7 @@ exports.stateChange = async ({
       address,
       [gateway]: true,
       otp,
+      comments,
     });
   } catch (err) {
     return next(err);

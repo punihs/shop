@@ -488,6 +488,7 @@ exports.updateShipmentState = async ({
       .stateChange({
         nextStateId,
         shipment,
+        comments: options.comments,
         actingUser: opsUser,
         packages: [],
         gateway,

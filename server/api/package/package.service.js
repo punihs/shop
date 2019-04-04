@@ -296,7 +296,6 @@ exports.updateState = async ({
     } else {
       // const comment =  Object.keys(PKG_STATE_IDS)[nextStateId];
       options.comments = _.startCase(((_.invert(PKG_STATE_IDS))[nextStateId]).toLowerCase());
-      comments = options.comments;
     }
 
     const packageState = await PackageState
@@ -383,7 +382,7 @@ exports.updateState = async ({
           nextStateId,
           lastStateId,
           pkg,
-          comments,
+          comments: options.comments,
           actingUser: opsUser,
           next,
           paymentGateway,
