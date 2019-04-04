@@ -31,7 +31,7 @@ class AccessCourierController {
 
   signup() {
     const allowed = [
-      'salutation', 'first_name',
+      'id', 'salutation', 'first_name',
       'last_name', 'email', 'phone',
       'group_id', 'country_id',
     ];
