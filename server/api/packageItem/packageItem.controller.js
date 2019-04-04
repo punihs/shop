@@ -1,9 +1,13 @@
 const debug = require('debug');
 const moment = require('moment');
 const {
-  PackageItem, Package, PackageItemCategory,
+  PackageItem, Package, PackageItemCategory, User, Store, PackageState,
 } = require('../../conn/sqldb');
 const minio = require('../../conn/minio');
+
+const { PACKAGE } = require('../../config/constants/buckets');
+
+const { GROUPS: { CUSTOMER } } = require('../../config/constants');
 
 const packageService = require('../package/package.service');
 const {
@@ -78,13 +82,42 @@ exports.show = async (req, res, next) => {
         include: [{
           model: Package,
           attributes: ['id'],
+          include: [{
+            model: Store,
+            attributes: ['id', 'name'],
+          }, {
+            model: User,
+            attributes: ['id', 'first_name', 'last_name', 'virtual_address_code'],
+            as: 'Customer',
+          }],
         }, {
           model: PackageItemCategory,
           attributes: ['id', 'name'],
         }],
       });
 
-    return res.json(packageItem);
+    const packages = await Package.findAll({
+      attributes: ['id', 'customer_id'],
+      where: { customer_id: packageItem.Package.Customer.id },
+      include: [{
+        model: PackageState,
+        where: { state_id: PACKAGE[CUSTOMER].ALL },
+      }],
+    });
+
+    const totalItems = await PackageItem
+      .count({
+        where: { package_id: packages.map(x => x.id) },
+      });
+
+    const itemName = packageItem.name;
+    const items = {
+      ...packageItem.toJSON(),
+      ...{ totalItems },
+      ...{ itemName },
+    };
+
+    return res.json(items);
   } catch (err) {
     return next(err);
   }

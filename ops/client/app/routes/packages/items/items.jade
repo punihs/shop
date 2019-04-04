@@ -173,6 +173,7 @@ div.m-t-xl.no-margin
                       | Package Category
                       span.text-danger *
                       input.form.form-control(
+                      id='PackageItemCategory'
                       type='text'
                       name="store_id"
                       ng-model='$ctrl.PackageItemCategory.model'
@@ -316,6 +317,9 @@ div.m-t-xl.no-margin
                     span(ng-if='$ctrl.submitting')
                       i.fa.fa-spin.fa-circle-o-notch
                       span.text-white &nbsp;&nbsp;Submitting...
+                  button.btn.btn-success.m-l(type='button' ng-click="$ctrl.personalShopperPrint()" ng-if= '$ctrl.EDIT' ng-disabled="newPackageItemForm.$pristine")
+                    span.fa.fa-forward.m-r-sm
+                    span.text-whitePrint Print Barcode
                   a.btn.btn.success(ng-click="$ctrl.open()") Create Category
 
     .clearfix

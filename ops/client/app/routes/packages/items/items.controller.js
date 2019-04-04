@@ -243,6 +243,32 @@ class PackageItemsController {
       });
   }
 
+  personalShopperPrint() {
+    if (!this.PackageItemCategory.model) {
+      $(`input[id="PackageItemCategory"]`).focus();
+      return  this
+        .toaster
+        .pop('error', 'Please update Category ');
+    }
+
+    const itemData = {
+      id: this.$stateParams.packageItemId,
+      packageId: this.$stateParams.id,
+      customerName: this.data.Package.Customer.first_name,
+      virtualAddressCode: this.data.Package.Customer.virtual_address_code,
+      store: this.data.Package.Store.name,
+      itemCategory: this.PackageItemCategory.model,
+      itemName: this.data.itemName,
+      totalItems: this.data.totalItems,
+      w: 1,
+      cell: 1,
+      rack: 1,
+      column: 3,
+    };
+    // console.log({ itemData });
+    this.printHTML(itemData);
+  }
+
   // / Pixel Printers ///
   printHTML(data) {
     // let printerName = document.getElementById("printerName");

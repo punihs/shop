@@ -102,7 +102,7 @@ exports.create = async (req, res, next) => {
       where: { customer_id: packageDetail.Customer.id },
       include: [{
         model: PackageState,
-        where: { state_id:  PACKAGE[CUSTOMER].ALL },
+        where: { state_id: PACKAGE[CUSTOMER].ALL },
       }],
     });
     const packageItems = await PackageItem
