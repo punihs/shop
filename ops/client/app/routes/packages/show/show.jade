@@ -266,7 +266,7 @@
                       style='height: 30px;width: 30px;border-radius: 50%;'
                       ng-click='$ctrl.openPhoto(packageItem.object)'
                     )
-                    a(ui-sref='package.item.edit({ id: $ctrl.$stateParams.id , packageItemId: packageItem.id })' target="_blank") {{packageItem.name}}
+                    a(ui-sref='package.item.edit({ id: $ctrl.$stateParams.id , packageItemId: packageItem.id })' target="_blank") {{packageItem.name}} ({{packageItem.id}})
                   .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-bind='packageItem.PackageItemCategory.name')
                   .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(title="{{packageItem.quantity}}" ng-bind="packageItem.quantity")
                   .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(title="{{packageItem.price_amount}}") ₹{{packageItem.price_amount | number: 2}}

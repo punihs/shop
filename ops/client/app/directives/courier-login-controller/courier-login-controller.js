@@ -14,13 +14,11 @@ class AccessCourierController {
   }
 
   accessCourier() {
-    console.log('Access Courier');
     const method = 'get';
     // Todo: Need to do this using localStorage user info , by updating the is_courier_migrated =2 in localStorage
     return this
       .$http[method](`/users/${this.user.id}`)
       .then(({ data: user }) => {
-        console.log('user', user);
         if (Number(user.is_courier_migrated) === 1) {
           this.signup();
         } else if (Number(user.is_courier_migrated) === 2) {
