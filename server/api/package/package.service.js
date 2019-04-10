@@ -289,6 +289,8 @@ exports.updateState = async ({
       state_id: nextStateId,
     };
 
+    console.log('Package State', options);
+
     // if (stateIdcommentMap[nextStateId]) options.comments = stateIdcommentMap[nextStateId];
 
     if (comments) {

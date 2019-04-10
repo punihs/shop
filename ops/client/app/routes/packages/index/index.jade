@@ -24,6 +24,10 @@ div
             ul.dropdown-menu.pull-right(uib-dropdown-menu='', role='menu', aria-labelledby='btn-append-to-body')
               li(ng-repeat="sort in $ctrl.sorts")
                 a(href='#' ng-bind='sort.name' ng-click='$ctrl.sort(sort.key)')
+
+        .pull-right.col.pointer.m-r-xs
+          a.btn.btn-sm.btn-success(ui-sref='packages.bulk')
+            span Add Packages
     .m-t-xl(style='padding-bottom: 4px;')
     scrollable-table(table-offset="110")
       table.table.m-b-none

@@ -30,18 +30,6 @@ angular.module('uiGenApp')
             .then(({ data }) => data),
         },
       })
-      .state('customer.packages.bulk', {
-        url: '/bulk?bulk',
-        templateUrl: 'app/routes/customers/packages/bulk/bulk.html',
-        controller: 'PackageBulkController',
-        controllerAs: '$ctrl',
-        resolve: {
-          pkg: () => null,
-          customer: ($http, $stateParams) => $http
-            .get(`/users/${$stateParams.id}`)
-            .then(({ data }) => data),
-        },
-      })
       .state('customer.package', {
         abstract: true,
         url: '/packages/:packageId',

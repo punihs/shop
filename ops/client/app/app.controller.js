@@ -101,6 +101,7 @@ class AppController {
         'shipment.packages.index',
         'customer.shipment.update',
         'customer.shipments.index',
+        'packages.bulk',
       ].includes($state.current.name);
     };
   }

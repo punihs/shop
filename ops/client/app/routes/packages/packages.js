@@ -18,6 +18,12 @@ angular.module('uiGenApp')
         controller: 'PackagesIndexController',
         controllerAs: '$ctrl',
       })
+      .state('packages.bulk', {
+        url: '/bulk',
+        templateUrl: 'app/routes/packages/bulk/bulk.html',
+        controller: 'PackageBulkController',
+        controllerAs: '$ctrl',
+      })
       .state('package', {
         abstract: true,
         url: '/packages/:id',

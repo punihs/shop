@@ -272,6 +272,74 @@ exports.create = async (req, res, next) => {
   }
 };
 
+exports.bulkCreate = async (req, res, next) => {
+  const { body } = req;
+  console.log('Packages Length', body.length);
+  console.log('Body', body);
+
+  try {
+    const allowed = [
+      'customer_id',
+      'invoice_code',
+      'virtual_address_code',
+    ];
+
+    await Promise.all(body.packages.map(async (item) => {
+      console.log('Pkg', Object.assign(
+        _.pick(item, allowed),
+        { store_id: body.store_id },
+      ));
+
+      const pkg = Object.assign(
+        _.pick(item, allowed),
+        { store_id: body.store_id },
+      );
+
+      // - Internal user
+      pkg.created_by = req.user.id;
+      pkg.package_type = INCOMING;
+
+      const { id } = await Package
+        .create(pkg);
+
+      // - Async Todo: need to move to socket server
+      await addFollowers({
+        objectId: id,
+        userIds: [
+          req.user.id,
+          item.customer_id,
+        ],
+        next,
+      });
+
+      const charges = { id };
+
+      log('body', JSON.stringify(req.body));
+      if (req.body.is_doc === true) {
+        charges.receive_mail_amount = 0.00;
+      }
+
+      // - todo: now await and catch together
+      await PackageCharge
+        .create(charges);
+
+      await updateState({
+        lastStateId: null,
+        nextStateId: PACKAGE_ITEMS_UPLOAD_PENDING,
+        pkg: { ...pkg, id },
+        actingUser: req.user,
+        next,
+      });
+    }));
+
+  } catch (e) {
+    return next(e);
+  }
+
+  console.log('Body data', req.user);
+  return res.json({ status: 'Success' });
+};
+
 exports.state = async (req, res, next) => {
   try {
     const stateId = Number(req.body.state_id);

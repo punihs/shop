@@ -1,119 +1,91 @@
 div.m-t-xl.no-margin
   .hbox#applicantNewdiv
-    customer-header.bg-white-only.w-full.b-b(customer="$ctrl.customer" style='position: fixed;z-index: 6;height: 40px;')
-    directive-header(
-    options="$ctrl"
-    buttons="{ buckets: false, view: $ctrl.pkg, viewPackages: true }"
-    App="App"
+    form.form.form-validation.form-horizontal.wrapper-md(
+    name="newPackageForm"
+    novalidate
+    ng-submit='$ctrl.create(newPackageForm)'
+    autocomplete='off'
     )
-    .m-t-lg
-    .wrapper-md.bg-white-only
-      div
-        .h1.m-l-md.font-thin.h3
-          | Bulk Package Upload
-
-      form.form.form-validation.form-horizontal.wrapper-md(
-      name="newPackageForm"
-      novalidate
-      ng-submit='$ctrl.create(newPackageForm)'
-      autocomplete='off'
-      )
-        .row
-          .col-md-12.col-sm-12.col-xs-12
-            .col-md-7
-              .row
-                .col-md-12
-                  ul.nav
-                    li: label.i-checks.i-checks-sm
-                      input(
-                      type="checkbox"
-                      ng-model="$ctrl.quickMode"
-                      ng-change="$ctrl.changeMode()"
-                      )
-                      i
-                      .hide
-                      | Quick Mode
-                      .fa.fa-info-circle.m-l-xs(
-                      uib-popover='By selecting this Barcode Scanner will with automatically save'
-                      popover-trigger="'mouseenter'"
-                      popover-placement='bottom'
-                      popover-append-to-body='true'
-                      )
+      .row
+        .col-md-12.col-sm-12.col-xs-12
+          .col-md-7
+            .row
+              .col-md-12
+                label.col-xs-12.input-group
+                  div Popular Stores :
+                  .pull-left.text-info-dker.b-a.b-info.m-t-xs.m-r-xs.pointer(
+                  ng-repeat='store in $ctrl.popularStores'
+                  ng-click='$ctrl.data.store_id = store.id; $ctrl.Store.model = store.name;$ctrl.focus("invoice_code");'
+                  )
+                    span.wrapper-xs(ng-bind='store.name')
+            .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
+            .text-danger Note: Sign to delivery boy after successful creation.
+            .row
+              .col-md-12
+                .col-md-5.col-sm-5.col-xs-12
                   label.col-xs-12.input-group
-                    div Popular Stores :
-                    .pull-left.text-info-dker.b-a.b-info.m-t-xs.m-r-xs.pointer(
-                    ng-repeat='store in $ctrl.popularStores'
-                    ng-click='$ctrl.data.store_id = store.id; $ctrl.Store.model = store.name;$ctrl.focus("invoice_code");'
+                    | Store
+                    span.text-danger *
+                    input.form.form-control(
+                    type='text'
+                    name="store_id"
+                    ng-model='$ctrl.Store.model'
+                    placeholder='eg: Flipkart'
+                    uib-typeahead='store.name for store in $ctrl.Store.get($viewValue)'
+                    typeahead-loading='$ctrl.Store.loadingStore'
+                    typeahead-no-results='$ctrl.Store.noResults'
+                    typeahead-on-select='$ctrl.Store.select($item)'
+                    ng-blur="$ctrl.Store.blur()"
+                    typeahead-wait-ms="10"
+                    autocomplete="off"
+                    autofocus
+                    required
                     )
-                      span.wrapper-xs(ng-bind='store.name')
-              .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;')
-              .text-danger Note: Sign to delivery boy after successful creation.
-              .row
-                .col-md-12
-                  .col-md-5.col-sm-5.col-xs-12
-                    label.col-xs-12.input-group
-                      | Store
-                      span.text-danger *
-                      input.form.form-control(
-                      type='text'
-                      name="store_id"
-                      ng-model='$ctrl.Store.model'
-                      placeholder='eg: Flipkart'
-                      uib-typeahead='store.name for store in $ctrl.Store.get($viewValue)'
-                      typeahead-loading='$ctrl.Store.loadingStore'
-                      typeahead-no-results='$ctrl.Store.noResults'
-                      typeahead-on-select='$ctrl.Store.select($item)'
-                      ng-blur="$ctrl.Store.blur()"
-                      typeahead-wait-ms="10"
-                      autocomplete="off"
-                      autofocus
-                      required
-                      )
-                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.store_id.$dirty && newPackageForm.store_id.$invalid') Please select Store
-                      i.fa.fa-refresh.fa-spin.m-l-xs(ng-show='$ctrl.Store.loadingStore')
-                      div(ng-show='$ctrl.Store.noResults')
-                        i.fa.fa-remove
-                        |  No Results Found
-              .row
-                .col-md-12
-                  .col-md-5.col-sm-5.col-xs-12
-                    label.col-xs-12.input-group
-                      | Reference Code
-                      span.text-danger *
-                      input.form.form-control(
-                      type='text'
-                      name='invoice_code'
-                      placeholder='eg. 404-5608143-1808328'
-                      ng-model='$ctrl.data.invoice_code'
-                      ng-blur='$ctrl.quickMode ? $ctrl.addNewPackage(newPackageForm): ""'
-                      required
-                      )
-                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.invoice_code.$dirty && newPackageForm.invoice_code.$invalid') Please enter Reference Code
+                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.store_id.$dirty && newPackageForm.store_id.$invalid') Please select Store
+                    i.fa.fa-refresh.fa-spin.m-l-xs(ng-show='$ctrl.Store.loadingStore')
+                    div(ng-show='$ctrl.Store.noResults')
+                      i.fa.fa-remove
+                      |  No Results Found
+            .row
+              .col-md-12
+                .col-md-5.col-sm-5.col-xs-12
+                  label.col-xs-12.input-group
+                    | Reference Code
+                    span.text-danger *
+                    input.form.form-control(
+                    type='text'
+                    name='invoice_code'
+                    placeholder='eg. 404-5608143-1808328'
+                    ng-model='$ctrl.data.invoice_code'
+                    ng-blur='$ctrl.quickMode ? $ctrl.addNewPackage(newPackageForm): ""'
+                    required
+                    )
+                    span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.invoice_code.$dirty && newPackageForm.invoice_code.$invalid') Please enter Reference Code
 
-      br
-      br
-      div
-        .h1.m-l-md.font-thin.h3
-          | List Of Packages
-        br
-        .row
-          .col-md-8.no-padder-right
-            table.table.m-b-none
-              thead
-                tr
-                  th.col-xs-2 Id
-                  th.col-xs-5 Reference Code
-                  th.col-xs-5
-            .col-xs-12(ng-show='$ctrl.invoice.length === 0')
-              td(colspan="5")
-                h1.text-center.text-muted No Packages
-                .text-center: ul.nav.nav-pills.nav-sm.center-pills
-            .col-xs-12(style='padding: 10px;')
-              .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='invo in $ctrl.invoice' ng-if=' $ctrl.invoice')
-                .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="invo.id")
-                .col-xs-5.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="invo.invoice_code")
-                .col-xs-5.wrapper-sm.text-ellipsis.m-t-xs
-                  button.m-l.btn.btn-success
-                    span.fa.fa-forward.m-r-sm
-                    a.text-white(ui-sref='customer.package.update({ id: $ctrl.$stateParams.id, packageId: invo.id })' target="_blank") Continue Updating
+    //br
+    //br
+    //div
+    //  .h1.m-l-md.font-thin.h3
+    //    | List Of Packages
+    //  br
+    //  .row
+    //    .col-md-8.no-padder-right
+    //      table.table.m-b-none
+    //        thead
+    //          tr
+    //            th.col-xs-2 Id
+    //            th.col-xs-5 Reference Code
+    //            th.col-xs-5
+    //      .col-xs-12(ng-show='$ctrl.invoice.length === 0')
+    //        td(colspan="5")
+    //          h1.text-center.text-muted No Packages
+    //          .text-center: ul.nav.nav-pills.nav-sm.center-pills
+    //      .col-xs-12(style='padding: 10px;')
+    //        .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='invo in $ctrl.invoice' ng-if=' $ctrl.invoice')
+    //          .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="invo.id")
+    //          .col-xs-5.wrapper-sm.text-ellipsis.m-t-xs(ng-bind="invo.invoice_code")
+    //          .col-xs-5.wrapper-sm.text-ellipsis.m-t-xs
+    //            button.m-l.btn.btn-success
+    //              span.fa.fa-forward.m-r-sm
+    //              a.text-white(ui-sref='customer.package.update({ id: $ctrl.$stateParams.id, packageId: invo.id })' target="_blank") Continue Updating
     .clearfix

@@ -8,6 +8,7 @@ router.get('/', autheticate(), controller.index);
 router.get('/bulkIndex', autheticate(), controller.bulkIndex);
 router.get('/:id', autheticate(), controller.show);
 router.post('/', autheticate(), controller.create);
+router.post('/bulkCreate', autheticate(), controller.bulkCreate);
 router.put('/:id/state', autheticate(), controller.state);
 router.put('/:id', autheticate(), controller.update);
 router.delete('/:id', autheticate(), controller.destroy);
