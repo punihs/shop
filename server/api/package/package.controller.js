@@ -21,6 +21,7 @@ const {
   GROUPS: { OPS, CUSTOMER },
   PACKAGE_TYPES: { INCOMING, PERSONAL_SHOPPER, COD },
 } = require('../../config/constants');
+const { PACKAGE } = require('../../config/constants/buckets');
 const {
   PACKAGE: { STANDARD_PHOTO, ADVANCED_PHOTO },
 } = require('../../config/constants/charges');
@@ -97,11 +98,29 @@ exports.show = async (req, res, next) => {
         }],
       });
 
+    const packages = await Package.findAll({
+      attributes: ['id', 'customer_id'],
+      where: { customer_id: pkg.Customer.id },
+      include: [{
+        model: PackageState,
+        where: { state_id: PACKAGE[CUSTOMER].ALL },
+      }],
+    });
+
+    const allItems = await PackageItem
+      .findAll({
+        attributes: ['id'],
+        where: { package_id: packages.map(x => x.id) },
+      });
+
+    const packageItemIds = allItems.map(x => x.id);
+
     if (!pkg) return res.status(404).end();
 
     return res.json({
       ...pkg.toJSON(),
       state_id: pkg.PackageState.state_id,
+      allPackageItemIds: packageItemIds,
     });
   } catch (err) {
     return next(err);

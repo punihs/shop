@@ -101,7 +101,7 @@ class ChangeShipmentStateController {
     this.$http
       .get(`/shipments/${this.shipment.id}/validate`)
       .then(({ data: packageItems }) => {
-        this.packageItems = packageItems
+        this.packageItems = packageItems;
       });
   }
 
@@ -118,10 +118,10 @@ class ChangeShipmentStateController {
       return validations[key];
     });
 
-    if(!valid) {
+    if (!valid) {
       this.error = this.errors[invalidKey];
       this.submitting = false;
-      return
+      return;
     }
 
     this

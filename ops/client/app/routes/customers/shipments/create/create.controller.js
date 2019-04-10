@@ -68,12 +68,11 @@ class ShipmentCreateController {
 
     const afterShipSlug = this.afterShipCarriers
       .filter((x) => {
-        if (x.carrier === this.data.shipping_carrier)
-          return x;
+        if (x.carrier === this.data.shipping_carrier) { return x; }
       });
 
     const data = Object.assign({ }, this.data);
-    Object.assign(data, { afterShip_slug: afterShipSlug[0].slug } );
+    Object.assign(data, { afterShip_slug: afterShipSlug[0].slug });
     if (!form) return (this.submittingTracking = false);
 
     const allowed = [
@@ -171,7 +170,7 @@ class ShipmentCreateController {
     const params = `all=true&country=${countryCode}&weight=${this.data.final_weight}&type=${docType}`;
 
     this.$http.get(`%/pricing/?${params}`)
-      .then(({ data: { prices }}) => {
+      .then(({ data: { prices } }) => {
         if (prices) {
           this.data.upstream_cost = prices[0].base_cost_from_upstream;
           this.data.fuel_sur_charge = prices[0].fuel_surcharge;

@@ -150,12 +150,10 @@ class ShipmentsIndexController {
           if (filteredLength) {
             if (x.ShipmentMetum.express_processing) {
               return Object.assign(x, { preference: true });
-            } else {
-              return Object.assign(x, { preference: false });
             }
-          } else {
             return Object.assign(x, { preference: false });
           }
+          return Object.assign(x, { preference: false });
         });
 
         if (typeof shipments === 'undefined') {

@@ -194,7 +194,7 @@ class PackageItemsController {
       .then(({ data }) => {
         if (!this.EDIT) {
           this.packageItem = data.packageItemId;
-          const {id} = data.packageItemId;
+          const { id } = data.packageItemId;
           this.submitting = false;
           const itemData = {
             id: data.packageItemId,
@@ -218,7 +218,7 @@ class PackageItemsController {
               : 'Created'} Successfully.`, '');
           if (this.isPrint) {
             this.printHTML(itemData);
-            return this.$state.go('package.show', {id: packageId});
+            return this.$state.go('package.show', { id: packageId });
           }
         }
         this
@@ -245,8 +245,8 @@ class PackageItemsController {
 
   personalShopperPrint() {
     if (!this.PackageItemCategory.model) {
-      $(`input[id="PackageItemCategory"]`).focus();
-      return  this
+      $('input[id="PackageItemCategory"]').focus();
+      return this
         .toaster
         .pop('error', 'Please update Category ');
     }

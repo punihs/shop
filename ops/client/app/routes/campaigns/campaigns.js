@@ -29,5 +29,5 @@ angular.module('uiGenApp')
               .catch(() => $state.go('access.404'));
           },
         },
-      })
+      });
   });

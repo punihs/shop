@@ -28,14 +28,12 @@ class CampaignCreateController {
     }
   }
 
-  reset(newPackageForm)
-  {
+  reset(newPackageForm) {
     this.data = {};
     newPackageForm.$setPristine();
   }
 
-  validateForm(form)
-  {
+  validateForm(form) {
     this.$stateParams.autofocus = '';
     Object.keys(form).filter(x => !x.startsWith('$')).forEach((f) => {
       if (form[f] && form[f].$invalid) {
@@ -47,14 +45,12 @@ class CampaignCreateController {
   }
 
 
-  startUpload(ctrl, file)
-  {
+  startUpload(ctrl, file) {
     ctrl.S3.upload(file, ctrl.data, ctrl);
   }
 
 
-  create(newCampaignForm)
-  {
+  create(newCampaignForm) {
     this.message = '';
     if (this.submitting) return null;
     this.submitting = true;

@@ -272,9 +272,10 @@
                   .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(title="{{packageItem.price_amount}}") ₹{{packageItem.price_amount | number: 2}}
                   .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs(title="{{packageItem.total_amount}}") ₹{{packageItem.total_amount | number: 2}}
 
-                  .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-trash(ng-click="$ctrl.deletePackageItem($ctrl.$stateParams.id, packageItem.id, $index)")
-
-
+                  .col-xs-2.wrapper-sm.text-ellipsis.m-t-xs
+                    .col-xs-4.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-trash(ng-click="$ctrl.deletePackageItem($ctrl.$stateParams.id, packageItem.id, $index)")
+                    .col-xs-8.wrapper-sm.text-ellipsis.m-t-xs
+                      a.bg-info(style='color:#ffffff;padding: 2px;' ng-click='$ctrl.printBarcode(packageItem, $ctrl.data.allPackageItemIds)') Print
                 .col-xs-12.text-center
                   a.btn.active.m-t-xs(ng-if="$ctrl.ui.loading")
                     i.fa.fa-circle-o-notch.fa-spin

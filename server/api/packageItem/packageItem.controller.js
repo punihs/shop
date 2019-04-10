@@ -74,11 +74,12 @@ exports.create = async (req, res, next) => {
 
 exports.show = async (req, res, next) => {
   try {
+    const packageItemId = req.params.id;
     const packageItem = await PackageItem
       .find({
         attributes: ['id', 'quantity', 'price_amount', 'total_amount', 'object', 'object_advanced',
           'name', 'object_invoice', 'object_ecommerce', 'ecommerce_link'],
-        where: { id: req.params.id },
+        where: { id: packageItemId },
         include: [{
           model: Package,
           attributes: ['id'],
@@ -105,10 +106,15 @@ exports.show = async (req, res, next) => {
       }],
     });
 
-    const totalItems = await PackageItem
-      .count({
+    const allItems = await PackageItem
+      .findAll({
+        attributes: ['id'],
         where: { package_id: packages.map(x => x.id) },
       });
+
+    const packageItemIds = allItems.map(x => x.id);
+
+    const totalItems = packageItemIds.indexOf(Number(packageItemId)) + 1;
 
     const itemName = packageItem.name;
     const items = {
