@@ -1122,6 +1122,12 @@ exports.state = async (req, res, next) => {
           message: 'You must update Shipment Tracking Information to send dispatch notification!',
         });
       }
+    } else if (PAYMENT_CONFIRMED === req.body.state_id) {
+      if (!shipment.transaction_id) {
+        return res.status(400).json({
+          message: 'Customer Not Selected Any Payment Gateway You can not confirm this',
+        });
+      }
     }
 
     const status = await updateShipmentState({
