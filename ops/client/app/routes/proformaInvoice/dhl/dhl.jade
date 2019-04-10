@@ -9,23 +9,23 @@
             img(src='/assets/images/wordmark.png', style='height:60px')
         tr
           td(colspan='3' style="border: 1px solid;")
-            h4 CONSIGNER
+            p CONSIGNER
           td(colspan='2' style="border: 1px solid;")
-            h4.text-center Date
+            p.text-center Date
           td(colspan='1' style="border: 1px solid; width: 5%;")
           td(colspan='2' style="border: 1px solid;")
-            h4.text-center(ng-bind='$ctrl.moment().format("DD-MM-YYYY")')
+            p.text-center(ng-bind='$ctrl.moment().format("DD-MM-YYYY")')
         tr
           td(colspan='3' style="border: 1px solid;")
-            h4 {{$ctrl.address.name}}
-            h4 {{$ctrl.address.line1}}
-            h4 {{$ctrl.address.line2}}
-            h4 {{$ctrl.address.line3}}
-            h4 Ph No {{$ctrl.address.phone}}
+            p {{$ctrl.address.name}}
+            p {{$ctrl.address.line1}}
+            p {{$ctrl.address.line2}}
+            p {{$ctrl.address.line3}}
+            p Ph No {{$ctrl.address.phone}}
           td(colspan='2' style="border: 1px solid;")
           td(colspan='1' style="border: 1px solid;")
-          td(colspan='2' style="border: 1px solid; vertical-align: bottom;")
-            h4.text-center
+          td.text-center(colspan='2' style="border: 1px solid; vertical-align: bottom;")
+            span
               input(
               style="text-align: center; border: 0px;"
               type='text'
@@ -43,19 +43,19 @@
           td(colspan='1' style="border: 1px solid;width: 15%;")
         tr
           td(colspan='3' style="border: 1px solid;")
-            h4 {{$ctrl.shipments.Customer.first_name}} &nbsp;{{$ctrl.shipments.Customer.last_name}}
-            h4 {{$ctrl.shipments.address}}
-            h4 {{$ctrl.shipments.phone}}
-          td(colspan='5' style="border: 1px solid; vertical-align: bottom;")
-            h4.text-center GST NO : 29AAGFI4861F1Z7
+            p {{$ctrl.shipments.Customer.first_name}} &nbsp;{{$ctrl.shipments.Customer.last_name}}
+            p {{$ctrl.shipments.address}}
+            p {{$ctrl.shipments.phone}}
+          td.text-center(colspan='5' style="border: 1px solid; vertical-align: bottom;")
+            span GST NO : 29AAGFI4861F1Z7
         tr
           td(colspan='2' style="border: 1px solid; width: 30%;")
-            h4 CONSIGNEE
+            p CONSIGNEE
           td(colspan='1' style="border: 1px solid;")
           td(colspan='5' style="border: 1px solid;")
         tr
           td(colspan='1' style="border: 1px solid; width: 15%;")
-            h4 AI
+            span AI
           td(colspan='2' style="border: 1px solid; width: 30%;")
           td(colspan='1' style="border: 1px solid; width: 15%;")
           td(colspan='1' style="border: 1px solid; width: 5%;")
@@ -66,25 +66,25 @@
           td(colspan='1' style="border: 1px solid; width: 15%;")
           td(colspan='2' style="border: 1px solid; width: 30%;")
           td(colspan='2' style="border: 1px solid; width: 15%;")
-            h4 Country of origin goods
+            span Country of origin goods
           td(colspan='1' style="border: 1px solid; width: 5%;")
-          td(colspan='2' style="border: 1px solid;width: 15%;")
-            h4.text-center Country of final Destination
+          td.text-center(colspan='2' style="border: 1px solid;width: 15%;")
+            span Country of final Destination
         tr
           td(colspan='1' style="border: 1px solid; width: 15%;")
-            h4 Vessel \ Flight No
+            span Vessel \ Flight No
           td(colspan='2' rowspan='2' style="border: 1px solid; width: 30%; vertical-align: bottom;")
-            h4 Place of Receipt by Pre-carrie
-          td(colspan='2' style="border: 1px solid; width: 15%;")
-            h4.text-center INDIA
+            span Place of Receipt by Pre-carrie
+          td.text-center(colspan='2' style="border: 1px solid; width: 15%;")
+            span INDIA
           td(colspan='1' style="border: 1px solid; width: 5%;")
-          td(colspan='2' style="border: 1px solid;width: 15%;")
-            h4.text-uppercase.text-center {{$ctrl.shipments.Country.name}}
+          td.text-uppercase.text-center(colspan='2' style="border: 1px solid;width: 15%;")
+            span {{$ctrl.shipments.Country.name}}
         tr
           td(colspan='1' style="border: 1px solid; width: 15%;")
             h1.blank
-          td(colspan='5' rowspan='3' style="border: 1px solid; vertical-align: bottom;")
-            h4.text-center
+          td.text-center(colspan='5' rowspan='3' style="border: 1px solid; vertical-align: bottom;")
+            span
               input(
               style="text-align: center; border: 0px;"
               type='text'
@@ -93,17 +93,17 @@
         tr
           td(colspan='1' style="border: 1px solid; width: 15%;")
           td(colspan='2' style="border: 1px solid; width: 30%;")
-            h4 Port of Loading
+            span Port of Loading
         tr
           td(colspan='1' style="border: 1px solid; width: 15%;")
-          td(colspan='2' style="border: 1px solid; width: 30%;")
-            h4.text-center final Destination
+          td.text-center(colspan='2' style="border: 1px solid; width: 30%;")
+            span final Destination
         tr
           td(colspan='1' style="border: 1px solid; width: 15%;")
-          td(colspan='2' style="border: 1px solid; width: 30%;")
-            h4.text-uppercase.text-center {{$ctrl.shipments.Country.name}}
+          td.text-uppercase.text-center(colspan='2' style="border: 1px solid; width: 30%;")
+            span {{$ctrl.shipments.Country.name}}
           td(colspan='5' style="border: 1px solid;")
-            h4
+            span
               input(
               style="text-align: center; border: 0px; width: 100%;"
               type='text'
@@ -111,43 +111,43 @@
         tr
           td(colspan='1' style="border: 1px solid; width: 15%;")
           td(colspan='1' style="border: 1px solid; width: 15%;")
-            h4 Sl No.
+            p Sl No.
           td(colspan='3' style="border: 1px solid;")
-            h4 DISCRIPTION OF GOODS
+            p DISCRIPTION OF GOODS
           td(colspan='1' style="border: 1px solid; width: 5%;")
-            h4.text-center Total Qty
+            p.text-center Total Qty
           td(colspan='1' style="border: 1px solid;width: 15%;")
-            h4.text-center Per Qty
+            p.text-center Per Qty
           td(colspan='1' style="border: 1px solid;width: 15%;")
-            h4.text-center Value in INR
+            p.text-center Value in INR
         tr(ng-repeat="item in $ctrl.PackItems")
           td(colspan='1' style="border: 1px solid; width: 15%;")
-          td(colspan='1' style="border: 1px solid; width: 15%;")
-            h4.text-center {{$index+1}}
+          td.text-center(colspan='1' style="border: 1px solid; width: 15%;")
+            span {{$index+1}}
           td(colspan='3' style="border: 1px solid;")
-            h4(ng-if="$ctrl.type === 'category'")
+            span(ng-if="$ctrl.type === 'category'")
               input(
               style="text-align: center; border: 0px;"
               type='text'
               ng-model='item.PackageItemCategory.name'
               )
-            h4(ng-if="$ctrl.type === 'item'")
+            span(ng-if="$ctrl.type === 'item'")
               input(
               style="text-align: center; border: 0px;"
               type='text'
               ng-model='item.name'
               )
-          td(colspan='1' style="border: 1px solid; width: 5%;")
-            h4.text-center {{item.quantity}}
+          td.text-center(colspan='1' style="border: 1px solid; width: 5%;")
+            span {{item.quantity}}
           td(colspan='1' style="border: 1px solid;width: 15%;")
-            h4
+            span
               input(
               style="text-align: center; border: 0px;"
               type='text'
               ng-model='item.price_amount'
               )
           td(colspan='1' style="border: 1px solid;width: 15%;")
-            h4
+            span
               input(
               style="text-align: center; border: 0px;"
               type='text'
@@ -160,7 +160,7 @@
           td(colspan='1' style="border: 1px solid; width: 5%;")
           td(colspan='1' style="border: 1px solid;width: 15%;")
           td(colspan='1' style="border: 1px solid;width: 15%;")
-            h4
+            span
               input(
               style="text-align: center; border: 0px;"
               type='text'
@@ -168,33 +168,33 @@
               )
         tr
           td(colspan='4' style="border: 1px solid; width: 60%;")
-            h4
+            span
               | Amount in words :
               input(
               style="text-align: center; border: 0px; width: 100%;"
               type='text'
               ng-model='$ctrl.amountWords'
               )
-          td(colspan='4' rowspan='4' style="border: 1px solid; width: 40%; vertical-align: bottom;")
-            h4.text-center Seal & singnature
+          td.text-center(colspan='4' rowspan='4' style="border: 1px solid; width: 40%; vertical-align: bottom;")
+            span Seal & singnature
         tr
           td(colspan='4' style="border: 1px solid; width: 60%;")
             h1.blank
         tr
           td(colspan='4' style="border: 1px solid; width: 60%;")
-            h4 We declaration that invoice show the actual price of goods
+            span We declaration that invoice show the actual price of goods
         tr
           td(colspan='4' style="border: 1px solid; width: 60%;")
-            h4 described and that all particulars are true & correct
+            span described and that all particulars are true & correct
         tr
           td.text-center.font-bold(colspan='3')
-            h4  #181 2nd cross Rd, Koramangala 1st Block
-            h4  Bengaluru - 560034
+            p  #181 2nd cross Rd, Koramangala 1st Block
+            p  Bengaluru - 560034
           td.font-bold(colspan='1')
-            h4 serviceteam@shoppre.com
-            h4 Tel : +91 8040944077
+            p serviceteam@shoppre.com
+            p Tel : +91 8040944077
           td.text-info(colspan='4')
-            h4.text-center Shoppre.com
+            p.text-center Shoppre.com
     br
 
 
