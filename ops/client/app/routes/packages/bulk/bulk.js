@@ -110,7 +110,6 @@ class PackageBulkController {
     const newItemNo = this.data.length - 1;
     if ( newItemNo !== 0 ) {
       this.data.splice($index, 1);
-      console.log('Deleted', this.data);
     }
   }
 

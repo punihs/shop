@@ -274,8 +274,6 @@ exports.create = async (req, res, next) => {
 
 exports.bulkCreate = async (req, res, next) => {
   const { body } = req;
-  console.log('Packages Length', body.length);
-  console.log('Body', body);
 
   try {
     const allowed = [
@@ -285,11 +283,6 @@ exports.bulkCreate = async (req, res, next) => {
     ];
 
     await Promise.all(body.packages.map(async (item) => {
-      console.log('Pkg', Object.assign(
-        _.pick(item, allowed),
-        { store_id: body.store_id },
-      ));
-
       const pkg = Object.assign(
         _.pick(item, allowed),
         { store_id: body.store_id },
@@ -336,7 +329,6 @@ exports.bulkCreate = async (req, res, next) => {
     return next(e);
   }
 
-  console.log('Body data', req.user);
   return res.json({ status: 'Success' });
 };
 
