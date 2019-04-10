@@ -137,7 +137,14 @@ class PackageShowController {
   deletePackage(packageid) {
     const c = confirm;
     const ok = c('Are you sure? Deleting Your Package');
-    if (!ok) return null;
+    if (!ok) {
+      return null;
+    } else if (this.packageItems.length) {
+      if (this.packageItems[0].package_order_code) {
+        return this.toaster
+          .pop('error', 'Personal Shopper Package cant be deleted , Please contact Tech Team');
+      }
+    }
 
     return this
       .$http
@@ -156,7 +163,14 @@ class PackageShowController {
   deletePackageItem(packageid, itemId, index) {
     const c = confirm;
     const ok = c('Are you sure? Deleting Your Package Item');
-    if (!ok) return null;
+    if (!ok) {
+      return null;
+    } else if (this.packageItems.length) {
+      if (this.packageItems[0].package_order_code) {
+        return this.toaster
+          .pop('error', 'Personal Shopper Package Item cant be deleted , Please contact Tech Team');
+      }
+    }
 
     return this
       .$http
