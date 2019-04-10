@@ -25,7 +25,7 @@ const {
   APPS, GROUPS: { OPS, CUSTOMER },
   SHIPMENT_STATE_IDS: {
     PAYMENT_COMPLETED, PAYMENT_FAILED, PAYMENT_REQUESTED, SHIPMENT_CANCELLED, SHIPMENT_DELIVERED,
-    DISPATCHED, DELIVERED, INTRANSIT, CUSTOM_HOLD, LOST, SHIPMENT_HANDED, PAYMENT_CONFIRMED,
+    DISPATCHED, DELIVERED, SHIPMENT_IN_TRANSIT, CUSTOM_HOLD, LOST, SHIPMENT_HANDED, PAYMENT_CONFIRMED,
     SHIPMENT_IN_ACTIVE,
   },
   PACKAGE_STATE_IDS: { READY_TO_SHIP, DAMAGED },
@@ -295,6 +295,12 @@ exports.updateShipmentState = async ({
           { payment_submit_date: moment() },
           { where: { id: shipment.id } },
         );
+        break;
+      }
+      case SHIPMENT_IN_TRANSIT: {
+        if (shipment.shipping_carrier.toUpperCase().indexOf('aipex') > -1) {
+          aipexPartner = true;
+        }
         break;
       }
       case PAYMENT_CONFIRMED: {
