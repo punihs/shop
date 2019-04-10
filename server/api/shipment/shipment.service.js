@@ -434,7 +434,8 @@ exports.updateShipmentState = async ({
           taskCreate(name, notes, bearer, projects, workspace);
           aftershipController.create(shipmentDispacthed);
         }
-        if (shipment.shipping_carrier.indexOf('aipex') > -1) {
+
+        if (shipment.shipping_carrier.toUpperCase().indexOf('aipex') > -1) {
           aipexPartner = true;
         }
 
