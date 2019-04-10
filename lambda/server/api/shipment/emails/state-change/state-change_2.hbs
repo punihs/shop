@@ -191,7 +191,13 @@
         <span class="il">{{address}}</span>
         <br><br>
         Airway bill number:
-      </p> </td>
+        <br><br>
+      {{#if aipexPartner}}
+        <br>
+        Please note that your shipment will be moving via Mumbai and hence you will receive 2 tracking numbers - one for the transit to Mumbai and the other for the transit from Mumbai to {{shipment.DestinationCountry}}.
+        Once the shipment reaches Mumbai, your second tracking number may take up to 7 working days to be updated as the same contains special items and has to go through additional customs clearance.
+      {{/if}}
+      </td>
   </tr>
 {{else if SHIPMENT_IN_TRANSIT}}
   <tr>
@@ -199,11 +205,15 @@
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Dear {{customer.first_name}},</p>
       <br><br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        This is to inform you that your Shipment <span class="il">{{shipment.id}}</span> is in transit and Tracking Number is <strong><span class="il">{{shipment.tracking_code}}</span></strong>
+        This is to inform you that your Shipment <span class="il">{{shipment.id}}</span> is in transit and Tracking Number is
+        <strong><span class="il">{{shipment.tracking_code}}</span></strong> is in transit to Mumbai for custom clearance.
         <br><br>
         You can track your shipment <a href="{{shipment.tracking_url}}?otp={{otp}}">here</a>. Feel free to reach out in case of any query.
         <br>
         <br>
+        {{#if aipexPartner}}
+        <b>Once the shipment reaches Mumbai, Your second tracking number may take up to 7 working days to be updated as the same contains special items and has to go through additional customs clearance.</b>
+        {{/if}}
       </p> </td>
   </tr>
 {{else if SHIPMENT_MANUAL_FOLLOW_UP}}

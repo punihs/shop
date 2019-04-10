@@ -271,6 +271,7 @@ exports.updateShipmentState = async ({
 
     const shipment = current;
     log('shp', shipment);
+    let aipexPartner = false;
 
     const options = {
       shipment_id: shipment.id,
@@ -374,6 +375,15 @@ exports.updateShipmentState = async ({
 
         paymentGatewayID = payment_gateway_id;
 
+        const DestinationCountry = Country.findOne({
+          attributes: ['name'],
+          where: { id: shipment.country_id },
+        });
+
+        if (DestinationCountry) {
+          Object.assign(shipment, { DestinationCountry: DestinationCountry.name });
+        }
+
         log('state changed SHIPMENT_HANDED', SHIPMENT_HANDED);
         log({ cashbackAmount });
 
@@ -424,6 +434,10 @@ exports.updateShipmentState = async ({
           taskCreate(name, notes, bearer, projects, workspace);
           aftershipController.create(shipmentDispacthed);
         }
+        if (shipment.shipping_carrier.indexOf('aipex') > -1) {
+          aipexPartner = true;
+        }
+
         break;
       }
       default: {
@@ -495,6 +509,7 @@ exports.updateShipmentState = async ({
         paymentGateway,
         address,
         next,
+        aipexPartner,
       });
 
     log('shipmentState', shipmentState.id);

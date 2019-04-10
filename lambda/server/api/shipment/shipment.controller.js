@@ -21,6 +21,7 @@ exports.notification = async (req, res, next) => {
       paymentDelayLimit,
       otp,
       comments,
+      aipexPartner,
     } = req.body;
 
     const { URLS_PARCEL } = ENV;
@@ -51,6 +52,7 @@ exports.notification = async (req, res, next) => {
             paymentDelayCharge,
             paymentDelayLimit,
             otp,
+            aipexPartner,
           }),
         }],
         oneSignal: [{

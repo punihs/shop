@@ -12,7 +12,8 @@ const { SHIPMENT_STATE_ID_NAMES_MAP } = require('../../config/constants');
 const toJSON = object => (object.toJSON ? object.toJSON() : object);
 
 exports.stateChange = async ({
-  actingUser, shipment, packages, nextStateId, address, paymentGateway, gateway, next, comments,
+  actingUser, shipment, packages, nextStateId,
+  address, paymentGateway, gateway, next, comments, aipexPartner,
 }) => {
   try {
     const customer = await User
@@ -40,6 +41,7 @@ exports.stateChange = async ({
       [gateway]: true,
       otp,
       comments,
+      aipexPartner,
     });
   } catch (err) {
     return next(err);

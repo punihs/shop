@@ -152,7 +152,8 @@ module.exports = {
     actingUser: OPS,
     ENV,
     subject: `Your Package Is Scheduled to Ship Today! | ShipmentID: ${shipment.id}`,
-    shipment,
+    shipment: Object.assign(shipment, { DestinationCountry: 'India' }),
+    aipexPartner: true,
   },
   SHIPMENT_IN_TRANSIT: {
     SHIPMENT_IN_TRANSIT: true,
