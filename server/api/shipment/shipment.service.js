@@ -298,7 +298,7 @@ exports.updateShipmentState = async ({
         break;
       }
       case SHIPMENT_IN_TRANSIT: {
-        if (shipment.shipping_carrier.toUpperCase().indexOf('aipex') > -1) {
+        if (shipment.shipping_carrier.toLowerCase().indexOf('aipex') > -1) {
           aipexPartner = true;
         }
         break;
