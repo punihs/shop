@@ -1176,7 +1176,6 @@ exports.paymentState = async (req, res, next) => {
 
 exports.payResponse = async (req, res, next) => {
   try {
-    logger.info('step1 shipment payment response ', JSON.stringify(req.body));
     const failedURL = `${URLS_PARCEL}/shipRequests`;
     const sucessURL = `${URLS_PARCEL}/transactions/${req.query.transaction_id}/response`;
     const { status } = req.query;

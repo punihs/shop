@@ -22,6 +22,7 @@ class LogoutController {
   }
 
   cleanup() {
+    localStorage.clear();
     const { ACCOUNTS } = this.URLS;
     const { location } = this.$window;
     location.href = `${ACCOUNTS}/logout`;

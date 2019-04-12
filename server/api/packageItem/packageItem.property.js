@@ -34,4 +34,5 @@ module.exports = DataTypes => ({
   is_image_resized: DataTypes.BOOLEAN,
   ecommerce_link: DataTypes.STRING,
   object_ecommerce: DataTypes.STRING,
+  received_date: DataTypes.DATE,
 });

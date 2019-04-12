@@ -1,5 +1,7 @@
 const debug = require('debug');
 const extractDomain = require('extract-domain');
+const moment = require('moment');
+const _ = require('lodash');
 
 const log = debug('s.personalShopperPackage.controller');
 const { updateState } = require('../package.service');
@@ -695,9 +697,15 @@ exports.submitOptions = async (req, res) => {
 
 exports.updateItem = async (req, res) => {
   const { id } = req.params;
+  const { body } = req;
+
+  if (req.body.status === 'recieved') {
+    Object.assign(body, { received_date: moment() });
+  }
+  const allowed = _.pick(body, ['status', 'received_date']);
 
   await PackageItem
-    .update({ status: req.body.status }, { where: { id } });
+    .update(allowed, { where: { id } });
 
   return res.json(id);
 };
