@@ -1,13 +1,13 @@
 angular.module('uiGenApp')
 // Depending on constant: AUTH_EVENTS
   .factory('Auth',
-    ($log, $http, $q, Session, URLS) => {
+    ($log, $http, $q, Session) => {
       const authService = {};
       let refreshingToken = false;
 
       authService.login = function login(credentials) {
         return $http
-          .post(`${URLS.API}/oauth/token`, credentials, {
+          .post('~~/oauth/token', credentials, {
             ignoreAuthModule: true,
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             transformRequest(obj) {
@@ -34,7 +34,7 @@ angular.module('uiGenApp')
         refreshingToken = true; // Set refresh_token reuqest tracker flag
         return $http
           .post(
-            `${URLS.API}/oauth/token`,
+            '~~/oauth/token',
             { refresh_token: Session.read('oauth').refresh_token },
           {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -51,7 +51,8 @@ angular.module('uiGenApp')
             Session.create('oauth', res.data);
             refreshingToken = false; // reset refresh_token reuqest tracker flag
             return $q.resolve(res);
-          }).catch(res => {
+          })
+          .catch(res => {
             refreshingToken = false; // reset refresh_token reuqest tracker flag
             return $q.reject(res);
           });
@@ -59,7 +60,7 @@ angular.module('uiGenApp')
 
       authService.logout = function logout() {
         return $http
-          .post(`${URLS.API}/oauth/revoke`, { access_token: Session.getAccessToken() }, {
+          .post('~~/oauth/revoke', { access_token: Session.getAccessToken() }, {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             transformRequest(obj) {
               return Object

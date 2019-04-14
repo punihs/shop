@@ -33,7 +33,7 @@ class OAuthCtrl {
             location.href = $state.href('dashboard.index', { absolute: true });
           }
         }))
-      .catch(() => {
+      .catch(() => { debugger
         location.href = URLS.OAUTH;
       });
   }

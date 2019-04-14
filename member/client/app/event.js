@@ -12,11 +12,11 @@ angular.module('uiGenApp')
     }
 
     $rootScope.$on('$stateChangeStart', (event, next) => {
-      if (!Session.isAuthenticated() && next.name !== 'access.oauth') {
-        const continueURL = $location.absUrl().split('?')[0];
-        location.href = `${URLS.WWW}/customer/login?continue=${continueURL}`;
-        return location.href;
-      }
+      // if (!Session.isAuthenticated() && next.name !== 'access.oauth') {
+      //   const continueURL = $location.absUrl().split('?')[0];
+      //   location.href = `${URLS.LOGIN}/customer/login?continue=${continueURL}`;
+      //   return location.href;
+      // }
 
       if (!Session.isAuthenticated() && (next.name.split('.')[0] !== 'access')) {
         event.preventDefault();

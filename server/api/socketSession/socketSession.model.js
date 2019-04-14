@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 
   SocketSession.associate = (db) => {
     SocketSession.belongsTo(db.User);
-    SocketSession.belongsTo(db.AccessToken);
+    // SocketSession.belongsTo(db.AccessToken);
   };
 
   return SocketSession;

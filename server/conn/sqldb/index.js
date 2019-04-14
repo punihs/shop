@@ -2,7 +2,6 @@ const _ = require('lodash');
 const Sequelize = require('sequelize');
 
 const config = require('../../config/environment');
-const oauthComponent = require('../../components/oauth/sequelize');
 
 const sqlDefaults = {
   dialect: 'mysql',
@@ -53,8 +52,6 @@ const db = {
 ].forEach((model) => {
   db[model] = db.sequelize.import(`../../api/${_.camelCase(model)}/${_.camelCase(model)}.model.js`);
 });
-
-oauthComponent(db);
 
 Object.keys(db).forEach((modelName) => {
   if ('associate' in db[modelName]) {
