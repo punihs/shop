@@ -1,13 +1,13 @@
 angular.module('uiGenApp')
   .run((
     $rootScope, Auth, authService, AUTH_EVENTS, Session,
-    $state, $window, URLS, User, $uibModal, $location,
-  ) => {
+    $state, $window, URLS, User, $uibModal, $location) => {
     // In Future: assign to variable to destroy during the $destroy event
     const location = $window.location;
     if (!Session.isAuthenticated() && $location.search().otp) {
       const continueURL = $location.absUrl().split('?')[0];
-      location.href = `${URLS.PARCEL_API}/api/users/authorise?otp=${$location.search().otp}&continue=${continueURL}`;
+      const { otp } = $location.search();
+      location.href = `${URLS.PARCEL}/api/users/authorise?otp=${otp}&continue=${continueURL}`;
       return location.href;
     }
 
@@ -43,9 +43,7 @@ angular.module('uiGenApp')
       return angular.noop(data);
     });
 
-
-
-    $rootScope.$on(AUTH_EVENTS.loginRequired, () => {
+    return $rootScope.$on(AUTH_EVENTS.loginRequired, () => {
       if (Session.isAuthenticated()) {
         // Refresh token autimatically if token expires
         Auth.refreshToken().then(
