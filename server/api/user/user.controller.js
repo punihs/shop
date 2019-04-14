@@ -7,7 +7,7 @@ const { MASTER_TOKEN } = require('../../config/environment');
 
 const {
   User, State, ActionableState, GroupState, Shipment, Country, Package, PackageState,
-  Locker, PHPCustomer, ShipmentState,
+  Locker, ShipmentState,
 } = require('../../conn/sqldb');
 const service = require('./user.service');
 

@@ -11,8 +11,10 @@ const { PACKAGE_STATE_ID_NAMES_MAP } = require('../config/constants');
 const toJSON = object => (object.toJSON ? object.toJSON() : object);
 
 exports.stateChange = async ({
-  actingUser, pkg, nextStateId, gateway, paymentGateway, packageStorageLimit, packageStorageExceededCharge,
+  actingUser, pkg, nextStateId, gateway, paymentGateway, packageStorageLimit,
+  packageStorageExceededCharge,
 }) => {
+  log('statechange');
   try {
     const customer = await User
       .findById(pkg.customer_id, {
@@ -36,7 +38,7 @@ exports.stateChange = async ({
       packageStorageExceededCharge,
     });
   } catch (err) {
-    // return next(err);
+    return err;
   }
 };
 

@@ -1,6 +1,6 @@
 const debug = require('debug');
 const {
-  Package, Store,
+  Package,
 } = require('../../../conn/sqldb');
 
 const log = debug('s.api.package.specialRequest');

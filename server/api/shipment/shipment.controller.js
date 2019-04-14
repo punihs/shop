@@ -1238,22 +1238,21 @@ exports.payResponse = async (req, res, next) => {
       }
 
       return res.redirect(`${sucessURL}?${stringify(params)}`);
-    } else {
-      logger.info('step6 shipment Payment failed');
-      await updateShipmentState({
-        shipment,
-        actingUser: customer,
-        nextStateId: PAYMENT_FAILED,
-        comments: 'payment failed',
-        next,
-      });
-
-      if (RAZOR === Number(req.query.pg)) {
-        return res.json(`${failedURL}?error='failed'&message=${msg}`);
-      }
-
-      return res.redirect(`${failedURL}?error='failed'&message=${msg}`);
     }
+    logger.info('step6 shipment Payment failed');
+    await updateShipmentState({
+      shipment,
+      actingUser: customer,
+      nextStateId: PAYMENT_FAILED,
+      comments: 'payment failed',
+      next,
+    });
+
+    if (RAZOR === Number(req.query.pg)) {
+      return res.json(`${failedURL}?error='failed'&message=${msg}`);
+    }
+
+    return res.redirect(`${failedURL}?error='failed'&message=${msg}`);
   } catch (err) {
     logger.error('error shipment payment response status Error', err);
     return next(err);
@@ -1284,8 +1283,8 @@ exports.trackingUpdate = async (req, res, next) => {
     let createAfterShip = false;
 
     if (body.tracking_code.indexOf('/') >= 0) {
-      connectingCode = body.tracking_code.split('/')[0];
-      liveCode = body.tracking_code.split('/')[1];
+      [connectingCode] = body.tracking_code.split('/');
+      [, liveCode] = body.tracking_code.split('/');
     }
 
     const shipment = await Shipment

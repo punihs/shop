@@ -6,14 +6,13 @@ const { OBJECT_TYPES: { PACKAGE } } = require('../../../config/constants');
 const db = require('../../../conn/sqldb');
 
 const {
-  Comment, User, PackageState, Follower, Package
+  Comment, User, PackageState, Follower,
 } = db;
 
 const log = debug('package');
 
 exports.index = async (req, res, next) => {
   try {
-
     const data = await db.sequelize.query('Select ' +
       'package_states.package_id as ID, ' +
       'package_states.comments, ' +

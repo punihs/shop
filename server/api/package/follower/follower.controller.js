@@ -1,7 +1,5 @@
 const debug = require('debug');
 
-const { OBJECT_TYPES: { PACKAGE } } = require('../../../config/constants');
-
 const { Follower, User, SocketSession } = require('../../../conn/sqldb');
 
 const attributes = [

@@ -24,9 +24,9 @@ exports.create = async (req, res) => {
 exports.walletShow = async (req, res) => {
   const { customer_id } = req.query;
 
-  const wallet_amount = await this.getWallet({ customer_id });
+  const walletAmount = await this.getWallet({ customer_id });
 
-  return res.json(wallet_amount);
+  return res.json(walletAmount);
 };
 
 
@@ -38,12 +38,12 @@ exports.walletUpdate = async (req, res) => {
 };
 
 exports.getWallet = async ({ customer_id: customerID }) => {
-  const wallet_amount = await rp({
+  const walletAmount = await rp({
     uri: `${URLS_MYACCOUNT}/admin/wallet?user_id=${customerID}`,
     json: true,
   });
 
-  return wallet_amount;
+  return walletAmount;
 };
 
 exports.setWallet = async ({ customer_id, amount, description }) => {

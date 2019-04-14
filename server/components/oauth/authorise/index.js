@@ -3,13 +3,11 @@ const {
   URLS_API, MASTER_TOKEN,
 } = require('../../../config/environment');
 
-module.exports = (username) => {
-  return rp({
-    method: 'POST',
-    uri: `${URLS_API}/authorise?token=${MASTER_TOKEN}`,
-    form: {
-      grant_type: 'loginAs',
-      username,
-    },
-  });
-};
+module.exports = username => rp({
+  method: 'POST',
+  uri: `${URLS_API}/authorise?token=${MASTER_TOKEN}`,
+  form: {
+    grant_type: 'loginAs',
+    username,
+  },
+});

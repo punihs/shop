@@ -12,7 +12,6 @@ const {
 
 exports.index = async (req, res, next) => {
   try {
-
     const data = await db.sequelize.query('Select ' +
       'shipment_states.shipment_id as ID, ' +
       'shipment_states.comments, ' +

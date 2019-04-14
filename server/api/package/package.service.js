@@ -289,7 +289,7 @@ exports.updateState = async ({
       state_id: nextStateId,
     };
 
-    console.log('Package State', options);
+    log('Package State', options);
 
     // if (stateIdcommentMap[nextStateId]) options.comments = stateIdcommentMap[nextStateId];
 
@@ -453,7 +453,10 @@ exports.packageStorageEmail = async () => {
   const expiringDate2 = moment(today, 'DD-MM-YYYY').add('days', (-19));
   const pkg = await Package.findAll({
     where: {
-      $and: [{ package_received_date: { $lte: expiringDate1 } }, { package_received_date: { $gte: expiringDate2 } }],
+      $and: [
+        { package_received_date: { $lte: expiringDate1 } },
+        { package_received_date: { $gte: expiringDate2 } },
+      ],
     },
     attributes: ['id', 'customer_id', 'package_received_date'],
     include: [{

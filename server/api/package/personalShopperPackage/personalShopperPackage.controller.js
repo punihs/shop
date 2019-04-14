@@ -16,7 +16,6 @@ const {
     ORDER_CREATED,
     ORDER_DELETED,
     ORDER_CANCELLED,
-    PAYMENT_COMPLETED,
     ORDER_PROCEED,
     OTHER_ITEMS_PROCEED,
   },
@@ -41,12 +40,11 @@ const fetchStoreIdOrCreate = async (storeName) => {
     });
   if (store) {
     return store.id;
-  } else {
-    const newStore = await Store
-      .create({ name: storeName, type: 'web' });
-
-    return newStore.id;
   }
+  const newStore = await Store
+    .create({ name: storeName, type: 'web' });
+
+  return newStore.id;
 };
 
 exports.create = async (req, res, next) => {
@@ -218,9 +216,6 @@ exports.create = async (req, res, next) => {
   personalShopperItem.if_item_unavailable = req.body.if_item_unavailable;
   personalShopperItem.status = 'pending';
 
-  const is_created = await PackageItem
-    .create(personalShopperItem);
-
   const packages = await Package
     .findAll({
       attributes: ['order_code'],
@@ -243,17 +238,19 @@ exports.create = async (req, res, next) => {
       }],
     });
 
-  const order_codes = await packages.map(y => y.order_code);
+  const orderCodes = await packages.map(y => y.order_code);
 
   const packageItems = await PackageItem
     .findAll({
       attributes: ['id', 'name', 'quantity', 'price_amount', 'total_amount', 'if_item_unavailable', 'color', 'url', 'size'],
       where: {
-        package_order_code: order_codes,
+        package_order_code: orderCodes,
       },
     });
 
-  return res.json({ packageItems, personalShop, hostname, storeId });
+  return res.json({
+    packageItems, personalShop, hostname, storeId,
+  });
 };
 
 

@@ -14,6 +14,7 @@ exports.stateChange = async ({
   actingUser, shipment, packages, nextStateId, address, paymentGateway,
   gateway, paymentDelayCharge, paymentDelayLimit,
 }) => {
+  log('statechange');
   try {
     const customer = await User
       .findById(shipment.customer_id, {
@@ -38,7 +39,7 @@ exports.stateChange = async ({
       paymentDelayLimit,
     });
   } catch (err) {
-    // return next(err);
+    return err;
   }
 };
 

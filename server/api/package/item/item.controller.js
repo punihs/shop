@@ -77,9 +77,12 @@ exports.create = async (req, res, next) => {
         created_by: req.user.id,
       });
 
-    await Package.update({
-      total_quantity: sequelize.literal('total_quantity + 1') }
-      , { where: { id: packageId } });
+    await Package
+      .update({
+        total_quantity: sequelize.literal('total_quantity + 1'),
+      }, {
+        where: { id: packageId },
+      });
 
     const packageDetail = await Package
       .find({

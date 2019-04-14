@@ -16,15 +16,13 @@ exports.taskCreate = (name, notes, bearer, projects, workspace) => {
     },
     form: {
       notes: details,
-      projects: projects,
+      projects,
       name: customerName,
-      workspace: workspace,
+      workspace,
     },
   };
 
-  request(options, (error, response, body) => {
+  request(options, (error) => {
     if (error) throw new Error(error);
-
-    // log(body);
   });
-}
+};

@@ -29,7 +29,7 @@ const { packageCreate } = require('./package.schema');
 
 const db = require('../../conn/sqldb');
 
-const { index, updateState, updatePackageOptions } = require('./package.service');
+const { index, updateState } = require('./package.service');
 const { getPersonalShopperItems } = require('../package/item/item.service');
 
 const {
@@ -69,8 +69,11 @@ exports.show = async (req, res, next) => {
       .findOne({
         attributes: req.query.fl
           ? req.query.fl.split(',')
-          : ['id', 'customer_id', 'created_at', 'weight', 'content_type', 'store_id', 'price_amount',
-            'personal_shopper_cost', 'delivery_charge', 'sales_tax', 'payment_gateway_fee', 'sub_total', 'transaction_id', 'buy_if_price_changed'],
+          : [
+            'id', 'customer_id', 'created_at', 'weight', 'content_type', 'store_id', 'price_amount',
+            'personal_shopper_cost', 'delivery_charge', 'sales_tax', 'payment_gateway_fee', 'sub_total',
+            'transaction_id', 'buy_if_price_changed',
+          ],
         where: options.where,
         include: [{
           model: PackageState,
@@ -324,7 +327,6 @@ exports.bulkCreate = async (req, res, next) => {
         next,
       });
     }));
-
   } catch (e) {
     return next(e);
   }
@@ -352,7 +354,8 @@ exports.state = async (req, res, next) => {
       }
     }
 
-    if ([READY_TO_SHIP, INACTIVE_LOCKER, CUSTOMER_INPUT, UPLOAD_INVOICE_REQUESTED].includes(stateId)) {
+    if ([READY_TO_SHIP, INACTIVE_LOCKER, CUSTOMER_INPUT, UPLOAD_INVOICE_REQUESTED]
+      .includes(stateId)) {
       if (!pkg.weight) {
         return res.status(400).json({ message: 'Please update weight of the package' });
       }
@@ -461,7 +464,6 @@ exports.update = async (req, res, next) => {
   try {
     const { type, shopperType } = req.query;
     const { id } = req.params;
-    const body = req.body;
 
     const packageType = shopperType === 'cod' ? COD : PERSONAL_SHOPPER;
 
@@ -470,7 +472,6 @@ exports.update = async (req, res, next) => {
     };
 
     if (type === 'psCustomerSide') {
-      const status = await updatePackageOptions(body);
       const packageItems = await getPersonalShopperItems(customerId, packageType);
 
       return res.json(packageItems);

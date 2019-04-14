@@ -17,7 +17,7 @@ const {
 
 const {
   Shipment, User, Locker, ShipmentState, Address, ShipmentMeta,
-  Package, Country, PhotoRequest, State, INQUEUE,
+  Package, Country, PhotoRequest, State,
   PackageItem, PackageCharge, Store,
 } = require('../../conn/sqldb');
 
@@ -25,10 +25,10 @@ const {
   APPS, GROUPS: { OPS, CUSTOMER },
   SHIPMENT_STATE_IDS: {
     PAYMENT_COMPLETED, PAYMENT_FAILED, PAYMENT_REQUESTED, SHIPMENT_CANCELLED, SHIPMENT_DELIVERED,
-    DISPATCHED, DELIVERED, SHIPMENT_IN_TRANSIT, CUSTOM_HOLD, LOST, SHIPMENT_HANDED, PAYMENT_CONFIRMED,
+    SHIPMENT_IN_TRANSIT, SHIPMENT_HANDED, PAYMENT_CONFIRMED,
     SHIPMENT_IN_ACTIVE,
   },
-  PACKAGE_STATE_IDS: { READY_TO_SHIP, DAMAGED },
+  PACKAGE_STATE_IDS: { READY_TO_SHIP },
   PAYMENT_GATEWAY: {
     WIRE, CASH, CARD, PAYTM, PAYPAL, WALLET, RAZOR,
   },
@@ -195,13 +195,20 @@ exports.show = async (req, res, next) => {
       },
       include: [{
         model: ShipmentMeta,
-        attributes: ['id', 'repacking_charge_amount', 'sticker_charge_amount', 'extra_packing_charge_amount', 'original_ship_box_charge__amount',
-          'consolidation_charge_amount', 'gift_wrap_charge_amount', 'gift_note_charge_amount', 'insurance_amount', 'other_charge_amount',
-          'liquid_charge_amount', 'overweight_charge_amount', 'shipment_id', 'express_processing_charge_amount'],
+        attributes: [
+          'id', 'repacking_charge_amount', 'sticker_charge_amount', 'extra_packing_charge_amount',
+          'original_ship_box_charge__amount',
+          'consolidation_charge_amount', 'gift_wrap_charge_amount', 'gift_note_charge_amount',
+          'insurance_amount', 'other_charge_amount',
+          'liquid_charge_amount', 'overweight_charge_amount', 'shipment_id',
+          'express_processing_charge_amount',
+        ],
       }, {
         model: ShipmentState,
         attributes: ['id', 'shipment_id'],
-        where: { state_id: [PAYMENT_REQUESTED, PAYMENT_FAILED, PAYMENT_COMPLETED, SHIPMENT_IN_ACTIVE] },
+        where: {
+          state_id: [PAYMENT_REQUESTED, PAYMENT_FAILED, PAYMENT_COMPLETED, SHIPMENT_IN_ACTIVE],
+        },
       }],
     };
 
@@ -238,7 +245,7 @@ exports.show = async (req, res, next) => {
     const packages = await Package
       .findAll(optionsPackage);
 
-    let estimated = shipment.estimated_amount;
+    const estimated = shipment.estimated_amount;
 
     const paymentGatewayId = req.query.payment_gateway_id ?
       Number(req.query.payment_gateway_id) : null;
@@ -305,17 +312,16 @@ exports.updateShipmentState = async ({
       }
       case PAYMENT_CONFIRMED: {
         const {
-          payment_gateway_id,
+          payment_gateway_id: _paymentGatewayID,
           final_amount: finalAmount,
           loyalty_amount: loyaltyAmount,
           wallet_amount: walletAmount,
         } = await this.transaction(shipment);
 
-        paymentGatewayID = payment_gateway_id;
+        paymentGatewayID = _paymentGatewayID;
+        log({ paymentGatewayID, finalAmount, loyaltyAmount });
 
-        log({ payment_gateway_id, finalAmount, loyaltyAmount });
-
-        if (paymentGatewayID == CASH || paymentGatewayID == WIRE) {
+        if (Number(paymentGatewayID) === CASH || Number(paymentGatewayID) === WIRE) {
           if (walletAmount < 0) {
             await transactionCtrl.setWallet({
               customer_id: shipment.customer_id,
@@ -370,7 +376,7 @@ exports.updateShipmentState = async ({
         break;
       } case SHIPMENT_HANDED: {
         const {
-          payment_gateway_id,
+          payment_gateway_id: _paymentGatewayID,
           cashback_amount: cashbackAmount,
           loyalty_amount: loyaltyAmount,
         } = await this.transaction(shipment);
@@ -379,7 +385,7 @@ exports.updateShipmentState = async ({
 
         log({ paymentGatewayID });
 
-        paymentGatewayID = payment_gateway_id;
+        paymentGatewayID = _paymentGatewayID;
 
         const DestinationCountry = Country.findOne({
           attributes: ['name'],
@@ -567,7 +573,10 @@ exports.paymentSubmitDelayEmail = async () => {
 
   const shipment = await Shipment.findAll({
     where: {
-      $and: [{ payment_submit_date: { $lte: expiringDate1 } }, { payment_submit_date: { $gte: expiringDate2 } }],
+      $and: [
+        { payment_submit_date: { $lte: expiringDate1 } },
+        { payment_submit_date: { $gte: expiringDate2 } },
+      ],
     },
     attributes: ['id', 'customer_name', 'address', 'phone', 'order_code', 'customer_id', 'payment_submit_date'],
     include: [{

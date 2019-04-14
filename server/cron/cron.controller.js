@@ -1,5 +1,4 @@
 const schedule = require('node-schedule');
-const moment = require('moment');
 
 const logger = require('./../components/logger');
 const { paymentSubmitDelayExceededEmail, paymentSubmitDelayEmail } = require('./../../server/api/shipment/shipment.service');
@@ -30,18 +29,18 @@ const paymentGateway = {
   name: null,
 };
 
-schedule.scheduleJob(' 0 1 * * *', async () => {
-  const opsUser = {
-    first_name: SUPPORT_EMAIL_FIRST_NAME,
-    last_name: SUPPORT_EMAIL_LAST_NAME,
-    email: SUPPORT_EMAIL_ID,
-  };
+const opsUser = {
+  first_name: SUPPORT_EMAIL_FIRST_NAME,
+  last_name: SUPPORT_EMAIL_LAST_NAME,
+  email: SUPPORT_EMAIL_ID,
+};
 
-  this.shipmentCron(opsUser);
-  this.packageCron(opsUser);
+schedule.scheduleJob(' 0 1 * * *', async () => {
+  this.shipmentCron();
+  this.packageCron();
 });
 
-exports.shipmentCron = async (opsUser) => {
+exports.shipmentCron = async () => {
   let nextStateId = PAYMENT_DELAY_EXCEEDED;
   const shipmentDelayExceeded = await paymentSubmitDelayExceededEmail();
   if (shipmentDelayExceeded) {
@@ -92,7 +91,16 @@ exports.shipmentCron = async (opsUser) => {
   }
 };
 
-exports.packageCron = async (opsUser) => {
+exports.shipment = async (req, res, next) => {
+  try {
+    const result = await this.shipmentCron();
+    return res.json(result);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+exports.packageCron = async () => {
   let nextStateId = PACKAGE_STORAGE_EXCEEDED;
   const packageStorageExceeded = await packageStorageExceededEmail();
 
@@ -131,5 +139,15 @@ exports.packageCron = async (opsUser) => {
         })
         .catch(err => logger.error('statechange notification', nextStateId, packageStorage, err));
     });
+  }
+};
+
+
+exports.package = async (req, res, next) => {
+  try {
+    const result = await this.packageCron();
+    return res.json(result);
+  } catch (err) {
+    return next(err);
   }
 };

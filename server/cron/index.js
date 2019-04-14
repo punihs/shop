@@ -4,8 +4,8 @@ const controller = require('./cron.controller');
 
 const router = express.Router();
 
-// router.get('/', controller.index);
-// router.get('/test', controller.test);
+router.get('/shipment', controller.shipment);
+router.get('/package', controller.package);
 
 
 module.exports = router;
