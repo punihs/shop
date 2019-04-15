@@ -22,7 +22,7 @@ class loyaltyPointsController {
   }
 
   getLayalty() {
-    this.$http.get(`$/api/phpApi/loyalty?customer_id=${this.$stateParams.customer_id}`)
+    this.$http.get(`$/phpApi/loyalty?customer_id=${this.$stateParams.customer_id}`)
       .then(({ data: { loyalty: loyaltyPoints,
         history: redeemHistory, points: loyaltyHistory } }) => {
         this.loyaltyHistory = loyaltyHistory;

@@ -41,7 +41,7 @@ class ShipRequestInvoiceController {
         });
         const transactionId = this.shipment.transaction_id;
         this.$http
-          .get(`$/api/transactions?transactionIds=${transactionId}`)
+          .get(`$/transactions?transactionIds=${transactionId}`)
           .then(({ data: transactions }) => {
             this.transactions = transactions;
           });

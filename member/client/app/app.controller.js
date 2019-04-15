@@ -40,7 +40,7 @@ class AppController {
     const credentials = this.ONESIGNAL[ENV];
 
     // This block of code is required for onesignal integration, temporarily commented
-    if (this.Session.isAuthenticated()) {
+    if (this.Session.isAuthenticated() && env !== 'development') {
       const OneSignal = window.OneSignal || [];
       OneSignal.push(() => {
         OneSignal.init({

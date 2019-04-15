@@ -27,7 +27,7 @@ class TransactionProcessingController {
 
     const qs = this.$httpParamSerializer(queryParams);
     this.$http
-      .get(`$/api/transactions/${this.id}/response?${qs}`)
+      .get(`$/transactions/${this.id}/response?${qs}`)
       .then(({ data: transaction }) => {
         this.transaction = transaction;
       })

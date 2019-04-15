@@ -43,7 +43,7 @@ class TransactionCreateController {
   }
 
   getWallet() {
-    this.$http.get(`$/api/phpApi/getWalletAndLoyalty?customer_id=${this.$stateParams.customer_id}`)
+    this.$http.get(`$/phpApi/getWalletAndLoyalty?customer_id=${this.$stateParams.customer_id}`)
       .then(({ data: { walletAmount, loyaltyAmount } }) => {
         this.walletBalanceAmount = Number(walletAmount);
         this.data.walletUsed = Number(walletAmount);
@@ -63,7 +63,7 @@ class TransactionCreateController {
   }
 
   getPaymentGateways() {
-    this.$http.get('$/api/paymentGateways')
+    this.$http.get('$/paymentGateways')
       .then(({ data: { gateWay } }) => {
         this.paymentGateways = gateWay;
       })
@@ -124,7 +124,7 @@ class TransactionCreateController {
     if (this.amount > 0) {
       const querystring = `amount=${this.amount}&coupon_code=${this.couponCode}&type=${this.data.type}`;
       this.$http
-        .put(`$/api/campaigns?${querystring}`)
+        .put(`$/campaigns?${querystring}`)
         .then(({
           data: {
             IS_DISCOUNT,
@@ -245,7 +245,7 @@ class TransactionCreateController {
 
     const method = 'get';
     return this
-      .$http[method]('$/api/transactions/create', { params: this.params })
+      .$http[method]('$/transactions/create', { params: this.params })
       .then(({ data: url }) => {
         const gateWaySeleted = Number(this.params.payment_gateway_id);
         this.submitting = false;
@@ -288,7 +288,7 @@ class TransactionCreateController {
         Object.assign(options.params, { razorPayId: this.paymentid });
         options.paymentProcessing = true;
         options.http
-          .get('$/api/transactions/create', { params : options.params })
+          .get('$/transactions/create', { params : options.params })
           .then(({ data: url }) => {
             options.window.location = url;
           })

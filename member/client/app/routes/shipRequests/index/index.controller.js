@@ -35,7 +35,7 @@ class ShipRequestsIndexController {
           const transactionIds = this.shipments.map(x => x.transaction_id);
           let transactionId = '';
           this.$http
-            .get(`$/api/transactions?transactionIds=${transactionIds}`)
+            .get(`$/transactions?transactionIds=${transactionIds}`)
             .then(({ data: transactions }) => {
               this.transactions = transactions;
 

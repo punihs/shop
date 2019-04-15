@@ -33,7 +33,7 @@ class DashboardIndexController {
     this.walletBalanceAmount = 0.00;
 
     this.$http
-      .get(`$/api/phpApi/getWalletAndLoyalty?customer_id=${this.user.id}`)
+      .get(`$/phpApi/getWalletAndLoyalty?customer_id=${this.user.id}`)
       .then(({ data: { walletAmount } }) => {
         if (walletAmount) {
           this.walletBalanceAmount = walletAmount;

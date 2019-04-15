@@ -33,7 +33,7 @@ class PersonalShopperTransactionResponseController {
         let transactionId = '';
 
         this.$http
-          .get(`$/api/transactions?transactionIds=${transactionIds}`)
+          .get(`$/transactions?transactionIds=${transactionIds}`)
           .then(({ data: transactions }) => {
             this.transactions = transactions;
 

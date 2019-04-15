@@ -20,7 +20,7 @@ class TransactionResponseController {
   $onInit() {
     const query = `customer_id=${this.customerId}&object_id=${this.object_id}`;
     this.$http
-      .get(`$/api/transactions/${this.id}/response?${query}`)
+      .get(`$/transactions/${this.id}/response?${query}`)
       .then(({ data: transaction }) => {
         this.transaction = transaction;
         if (this.transaction.payment_gateway_id === this.paymentGatewayCashID ||
