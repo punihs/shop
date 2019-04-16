@@ -351,7 +351,7 @@ const getAddress = async ({ addressId, next }) => {
         where: { id: addressId },
         include: [{
           model: Country,
-          attributes: ['name'],
+          attributes: ['name', 'iso2'],
         }],
       });
   } catch (err) {
@@ -483,16 +483,16 @@ exports.create = async (req, res, next) => {
     });
 
     // - Get Pricing from Ship API
-    const {
-      final_amount: shippingCharge,
-      standard_amount: standardAmount,
-      discount_amount: discountAmount,
-    } = await ship
+    const { prices } = await ship
       .getPricing({
-        countryId: address.country_id,
+        country: address.Country.iso2,
         weight: shipRequest.weight,
         type: packages[0].content_type,
       });
+
+    const shippingCharge = prices[0].final_cost;
+    const standardAmount = prices[0].final_cost * 2;
+    const discountAmount = prices[0].final_cost;
 
     const shipmentChargeMap = getShipmentMetaMap({
       body: req.body,

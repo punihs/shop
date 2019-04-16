@@ -3,15 +3,15 @@ const rp = require('request-promise');
 
 const log = debug('ship-index');
 
-const { URLS_SHIP } = require('../../../../config/environment');
+const { COURIER } = require('../../../../config/environment');
 
 module.exports = {
-  getPricing({ countryId, weight, type }) {
-    log('getPricing', { countryId, weight, type });
+  getPricing({ country, weight, type }) {
+    log('getPricing', { country, weight, type });
 
     const shippingCharge = rp({
-      uri: `${URLS_SHIP}/api/pricing/calcShipping`,
-      qs: { countryId, weight, type },
+      uri: `${COURIER}/api/pricing`,
+      qs: { country, weight, type, all: true },
       json: true,
     });
     log({ shippingCharge });

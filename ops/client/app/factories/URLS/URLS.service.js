@@ -2,25 +2,34 @@ angular.module('uiGenApp')
   .factory('URLS', () => {
     const { host, protocol } = window.location;
     const PREFIX = `${protocol}//${host
-      .substr(0, ((host.includes('staging')) ? host.indexOf('-') : -1) + 1)}`;
+      .includes('staging') ? host.substr(0, host.indexOf('-') + 1) : ''}`;
+
     const DOMAIN = `${host.substr(host.indexOf('.') + 1)}`;
+    const PROJECT = 'parcel';
+    const COMPONENT = 'ops';
 
-    const project = 'parcel';
-    const courier = 'courier';
+    const OAUTH_CLIENT_ID = `${PROJECT}-${COMPONENT}`;
+    const SUBDOMAIN = OAUTH_CLIENT_ID;
 
+    const buildUrl = (subdomain) => `${PREFIX}${subdomain}.${DOMAIN}`;
+    const UI_URL = buildUrl(SUBDOMAIN);
+    const LOGIN = buildUrl('login');
     return {
+      PREFIX,
+      PROJECT,
+      OAUTH_CLIENT_ID,
+      SUBDOMAIN,
+      UI_URL,
+      DOMAIN,
+      LOGIN,
+      PARCEL: buildUrl(PROJECT),
+      PAY: buildUrl('pay'),
+      ENGAGE: buildUrl('engage'),
+
       CDN: `${PREFIX}cdn.${DOMAIN}`,
-      ACCOUNTS: `${PREFIX}accounts.${DOMAIN}`,
-      HELP: `${PREFIX}ship.${DOMAIN}`,
 
-      API: `${PREFIX}api.${DOMAIN}`,
-      PARCEL_API: `${PREFIX}${project}-api.${DOMAIN}`,
-      COURIER_API: `${PREFIX}${courier}-api.${DOMAIN}`,
-      PAY_API: `${PREFIX}pay-api.${DOMAIN}`,
-      CHICKEN_API: `${PREFIX}chicken-api.${DOMAIN}`,
-      SHIP_API: `${PREFIX}ship-api.${DOMAIN}`,
-
-      OAUTH: `${PREFIX}accounts.${DOMAIN}/authorise?client_id=ops&response_type=code&` +
-      `redirect_uri=${PREFIX}parcel-ops.${DOMAIN}/access/oauth`,
+      OAUTH: `${LOGIN}/authorise?client_id=${OAUTH_CLIENT_ID}&response_type=code&` +
+      `redirect_uri=${UI_URL}/access/oauth`,
+      HELP: 'https://ship.shoppre.com',
     };
   });

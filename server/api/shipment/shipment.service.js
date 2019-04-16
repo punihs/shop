@@ -311,6 +311,7 @@ exports.updateShipmentState = async ({
         break;
       }
       case PAYMENT_CONFIRMED: {
+        console.log({ sadf: 123 });
         const {
           payment_gateway_id: _paymentGatewayID,
           final_amount: finalAmount,
@@ -319,7 +320,7 @@ exports.updateShipmentState = async ({
         } = await this.transaction(shipment);
 
         paymentGatewayID = _paymentGatewayID;
-        log({ paymentGatewayID, finalAmount, loyaltyAmount });
+        console.log({ paymentGatewayID, finalAmount, loyaltyAmount });
 
         if (Number(paymentGatewayID) === CASH || Number(paymentGatewayID) === WIRE) {
           if (walletAmount < 0) {
@@ -330,7 +331,7 @@ exports.updateShipmentState = async ({
             });
           }
         }
-
+      console.log({paymentGatewayID});
         await transactionCtrl
           .addLoyalty({
             customer_id: shipment.customer_id,

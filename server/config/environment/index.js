@@ -15,11 +15,12 @@ const config = {
     FROM_EMAIL: process.env.FROM_EMAIL || 'support@shoppre.com',
     URLS_API: `${env.PREFIX}api.${env.DOMAIN}`,
     URLS_PARCEL: `${env.PREFIX}parcel.${env.DOMAIN}`,
-    URLS_PAY: `${env.PREFIX}pay-api.${env.DOMAIN}`,
+    URLS_PAY: `${env.PREFIX}pay.${env.DOMAIN}`,
     URLS_WWW: `${env.PREFIX}www.${env.DOMAIN}`,
-    URLS_SHIP: `${env.PREFIX}ship-api.${env.DOMAIN}`,
+    URLS_SHIP: `${env.PREFIX}ship.${env.DOMAIN}`,
     PREFIX: `${env.PREFIX}`,
     DOMAIN: `${env.DOMAIN}`,
+    COURIER: `${env.PREFIX}courier.${env.DOMAIN}`,
     URLS_MYACCOUNT: env.NODE_ENV === 'development' ? 'http://localhost:8001' : `${env.PREFIX}www.${env.DOMAIN}`,
     auth: {
       google: {

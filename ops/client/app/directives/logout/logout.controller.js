@@ -23,9 +23,9 @@ class LogoutController {
 
   cleanup() {
     localStorage.clear();
-    const { ACCOUNTS } = this.URLS;
+    const { LOGIN, OAUTH_CLIENT_ID } = this.URLS;
     const { location } = this.$window;
-    location.href = `${ACCOUNTS}/logout`;
+    location.href = `${LOGIN}/logout?continue=/signin?client_id=${OAUTH_CLIENT_ID}`;
   }
 }
 

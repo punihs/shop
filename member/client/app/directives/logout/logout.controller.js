@@ -37,18 +37,19 @@ class LogoutController {
           .logout())
         .then(() => this.cleanup(), () => this.cleanup())
         .catch(() => this.cleanup());
-    } else {
-      return this.Auth
-        .logout()
-        .then(() => this.cleanup(), () => this.cleanup())
-        .catch(() => this.cleanup());
     }
+
+    return this.Auth
+      .logout()
+      .then(() => this.cleanup(), () => this.cleanup())
+      .catch(() => this.cleanup());
   }
 
   cleanup() {
-    const { ACCOUNTS } = this.URLS;
+    localStorage.clear();
+    const { LOGIN, OAUTH_CLIENT_ID } = this.URLS;
     const { location } = this.$window;
-    location.href = `${ACCOUNTS}/logout`;
+    location.href = `${LOGIN}/logout?continue=/signin?client_id=${OAUTH_CLIENT_ID}`;
   }
 }
 

@@ -10,12 +10,10 @@ angular.module('uiGenApp')
     const LOGIN = buildUrl('login');
     return {
       PREFIX,
-      UI_URL,
-      PROJECT,
-      DOMAIN,
       LOGIN,
+      OAUTH_CLIENT_ID: PROJECT,
+      UI_URL,
       COURIER: buildUrl('courier'),
-      PARCEL: UI_URL,
       PAY: buildUrl('pay'),
       ENGAGE: buildUrl('engage'),
 
