@@ -11,6 +11,7 @@ angular.module('uiGenApp')
     return {
       PREFIX,
       LOGIN,
+      DOMAIN,
       OAUTH_CLIENT_ID: PROJECT,
       UI_URL,
       COURIER: buildUrl('courier'),
