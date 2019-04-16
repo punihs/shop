@@ -22,7 +22,7 @@ angular
 
       const reverseMap = Object.keys(map).reduce((nxt, x) => Object.assign(nxt, { [x]: true }), {});
       if (type === '~' && config.url[0] === '~') {
-        config.url = `${URLS.LOGIN}/${config.url.substr(2)}`;
+        config.url = `${URLS.LOGIN}${config.url.substr(2)}`;
       } else if (reverseMap[type]) {
         config.url = `${map[type]}/api${config.url.substr(1)}`;
       }
