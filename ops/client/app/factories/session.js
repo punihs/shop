@@ -17,11 +17,11 @@ angular.module('qui.core')
       };
 
       sessionService.isAuthenticated = function isAuthenticated() {
-        return !!(sessionService.read('oauth') && sessionService.read('oauth').access_token);
+        return !!(sessionService.read('adminOauth') && sessionService.read('adminOauth').access_token);
       };
 
       sessionService.getAccessToken = function getAccessToken() {
-        return sessionService.read('oauth') && sessionService.read('oauth').access_token;
+        return sessionService.read('adminOauth') && sessionService.read('adminOauth').access_token;
       };
 
       sessionService.isAuthorized = function isAuthorized(authorizedRoles) {

@@ -33,7 +33,7 @@ class CustomersListController {
   }
 
   $onInit() {
-    this.user = this.Session.read('userinfo');
+    this.user = this.Session.read('adminUserinfo');
     this.facet = {};
     this.groupId = this.$state.params.groupId;
     if (!this.GROUPS.map(x => x.id).includes(Number(this.groupId))) {

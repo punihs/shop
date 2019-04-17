@@ -1,14 +1,14 @@
 class AppController {
   constructor($window, $uibModal, $state, $rootScope, URLS, $http, $stateParams, Session,
-    Page, socket) {
+    Page, socket, ONESIGNAL) {
     this.Page = Page;
     this.socket = socket;
     this.$stateParams = $stateParams;
     this.Session = Session;
 
-    this.userinfo = this.Session.read('userinfo');
-    this.states = this.Session.read('states');
-    this.shipmentStates = this.Session.read('shipment-states');
+    this.adminUserinfo = this.Session.read('adminUserinfo');
+    this.states = this.Session.read('adminStates');
+    this.shipmentStates = this.Session.read('adminShipment-states');
 
     this.Math = Math;
     this.URLS = URLS;
@@ -31,11 +31,16 @@ class AppController {
       },
     };
 
-    if (this.Session.isAuthenticated()) {
+    const env = URLS.DOMAIN.endsWith('.com') ? 'production' : 'development';
+    const ENV = URLS.PREFIX.includes('staging') ? 'staging' : env;
+    const credentials = ONESIGNAL[ENV];
+
+    if (this.Session.isAuthenticated() && !URLS.DOMAIN.includes('test')) {
       const OneSignal = window.OneSignal || [];
       OneSignal.push(() => {
+        OneSignal.sendTag('key', this.adminUserinfo.id);
         OneSignal.init({
-          appId: 'b7792635-0674-4e60-bef9-66d31b818a92',
+          appId: credentials,
           allowLocalhostAsSecureOrigin: true,
           autoRegister: true,
           notifyButton: {

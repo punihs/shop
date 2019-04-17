@@ -17,7 +17,7 @@ class OAuthCtrl {
       .then(() => Auth
         .setSessionData()
         .then(() => {
-          this.user = Session.read('userinfo');
+          this.user = Session.read('adminUserinfo');
           $cookies.put('cc_data', this.user.id, {
             expires: 'Thu, 01 Jan 2099 00:00:01 GMT',
           });

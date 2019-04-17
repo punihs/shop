@@ -17,7 +17,7 @@ class EmailCandidateController {
     this.email = {};
     this.email.to = this.candidateEmail;
     this.email.name = this.candidateName;
-    this.email.replyTo = JSON.parse(localStorage.getItem('userinfo')).email_id;
+    this.email.replyTo = JSON.parse(localStorage.getItem('adminUserinfo')).email_id;
   }
 
   cancel() {

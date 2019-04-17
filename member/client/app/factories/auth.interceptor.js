@@ -4,7 +4,7 @@ angular
     request: (conf) => {
       const config = conf;
 
-      if (config.url[0] === '/') config.url = `${URLS.PARCEL}/api${config.url}`;
+      if (config.url[0] === '/') config.url = `${URLS.UI_URL}/api${config.url}`;
 
       const engage = '#';
       const pay = '$';

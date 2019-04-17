@@ -8,7 +8,7 @@ class SocialShareController {
   }
 
   $onInit() {
-    this.user = this.Session.read('userinfo');
+    this.user = this.Session.read('adminUserinfo');
     const userIdBase64 = btoa(this.user.id);
     this.jobLink = `${this.URLS.APPLY}/${userIdBase64}/${this.job.job_code}`;
     this.links = {

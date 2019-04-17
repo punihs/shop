@@ -10,7 +10,7 @@ class AccessCourierController {
   }
 
   $onInIt() {
-    this.user = this.Session.read('userinfo');
+    this.user = this.Session.read('adminUserinfo');
   }
 
   accessCourier() {

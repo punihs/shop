@@ -25,8 +25,8 @@ class OrderShowController {
 
   $onInit() {
     this.data = this.pkg;
-    this.states = this.Session.read('states');
-    this.user = this.Session.read('userinfo');
+    this.states = this.Session.read('adminStates');
+    this.user = this.Session.read('adminUserinfo');
     this.totalSelectedItems = 0;
 
     this.location = this.$window.location;

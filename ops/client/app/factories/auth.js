@@ -18,7 +18,7 @@ angular.module('qui.core')
                 .join('&');
             },
           })
-          .then(response => Session.create('oauth', response.data))
+          .then(response => Session.create('adminOauth', response.data))
           .catch(
             res => {
               Session.destroy();
@@ -37,7 +37,7 @@ angular.module('qui.core')
         return $http
           .post(
             url,
-            { refresh_token: Session.read('oauth').refresh_token },
+            { refresh_token: Session.read('adminOauth').refresh_token },
             {
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
               transformRequest(obj) {
@@ -50,7 +50,7 @@ angular.module('qui.core')
             }
           )
           .then(res => {
-            Session.create('oauth', res.data);
+            Session.create('adminOauth', res.data);
             refreshingToken = false; // reset refresh_token reuqest tracker flag
             return $q.resolve(res);
           }).catch(res => {
@@ -87,13 +87,13 @@ angular.module('qui.core')
       authService.setSessionData = () => $q.all([
         $http
           .get('/users/me')
-          .then(response => Session.create('userinfo', response.data)),
+          .then(response => Session.create('adminUserinfo', response.data)),
         $http
           .get('/users/states?type=PACKAGE')
-          .then(response => Session.create('states', response.data)),
+          .then(response => Session.create('adminStates', response.data)),
         $http
           .get('/users/states?type=SHIPMENT')
-          .then(response => Session.create('shipment-states', response.data)),
+          .then(response => Session.create('adminShipment-states', response.data)),
         $http
           .get('/afterShipCarriers')
           .then(response => Session.create('afterShipCarriers', response.data)),

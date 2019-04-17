@@ -8,8 +8,8 @@
           ng-bind='$ctrl.userInitial'
         )
     .col
-      .w-full.m-t-xs.text-md.text-black.text-ellipsis(ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen' ng-bind='App.userinfo.name' title='{{App.userinfo.name}}')
-      .w-full.m-t-xs.text-black.text-ellipsis(ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen' ng-bind='App.userinfo.email' title='{{App.userinfo.email}}')
+      .w-full.m-t-xs.text-md.text-black.text-ellipsis(ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen' ng-bind='App.adminUserinfo.name' title='{{App.adminUserinfo.name}}')
+      .w-full.m-t-xs.text-black.text-ellipsis(ng-click='$ctrl.isProfPopOpen = !$ctrl.isProfPopOpen' ng-bind='App.adminUserinfo.email' title='{{App.adminUserinfo.email}}')
   .hbox
     .col.w-full.m-t-xs
       .w-full(ng-controller='LogoutController as logout')

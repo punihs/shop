@@ -23,15 +23,15 @@ class shipmentsShowController {
     // this.editAllowedStates = [16, 17, 18, 19, 21, 22, 23, 24];
     this.deleteAllowedStates = [16, 17, 18, 19, 21];
     this.location = $window.location;
-    this.user = Session.read('userinfo');
+    this.user = Session.read('adminUserinfo');
     this.$onInit();
   }
 
   $onInit() {
     this.root = '_root_';
     this.modal = {};
-    this.states = this.Session.read('shipment-states');
-    this.user = this.Session.read('userinfo');
+    this.states = this.Session.read('adminShipment-states');
+    this.user = this.Session.read('adminUserinfo');
     this.paymentMode(this.data);
   }
 

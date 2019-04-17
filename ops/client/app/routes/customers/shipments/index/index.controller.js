@@ -29,7 +29,7 @@ class CustomersShipmentsIndexController {
     this.todayDate = '';
     this.shipmentStateId = this.QCONFIG.SHIPMENT_STATE_IDS;
     this.buckets = this.QCONFIG.SHIPMENT_STATES;
-    this.states = this.Session.read('shipment-states');
+    this.states = this.Session.read('adminShipment-states');
 
     this.customer = this.customer || {};
     this.Page.setTitle(`${this.customer.name ? `${this.customer.name} - ` : ''} ${

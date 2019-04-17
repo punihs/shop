@@ -6,19 +6,17 @@ angular.module('uiGenApp')
 
     const DOMAIN = `${host.substr(host.indexOf('.') + 1)}`;
     const PROJECT = 'parcel';
-    const COMPONENT = 'ops';
+    const COMPONENT = 'admin';
 
     const OAUTH_CLIENT_ID = `${PROJECT}-${COMPONENT}`;
-    const SUBDOMAIN = OAUTH_CLIENT_ID;
 
     const buildUrl = (subdomain) => `${PREFIX}${subdomain}.${DOMAIN}`;
-    const UI_URL = buildUrl(SUBDOMAIN);
+    const UI_URL = buildUrl(PROJECT);
     const LOGIN = buildUrl('login');
     return {
       PREFIX,
       PROJECT,
       OAUTH_CLIENT_ID,
-      SUBDOMAIN,
       UI_URL,
       DOMAIN,
       LOGIN,
@@ -29,7 +27,7 @@ angular.module('uiGenApp')
       CDN: `${PREFIX}cdn.${DOMAIN}`,
 
       OAUTH: `${LOGIN}/authorise?client_id=${OAUTH_CLIENT_ID}&response_type=code&` +
-      `redirect_uri=${UI_URL}/access/oauth`,
+      `redirect_uri=${UI_URL}/${COMPONENT}/access/oauth`,
       HELP: 'https://ship.shoppre.com',
     };
   });

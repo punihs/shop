@@ -26,7 +26,7 @@ class CustomerOrdersIndexController {
       { id: 2, name: 'Created Date', key: 'created_at DESC' },
     ];
     this.ExcelDownload = ExcelDownload;
-    this.states = this.Session.read('states');
+    this.states = this.Session.read('adminStates');
     this.ChangeState = ChangeState;
     this.$onInit();
   }

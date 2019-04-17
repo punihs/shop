@@ -11,7 +11,7 @@
     }
 
     $onInit() {
-      this.user = this.Session.read('userinfo');
+      this.user = this.Session.read('adminUserinfo');
       this.states = this.Session.read(`${this.type === 'shipment' ? 'shipment-' : ''}states`);
       this.post = { comments: '' };
       this.followers = [];

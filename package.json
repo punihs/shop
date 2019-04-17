@@ -13,6 +13,7 @@
     "check-logs": "cd logs; for x in *.log; do tput setaf 1;cat $x; tput sgr 0;done; exit 0;",
     "bench-api": "node  ./scripts/githubStatusCheck/after.js",
     "migrate": "DEBUG=s.*  sequelize db:migrate;",
+    "tunnel": "ssh -R shoppre:80:localhost:9000 serveo.net",
     "seed": " DEBUG=s.*  sequelize db:seed:all",
     "copy": "cp -r ./auth/logs/* ./logs",
     "test": "NODE_ENV=test nyc --reporter=text mocha --opts .mocharc server/api/**/*.spec.js --exit | grep -v '100'",

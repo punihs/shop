@@ -26,7 +26,7 @@ class ShipmentsIndexController {
       { id: 3, name: 'Name', key: 'customer_name DESC' },
     ];
     this.ExcelDownload = ExcelDownload;
-    this.states = this.Session.read('shipment-states');
+    this.states = this.Session.read('adminShipment-states');
     this.ChangeShipmentState = ChangeShipmentState;
     this.$onInit();
   }

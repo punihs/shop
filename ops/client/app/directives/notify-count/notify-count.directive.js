@@ -18,7 +18,7 @@ class NotifyCountController {
   }
 
   fetchNotificationCount() {
-    const user = this.Session.read('userinfo');
+    const user = this.Session.read('adminUserinfo');
     if (!user) return setTimeout(this.fetchNotificationCount, 1000);
     return this
       .$http

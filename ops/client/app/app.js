@@ -1,7 +1,7 @@
 // const raven = Raven.config('https://a4576e2b58fa419d9a76610db580a7b0@sentry.shoppre.com/5', {});
 //
-// if (localStorage.userinfo) {
-//   const user = JSON.parse(localStorage.userinfo);
+// if (localStorage.adminUserinfo) {
+//   const user = JSON.parse(localStorage.adminUserinfo);
 //   raven.setUser({
 //     id: user.id,
 //     email: user.email,
@@ -64,6 +64,11 @@ angular.module('uiGenApp', [
     line2: '7th Main, 1st Block Koramangala,',
     line3: 'Bengaluru, Karnataka,560034',
     phone: '+91 9148351414',
+  })
+  .constant('ONESIGNAL', {
+    development: '91cbfcb8-6ad5-4128-a0f6-a653eeeaac4c',
+    staging: '98049cea-88e2-49b5-b2a3-d6c5fe0d6dbf',
+    production: 'd0bf3fb3-1bd7-4ad8-9ba0-85ca0eb1273f',
   })
   // .factory('$exceptionHandler', () => (exception) => Raven.captureException(exception))
   // .factory('errorHttpInterceptor', ($q) => ({

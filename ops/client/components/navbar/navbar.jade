@@ -27,7 +27,7 @@
     //ng-focus="App.openSearchCandidate($event)"
 
     aside
-    .col-sm-5.col-md-2: form.w-full.navbar-form.no-padder.hide(role='search' ng-if="!App.userinfo.isBlocked")
+    .col-sm-5.col-md-2: form.w-full.navbar-form.no-padder.hide(role='search' ng-if="!App.adminUserinfo.isBlocked")
       .form-group.w-full: .input-group.w-full(ng-hide="App.fullPage==true")
         span.input-group-btn.b-white(style='width: 1%', ng-class='{"b-b": NavBar.isSearchOpen}', ng-click='NavBar.isSearchOpen=!NavBar.isSearchOpen;NavBar.ui.setfocus();')
           a.btn.btn-xs

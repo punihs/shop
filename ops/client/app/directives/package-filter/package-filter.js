@@ -9,7 +9,7 @@ class PackageFilterController {
   }
 
   $onInit() {
-    this.user = this.Session.read('userinfo');
+    this.user = this.Session.read('adminUserinfo');
     this.facet = '';
     this.ui = {
       selected: {},

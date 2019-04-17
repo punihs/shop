@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <base href="/">
+  <base href="/admin/">
   <title ng-bind="App.Page.title()"> OPS</title>
   <meta name="description" content="dashboard, recruiter, client">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -116,8 +116,8 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
   ga('create', 'UA-129193448-2', 'auto');
-  if(localStorage.userinfo) {
-    user = JSON.parse(localStorage.userinfo)
+  if(localStorage.adminUserinfo) {
+    user = JSON.parse(localStorage.adminUserinfo)
     ga('set', 'userId', user.id);
   }
   ga('send', 'pageview');
