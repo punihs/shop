@@ -13,7 +13,7 @@ class ChangeStateController {
   }
 
   $onInit() {
-    this.states = this.Session.read('states');
+    this.states = this.Session.read('adminStates');
     this.today = new Date();
     this.ui = { checking: false };
     this.submitting = false;
@@ -72,7 +72,7 @@ class ChangeStateService {
   }
 
   $onInit() {
-    this.states = this.Session.read('states');
+    this.states = this.Session.read('adminStates');
   }
 
   open(pkg, stateId, customerId) {

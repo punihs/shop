@@ -45,7 +45,7 @@ class ChangeShipmentStateController {
         allPackageItemsScanned: false,
       },
     };
-    this.states = this.Session.read('shipment-states');
+    this.states = this.Session.read('adminShipment-states');
     this.today = new Date();
     this.ui = { checking: false };
     this.submitting = false;
@@ -156,7 +156,7 @@ class ChangeShipmentStateService {
   }
 
   $onInit() {
-    this.states = this.Session.read('shipment-states');
+    this.states = this.Session.read('adminShipment-states');
   }
 
   open(shipment, stateId, customerId) {
