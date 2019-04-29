@@ -216,6 +216,9 @@ exports.create = async (req, res, next) => {
   personalShopperItem.if_item_unavailable = req.body.if_item_unavailable;
   personalShopperItem.status = 'pending';
 
+  const is_created = await PackageItem
+    .create(personalShopperItem);
+
   const packages = await Package
     .findAll({
       attributes: ['order_code'],
