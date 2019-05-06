@@ -3,6 +3,8 @@ class OAuthCtrl {
   /* @ngInject */
   constructor(Auth, $location, $window, $state, URLS, $rootScope, Session, toaster) {
     const query = $location.search();
+    console.log('query', query);
+    debugger;
     if (query.error) {
       this.authErr = {
         error: query.error,

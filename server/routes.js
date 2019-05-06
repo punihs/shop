@@ -79,8 +79,8 @@ module.exports = (app) => {
   app.use('/api/users/public', userPublic);
   app.use(
     '/api/users',
-    user,
     authenticate(),
+    user,
     userPackage,
     userShipment,
     userShippingPreference,

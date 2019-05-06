@@ -12,6 +12,7 @@ const checkDuplicate = email => User.find({
 
 exports.signup = async ({ body, next }) => {
   try {
+    console.log('user Signup Body', body);
     const {
       id,
       salutation,
@@ -28,6 +29,9 @@ exports.signup = async ({ body, next }) => {
       gcl_id,
       hooks,
     } = body;
+
+    console.log('fisrt name', firstName);
+    console.log('last name', lastName);
 
     const email = e.trim();
     // - Todo: Email Validation
@@ -48,8 +52,8 @@ exports.signup = async ({ body, next }) => {
       .create({
         id,
         salutation,
-        first_name: firstName.charAt(0).toUpperCase() + firstName.slice(1),
-        last_name: lastName.charAt(0).toUpperCase() + lastName.slice(1),
+        first_name: firstName !== undefined ? firstName.charAt(0).toUpperCase() + firstName.slice(1) : firstName,
+        last_name: lastName !== undefined ? lastName.charAt(0).toUpperCase() + lastName.slice(1) : lastName,
         email,
         phone,
         referer,

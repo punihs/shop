@@ -1,6 +1,6 @@
 class ShipRequestConfirmController {
   constructor(
-    $http, Page, $stateParams, $location, toaster, $state, $uibModal,
+    $http, Page, $stateParams, $location, toaster, $state, $uibModal, URLS,
     $window, CONFIG,
   ) {
     this.$http = $http;
@@ -9,6 +9,7 @@ class ShipRequestConfirmController {
     this.toaster = toaster;
     this.$window = $window;
     this.$stateParams = $stateParams;
+    this.URLS = URLS;
     this.$state = $state;
     this.$uibModal = $uibModal;
     this.CONFIG = CONFIG;
@@ -105,6 +106,7 @@ class ShipRequestConfirmController {
         });
       })
       .catch((err) => {
+        debugger;
         this
           .toaster
           .pop('error', err.data.message);
@@ -112,14 +114,16 @@ class ShipRequestConfirmController {
   }
 
   submitPayment() {
-    this.$state.go('transaction.create', {
-      id: this.shipment.id,
-      amount: this.payment.amount,
-      object_id: this.shipment.order_code,
-      customer_id: this.shipment.customer_id,
-      axis_banned: this.shipment.is_axis_banned_item,
-      type: 'shipment',
-    });
+    // this.$state.go('transaction.create', {
+    //   id: this.shipment.id,
+    //   amount: this.payment.amount,
+    //   object_id: this.shipment.order_code,
+    //   customer_id: this.shipment.customer_id,
+    //   axis_banned: this.shipment.is_axis_banned_item,
+    //   type: 'shipment',
+    // });
+    const url = `${this.URLS.PAY}/transactions/${this.shipment.order_code}/create?id=${this.shipment.id}&amount=${this.shipment.estimated_amount}&object_id=${this.shipment.order_code}&customer_id=${this.shipment.customer_id}&axis_banned=${this.shipment.is_axis_banned_item}&type=shipment`;
+    this.$window.location.href = url;
   }
 }
 

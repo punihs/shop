@@ -43,7 +43,7 @@ export default function (app) {
   }
 
   if ('development' === env) {
-    app.use(require('connect-livereload')({ port: 12346 }));
+    app.use(require('connect-livereload')({ port: 13446 }));
   }
 
   if ('development' === env || 'test' === env) {

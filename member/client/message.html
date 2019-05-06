@@ -1,0 +1,15 @@
+<html>
+<head>
+  <script>
+    function onMessage(e) {
+      if(e.data !== 'credentials') return;
+      console.log('sedbubg resoibse')
+      window.parent.postMessage(['oauth', 'userinfo'].map(x => localStorage.getItem(x)), '*');
+
+    }
+    window.addEventListener('message', onMessage);
+  </script>
+</head>
+<body>
+</body>
+</html>

@@ -1,10 +1,12 @@
 class IndexController {
-  constructor($http, Page, toaster, CONFIG, moment, Session, $location) {
+  constructor($http, Page, toaster, $window, CONFIG, moment, URLS, Session, $location) {
     this.$http = $http;
     this.Page = Page;
     this.toaster = toaster;
     this.CONFIG = CONFIG;
+    this.URLS = URLS;
     this.moment = moment;
+    this.$window = $window;
     this.Session = Session;
     this.$location = $location;
     this.error = this.$location.search().error;
@@ -151,6 +153,11 @@ class IndexController {
           .toaster
           .pop('error', err.data.message);
       });
+  }
+
+  retryPayment(pkg) {
+    const url = `${this.URLS.PAY}/access/login?id=${pkg.id}&amount=${pkg.sub_total}&object_id=${pkg.id.toString()}&customer_id=${this.customerId}&axis_banned=false&type=${this.packageType}`;
+    this.$window.location.href = url;
   }
 }
 

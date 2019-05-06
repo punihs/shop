@@ -21,6 +21,20 @@ describe('GET /api/users', () => {
   });
 });
 
+
+// describe('GET /api/users/public/register', () => {
+//   it('return users', (done) => {
+//     request(app)
+//       .get('/api/users')
+//       .set('Authorization', `Bearer ${auth.access_token}`)
+//       .expect('Content-Type', /json/)
+//       .expect(200)
+//       .then(() => {
+//         done();
+//       });
+//   });
+// });
+
 describe('GET /api/users/states', () => {
   it('return users', (done) => {
     request(app)

@@ -490,9 +490,17 @@ exports.create = async (req, res, next) => {
         type: packages[0].content_type,
       });
 
-    const shippingCharge = prices[0].final_cost;
-    const standardAmount = prices[0].final_cost * 2;
-    const discountAmount = prices[0].final_cost;
+    console.log({ prices });
+
+    let shippingCharge = 0;
+    let standardAmount = 0;
+    let discountAmount = 0;
+
+    if (prices.length) {
+      shippingCharge = prices[0].final_cost;
+      standardAmount = prices[0].final_cost * 2;
+      discountAmount = prices[0].final_cost;
+    }
 
     const shipmentChargeMap = getShipmentMetaMap({
       body: req.body,
@@ -1176,43 +1184,26 @@ exports.paymentState = async (req, res, next) => {
 
 exports.payResponse = async (req, res, next) => {
   try {
-    const failedURL = `${URLS_PARCEL}/shipRequests`;
-    const sucessURL = `${URLS_PARCEL}/transactions/${req.query.transaction_id}/response`;
-    const { status } = req.query;
-    const msg = {
-      1: 'Looks like you cancelled the payment. You can try again now or if you ' +
-      'faced any issues in completing the payment, please contact us.',
-      2: 'Security Error! Please try again after sometime or contact us for support.',
-      3: 'Payment transaction failed! You can try again now or if you faced any issues in ' +
-      'completing the payment, please contact us.',
-      4: 'Unexpected error occurred and payment has been failed',
-      5: 'invalid payment gateway',
-      6: 'success',
-    }[status];
+    const { body } = req;
 
-    logger.info('step2 message and shipment Code', req.params.id, msg);
+    console.log('Payment response', body);
 
     const shipment = await Shipment
-      .find({ where: { order_code: req.params.id } });
+      .find({ where: { order_code: body.object_id } });
     // - Todo: Security issue
-    const customer = await User.findById(req.query.uid, { raw: true });
-
-    logger.info('step3 shipment', JSON.stringify(Shipment));
+    const customer = await User.findById(body.customer_id, { raw: true });
 
     const SUCCESS = '6';
-    log(req.query.status);
-    log(req.query);
+    log(body.status);
 
-    if (req.query.status === SUCCESS) {
-      logger.info('step4 shipment success block');
-
+    if (body.status === SUCCESS) {
       await Shipment.update({
-        transaction_id: req.query.transaction_id,
-        payment_gateway_id: req.query.pg,
-        final_amount: req.query.amount,
-        payment_gateway_fee_amount: req.query.pgAmount || 0,
+        transaction_id: body.transaction_id,
+        payment_gateway_id: body.paymentGateway,
+        final_amount: body.amount,
+        payment_gateway_fee_amount: body.pgAmount || 0,
         payment_status: 'success',
-      }, { where: { order_code: req.params.id } });
+      }, { where: { order_code: body.object_id } });
 
       logger.info('step5 shipment success block updated success');
 
@@ -1220,39 +1211,21 @@ exports.payResponse = async (req, res, next) => {
         shipment,
         actingUser: customer,
         nextStateId: PAYMENT_COMPLETED,
-        comments: `Payment ${req.query.paymentStatus}!`,
+        comments: `Payment ${body.status}!`,
         next,
       });
-
-      const { amount } = req.query;
-      const params = {
-        object_id: shipment.order_code,
-        customer_id: req.query.uid,
-        status: 'sucess',
-        message: msg,
-        amount,
-      };
-
-      if (RAZOR === Number(req.query.pg)) {
-        return res.json(`${sucessURL}?${stringify(params)}`);
-      }
-
-      return res.redirect(`${sucessURL}?${stringify(params)}`);
-    }
-    logger.info('step6 shipment Payment failed');
-    await updateShipmentState({
-      shipment,
-      actingUser: customer,
-      nextStateId: PAYMENT_FAILED,
-      comments: 'payment failed',
-      next,
-    });
-
-    if (RAZOR === Number(req.query.pg)) {
-      return res.json(`${failedURL}?error='failed'&message=${msg}`);
+    } else {
+      logger.info('step6 shipment Payment failed');
+      await updateShipmentState({
+        shipment,
+        actingUser: customer,
+        nextStateId: PAYMENT_FAILED,
+        comments: 'payment failed',
+        next,
+      });
     }
 
-    return res.redirect(`${failedURL}?error='failed'&message=${msg}`);
+    return res.json({ status: 'success' });
   } catch (err) {
     logger.error('error shipment payment response status Error', err);
     return next(err);

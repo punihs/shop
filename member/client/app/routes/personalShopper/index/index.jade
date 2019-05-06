@@ -86,7 +86,7 @@
                   p Awaiting Payment
                   p It might take upto 24 Hours to reflect your payments into our account.
                   p
-                    a.summary-order(ui-sref='transaction.create({id: package.id, amount: package.sub_total, object_id: package.id.toString(), customer_id: $ctrl.customerId, axis_banned: false, type: $ctrl.packageType})') Change Payment Method
+                    a.summary-order(ng-click='$ctrl.retryPayment(package)') Change Payment Method
                 span(ng-if="package.payment_status === 'success' && (package.payment_gate_id == $ctrl.PAYMENT_GATEWAY.CARD || package.payment_gate_id == $ctrl.PAYMENT_GATEWAY.PAYPAL || $ctrl.package.payment_gate_id == $ctrl.PAYMENT_GATEWAY.PAYTM)")
                   p Awaiting Payment
                   p It might take upto 24 Hours to reflect your payments into our account.
@@ -139,7 +139,8 @@
                   a.summary-order(ng-click="$ctrl.itemsProceed(package.id, $index)") Proceed with Other Items
               div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.PAYMENT_FAILED')
                 p
-                  a.summary-order(ui-sref='transaction.create({id: package.id, amount: package.sub_total, object_id: package.id.toString(), customer_id: $ctrl.customerId, axis_banned: false, type: $ctrl.packageType})') Retry Payment
+                  //a.summary-order(ui-sref='transaction.create({id: package.id, amount: package.sub_total, object_id: package.id.toString(), customer_id: $ctrl.customerId, axis_banned: false, type: $ctrl.packageType})') Retry Payment
+                  a.summary-order(ng-click='$ctrl.retryPayment(package)') Retry Payment
               div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.OUT_OF_STOCK')
                 p {{package.PackageState.State.name}}
                   i.fa.fa-info-circle.m-l-xs(

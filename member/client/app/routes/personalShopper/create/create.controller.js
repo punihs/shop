@@ -1,11 +1,12 @@
 class CreateController {
-  constructor($http, Page, Session, $state, toaster, $stateParams, S3, URLS) {
+  constructor($http, Page, Session, $state, toaster, $stateParams, S3, URLS, $window) {
     this.$http = $http;
     this.Page = Page;
     this.Session = Session;
     this.toaster = toaster;
     this.$state = $state;
     this.S3 = S3;
+    this.$window = $window;
     this.$stateParams = $stateParams;
     this.URLS = URLS;
     this.$onInit();
@@ -414,14 +415,9 @@ class CreateController {
 
     const id = this.packageData.map(x => x.id);
 
-    this.$state.go('transaction.create', {
-      id,
-      amount: this.totalAmount,
-      object_id: id.toString(),
-      customer_id: this.Session.read('userinfo').id,
-      axis_banned: false,
-      type: shopperType,
-    });
+    const customerId = this.Session.read('userinfo').id;
+    const url = `${this.URLS.PAY}/access/login?id=${id}&amount=${this.totalAmount}&object_id=${id.toString()}&customer_id=${customerId}&axis_banned=false&type=${shopperType}`;
+    this.$window.location.href = url;
   }
 }
 

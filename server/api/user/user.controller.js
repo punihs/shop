@@ -121,7 +121,8 @@ exports.me = async (req, res, next) => {
 
 exports.states = async (req, res, next) => {
   try {
-    const groupId = Number(req.user.group_id);
+    console.log('request', req.query, req.user);
+    const groupId = Number(req.user.group_id) || 1;
 
     const states = await State
       .findAll({
@@ -274,10 +275,9 @@ const messagesMap = {
 
 exports.register = async (req, res, next) => {
   try {
-    log('register');
-
+    console.log('Google Signup User data');
     const status = await service
-      .signup({ body: req.body });
+      .signup({ body: req.body, next });
 
     return res
       .status(status.code)

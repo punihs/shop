@@ -15,7 +15,7 @@ router.put('/personalShopperPackage/:id/itemsProceed', controller.itemsProceed);
 router.put('/personalShopperPackage/:id/updateItem', controller.updateItem);
 router.get('/personalShopperPackage/history', controller.history);
 router.get('/personalShopperPackage/paymentSuccess', controller.paymentSuccess);
-router.get('/:id/response/payment', controllerService.payResponse);
+router.post('/:id/response/payment', controllerService.payResponse);
 
 module.exports = router;
 

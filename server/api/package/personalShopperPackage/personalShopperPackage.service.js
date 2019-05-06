@@ -31,34 +31,38 @@ const getPackages = async (ids) => {
 
 exports.payResponse = async (req, res, next) => {
   try {
-    const failedURL = `${URLS_PARCEL}/personalShopper/index`;
-    const sucessURL = `${URLS_PARCEL}/personalShopper/transactions/response`;
-    const { status } = req.query;
-    const msg = {
-      1: 'Looks like you cancelled the payment. You can try again now or if you ' +
-      'faced any issues in completing the payment, please contact us.',
-      2: 'Security Error! Please try again after sometime or contact us for support.',
-      3: 'Payment transaction failed! You can try again now or if you faced any issues in ' +
-      'completing the payment, please contact us.',
-      4: 'Unexpected error occurred and payment has been failed',
-      5: 'invalid payment gateway',
-      6: 'success',
-    }[status];
+    // const failedURL = `${URLS_PARCEL}/personalShopper/index`;
+    // const sucessURL = `${URLS_PARCEL}/personalShopper/transactions/response`;
+    // const { status } = req.query;
+    // const msg = {
+    //   1: 'Looks like you cancelled the payment. You can try again now or if you ' +
+    //   'faced any issues in completing the payment, please contact us.',
+    //   2: 'Security Error! Please try again after sometime or contact us for support.',
+    //   3: 'Payment transaction failed! You can try again now or if you faced any issues in ' +
+    //   'completing the payment, please contact us.',
+    //   4: 'Unexpected error occurred and payment has been failed',
+    //   5: 'invalid payment gateway',
+    //   6: 'success',
+    // }[status];
+    const { body } = req;
 
-    const objectId = req.params.id;
+    console.log('Body', body);
 
-    const customer = await User.findById(req.query.uid, { raw: true });
+    const objectId = body.id;
+
+    const customer = await User.findById(body.customer_id, { raw: true });
 
     const SUCCESS = '6';
-    log(req.query.status);
-    log(req.query);
+    log(body.status);
+    log(body.query);
 
-    const ids = objectId.split(',');
+    const ids = objectId.toString().includes(',') === true ? objectId.split(',') : objectId;
+
     await Package.update({
-      transaction_id: req.query.transaction_id,
-    }, { where: { id: objectId.split(',') } });
+      transaction_id: body.transaction_id,
+    }, { where: { id: ids } });
 
-    if (req.query.status === SUCCESS) {
+    if (body.status === SUCCESS) {
       const pkg = await getPackages(ids);
 
       pkg.forEach((x) => {
@@ -70,21 +74,6 @@ exports.payResponse = async (req, res, next) => {
           next,
         });
       });
-
-      const { amount } = req.query;
-      const params = {
-        object_id: req.query.object_id,
-        customer_id: req.query.uid,
-        status: 'sucess',
-        message: msg,
-        amount,
-      };
-
-      if (RAZOR === Number(req.query.pg)) {
-        res.json(`${sucessURL}?${stringify(params)}`);
-      } else {
-        res.redirect(`${sucessURL}?${stringify(params)}`);
-      }
     } else {
       const pkg = await getPackages(ids);
 
@@ -97,13 +86,8 @@ exports.payResponse = async (req, res, next) => {
           next,
         });
       });
-
-      if (RAZOR === Number(req.query.pg)) {
-        res.json(`${failedURL}?error='failed'&message=${msg}`);
-      } else {
-        res.redirect(`${failedURL}?error='failed'&message=${msg}`);
-      }
     }
+    return res.status(200).json({ status: 'updated' });
   } catch (err) {
     next(err);
   }
