@@ -1,4 +1,4 @@
-const event = require('../../conn/events');
+const event = require('../../../../../../silk/chat/server/conn/events');
 const subjectMap = require('../package/emails/state-change/subject');
 // const { PREFIX, DOMAIN } = require('../../config/environment');
 

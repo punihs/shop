@@ -1,7 +1,6 @@
 const debug = require('debug');
-const ses = require('../../../../engage/server/conn/email/ses');
 const subjectMap = require('../shipment/emails/state-change/subject');
-const event = require('../../conn/events');
+const event = require('../../../../../../silk/chat/server/conn/events');
 
 const log = debug('s-api-shipment-notification');
 

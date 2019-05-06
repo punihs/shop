@@ -1,16 +1,13 @@
 class LogoutController {
-  constructor(URLS, $window, $cookies, Session, $http, Auth) {
+  constructor(URLS, $window, Session, $http, Auth) {
     this.URLS = URLS;
     this.$window = $window;
-    this.$cookies = $cookies;
     this.Session = Session;
     this.$http = $http;
     this.Auth = Auth;
   }
 
   $onInit() {
-    // Removing chat user cookie
-    this.$cookies.remove('cc_data');
     this.notify = this.Session.read('notify');
 
     return this.$http

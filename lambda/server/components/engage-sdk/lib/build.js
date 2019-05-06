@@ -2,7 +2,7 @@ const debug = require('debug');
 const rp = require('request-promise');
 const logger = require('../../logger');
 const { root, CURRENT_EMAIL, project } = require('../config');
-const ses = require('../../../../../engage/server/conn/email/ses');
+const ses = require('../../../../../../../silk/chat/server/conn/email/ses');
 
 const log = debug('s-emails-lib-build');
 

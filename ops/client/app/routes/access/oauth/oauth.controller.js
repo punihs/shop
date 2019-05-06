@@ -1,6 +1,6 @@
 class OAuthCtrl {
   /* @ngInject */
-  constructor(Auth, $location, $cookies, $window, $state, URLS, $rootScope, Session, toaster) {
+  constructor(Auth, $location, $window, $state, URLS, $rootScope, Session, toaster) {
     const query = $location.search();
     if (query.error) {
       this.authErr = {
@@ -18,9 +18,6 @@ class OAuthCtrl {
         .setSessionData()
         .then(() => {
           this.user = Session.read('adminUserinfo');
-          $cookies.put('cc_data', this.user.id, {
-            expires: 'Thu, 01 Jan 2099 00:00:01 GMT',
-          });
 
           const location = $window.location;
           // Used for updating session
