@@ -35,7 +35,16 @@ exports.index = async (req, res, next) => {
     const count = await Address
       .count({ where: { customer_id: options.where.customer_id } });
 
-    return res.json({ addresses, count, addressLimit: ADDRESS_COUNT });
+    const defaultAddress = await Address
+      .find({
+        where: { is_default: true },
+        include: [{
+          model: Country,
+          attributes: ['id', 'name'],
+        }],
+      });
+
+    return res.json({ addresses, count, addressLimit: ADDRESS_COUNT, defaultAddress });
   } catch (err) {
     return next(err);
   }

@@ -1,85 +1,51 @@
-section.ship_response.toreview
-  .container.m-t
-    .row.m-t
-      .col-md-8.m-t-xs
-        .longblock
-          h3
-            b.title THANK YOU FOR CREATING YOUR SHIP REQUEST!
-          h3.alert-success Hello there! :)
-          p We are excited to start preparing your parcel!
-          p
-            | Kindly note that you can no longer change the selection of your packages, Shipping Options and Delivery Address.
-          p
-            | Shoppre might take up to a maximum period of 24 Hours to pack your items, weigh your parcel and update your shipment totals.
-          p
-            | We usually try to get back to you with your Final Shipment Charges as soon as possible, unless during peak hours or some of your parcels which are put on hold due to its special handling requirement, and hence we might take additional time to notify you and get your approval in certain cases.
-          h4
-            | You shall be notified via email when your packages are ready to be shipped from the Shoppre facility. You can now view your shipment in the
-            a.summary-order(ui-sref='shipRequests.index')&nbsp; Queue
-            | .
-          i
-            | P.S. Cancel your shipment right now if you wish to do so, before we start processing your shipment.
-          p.text-orange.summary-order.m-t
-            | Please remember that once your package is ready to be shipped and your final cost is updated, KINDLY SUBMIT YOUR PAYMENT WITHIN 7 DAYS. From the 8th day, your parcel will start accumulating Storage fees of INR 100/day which you can view in your Shoppre wallet.
-          .text-center.hidden-xs
-            a.btn.btn-success(ui-sref='shipRequests.index', style='border-radius: 5px;margin-top: 15px;')&nbsp; I WILL BE AWAITING YOUR NOTIFICATION EMAIL TO SUBMIT MY PAYMENT
-          a.text-success.hidden-md.hidden-lg.hidden-sm(ui-sref='shipRequests.index', style='border-radius: 5px;margin-top: 15px;')
-            u I WILL BE AWAITING YOUR NOTIFICATION EMAIL TO SUBMIT MY PAYMENT
-          .splitbox.alert-info
-            h3 Shipment Details:
-            p # {{$ctrl.shipment.order_code}}
-            hr
-            h3 Shipping Address:
-            h4 {{$ctrl.shipment.customer_name}}
-            p {{$ctrl.shipment.address}}
-            p Phone: {{$ctrl.shipment.phone}}
-      .col-md-4.m-t-xs
-        .col-md-6.sidebarSpecial.white-border
-          .col-md-2.no-padder
-            img(src='/assets/images/dashico1.png')
-          .col-md-6
-            .h4.text-u-c
-              a(ng-href='{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/country-guide') Country Guides
-        .col-md-6.sidebarSpecial
-          .col-md-2.no-padder
-            img(src='/assets/images/dashico2.png')
-          .col-md-9
-            .h4.text-u-c
-              a(ng-href='{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/browse-categories') Brands you love
-        .col-md-6.sidebarSpecial.m-t-xs.white-border
-          .col-md-2.no-padder
-            img(src='/assets/images/dashico3.png')
-          .col-md-9
-            .h4.text-u-c
-              a(ng-href='{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/pricing') Shipping Calculator
-        .col-md-6.sidebarSpecial.m-t-xs
-          .col-md-2.no-padder
-            img(src='/assets/images/dashico4.png')
-          .col-md-9
-            .h4.text-u-c
-              a(ui-sref='personalShopper.create') Personal Shopper
-        .col-md-6.sidebarSpecial.m-t-xs.white-border
-          .col-md-2.no-padder
-            img(src='/assets/images/dashico5.png')
-          .col-md-9
-            .h4.text-u-c
-              a(ng-href='') Exchange Rates
-        .col-md-6.sidebarSpecial.m-t-xs
-          .col-md-2.no-padder
-            img(src='/assets/images/dashico6.png')
-          .col-md-9
-            .h4.text-u-c
-              a(ng-href='{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/services') Our Services
-        .col-md-6.sidebarSpecial.m-t-xs.white-border
-          .col-md-2.no-padder
-            img(src='/assets/images/dashico7.png')
-          .col-md-9
-            .h4.text-u-c
-              a(ng-href='{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/address') Address Book
-        .col-md-6.sidebarSpecial.m-t-xs
-          .col-md-2.no-padder
-            img(src='/assets/images/dashico8.png')
-          .col-md-9
-            .h4.text-u-c.top-margin-10
-              a(ng-href='{{$ctrl.URLS.PREFIX}}blog.shoppre.com') Blog
-
+.col-md-12.col-xs-12
+  .col-md-12.col-xs-12.no-padder
+    .col-md-12.col-xs-12
+      h1.f-s-22.f-c-d-greay Create Shipment Request
+      p.f-s-16.f-c-d-greay
+        i.fas.fa-home
+        span.f-c-l-gray &nbsp;&nbsp;/ Mylocker /
+        |  &nbsp; Create Ship Request
+    .col-md-12
+      .longblock.no-margin
+        h3
+          .container
+            center
+              img(src='/assets/images/success.png', alt='')
+              p.text-info Thank you for Creating your Ship Request
+        h4  Hello There! :)
+        br
+        h4.justify-content-around
+          | We are excited to start preparing your parcel!
+          br
+          | Kindly note that you can no longer change the selection of your packages, Shipping Options and Delivery Address.
+          br
+          | Shoppre might take up to a maximum period of 24 Hours to pack your items, weigh your parcel and update your shipment totals.
+          | We usually try to get back to you with your Final Shipment Charges as soon as possible, unless during peak hours or some of your parcels
+          | which are put on hold due to its special handling requirement, and hence we might take additional time to notify you and get your approval in certain cases.
+        br
+        h4.f-c-d-greay You shall be notified via email when your packages are ready to be shipped from the Shoppre facility. You can now view your shipment in the
+          a(ui-sref='shipRequests.index' style="color: #ff6c00;")&nbsp; Queue
+          | .
+        br
+        h4
+          | P.S. Cancel your shipment right now if you wish to do so, before we start processing your shipment.
+        h4.m-t(style="color: #ff6c00;")
+          | Please remember that once your package is ready to be shipped and your final cost is updated, KINDLY SUBMIT YOUR PAYMENT
+          br
+          | WITHIN 7 DAYS. From the 8th day, your parcel will start accumulating Storage fees of INR 100/day which you can view in your Shoppre wallet.
+        .text-center.hidden-xs
+          a.btn.btn-success(ui-sref='shipRequests.index', style='border-radius: 5px;margin-top: 15px;')&nbsp; I WILL BE AWAITING YOUR NOTIFICATION EMAIL TO SUBMIT MY PAYMENT
+        a.text-success.hidden-md.hidden-lg.hidden-sm(ui-sref='shipRequests.index', style='border-radius: 5px;margin-top: 15px;')
+          u I WILL BE AWAITING YOUR NOTIFICATION EMAIL TO SUBMIT MY PAYMENT
+        br
+      .f-c-d-greay.clearfix.border
+        br
+        .col-md-3
+          h4.f-c-d-greay Shipment Details:
+          h5 # {{$ctrl.shipment.order_code}}
+        .col-md-9
+          h4.f-c-d-greay Shipping Address:
+          h5 {{$ctrl.shipment.customer_name}}, {{$ctrl.shipment.address}}, {{$ctrl.shipment.phone}}
+          br
+    .clearfix

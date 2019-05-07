@@ -30,8 +30,11 @@ class ShipRequestsCreateController {
     this.IsShippingAddress = false;
     this.address = [];
     this.shipments = [];
+    this.summary = true;
+    this.preferences = false;
 
     this.getList();
+    this.getDefaultAddress();
   }
 
   open() {
@@ -43,7 +46,17 @@ class ShipRequestsCreateController {
         if (data.is_default === true) {
           this.data.address_id = data.id;
         }
-        this.customer.Addresses.push(data);
+        this.defaultAddress = data;
+      });
+  }
+
+  select() {
+    const modal = this.AddAddress.open(this.defaultAddress.id, 'select');
+    modal
+      .result
+      .then((data) => {
+        this.IsShippingAddress = true;
+        this.defaultAddress = data;
       });
   }
 
@@ -54,8 +67,8 @@ class ShipRequestsCreateController {
       .then((data) => {
         this.IsShippingAddress = true;
         if (data.is_default === true) {
-          // data.id = addressId;
           this.data.address_id = data.id;
+          this.defaultAddress = data;
         }
         Object.assign(this.customer.Addresses[index], data);
       });
@@ -73,6 +86,15 @@ class ShipRequestsCreateController {
       extrapackAmount + originalAmount + giftwrapAmount + giftnoteAmount + expressprocessingAmount;
     this.totalChargeAmount = this.charges + this.totalAmount_from_api;
     this.operationsAmount = this.charges;
+  }
+
+  getDefaultAddress() {
+    this
+      .$http
+      .get('/addresses')
+      .then(({ data: { defaultAddress } }) => {
+        this.defaultAddress = defaultAddress;
+      });
   }
 
   getList() {
@@ -157,6 +179,16 @@ class ShipRequestsCreateController {
         },
       },
     });
+  }
+
+  nextStage() {
+    this.summary = false;
+    this.preferences = true;
+  }
+
+  back() {
+    this.summary = true;
+    this.preferences = false;
   }
 
   deletePackage(id) {

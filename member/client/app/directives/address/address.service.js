@@ -13,6 +13,8 @@ class AddAddressController {
   }
 
   $onInit() {
+    this.data = {};
+
     this.Country = {
       select: ($item) => {
         this.data.country_id = $item.id;
@@ -50,6 +52,27 @@ class AddAddressController {
     if (this.type === 'edit') {
       this.getAddress(this.addressId);
     }
+
+    if (this.type === 'select') {
+      this.getAllAddress(this.addressId);
+    }
+  }
+
+  getAllAddress() {
+    this
+      .$http
+      .get('/addresses')
+      .then(({ data: { addresses } }) => {
+        this.address = addresses;
+        this.data.address = this.addressId;
+      });
+  }
+
+  selectAddress() {
+    const data = this.address.filter(x => x.id === this.data.address);
+
+    return this.$uibModalInstance
+      .close(Object.assign(data[0]));
   }
 
   getAddress() {

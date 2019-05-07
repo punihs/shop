@@ -29,6 +29,7 @@ $fa-font-path: "../bower_components/font-awesome/webfonts";
 @import 'routes/packages/create/create.scss';
 @import 'routes/packages/index/index.scss';
 @import 'routes/shipRequests/confirm/confirm.scss';
+@import 'routes/shipRequests/create/create.scss';
 @import 'routes/shipRequests/history/history.scss';
 @import 'routes/shipRequests/transactions/response/transaction.scss';
 @import 'routes/transactions/response/response.scss';
@@ -52,6 +53,15 @@ $fa-font-path: "../bower_components/font-awesome/webfonts";
   padding: 5px 10px;
   margin-left: 3px;
   margin-right: 3px;
+}
+
+.address-checkbox {
+  width: 20px;
+  height: 20px;
+  line-height: 1;
+  border: 1px solid #bdcee4;
+  background-color: #fff;
+  vertical-align: bottom;
 }
 
 .no-padder-left {
@@ -1044,6 +1054,7 @@ li.dndPlaceholder {
 .s-h{position:fixed;z-index: 6;height: 42px;}
 .xs-li-m{margin-left:0 }
 .scroll{overflow:auto}
+.create-ship-pad{padding:20px 15px 15px 15px}
 //@media queries
 @media only screen and (max-width: 1024px) {
 
@@ -1085,6 +1096,8 @@ li.dndPlaceholder {
     display: block;
     text-align: center;
   }
+  .create-ship-pad{padding:20px 5px 5px 5px}
+
   .invoice-box table tr.information table td {
     width: 100%;
     display: block;

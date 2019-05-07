@@ -2,7 +2,7 @@
   .modal-title
     .h4.text-info.text-uppercase {{$ctrl.type}} Shipping Address
       .close(ng-click='$ctrl.$uibModalInstance.dismiss("close")') ×
-div.m-t-xl.no-margin
+div.m-t-xl.no-margin(ng-if='$ctrl.type === "edit" || $ctrl.type === "add"')
   .hbox
     .wrapper-md.bg-white-only.no-padder
       form.form.form-validation.form-horizontal.wrapper-md(
@@ -164,10 +164,40 @@ div.m-t-xl.no-margin
             .row
               .col-md-6.col-xs-12
                 h4(ng-bind="$ctrl.error.message" style="color:red;")
-                button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting")
+                button.btn.btn-info(type='submit' ng-disabled="$ctrl.submitting")
                   span.fa.fa-forward.m-r-sm
                   span.text-white(ng-if='!$ctrl.submitting') Save New Shipping Address
                   span(ng-if='$ctrl.submitting')
                     i.fa.fa-spin.fa-circle-o-notch
                     span.text-white &nbsp;&nbsp;Submitting...
+div.m-t-xl.no-margin(ng-if='$ctrl.type === "select"')
+  .hbox
+    .wrapper-md.bg-white-only.no-padder
+      .col-md-12.col-xs-12(ng-repeat='item in $ctrl.address')
+        .form-group
+          input(type='radio', class='address-checkbox', name='a', ng-value='item.id' ng-model='$ctrl.data.address', style='margin: 15px 0 0 !important;')
+          strong
+            span(style='margin-left: 10px;', ng-bind='item.salutation + "." + item.first_name + item.last_name + " "')
+          span(ng-bind='"(" + item.phone + ")"')
+          p(style='margin: 0 0 10px 30px')
+            span(ng-bind='item.line1 + " , "')
+            span(
+            ng-if='item.line2'
+            ng-bind='item.line2 + " , "'
+            )
+            span(ng-bind='item.city + "," + item.state + "," + item.Country.name')
+            span(
+            ng-if='item.pincode'
+            ng-bind='" - " + item.pincode'
+            )
+        hr(style='margin-top: 0px !important;margin-bottom: 0px !important;')
 
+      .col-md-6.col-xs-12
+        h4.m-t(ng-bind="$ctrl.error.message" style="color:red;")
+        button.btn.btn-info(type='submit' ng-disabled="$ctrl.submitting")
+          span.text-white(ng-if='!$ctrl.submitting' ng-click='$ctrl.selectAddress()') Select Shipping Address
+          span(ng-if='$ctrl.submitting')
+            i.fa.fa-spin.fa-circle-o-notch
+            span.text-white &nbsp;&nbsp;Submitting...
+  br
+.clearfix
