@@ -187,14 +187,16 @@ exports.create = async (req, res, next) => {
           .create(pkg);
 
         // - Async Todo: need to move to socket server
-        await addFollowers({
-          objectId: id,
-          userIds: [
-            req.user.id,
-            req.body.customer_id,
-          ],
-          next,
-        });
+
+        //- Commented because bulk create not working in staging
+        // await addFollowers({
+        //   objectId: id,
+        //   userIds: [
+        //     req.user.id,
+        //     Number(req.body.customer_id),
+        //   ],
+        //   next,
+        // });
 
         const charges = { id };
 
@@ -206,7 +208,6 @@ exports.create = async (req, res, next) => {
         // - todo: now await and catch together
         await PackageCharge
           .create(charges);
-
         await updateState({
           lastStateId: null,
           nextStateId: PACKAGE_ITEMS_UPLOAD_PENDING,
@@ -214,7 +215,6 @@ exports.create = async (req, res, next) => {
           actingUser: req.user,
           next,
         });
-
         return res
           .status(201)
           .json({ id });
