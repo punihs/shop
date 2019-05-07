@@ -97,13 +97,12 @@ div.m-t-xl.no-margin
                   .col-md-6.col-sm-5.col-xs-12.no-padder
                     label.col-xs-12.input-group
                       | Price
-                      span.text-danger *
+                      span
                       input.form.form-control(
                       type='number'
                       name='price_amount'
                       placeholder='eg. 300'
                       ng-model='$ctrl.data.price_amount'
-                      required
                       )
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.price_amount.$dirty && newPackageForm.price_amount.$invalid') Please enter Price
                   .col-md-6.col-sm-5.col-xs-12

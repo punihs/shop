@@ -77,13 +77,6 @@ exports.create = async (req, res, next) => {
         created_by: req.user.id,
       });
 
-    await Package
-      .update({
-        total_quantity: sequelize.literal('total_quantity + 1'),
-      }, {
-        where: { id: packageId },
-      });
-
     const packageDetail = await Package
       .find({
         where: { id: packageId },
@@ -112,6 +105,19 @@ exports.create = async (req, res, next) => {
       .count({
         where: { package_id: packages.map(x => x.id) },
       });
+
+    const packageItemsAmount = await PackageItem
+      .sum('total_amount', { where: { package_id: packageId } });
+
+    await Package
+      .update(
+        {
+          total_quantity: sequelize.literal('total_quantity + 1'),
+          price_amount: packageItemsAmount,
+        },
+        { where: { id: packageId } },
+      );
+
     return res.json({
       ...packageDetail.toJSON(),
       packageItemId: pkgItem.id,
@@ -146,6 +152,23 @@ exports.update = async (req, res, next) => {
 
     const status = await PackageItem
       .update(packageItem, { where: options.where });
+
+    const packageItemsList = await PackageItem
+      .find({
+        attributes: ['id', 'total_amount', 'package_id'],
+        where: { id },
+      });
+
+    const packageItemsAmount = await PackageItem
+      .sum('total_amount', { where: { package_id: packageItemsList.package_id } });
+
+    await Package
+      .update(
+        {
+          price_amount: packageItemsAmount,
+        },
+        { where: { id: packageItemsList.package_id } },
+      );
 
     return res.json(status);
   } catch (err) {

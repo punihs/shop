@@ -112,6 +112,14 @@ class PackageItemsController {
     }
   }
 
+  amount(type) {
+    if (type === 'total') {
+      this.data.price_amount = this.data.total_amount / this.data.quantity;
+    } else {
+      this.data.total_amount = this.data.price_amount * this.data.quantity;
+    }
+  }
+
   reset(newPackageItemForm) {
     this.data = {};
     this.PackageItemCategory.model = '';

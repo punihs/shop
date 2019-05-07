@@ -233,11 +233,11 @@ div.m-t-xl.no-margin
                       name='price_amount'
                       placeholder='eg. 300'
                       ng-model='$ctrl.data.price_amount'
+                      ng-change = '$ctrl.amount("price")'
                       required
                       )
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageItemForm.price_amount.$dirty && newPackageItemForm.price_amount.$invalid') Please enter Price
 
-                  input(type='hidden' ng-bind='$ctrl.data.quantity && $ctrl.data.price_amount && ($ctrl.data.total_amount = $ctrl.data.price_amount* $ctrl.data.quantity)')
                   .col-md-6.col-sm-5.col-xs-12
                     label.col-xs-12.input-group
                       | Total Price
@@ -248,7 +248,8 @@ div.m-t-xl.no-margin
 
                       placeholder='eg. 900'
                       ng-model='$ctrl.data.total_amount'
-                      disabled
+                      ng-change = '$ctrl.amount("total")'
+                      required
                       )
               .row
                 .col-md-6.col-sm-5.col-xs-12
