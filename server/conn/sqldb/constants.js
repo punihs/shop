@@ -52,6 +52,7 @@ const constants = {};
 [
   { name: 'package-discard-actionable-state', keyMap: false },
   { name: 'package-ready-to-discard-actionable-state', keyMap: false },
+  { name: 'personal-shopper-failed-actionable-state', keyMap: false },
   { name: 'carriers_afterShip', keyMap: false },
   { name: 'package_discard_to_ready_actionable_state', keyMap: false },
   { name: 'shipment_inactive_to_shipment_abandon', keyMap: false },
