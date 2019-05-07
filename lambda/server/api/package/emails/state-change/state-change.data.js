@@ -59,6 +59,8 @@ const ENV = {
   URLS_MYACCOUNT: 'http://myaccount.shoppre.test',
 };
 
+const otp = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlY2guc2hvcHByZUBnbWFpbC5jb20iLCJpYXQiOjE1NTEyODM1MzR9.Ywy0Dm8NWDP6HlO4f7tTzfLN1p_7iFrDKWCJcDeOqHk';
+
 module.exports = {
   PACKAGE_ITEMS_UPLOAD_PENDING: {
     PACKAGE_ITEMS_UPLOAD_PENDING: true,
@@ -69,9 +71,10 @@ module.exports = {
     ENV,
     paymentGateway: {},
     subject: 'Your Package Has Just Arrived at Our Facility!',
-    otp: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlY2guc2hvcHByZUBnbWFpbC5jb20iLCJpYXQiOjE1NTEyODM1MzR9.Ywy0Dm8NWDP6HlO4f7tTzfLN1p_7iFrDKWCJcDeOqHk',
+    otp,
   },
   CUSTOMER_INPUT: {
+    otp,
     CUSTOMER_INPUT: true,
     INCOMING: true,
     pkg,
@@ -82,7 +85,7 @@ module.exports = {
     subject: 'Please Input the Product Costs of Your Purchase',
   },
   READY_TO_SHIP: {
-    otp: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InB1bml0aC5oczkwQGdtYWlsLmNvbSIsImlhdCI6MTU1MTMzMTc2OX0.Dwf-UrtOIK95Nu2REt6Yky9r0bmNRKH6gC19aQKpcSg',
+    otp,
     READY_TO_SHIP: true,
     INCOMING: true,
     pkg,
@@ -93,7 +96,7 @@ module.exports = {
     subject: `Your Package Is Ready to be Shipped | Package ID: ${pkg.id}`,
   },
   DAMAGED: {
-    otp: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InB1bml0aC5oczkwQGdtYWlsLmNvbSIsImlhdCI6MTU1MTMzMTc2OX0.Dwf-UrtOIK95Nu2REt6Yky9r0bmNRKH6gC19aQKpcSg',
+    otp,
     DAMAGED: true,
     INCOMING: true,
     pkg,
@@ -104,7 +107,7 @@ module.exports = {
     subject: 'Seems Your Item Had Arrived Here With a Damage!',
   },
   RETURN_REQUEST_FROM_CUSTOMER: {
-    otp: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InB1bml0aC5oczkwQGdtYWlsLmNvbSIsImlhdCI6MTU1MTMzMTc2OX0.Dwf-UrtOIK95Nu2REt6Yky9r0bmNRKH6gC19aQKpcSg',
+    otp,
     RETURN_REQUEST_FROM_CUSTOMER: true,
     INCOMING: true,
     pkg,
@@ -115,6 +118,7 @@ module.exports = {
     subject: `Your Request to Return the Package ID: ${pkg.id} Has Been Received`,
   },
   RETURN_PICKUP_DONE: {
+    otp,
     RETURN_PICKUP_DONE: true,
     INCOMING: true,
     pkg,
@@ -125,6 +129,7 @@ module.exports = {
     subject: `Return Request | Your Package ID: ${pkg.id}Has Been Dispatched `,
   },
   UPLOAD_INVOICE_REQUESTED: {
+    otp,
     UPLOAD_INVOICE_REQUESTED: true,
     INCOMING: true,
     pkg,
@@ -135,6 +140,7 @@ module.exports = {
     subject: 'Please Upload the Invoice of Your Purchase',
   },
   SPLIT_PACKAGE: {
+    otp,
     SPLIT_PACKAGE: true,
     nextStateName: 'SPLIT_PACKAGE',
     INCOMING: true,
@@ -146,6 +152,7 @@ module.exports = {
     subject: 'Request to Split Your Package Has Been Received',
   },
   SPLIT_PACKAGE_PROCESSED: {
+    otp,
     SPLIT_PACKAGE_PROCESSED: true,
     INCOMING: true,
     pkg,
@@ -156,6 +163,7 @@ module.exports = {
     subject: `Your Package ID: ${pkg.id} has successfully been split!`,
   },
   DISCARDED: {
+    otp,
     DISCARDED: true,
     INCOMING: true,
     pkg,
@@ -166,6 +174,7 @@ module.exports = {
     subject: `Your Package ID: ${pkg.id} Has Successfully Been Discarded!`,
   },
   DISCARD_REQUESTED: {
+    otp,
     DISCARD_REQUESTED: true,
     INCOMING: true,
     pkg,
@@ -176,6 +185,7 @@ module.exports = {
     subject: `Your Request to Discard the Package ID: ${pkg.id} Has Been Received`,
   },
   STANDARD_PHOTO_REQUEST: {
+    otp,
     STANDARD_PHOTO_REQUEST: true,
     INCOMING: true,
     pkg,
@@ -186,6 +196,7 @@ module.exports = {
     subject: 'Customer Has Requested Standard Photos',
   },
   ADVANCED_PHOTO_REQUEST: {
+    otp,
     ADVANCED_PHOTO_REQUEST: true,
     INCOMING: true,
     pkg,
@@ -196,6 +207,7 @@ module.exports = {
     subject: 'Customer Has Requested Advanced Photos',
   },
   PS_RETURN_REQUESTED: {
+    otp,
     PS_RETURN_REQUESTED: true,
     pkg,
     customer,
@@ -205,6 +217,7 @@ module.exports = {
     subject: '',
   },
   PS_REFUND_RECIEVED: {
+    otp,
     PS_REFUND_RECIEVED: true,
     pkg,
     customer,
@@ -214,6 +227,7 @@ module.exports = {
     subject: '',
   },
   PAYMENT_COMPLETED: {
+    otp,
     PAYMENT_COMPLETED: true,
     PERSONAL_SHOPPER: true,
     COD: true,
@@ -227,6 +241,7 @@ module.exports = {
     paymentGateway,
   },
   ORDER_CANCELLED: {
+    otp,
     ORDER_CANCELLED: true,
     PERSONAL_SHOPPER: true,
     COD: true,
@@ -238,6 +253,7 @@ module.exports = {
     subject: `Your Order ${pkg.order_code} Has Been Cancelled`,
   },
   PRICE_CHANGED: {
+    otp,
     PRICE_CHANGED: true,
     PERSONAL_SHOPPER: true,
     ORDER_ITEMS: true,
@@ -249,6 +265,7 @@ module.exports = {
     subject: 'Item(s) Have changed Price',
   },
   PAYMENT_FAILED: {
+    otp,
     PAYMENT_FAILED: true,
     PERSONAL_SHOPPER: true,
     COD: true,
@@ -261,6 +278,7 @@ module.exports = {
     paymentGateway,
   },
   PAYMENT_CONFIRMED: {
+    otp,
     PAYMENT_CONFIRMED: true,
     PERSONAL_SHOPPER: true,
     COD: true,
@@ -273,6 +291,7 @@ module.exports = {
     paymentGateway,
   },
   ORDER_PLACED: {
+    otp,
     ORDER_PLACED: true,
     PERSONAL_SHOPPER: true,
     ORDER_ITEMS: true,
@@ -284,6 +303,7 @@ module.exports = {
     subject: 'We Have Successfully Placed Your Order',
   },
   OUT_OF_STOCK: {
+    otp,
     OUT_OF_STOCK: true,
     PERSONAL_SHOPPER: true,
     ORDER_ITEMS: true,
@@ -295,6 +315,7 @@ module.exports = {
     subject: 'Item(s) Have Went Out of Stock',
   },
   REFUNDED_TO_WALLET: {
+    otp,
     REFUNDED_TO_WALLET: true,
     PERSONAL_SHOPPER: true,
     COD: true,
@@ -306,6 +327,7 @@ module.exports = {
     subject: `We've Finished Refunding Your Payment for the Order ${pkg.order_code}`,
   },
   REFUNDED_TO_BANK_ACCOUNT: {
+    otp,
     REFUNDED_TO_BANK_ACCOUNT: true,
     PERSONAL_SHOPPER: true,
     COD: true,
@@ -317,6 +339,7 @@ module.exports = {
     subject: `We've Finished Refunding Your Payment for the Order ${pkg.order_code}`,
   },
   AWAITING_PACKAGE: {
+    otp,
     AWAITING_PACKAGE: true,
     PERSONAL_SHOPPER: true,
     pkg,
@@ -327,6 +350,7 @@ module.exports = {
     subject: '',
   },
   ORDER_COMPLETED: {
+    otp,
     ORDER_COMPLETED: true,
     PERSONAL_SHOPPER: true,
     COD: true,
@@ -338,6 +362,7 @@ module.exports = {
     subject: `All Items on Your Order ${pkg.order_code} Have Arrived`,
   },
   PACKAGE_STORAGE: {
+    otp,
     PACKAGE_STORAGE: true,
     INCOMING: true,
     pkg,
@@ -350,6 +375,7 @@ module.exports = {
     packageItems,
   },
   PACKAGE_STORAGE_EXCEEDED: {
+    otp,
     PACKAGE_STORAGE_EXCEEDED: true,
     INCOMING: true,
     pkg,

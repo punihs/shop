@@ -1,6 +1,9 @@
 const debug = require('debug');
+const jwt = require('jsonwebtoken');
+
 const hookshot = require('../conn/hookshot');
 const viewConfig = require('../view.config');
+const env = require('../config/environment');
 
 const log = debug('s-api-package-notification');
 
@@ -23,6 +26,8 @@ exports.stateChange = async ({
         ],
       });
 
+    const otp = jwt.sign({ email: customer.email }, env.MASTER_TOKEN);
+
     return hookshot.trigger('package:stateChange', {
       before: null,
       nextStateId,
@@ -36,6 +41,7 @@ exports.stateChange = async ({
       INCOMING: true,
       packageStorageLimit,
       packageStorageExceededCharge,
+      otp,
     });
   } catch (err) {
     return err;

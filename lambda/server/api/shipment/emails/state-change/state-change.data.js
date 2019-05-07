@@ -57,6 +57,8 @@ const ENV = {
   URLS_WWW: 'http://www.shoppre.test',
 };
 
+const otp = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlY2guc2hvcHByZUBnbWFpbC5jb20iLCJpYXQiOjE1NTEyODM1MzR9.Ywy0Dm8NWDP6HlO4f7tTzfLN1p_7iFrDKWCJcDeOqHk';
+
 module.exports = {
   PACKAGING_REQUESTED: {
     PACKAGING_REQUESTED: true,
@@ -67,6 +69,7 @@ module.exports = {
     actingUser: OPS,
     subject: `We Have Received Your Shipping Request | Shipment ID: ${shipment.id}`,
     ENV,
+    otp,
   },
   INVOICE_REQUESTED: {
     INVOICE_REQUESTED: true,
@@ -77,6 +80,7 @@ module.exports = {
     ENV,
     subject: '',
     shipment,
+    otp,
   },
   PAYMENT_REQUESTED: {
     nextStateName: 'PAYMENT_REQUESTED',
@@ -88,7 +92,7 @@ module.exports = {
     ENV,
     subject: `Make Payment | Your Shipment ID: ${shipment.id} Is Packed & Weighed`,
     shipment,
-    otp: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlY2guc2hvcHByZUBnbWFpbC5jb20iLCJpYXQiOjE1NTEyODM1MzR9.Ywy0Dm8NWDP6HlO4f7tTzfLN1p_7iFrDKWCJcDeOqHk',
+    otp,
   },
   PAYMENT_INITIATED: {
     PAYMENT_INITIATED: true,
@@ -99,6 +103,7 @@ module.exports = {
     subject: 'Payment Initiated',
     address,
     shipment,
+    otp,
   },
   PAYMENT_COMPLETED: {
     PAYMENT_COMPLETED: true,
@@ -111,6 +116,7 @@ module.exports = {
     shipment,
     paymentGateway,
     cash: 'Cash',
+    otp,
   },
   PAYMENT_FAILED: {
     PAYMENT_FAILED: true,
@@ -122,6 +128,7 @@ module.exports = {
     subject: `Transaction Attempt Failed: Using your ${paymentGateway.name} | ShipmentID: ${shipment.id}`,
     shipment,
     paymentGateway,
+    otp,
   },
   PAYMENT_CONFIRMED: {
     PAYMENT_CONFIRMED: true,
@@ -133,6 +140,7 @@ module.exports = {
     subject: `Payment Confirmed! | Shipment ID: ${shipment.id}`,
     shipment,
     paymentGateway,
+    otp,
   },
   UPSTREAM_SHIPMENT_REQUEST_CREATED: {
     UPSTREAM_SHIPMENT_REQUEST_CREATED: true,
@@ -143,6 +151,7 @@ module.exports = {
     ENV,
     subject: `We have created a Ship Request with our Courier Partner for your ShipmentID: ${shipment.id}`,
     shipment,
+    otp,
   },
   SHIPMENT_HANDED: {
     SHIPMENT_HANDED: true,
@@ -154,6 +163,7 @@ module.exports = {
     subject: `Your Package Is Scheduled to Ship Today! | ShipmentID: ${shipment.id}`,
     shipment: Object.assign(shipment, { DestinationCountry: 'India' }),
     aipexPartner: true,
+    otp,
   },
   SHIPMENT_IN_TRANSIT: {
     SHIPMENT_IN_TRANSIT: true,
@@ -164,6 +174,7 @@ module.exports = {
     ENV,
     subject: `Your ShipmentID: ${shipment.id} is in Transit to the Destination`,
     shipment,
+    otp,
   },
   SHIPMENT_MANUAL_FOLLOW_UP: {
     SHIPMENT_MANUAL_FOLLOW_UP: true,
@@ -174,6 +185,7 @@ module.exports = {
     ENV,
     subject: '',
     shipment,
+    otp,
   },
   SHIPMENT_LOST: {
     SHIPMENT_LOST: true,
@@ -184,6 +196,7 @@ module.exports = {
     ENV,
     subject: '',
     shipment,
+    otp,
   },
   CUSTOM_ON_HOLD: {
     CUSTOM_ON_HOLD: true,
@@ -194,6 +207,7 @@ module.exports = {
     ENV,
     subject: '',
     shipment,
+    otp,
   },
   WRONG_ADDRESS: {
     WRONG_ADDRESS: true,
@@ -205,6 +219,7 @@ module.exports = {
     ENV,
     subject: '',
     shipment,
+    otp,
   },
   SHIPMENT_REJECTED_BY_CUSTOMER: {
     SHIPMENT_REJECTED_BY_CUSTOMER: true,
@@ -215,6 +230,7 @@ module.exports = {
     ENV,
     subject: '',
     shipment,
+    otp,
   },
   RTO_REQUESTED: {
     RTO_REQUESTED: true,
@@ -225,6 +241,7 @@ module.exports = {
     ENV,
     subject: '',
     shipment,
+    otp,
   },
   RAISE_SHIPMENT_LOST_CLAIM: {
     RAISE_SHIPMENT_LOST_CLAIM: true,
@@ -235,6 +252,7 @@ module.exports = {
     ENV,
     subject: '',
     shipment,
+    otp,
   },
   PENALTY_PAYMENT_REQUESTED: {
     PENALTY_PAYMENT_REQUESTED: true,
@@ -245,6 +263,7 @@ module.exports = {
     ENV,
     subject: '',
     shipment,
+    otp,
   },
   RETURN_TO_ORIGIN: {
     RETURN_TO_ORIGIN: true,
@@ -255,6 +274,7 @@ module.exports = {
     ENV,
     subject: '',
     shipment,
+    otp,
   },
   AMOUNT_RECEIVED_FROM_UPSTREAM: {
     AMOUNT_RECEIVED_FROM_UPSTREAM: true,
@@ -265,6 +285,7 @@ module.exports = {
     ENV,
     subject: '',
     shipment,
+    otp,
   },
   PENALTY_PAYMENT_DONE: {
     PENALTY_PAYMENT_DONE: true,
@@ -275,6 +296,7 @@ module.exports = {
     ENV,
     subject: '',
     shipment,
+    otp,
   },
   WRONG_ADDRESS_FOLLOW_UP: {
     WRONG_ADDRESS_FOLLOW_UP: true,
@@ -285,6 +307,7 @@ module.exports = {
     ENV,
     subject: '',
     shipment,
+    otp,
   },
   CLAIM_PROCESSED_TO_CUSTOMER: {
     CLAIM_PROCESSED_TO_CUSTOMER: true,
@@ -295,6 +318,7 @@ module.exports = {
     ENV,
     subject: '',
     shipment,
+    otp,
   },
   CUSTOMER_ACKNOWLEDGEMENT_RECEIVED: {
     CUSTOMER_ACKNOWLEDGEMENT_RECEIVED: true,
@@ -305,6 +329,7 @@ module.exports = {
     ENV,
     subject: '',
     shipment,
+    otp,
   },
   SHIPMENT_DELIVERED: {
     SHIPMENT_DELIVERED: true,
@@ -315,6 +340,7 @@ module.exports = {
     ENV,
     subject: `Shipment Delivered | Earn 150 Loyalty Points! | ShipmentID: ${shipment.id}`,
     shipment,
+    otp,
   },
   SHIPMENT_CANCELLED: {
     SHIPMENT_CANCELLED: true,
@@ -326,6 +352,7 @@ module.exports = {
     ENV,
     subject: `Shipment Cancelled! | Shipment ID: ${shipment.id}`,
     shipment,
+    otp,
   },
   PAYMENT_DELAY: {
     PAYMENT_DELAY: true,
@@ -338,6 +365,7 @@ module.exports = {
     shipment,
     paymentDelayLimit: 7,
     paymentDelayCharge: 100,
+    otp,
   },
   PAYMENT_DELAY_EXCEEDED: {
     PAYMENT_DELAY_EXCEEDED: true,
@@ -350,5 +378,6 @@ module.exports = {
     shipment,
     paymentDelayLimit: 7,
     paymentDelayCharge: 100,
+    otp,
   },
 };
