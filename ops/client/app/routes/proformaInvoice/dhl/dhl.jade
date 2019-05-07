@@ -43,7 +43,7 @@
           td(colspan='1' style="border: 1px solid;width: 15%;")
         tr
           td(colspan='3' style="border: 1px solid;")
-            p {{$ctrl.shipments.Customer.first_name}} &nbsp;{{$ctrl.shipments.Customer.last_name}}
+            p {{$ctrl.shipments.customer_name}}
             p {{$ctrl.shipments.address}}
             p {{$ctrl.shipments.phone}}
           td.text-center(colspan='5' style="border: 1px solid; vertical-align: bottom;")
@@ -133,7 +133,7 @@
               )
             span(ng-if="$ctrl.type === 'item'")
               input(
-              style="text-align: center; border: 0px;"
+              style="text-align: center; border: 0px; width: 100%;"
               type='text'
               ng-model='item.name'
               )
