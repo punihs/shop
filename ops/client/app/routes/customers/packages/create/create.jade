@@ -176,12 +176,14 @@ div.m-t-xl.no-margin
                   .col-md-4.col-sm-5.col-xs-12
                     label.col-xs-12.input-group
                       | Restricted Item
+                      span.text-danger *
                       .fa.fa-info-circle.m-l-xs(
                       uib-popover=''
                       popover-trigger="'mouseenter'"
                       popover-placement='top'
                       popover-append-to-body='true'
                       )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.is_restricted_item.$dirty && newPackageForm.is_restricted_item.$invalid') Please Select Option
                     .col-xs-12: ul.nav
                       li.inline: label.i-checks.i-checks-sm
                         input(
