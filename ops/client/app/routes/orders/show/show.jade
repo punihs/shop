@@ -73,13 +73,13 @@
               a.text-muted.font-thin Total Quantity
               div(ng-bind='$ctrl.data.total_quantity')
 
-          .clear.wrapper-xs(ng-if='$ctrl.data.sub_total')
+          .clear.wrapper-xs(ng-if='$ctrl.data.price_amount')
             a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
               i.fa.fa-inr.text-muted.fa-lg
             div
               a.text-muted.font-thin Total Price
               div
-                span(ng-bind='$ctrl.data.sub_total')
+                span(ng-bind='$ctrl.data.price_amount')
 
           .clear.wrapper-xs(ng-if='$ctrl.data.personal_shopper_cost')
             a.h4.text-center.m-r-xs.pull-left.thumb-xs.no-border.m-t-sm
