@@ -24,7 +24,7 @@
 
     getList() {
       this.ui = { loading: true, scrollToBottom: false };
-      const route = `/${this.type}s/${this.id}/comments`;
+      const route = `#/${this.type}s/${this.id}/comments`;
       this
         .$http
         .get(route)
@@ -37,7 +37,7 @@
     }
 
     loadFollowers() {
-      const route = `/${this.type}s/${this.id}/followers`;
+      const route = `#/${this.type}s/${this.id}/followers`;
       this
         .$http
         .get(route)
@@ -51,7 +51,7 @@
       const comments = this.post.comments;
       if (!comments) return;
       this.ui = { loading: true, scrollToBottom: false };
-      const route = `/${this.type}s/${this.id}/comments`;
+      const route = `#/${this.type}s/${this.id}/comments`;
 
       this
         .$http

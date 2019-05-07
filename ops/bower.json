@@ -17,14 +17,11 @@
     "angular-ui-router": "~0.2.15",
     "angular-bootstrap": "2.5.0",
     "angular-bootstrap-calendar": "~0.17.6",
-    "angular-chart.js": "^1.1.1",
     "lodash": "3.10.1",
-    "restangular": "~1.5.1",
     "bootstrap-sass": "3.3.6",
     "ng-file-upload": "^12.0.1",
     "angular-loading-bar": "^0.8.0",
     "bootstrap-ui-datetime-picker": "^2.2.3",
-    "jquery.easy-pie-chart": "^2.1.6",
     "angular-scrollable-table": "*",
     "angularjs-slider": "^5.4.1",
     "AngularJS-Toaster": "angularjs-toaster#2.0.0",
@@ -34,24 +31,22 @@
     "angular-cookies": "~1.4.8",
     "flag-icon-css": "^3.1.0",
     "angular-socket-io": "0.7.0",
-    "socket.io-client": "2.1.0",
     "angular-base64-upload": "^0.1.23",
     "angular-hotkeys-light": "^1.1.1",
     "ng-intl-tel-input": "^2.0.0",
-    "angular-raven": "^0.6.2"
+    "angular-raven": "^0.6.2",
+    "socket.io-client": "2.1.0",
+    "socket.io": "2.1.0"
   },
   "overrides": {
-    "jquery.easy-pie-chart": {
-      "dependencies": {
-        "jquery": ">=1.9.0"
-      },
-      "main": [
-        "dist/angular.easypiechart.min.js"
-      ]
+    "socket.io-client": {
+      "main": "dist/socket.io.js"
     }
   },
   "resolutions": {
     "angular": "~1.4.8",
-    "angular-bootstrap": "2.5.0"
+    "angular-bootstrap": "2.5.0",
+    "socket.io-client": "2.1.0",
+    "socket.io": "2.1.0"
   }
 }

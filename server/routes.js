@@ -15,7 +15,6 @@ const search = require('./api/search');
 const packages = require('./api/package');
 const afterShipCarriers = require('./api/afterShipCarriers');
 const personalShopperPackage = require('./api/package/personalShopperPackage');
-const packageComment = require('./api/package/comment');
 const packageItem = require('./api/packageItem');
 const packageItems = require('./api/package/item');
 const packageCharge = require('./api/package/charge');
@@ -24,7 +23,6 @@ const userShippingPreference = require('./api/user/shippingPreference');
 const packageItemCategory = require('./api/packageItemCategory');
 const shipment = require('./api/shipment');
 const shipmentPublic = require('./api/shipment/www');
-const shipmentComment = require('./api/shipment/comment');
 const transaction = require('./api/transaction');
 const shipmentPackage = require('./api/shipment/package');
 const address = require('./api/address');
@@ -46,13 +44,11 @@ module.exports = (app) => {
   app.use('/api/minio', authenticate(), minio);
   app.use('/api/search', search);
   app.use('/api/public/packages', personalShopperPackage);
-  app.use('/api/packages/comments', packageComment);
   app.use(
     '/api/packages',
     packages, // auth did in router ie., api/package/index.js
     authenticate(),
     packageItems,
-    packageComment,
     personalShopperPackage,
     packageCharge,
     specialRequest,
@@ -61,13 +57,11 @@ module.exports = (app) => {
   app.use('/api/addresses', authenticate(), address);
   app.use('/api/transactions', transaction);
   app.use('/api/public/shipments', shipment);
-  app.use('/api/shipments/comments', shipmentComment);
   app.use(
     '/api/shipments',
     authenticate(),
     shipment,
     shipmentPackage,
-    shipmentComment,
     shipmentFollower,
   );
   app.use('/api/www/shipments', shipmentPublic);

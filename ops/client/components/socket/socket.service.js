@@ -17,7 +17,7 @@ function Socket($rootScope, $http, socketFactory, URLS, Session) {
   }
 
   // socket.io now auto-configures its connection when we ommit a connection url
-  const ioSocket = io(URLS.PARCEL_API, options);
+  const ioSocket = io(URLS.ENGAGE, options);
 
   const socket = socketFactory({
     ioSocket,
@@ -36,7 +36,7 @@ function Socket($rootScope, $http, socketFactory, URLS, Session) {
       /**
        * Syncs item creation/updates on 'model:save'
        */
-      socket.on(route, (item) => {
+      socket.on(route.slice(1), (item) => {
         items[appendAtBeginning ? 'push' : 'unshift'](item);
       });
     },

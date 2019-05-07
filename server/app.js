@@ -5,9 +5,7 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const http = require('http');
 const express = require('express');
-const socket = require('socket.io');
 
-const socketioConfig = require('./config/socketio');
 const logger = require('./components/logger');
 
 const expressConfig = require('./config/express');
@@ -19,11 +17,6 @@ const db = require('./conn/sqldb');
 const app = express();
 const server = http.createServer(app);
 
-const socketio = socket(server, {
-  serveClient: true,
-});
-
-socketioConfig(socketio, db);
 expressConfig(app);
 
 // Start server

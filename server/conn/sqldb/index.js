@@ -27,7 +27,7 @@ const db = {
   'Country', 'Locker',
 
   // - Basic
-  'User', 'UserMeta', 'Group', 'Follower', 'SocketSession',
+  'User', 'UserMeta', 'Group',
 
   // - Customer Account
   // Shoppre.com - Inspired by MyUS.com
@@ -40,9 +40,6 @@ const db = {
   'PhotoRequest',
 
   'Shipment', 'ShipmentMeta', 'ShipmentState', 'AfterShipCarriers',
-
-  // - Notifications
-  'Comment',
 
   // - Product
   'Store',

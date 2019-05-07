@@ -56,7 +56,7 @@ module.exports = function (grunt) {
     },
     open: {
       server: {
-        url: 'http://parcel-ops.shoppre.test',
+        url: 'http://parcel.shoppre.test/admin',
       },
     },
     watch: {
@@ -244,7 +244,7 @@ module.exports = function (grunt) {
       },
       client: {
         src: '<%= yeoman.client %>/index.html',
-        ignorePath: '<%= yeoman.client %>/',
+        ignorePath: './<%= yeoman.client %>/',
       },
       test: {
         src: './karma.conf.js',
