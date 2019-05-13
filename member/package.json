@@ -102,7 +102,6 @@
     "build": "bower install && grunt build",
     "kill": "kill -9 $(lsof -t -i:12346);",
     "staging-deploy": "rsync -avh dist/ pulse@staging-app1.shoppre.com:~/shoppre/parcel.dist",
-    "live-deploy": "ssh pulse@napp1.shoppre.com 'rsync -avh staging-app1.shoppre.com:~/shoppre/parcel.dist /home/pulse/shoppre'",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update",
     "validate": "npm ls"
   },
