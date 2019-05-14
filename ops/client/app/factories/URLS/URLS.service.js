@@ -23,6 +23,7 @@ angular.module('uiGenApp')
       PARCEL: buildUrl(PROJECT),
       PAY: buildUrl('pay'),
       ENGAGE: 'http://localhost:7010' || buildUrl('engage'),
+      WWW: buildUrl('www'),
 
       CDN: `${PREFIX}cdn.${DOMAIN}`,
 

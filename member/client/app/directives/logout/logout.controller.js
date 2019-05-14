@@ -46,10 +46,15 @@ class LogoutController {
   }
 
   cleanup() {
-    localStorage.clear();
-    const { LOGIN, OAUTH_CLIENT_ID } = this.URLS;
+    // localStorage.clear();
+    localStorage.removeItem('oauth');
+    localStorage.removeItem('userinfo');
+    localStorage.removeItem('states');
+    localStorage.removeItem('shipment-states');
+    const { WWW, OAUTH_CLIENT_ID } = this.URLS;
     const { location } = this.$window;
-    location.href = `${LOGIN}/logout?continue=/signin?client_id=${OAUTH_CLIENT_ID}`;
+    location.href = `${WWW}/logout`;
+    // location.href = `${LOGIN}/logout?continue=/signin?client_id=${OAUTH_CLIENT_ID}`;
   }
 }
 
