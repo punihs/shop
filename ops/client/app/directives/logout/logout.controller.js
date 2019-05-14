@@ -19,10 +19,16 @@ class LogoutController {
   }
 
   cleanup() {
-    localStorage.clear();
-    const { LOGIN, OAUTH_CLIENT_ID } = this.URLS;
+    // localStorage.clear();
+    localStorage.removeItem('adminOauth');
+    localStorage.removeItem('adminShipment-states');
+    localStorage.removeItem('adminStates');
+    localStorage.removeItem('adminUserinfo');
+    localStorage.removeItem('afterShipCarriers');
+    const { WWW, OAUTH_CLIENT_ID } = this.URLS;
     const { location } = this.$window;
-    location.href = `${LOGIN}/logout?continue=/signin?client_id=${OAUTH_CLIENT_ID}`;
+    // location.href = `${LOGIN}/logout?continue=/signin?client_id=${OAUTH_CLIENT_ID}`;
+    location.href = `${WWW}/logout`;
   }
 }
 
