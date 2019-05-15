@@ -37,7 +37,7 @@ exports.index = async (req, res, next) => {
 
     const defaultAddress = await Address
       .find({
-        where: { is_default: true },
+        where: { is_default: true, customer_id: options.where.customer_id },
         include: [{
           model: Country,
           attributes: ['id', 'name'],
