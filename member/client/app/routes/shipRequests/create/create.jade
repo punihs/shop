@@ -46,7 +46,7 @@
                 td From
                 td Value
                 td Weight
-            tbody(ng-repeat="shipment in $ctrl.shipments" ng-init='$ctrl.MoreOption={}')
+            tbody(ng-repeat="shipment in $ctrl.shipments" ng-init='$ctrl.MoreOption={}' ng-class='$ctrl.MoreOption[$index] === true ? "bg-color" : ""')
               tr(ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]' style='cursor:pointer')
                 td(ng-bind='shipment.id')
                 td
@@ -54,7 +54,7 @@
                 td ₹{{shipment.price_amount | number : 2}}
                 td {{shipment.weight}} kg
                   i.fas.fa-trash.pull-right.hide(style="color:red" title='Delete Package' ng-click='$ctrl.deletePackage(shipment.id, $index)')
-              tr(style="background:#f1f5fa")
+              tr
                 td(colspan='5' ng-if='$ctrl.MoreOption[$index]')
                   table.table(style="background:white")
                     thead.f-s-16.f-c-d-greay.f-w-6
@@ -69,7 +69,7 @@
                         td {{item.quantity}}
                         td ₹{{item.price_amount}}
                         td ₹{{item.price_amount * item.quantity}}
-
+            tbody
               .col-md-12.col-xs-12(style="background:#e1e9f3;")
                  td  Shipment Totals
                  td
