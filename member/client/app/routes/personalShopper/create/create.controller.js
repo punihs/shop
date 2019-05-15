@@ -200,6 +200,8 @@ class CreateController {
     this.cartSection = false;
     this.optionsSection = false;
 
+    this.updatePackageOption();
+
     if (this.summarySection) {
       this.getPackageItem();
     }
