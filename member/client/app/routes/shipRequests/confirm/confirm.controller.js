@@ -122,7 +122,7 @@ class ShipRequestConfirmController {
     //   axis_banned: this.shipment.is_axis_banned_item,
     //   type: 'shipment',
     // });
-    const url = `${this.URLS.PAY}/transactions/${this.shipment.order_code}/create?id=${this.shipment.id}&amount=${this.shipment.estimated_amount}&object_id=${this.shipment.order_code}&customer_id=${this.shipment.customer_id}&axis_banned=${this.shipment.is_axis_banned_item}&type=shipment`;
+    const url = `${this.URLS.PAY}/access/login?id=${this.shipment.id}&amount=${this.shipment.estimated_amount}&object_id=${this.shipment.order_code}&customer_id=${this.shipment.customer_id}&axis_banned=${this.shipment.is_axis_banned_item}&type=shipment`;
     this.$window.location.href = url;
   }
 }
