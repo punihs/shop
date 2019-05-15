@@ -233,7 +233,13 @@ exports.show = async (req, res, next) => {
         },
       });
 
-    return res.json({ ...user.toJSON(), packageCount, personalShopperCount });
+    // return res.json({ ...user.toJSON(), packageCount, personalShopperCount });
+
+    if (user) {
+      return res.json({ status: 409, ...user.toJSON(), packageCount, personalShopperCount });
+    } else {
+      return res.json({ status: 404 });
+    }
   } catch (err) {
     return next(err);
   }
@@ -281,7 +287,7 @@ exports.register = async (req, res, next) => {
 
     return res
       .status(status.code)
-      .json({ message: messagesMap[status.code] });
+      .json({ status: status.code, message: messagesMap[status.code] });
   } catch (err) {
     return next(err);
   }
