@@ -57,7 +57,7 @@ class AccessCourierController {
     };
     const method = 'post';
     return this
-      .$http[method]('~/authorise', data)
+      .$http[method]('~~/authorise', data)
       .then(({ data: redirectUrl }) => {
         this.$window.open(redirectUrl, '_blank');
       });
