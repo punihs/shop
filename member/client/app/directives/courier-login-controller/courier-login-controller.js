@@ -18,10 +18,10 @@ class AccessCourierController {
     return this
       .$http[method](`%/users/${this.user.id}`)
       .then(({ data: user }) => {
-        console.log({ user: user.status });
-        if (Number(user.status) === 404) {
+        console.log({ user: user });
+        if (Number(user.statusCode) === 404) {
           this.signup();
-        } else if (Number(user.status) === 409) {
+        } else if (Number(user.statusCode) === 409) {
           this.authorise();
         }
       });
@@ -33,7 +33,6 @@ class AccessCourierController {
       'last_name', 'email', 'phone',
       'group_id', 'country_id',
     ];
-    console.log({ user: this.user });
     const method = 'post';
     return this
       .$http[method]('%/users/register', _.pick(this.user, allowed))

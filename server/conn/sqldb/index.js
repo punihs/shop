@@ -6,6 +6,7 @@ const config = require('../../config/environment');
 const sqlDefaults = {
   dialect: 'mysql',
   timezone: '+05:30',
+  logging: config.env !== 'production',
   dialectOptions: {
     decimalNumbers: true,
   },
