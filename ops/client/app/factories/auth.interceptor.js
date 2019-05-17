@@ -9,12 +9,14 @@ angular
       const engage = '#';
       const pay = '$';
       const login = '~';
+      const courier = '&';
 
       const map = {
         // [parcel]: URLS.PARCEL,
         [engage]: URLS.ENGAGE,
         [pay]: URLS.PAY,
         [login]: URLS.LOGIN,
+        [courier]: URLS.COURIER,
       };
 
       const type = config.url[0];
