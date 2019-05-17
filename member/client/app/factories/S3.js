@@ -2,7 +2,7 @@ angular
   .module('uiGenApp')
   .factory('S3', ($http, toaster, URLS) => ({
     upload: (file, data, $ctrl) => $http
-      .get('/minio/presignedUrl', { params: { filename: file.name } })
+      .get('/minio/presignedUrl', { params: { filename: file.name.toLowerCase() } })
       .then(({ data: { object, url } }) => {
         const xhr = new XMLHttpRequest();
         xhr.open('PUT', url, true);
@@ -27,7 +27,7 @@ angular
 
 
     uploadCod: (file, data, $ctrl) => $http
-      .get('/minio/presignedUrl', { params: { filename: file.name } })
+      .get('/minio/presignedUrl', { params: { filename: file.name.toLowerCase() } })
       .then(({ data: { object, url } }) => {
         const xhr = new XMLHttpRequest();
         xhr.open('PUT', url, true);
