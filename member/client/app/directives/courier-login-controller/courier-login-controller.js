@@ -18,7 +18,6 @@ class AccessCourierController {
     return this
       .$http[method](`%/users/${this.user.id}`)
       .then(({ data: user }) => {
-        console.log({ user: user });
         if (Number(user.statusCode) === 404) {
           this.signup();
         } else if (Number(user.statusCode) === 409) {
@@ -52,7 +51,9 @@ class AccessCourierController {
     return this
       .$http[method]('~~/api/authorise', data)
       .then(({ data: redirectUrl }) => {
-        this.$window.open(redirectUrl, '_blank');
+        // this.$window.location.href = redirectUrl;
+        const newTab = this.$window.open();
+        newTab.location.href = redirectUrl;
       });
   }
 }
