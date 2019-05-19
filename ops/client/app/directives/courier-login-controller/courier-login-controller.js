@@ -59,7 +59,9 @@ class AccessCourierController {
     return this
       .$http[method]('~~/api/authorise', data)
       .then(({ data: redirectUrl }) => {
-        this.$window.open(redirectUrl, '_blank');
+        // this.$window.open(redirectUrl, '_blank');
+        const newTab = window.open();
+        newTab.location.href = redirectUrl;
       });
   }
 }
