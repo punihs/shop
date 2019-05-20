@@ -2,7 +2,7 @@ angular
   .module('uiGenApp')
   .factory('S3', ($http, toaster, URLS) => ({
     upload: (file, data, $ctrl) => $http
-      .get('/minio/presignedUrl', { params: { filename: file.name } })
+      .get('/minio/presignedUrl', { params: { filename: file.name.toLowerCase() } })
       .then(({ data: { object, url } }) => {
         const xhr = new XMLHttpRequest();
         xhr.open('PUT', url, true);
@@ -27,7 +27,7 @@ angular
       .catch(() => toaster.pop('error', 'Error while uploading file')),
 
     uploadAdvanced: (file, data, $ctrl) => $http
-      .get('/minio/presignedUrl', { params: { filename: file.name } })
+      .get('/minio/presignedUrl', { params: { filename: file.name.toLowerCase() } })
       .then(({ data: { object, url } }) => {
         const xhr = new XMLHttpRequest();
         xhr.open('PUT', url, true);
@@ -54,7 +54,7 @@ angular
       .catch(() => toaster.pop('error', 'Error while uploading file')),
 
     uploadInvoice: (file, data, $ctrl) => $http
-      .get('/minio/presignedUrl', { params: { filename: file.name } })
+      .get('/minio/presignedUrl', { params: { filename: file.name.toLowerCase() } })
       .then(({ data: { object, url } }) => {
         const xhr = new XMLHttpRequest();
         xhr.open('PUT', url, true);
@@ -81,7 +81,7 @@ angular
       .catch(() => toaster.pop('error', 'Error while uploading file')),
 
     uploadEcommerce: (file, data, $ctrl) => $http
-      .get('/minio/presignedUrl', { params: { filename: file.name } })
+      .get('/minio/presignedUrl', { params: { filename: file.name.toLowerCase() } })
       .then(({ data: { object, url } }) => {
         const xhr = new XMLHttpRequest();
         xhr.open('PUT', url, true);
