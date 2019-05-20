@@ -28,7 +28,7 @@ class OrderUpdateController {
     if (this.EDIT) {
       if (this.data.seller_invoice) {
         const invoicePath = `${this.URLS.CDN}/shoppre/${this.data.seller_invoice}`;
-        this.data.object = invoicePath;
+        this.data.object_thumb = invoicePath;
       }
       this.file = 'Nothing';
     }
