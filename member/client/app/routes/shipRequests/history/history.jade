@@ -43,7 +43,7 @@ div
                             | DESCRIPTION
                             span.footable-sort-indicator
                           th.footable-visible.footable-sortable(data-hide='phone,tablet', data-name='Date Of Birth')
-                            | REQUEST DATE
+                            | DISPATCHED DATE
                             span.footable-sort-indicator
                           th.footable-visible.footable-last-column.footable-sortable
                             | Charges
@@ -82,7 +82,7 @@ div
                             | Canceled
                           td.footable-visible(
                           ng-bind='shipment.created_at | date:"MMM d, y"'
-                          uib-tooltip="{{shipment.created_at | date:'MMM d, y'}} IST {{shipment.created_at | date:'h:mm a'}}"
+                          uib-tooltip="{{shipment.dispatch_date | date:'MMM d, y'}} IST {{shipment.dispatch_date | date:'h:mm a'}}"
                           tooltip-placement='right'
                           tooltip-append-to-body='true'
                           )

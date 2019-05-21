@@ -679,7 +679,7 @@ exports.history = async (req, res, next) => {
         'coupon_amount', 'loyalty_amount', 'estimated_amount', 'created_at', 'payment_status',
         'final_amount', 'payment_gateway_fee_amount', 'tracking_code', 'tracking_url', 'afterShip_slug',
         'number_of_packages', 'weight_by_shipping_partner', 'value_by_shipping_partner', 'shipping_carrier',
-        'connecting_tracking_code', 'country_id',
+        'connecting_tracking_code', 'country_id', 'dispatch_date',
       ],
       where: { customer_id: req.user.id },
       include: [{

@@ -71,12 +71,6 @@ div
                             td.footable-visible.footable-first-column(ng-click='shipment.open = !shipment.open')
                               i.fa.fa-chevron-circle-down.text-info
                             td.footable-visible {{shipment.customer_name}}
-                              span(
-                              ng-bind="shipment.created_at | date:'MMM d, y'"
-                              uib-tooltip="IST {{shipment.created_at | date:'h:mm a'}}"
-                              tooltip-placement='right'
-                              tooltip-append-to-body='true'
-                              )
                             td.footable-visible.hidden-xs {{shipment.order_code}}
                             td.footable-visible.hidden-xs
                               span(

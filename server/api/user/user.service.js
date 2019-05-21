@@ -12,7 +12,6 @@ const checkDuplicate = email => User.find({
 
 exports.signup = async ({ body, next }) => {
   try {
-    console.log('user Signup Body', body);
     const {
       id,
       salutation,
@@ -29,9 +28,6 @@ exports.signup = async ({ body, next }) => {
       gcl_id,
       hooks,
     } = body;
-
-    console.log('fisrt name', firstName);
-    console.log('last name', lastName);
 
     const email = e.trim();
     // - Todo: Email Validation
