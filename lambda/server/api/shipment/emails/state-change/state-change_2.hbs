@@ -206,7 +206,10 @@
       <br><br>
       <p style="margin:4px 20px 18px 20px;width:640px">
         This is to inform you that your Shipment <span class="il">{{shipment.id}}</span> is in transit and Tracking Number is
-        <strong><span class="il">{{shipment.tracking_code}}</span></strong> is in transit to Mumbai for custom clearance.
+        <strong><span class="il">{{shipment.tracking_code}}</span></strong>
+        {{#if aipexPartner}}
+          is in transit to Mumbai for custom clearance.
+        {{/if}}
         <br><br>
         You can track your shipment <a href="{{shipment.tracking_url}}?otp={{otp}}">here</a>. Feel free to reach out in case of any query.
         <br>

@@ -42,7 +42,7 @@ exports.notification = async (req, res, next) => {
             [nextStateName]: true,
             shipment,
             address,
-            subject: subjectMap({ nextStateName, shipment, paymentGateway }),
+            subject: subjectMap({ nextStateName, shipment, paymentGateway, aipexPartner }),
             packages,
             customer,
             actingUser,
