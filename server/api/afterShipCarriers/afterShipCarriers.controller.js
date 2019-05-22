@@ -87,13 +87,25 @@ exports.update = async (req, res, next) => {
 
         };
 
-        await updateShipmentState({
-          nextStateId: SHIPMENT_DELIVERED,
-          shipment,
-          actingUser: opsUser,
-          comments: 'Shipment Delivered- AfterShip',
-          next,
-        });
+        let aipexPartner = false;
+        if (shipment.shipping_carrier.toUpperCase().indexOf('aipex') > -1) {
+          aipexPartner = true;
+        }
+
+        let deliveryUpdate = false;
+        if ((aipexPartner && shipment.connecting_tracking_code) || (!aipexPartner)) {
+          deliveryUpdate = true;
+        }
+
+        if (deliveryUpdate) {
+          await updateShipmentState({
+            nextStateId: SHIPMENT_DELIVERED,
+            shipment,
+            actingUser: opsUser,
+            comments: 'Shipment Delivered- AfterShip',
+            next,
+          });
+        }
       }
     }
     return res.status(200).json({ message: 'success' });
