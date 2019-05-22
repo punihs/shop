@@ -12,6 +12,8 @@ angular.module('uiGenApp')
         return angular.fromJson($window.localStorage[key]);
       };
 
+      sessionService.clear = items => (items.map(x => (delete $window.localStorage[x])));
+
       sessionService.destroy = function destroy() {
         $window.localStorage.clear();
       };
