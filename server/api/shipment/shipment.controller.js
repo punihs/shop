@@ -1123,6 +1123,20 @@ exports.state = async (req, res, next) => {
     const shipment = await Shipment
       .findById(req.params.id, { raw: true });
 
+    const delivered = await Shipment.findOne({
+      attributes: ['id'],
+      where: { id: req.params.id },
+      include: [{
+        model: ShipmentState,
+        attrbutes: ['id'],
+        where: { state_id: SHIPMENT_DELIVERED },
+      }],
+    });
+
+    if (delivered) {
+      return res.status(400).json({ message: 'Shipment Already Delivered' });
+    }
+
     if (SHIPMENT_HANDED === req.body.state_id) {
       if (!shipment.shipping_carrier || !shipment.number_of_packages ||
         !shipment.weight_by_shipping_partner || !shipment.tracking_code) {
