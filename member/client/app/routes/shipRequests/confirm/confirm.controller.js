@@ -140,8 +140,8 @@ class ShipRequestConfirmController {
     return this
       .$http[method]('~~/api/authorise', data)
       .then(({ data: redirectUrl }) => {
-        // const newTab = this.$window.open();
-        this.$window.location.href = redirectUrl + `&id=${this.shipment.id}&amount=${this.shipment.estimated_amount}&object_id=${this.shipment.order_code}&customer_id=${this.shipment.customer_id}&axis_banned=${this.shipment.is_axis_banned_item}&type=shipment`;
+        const cancelUrl = `${this.URLS.PARCEL}/shipRequests`;
+        this.$window.location.href = redirectUrl + `&id=${this.shipment.id}&amount=${this.shipment.estimated_amount}&object_id=${this.shipment.order_code}&customer_id=${this.shipment.customer_id}&axis_banned=${this.shipment.is_axis_banned_item}&type=shipment&cancelUrl=${cancelUrl}`;
       });
   }
 }

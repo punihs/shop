@@ -418,8 +418,26 @@ class CreateController {
     const id = this.packageData.map(x => x.id);
 
     const customerId = this.Session.read('userinfo').id;
-    const url = `${this.URLS.PAY}/access/login?id=${id}&amount=${this.totalAmount}&object_id=${id.toString()}&customer_id=${customerId}&axis_banned=false&type=${shopperType}`;
-    this.$window.location.href = url;
+    this.authorise(id, customerId, shopperType);
+  }
+
+  authorise(id, customerId, shopperType) {
+    this.user = this.Session.read('userinfo');
+    const paymentClient = 9;
+    const data = {
+      grant_type: 'loginAs',
+      username: this.user.email,
+      app_id: paymentClient,
+    };
+    const method = 'post';
+    return this
+      .$http[method]('~~/api/authorise', data)
+      .then(({ data: redirectUrl }) => {
+        // const newTab = this.$window.open();
+        const cancelUrl = `${this.URLS.PARCEL}/personalShopper/create`;
+        this.$window.location.href =
+          redirectUrl + `&id=${id}&amount=${this.totalAmount}&object_id=${id.toString()}&customer_id=${customerId}&axis_banned=false&type=${shopperType}&cancel_url=${cancelUrl}`;
+      });
   }
 }
 

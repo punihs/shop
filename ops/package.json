@@ -98,6 +98,7 @@
     "start": "node server",
     "lint": "eslint --fix --ext .js --ignore-path .gitignore ./client/",
     "test": "grunt test",
+    "kill": "kill -9 $(lsof -t -i:12345);",
     "build": "bower install && grunt build",
     "staging-deploy": "rsync -avh dist/ pulse@staging-app1.shoppre.com:~/shoppre/parcel-ops.dist",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update",

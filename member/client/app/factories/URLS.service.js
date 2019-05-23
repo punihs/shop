@@ -18,6 +18,7 @@ angular.module('uiGenApp')
       PAY: buildUrl('pay'),
       ENGAGE: buildUrl('engage'),
       WWW: buildUrl('www'),
+      PARCEL: buildUrl('parcel'),
 
       CDN: `${PREFIX}cdn.${DOMAIN}`,
 
