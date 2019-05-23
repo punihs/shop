@@ -436,7 +436,7 @@ class CreateController {
         // const newTab = this.$window.open();
         const cancelUrl = `${this.URLS.PARCEL}/personalShopper/create`;
         this.$window.location.href =
-          redirectUrl + `&id=${id}&amount=${this.totalAmount}&object_id=${id.toString()}&customer_id=${customerId}&axis_banned=false&type=${shopperType}&cancel_url=${cancelUrl}`;
+          redirectUrl + `&id=${id}&amount=${this.totalAmount}&object_id=${id.toString()}&customer_id=${customerId}&axis_banned=false&type=${shopperType}&cancelUrl=${cancelUrl}`;
       });
   }
 }
