@@ -11,7 +11,7 @@ div
       ng-click='$ctrl.open()'
       ng-disabled='$ctrl.addressCount < $ctrl.addressLimit ? false : true'
       )
-        span Add New address
+        span.text-white Add New address
 .mobile-verification-popup.col-md-12.col-sm-12.col-xs-12(ng-if='!$ctrl.verifyPhone')
   .whitebox
     br
@@ -55,16 +55,16 @@ div
             ng-click='$ctrl.open()'
             ng-disabled='$ctrl.addressCount < $ctrl.addressLimit ? false : true'
             )
-              span Add New address
+              span.text-white Add New address
           h3.f-s-16.f-c-red.f-w-5 Only 5 address you can store in your profile
       h3(ng-if = '$ctrl.addresses.length') Your International Shipping addresses.
 
       .col-md-12.col-sm-12.col-xs-12
         .col-md-6.col-sm-12.col-xs-12(ng-repeat='address in $ctrl.addresses' style="margin-top:20px")
           .col-md-12.col-sm-12.col-xs-12.no-pad.div-address-border
-            .col-md-9.col-xs-9
+            .col-md-9.col-xs-8
               p.f-s-20.f-c-blue(ng-bind='address.Country.name + " - Address "')
-            .col-md-3.col-xs-3(style='padding-top:10px; cursor: pointer;')
+            .col-md-3.col-xs-4(style='padding-top:10px; cursor: pointer;')
              i.fas.fa-trash.f-c-red.pull-right(ng-click='$ctrl.destroy(address, $index)')
              i.fas.fa-pen-square.pull-right(style='margin-right:10px' ng-click='$ctrl.editAddress(address.id, $index)')
           .col-md-12.col-sm-12.col-xs-12.address-card
