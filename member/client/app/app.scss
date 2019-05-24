@@ -948,6 +948,8 @@ li.dndPlaceholder {
 .ps-s-b3{background-color: rgba(80, 125, 188, 0.15);}
 .ps-s-b4{box-shadow: 0 0 6px rgba(80, 125, 188, 0.08);border-radius: 3px;background-color: rgba(80, 125, 188, 0.07);}
 .img-center{display: block;margin-left: auto;margin-right: auto;margin-top:20px }
+
+.div-address-border{border:1px solid rgba(146, 156, 165, 0.2);};
 //accordin
 .wrapper{width: 92%;}
 @media(max-width:992px){
@@ -1040,7 +1042,8 @@ li.dndPlaceholder {
   }
 
 }
-
+.address-card{border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;border: 1px solid rgba(146, 156, 165, 0.2);border-top: none;padding: 20px;height: 248px;}
+.card-padding{padding-right:10px;padding-left: 10px}
 
 .no-margin-top{
   margin-top:0px;
@@ -1091,6 +1094,9 @@ li.dndPlaceholder {
   .f-s-16{font-size:12px }
   .f-s-14{font-size:10px }
 
+  .card-padding{padding:0}
+  .address-card{min-height: 160px;}
+
   .invoice-box table tr.top table td {
     width: 100%;
     display: block;
@@ -1109,4 +1115,5 @@ li.dndPlaceholder {
   .btn-xl{width: 250px;}
   .div-align-items-r{text-align: center;}
   .div-align-items-l{text-align: left;}
+
 }

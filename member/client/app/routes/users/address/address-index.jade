@@ -1,75 +1,222 @@
-.bg-white-only.pos-abt.h-full.w-full(style='top:0;left:0;z-index: -1;')
 div
-  .hbox(style="position:relative")
-
-    // - Primary Header
-    .bg-white-only.w-full.b-b(style='position: fixed; z-index: 6; height: 40px;')
-      .pull-left.wrapper-sm.no-padder-top
-        span.h4.text-info
-          i.fas.fa-address-book.text-info-lter.m-r-sm
-          | Address Book
-    div(style='position: fixed;right: 5px;z-index: 9;margin-top: 5px;')
-      a.pull-right.btn.btn-info.btn-sm(
-        ui-sref='users.address-create'
-        popover-trigger="'mouseenter'"
-        popover-placement='bottom'
-        popover-append-to-body='true'
-        ng-disabled='$ctrl.addressCount < $ctrl.addressLimit ? false : true'
+.col-md-12.col-xs-12(style='margin-top: 10px; margin-bottom: 10px;')
+  .col-md-6.col-xs-12
+    i.f-s-20.f-c-d-greay Address
+    br
+    i.fas.fa-home.f-c-d-greay  /Address
+  .col-md-6.col-xs-12
+    p
+    button.btn.btn-info.btn-md.pull-right(type='button', data-toggle='modal', data-target='#bd-example-modal-xl')
+      a(
+      ng-click='$ctrl.open()'
+      ng-disabled='$ctrl.addressCount < $ctrl.addressLimit ? false : true'
       )
-        i.fas.fa-plus.m-r-sm
-        span Add New Shipping Address
+        span Add New address
+.mobile-verification-popup.col-md-12.col-sm-12.col-xs-12(ng-if='!$ctrl.verifyPhone')
+  .whitebox
+    br
+    br
+    h3 Verify Your mobile number
+    p To continue to your profile
+    form.mobileform(style='width: 80%' name="newPhoneForm" ng-submit='$ctrl.updatePhoneNumber(newPhoneForm)')
+      .row
+        .col-md-12.col-sm-12.col-xs-12
+          label.col-xs-12.input-group
+            | Phone / Mobile Number
+            span.text-danger *
+      .row
+        .col-md-12.col-sm-12.col-xs-12
+          input#tel.form-control(type='tel', name='phone', ng-model='$ctrl.data.phone', ng-intl-tel-input='' required)
+          span.help-block.text-danger(ng-show='newPhoneForm.phone.$pristine && newPhoneForm.phone.$touched') Please type a telephone number
+          span.help-block.text-danger(ng-show='newPhoneForm.phone.$invalid && newPhoneForm.phone.$touched') Invalid :(
+          span.help-block.text-success(ng-show='newPhoneForm.phone.$valid && newPhoneForm.phone.$touched') Valid :)
+      .row
+        .col-md-12.col-sm-12.col-xs-12
+          h4(ng-bind="$ctrl.error.message" style="color:red;")
+          button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting")
+            span.fa.fa-forward.m-r-sm
+            span.text-white(ng-if='!$ctrl.submitting') Save Phone Number
+            span(ng-if='$ctrl.submitting')
+              i.fa.fa-spin.fa-circle-o-notch
+              span.text-white &nbsp;&nbsp;Submitting...
 
 
-    // - Secondary Header
-    .bg-light.padder.w-full.bg-white-only.m-t-xl.b-b(
-      style='position:fixed;z-index: 6;height: 42px;'
-    )
-      div.m-t-xs.m-l-md
-        .h4.text-danger(ng-if = '$ctrl.addressCount < $ctrl.addressLimit')
-          | Only {{$ctrl.addressLimit}} Address you can store in your profile
+.col-md-12(style='margin-bottom: 20px ')
+  .col-md-8.col-xs-12.no-padder(style='min-height:200px;')
+    .col-md-12.col-xs-12.div-b-w-s(style='padding:20px;')
+      .col-md-12.col-xs-12.no-pad(ng-if = '$ctrl.addresses.length === 0')
+        center
+          img(src='assets/images/empty_addressbox.svg')
+          h3.f-s-24.f-c-l-gray.f-w-7(style='margin-top: 30px; ') Address book empty
+          h3.f-s-16.f-c-l-gray Start adding Address your address book
+          br
+          button.btn.btn-info(type='button', data-toggle='modal', data-target='#bd-example-modal-xl')
+            a(
+            ng-click='$ctrl.open()'
+            ng-disabled='$ctrl.addressCount < $ctrl.addressLimit ? false : true'
+            )
+              span Add New address
+          h3.f-s-16.f-c-red.f-w-5 Only 5 address you can store in your profile
+      h3(ng-if = '$ctrl.addresses.length') Your International Shipping addresses.
 
-    // - Content Area
-    .bg-light(style='min-height: 200px;')
-      .m-t-xxl.m-b-lg(style='height: 1px;')
-      .hbox
-        .wrapper-md.bg-white-only.wrapper-parcel
-          .col-md-12
-            .row
-              .col-md-12.col-sm-12.col-xs-12
-                .clearfix
-                  .row
-                    .col-xs-12(ng-show='$ctrl.addresses.length === 0 && !$ctrl.ui.loading')
-                      td(colspan="5")
-                        h1.text-center.text-muted Start Adding Addresses to your Address Book
+      .col-md-12.col-sm-12.col-xs-12
+        .col-md-6.col-sm-12.col-xs-12(ng-repeat='address in $ctrl.addresses' style="margin-top:20px")
+          .col-md-12.col-sm-12.col-xs-12.no-pad.div-address-border
+            .col-md-9.col-xs-9
+              p.f-s-20.f-c-blue(ng-bind='address.Country.name + " - Address "')
+            .col-md-3.col-xs-3(style='padding-top:10px; cursor: pointer;')
+             i.fas.fa-trash.f-c-red.pull-right(ng-click='$ctrl.destroy(address, $index)')
+             i.fas.fa-pen-square.pull-right(style='margin-right:10px' ng-click='$ctrl.editAddress(address.id, $index)')
+          .col-md-12.col-sm-12.col-xs-12.address-card
+            p.f-s-20.f-c-l-gray(style='text-align:left;')
+              span(ng-bind='address.first_name + " " + address.last_name + ", "')
+              br
+              span(ng-bind='address.line1 + ", "')
+              br
+              span(ng-bind='address.line2 + ", "')
+              br
+              span(ng-bind='address.city + ", " + address.state + ", "')
+              br
+              span(ng-bind='address.Country.name')
+              span(
+              ng-if='address.pincode'
+              ng-bind='" - " + address.pincode + ", "'
+              )
+              br
+              span(ng-if='address.phone'
+              ng-bind='address.phone'
+              )
+            buttonbtn.btn.btn-info.btn-sm(type='button', data-toggle='modal', data-target='#bd-example-modal-xl' ng-if='address.is_default') Default
 
-                    //hr
-                    .well.col-md-4.m-t.m-l.bg-info.hover-wrap.address-box-height(style='min-height: 205px;' ng-repeat='address in $ctrl.addresses' ng-class='address.is_default ? "dker": "lt"')
-                      h4.no-margin-top
-                        span.font-thin(ng-bind='(address.city ? address.city.toUpperCase() : "") + " Address"')
-                        span.flag-icon.m-l-xs(
-                          ng-class='"flag-icon-"+ address.Country.iso2.toLowerCase()'
-                        )
-                        span.pull-right.font-thin.pointer.m-t.display-on-hover(ui-sref='users.address-edit({ id: address.id })')
-                          span.fa.fa-edit.m-l-xs
-                          | &nbsp;EDIT
+      .col-md-12.col-xs-12.no-pad(ng-if = '$ctrl.addresses.length')
+        h3.f-s-16.f-c-red.f-w-5(style='margin-top:20px') Only 5 address you can store in your profile
 
-                      strong(ng-bind='address.first_name + " " + address.last_name')
-                      p
-                        small.block(ng-bind='address.line1')
-                        small.block(ng-bind='address.line2')
-                        small.block(ng-bind='address.city + ", " + address.state')
-                        small(ng-bind='address.Country.name')
-                        span(
-                          ng-if='address.pincode'
-                          ng-bind='" - " + address.pincode'
-                        )
-                        small.block(
-                          ng-if='address.phone'
-                          ng-bind='address.phone'
-                        )
-                        span.label.pull-left.padding-5.m-t-xs.bg-primary.text-white(ng-if='address.is_default') DEFAULT SHIPPING ADDRESS
-                        button.pull-right.m-t-xxs.btn-xs.btn-info(ng-click='$ctrl.destroy(address, $index)')
-                          i.fas.fa-trash
 
-                    .clearfix.bg-white-only
-                  .clearfix
+  .col-md-4.col-xs-12.div-address
+    img.m-t-img(src='assets/images/title.png', style='width: 100%')
+    .col-md-12.col-xs-12.div-b-w-s(style='padding:20px;')
+      span.m-l-xs.copy-button-out.text-primary.pointer.pull-right(
+      ngclipboard='',
+      data-clipboard-target='#virtual'
+      ng-click='$ctrl.copied()'
+      ) Copy Virtual Address
+      form#virtual
+        .form-group
+          .col-md-10.col-xs-10.no-pad
+            select#sel1.form-control(style='background-color: #d1dded;')
+              option Address Format
+          .col-md-2.col-xs-2
+            button.btn.btn-img(type='button', data-toggle='modal', data-target='#bd-example-modal-xl', style='', ng-click='$ctrl.faq()')
+              img(src='assets/images/show-faq.png')
+          br
+        .form-group
+          span.copy-wrap.line-spacing.f-s-14.f-c-l-gray
+            label.text-muted.address-tab Name
+            | &nbsp;
+            br
+            span#Name.f-s-18.f-c-d-greay
+              span {{$ctrl.user.name}}
+            span.m-l-xs.copy-button.text-primary.pointer(
+            ngclipboard='',
+            data-clipboard-target='#Name'
+            ng-click='$ctrl.copied()'
+            ) copy
+          hr
+        .form-group
+          span.copy-wrap.line-spacing.f-s-14.f-c-l-gray
+            label.text-muted.address-tab Address Line 1
+            | &nbsp;
+            br
+            span#Address1.f-s-18.f-c-d-greay
+              span {{$ctrl.user.virtual_address_code}} #181, 1st Floor, 2nd Cross Rd
+            span.m-l-xs.copy-button.text-primary.pointer(
+            ngclipboard='',
+            data-clipboard-target='#Address1'
+            ng-click='$ctrl.copied()'
+            ) copy
+        .form-grouphinav
+          span.copy-wrap.line-spacing.f-s-14.f-c-l-gray
+            label.text-muted.address-tab Address Line 2:
+            | &nbsp;
+            br
+            span#Address2.f-s-18.f-c-d-greay
+              span 7th Main, Koramangala 1st Block
+            span.m-l-xs.copy-button.text-primary.pointer(
+            ngclipboard='',
+            data-clipboard-target='#Address2'
+            ng-click='$ctrl.copied()'
+            ) copy
+        .form-group
+          span.copy-wrap.line-spacing.f-s-14.f-c-l-gray
+            label.text-muted.address-tab Landmark:
+            | &nbsp;
+            br
+            span#landmark.f-s-18.f-c-d-greay
+              span Near Seema English Nursery School
+            span.m-l-xs.copy-button.text-primary.pointer(
+            ngclipboard='',
+            data-clipboard-target='#landmark'
+            ng-click='$ctrl.copied()'
+            ) copy
+        .form-group
+          span.copy-wrap.line-spacing.f-s-14.f-c-l-gray
+            label.text-muted.address-tab Phone Number:
+            | &nbsp;
+            br
+            span#phonenumber.f-s-18.f-c-d-greay
+              span +91-9148357733
+            span.m-l-xs.copy-button.text-primary.pointer(
+            ngclipboard='',
+            data-clipboard-target='#phonenumber'
+            ng-click='$ctrl.copied()'
+            ) copy
+        .form-group
+          .col-md-6.col-xs-6.no-padder
+            span.copy-wrap.line-spacing.f-s-14.f-c-l-gray
+              label.text-muted.address-tab City:
+              | &nbsp;
+              br
+              span#city.f-s-18.f-c-d-greay
+                span Bengaluru
+              span.m-l-xs.copy-button.text-primary.pointer(
+              ngclipboard='',
+              data-clipboard-target='#city'
+              ng-click='$ctrl.copied()'
+              ) copy
+          .col-md-6.col-xs-6.no-padder
+            span.copy-wrap.line-spacing.f-s-14.f-c-l-gray
+              label.text-muted.address-tab State/Province:
+              | &nbsp;
+              br
+              span#state.f-s-18.f-c-d-greay
+                span Karnataka
+              span.m-l-xs.copy-button.text-primary.pointer(
+              ngclipboard='',
+              data-clipboard-target='#state'
+              ng-click='$ctrl.copied()'
+              ) copy
+        .form-group
+          .col-md-6.col-xs-6.no-padder
+            span.copy-wrap.line-spacing.f-s-14.f-c-l-gray
+              label.text-muted.address-tab Pincode
+              | &nbsp;
+              br
+              span#pincode.f-s-18.f-c-d-greay
+                span 560034
+              span.m-l-xs.copy-button.text-primary.pointer(
+              ngclipboard='',
+              data-clipboard-target='#pincode'
+              ng-click='$ctrl.copied()'
+              ) copy
+          .col-md-6.col-xs-6.no-padder
+            span.copy-wrap.line-spacing.f-s-14.f-c-l-gray
+              label.text-muted.address-tab Address Type
+              | &nbsp;
+              br
+              span#addressType.f-s-18.f-c-d-greay
+                span Home
+              span.m-l-xs.copy-button.text-primary.pointer(
+              ngclipboard='',
+              data-clipboard-target='#addressType'
+              ng-click='$ctrl.copied()'
+              ) copy
