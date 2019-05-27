@@ -92,8 +92,8 @@ class ShipRequestsCreateController {
     this
       .$http
       .get('/addresses')
-      .then(({ data: { defaultAddress } }) => {
-        this.defaultAddress = defaultAddress;
+      .then(({ data: { defaultAddress, addresses } }) => {
+        this.defaultAddress = defaultAddress || addresses[0];
       });
   }
 
