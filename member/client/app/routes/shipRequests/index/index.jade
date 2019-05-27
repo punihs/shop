@@ -12,7 +12,7 @@ div
         | From the 8th day, your parcel will start accumulating Storage fees of INR 100/day.
         span(ng-bind='" " + $ctrl.TITLE')
   .container-fluid.scrollableContainer
-    .hbox.bg-white-only
+    .hbox.bg-white-only.m-b
       // - Content Area
       .bg-white-only
         .col-md-12.col-sm-12.col-xs-12.no-padder.m-t-xs(ng-if='$ctrl.shipments.length')
@@ -171,8 +171,8 @@ div
                                             a(ui-sref='package.show({ id: package.id })' ng-bind='package.Store.name' style='cursor: pointer;' ng-click='package.open = !package.open')
                                           td.footable-visible.hidden-xs {{package.id}}
                                           td.footable-visible(
-                                          ng-bind='$ctrl.moment(package.created_at).fromNow()'
-                                          uib-tooltip="{{package.created_at | date:'MMM d, y'}} IST {{package.created_at | date:'h:mm a'}}"
+                                          ng-bind="package.created_at | date:'MMM d, y'"
+                                          uib-tooltip="IST {{package.created_at | date:'h:mm a'}}"
                                           tooltip-placement='right'
                                           tooltip-append-to-body='true'
                                           )
