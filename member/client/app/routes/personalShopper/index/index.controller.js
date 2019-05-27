@@ -156,9 +156,30 @@ class IndexController {
   }
 
   retryPayment(pkg) {
-    const url = `${this.URLS.PAY}/access/login?id=${pkg.id}&amount=${pkg.sub_total}&object_id=${pkg.id.toString()}&customer_id=${this.customerId}&axis_banned=false&type=${this.packageType}`;
-    this.$window.location.href = url;
+    // const url = `${this.URLS.PAY}/access/login?id=${pkg.id}&amount=${pkg.sub_total}&object_id=${pkg.id.toString()}&customer_id=${this.customerId}&axis_banned=false&type=${this.packageType}`;
+    // this.$window.location.href = url;
+
+    this.authorise(pkg.id, this.customerId, this.packageType, pkg.sub_total);
   }
+
+  authorise(id, customerId, shopperType, totalAmount) {
+    this.user = this.Session.read('userinfo');
+    const paymentClient = 9;
+    const data = {
+      grant_type: 'loginAs',
+      username: this.user.email,
+      app_id: paymentClient,
+    };
+    const method = 'post';
+    return this
+      .$http[method]('~~/api/authorise', data)
+      .then(({ data: redirectUrl }) => {
+        const cancelUrl = `${this.URLS.PARCEL}/personalShopper/create`;
+        this.$window.location.href =
+          redirectUrl + `&id=${id}&amount=${totalAmount}&object_id=${id.toString()}&customer_id=${customerId}&axis_banned=false&type=${shopperType}&cancelUrl=${cancelUrl}`;
+      });
+  }
+
 }
 
 angular
