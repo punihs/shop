@@ -12,6 +12,14 @@ angular.module('uiGenApp')
         templateUrl: 'app/routes/shipRequests/index/index.html',
         controller: 'ShipRequestsIndexController',
         controllerAs: '$ctrl',
+        resolve: {
+          shipments($http, $stateParams, $state) {
+            return $http
+              .get('/shipments/queue')
+              .then(({ data: { shipments } }) => shipments)
+              .catch(() => $state.go('access.404'));
+          },
+        },
       })
       .state('shipRequests.create', {
         url: '/create?packageIds',

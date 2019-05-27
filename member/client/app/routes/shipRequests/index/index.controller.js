@@ -1,5 +1,5 @@
 class ShipRequestsIndexController {
-  constructor($http, Page, $uibModal, toaster, moment, CONFIG, $location) {
+  constructor($http, Page, $uibModal, toaster, moment, CONFIG, $location, shipments) {
     this.$http = $http;
     this.Page = Page;
     this.$uibModal = $uibModal;
@@ -10,54 +10,45 @@ class ShipRequestsIndexController {
     this.shipments = [];
     this.CONFIG = CONFIG;
     this.error = this.$location.search().error;
+    this.shipments = shipments;
 
     this.$onInit();
   }
 
   $onInit() {
     this.inreview = false;
+    this.MoreOption = false;
     this.PAYMENT_GATEWAYS = this.CONFIG.PAYMENT_GATEWAY;
     this.SHIPMENT_STATE_IDS = this.CONFIG.SHIPMENT_STATE_IDS;
+
+
+    this.shipments.map((s) => {
+      const shipment = s;
+      const shipmentDate = new Date(shipment.created_at);
+      shipment.totalHours = moment().diff(moment(shipmentDate), 'hour');
+
+      return shipment;
+    });
+
+    const transactionIds = this.shipments.map(x => x.transaction_id);
+    let transactionId = '';
     this.$http
-      .get('/shipments/queue')
-      .then(({ data: { shipments } }) => {
-        if (shipments) {
-          this.shipments = shipments;
+      .get(`$/transactions?transactionIds=${transactionIds}`)
+      .then(({ data: transactions }) => {
+        this.transactions = transactions;
 
-          this.shipments.map((s) => {
-            const shipment = s;
-            const shipmentDate = new Date(shipment.created_at);
-            shipment.totalHours = moment().diff(moment(shipmentDate), 'hour');
+        transactionId = transactions.map(x => x.id);
 
-            return shipment;
-          });
-
-          const transactionIds = this.shipments.map(x => x.transaction_id);
-          let transactionId = '';
-          this.$http
-            .get(`$/transactions?transactionIds=${transactionIds}`)
-            .then(({ data: transactions }) => {
-              this.transactions = transactions;
-
-              transactionId = transactions.map(x => x.id);
-
-              this.shipments.forEach((ship) => {
-                if (transactionId.includes(ship.transaction_id)) {
-                  this.transactions.map((trans) => {
-                    if (ship.transaction_id === trans.id) {
-                      Object.assign(ship, { payment_gate_id: trans.payment_gateway_id });
-                      Object.assign(ship, { payment_status: trans.payment_status });
-                    }
-                  });
-                }
-              });
+        this.shipments.forEach((ship) => {
+          if (transactionId.includes(ship.transaction_id)) {
+            this.transactions.map((trans) => {
+              if (ship.transaction_id === trans.id) {
+                Object.assign(ship, { payment_gate_id: trans.payment_gateway_id });
+                Object.assign(ship, { payment_status: trans.payment_status });
+              }
             });
-        }
-      })
-      .catch((err) => {
-        this
-          .toaster
-          .pop('error', err.data.message);
+          }
+        });
       });
 
     if (this.error) {
