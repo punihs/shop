@@ -174,7 +174,7 @@ class IndexController {
     return this
       .$http[method]('~~/api/authorise', data)
       .then(({ data: redirectUrl }) => {
-        const cancelUrl = `${this.URLS.PARCEL}/personalShopper/create`;
+        const cancelUrl = `${this.URLS.PARCEL}/personalShopper/index`;
         this.$window.location.href =
           redirectUrl + `&id=${id}&amount=${totalAmount}&object_id=${id.toString()}&customer_id=${customerId}&axis_banned=false&type=${shopperType}&cancelUrl=${cancelUrl}`;
       });
