@@ -93,7 +93,7 @@ div
                           td.footable-visible(ng-show='shipment.ShipmentState.state_id == $ctrl.SHIPMENT_STATE_IDS.SHIPMENT_CANCELLED')
                             | Cancelled
                           td.footable-visible(
-                          ng-bind='shipment.created_at | date:"MMM d, y"'
+                          ng-bind='shipment.dispatch_date | date:"MMM d, y"'
                           uib-tooltip="{{shipment.dispatch_date | date:'MMM d, y'}} IST {{shipment.dispatch_date | date:'h:mm a'}}"
                           tooltip-placement='right'
                           tooltip-append-to-body='true'
