@@ -15,6 +15,7 @@ const {
     IN_REVIEW,
     CUSTOMER_INPUT,
     UPLOAD_INVOICE_REQUESTED,
+    PACKAGE_DELETED,
   },
   PHOTO_REQUEST_TYPES: { STANDARD, ADVANCED },
   PHOTO_REQUEST_STATES: { COMPLETED },
@@ -498,6 +499,30 @@ exports.update = async (req, res, next) => {
 exports.destroy = async (req, res, next) => {
   try {
     const { id } = req.params;
+    const { id: customerId } = req.user;
+
+    const pack = await Package
+      .find({
+        where: { id },
+        include: [{
+          model: PackageState,
+          attributes: ['id', 'state_id'],
+        }],
+      });
+
+    await updateState({
+      pkg: pack,
+      actingUser: req.user,
+      nextStateId: PACKAGE_DELETED,
+      comments: 'Package Deleted',
+      next,
+    });
+
+    await PackageItem
+      .update(
+        { deleted_by: customerId },
+        { where: { package_id: id } },
+      );
 
     await PackageItem
       .destroy({ where: { package_id: id } });

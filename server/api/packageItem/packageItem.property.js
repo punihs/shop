@@ -35,4 +35,5 @@ module.exports = DataTypes => ({
   ecommerce_link: DataTypes.STRING,
   object_ecommerce: DataTypes.STRING,
   received_date: DataTypes.DATE,
+  deleted_by: DataTypes.INTEGER,
 });

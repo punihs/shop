@@ -58,6 +58,7 @@ const constants = {};
   { name: 'package_discard_to_ready_actionable_state', keyMap: false },
   { name: 'shipment_inactive_to_shipment_abandon', keyMap: false },
   { name: 'shipment_failed_to_shipment_confirm', keyMap: false },
+  { name: 'package_delete_state', keyMap: false },
 ]
   .forEach(({ name, keyMap = true }) => {
     const data = r(`./../../api/seedingFiles/${_.camelCase(name)}.seed`)(constants);

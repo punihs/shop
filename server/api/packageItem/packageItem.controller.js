@@ -132,6 +132,13 @@ exports.show = async (req, res, next) => {
 exports.destroy = async (req, res, next) => {
   try {
     const { id } = req.params;
+    const { id: customerId } = req.user;
+
+    await PackageItem
+      .update(
+        { deleted_by: customerId },
+        { where: { id } },
+      );
 
     const status = await PackageItem.destroy({ where: { id } });
 

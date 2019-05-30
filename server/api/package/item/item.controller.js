@@ -179,6 +179,7 @@ exports.update = async (req, res, next) => {
 exports.destroy = async (req, res, next) => {
   try {
     const { packageId, id } = req.params;
+    const { id: customerId } = req.user;
 
     const pkg = await Package
       .find({
@@ -202,6 +203,12 @@ exports.destroy = async (req, res, next) => {
           message: `Package Item ${id} can not delete after ready to ship`,
         });
     }
+
+    await PackageItem
+      .update(
+        { deleted_by: customerId },
+        { where: { package_id: packageId, id } },
+      );
 
     await PackageItem
       .destroy({
