@@ -1,366 +1,353 @@
 div
-  .hbox(style="position:relative")
-
-    // - Primary Header
-    .bg-white-only.w-full.b-b(style='position: fixed;z-index: 6;height: 40px;')
-      .pull-left.wrapper-sm.no-padder-top.text-info
-        span.h4
-          i.fas.fa-plane-departure.m-r
-          | Ship Request Confirm
+  .col-md-12.col-sm-12.col-xs-12
+    h1.f-s-20.f-c-d-greay Submit Payment
+    p.f-s-16.f-c-d-greay
+      i.fa.fa-home
+      span.m-l-xs-md / Shipments / Submit Payment
 
     // - Content Area
-    .bg-white.m-t-n-xs-md(style='min-height: 200px;')
-      .m-t-xxl(style='height: 1px;')
-      .hbox
-        .bg-white-only.wrapper-parcel
-          .col-md-12.no-padder-left.p-t-lg
-            .pos-fix.w-full.h-full(style='left:0;top:0;z-index: -1;background: #fff;')
-            .container
-              .row
-                .col-md-7
-                  .div-border-create
-                    h2.font-bold.m-n.alert.bg-primary.text-white 1. DELIVERY ADDRESS
-                      span
-                        i.fa.fa-info-circle.m-l-xs(
-                        uib-popover='Please take extra care to make sure that you have entered the correct address while making an International Shipment. T' +
-                        "he courier will charge an additional fee (between INR 3000 to INR 7000) to your Shoppre account if you " +
-                        "update your address after the shipment has left our facility. Many couriers charge this fee after delivery, " +
-                        "so you may see it charged to your account post-shipment."
-                        popover-trigger="'mouseenter'"
-                        popover-placement='right'
-                        popover-append-to-body='true'
-                        )
+  .container-fluid.scrollableContainer
+    .hbox.bg-white-only.m-b
+      .col-md-12.m-t
+        .col-md-7
+          .div-border-confirm
+            h5.div-list
+              strong Delivery Address
+              span
+                i.fa.fa-info-circle.m-l-xs(
+                uib-popover='Please take extra care to make sure that you have entered the correct address while making an International Shipment. T' +
+                "he courier will charge an additional fee (between INR 3000 to INR 7000) to your Shoppre account if you " +
+                "update your address after the shipment has left our facility. Many couriers charge this fee after delivery, " +
+                "so you may see it charged to your account post-shipment."
+                popover-trigger="'mouseenter'"
+                popover-placement='right'
+                popover-append-to-body='true'
+                )
+            h5.div-list {{$ctrl.shipment.customer_name}} &nbsp; &nbsp;
+              span ({{$ctrl.shipment.phone}})
+            h5.div-list {{$ctrl.shipment.address}}
+
+          div
+            p.m-t-xs {{$ctrl.packages.length}} Packages in this shipment
+            table.table.default.footable-loaded.footable.col-md-12(
+            ui-jq='footable', data-filter='#filter', data-page-size='5')
+              thead.bg-primary.text-white
+                tr(data-toggle='true')
+                  th.footable-visible.footable-sortable
+                    | ID
+                    span.footable-sort-indicator
+                  th.footable-visible.footable-sortable
+                    | From
+                    span.footable-sort-indicator
+                  th.footable-visible.footable-sortable.hidden-xs(data-hide='phone,tablet', data-name='Date Of Birth')
+                    | Value
+                    span.footable-sort-indicator
+                  th.footable-visible.footable-last-column.footable-sortable(data-hide='phone')
+                    | Weight
+                    span.footable-sort-indicator
+              tbody(ng-repeat="package in $ctrl.packages" ng-init='$ctrl.MoreOption={}')
+                tr.footable-even(style='display: table-row; cursor: pointer;' ng-class='$ctrl.MoreOption[$index] === true ? "bg-gr-q" : ""')
+                  td.footable-visible(ng-bind='package.id' ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]')
+                  td.footable-visible
+                    span(ng-bind='package.Store.name')
                     br
-                    p.div-list {{$ctrl.shipment.customer_name}},&nbsp;
-                      br
-                      | {{$ctrl.shipment.address}}
-                      | &nbsp;PH&nbsp; {{$ctrl.shipment.phone}}
-
-                  div.div-border-create
-                    h2.font-bold.m-n.alert.alert.bg-primary.text-white 2. SHIPMENT SUMMARY
-                    .col-md-12.div-border-create
-                      p.m-t-xs {{$ctrl.packages.length}} Packages in this shipment
-                      .panel.panel-default
-                        table.table.table-bordered.m-b-none.default.footable-loaded.footable.table-responsive(
-                        ui-jq='footable', data-filter='#filter', data-page-size='5')
-                          thead
-                            tr
-                              th.footable-visible.footable-first-column.footable-sortable.hidden-xs(data-toggle='true')
-                              th.footable-visible.footable-sortable
-                                | From
-                                span.footable-sort-indicator
-                              th.footable-visible.footable-sortable(data-hide='phone,tablet')
-                                | ID
-                                span.footable-sort-indicator
-                              th.footable-visible.footable-sortable.hidden-xs(data-hide='phone,tablet', data-name='Date Of Birth')
-                                | Total Value
-                                span.footable-sort-indicator
-                              th.footable-visible.footable-last-column.footable-sortable(data-hide='phone')
-                                | Weight
-                                span.footable-sort-indicator
-                          tbody(ng-repeat="package in $ctrl.packages" ng-init='$ctrl.MoreOption={}')
-                            tr.footable-even(style='display: table-row;')
-                              td.footable-visible.footable-first-column.hidden-xs(ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]')
-                                i.fa.fa-chevron-circle-down.text-info
-                              td.footable-visible(ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]')
-                                i.pull-left.fa.fa-chevron-circle-down.text-info.img-responsive.hidden-md.hidden-sm.hidden-lg
-                                a.pull-left(ui-sref='package.show({ id: package.id })' ng-bind='package.Store.name')
-                              td.footable-visible(ng-bind='package.invoice_code')
-                              td.footable-visible.hidden-xs ₹{{package.price_amount | number : 2}}
-                              td.footable-visible {{package.weight | number :2}} kg
-                            tr.footable-even(style='display: table-row;')
-                              td.footable-visible(colspan='5' ng-if='$ctrl.MoreOption[$index]')
-                                p(ng-show='package.PhotoRequests.length > 0')
-                                  button(ng-click='$ctrl.viewPhotos(package)') Photos
-                                table#DataTables_Table_4.table.table-bordered.m-b-none
-                                  thead
-                                    tr(role='row')
-                                      th.sorting_asc.text-u-c(style='width: 186px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Package Details
-                                      th.sorting.text-u-c(style='width: 242px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') QTY
-                                      th.sorting.text-u-c(style='width: 241px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Value per Unit
-                                      th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending') Value
-                                  tbody(ng-repeat="item in package.PackageItems")
-                                    tr.odd(role='row')
-                                      td.sorting_1 {{item.name}}
-                                      td {{item.quantity}}
-                                      td ₹&nbsp;{{item.price_amount | number : 2}}
-                                      td ₹&nbsp;{{item.price_amount * item.quantity | number : 2}}
-                          tr.footable-even.table-footer
-                            td.footable-visible.footable-first-column.hidden-xs
-                            td.footable-visible Shipment Totals
-                            td.footable-visible.hidden-xs
-                            td.footable-visible.hidden-md.hidden-sm.hidden-lg ₹&nbsp;{{$ctrl.totalpackagePriceAmount | number : 2}}
-                            td.footable-visible.hidden-xs ₹&nbsp;{{$ctrl.totalpackagePriceAmount | number : 2}}
-                            td.footable-visible {{$ctrl.shipment.final_weight | number :2}} kg
-                  .clearfix
-                .col-md-4
-                  .panel.no-box-shadow
-                    .panel-heading.font-bold.text-u-c.bg-primary.text-white SHIPPING CHARGES SUMMARY
-                    .panel-body.border-orange
-                      form.form.form-validation.form-horizontal(
-                      name="newShipmentForm"
-                      novalidate
-                      ng-submit='$ctrl.create(newShipmentForm)'
-                      autocomplete='off'
-                      )
-                        ul.list-group.list-group-lg.m-b-none.list-unstyled
-                          li
-                            p
-                              | Total Value of items
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.shipment.value_amount | number : 2}}
-                          li
-                            p
-                              | Actual Weight
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.shipment.weight | number : 2}} kg
-                          li
-                            p
-                              | Box Dimensions
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.shipment.box_length | number : 2}} x {{$ctrl.shipment.box_height | number : 2}} x {{$ctrl.shipment.box_width | number : 2}} cm
-                              span(
-                              uib-popover = 'Box Dimensions = Length x Height x Width (in cm)'
-                              popover-trigger="'mouseenter'"
-                              popover-placement='right'
-                              popover-append-to-body='true'
-                              )
-                                i.m-l.fa.fa-info-circle
-                          li
-                            p
-                              | Volumetric Weight
-                              span.totalvalue.pull-right &nbsp; {{$ctrl.shipment.volumetric_weight | number :2}} kg
-                              span(
-                              uib-popover = 'For International Shipments:' +
-                              'Dimensional Weight = Length x Width x Height (in cm) / 5000' +
-                              'For Domestic Shipments:' +
-                              'Dimensional Weight = Length x Width x Height (in cm) / 4000'
-                              popover-trigger="'mouseenter'"
-                              popover-placement='right'
-                              popover-append-to-body='true'
-                              )
-                                i.m-l.fa.fa-info-circle
-                          li
-                            p
-                              | Final Chargeable Weight
-                              span.totalvalue.pull-right &nbsp; {{$ctrl.shipment.final_weight | number :2}} kg
-                              span(
-                              uib-popover = 'All International carriers base their billable shipping rates on the greater of Actual Weight and Dimensional Weight.'+
-                              'Actual weight is the weight of the package when put on a scale.'+
-                              'Dimensional weight is based on the size of the package. It is calculated by multiplying the dimensions of the item.'+
-                              'For International Shipments:'+
-                              'Dimensional Weight = Length x Width x Height (in cm) / 5000' +
-                              'For Domestic Shipments:' +
-                              'Dimensional Weight = Length x Width x Height (in cm) / 4000'
-                              popover-trigger="'mouseenter'"
-                              popover-placement='right'
-                              popover-append-to-body='true'
-                              )
-                                i.m-l.fa.fa-info-circle
-                          li
-                            p
-                              | Packages Count
-                              span.totalvalue.pull-right &nbsp; {{$ctrl.shipment.packages_count}}
-                          li
-                            hr
-                            p.font-bold
-                              | Sub Total
-                              span.fa.fa-rupee.totalvalue.pull-right &nbsp;{{$ctrl.shipment.sub_total_amount | number : 2}}
-                          li
-                            p.font-bold
-                              | Shipping Discount
-                              span.fa.fa-rupee.totalvalue.pull-right &nbsp;{{$ctrl.shipment.discount_amount| number : 2}}
-                              span(
-                              uib-popover = 'Apart from Country-based shipping discounts, Additional discounts may apply to Shoppre Membership Partners and to Shoppre Loyalty Members (Gold and above).'
-                              popover-trigger="'mouseenter'"
-                              popover-placement='right'
-                              popover-append-to-body='true'
-                              )
-                                i.m-l.fa.fa-info-circle
-                          li(ng-if="$ctrl.wallet === 1  || $ctrl.payment.wallet < 0")
-                            p.font-bold
-                              | Shoppre Wallet
-                              span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.payment.wallet}}
-                                h6(ng-if="$ctrl.payment.wallet > 0") Amount to bededucted
-                                h6(ng-if="$ctrl.payment.wallet < 0") Amount to be Added
-                          li
-                          li(ng-if="$ctrl.shipment.pick_up_charge_amount > 0")
-                            p.font-bold
-                              | Pickup Charge
-                              span.fa.fa-rupee.totalvalue.pull-right.font-bold &nbsp;{{$ctrl.shipment.pick_up_charge_amount| number : 2}}
-                          li(ng-if="$ctrl.shipmentMeta.other_charge_amount > 0")
-                            p.font-bold
-                              | Other Charge Amount
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.shipmentMeta.other_charge_amount| number : 2}}
-                          li
-                            hr
-                            p.font-bold
-                              | Basic Shipping Costs
-                              span.fa.fa-rupee.totalvalue.pull-right &nbsp;{{$ctrl.shipment.estimated_amount - $ctrl.shipment.package_level_charges_amount - $ctrl.payment.wallet | number: 2 }}
-                          .clearfix
-                  .panel.m-t-md.no-box-shadow.border-orange(ng-show="$ctrl.shipment.package_level_charges_amount > 0")
-                    .panel-heading.font-bold.text-u-c.bg-primary.text-white PACKAGE LEVEL CHARGES SUMMARY
-                    .panel-body
-                      form.ng-pristine.ng-valid(role='form')
-                        ul.list-group.list-group-lg.m-b-none.list-unstyled
-                          li(ng-if="$ctrl.shipmentMeta.repacking_charge_amount > 0")
-                            p
-                              | Discard shoe boxes
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.shipmentMeta.repacking_charge_amount| number : 2}}
-                          li(ng-if="$ctrl.shipmentMeta.sticker_charge_amount > 0")
-                            p
-                              | Fragile stikers
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.shipmentMeta.sticker_charge_amount| number : 2}}
-                          li(ng-if="$ctrl.shipmentMeta.extra_packing_charge_amount > 0")
-                            p
-                              | Extra packing material
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.shipmentMeta.extra_packing_charge_amount| number : 2}}
-                          li(ng-if="$ctrl.shipmentMeta.original_ship_box_charge__amount > 0")
-                            p
-                              | Ship in original boxes
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.shipmentMeta.original_ship_box_charge_amount| number : 2}}
-                          li(ng-if="$ctrl.shipmentMeta.gift_wrap_charge_amount > 0")
-                            p
-                              | Gift wrap
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.shipmentMeta.gift_wrap_charge_amount| number : 2}}
-                          li(ng-if="$ctrl.shipmentMeta.gift_note_charge_amount > 0")
-                            p
-                              | Gift note
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.shipmentMeta.gift_note_charge_amount| number : 2}}
-                          li(ng-if="$ctrl.shipmentMeta.express_processing_charge_amount > 0")
-                            p
-                              | Express Processing Fee
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.shipmentMeta.express_processing_charge_amount| number : 2}}
-                          li(ng-if="$ctrl.shipmentMeta.consolidation_charge_amount > 0")
-                            p
-                              | Package consolidation
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.shipmentMeta.consolidation_charge_amount| number : 2}}
-                          li(ng-if="$ctrl.shipmentMeta.liquid_charge_amount > 0")
-                            p
-                              | Special Package Clearance Fee
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.shipmentMeta.liquid_charge_amount| number : 2}}
-                          li(ng-if="$ctrl.shipmentMeta.overweight_charge_amount > 0")
-                            p
-                              | Overweight Clearance Fee
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.shipmentMeta.overweight_charge_amount| number : 2}}
-                        ul.list-group.list-group-lg.m-b-none.list-unstyled
-                          li(ng-if="$ctrl.data.storage_amount > 0")
-                            p
-                              | Additional Storage Fee
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.data.storage_amount | number: 2}}
-                          li(ng-if="$ctrl.data.photo_amount")
-                            p
-                              | Photo Charges
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.data.photo_amount| number : 2}}
-                          li(ng-if="$ctrl.data.pickup_amount > 0")
-                            p
-                              | Pick-up Service
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.data.pickup_amount| number : 2}}
-                          li(ng-if="$ctrl.data.split_package_amount > 0")
-                            p
-                              | Split Package
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.data.split_package_amount| number : 2}}
-                          li(ng-if="$ctrl.data.special_handling_amount > 0")
-                            p
-                              | Special Handling Fee
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.data.special_handling_amount| number : 2}}
-                          li(ng-if="$ctrl.data.receive_mail_amount > 0")
-                            p
-                              | Special Handling Fee
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.data.receive_mail_amount| number : 2}}
-                          li(ng-if="$ctrl.data.scan_document_amount > 0")
-                            p
-                              | Scan Document
-                              span.totalvalue.pull-right &nbsp;{{$ctrl.data.scan_document_amount| number : 2}}
-                          li(ng-if="$ctrl.data.wrong_address_amount > 0")
-                            p
-                              | Address Correction
-                              span.totalvalue.pull-right {{$ctrl.data.wrong_address_amount| number : 2}}
-                          li(ng-if="$ctrl.shipment.package_level_charges_amount > 0")
-                            hr
-                            p.font-bold
-                              | Package Level Charges :
-                              span.fa.fa-rupee.totalvalue.pull-right &nbsp;{{$ctrl.shipment.package_level_charges_amount| number : 2}}
-                          .clearfix
-                  .panel.m-t-md.no-box-shadow.border-orange
-                    .panel-heading.font-bold.text-u-c.bg-primary.text-white FINAL CHARGES
-                    .panel-body
-                      form.ng-pristine.ng-valid(role='form')
-                        ul.list-group.list-group-lg.m-b-none.list-unstyled
-                          p
-                            | Basic Shipping Costs
-                            span.totalvalue.pull-right &nbsp;{{$ctrl.shipment.estimated_amount - $ctrl.shipment.package_level_charges_amount - $ctrl.payment.wallet| number : 2}}
-                          p
-                            | Package Level Charges
-                            span.totalvalue.pull-right &nbsp;{{$ctrl.shipment.package_level_charges_amount| number : 2}}
-                            span(
-                            uib-popover = 'Shoppre includes all of the service charges (apart from shipping charges) under Package Level Charges. The break-up is as shown above.'
-                            popover-trigger="'mouseenter'"
-                            popover-placement='right'
-                            popover-append-to-body='true'
-                            )
-                              i.m-l.fa.fa-info-circle
-                          p.hide
-                            | Coupon Discount
-                            span.totalvalue.pull-right (-) {{$ctrl.payment.coupon | number: 2 }}
-                            span(
-                            uib-popover = 'This Discount is applicable on Basic Shipping Costs only.'
-                            popover-trigger="'mouseenter'"
-                            popover-placement='right'
-                            popover-append-to-body='true'
-                            )
-                              i.m-l.fa.fa-info-circle
-                          p.hide
-                            | Loyalty Rewards
-                            span.totalvalue.pull-right (-) {{$ctrl.payment.loyalty | number: 2 }}
-                            span(
-                            uib-popover = 'For every 1,000 Shoppre Loyalty Points you earn, a credit of INR 100 will automatically be applied to your next shipment'
-                            popover-trigger="'mouseenter'"
-                            popover-placement='right'
-                            popover-append-to-body='true'
-                            )
-                              i.m-l.fa.fa-info-circle
-                          p(ng-if="$ctrl.shipment.payment_gateway_fee")
-                            | Payment Gateway (PG) Fee:
-                            span.totalvalue.pull-right {{$ctrl.payment.payment_gateway_fee | number: 2 }}
-                  // - todo wallet option required after implementation
-                  //ul.list-group.list-group-lg.m-b-none.list-unstyled.chkbox_background(ng-if="$ctrl.shipment.Customer.wallet_balance_amount && $ctrl.shipment.Customer.wallet_balance_amount < $ctrl.shipment.estimated_amount && $ctrl.shipment.Customer.wallet_balance_amount !== 0")
-                  //  li
-                  //    .checkbox
-                  //      label.i-checks(ng-if="$ctrl.shipment.Customer.wallet_balance_amount")
-                  //        input(
-                  //        ng-model='$ctrl.isWalletChecked'
-                  //        type='checkbox',
-                  //        ng-change="$ctrl.walletClicked()",
-                  //        ng-checked ="$ctrl.isWalletChecked"
-                  //        )
-                  //        i
-                  //        | Shoppre Wallet
-                  //      label.i-checks(ng-if="$ctrl.shipment.Customer.wallet_balance_amount < 0")
-                  //        input(
-                  //        ng-model='$ctrl.isWalletChecked'
-                  //        type='checkbox',
-                  //        ng-change="$ctrl.walletClicked()",
-                  //        ng-checked='true'
-                  //        ng-disabled="$ctrl.status = 'disabled'"
-                  //        )
-                  //        i
-                  //        | Shoppre Wallet
-                  //      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.Customer.wallet_balance_amount| number : 2}}
-                  div.final-ship-charge.text-shoppre
-                    h4 Final Shipping Charges *
-                      h4
-                        i.fa.fa-rupee.m-r-xs
-                        span(ng-bind='$ctrl.payment.amount| number : 2')
-
-                  button.btn.btn-success.r-x.font-bold.w-full(
-                  type='submit',
-                  ng-click='$ctrl.submitPayment()'
-                  )
-                    | Proceed to Payment
-                  //a.btn.btn-shoppre(
-                  //style='width: 100%;font-size: 18px;border-radius: 5px;background: #10c018;font-weight: 900;'
-                  //ng-href='http://pay.shoppre.test/api/transactions/create?estimated={{$ctrl.payment.amount}}&object_id={{$ctrl.shipment.id}}'
-                  //)
-                  //  | Proceed to Payment
-                  h5 * Charges shown DO NOT include any duties and taxes due upon shipment arriaval in your receiving country.
-
-
+                    span.text-info (
+                    span.text-info(ng-bind='package.PackageItems.length')
+                    span.text-info &nbsp Items )
+                  td.footable-visible.hidden-xs ₹{{package.price_amount | number : 2}}
+                  td.footable-visible {{package.weight | number :2}} kg
+                tr.footable-even.bg-gr-q(style='display: table-row;')
+                  td.footable-visible(colspan='5' ng-if='$ctrl.MoreOption[$index]' style='border: 0px;')
+                    div.bg-white-only
+                      //p(ng-show='package.PhotoRequests.length > 0')
+                      //  button(ng-click='$ctrl.viewPhotos(package)') Photos
+                      table#DataTables_Table_4.table(style='background-color: #ffffff;')
+                        thead
+                          tr(role='row')
+                            th.sorting_asc.text-u-c(style='width: 186px; border-color: white;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Package Details
+                            th.sorting.text-u-c(style='width: 242px; border-color: white;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') QTY
+                            th.sorting.text-u-c.hidden-xs(style='width: 241px; border-color: white;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Value per Unit
+                            th.sorting.text-u-c(style='width: 130px; border-color: white;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending') Value
+                        tbody(ng-repeat="item in package.PackageItems")
+                          tr.odd(role='row')
+                            td.sorting_1 {{item.name}}
+                            td {{item.quantity}}
+                            td.hidden-xs ₹&nbsp;{{item.price_amount | number : 2}}
+                            td ₹&nbsp;{{item.price_amount * item.quantity | number : 2}}
+              tr.footable-even.bg-gr-q(style='display: table-row;')
+                td.footable-visible.text-blue Shipment Totals
+                td.footable-visible
+                td.footable-visible.hidden-xs.text-blue ₹&nbsp;{{$ctrl.totalpackagePriceAmount | number : 2}}
+                td.footable-visible {{$ctrl.shipment.final_weight | number :2}} kg
           .clearfix
+        .col-md-5
+          .panel.no-box-shadow.div-border-confirm
+            h5
+            strong.div-list Shipping Charges Summary
+            hr
+            .panel-body
+              form.form.form-validation.form-horizontal(
+              name="newShipmentForm"
+              novalidate
+              ng-submit='$ctrl.create(newShipmentForm)'
+              autocomplete='off'
+              )
+                ul.list-group.list-group-lg.m-b-none.list-unstyled
+                  li
+                    p
+                      | Total Value of items
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.shipment.value_amount | number : 2}}
+                  li
+                    p
+                      | Actual Weight
+                      span.totalvalue.pull-right &nbsp;{{$ctrl.shipment.weight | number : 2}} kg
+                  li
+                    p
+                      | Box Dimensions
+                      span.totalvalue.pull-right &nbsp;{{$ctrl.shipment.box_length | number : 2}} x {{$ctrl.shipment.box_height | number : 2}} x {{$ctrl.shipment.box_width | number : 2}} cm
+                      span(
+                      uib-popover = 'Box Dimensions = Length x Height x Width (in cm)'
+                      popover-trigger="'mouseenter'"
+                      popover-placement='right'
+                      popover-append-to-body='true'
+                      )
+                        i.m-l.fa.fa-info-circle
+                  li
+                    p
+                      | Volumetric Weight
+                      span.totalvalue.pull-right &nbsp; {{$ctrl.shipment.volumetric_weight | number :2}} kg
+                      span(
+                      uib-popover = 'For International Shipments:' +
+                      'Dimensional Weight = Length x Width x Height (in cm) / 5000' +
+                      'For Domestic Shipments:' +
+                      'Dimensional Weight = Length x Width x Height (in cm) / 4000'
+                      popover-trigger="'mouseenter'"
+                      popover-placement='right'
+                      popover-append-to-body='true'
+                      )
+                        i.m-l.fa.fa-info-circle
+                  li
+                    p
+                      | Final Chargeable Weight
+                      span.totalvalue.pull-right &nbsp; {{$ctrl.shipment.final_weight | number :2}} kg
+                      span(
+                      uib-popover = 'All International carriers base their billable shipping rates on the greater of Actual Weight and Dimensional Weight.'+
+                      'Actual weight is the weight of the package when put on a scale.'+
+                      'Dimensional weight is based on the size of the package. It is calculated by multiplying the dimensions of the item.'+
+                      'For International Shipments:'+
+                      'Dimensional Weight = Length x Width x Height (in cm) / 5000' +
+                      'For Domestic Shipments:' +
+                      'Dimensional Weight = Length x Width x Height (in cm) / 4000'
+                      popover-trigger="'mouseenter'"
+                      popover-placement='right'
+                      popover-append-to-body='true'
+                      )
+                        i.m-l.fa.fa-info-circle
+                  li
+                    p
+                      | Packages Count
+                      span.totalvalue.pull-right &nbsp; {{$ctrl.shipment.packages_count}}
+                  li
+                    hr
+                    p.font-bold
+                      | Sub Total
+                      span.fa.fa-rupee.totalvalue.pull-right ₹&nbsp;{{$ctrl.shipment.sub_total_amount | number : 2}}
+                  li
+                    p.font-bold
+                      | Shipping Discount
+                      span.fa.fa-rupee.totalvalue.pull-right ₹&nbsp;{{$ctrl.shipment.discount_amount| number : 2}}
+                      span(
+                      uib-popover = 'Apart from Country-based shipping discounts, Additional discounts may apply to Shoppre Membership Partners and to Shoppre Loyalty Members (Gold and above).'
+                      popover-trigger="'mouseenter'"
+                      popover-placement='right'
+                      popover-append-to-body='true'
+                      )
+                        i.m-l.fa.fa-info-circle
+                  li(ng-if="$ctrl.wallet === 1  || $ctrl.payment.wallet < 0")
+                    p.font-bold
+                      | Shoppre Wallet
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold ₹&nbsp;{{$ctrl.payment.wallet}}
+                        h6(ng-if="$ctrl.payment.wallet > 0") Amount to bededucted
+                        h6(ng-if="$ctrl.payment.wallet < 0") Amount to be Added
+                  li
+                  li(ng-if="$ctrl.shipment.pick_up_charge_amount > 0")
+                    p.font-bold
+                      | Pickup Charge
+                      span.fa.fa-rupee.totalvalue.pull-right.font-bold ₹&nbsp;{{$ctrl.shipment.pick_up_charge_amount| number : 2}}
+                  li(ng-if="$ctrl.shipmentMeta.other_charge_amount > 0")
+                    p.font-bold
+                      | Other Charge Amount
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.shipmentMeta.other_charge_amount| number : 2}}
+                  li
+                    hr
+                    p.font-bold
+                      | Basic Shipping Costs
+                      span.fa.fa-rupee.totalvalue.pull-right ₹&nbsp;{{$ctrl.shipment.estimated_amount - $ctrl.shipment.package_level_charges_amount - $ctrl.payment.wallet | number: 2 }}
+                  .clearfix
+          .panel.m-t-md.no-box-shadow.div-border-confirm(ng-show="$ctrl.shipment.package_level_charges_amount > 0")
+            h5
+            strong.div-list Package Level Charges Summary
+            hr
+            .panel-body
+              form.ng-pristine.ng-valid(role='form')
+                ul.list-group.list-group-lg.m-b-none.list-unstyled
+                  li(ng-if="$ctrl.shipmentMeta.repacking_charge_amount > 0")
+                    p
+                      | Discard shoe boxes
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.shipmentMeta.repacking_charge_amount| number : 2}}
+                  li(ng-if="$ctrl.shipmentMeta.sticker_charge_amount > 0")
+                    p
+                      | Fragile stikers
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.shipmentMeta.sticker_charge_amount| number : 2}}
+                  li(ng-if="$ctrl.shipmentMeta.extra_packing_charge_amount > 0")
+                    p
+                      | Extra packing material
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.shipmentMeta.extra_packing_charge_amount| number : 2}}
+                  li(ng-if="$ctrl.shipmentMeta.original_ship_box_charge__amount > 0")
+                    p
+                      | Ship in original boxes
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.shipmentMeta.original_ship_box_charge_amount| number : 2}}
+                  li(ng-if="$ctrl.shipmentMeta.gift_wrap_charge_amount > 0")
+                    p
+                      | Gift wrap
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.shipmentMeta.gift_wrap_charge_amount| number : 2}}
+                  li(ng-if="$ctrl.shipmentMeta.gift_note_charge_amount > 0")
+                    p
+                      | Gift note
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.shipmentMeta.gift_note_charge_amount| number : 2}}
+                  li(ng-if="$ctrl.shipmentMeta.express_processing_charge_amount > 0")
+                    p
+                      | Express Processing Fee
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.shipmentMeta.express_processing_charge_amount| number : 2}}
+                  li(ng-if="$ctrl.shipmentMeta.consolidation_charge_amount > 0")
+                    p
+                      | Package consolidation
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.shipmentMeta.consolidation_charge_amount| number : 2}}
+                  li(ng-if="$ctrl.shipmentMeta.liquid_charge_amount > 0")
+                    p
+                      | Special Package Clearance Fee
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.shipmentMeta.liquid_charge_amount| number : 2}}
+                  li(ng-if="$ctrl.shipmentMeta.overweight_charge_amount > 0")
+                    p
+                      | Overweight Clearance Fee
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.shipmentMeta.overweight_charge_amount| number : 2}}
+                ul.list-group.list-group-lg.m-b-none.list-unstyled
+                  li(ng-if="$ctrl.data.storage_amount > 0")
+                    p
+                      | Additional Storage Fee
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.data.storage_amount | number: 2}}
+                  li(ng-if="$ctrl.data.photo_amount")
+                    p
+                      | Photo Charges
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.data.photo_amount| number : 2}}
+                  li(ng-if="$ctrl.data.pickup_amount > 0")
+                    p
+                      | Pick-up Service
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.data.pickup_amount| number : 2}}
+                  li(ng-if="$ctrl.data.split_package_amount > 0")
+                    p
+                      | Split Package
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.data.split_package_amount| number : 2}}
+                  li(ng-if="$ctrl.data.special_handling_amount > 0")
+                    p
+                      | Special Handling Fee
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.data.special_handling_amount| number : 2}}
+                  li(ng-if="$ctrl.data.receive_mail_amount > 0")
+                    p
+                      | Special Handling Fee
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.data.receive_mail_amount| number : 2}}
+                  li(ng-if="$ctrl.data.scan_document_amount > 0")
+                    p
+                      | Scan Document
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.data.scan_document_amount| number : 2}}
+                  li(ng-if="$ctrl.data.wrong_address_amount > 0")
+                    p
+                      | Address Correction
+                      span.totalvalue.pull-right ₹&nbsp;{{$ctrl.data.wrong_address_amount| number : 2}}
+                  li(ng-if="$ctrl.shipment.package_level_charges_amount > 0")
+                    hr
+                    p.font-bold
+                      | Package Level Charges :
+                      span.fa.fa-rupee.totalvalue.pull-right ₹&nbsp;{{$ctrl.shipment.package_level_charges_amount| number : 2}}
+                  .clearfix
+          .panel.m-t-md.no-box-shadow.div-border-confirm
+            h5
+            strong.div-list Final Charges
+            hr
+            .panel-body
+              form.ng-pristine.ng-valid(role='form')
+                ul.list-group.list-group-lg.m-b-none.list-unstyled
+                  p
+                    | Basic Shipping Costs
+                    span.totalvalue.pull-right ₹&nbsp;{{$ctrl.shipment.estimated_amount - $ctrl.shipment.package_level_charges_amount - $ctrl.payment.wallet| number : 2}}
+                  p
+                    | Package Level Charges
+                    span.totalvalue.pull-right ₹&nbsp;{{$ctrl.shipment.package_level_charges_amount| number : 2}}
+                    span(
+                    uib-popover = 'Shoppre includes all of the service charges (apart from shipping charges) under Package Level Charges. The break-up is as shown above.'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
+                    )
+                      i.m-l.fa.fa-info-circle
+                  p.hide
+                    | Coupon Discount
+                    span.totalvalue.pull-right (-) ₹&nbsp;{{$ctrl.payment.coupon | number: 2 }}
+                    span(
+                    uib-popover = 'This Discount is applicable on Basic Shipping Costs only.'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
+                    )
+                      i.m-l.fa.fa-info-circle
+                  p.hide
+                    | Loyalty Rewards
+                    span.totalvalue.pull-right (-) ₹&nbsp;{{$ctrl.payment.loyalty | number: 2 }}
+                    span(
+                    uib-popover = 'For every 1,000 Shoppre Loyalty Points you earn, a credit of INR 100 will automatically be applied to your next shipment'
+                    popover-trigger="'mouseenter'"
+                    popover-placement='right'
+                    popover-append-to-body='true'
+                    )
+                      i.m-l.fa.fa-info-circle
+                  p(ng-if="$ctrl.shipment.payment_gateway_fee")
+                    | Payment Gateway (PG) Fee:
+                    span.totalvalue.pull-right ₹&nbsp;{{$ctrl.payment.payment_gateway_fee | number: 2 }}
+          // - todo wallet option required after implementation
+          //ul.list-group.list-group-lg.m-b-none.list-unstyled.chkbox_background(ng-if="$ctrl.shipment.Customer.wallet_balance_amount && $ctrl.shipment.Customer.wallet_balance_amount < $ctrl.shipment.estimated_amount && $ctrl.shipment.Customer.wallet_balance_amount !== 0")
+          //  li
+          //    .checkbox
+          //      label.i-checks(ng-if="$ctrl.shipment.Customer.wallet_balance_amount")
+          //        input(
+          //        ng-model='$ctrl.isWalletChecked'
+          //        type='checkbox',
+          //        ng-change="$ctrl.walletClicked()",
+          //        ng-checked ="$ctrl.isWalletChecked"
+          //        )
+          //        i
+          //        | Shoppre Wallet
+          //      label.i-checks(ng-if="$ctrl.shipment.Customer.wallet_balance_amount < 0")
+          //        input(
+          //        ng-model='$ctrl.isWalletChecked'
+          //        type='checkbox',
+          //        ng-change="$ctrl.walletClicked()",
+          //        ng-checked='true'
+          //        ng-disabled="$ctrl.status = 'disabled'"
+          //        )
+          //        i
+          //        | Shoppre Wallet
+          //      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.Customer.wallet_balance_amount| number : 2}}
+          div.final-ship-charge.text-black
+            h4 Final Shipping Charges *
+              h4 ₹&nbsp;
+                span(ng-bind='$ctrl.payment.amount| number : 2')
+
+            button.btn.btn-success.r-x.font-bold.w-full(
+            type='submit',
+            ng-click='$ctrl.submitPayment()'
+            )
+              | Proceed to Payment
+            h5 * Charges shown DO NOT include any duties and taxes due upon shipment arriaval in your receiving country.
+
+
+      .clearfix
