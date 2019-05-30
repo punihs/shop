@@ -55,6 +55,7 @@ class ShipRequestsCreateController {
     modal
       .result
       .then((data) => {
+        this.data.address_id = data.id;
         this.IsShippingAddress = true;
         this.defaultAddress = data;
       });
