@@ -239,6 +239,28 @@
           .col-md-8.col-xs-8.no-padder
             p.f-s-16.f-c-l-gray(ng-if='$ctrl.shipmentMeta.photo_amount')
              | Photo Charges
+            p.f-s-16.f-c-l-gray(ng-if= '$ctrl.shipmentMeta.consolidation_charge_amount')
+             | Consolidation Charges
+            p.f-s-16.f-c-l-gray(ng-if= '$ctrl.shipmentMeta.storage_amount')
+             | Additional Storage Fee
+            p.f-s-16.f-c-l-gray(ng-if= '$ctrl.shipmentMeta.is_liquid')
+             | Special Package Clearance Fee
+            p.f-s-16.f-c-l-gray(ng-if= '$ctrl.operationsAmount')
+              | Shipping Preference Charges &nbsp;
+              tr.footable-even(style='display: table-row;')
+                td.footable-visible.footable-first-column
+                  i.fa.fa-chevron-circle-down.text-info(ng-click = '$ctrl.packageOptions = !$ctrl.packageOptions')
+                  .col-md-12(ng-show='$ctrl.packageOptions')
+                      p.f-s-10.f-c-l-gray(ng-if='$ctrl.data.gift_wrap')
+                        | Gift Wrap
+                      p.f-s-10.f-c-l-gray(ng-if='$ctrl.data.extra_packing')
+                        | Add Extra Package Material
+                      p.f-s-10.f-c-l-gray(ng-if='$ctrl.data.repack')
+                        | Discard Shoe Box
+                      p.f-s-10.f-c-l-gray(ng-if='$ctrl.data.gift_note')
+                        | Gift Note
+                      p.f-s-10.f-c-l-gray(ng-if='$ctrl.data.express_processing')
+                        | Express Processing
             p.f-s-16.f-c-l-gray Overweight Clearance Charge
               i.fa.fa-info-circle.m-l-xs(
               uib-popover='Any shipment which weighs more than 30 kg will be considered as a commercial shipment and will incur a custom clearance cost of INR 2500. If you would like to restrict a Maximum weight of individual boxes in a shipment, you can input the “maximum weight per shipment” of your choice, under your Shipping Preferences. Shoppre will split your shipment into multiple boxes not exceeding this box weight limit (whenever possible), at the same cost of splitting a package (INR 200 per new package created).'
@@ -246,12 +268,35 @@
               popover-placement='bottom'
               popover-append-to-body='true'
               )
+            hr
             p.f-s-16.f-c-l-gray(ng-if='$ctrl.totalChargeAmount')
-             | Total Package Level Charges
+             strong Total Package Level Charges
           .col-md-4.col-xs-4.no-padder(style="text-align: right;")
             p.f-s-16.f-c-d-gray(ng-if='$ctrl.shipmentMeta.photo_amount')
              | ₹{{$ctrl.shipmentMeta.photo_amount}}
+            p.f-s-16.f-c-d-gray(ng-if= '$ctrl.shipmentMeta.consolidation_charge_amount')
+              | ₹{{$ctrl.shipmentMeta.consolidation_charge_amount}}
+            p.f-s-16.f-c-d-gray(ng-if= '$ctrl.shipmentMeta.storage_amount')
+             | ₹{{$ctrl.shipmentMeta.storage_amount}}
+            p.f-s-16.f-c-d-gray(ng-if= '$ctrl.shipmentMeta.is_liquid')
+             | ₹{{$ctrl.data.is_liquid}}
+            p.f-s-16.f-c-d-gray(ng-if= '$ctrl.operationsAmount')
+              | ₹{{$ctrl.operationsAmount}}
+              tr.footable-even(style='display: table-row;')
+                td.footable-visible.footable-first-column(ng-click = '$ctrl.packageOptions = !$ctrl.packageOptions')
+                  .col-md-12(ng-show='$ctrl.packageOptions')
+                    p.f-s-10.f-c-l-gray(ng-if='$ctrl.data.gift_wrap')
+                      |  ₹100
+                    p.f-s-10.f-c-l-gray(ng-if='$ctrl.data.extra_packing')
+                      |  ₹500
+                    p.f-s-10.f-c-l-gray(ng-if='$ctrl.data.repack')
+                      |  ₹100
+                    p.f-s-10.f-c-l-gray(ng-if='$ctrl.data.gift_note')
+                      |  ₹50
+                    p.f-s-10.f-c-l-gray(ng-if='$ctrl.data.express_processing')
+                      |  ₹200
             p.f-s-16.f-c-d-gray To Be Calculated
+            hr
             p.f-s-16.f-c-d-gray(ng-if='$ctrl.totalChargeAmount')
              | ₹{{$ctrl.totalChargeAmount}}
         .col-md-12.col-xs-12(style="background-color: #e1e9f3;border-radius: 3px;")
@@ -260,11 +305,11 @@
               label.i-checks(ng-if='$ctrl.data.express_processing')
                 input(type='checkbox', checked='true' value='' ng-model='$ctrl.data.express_processing')
                 i
-                | Express Processing
+                | Express Processing - INR 200
               label.i-checks(ng-if='!$ctrl.data.express_processing')
                 input(type='checkbox',  value='' ng-model='$ctrl.data.express_processing')
                 i
-                | Express Processing
+                | Express Processing - INR 200
               i.fa.fa-info-circle.m-l-xs(
               uib-popover='With Express Processing your package will jump to the front of the processing queues. This means your package gets VIP treatment.Faster consolidation,special requests and out the door quickly.'
               popover-trigger="'mouseenter'"

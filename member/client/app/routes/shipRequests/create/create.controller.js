@@ -14,6 +14,7 @@ class ShipRequestsCreateController {
 
   $onInit() {
     this.Page.setTitle('Shipment Request Create');
+    this.packageOptions = false;
 
     this.customer = [];
     this.charges = {};
