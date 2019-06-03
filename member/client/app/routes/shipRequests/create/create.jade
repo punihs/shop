@@ -7,7 +7,7 @@
         span.f-c-l-gray &nbsp;&nbsp;/ Mylocker /
         |  &nbsp; Create Ship Request
     .col-md-12.col-xs-12.div-b-w-s.no-padder
-      .col-md-9.col-xs-12.create-ship-pad(ng-if='$ctrl.summary')
+      .col-md-7.col-xs-12.create-ship-pad(ng-if='$ctrl.summary')
         center
           img.img-responsive(src='assets/images/creat-shipment-1.png', style='margin: 12px 0 12px 0;')
         hr
@@ -26,7 +26,7 @@
             i.m-l.fa.fa-info-circle
         p.f-s-16.f-c-d-greay(ng-bind='$ctrl.defaultAddress.line1 + "," + $ctrl.defaultAddress.line2 + "," + $ctrl.defaultAddress.city + "," + $ctrl.defaultAddress.state + "," + $ctrl.defaultAddress.Country.name + "-" + $ctrl.defaultAddress.pincode')
         button.btn.btn-default(ng-click='$ctrl.editAddress($ctrl.defaultAddress.id, $index)') Edit
-        button.btn.btn-default.m-l-sm(ng-click='$ctrl.select()') change
+        button.btn.btn-default.m-l-sm(ng-click='$ctrl.select()') Change
         button.btn.btn-default.m-l-sm(ng-click='$ctrl.open()') Add Address
         br
         .col-md-12.col-xs-12.no-padder(style="margin-top:20px")
@@ -39,15 +39,15 @@
               popover-placement='bottom'
               popover-append-to-body='true') Add More Package
         .col-md-12.col-xs-12.no-padder(style="margin-top:10px")
-          table.table.table-striped.m-b-none(style="border-radius: 3px 3px 0 0;")
-            thead(style="background-color: #677582;color:#fff;font-weight:700")
+          table.table.m-b-none(style="border-radius: 3px 3px 0 0;")
+            thead(style='background-color: #677582;color:#fff;font-weight:700')
               tr(data-toggle='true')
                 td Package ID
                 td From
                 td Value
                 td Weight
             tbody(ng-repeat="shipment in $ctrl.shipments" ng-init='$ctrl.MoreOption={}' ng-class='$ctrl.MoreOption[$index] === true ? "bg-color" : ""')
-              tr(ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]' style='cursor:pointer')
+              tr(ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]' style='cursor:pointer;')
                 td(ng-bind='shipment.id')
                 td
                   a(ui-sref='package.show({ id: package.id })' ng-bind='shipment.Store.name')
@@ -69,33 +69,34 @@
                         td {{item.quantity}}
                         td ₹{{item.price_amount}}
                         td ₹{{item.price_amount * item.quantity}}
-            tbody
-              .col-md-12.col-xs-12(style="background:#e1e9f3;")
-                 td  Shipment Totals
-                 td
-                 td ₹{{$ctrl.totalpackagePriceAmount | number : 2}}
-                 td.footable-visible(colspan='2') Final Weight of Shipment to be calculated
-                   span(
-                   uib-popover = "All International carriers base their billable shipping rates" +
-                   "on the greater of Actual Weight and Dimensional Weight." +
-                   "Actual weight is the weight of the package when put on a" +
-                   "scale." +
-                   " Dimensional weight is based on the size of the package. It is" +
-                   "calculated by multiplying the dimensions of the item." +
-                   "For International Shipments:" +
-                   "Dimensional Weight = Length x Width x Height (in cm) / 5000" +
-                   "For Domestic Shipments:" +
-                   "Dimensional Weight = Length x Width x Height (in cm) / 4000"
-                   popover-trigger="'mouseenter'"
-                   popover-placement='right'
-                   popover-append-to-body='true'
-                   )
-                     i.m-l.fa.fa-info-circle
-          .col-md-12.col-xs-12.no-padder
-             button.btn.pull-right.btn-request(ng-click='$ctrl.nextStage()' style="margin-top:20px;color:#fff;width: 80px;height: auto;") Next
-          br
+        .col-md-12.col-xs-12(style="background:#f1f5fa;")
+          table.table.table-striped.m-b-none(style="border-radius: 3px 3px 0 0;")
+            thead
+              tr
+                td.text-blue  Shipment Totals
+                td.text-blue ₹{{$ctrl.totalpackagePriceAmount | number : 2}} &nbsp;
+                  span.f-c-d-greay ( * Final Weight of Shipment to be calculated )
+                    span(
+                     uib-popover = "All International carriers base their billable shipping rates" +
+                     "on the greater of Actual Weight and Dimensional Weight." +
+                     "Actual weight is the weight of the package when put on a" +
+                     "scale." +
+                     " Dimensional weight is based on the size of the package. It is" +
+                     "calculated by multiplying the dimensions of the item." +
+                     "For International Shipments:" +
+                     "Dimensional Weight = Length x Width x Height (in cm) / 5000" +
+                     "For Domestic Shipments:" +
+                     "Dimensional Weight = Length x Width x Height (in cm) / 4000"
+                     popover-trigger="'mouseenter'"
+                     popover-placement='right'
+                     popover-append-to-body='true'
+                     )
+                       i.m-l.fa.fa-info-circle
+        .col-md-12.col-xs-12.no-padder
+           button.btn.pull-right.btn-request(ng-click='$ctrl.nextStage()' style="margin-top:20px;color:#fff;width: 80px;height: auto;") Next
+        br
 
-      .col-md-9.col-xs-12(style="padding-top:20px;" ng-if='$ctrl.preferences')
+      .col-md-7.col-xs-12(style="padding-top:20px;" ng-if='$ctrl.preferences')
         center
           img.img-responsive(src='assets/images/create-shipment-2.png', style='margin: 12px 0 12px 0;')
         hr
@@ -232,7 +233,7 @@
         br
 
 
-      .col-md-3.col-xs-12(style="padding:10px;")
+      .col-md-5.col-xs-12(style="padding:10px;")
         .col-md-12.col-xs-12.div-b-w-s(style="border: 1px solid rgba(146, 156, 165, 0.2);border-radius:4px;padding-bottom: 100px;")
           h3.f-s-16.f-c-d-greay Package Level Charges Summary
           hr
