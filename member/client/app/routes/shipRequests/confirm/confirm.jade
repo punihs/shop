@@ -46,8 +46,8 @@ div
                     | Weight
                     span.footable-sort-indicator
               tbody(ng-repeat="package in $ctrl.packages" ng-init='$ctrl.MoreOption={}')
-                tr.footable-even(style='display: table-row; cursor: pointer;' ng-class='$ctrl.MoreOption[$index] === true ? "bg-gr-q" : ""')
-                  td.footable-visible(ng-bind='package.id' ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]')
+                tr.footable-even(style='display: table-row; cursor: pointer;' ng-class='$ctrl.MoreOption[$index] === true ? "bg-gr-q" : ""' ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]')
+                  td.footable-visible.col-md-2(ng-bind='package.id')
                   td.footable-visible
                     span(ng-bind='package.Store.name')
                     br
@@ -78,14 +78,14 @@ div
                 td.footable-visible.text-blue Shipment Totals
                 td.footable-visible
                 td.footable-visible.hidden-xs.text-blue ₹&nbsp;{{$ctrl.totalpackagePriceAmount | number : 2}}
-                td.footable-visible {{$ctrl.shipment.final_weight | number :2}} kg
+                td.footable-visible.text-blue {{$ctrl.shipment.final_weight | number :2}} kg
           .clearfix
         .col-md-5
           .panel.no-box-shadow.div-border-confirm
             h5
             strong.div-list Shipping Charges Summary
             hr.hrs.no-margin-bottom
-            .panel-body(style='padding: 10px;')
+            .panel-body(style='padding: 10px; margin-left: 10px;')
               form.form.form-validation.form-horizontal(
               name="newShipmentForm"
               novalidate
@@ -188,7 +188,7 @@ div
             h5
             strong.div-list Package Level Charges Summary
             hr.hrs.no-margin-bottom
-            .panel-body(style='padding: 10px;')
+            .panel-body(style='padding: 10px; margin-left: 10px;')
               form.ng-pristine.ng-valid(role='form')
                 ul.list-group.list-group-lg.m-b-none.list-unstyled
                   li(ng-if="$ctrl.shipmentMeta.repacking_charge_amount > 0")
@@ -274,7 +274,7 @@ div
             h5
             strong.div-list Final Charges
             hr.hrs.no-margin-bottom
-            .panel-body(style='padding: 10px;')
+            .panel-body(style='padding: 10px; margin-left: 10px;')
               form.ng-pristine.ng-valid(role='form')
                 ul.list-group.list-group-lg.m-b-none.list-unstyled
                   p
@@ -337,7 +337,7 @@ div
           //        i
           //        | Shoppre Wallet
           //      span.fa.fa-rupee.totalvalue.pull-right {{$ctrl.shipment.Customer.wallet_balance_amount| number : 2}}
-          div.final-ship-charge.text-black(style='padding: 10px;')
+          div.final-ship-charge.text-black(style='padding: 10px; background-color: #e1e9f3;')
             h4 Final Shipping Charges *
               h4 ₹&nbsp;
                 span(ng-bind='$ctrl.payment.amount| number : 2')
@@ -349,7 +349,7 @@ div
               | Proceed to Payment
             p.f-s-14.f-c-l-gray * Charges shown &nbsp;
               span.f-c-red DO NOT &nbsp;
-              | include any duties and taxes due upon shipment arriaval in your receiving country.
+              | include any duties and taxes due upon shipment arrival in your receiving country.
 
 
       .clearfix
