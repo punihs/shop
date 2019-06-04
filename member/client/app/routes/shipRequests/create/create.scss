@@ -4,10 +4,10 @@
 .bg-color {
   background-color: #e1e9f3;
 }
-.table > tbody > tr > td,
-.table > tfoot > tr > td {
+.table-create > tbody > tr > td,
+.table-create > tfoot > tr > td {
   border: 0px;
 }
-.table > tbody + tbody {
+.table-create > tbody + tbody {
    border: 0px ;
 }

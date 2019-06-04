@@ -39,7 +39,7 @@
               popover-placement='bottom'
               popover-append-to-body='true') Add More Package
         .col-md-12.col-xs-12.no-padder(style="margin-top:10px")
-          table.table.m-b-none(style="border-radius: 3px 3px 0 0;")
+          table.table.table-create.m-b-none(style="border-radius: 3px 3px 0 0;")
             thead(style='background-color: #677582;color:#fff;font-weight:700')
               tr(data-toggle='true')
                 td Package ID
@@ -56,7 +56,7 @@
                   i.fas.fa-trash.pull-right.hide(style="color:red" title='Delete Package' ng-click='$ctrl.deletePackage(shipment.id, $index)')
               tr
                 td(colspan='5' ng-if='$ctrl.MoreOption[$index]')
-                  table.table(style="background:white")
+                  table.table.table-create(style="background:white")
                     thead.f-s-16.f-c-d-greay.f-w-6
                       tr
                         td Package Details
