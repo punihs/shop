@@ -40,7 +40,7 @@ class PackageShowController {
     this.root = '_root_';
     this.modal = {};
     this.packageItemsAdditionAllowedStateIds = [1];
-    this.editAllowedStates = [1, 2, 5];
+    this.editAllowedStates = [1, 2, 5, 6];
     this.packageItems = [];
     this.charges = null;
 

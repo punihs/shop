@@ -1200,8 +1200,6 @@ exports.payResponse = async (req, res, next) => {
   try {
     const { body } = req;
 
-    console.log('Payment response', body);
-
     const shipment = await Shipment
       .find({ where: { order_code: body.object_id } });
     // - Todo: Security issue
@@ -1225,7 +1223,7 @@ exports.payResponse = async (req, res, next) => {
         shipment,
         actingUser: customer,
         nextStateId: PAYMENT_COMPLETED,
-        comments: `Payment ${body.status}!`,
+        comments: 'Payment Success!',
         next,
       });
     } else {

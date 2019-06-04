@@ -6,6 +6,7 @@ const {
   SUPPORT_EMAIL_ID, SUPPORT_EMAIL_FIRST_NAME, SUPPORT_EMAIL_LAST_NAME,
 } = require('../../config/environment');
 const cashback = require('../shipment/components/cashback');
+const transactionCtrl = require('../transaction/transaction.controller');
 
 const {
   APPS, GROUPS: { CUSTOMER, OPS },
@@ -15,7 +16,7 @@ const {
   },
   PACKAGE_STATE_IDS: {
     PACKAGE_ITEMS_UPLOAD_PENDING, SPLIT_PACKAGE_PROCESSED, AWAITING_VERIFICATION, IN_REVIEW,
-    ADDED_SHIPMENT, AWAITING_FOR_ORDER, ORDER_CREATED,
+    ADDED_SHIPMENT, AWAITING_FOR_ORDER, ORDER_CREATED, RETURN_PICKUP_DONE,
   },
   PACKAGE_TYPES: {
     PERSONAL_SHOPPER, COD,
@@ -319,6 +320,34 @@ exports.updateState = async ({
           { package_received_date: moment() },
           { where: { id: pkg.id } },
         );
+        break;
+      }
+      case RETURN_PICKUP_DONE: {
+        let today = moment();
+        if (pkg.package_received_date) {
+          const receivedDate = moment(pkg.package_received_date, 'DD-MM-YYYY');
+          today = moment(today, 'DD-MM-YYYY');
+          const noOfDays = today.diff(receivedDate, 'days');
+
+          let returnCharges = 0;
+
+          if (noOfDays >= 4 && noOfDays <= 10) {
+            returnCharges = 100;
+          } else if (noOfDays >= 11 && noOfDays <= 15) {
+            returnCharges = 200;
+          } else if (noOfDays > 15) {
+            returnCharges = 400;
+          }
+
+          if (returnCharges > 0) {
+            await transactionCtrl
+              .setWallet({
+                customer_id: pkg.customer_id,
+                amount: -returnCharges,
+                description: `Package return charges for package Id ${pkg.id} and number of days is ${noOfDays}`,
+              });
+          }
+        }
         break;
       }
       default: {
