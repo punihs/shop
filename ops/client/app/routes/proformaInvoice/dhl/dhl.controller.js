@@ -71,6 +71,17 @@ class dhlController {
           .pop('error', err.data.message);
       });
   }
+
+  removeRow(index) {
+    this.Charges.total_amount = this.Charges.total_amount - this.PackItems[index].total_amount;
+
+    this.$http
+      .get(`/shipments/${this.Charges.total_amount}/amountToWords`)
+      .then(({ data: { amountInWords } }) => {
+        this.amountWords = `${amountInWords} Only`;
+      });
+    this.PackItems.splice(index, 1);
+  }
 }
 
 angular

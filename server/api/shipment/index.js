@@ -25,6 +25,7 @@ router.post('/:id/response', controller.payResponse);
 router.get('/:orderCode/request/shipRequestResponse', controller.shipRequestResponse);
 router.put('/:id/tracking', controller.trackingUpdate);
 router.get('/:orderCode/proformaInvoice', controller.proformaInvoice);
+router.get('/:amount/amountToWords/', controller.amountToWords);
 
 module.exports = router;
 

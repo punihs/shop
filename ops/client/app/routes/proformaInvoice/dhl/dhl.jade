@@ -121,7 +121,7 @@
           td(colspan='1' style="border: 1px solid;width: 15%;")
             p.text-center Value in INR
         tr(ng-repeat="item in $ctrl.PackItems")
-          td(colspan='1' style="border: 1px solid; width: 15%;")
+          td(ng-click='$ctrl.removeRow($index)' colspan='1' style="border: 1px solid; width: 15%;")
           td.text-center(colspan='1' style="border: 1px solid; width: 15%;")
             span {{$index+1}}
           td(colspan='3' style="border: 1px solid;")
@@ -138,7 +138,12 @@
               ng-model='item.name'
               )
           td.text-center(colspan='1' style="border: 1px solid; width: 5%;")
-            span {{item.quantity}}
+            span
+              input(
+              style="text-align: center; border: 0px;"
+              type='text'
+              ng-model='item.quantity'
+              )
           td(colspan='1' style="border: 1px solid;width: 15%;")
             span
               input(

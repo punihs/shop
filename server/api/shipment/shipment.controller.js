@@ -875,6 +875,20 @@ exports.proformaInvoice = async (req, res, next) => {
   }
 };
 
+exports.amountToWords = async (req, res, next) => {
+  try {
+    const { amount } = req.params;
+    console.log(amount);
+    const amountInWords = _.startCase(_.toLower(numberWords(amount)));
+
+    return res.json({
+      amountInWords,
+    });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 exports.finalShipRequest = async (req, res, next) => {
   try {
     const customerId = req.user.id;
