@@ -1,7 +1,7 @@
 (() => {
   class CommentsController {
     /*  @ngInject  */
-    constructor($http, $timeout, Session, socket) {
+    constructor($http, $timeout, Session, socket, moment) {
       this.moment = moment;
       this.$http = $http;
       this.$timeout = $timeout;

@@ -21,6 +21,7 @@ angular
     'angular-loading-bar',
     'naif.base64',
     'toaster',
+    'btford.socket-io',
     'ngclipboard',
     'ngIntlTelInput',
     // 'ngRaven',

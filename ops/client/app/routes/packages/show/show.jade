@@ -261,7 +261,6 @@
                 .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='packageItem in $ctrl.packageItems')
                   .col-xs-2.wrapper-sm.m-t-xs
                     img.pull-left.m-r(
-
                       ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + packageItem.object.replace(".", "-thumb.")}}'
                       style='height: 30px;width: 30px;border-radius: 50%;'
                       ng-click='$ctrl.openPhoto(packageItem.object)'

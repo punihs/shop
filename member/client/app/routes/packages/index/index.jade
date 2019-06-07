@@ -138,7 +138,9 @@ div
                             span.badge.bg-success.m-l-xs.text-white(ng-if='package.content_type === "2"') SPECIAL
                             span.badge.bg-danger.m-l-xs.text-white(ng-if='package.damaged') DAMAGED
                             span.badge.bg-danger.m-l-xs.text-white(ng-if='package.is_restricted_item === true') Restricted Item
-
+                            br
+                            a(ui-sref='comments.index({id:package.id})')
+                              span.btn-chat Chat
                           td.footable-visible(ng-if="$ctrl.$stateParams.bucket !=='MY_ORDERS'" )
                             a(ng-click='$ctrl.viewPhotos($index, package)' ng-if="$ctrl.PACKAGE_STATE_IDS.INCOMING_PACKAGE !== package.state_id" )
                               u.text-blue Photos

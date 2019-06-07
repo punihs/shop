@@ -38,6 +38,7 @@ module.exports = function (config) {
       'client/bower_components/ng-intl-tel-input/dist/ng-intl-tel-input.js',
       'client/bower_components/raven-js/dist/raven.js',
       'client/bower_components/angular-raven/angular-raven.js',
+      'client/bower_components/angular-socket-io/socket.js',
       // endbower
       'client/app/app.js',
       'client/{app,components}/**/*.module.js',

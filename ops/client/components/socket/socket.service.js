@@ -25,7 +25,6 @@ function Socket($rootScope, $http, socketFactory, URLS, Session) {
 
   return {
     socket,
-
     /**
      * Register listeners to sync an array with updates on a model
      *
