@@ -41,7 +41,7 @@
                         center
                           h5.f-s-5.f-c-red  Self Purchased
                           h6 ( DO YOU WANT TO PLACE THE ORDERS YOURSELF?)
-                          h1.f-s-1.f-c-blue  Price: 7%
+                          h1.f-s-1.f-c-blue  Price: 10%
                     .col-md-6.col-xs-6
                       div
                         .checkbox
@@ -63,7 +63,7 @@
                         center
                           h5.f-s-5.f-c-blue  Assisted Purchase
                           h6 ( DO YOU WANT SHOPPRE TO PLACE THE ORDERS FOR YOU? )
-                          h1.f-s-1.f-c-blue  Price: 10%
+                          h1.f-s-1.f-c-blue  Price: 7%
                   .text-center
                     br
                     button.btn.btn-s-r.btn-b-r.btn-l.m-t-xs-md(ng-click='$ctrl.btnToggleCartSection($ctrl.cartSection)')
@@ -220,18 +220,18 @@
                             option(value='', selected='selected') ---------- Select ----------
                             option(value='{{item}}', ng-repeat='item in $ctrl.purchasePriceOption', ng-bind='item')
                     .row
+                      //.col-md-3(ng-if='$ctrl.assisted_purchased')
+                      //  label.f-c-d-gray.f-s-10 Promotional Code
+                      //  br
+                      //  input.input-group.form-control(type='text', ng-model='orderPackage.promo_code', name='promo_code', placeholder='ADCDSA12')
                       .col-md-3(ng-if='$ctrl.assisted_purchased')
-                        label.f-c-d-gray.f-s-10 Promotional Code
-                        br
-                        input.input-group.form-control(type='text', ng-model='orderPackage.promo_code', name='promo_code', placeholder='ADCDSA12')
-                      .col-md-3(ng-if='$ctrl.assisted_purchased')
-                        label.f-c-d-gray.f-s-10 Promotional Description
+                        label.f-c-d-gray.f-s-10  Instructions
                         br
                         input.input-group.form-control(type='text', ng-model='orderPackage.promo_info', name='', placeholder='Enter')
-                      .col-md-3(ng-if='$ctrl.assisted_purchased')
-                        label.f-c-d-gray.f-s-10 If this promotion is not available
-                        br
-                        input.input-group.form-control(type='text', ng-model='orderPackage.if_promo_unavailable', name='if_promo_unavailable', placeholder='Enter')
+                      //.col-md-3(ng-if='$ctrl.assisted_purchased')
+                      //  label.f-c-d-gray.f-s-10 If this promotion is not available
+                      //  br
+                      //  input.input-group.form-control(type='text', ng-model='orderPackage.if_promo_unavailable', name='if_promo_unavailable', placeholder='Enter')
                     .row
                       .col-md-4(ng-if='$ctrl.self_purchased')
                         label.f-c-d-gray.f-s-10 Invoice
