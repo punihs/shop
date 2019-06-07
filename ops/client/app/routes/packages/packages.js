@@ -39,7 +39,7 @@ angular.module('uiGenApp')
             const fl = [
               'id', 'customer_id', 'invoice_code', 'created_at', 'weight', 'price_amount',
               'is_doc', 'content_type', 'splitting_directions', 'return_send', 'comments',
-              'invoice', 'store_name',
+              'invoice', 'store_name', 'rack_number',
             ];
 
             const params = {

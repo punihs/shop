@@ -48,7 +48,7 @@ angular.module('uiGenApp')
           pkg: ($http, $stateParams, toaster) => {
             const fl = [
               'id', 'customer_id', 'invoice_code', 'created_at',
-              'weight', 'is_doc', 'price_amount', 'content_type', 'is_restricted_item',
+              'weight', 'is_doc', 'price_amount', 'content_type', 'is_restricted_item', 'rack_number',
             ].join(',');
 
             return $http

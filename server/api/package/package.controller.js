@@ -163,6 +163,7 @@ exports.create = async (req, res, next) => {
           'content_type',
           'total_quantity',
           'is_restricted_item',
+          'rack_number',
         ];
         req.body.total_quantity = 0;
 
@@ -458,6 +459,7 @@ exports.update = async (req, res, next) => {
     'seller_invoice',
     'amount_paid',
     'is_restricted_item',
+    'rack_number',
   ];
 
   const { id: customerId } = req.user;

@@ -63,4 +63,5 @@ module.exports = DataTypes => ({
   transaction_id: DataTypes.INTEGER,
   package_received_date: DataTypes.DATE,
   is_restricted_item: DataTypes.BOOLEAN,
+  rack_number: DataTypes.INTEGER,
 });

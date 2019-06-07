@@ -33,6 +33,7 @@ class PackageShowController {
 
     this.location = this.$window.location;
     this.customer = this.data.Customer;
+    this.customer.rack_number = this.pkg.rack_number;
 
     this.Page.setFavicon(`${this.$stateParams.profilePhotoUrl}`);
     if (this.data.Store) this.Page.setTitle(this.data.Store.name);

@@ -91,6 +91,18 @@ div.m-t-xl.no-margin
                       required
                       )
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.invoice_code.$dirty && newPackageForm.invoice_code.$invalid') Please enter Reference Code
+                  .col-md-6.col-sm-5.col-xs-12(ng-if='$ctrl.EDIT')
+                    label.col-xs-12.input-group
+                      | Rack Number
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='rack_number'
+                      placeholder='eg. 7'
+                      ng-model='$ctrl.data.rack_number'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.rack_number.$dirty && newPackageForm.rack_number.$invalid') Please enter Rack Number
               .line.line-dashed.b-b.line-lg.pull-in(style='margin: 5px 0;' ng-if='$ctrl.EDIT')
               .row(ng-if='$ctrl.EDIT')
                 .col-md-12

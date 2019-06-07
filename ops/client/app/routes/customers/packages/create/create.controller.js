@@ -146,6 +146,7 @@ class PackageCreateController {
       'customer_id',
       'content_type',
       'is_restricted_item',
+      'rack_number',
     ];
 
     const method = packageId ? 'put' : 'post';
