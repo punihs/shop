@@ -1,6 +1,6 @@
 class AppController {
   constructor($window, $state, $rootScope, URLS,
-              $http, $stateParams, Session, Page) {
+    $http, $stateParams, Session, Page, ONESIGNAL) {
     this.$window = $window;
     this.$state = $state;
     this.$rootScope = $rootScope;
@@ -9,6 +9,7 @@ class AppController {
     this.$stateParams = $stateParams;
     this.Session = Session;
     this.Page = Page;
+    this.ONESIGNAL = ONESIGNAL;
 
     this.$onInit();
   }
@@ -17,7 +18,7 @@ class AppController {
     this.userinfo = this.Session.read('userinfo');
     this.states = this.Session.read('states');
     this.app = {
-      name: 'Parcel',
+      name: 'Shopper',
       version: '0.0.1',
       settings: {
         themeID: 1,
@@ -34,12 +35,16 @@ class AppController {
       },
     };
 
-    if (this.Session.isAuthenticated()) {
+    const env = this.URLS.DOMAIN.endsWith('.com') ? 'production' : 'development';
+    const ENV = this.URLS.PREFIX.includes('staging') ? 'staging' : env;
+    const credentials = this.ONESIGNAL[ENV];
+
+    // This block of code is required for onesignal integration, temporarily commented
+    if (this.Session.isAuthenticated() && env !== 'development') {
       const OneSignal = window.OneSignal || [];
       OneSignal.push(() => {
-        OneSignal.sendTag('key', this.userinfo.id);
         OneSignal.init({
-          appId: 'b7792635-0674-4e60-bef9-66d31b818a92',
+          appId: credentials,
           allowLocalhostAsSecureOrigin: true,
           autoRegister: true,
           notifyButton: {
@@ -53,6 +58,7 @@ class AppController {
               .$http
               .post('#/notificationSubscriptions', {
                 player_id: pid,
+                user_id: this.userinfo.id,
               })
               .then(() => this.Session
                 .create('oneSignalPlayerId', pid));

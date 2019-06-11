@@ -1,6 +1,16 @@
 <tr>
   <td colspan="2" style="padding:0 20px;line-height:22px;width:640px">
     <p style="border-top:1px solid #ccc;padding:20px 0 0 0">
+      {{#if PERSONAL_SHOPPER}}
+      Have queries still? Contact our Support team to learn more.
+      <br>
+      Thank You for Choosing Our Assisted Purchase Order!
+      {{else if COD}}
+      Have queries still? Contact our Support team to learn more.
+      <br>
+      Thank You for Choosing Our Self Purchase Order!
+      {{/if}}
+      <br>
       Your
-      <a href="{{ENV.URLS_PARCEL}}/accounts/profile" style="color:#006699;text-decoration:none" target="_blank" >profile details </a>. </p> </td>
+      <a href="{{ENV.URLS_PARCEL}}/users/profile?otp={{otp}}" style="color:#006699;text-decoration:none" target="_blank" >profile details </a>. </p> </td>
 </tr>

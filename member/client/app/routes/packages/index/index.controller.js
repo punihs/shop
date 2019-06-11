@@ -1,7 +1,7 @@
 class PackagesIndexController {
   constructor(
     $http, Page, $uibModal, $stateParams, CONFIG, $location, $state, Session, S3,
-    toaster, moment, URLS, AddComment, PhotoService) {
+    toaster, moment, URLS, AddComment, PhotoService, PackageSelectService) {
     this.$http = $http;
     this.Page = Page;
     this.S3 = S3;
@@ -16,14 +16,14 @@ class PackagesIndexController {
     this.URLS = URLS;
     this.AddComment = AddComment;
     this.PhotoService = PhotoService;
+    this.PackageSelectService = PackageSelectService;
+
     return this.$onInit();
   }
 
   $onInit() {
     this.isPaymentSubmit = false;
     this.MoreOption = false;
-    this.allChecked = false;
-
     this.store = 'Amazon';
 
     this.totalItemAmount = 0;
@@ -42,7 +42,15 @@ class PackagesIndexController {
 
     this.user = this.Session.read('userinfo');
     this.PACKAGE_STATE_IDS = this.CONFIG.PACKAGE_STATE_IDS;
-    this.buckets = this.CONFIG.PACKAGE_STATES.map(x => x.replace(/ /g, '_').toUpperCase());
+    this.buckets = this.CONFIG.PACKAGE_STATES
+      .map(x => x.toString().replace(/ /g, '_').toUpperCase());
+    this.bucketIcons = {
+      0: 'fa-rocket',
+      1: 'fa-scanner',
+      2: 'fa-exclamation-circle',
+      3: 'fa-shopping-cart',
+      4: 'fa-ballot-check',
+    };
 
     // Set default bucket to ALL
     if (!this.buckets.includes(this.$stateParams.bucket)) {
@@ -65,6 +73,7 @@ class PackagesIndexController {
 
     this.getList();
     this.loadMessages();
+    this.shipType = this.$stateParams.bucket;
   }
 
   loadMessages() {
@@ -163,9 +172,8 @@ class PackagesIndexController {
 
   replaceCharWithSpace(input, char) {
     if (!input) return '';
+    const text = (input || '').toString().replace(new RegExp(char, 'g'), ' ');
 
-    const text = input.replace(new RegExp(char, 'g'), ' ');
-    console.log(text);
     return text;
   }
 
@@ -205,11 +213,40 @@ class PackagesIndexController {
   getList() {
     let packageIds = null;
     this.$http
-      .get('/packages', { params: { bucket: this.$stateParams.bucket } })
-      .then(({ data: { packages, facets, queueCount, paymentCount } }) => {
+      .get('/packages', { params: { bucket: this.$stateParams.bucket, limit: 400 } })
+      .then(({
+        data: {
+          packages, facets, queueCount, paymentCount,
+        },
+      }) => {
         packageIds = packages.map((x) => x.id);
 
-        this.master.push(...packages);
+        this.allChecked = true;
+        let allPackages = packages;
+        if (this.$stateParams.bucket === 'READY_TO_SEND') {
+          if (this.$stateParams.packageIds) {
+            allPackages = allPackages.map((item) => {
+              const items = item;
+              if (this.$stateParams.packageIds.includes(item.id)) {
+                items.isChecked = true;
+                return item;
+              }
+              this.allChecked = false;
+              items.isChecked = false;
+              return item;
+            });
+          } else {
+            allPackages = allPackages.map((item) => {
+              const items = item;
+              items.isChecked = true;
+              return item;
+            });
+          }
+        }
+
+        this.totalSelectedPackages = allPackages.length;
+
+        this.master.push(...allPackages);
         this.queueCount = queueCount;
         this.isPaymentSubmit = !!paymentCount;
 
@@ -270,12 +307,32 @@ class PackagesIndexController {
     this.$state.reload();
   }
 
+  deletePackage(packageid) {
+    const c = confirm;
+    const ok = c('Are you sure you want to delete this Package?');
+    if (!ok) return null;
+
+    return this
+      .$http
+      .delete(`/packages/${packageid}`)
+      .then(({ data: { message } }) => {
+        this.toaster
+          .pop('success', message);
+        this.packages.splice(this.packages.findIndex(l => (l.id === packageid)), 1);
+        this.facets.MY_ORDERS -= 1;
+      })
+      .catch(() => {
+        this.toaster
+          .pop('error', 'There was problem deleting package');
+      });
+  }
+
   viewPhotos(index, packageDetail) {
     const modal = this.PhotoService.open(index, packageDetail);
     modal
       .result
       .then((data) => {
-        this.packages.map((x) => {
+        this.packages.forEach((x) => {
           if (x.id === data.id) {
             let PhotoRequests = '';
             if (data.type === 'standard') {
@@ -290,7 +347,7 @@ class PackagesIndexController {
         modal1
           .result
           .then((result) => {
-            this.packages.map((x) => {
+            this.packages.forEach((x) => {
               if (x.id === result.id) {
                 if (result.type === 'standard') {
                   x.PhotoRequests.push({ status: '2', type: '1' });
@@ -313,6 +370,12 @@ class PackagesIndexController {
       });
   }
 
+  proceedToShipment() {
+    const packageIds = this.packages.filter(x => x.isChecked).map(x => x.id);
+    this.$state
+      .go('shipRequests.create', { packageIds: packageIds.toString() });
+  }
+
   createShipment() {
     const specialItems = this.packages.filter(x => x.isChecked).map(x => x.content_type);
     if (specialItems.includes('1') && specialItems.includes('2')) {
@@ -321,9 +384,33 @@ class PackagesIndexController {
         .pop('error', ' Packages containing special items must be chosen and shipped separately ');
       return;
     }
-    const packageIds = this.packages.filter(x => x.isChecked).map(x => x.id);
-    this.$state
-      .go('shipRequests.create', { packageIds });
+    const restrictedItems = this.packages.filter(x => x.isChecked).map(x => x.is_restricted_item);
+    if (restrictedItems.includes(true)) {
+      this
+        .toaster
+        .pop('error', ' Package containing restricted items u cant ship these items');
+      return;
+    }
+    let proceed = true;
+    const pkgNotSelected = this.packages
+      .filter(x => x.isChecked === false)
+      .map(x => x.content_type);
+    const normalPkg = this.packages.every(x => x.content_type === '1');
+    const specialPkg = this.packages.every(x => x.content_type === '2');
+    if ((pkgNotSelected.includes('1') && normalPkg) || (specialPkg && pkgNotSelected.includes('2')) || (pkgNotSelected.includes('2') && pkgNotSelected.includes('1'))) {
+      proceed = false;
+      const modal = this.PackageSelectService.open();
+      modal
+        .result
+        .then((data) => {
+          if (data.proceed) {
+            this.proceedToShipment();
+          }
+        });
+    }
+    if (proceed) {
+      this.proceedToShipment();
+    }
   }
 }
 

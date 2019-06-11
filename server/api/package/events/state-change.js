@@ -1,4 +1,3 @@
-
 const store = 'Amazon';
 
 module.exports = {

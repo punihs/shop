@@ -13,7 +13,7 @@ class OAuthCtrl {
     }
 
     if (!query.code) toaster.pop('error', 'Authorization code missing');
-    Session.destroy();
+    Session.clear(['userinfo', 'oauth', 'states', 'shipment-states']);
 
     const { location } = $window;
 
@@ -25,11 +25,15 @@ class OAuthCtrl {
           this.user = Session.read('userinfo');
 
           // Used for updating session
-          location.href = query.state
-            ? `${location.origin}${query.state}`
-            : $state.href('packages.index', { absolute: true });
+          if (query.state) {
+            location.href = `${location.origin}${query.state}`;
+          } else if (query.continue) {
+            location.href = `${query.continue}`;
+          } else {
+            location.href = $state.href('dashboard.index', { absolute: true });
+          }
         }))
-      .catch(() => {
+      .catch(() => { debugger
         location.href = URLS.OAUTH;
       });
   }

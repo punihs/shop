@@ -1,8 +1,8 @@
 
 function Socket($rootScope, $http, socketFactory, URLS, Session) {
   this.Session = Session;
-  this.user = this.Session.read('userinfo');
-  this.auth = this.Session.read('oauth');
+  this.user = this.Session.read('adminUserinfo');
+  this.auth = this.Session.read('adminOauth');
 
   const options = {
     // Send auth token on connection, you will need to DI the Auth service above
@@ -17,7 +17,7 @@ function Socket($rootScope, $http, socketFactory, URLS, Session) {
   }
 
   // socket.io now auto-configures its connection when we ommit a connection url
-  const ioSocket = io(URLS.PARCEL_API, options);
+  const ioSocket = io(URLS.ENGAGE, options);
 
   const socket = socketFactory({
     ioSocket,
@@ -25,7 +25,6 @@ function Socket($rootScope, $http, socketFactory, URLS, Session) {
 
   return {
     socket,
-
     /**
      * Register listeners to sync an array with updates on a model
      *
@@ -36,7 +35,7 @@ function Socket($rootScope, $http, socketFactory, URLS, Session) {
       /**
        * Syncs item creation/updates on 'model:save'
        */
-      socket.on(route, (item) => {
+      socket.on(route.slice(1), (item) => {
         items[appendAtBeginning ? 'push' : 'unshift'](item);
       });
     },

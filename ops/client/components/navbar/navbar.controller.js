@@ -12,7 +12,7 @@ class NavbarController {
   }
 
   $onInit() {
-    this.user = this.Session.read('userinfo');
+    this.user = this.Session.read('adminUserinfo');
     if (!this.user) return;
     this.userInitial = this.user.first_name.substr(0, 1);
     this.ui = { count: 0 };

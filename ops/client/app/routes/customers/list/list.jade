@@ -55,7 +55,7 @@
           span.m-b-xs.m-t-xs.pull-right.wrapper-xs.m-r-sm.text-sm
             span.pointer.padder(
               ng-if='customer.Shipments.length'
-              ui-sref="customer.shipments({ id: customer.id })")
+              ui-sref="customer.shipments.index({ id: customer.id })")
               | &nbsp;SHIPMENTS
             span.pointer.padder.b-l(
               ng-if='customer.Packages.length'

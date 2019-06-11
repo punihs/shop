@@ -1,7 +1,7 @@
 (() => {
   class CommentsController {
     /*  @ngInject  */
-    constructor($http, $timeout, Session, socket) {
+    constructor($http, $timeout, Session, socket, moment) {
       this.moment = moment;
       this.$http = $http;
       this.$timeout = $timeout;
@@ -11,7 +11,7 @@
     }
 
     $onInit() {
-      this.user = this.Session.read('userinfo');
+      this.user = this.Session.read('adminUserinfo');
       this.states = this.Session.read(`${this.type === 'shipment' ? 'shipment-' : ''}states`);
       this.post = { comments: '' };
       this.followers = [];
@@ -24,7 +24,7 @@
 
     getList() {
       this.ui = { loading: true, scrollToBottom: false };
-      const route = `/${this.type}s/${this.id}/comments`;
+      const route = `#/${this.type}s/${this.id}/comments`;
       this
         .$http
         .get(route)
@@ -37,7 +37,7 @@
     }
 
     loadFollowers() {
-      const route = `/${this.type}s/${this.id}/followers`;
+      const route = `#/${this.type}s/${this.id}/followers`;
       this
         .$http
         .get(route)
@@ -51,7 +51,7 @@
       const comments = this.post.comments;
       if (!comments) return;
       this.ui = { loading: true, scrollToBottom: false };
-      const route = `/${this.type}s/${this.id}/comments`;
+      const route = `#/${this.type}s/${this.id}/comments`;
 
       this
         .$http

@@ -6,7 +6,7 @@ angular.module('qui.core')
       let refreshingToken = false;
 
       authService.login = function login(credentials) {
-        const url = `${URLS.API}/oauth/token`;
+        const url = '~~/oauth/token';
         return $http
           .post(url, credentials, {
             ignoreAuthModule: true,
@@ -18,7 +18,7 @@ angular.module('qui.core')
                 .join('&');
             },
           })
-          .then(response => Session.create('oauth', response.data))
+          .then(response => Session.create('adminOauth', response.data))
           .catch(
             res => {
               Session.destroy();
@@ -33,11 +33,11 @@ angular.module('qui.core')
           return $q.reject({ warning: 'Refresh token request already sent.' });
         }
         refreshingToken = true; // Set refresh_token reuqest tracker flag
-        const url = `${URLS.API}/oauth/token`;
+        const url = '~~/oauth/token';
         return $http
           .post(
             url,
-            { refresh_token: Session.read('oauth').refresh_token },
+            { refresh_token: Session.read('adminOauth').refresh_token },
             {
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
               transformRequest(obj) {
@@ -50,7 +50,7 @@ angular.module('qui.core')
             }
           )
           .then(res => {
-            Session.create('oauth', res.data);
+            Session.create('adminOauth', res.data);
             refreshingToken = false; // reset refresh_token reuqest tracker flag
             return $q.resolve(res);
           }).catch(res => {
@@ -60,7 +60,7 @@ angular.module('qui.core')
       };
 
       authService.logout = function logout() {
-        const url = `${URLS.API}/oauth/revoke`;
+        const url = '~~/oauth/revoke';
         return $http
           .post(url, { access_token: Session.getAccessToken() }, {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -87,13 +87,10 @@ angular.module('qui.core')
       authService.setSessionData = () => $q.all([
         $http
           .get('/users/me')
-          .then(response => Session.create('userinfo', response.data)),
+          .then(response => Session.create('adminUserinfo', response.data)),
         $http
           .get('/users/states?type=PACKAGE')
-          .then(response => Session.create('states', response.data)),
-        $http
-          .get('/users/states?type=SHIPMENT')
-          .then(response => Session.create('shipment-states', response.data)),
+          .then(response => Session.create('adminStates', response.data)),
       ]);
 
       return authService;

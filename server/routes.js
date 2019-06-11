@@ -3,6 +3,7 @@
  */
 const express = require('express');
 
+
 const { name, version } = require('../package.json');
 
 const oAuth = require('./components/oauth');
@@ -10,61 +11,42 @@ const logger = require('./components/logger');
 const authenticate = require('./components/oauth/authenticate');
 
 // - Routers
-const search = require('./api/search');
 const packages = require('./api/package');
-const packageComment = require('./api/package/comment');
+const personalShopperPackage = require('./api/package/personalShopperPackage');
 const packageItem = require('./api/packageItem');
 const packageItems = require('./api/package/item');
 const packageCharge = require('./api/package/charge');
 const specialRequest = require('./api/package/specialRequest');
-const shippingPreference = require('./api/shippingPreference');
+const userShippingPreference = require('./api/user/shippingPreference');
 const packageItemCategory = require('./api/packageItemCategory');
-const shipment = require('./api/shipment');
-const shipmentComment = require('./api/shipment/comment');
-const shipmentPackage = require('./api/shipment/package');
-const personalShopperPackage = require('./api/personalShopperPackage');
+const transaction = require('./api/transaction');
 const address = require('./api/address');
 const user = require('./api/user');
 const userPublic = require('./api/user');
-const notification = require('./api/notification');
 const userDocument = require('./api/userDocument');
 const country = require('./api/country');
 const health = require('./api/health');
 const store = require('./api/store');
 const userPackage = require('./api/user/package');
-const userShipment = require('./api/user/shipment');
 const follower = require('./api/package/follower');
-const shipmentFollower = require('./api/shipment/follower');
 const minio = require('./conn/minio/minio.route');
-const cron = require('./cron');
 
 module.exports = (app) => {
   app.use('/api/health', health);
   app.use('/api/minio', authenticate(), minio);
-  app.use('/api/search', search);
+  app.use('/api/public/packages', personalShopperPackage);
   app.use(
     '/api/packages',
     packages, // auth did in router ie., api/package/index.js
     authenticate(),
     packageItems,
-    packageComment,
+    personalShopperPackage,
     packageCharge,
     specialRequest,
     follower,
   );
   app.use('/api/addresses', authenticate(), address);
-  app.use('/api/public/shipments', shipment);
-  app.use(
-    '/api/shipments',
-    authenticate(),
-    shipment,
-    shipmentPackage,
-    shipmentComment,
-    shipmentFollower,
-  );
-  app.use('/api/shippingPreference', authenticate(), shippingPreference);
-  app.use('/api/notifications', authenticate(), notification);
-  app.use('/api/personalShopperPackages', authenticate(), personalShopperPackage);
+  app.use('/api/transactions', transaction);
   app.use('/api/userDocuments', authenticate(), userDocument);
   app.use('/api/countries', country);
   app.use('/api/packageItems', authenticate(), packageItem);
@@ -72,12 +54,11 @@ module.exports = (app) => {
   app.use('/api/users/public', userPublic);
   app.use(
     '/api/users',
-    user,
     authenticate(),
+    user,
     userPackage,
-    userShipment,
+    userShippingPreference,
   );
-  app.use('/api/crons', cron);
   app.use('/api/stores', store);
   app.get('/secured', authenticate(), (req, res) => res.json({ name, version }));
 

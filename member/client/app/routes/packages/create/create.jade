@@ -2,20 +2,20 @@ div
   .hbox(style="position:relative")
 
     // - Primary Header
-    .bg-white-only.w-full.b-b(style='position: fixed;z-index: 6;height: 40px;')
+    .bg-white-only.w-full(style='position: fixed;z-index: 6;height: 40px;')
       .pull-left.wrapper-sm.no-padder-top
         span.h4
           i.fas.fa-cube.m-r
           | Add Incoming Package
 
     // - Secondary Header
-    .bg-light.b-b.padder.w-full.bg-white-only.m-t-xl(
+    .bg-light.padder.w-full.bg-white-only.m-t-xl(
     style='position:fixed;z-index: 6;height: 65px;'
     )
-      div.m-t-sm
-        .h4
+      div.m-t-sm.m-b-sm.bg-white-only
+        .h4.wrapper-xs
           | Pre-Alert Shoppre about your Incoming Packages
-        .h5.m-t-xs
+        .h5.m-t-xs.wrapper-xs
           | If you would like to alert us about any of your future incoming items that will be
           | arriving at your locker in our facility, you can provide the details now!
           span(ng-bind='" " + $ctrl.TITLE')
@@ -37,7 +37,7 @@ div
                   h4.panel-title.text-center.font-thin.h5.m-t-xs
                     | We will update you once your package is received at our facility.
             .row
-              .col-md-8.col-sm-8.col-xs-12
+              .col-md-8.col-sm-8.col-xs-12.m-t-xxl
                 label.col-xs-12.input-group
                   | Store
                   span.text-danger *
@@ -62,7 +62,7 @@ div
                   label.col-xs-12.input-group
                     | Tracking Number(optional)
                     input.form.form-control(
-                      type='number'
+                      type='text'
                       name='tracking_code'
                       placeholder='eg. 94114'
                       ng-model='$ctrl.data.tracking_code'
@@ -72,7 +72,7 @@ div
                   label.col-xs-12.input-group
                     | Order / Invoice Number (optional)
                     input.form.form-control(
-                      type='number'
+                      type='text'
                       name='invoice_code'
                       placeholder='eg. 9844717202'
                       ng-model='$ctrl.data.invoice_code'
@@ -127,7 +127,7 @@ div
                       span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newPackageForm.file.$dirty && newPackageForm.file.$invalid') Please choose supported file
                   .row
                    .col-md-12
-                     .col-md-3
+                     .col-md-3.no-padder
                        button.btn.btn-info.m-t(type='submit' ng-disabled="$ctrl.submitting")
                          span.text-white(ng-if='!$ctrl.submitting')
                            i.fa.fa-save.m-r-xs

@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <base href="/">
+  <base href="/admin/">
   <title ng-bind="App.Page.title()"> OPS</title>
   <meta name="description" content="dashboard, recruiter, client">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -31,6 +31,8 @@
   <link rel="stylesheet" href="app/app.css">
   <!-- injector:css -->
   <link rel="stylesheet" href="app/css/source-sans-pro.css">
+  <link rel="stylesheet" href="app/routes/customers/orders/index/index.css">
+  <link rel="stylesheet" href="app/routes/orders/index/index.css">
   <!-- endinjector -->
   <!-- endbuild -->
   <link rel="manifest" href="/manifest.json" />
@@ -61,8 +63,7 @@
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
   </script>
 
-
-  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdn.rawgit.com/kjur/jsrsasign/c057d3447b194fa0a3fdcea110579454898e093d/jsrsasign-all-min.js"></script>
 </head>
 <body>
 <!--[if lt IE 7]>
@@ -113,13 +114,14 @@
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-52116787-4', 'auto');
-  if(localStorage.userinfo) {
-    user = JSON.parse(localStorage.userinfo)
+  ga('create', 'UA-129193448-2', 'auto');
+  if(localStorage.adminUserinfo) {
+    user = JSON.parse(localStorage.adminUserinfo)
     ga('set', 'userId', user.id);
   }
   ga('send', 'pageview');
 </script>
+
 
 <!--[if lt IE 9]>
 <script src="bower_components/es5-shim/es5-shim.js"></script>
@@ -136,14 +138,10 @@
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 <script src="bower_components/moment/moment.js"></script>
 <script src="bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.js"></script>
-<script src="bower_components/chart.js/dist/Chart.js"></script>
-<script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
 <script src="bower_components/lodash/lodash.js"></script>
-<script src="bower_components/restangular/dist/restangular.js"></script>
 <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
 <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
 <script src="bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js"></script>
-<script src="bower_components/jquery.easy-pie-chart/dist/angular.easypiechart.min.js"></script>
 <script src="bower_components/angular-scrollable-table/angular-scrollable-table.js"></script>
 <script src="bower_components/angularjs-slider/dist/rzslider.js"></script>
 <script src="bower_components/AngularJS-Toaster/toaster.js"></script>
@@ -159,40 +157,30 @@
 <script src="bower_components/ng-intl-tel-input/dist/ng-intl-tel-input.js"></script>
 <script src="bower_components/raven-js/dist/raven.js"></script>
 <script src="bower_components/angular-raven/angular-raven.js"></script>
+<script src="bower_components/socket.io-client/dist/socket.io.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 <!-- build:js(.tmp) app/app.js -->
 <script src="app/app.js"></script>
 <!-- injector:js -->
-<script src="app/factories/ng-image-compress.js"></script>
+<script src="app/factories/qui.components/form.js"></script>
 <script src="app/app.constant.js"></script>
 <script src="app/directives/add-follower/add-follower.controller.js"></script>
 <script src="app/directives/announcement-modal/announcement-modal.controller.js"></script>
-<script src="app/directives/change-shipment-state/change-shipment-state.service.js"></script>
 <script src="app/directives/change-state/change-state.service.js"></script>
 <script src="app/directives/click-tocopy/click-tocopy.controller.js"></script>
 <script src="app/directives/common.directive.js"></script>
 <script src="app/directives/confirm-dialog/confirm-dialog.service.js"></script>
-<script src="app/directives/createCategory/createCategory.service.js"></script>
-<script src="app/directives/createStore/createStore.service.js"></script>
+<script src="app/directives/courier-login-controller/courier-login-controller.js"></script>
 <script src="app/directives/directive-header/directive-header.directive.js"></script>
-<script src="app/directives/download-resume/download-resume.controller.js"></script>
-<script src="app/directives/email-candidate/email-candidate.controller.js"></script>
 <script src="app/directives/full-screen-content/full-screen-content.directive.js"></script>
-<script src="app/directives/job-comment/job-comment.directive.js"></script>
-<script src="app/directives/job-detail/job-detail.directive.js"></script>
-<script src="app/directives/job-payment/job-payment.controller.js"></script>
 <script src="app/directives/logout/logout.controller.js"></script>
-<script src="app/directives/notify-count/notify-count.directive.js"></script>
 <script src="app/directives/package-filter/package-filter.js"></script>
 <script src="app/directives/reapply/reapply.controller.js"></script>
 <script src="app/directives/reapply/reapply.service.js"></script>
 <script src="app/directives/reauth/reauth.directive.js"></script>
-<script src="app/directives/shipment-filter/shipment-filter.js"></script>
 <script src="app/directives/social-share/social-share.controller.js"></script>
 <script src="app/directives/text-focus/text-focus.directive.js"></script>
-<script src="app/directives/upload-excel/upload-excel.service.js"></script>
-<script src="app/directives/viewPhoto/viewPhoto.service.js"></script>
 <script src="app/event.js"></script>
 <script src="app/factories/ExcelDownload/ExcelDownload.service.js"></script>
 <script src="app/factories/QCONFIG/QCONFIG.service.js"></script>
@@ -204,36 +192,34 @@
 <script src="app/factories/constants/currency.js"></script>
 <script src="app/factories/loginAs.js"></script>
 <script src="app/factories/moment.js"></script>
-<script src="app/app.controller.js"></script>
+<script src="app/factories/ng-image-compress.js"></script>
 <script src="app/factories/page.js"></script>
 <script src="app/factories/prototype/prototype.js"></script>
 <script src="app/factories/qui.components/before.bottom.js"></script>
 <script src="app/factories/qui.components/contenteditable.js"></script>
-<script src="app/factories/qui.components/form.js"></script>
+<script src="app/app.controller.js"></script>
 <script src="app/factories/qui.components/keypress.js"></script>
 <script src="app/factories/qui.components/scroll.to.bottom.js"></script>
+<script src="app/factories/qz-tray.js"></script>
 <script src="app/factories/session.js"></script>
 <script src="app/factories/user.js"></script>
 <script src="app/routes/access/access.js"></script>
 <script src="app/routes/access/oauth/oauth.controller.js"></script>
+<script src="app/routes/campaigns/campaigns.js"></script>
+<script src="app/routes/campaigns/create/create.controller.js"></script>
+<script src="app/routes/campaigns/index/index.controller.js"></script>
 <script src="app/routes/customers/customer-header/customer-header.directive.js"></script>
 <script src="app/routes/customers/customers.js"></script>
 <script src="app/routes/customers/list/list.controller.js"></script>
-<script src="app/routes/customers/packages/create/create.controller.js"></script>
-<script src="app/routes/customers/packages/index/index.controller.js"></script>
-<script src="app/routes/customers/packages/packages.js"></script>
-<script src="app/routes/customers/shipments/create/create.controller.js"></script>
-<script src="app/routes/customers/shipments/index/index.controller.js"></script>
-<script src="app/routes/customers/shipments/shipments.js"></script>
+<script src="app/routes/customers/orders/index/index.controller.js"></script>
+<script src="app/routes/customers/orders/orders.js"></script>
 <script src="app/routes/customers/view/view.controller.js"></script>
-<script src="app/routes/packages/charges/charges.controller.js"></script>
-<script src="app/routes/packages/index/index.controller.js"></script>
-<script src="app/routes/packages/items/items.controller.js"></script>
-<script src="app/routes/packages/packages.js"></script>
-<script src="app/routes/packages/show/show.controller.js"></script>
-<script src="app/routes/shipments/index/index.controller.js"></script>
-<script src="app/routes/shipments/shipments.js"></script>
-<script src="app/routes/shipments/show/show.controller.js"></script>
+<script src="app/routes/feeds/feeds.js"></script>
+<script src="app/routes/feeds/index/index.controller.js"></script>
+<script src="app/routes/orders/index/index.controller.js"></script>
+<script src="app/routes/orders/orders.js"></script>
+<script src="app/routes/orders/show/show.controller.js"></script>
+<script src="app/routes/orders/update/update.controller.js"></script>
 <script src="components/aside/aside.directive.js"></script>
 <script src="components/comment/comment.directive.js"></script>
 <script src="components/customer-nav/customer-nav.directive.js"></script>
@@ -247,5 +233,14 @@
 <script src="components/socket/socket.service.js"></script>
 <!-- endinjector -->
 <!-- endbuild -->
+<script type='text/javascript'>
+  var pubID = '54240CL48886';
+
+  (function(d, t) {
+    var s = document.createElement('script');s.type = 'text/javascript';
+    s.async = true;s.src = (document.location.protocol == 'https:' ? 'https://cdn0.cuelinks.com/js/' : 'http://cdn0.cuelinks.com/js/')  + 'cuelinksv1.js';
+    document.getElementsByTagName('body')[0].appendChild(s);
+  }());
+</script>
 </body>
 </html>

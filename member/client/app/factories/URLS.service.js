@@ -3,22 +3,27 @@ angular.module('uiGenApp')
     const { host, protocol } = window.location;
     const PREFIX = `${protocol}//${host.substr(0, host.indexOf('-') + 1)}`;
     const DOMAIN = `${host.substr(host.indexOf('.') + 1)}`;
-    const project = 'parcel';
+    const PROJECT = 'shop';
+
+    const buildUrl = (subdomain) => `${PREFIX}${subdomain}.${DOMAIN}`;
+    const UI_URL = buildUrl(PROJECT);
+    const LOGIN = buildUrl('login');
     return {
-      DOMAIN,
       PREFIX,
+      LOGIN,
+      DOMAIN,
+      OAUTH_CLIENT_ID: PROJECT,
+      UI_URL,
+      COURIER: buildUrl('courier'),
+      PAY: buildUrl('pay'),
+      ENGAGE: buildUrl('engage'),
+      WWW: buildUrl('www'),
+      PARCEL: buildUrl('parcel'),
 
       CDN: `${PREFIX}cdn.${DOMAIN}`,
-      ACCOUNTS: `${PREFIX}accounts.${DOMAIN}`,
-      PARCEL: `${PREFIX}parcel.${DOMAIN}`,
-      HELP: `${PREFIX}ship.${DOMAIN}`,
 
-      API: `${PREFIX}api.${DOMAIN}`,
-      PARCEL_API: `${PREFIX}${project}-api.${DOMAIN}`,
-      PAY_API: `${PREFIX}pay-api.${DOMAIN}`,
-      CHICKEN_API: `${PREFIX}chicken-api.${DOMAIN}`,
-
-      OAUTH: `${PREFIX}accounts.${DOMAIN}/authorise?client_id=${project}&response_type=code&` +
-      `redirect_uri=${PREFIX}${project}.${DOMAIN}/access/oauth`,
+      OAUTH: `${LOGIN}/authorise?client_id=${PROJECT}&response_type=code&` +
+        `redirect_uri=${UI_URL}/access/oauth`,
+      HELP: 'https://ship.shoppre.com',
     };
   });

@@ -13,7 +13,13 @@
           <table align="right" style="font:12px/16px Arial,sans-serif;color:rgb(51,51,51)">
             <tbody>
             <tr style="padding:5px 0px 5px 0px;white-space:nowrap;border-collapse:collapse;text-align:right;width:490px">
-              <td> <a href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW" style="text-decoration:none;color:rgb(0,102,153);font-family:Arial,san-serif" target="_blank">Your Packages</a> </td>
+              {{#if INCOMING}}
+                <td> <a href="{{ENV.URLS_PARCEL}}/packages?bucket=ALL&otp={{otp}}" style="text-decoration:none;color:rgb(0,102,153);font-family:Arial,san-serif" target="_blank">Your Packages</a> </td>
+              {{else if PERSONAL_SHOPPER}}
+                <td> <a href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}" style="text-decoration:none;color:rgb(0,102,153);font-family:Arial,san-serif" target="_blank">Your Orders</a> </td>
+              {{else if COD}}
+                <td> <a href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}" style="text-decoration:none;color:rgb(0,102,153);font-family:Arial,san-serif" target="_blank">Your Orders</a> </td>
+              {{/if}}
               <td> <span style="text-decoration:none;color:#ccc;font:15px Arial,san-serif">&nbsp;|&nbsp;</span> </td>
               <td> <a href="{{ENV.URLS_WWW}}" style="text-decoration:none;color:rgb(0,102,153);font-family:Arial,san-serif" target="_blank"> <span class="il">ShoppRe</span>.com</a> </td>
             </tr>
@@ -28,6 +34,10 @@
     {{else if CUSTOMER_INPUT}}
       <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
         <span style="font:20px Arial,san-serif">Please Input Package Values</span>
+      </td>
+    {{else if UPLOAD_INVOICE_REQUESTED}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Please Upload Package Invoice</span>
       </td>
     {{else if READY_TO_SHIP}}
       <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
@@ -77,54 +87,171 @@
       <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
         <span style="font:20px Arial,san-serif">Personal Shopper Refund Recieved</span>
       </td>
-    {{else if ORDER_CREATED}}
+    {{else if PAYMENT_COMPLETED}}
       <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
-        <span style="font:20px Arial,san-serif">Customer Order Created</span>
+        <span style="font:20px Arial,san-serif">Order Created Successfully</span>
       </td>
     {{else if ORDER_CANCELLED}}
       <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
-        <span style="font:20px Arial,san-serif">Customer Order Cancelled</span>
+        <span style="font:20px Arial,san-serif">Order Cancelled</span>
       </td>
-    {{else if PAYMENT_INITIATED}}
+    {{else if PRICE_CHANGED}}
       <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
-        <span style="font:20px Arial,san-serif">Payment Initiated</span>
+        <span style="font:20px Arial,san-serif">Item(s) Have changed Price</span>
       </td>
     {{else if PAYMENT_FAILED}}
       <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
         <span style="font:20px Arial,san-serif">Payment Failed</span>
       </td>
-    {{else if PAYMENT_COMPLETED}}
+    {{else if PAYMENT_CONFIRMED}}
       <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
-        <span style="font:20px Arial,san-serif">Payment Completed</span>
+        <span style="font:20px Arial,san-serif">Payment Received</span>
       </td>
     {{else if ORDER_PLACED}}
       <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
-        <span style="font:20px Arial,san-serif">Order Placed</span>
+        <span style="font:20px Arial,san-serif">We Have Successfully Placed Your Order</span>
       </td>
     {{else if OUT_OF_STOCK}}
       <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
-        <span style="font:20px Arial,san-serif">Out Of Stock</span>
+        <span style="font:20px Arial,san-serif">Item(s) Have Went Out of Stock</span>
       </td>
     {{else if REFUNDED_TO_WALLET}}
       <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
-        <span style="font:20px Arial,san-serif">Refunded To Wallet</span>
+        <span style="font:20px Arial,san-serif">Completed Refunding Your Payment via Wallet</span>
       </td>
     {{else if REFUNDED_TO_BANK_ACCOUNT}}
       <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
-        <span style="font:20px Arial,san-serif">Refunded To Bank Account</span>
+        <span style="font:20px Arial,san-serif">Completed Refunding Your Payment via Bank Account</span>
+      </td>
+    {{else if ORDER_COMPLETED}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">Order Completed</span>
       </td>
     {{else if AWAITING_PACKAGE}}
       <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
         <span style="font:20px Arial,san-serif">Awaiting Package</span>
       </td>
+    {{else if PACKAGE_STORAGE}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">FREE storage is about to expire! Request to Ship soon!</span>
+      </td>
+    {{else if PACKAGE_STORAGE_EXCEEDED}}
+      <td style="padding:7px 0px 0px 20px;text-align:right;width:490px">
+        <span style="font:20px Arial,san-serif">FREE storage has expired! Request to ship immediately!</span>
+      </td>
     {{/if}}
       </tr>
       <tr>
         <td style="padding:0px 0px 5px 20px;text-align:right;width:120px">
-          <span style="font-size:12px"> Package ID: </span> <span style="font-size:12px">
+          {{#if INCOMING}}
+            <span style="font-size:12px"> Package ID: </span>
+          {{else if PERSONAL_SHOPPER}}
+            <span style="font-size:12px"> Order ID: </span>
+          {{else if COD}}
+            <span style="font-size:12px"> Order ID: </span>
+          {{/if}}
+          <span style="font-size:12px">
+            {{#if PACKAGE_ITEMS_UPLOAD_PENDING}}
               <a
-                href="{{ENV.URLS_PARCEL}}/packages/{{pkg.id}}"
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW&otp={{otp}}"
                 style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if CUSTOMER_INPUT}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=ACTION_REQUIRED&otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if UPLOAD_INVOICE_REQUESTED}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=ACTION_REQUIRED&otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if READY_TO_SHIP}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND&otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if DAMAGED}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND&otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if RETURN_REQUEST_FROM_CUSTOMER}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW&otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if RETURN_PICKUP_DONE}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=ALL&otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if SPLIT_PACKAGE}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW&otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if SPLIT_PACKAGE_PROCESSED}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=ALL&otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if DISCARDED}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=ALL&otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if DISCARD_REQUESTED}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW&otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if STANDARD_PHOTO_REQUEST}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND&otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if ADVANCED_PHOTO_REQUEST}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND&otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if PAYMENT_COMPLETED}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
+            {{else if ORDER_CANCELLED}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
+            {{else if PRICE_CHANGED}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index"?otp={{otp}}
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
+            {{else if PAYMENT_FAILED}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
+            {{else if PAYMENT_CONFIRMED}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
+            {{else if ORDER_PLACED}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
+            {{else if OUT_OF_STOCK}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
+            {{else if REFUNDED_TO_WALLET}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
+            {{else if REFUNDED_TO_BANK_ACCOUNT}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
+            {{else if ORDER_COMPLETED}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.order_code}}</a>
+            {{else if PACKAGE_STORAGE}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND&otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{else if PACKAGE_STORAGE_EXCEEDED}}
+              <a
+                href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND&otp={{otp}}"
+                style="text-decoration:none;color:#006699" target="_blank" >{{pkg.id}}</a>
+            {{/if}}
               <br> </span>
         </td>
       </tr>

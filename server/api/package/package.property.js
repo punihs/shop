@@ -35,8 +35,7 @@ module.exports = DataTypes => ({
     type: DataTypes.ENUM,
     values: [INCOMING, PERSONAL_SHOPPER, COD],
   },
-  splitting_directions: DataTypes.STRING,
-  return_send: DataTypes.STRING,
+
   total_quantity: DataTypes.INTEGER,
 
   personal_shopper_cost: DataTypes.INTEGER,
@@ -55,7 +54,14 @@ module.exports = DataTypes => ({
   instruction: DataTypes.STRING,
   payment_gateway_name: DataTypes.STRING,
   payment_status: DataTypes.STRING,
-  status: DataTypes.STRING,
   invoice: DataTypes.STRING,
   notes: DataTypes.STRING,
+  return_send: DataTypes.STRING,
+  splitting_directions: DataTypes.STRING,
+  order_code: DataTypes.STRING,
+  buy_if_price_changed: DataTypes.STRING,
+  transaction_id: DataTypes.INTEGER,
+  package_received_date: DataTypes.DATE,
+  is_restricted_item: DataTypes.BOOLEAN,
+  rack_number: DataTypes.INTEGER,
 });

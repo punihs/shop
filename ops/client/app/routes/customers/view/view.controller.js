@@ -91,10 +91,13 @@ class CustomerViewController {
             description: data.description,
           };
           this.transactions.push(walletTransaction);
+          this.data.description = '';
+          this.data.amount = '';
         } else {
           this.transactions[this.editWalletIndex].amount = data.amount;
           this.transactions[this.editWalletIndex].description = data.description;
         }
+        this.reset(walletForm);
         this.submitWallet = false;
         this.editWallet = false;
         const message = method === 'post' ? 'Added' : 'Updated';
@@ -179,12 +182,12 @@ class CustomerViewController {
       });
   }
   getWalletTransactions() {
-    // this
-    //   .$http
-    //   .get(`/transactions?customer_id=${this.id}`)
-    //   .then(({ data }) => {
-    //     this.transactions = data;
-    //   });
+    this
+      .$http
+      .get(`$/phpApi/walletIndex?customer_id=${this.id}`)
+      .then(({ data: { transactions } }) => {
+        this.transactions = transactions;
+      });
   }
   getLoyaltyRewards() {
     // this
@@ -206,9 +209,9 @@ class CustomerViewController {
   }
   getShippingPreferences() {
     this.$http
-      .get(`/shippingPreference/${this.id}`)
-      .then(({ data: { preference } }) => {
-        this.shippingPreference = preference[0];
+      .get(`/users/${this.id}/shippingPreference`)
+      .then(({ data: { shippingPreference } }) => {
+        this.shippingPreference = shippingPreference[0];
       });
   }
 
@@ -272,6 +275,11 @@ class CustomerViewController {
           .pop('error', message);
       });
   }
+
+  reset(formData) {
+    formData.$setPristine();
+  }
+
   deleteWalletTransaction(customerId, transactionId, amount, type, index) {
     this
       .$http

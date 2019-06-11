@@ -1,0 +1,63 @@
+.col-md-12.ps-main
+  div.col-md-6
+    h1.f-s-1.f-c-d-gray ShoppRe Balance
+    h12.f-s-10.f-c-d-gray
+      | Personal Shopper
+      span.f-c-gray  > ShoppRe Balance
+  div.col-md-6(style='padding-top: 20px;')
+      button.btn-l.btn-b-r.btn-s-r.pull-right.f-s-9
+        |Place an Order
+  .clearfix
+  .ps-mainidiv
+    div
+      .div-align-items-r
+        label.f-s-10.f-c-gray Current Balance
+        label.f-s-5.f-c-red -1000
+        img(src='/assets/images/wallet.png')
+      .row
+        table#orders-history
+          tbody
+            tr
+              th Ordered on
+              th Order Number
+              th Details
+              th Amount
+              th Outstanding
+            tr
+              td PS123456
+              td 16 Jan 2018
+              td Item out of stock
+              td - 1000
+              td - 1000
+
+            tr
+              td
+              td 16 Jan 2018
+              td Balance deducted for new Personal Shopper Order
+              td + 300
+              td 0
+
+            tr
+              td PS123456
+              td 16 Jan 2018
+              td Product Price Decreased
+              td - 300
+              td - 300
+
+
+          tfoot.hide-if-no-paging
+            tr
+              td.text-center.footable-visible(colspan='5')
+                ul.pagination
+                  li.footable-page-arrow.disabled
+                    a(data-page='first', href='#first') «
+                  li.footable-page-arrow.disabled
+                    a(data-page='prev', href='#prev') ‹
+                  li.footable-page.active
+                    a(data-page='0', href='#') 1
+                  li.footable-page
+                    a(data-page='1', href='#') 2
+                  li.footable-page-arrow
+                    a(data-page='next', href='#next') ›
+                  li.footable-page-arrow
+                    a(data-page='last', href='#last') »

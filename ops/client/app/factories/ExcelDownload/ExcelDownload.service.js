@@ -14,7 +14,7 @@
         limit: 10000,
       });
 
-      const { access_token: accessToken } = this.Session.read('oauth');
+      const { access_token: accessToken } = this.Session.read('adminOauth');
       const xlsx = `${this.URLS.API}${shipmentId
         ? `/shipments/${shipmentId}`
         : ''

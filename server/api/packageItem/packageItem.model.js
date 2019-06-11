@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'created_by',
       as: 'Creator',
     });
+    PackageItem.belongsTo(db.User, {
+      foreignKey: 'customer_id',
+      as: 'Customer',
+    });
     PackageItem.belongsTo(db.Package);
     PackageItem.belongsTo(db.PackageItemCategory);
     db.PackageItemCategory.belongsTo(db.PackageItem);

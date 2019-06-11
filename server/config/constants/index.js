@@ -48,6 +48,19 @@ const constants = {
     AWAITING_PACKAGE: 47,
     UPLOAD_INVOICE_REQUESTED: 54,
     INCOMING_PACKAGE: 59,
+    ORDER_DELETED: 62,
+    PAYMENT_CONFIRMED: 63,
+    ORDER_PROCEED: 64,
+    PRICE_CHANGED: 65,
+    IN_TRANSIT: 66,
+    AWAITING_FOR_STOCK: 67,
+    ORDER_COMPLETED: 68,
+    OTHER_ITEMS_PROCEED: 69,
+    PACKAGE_STORAGE: 1002,
+    PACKAGE_STORAGE_EXCEEDED: 1003,
+    AWAITING_FOR_ORDER: 70,
+    INACTIVE_LOCKER: 71,
+    PACKAGE_DELETED: 73,
   },
   SHIPMENT_COUPON_STATES: {
     PENDING: 'pending',
@@ -82,14 +95,27 @@ const constants = {
     SHIPMENT_CANCELLED: 41,
     SHIPMENT_DELETED: 55,
     CUSTOMER_DOCUMENT_RESOLVED: 60,
+    SHIPMENT_ABANDON: 61,
+
+    PAYMENT_DELAY_EXCEEDED: 1000,
+    PAYMENT_DELAY: 1001,
+    SHIPMENT_IN_ACTIVE: 72,
   },
-  SHIPMENT_HISTORY: [24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41],
+  SHIPMENT_HISTORY: [24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 61],
+  PACKAGE_COUNT: [1, 2, 3, 4, 5, 6, 7, 9, 11, 12, 13, 15, 52, 53, 54, 71],
+
+  SHIPMENT_COUNT: [20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+    32, 33, 34, 35, 36, 37, 38, 39, 40],
+
+  PACKAGE_SHIPMENT_COUNT: [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+    32, 33, 34, 35, 36, 37, 38, 39],
+
   PRICE_ENTERER: {
     SHOPPRE: '1',
     CUSTOMER: '2',
   },
   PHOTO_REQUEST_TYPES: {
-    BASIC: '1',
+    STANDARD: '1',
     ADVANCED: '2',
   },
   PHOTO_REQUEST_STATES: {
@@ -98,8 +124,8 @@ const constants = {
   },
   APPS: {
     ACCOUNTS: 1,
-    OPS: 2,
-    MEMBER: 3,
+    OPS: 13,
+    MEMBER: 12,
     WWW: 4,
   },
   SALUTATIONS: {
@@ -140,6 +166,22 @@ const constants = {
     PAYTM: 4,
     PAYPAL: 5,
     WALLET: 6,
+    RAZOR: 7,
+  },
+  PAYMENT_GATEWAY_NAMES: {
+    WIRE: 'wire',
+    CASH: 'cash',
+    CARD: 'card',
+    PAYTM: 'paytm',
+    PAYPAL: 'paypal',
+    WALLET: 'wallet',
+    RAZOR: 'razor',
+  },
+  CRON_STATES: {
+    PAYMENT_DELAY_EXCEEDED: 1000,
+    PAYMENT_DELAY: 1001,
+    PACKAGE_STORAGE: 1002,
+    PACKAGE_STORAGE_EXCEEDED: 1003,
   },
 };
 
@@ -148,6 +190,13 @@ constants.PACKAGE_STATE_ID_NAMES_MAP = Object
   .reduce((nxt, stateName) => ({
     ...nxt,
     [constants.PACKAGE_STATE_IDS[stateName]]: stateName,
+  }), {});
+
+constants.SHIPMENT_STATE_ID_NAMES_MAP = Object
+  .keys(constants.SHIPMENT_STATE_IDS)
+  .reduce((nxt, stateName) => ({
+    ...nxt,
+    [constants.SHIPMENT_STATE_IDS[stateName]]: stateName,
   }), {});
 
 module.exports = constants;

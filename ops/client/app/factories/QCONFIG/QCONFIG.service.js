@@ -65,5 +65,14 @@ angular.module('uiGenApp')
       SHIPMENT_CANCELLED: 41,
       SHIPMENT_DELETED: 55,
     },
+
+    CARTON_BOX: [
+      { amount: 14.5, kg: '2.5 - kg' },
+      { amount: 23, kg: '5.5 - kg' },
+      { amount: 35, kg: '10.5 - kg' },
+      { amount: 40.5, kg: '15.5 - kg' },
+      { amount: 58.5, kg: '17.5 - kg' },
+      { amount: 10, kg: 'Other' },
+    ],
   }));
 

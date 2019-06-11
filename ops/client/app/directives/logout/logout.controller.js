@@ -1,16 +1,13 @@
 class LogoutController {
-  constructor(URLS, $window, $cookies, Session, $http, Auth) {
+  constructor(URLS, $window, Session, $http, Auth) {
     this.URLS = URLS;
     this.$window = $window;
-    this.$cookies = $cookies;
     this.Session = Session;
     this.$http = $http;
     this.Auth = Auth;
   }
 
   $onInit() {
-    // Removing chat user cookie
-    this.$cookies.remove('cc_data');
     this.notify = this.Session.read('notify');
 
     return this.$http
@@ -22,9 +19,16 @@ class LogoutController {
   }
 
   cleanup() {
-    const { ACCOUNTS } = this.URLS;
+    // localStorage.clear();
+    localStorage.removeItem('adminOauth');
+    localStorage.removeItem('adminShipment-states');
+    localStorage.removeItem('adminStates');
+    localStorage.removeItem('adminUserinfo');
+    localStorage.removeItem('afterShipCarriers');
+    const { WWW, OAUTH_CLIENT_ID } = this.URLS;
     const { location } = this.$window;
-    location.href = `${ACCOUNTS}/logout`;
+    // location.href = `${LOGIN}/logout?continue=/signin?client_id=${OAUTH_CLIENT_ID}`;
+    location.href = `${WWW}/logout`;
   }
 }
 

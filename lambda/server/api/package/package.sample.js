@@ -1,7 +1,7 @@
 module.exports = {
   stateChange: {
     customer: {
-      id: 647, // 738
+      id: 646, // 738
     },
   },
 };

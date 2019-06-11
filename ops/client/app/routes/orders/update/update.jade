@@ -1,0 +1,187 @@
+div.m-t-xl.no-margin
+  .hbox#applicantNewdiv
+    .m-t-lg
+    .wrapper-md.bg-white-only
+      div
+        .h1.m-l-md.font-thin.h3
+          | Edit Order
+          ul.nav.nav-pills.nav-sm.pull-right
+            li.m-r-xs.pull-right
+              a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
+              ui-sref='order.show({ id: $ctrl.$stateParams.id })'
+              popover-trigger="'mouseenter'"
+              popover-placement='bottom'
+              popover-append-to-body='true'
+              )
+                span.fa.fa-backward
+                span  Go Back
+      form.form.form-validation.form-horizontal.wrapper-md(
+      name="orderForm"
+      novalidate
+      ng-submit='$ctrl.update(orderForm)'
+      autocomplete='off'
+      )
+        .row
+          .col-md-12.col-sm-12.col-xs-12
+            .col-md-7
+              .row
+                .col-md-12
+                  input(type='hidden' ng-bind='$ctrl.data.store_id && $ctrl.data.store_id')
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Seller Name
+                      span.text-danger *
+                      input.form.form-control(
+                      type='text'
+                      name="store_id"
+                      ng-model='$ctrl.data.Store.name'
+                      placeholder='eg. amazon'
+                      disabled
+                      )
+                  input(type='hidden' ng-bind='$ctrl.data.price_amount && $ctrl.data.price_amount')
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Total Price
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='price_amount'
+                      placeholder='eg. 900'
+                      ng-model='$ctrl.data.price_amount'
+                      disabled
+                      )
+              .row
+                .col-md-12
+                  input(type='hidden' ng-bind='$ctrl.data.sales_tax && $ctrl.data.sales_tax')
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Sales Tax
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='sales_tax'
+                      placeholder='eg. 900'
+                      ng-model='$ctrl.data.sales_tax'
+                      disabled
+                      )
+                  input(type='hidden' ng-bind='$ctrl.data.delivery_charge && $ctrl.data.delivery_charge')
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Delivery Charge
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='delivery_charge'
+                      placeholder='eg. 900'
+                      ng-model='$ctrl.data.delivery_charge'
+                      disabled
+                      )
+              .row
+                .col-md-12
+                  input(type='hidden' ng-bind='$ctrl.data.personal_shopper_cost && $ctrl.data.personal_shopper_cost')
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Personal Shopper Fee
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='personal_shopper_cost'
+                      placeholder='eg. 900'
+                      ng-model='$ctrl.data.personal_shopper_cost'
+                      disabled
+                      )
+                  input(type='hidden' ng-bind='$ctrl.data.sub_total && $ctrl.data.sub_total')
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Sub Total
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='sub_total'
+                      placeholder='eg. 900'
+                      ng-model='$ctrl.data.sub_total'
+                      disabled
+                      )
+              .row
+                .col-md-12
+                  input(type='hidden' ng-bind='$ctrl.data.total_quantity && $ctrl.data.total_quantity')
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Total Quantity
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='total_quantity'
+                      placeholder='eg. 900'
+                      ng-model='$ctrl.data.total_quantity'
+                      disabled
+                      )
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Amount Paid To The Website
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='amount_paid'
+                      placeholder='eg. 900'
+                      ng-model='$ctrl.data.amount_paid'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && orderForm.amount_paid.$dirty && orderForm.amount_paid.$invalid') Please Amount Paid To The Website
+              .row
+                .col-md-12
+                  .col-md-5.col-sm-5.col-xs-12
+                    .hbox
+                      label.col
+                        | Photo
+                        span.text-danger *
+                        .btn-file-wrapper(ng-class="orderForm.file.$touched && orderForm.file.$invalid ? 'input-file-danger':''" drag-drop-toggle)
+                          .btn-file
+                            span(ng-show="(orderForm.file.$touched && orderForm.file.$valid) || $ctrl.data.file")
+                              span.text-muted(ng-bind="$ctrl.file.name")
+                            p.no-margin(ng-hide="(orderForm.file.$touched && orderForm.file.$valid) || $ctrl.data.file")
+                              span.text-bold Choose a file
+                              |  or Drag it here.
+                            span.file-support(ng-hide="(orderForm.file.$touched && orderForm.file.$valid) || $ctrl.data.file") Supported Formats: .png, .jpeg, .jpg, .bmp, .pdf'
+                            input.form-control(
+                            accept="image/*"
+                            type="file"
+                            ng-model='$ctrl.file'
+                            name='file'
+                            ngf-pattern="'.png,.jpeg,.jpg,.bmp,.pdf'"
+                            ngf-max-size="15MB"
+                            ngf-max-files="1"
+                            ngf-select='$ctrl.uploadingPhotos=true;'
+                            onclick="this.value = null"
+                            ng-image-compress
+                            image="myAwesomeImage"
+                            ctrl="$ctrl"
+                            upload-fn="$ctrl.startUpload"
+                            resize-max-height="1000"
+                            resize-max-width="1000"
+                            resize-quality="0.7"
+                            resize-type="image/jpg"
+                            required
+                            )
+                        span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && !$ctrl.data.file && !orderForm.file.$invalid') Please choose file
+                        span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && orderForm.file.$invalid') Please choose supported file
+                        span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && orderForm.file.$dirty && orderForm.file.$invalid') Please choose supported file
+                  .col-xs-1.wrapper-sm.m-t-xs
+                    img.pull-left.m-r(
+                    ng-if='$ctrl.data.object'
+                    ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.object}}'
+                    style='height: 85px;width: 80px;'
+                    )
+              .row
+                .col-md-8
+                  .text-danger.font-bold(ng-if="orderForm.file.$error.maxSize") Please select file less than 5MB
+                .col-md-12.col-xs-12
+                  h4(ng-bind="$ctrl.error.message" style="color:red;")
+                  button.btn.btn-success(type='submit' ng-disabled="$ctrl.uploadingPhotos || $ctrl.submitting || orderForm.$pristine")
+                    span.fa.fa-forward.m-r-sm
+                    span.text-white(ng-if='!$ctrl.submitting') Save
+                    span(ng-if='$ctrl.submitting')
+                      i.fa.fa-spin.fa-circle-o-notch
+                      span.text-white &nbsp;&nbsp;Submitting...
+
+    .clearfix

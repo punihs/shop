@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'customer_id',
       as: 'Customer',
     });
+
     db.User.hasOne(db.Locker, {
       foreignKey: 'customer_id',
     });
@@ -47,7 +48,14 @@ module.exports = (sequelize, DataTypes) => {
             where: { customer_id: null },
             limit: 1,
           })
-          .then(() => Locker.find({ attributes: ['id', 'name'] }, { where: { customer_id: customerId } }))));
+          .then(() => Locker
+            .find({
+              attributes: ['id', 'name'],
+            }, {
+              where: {
+                customer_id: customerId,
+              },
+            }))));
   };
 
   return Locker;

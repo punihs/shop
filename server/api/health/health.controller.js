@@ -1,11 +1,13 @@
-
 const {
   sequelize,
 } = require('../../conn/sqldb');
 
-exports.health = (req, res, next) => Promise
-  .all([
-    sequelize.authenticate(),
-  ])
-  .then(() => res.json({ db: true }))
-  .catch(next);
+exports.health = async (req, res, next) => {
+  try {
+    await sequelize.authenticate();
+
+    return res.json({ db: true });
+  } catch (err) {
+    return next(err);
+  }
+};

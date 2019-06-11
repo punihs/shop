@@ -2,8 +2,7 @@ class CustomersListController {
   /* @ngInject */
   constructor(
     $http, $state, $rootScope, $window, $location, $timeout, $stateParams, $filter,
-    $uibModal, toaster, QCONFIG, Session, Prototype, ListModal, Page, URLS, LoginAs,
-  ) {
+    $uibModal, toaster, QCONFIG, Session, Prototype, ListModal, Page, URLS, LoginAs) {
     this.URLS = URLS;
     this.Page = Page;
     this.$http = $http;
@@ -34,7 +33,7 @@ class CustomersListController {
   }
 
   $onInit() {
-    this.user = this.Session.read('userinfo');
+    this.user = this.Session.read('adminUserinfo');
     this.facet = {};
     this.groupId = this.$state.params.groupId;
     if (!this.GROUPS.map(x => x.id).includes(Number(this.groupId))) {
@@ -107,11 +106,13 @@ class CustomersListController {
           // data has been loaded
           this.ui.loading = false;
 
-          // check for returned results count and set lazy loadLoad false if less
-          this.ui.lazyLoad = angular.equals(this.list.length, this.params.limit);
-
           // increment offset for next loading of results
           this.params.offset = this.params.offset + this.params.limit;
+          // this.params.offset = this.params.offset + this.params.limit;
+
+          // check for returned results count and set lazy loadLoad false if less
+          this.ui.lazyLoad = angular.equals(customers.length, this.params.limit);
+          // this.params.start = this.params.start + this.params.limit;
         })
         .catch(() => {
           this.ui.loading = false;

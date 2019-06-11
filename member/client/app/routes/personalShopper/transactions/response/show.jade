@@ -1,0 +1,110 @@
+.col-md-12
+  br
+  div(style='background-color:#fff')
+    br
+    .container
+      center
+       img(src='/assets/images/success.png', alt='')
+    .container
+      h2.text-center.text-info(ng-if="$ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.WIRE")
+        | Thanks for placing the order!
+      h2.text-center.text-info(ng-if="$ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.CARD || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.WALLET || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.PAYPAL || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.PAYTM || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.CASH")
+        | Payment Successful
+    br
+    .container(ng-if="$ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.WIRE")
+      h4(ng-if="$ctrl.transactions[0].object_name === 'ps'")
+        | We have received your Assisted Purchase order.  We're only one step away from placing your order; you'd have to make payment.Once we confirm
+      h4(ng-if="$ctrl.transactions[0].object_name === 'ps'")
+        |   the payment, we'll make your purchase in just 24 hours; any difference in product costs at the time of us placing the order will be settled at the end.
+      h4(ng-if="$ctrl.transactions[0].object_name === 'cod'")
+        | We have received your Self Purchase order.  We're only awaiting for receiving your order; you'd have to make payment.Once we confirm
+      h4(ng-if="$ctrl.transactions[0].object_name === 'cod'")
+        |   the payment, we'll accept your order; any difference in product costs at the time of receiving the order will be settled at the end.
+      br
+      h4.text-center(ng-if="$ctrl.transactions[0].object_name === 'ps'") You'll be notified via email once the order is placed or if we run into any issue with your order.
+      h4.text-center(ng-if="$ctrl.transactions[0].object_name === 'cod'") You'll be notified via email once the order is recieved or if we run into any issue with your order.
+    .container(ng-if="$ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.CARD || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.WALLET || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.PAYPAL || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.PAYTM || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.CASH")
+      h4.text-center(ng-if="$ctrl.transactions[0].object_name === 'ps'") Your order is being processed. It will be placed within 24 hours.
+      h4.text-center(ng-if="$ctrl.transactions[0].object_name === 'cod'") Thank you ,Your Self Purchase order is Placed
+      br
+      h4.text-center(ng-if="$ctrl.transactions[0].object_name === 'ps'") You'll be notified via email once the order is placed or if we run into any issue with your order.
+      h4.text-center(ng-if="$ctrl.transactions[0].object_name === 'cod'") You'll be notified via email once the order is recieved or if we run into any issue with your order.
+    br
+    .container.div-br.no-padder(ng-if="$ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.WIRE")
+      .col-md-8.div-pad-20
+        h1.f-c-red.f-s-6 You can make it out to:
+        br
+        .col-md-6.no-padder
+          p.font-15
+            strong Account Name :
+            span {{$ctrl.account.account_name}}
+          p.font-15
+            strong Account Number:
+            span {{$ctrl.account.account_number}}
+          p.font-15
+            strong IFSC Code:
+            span {{$ctrl.account.ifs_code}}
+          p.font-15
+            strong MICR Code:
+            span {{$ctrl.account.micr_code}}
+        .col-md-6.no-padder
+          p.font-15
+            strong Branch:
+            span {{$ctrl.account.branch}}
+          p.font-15
+            strong Email Id:
+            span {{$ctrl.account.email_id}}
+          p.font-15
+            strong Address:
+            span {{$ctrl.account.address}}
+          p.font-15
+            strong Swift Code:
+            span {{$ctrl.account.swift_code}}
+      .col-md-4.col-xs-12.div-bg.no-padder.pull-right
+        div.div-pad-20
+        center
+          h3.text-white Pay
+          br
+          br
+          span.r-span ₹
+          br
+          h3.text-white(style='font-weight:900') {{$ctrl.transactions[0].final_amount | number: 2}}
+        br
+        br
+    br
+    .container.centerFlex(ng-if="$ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.CARD || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.WALLET || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.PAYPAL || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.PAYTM || $ctrl.transactions[0].payment_gateway_id == $ctrl.PAYMENT_GATEWAY.CASH")
+      .col-md-4.col-xs-8.div-bg.no-padder
+        div.div-pad-20
+        center
+          h3.text-white You paid:
+          br
+          br
+          span.r-span ₹
+          br
+          h3.text-white(style='font-weight:900') {{$ctrl.transactions[0].final_amount | number: 2}}
+        br
+        br
+
+    br
+.col-md-12(ng-repeat="package in $ctrl.packages")
+  br
+  div(style='background-color:#fff')
+    br
+    .container
+      .col-md-6.no-padder
+        h4.text-info {{package.Store.name}}
+        h4 Shoppre Order Number:
+            | {{package.order_code}}
+        h4 {{package.created_at | date:'MMM d, y'}} IST {{package.created_at | date:'h:mm a'}}
+      .col-md-6.no-padder
+        h4.text-info.pull-right
+          ul.nav.nav-pills.nav-sm.pull-right
+            li.m-r-xs.pull-right
+              a.b-a.btn-addon.text-info.b-info(
+              ui-sref='personalShopper.show({ id: package.order_code })'
+              popover-trigger="'mouseenter'"
+              popover-placement='bottom'
+              popover-append-to-body='true'
+              )
+                span  View Your Receipt
+    br

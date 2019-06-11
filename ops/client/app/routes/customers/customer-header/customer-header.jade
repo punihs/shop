@@ -3,13 +3,13 @@
       span.h4.text-info(ng-bind='$ctrl.customer.name')
 .pull-left.wrapper-sm
   span.b-1x.b-r.b-l.b-ligth-dker
-.pull-left.wrapper-sm.no-padder-top.ng-binding(
-  title='Locker: {{$ctrl.customer.Locker}}'
-  ng-if='$ctrl.customer.Locker'
+.pull-left.wrapper-sm.no-padder-top.ng-binding.text-danger(
+  title='Locker: {{$ctrl.customer.rack_number}}'
+  ng-if='$ctrl.customer.rack_number'
 )
   i.fa.fa-md.fa-suitcase.text-light-dker
   span.m-l-xs(
-    ng-bind='$ctrl.customer.Locker.short_name'
+    ng-bind='$ctrl.customer.rack_number'
   )
 .pull-left.wrapper-sm.no-padder-top.ng-binding(title='Country: {{$ctrl.customer.Country.name}}')
   span.flag-icon.m-l-xs(
@@ -28,6 +28,9 @@
   i.fa.fa-phone
   a(ng-href='tel:{{$ctrl.customer.phone}}')
     span.m-l-xs(ng-bind='$ctrl.customer.phone')
+.pull-left.wrapper-sm.no-padder-top
+  span
+    a(ng-click='$ctrl.LoginAs.init($ctrl.customer.email);') Login
 uib-progressbar.w-full.bg-light.dker.progress-striped.active.m-t-xl(
   ng-init='max=20;elapsed=$ctrl.moment().diff($ctrl.moment($ctrl.customer.Locker.allocated_at), "days")'
   ng-if='$ctrl.customer.Locker'

@@ -1,4 +1,4 @@
-angular.module('qui.core')
+angular.module('uiGenApp')
   .factory('Session', [
     '$window',
     function Session($window) {
@@ -11,6 +11,8 @@ angular.module('qui.core')
       sessionService.read = function read(key) {
         return angular.fromJson($window.localStorage[key]);
       };
+
+      sessionService.clear = items => (items.map(x => (delete $window.localStorage[x])));
 
       sessionService.destroy = function destroy() {
         $window.localStorage.clear();

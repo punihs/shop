@@ -3,8 +3,14 @@ const { GROUPS: { CUSTOMER } } = require('../../../../config/constants');
 
 const { CURRENT_EVENT_KEY } = require('../../../../config/environment');
 
-const render = require('../../../../../../chicken-sdk/render');
+const render = require('../../../../components/engage-sdk/render');
 const TemplateData = require('./state-change.data')[CURRENT_EVENT_KEY];
+
+const { log } = console;
+
+log('---------------\n\n');
+log(JSON.stringify(TemplateData));
+log('\n\n---------------');
 
 const TemplateName = __dirname.split('/')
   .slice(-3)

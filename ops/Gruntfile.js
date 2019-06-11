@@ -2,7 +2,7 @@
 'use strict';
 const path = require('path');
 const root = path.normalize(`${__dirname}/..`);
-console.log({ root })
+
 module.exports = function (grunt) {
   var localConfig;
   try {
@@ -40,7 +40,7 @@ module.exports = function (grunt) {
     },
     express: {
       options: {
-        port: process.env.PORT || 5002,
+        port: process.env.PORT || 4002,
       },
       dev: {
         options: {
@@ -56,7 +56,7 @@ module.exports = function (grunt) {
     },
     open: {
       server: {
-        url: 'http://parcel-ops.shoppre.test',
+        url: 'http://shop.shoppre.test/admin',
       },
     },
     watch: {
@@ -109,14 +109,14 @@ module.exports = function (grunt) {
           '<%= yeoman.client %>/assets/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}',
         ],
         options: {
-          livereload: 12345,
+          livereload: 12349,
         },
       },
       express: {
         files: ['<%= yeoman.server %>/**/*.{js,json}'],
         tasks: ['express:dev', 'wait'],
         options: {
-          livereload: 12345,
+          livereload: 12349,
           spawn: false, // Without this option specified express won't be reloaded
         },
       },
@@ -212,7 +212,7 @@ module.exports = function (grunt) {
         options: {
           nodeArgs: ['--debug-brk'],
           env: {
-            PORT: process.env.PORT || 5002,
+            PORT: process.env.PORT || 4002,
           },
           callback(nodemon) {
             nodemon.on('log', function (event) {
@@ -244,7 +244,7 @@ module.exports = function (grunt) {
       },
       client: {
         src: '<%= yeoman.client %>/index.html',
-        ignorePath: '<%= yeoman.client %>/',
+        ignorePath: './<%= yeoman.client %>/',
       },
       test: {
         src: './karma.conf.js',

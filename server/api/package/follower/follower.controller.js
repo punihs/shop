@@ -1,50 +1,49 @@
-
 const debug = require('debug');
 
-const log = debug('package');
+const { Follower, User, SocketSession } = require('../../../conn/sqldb');
 
-const { OBJECT_TYPES: { PACKAGE } } = require('../../../config/constants');
-
-const db = require('../../../conn/sqldb');
-
-const { Follower, User, SocketSession } = db;
 const attributes = [
   'id', 'email', 'first_name', 'last_name', 'salutation', 'profile_photo_url', 'name',
 ];
-exports.index = (req, res, next) => {
-  log('index', req.query);
+const log = debug('package');
 
-  return Follower
-    .findAll({
-      where: {
-        object_id: req.params.packageId,
-        object_type_id: PACKAGE,
-      },
-    })
-    .then((followers) => {
-      if (!followers.length) return res.json([]);
+exports.index = async (req, res, next) => {
+  try {
+    log('index', req.query);
 
-      return User
-        .findAll({
-          attributes,
+    const followers = await Follower
+      .findAll({
+        attributes: ['id', 'object_type_id', 'object_id', 'shared_by', 'updated_by', 'user_id'],
+        where: { object_id: req.params.packageId },
+      });
+
+    if (!followers.length) return res.json([]);
+
+    const users = await User
+      .findAll({
+        attributes,
+        where: {
+          id: followers
+            .map(x => x.user_id)
+            .filter(x => (x !== req.user.id)),
+        },
+        include: [{
+          model: SocketSession,
+          attributes: ['id'],
           where: {
-            id: followers
-              .map(x => x.user_id)
-              .filter(x => (x !== req.user.id)),
-
+            is_online: true,
           },
-          include: [{
-            model: SocketSession,
-            attributes: ['id'],
-            where: {
-              is_online: true,
-            },
-            required: false,
-          }],
-        })
-        .then(users => res
-          .json(users
-            .map(x => ({ ...x.toJSON(), online: !!x.SocketSessions.length }))));
-    })
-    .catch(next);
+          required: false,
+        }],
+      });
+
+    return res
+      .json(users
+        .map(x => ({
+          ...x.toJSON(),
+          online: !!x.SocketSessions.length,
+        })));
+  } catch (err) {
+    return next(err);
+  }
 };

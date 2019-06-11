@@ -1,0 +1,191 @@
+div.m-t-xl.no-margin
+  .hbox#applicantNewdiv
+    .m-t-lg
+    .wrapper-md.bg-white-only
+      div
+        .h1.m-l-md.font-thin.h3
+          | {{$ctrl.EDIT ? 'Edit' : 'Create'}} Campaign
+      div.back-button-shipment
+        ul.nav.nav-pills.nav-sm.pull-right
+          li.m-r-xs.pull-right
+            a.h5.font-bold.b-a.btn-addon.btn-success.text-white-only.b-success.imp(
+            ui-sref='campaigns.index({ id: $ctrl.data.id })'
+            popover-trigger="'mouseenter'"
+            popover-placement='bottom'
+            popover-append-to-body='true'
+            )
+              span.fa.fa-backward
+              span(style='botom: 0')  Go Back
+      form.form.form-validation.form-horizontal.wrapper-md(
+      name="newCampaignForm"
+      novalidate
+      ng-submit='$ctrl.create(newCampaignForm)'
+      autocomplete='off'
+      )
+        .row
+          .col-md-10.col-sm-10.col-xs-10
+            .col-md-7
+              .row
+                .col-md-12
+                  .col-md-6.col-sm-5.col-xs-12.no-padder
+                    label.col-xs-12.input-group
+                      | Name
+                      span.text-danger *
+                      input.form.form-control(
+                      type='text'
+                      name='name'
+                      placeholder='eg. Diwali'
+                      ng-model='$ctrl.data.name'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='newCampaignForm.name.$dirty && newCampaignForm.name.$invalid') Please Enter Campaign Name
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Maximum Discount Amount
+                      span.text-danger *
+                      input.form.form-control(
+                      type='number'
+                      name='maximum_discount_amount'
+                      placeholder='eg. 200'
+                      ng-model='$ctrl.data.maximum_discount_amount'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='newCampaignForm.maximum_discount_amount.$dirty && newCampaignForm.maximum_discount_amount.$invalid') Please Enter Maximum discount Amount
+          .col-md-10.col-sm-10.col-xs-10
+            .col-md-7
+              .row
+                .col-md-12
+                  .col-md-6.col-sm-5.col-xs-12.no-padder
+                    label.col-xs-12.input-group
+                      | Discount Code
+                      input.form.form-control.text-uppercase(
+                      type='text'
+                      name='discount_code'
+                      placeholder='eg. FRST50'
+                      ng-model='$ctrl.data.discount_code'
+                      )
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Cashback Code
+                      input.form.form-control.text-uppercase(
+                      type='text'
+                      name='cashback_code'
+                      placeholder='eg. CRST40'
+                      ng-model='$ctrl.data.cashback_code'
+                      )
+          .col-md-10.col-sm-10.col-xs-10
+            .col-md-7
+              .row
+                .col-md-12
+                  .col-md-6.col-sm-5.col-xs-12.no-padder
+                    label.col-xs-12.input-group
+                      | Discount Percentage
+                      input.form.form-control(
+                      type='number'
+                      name='discount_percentage'
+                      placeholder='eg. 50'
+                      ng-model='$ctrl.data.discount_percentage'
+                      )
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Cashback Percentage
+                      input.form.form-control(
+                      type='number'
+                      name='cashback_percentage'
+                      placeholder='eg. 40'
+                      ng-model='$ctrl.data.cashback_percentage'
+                      )
+          .col-md-10.col-sm-10.col-xs-10
+            .col-md-7
+              .row
+                .col-md-12
+                  .col-md-6.col-sm-5.col-xs-12.no-padder
+                    label.col-xs-12.input-group
+                      | Start Date
+                      span.text-danger *
+                      input.form.form-control(
+                      type='date'
+                      name='start_date'
+                      ng-model='$ctrl.data.start_date'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='newCampaignForm.start_date.$dirty && newCampaignForm.start_date.$invalid') Please Enter Campaign Start date
+                  .col-md-6.col-sm-5.col-xs-12
+                    label.col-xs-12.input-group
+                      | Expiry Date
+                      span.text-danger *
+                      input.form.form-control(
+                      type='date'
+                      name='expiry_date'
+                      data-date=""
+                      data-date-format="DD MM YYYY"
+                      ng-model='$ctrl.data.expiry_date'
+                      required
+                      )
+                      span.wrapper-xs.text-xs.text-danger(ng-show='newCampaignForm.expiry_date.$dirty && newCampaignForm.expiry_date.$invalid') Please Enter Campaign Expiry date
+          .col-md-10.col-sm-10.col-xs-10
+            .col-md-7
+              .row
+                .col-md-12
+                  .col-md-6.col-sm-5.col-xs-12.no-padder
+                    label.col-xs-12.input-group
+                      | Select Campaign Type
+                      select.form.form-control(
+                      ng-model='$ctrl.data.type'
+                      name='type'
+                      ng-options='type.value as type.type for type in $ctrl.types'
+                      )
+          .col-md-10.col-sm-10.col-xs-10
+            .col-md-5.col-sm-5.col-xs-5
+              .hbox
+                label.col
+                  | Photo
+                  span.text-danger *
+                  .btn-file-wrapper(ng-class="newCampaignForm.file.$touched && newCampaignForm.file.$invalid ? 'input-file-danger':''" drag-drop-toggle)
+                    .btn-file
+                      span(ng-show="(newCampaignForm.file.$touched && newCampaignForm.file.$valid) || $ctrl.data.file")
+                        span.text-muted(ng-bind="$ctrl.file.name")
+                      p.no-margin(ng-hide="(newCampaignForm.file.$touched && newCampaignForm.file.$valid) || $ctrl.data.file")
+                        span.text-bold Choose a file
+                        |  or Drag it here.
+                      span.file-support(ng-hide="(newCampaignForm.file.$touched && newCampaignForm.file.$valid) || $ctrl.data.file") Supported Formats: .png, .jpeg, .jpg, .bmp, .pdf'
+                      input.form-control(
+                      accept="image/*"
+                      type="file"
+                      ng-model='$ctrl.file'
+                      name='file'
+                      ngf-pattern="'.png,.jpeg,.jpg,.bmp,.pdf'"
+                      ngf-max-size="15MB"
+                      ngf-max-files="1"
+                      ngf-select='$ctrl.uploadingPhotos=true;'
+                      onclick="this.value = null"
+                      ng-image-compress
+                      image="myAwesomeImage"
+                      ctrl="$ctrl"
+                      upload-fn="$ctrl.startUpload"
+                      resize-max-height="1000"
+                      resize-max-width="1000"
+                      resize-quality="0.7"
+                      resize-type="image/jpg"
+                      required
+                      )
+                  span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && !$ctrl.data.object') Please choose file
+                  span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newCampaignForm.file.$invalid') Please choose supported file
+                  span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newCampaignForm.file.$dirty && newCampaignForm.file.$invalid') Please choose supported file
+            .col-md-3.col-sm-3.col-xs-3.wrapper-sm.m-t-xs
+              img.pull-left.m-r(
+              ng-if='$ctrl.data.object'
+              ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + $ctrl.data.object}}'
+              style='height: 85px;width: 80px;'
+              )
+          .clearfix
+          .row.wrapper-md
+            .col-md-5.col-sm-5.col-xs-5
+              h4(ng-bind="$ctrl.error.message" style="color:red;")
+              h4(ng-bind="$ctrl.message" style="color:red;")
+              button.btn.btn-success(type='submit' ng-disabled="$ctrl.submitting || (!$ctrl.submitting && !newCampaignForm.$dirty)")
+                span.fa.fa-forward.m-r-sm
+                span.text-white(ng-if='!$ctrl.submitting') {{$ctrl.EDIT ? 'Update ' : ' Create ' }} Campaign
+                span(ng-if='$ctrl.submitting')
+                  i.fa.fa-spin.fa-circle-o-notch
+                  span.text-white &nbsp;&nbsp;Submitting...

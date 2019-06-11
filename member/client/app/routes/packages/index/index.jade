@@ -2,7 +2,7 @@ div
   .hbox(style="position:relative")
 
     // - Primary Header
-    .bg-white-only.w-full.b-b(style='position: fixed;z-index: 6;height: 40px;')
+    .bg-white-only.w-full.b-b.p-h
       .pull-left.wrapper-sm.no-padder-top
         span.h4
           i.fas.fa-cubes.m-r
@@ -13,18 +13,22 @@ div
 
 
     // - Secondary Header
-    .bg-light.b-b.padder.w-full.bg-white-only.m-t-xl(
-      style='position:fixed;z-index: 6;height: 42px;'
-    )
+    .bg-light.b-b.w-full.bg-white-only.m-t-xl.s-h
       ul.nav.nav-pills.nav-sm.m-t-xs.shoppre-nav-pills
-        li(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active" ng-show="$ctrl.buckets")
+        li.hidden-xs(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active" ng-show="$ctrl.buckets")
           a(
            ui-sref='packages.index({ bucket: bucket })'
-           style='padding: 6px 9px;'
+           style='padding: 6px 6px;'
           )
             span(ng-bind='$ctrl.replaceCharWithSpace(bucket, "_")')
             span.badge.bg-info.pull-right(ng-bind='$ctrl.facets[bucket]')
-
+        li.hidden-sm.hidden-md.hidden-lg.xs.xs-li-m(ng-repeat='bucket in $ctrl.buckets' ui-sref-active="active" ng-show="$ctrl.buckets")
+          a(
+            ui-sref='packages.index({ bucket: bucket })'
+            style='padding: 6px 6px;'
+          )
+            span.fas(ng-class='$ctrl.bucketIcons[$index]')
+            span.badge.bg-info.pull-right(ng-bind='$ctrl.facets[bucket]')
     div(style='position: fixed;right: 5px;z-index: 9;margin-top: 5px;')
       a.btn-info.btn.btn-sm(
         ui-sref='packages.create'
@@ -80,10 +84,10 @@ div
                           span.badge.bg-warning.pull-right.no-margin.m-t-xs(ng-show='$index === 2' ng-bind='$ctrl.replaceCharWithSpace($ctrl.facets.ACTION_REQUIRED, "_")')
                           span.badge.bg-warning.pull-right.no-margin.m-t-xs(ng-show='$index === 3' ng-bind='$ctrl.replaceCharWithSpace($ctrl.facets.ALL, "_")')
               .full-width
-                .panel.panel-default
+                .panel.panel-default(style="overflow:auto")
                   div
                     .panel-heading
-                      | Select Package to Ship
+                      span(ng-bind='$ctrl.replaceCharWithSpace($ctrl.shipType, "_")')
                     table.table.table-bordered.m-b-none.default.footable-loaded.footable(
                      ui-jq='footable', data-filter='#filter', data-page-size='5')
                       thead.bg-primary.text-white
@@ -94,8 +98,8 @@ div
                             | From
                             span.footable-sort-indicator
                             span.footable-sort-indicator
-                          th.footable-visible.footable-sortable(data-hide='phone,tablet', data-name='Date Of Birth')
-                            | Date Recieved
+                          th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.bucket !=='MY_ORDERS'" )
+                            | Photos
                             span.footable-sort-indicator
                           th.footable-visible.footable-last-column.footable-sortable.bg-warning.text-u-c(ng-if="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'")
                             | ACTION REQUIRED
@@ -106,11 +110,14 @@ div
                           th.footable-visible.footable-last-column.footable-sortable(ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'")
                             | Weight
                             span.footable-sort-indicator
-                          th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'")
-                            | Photos
+                          th.footable-visible.footable-sortable(data-hide='phone,tablet', data-name='Date Of Birth')
+                            | Date Recieved
                             span.footable-sort-indicator
                           th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.bucket==='ALL'")
                             | Status
+                            span.footable-sort-indicator
+                          th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.bucket==='MY_ORDERS'")
+                            | Delete
                             span.footable-sort-indicator
                           th.footable-visible.footable-last-column.footable-sortable(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'" )
                             .checkbox.no-margin
@@ -122,17 +129,21 @@ div
                           td.footable-visible.footable-first-column.text-blue(ng-click='$ctrl.MoreOption[$index]=!$ctrl.MoreOption[$index]')
                             i.fa.fa-chevron-circle-down
                           td.footable-visible
-                            a(ui-sref='package.show({ id: package.id })' ng-bind='package.Store.name' title='{{package.id}}')
+                            span.text-info(ng-bind='package.Store.name' title='{{package.id}}')
                             br
                             span.text-info(ng-bind='package.invoice_code')
+                            span (
+                            span.text-info(ng-bind='package.id')
+                            span )
                             span.badge.bg-success.m-l-xs.text-white(ng-if='package.content_type === "2"') SPECIAL
                             span.badge.bg-danger.m-l-xs.text-white(ng-if='package.damaged') DAMAGED
-
-                          td.footable-visible(
-                            uib-tooltip="{{$ctrl.moment(package.created_at).fromNow()}} IST {{package.created_at | date:'h:mm a'}}"
-                            tooltip-placement='right'
-                            tooltip-append-to-body='true'
-                          ) {{package.created_at | date:'MMM d, y'}}
+                            span.badge.bg-danger.m-l-xs.text-white(ng-if='package.is_restricted_item === true') Restricted Item
+                            br
+                            a(ui-sref='comments.index({id:package.id})')
+                              span.btn-chat Chat
+                          td.footable-visible(ng-if="$ctrl.$stateParams.bucket !=='MY_ORDERS'" )
+                            a(ng-click='$ctrl.viewPhotos($index, package)' ng-if="$ctrl.PACKAGE_STATE_IDS.INCOMING_PACKAGE !== package.state_id" )
+                              u.text-blue Photos
                           td.footable-visible(
                             ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'"
                           ) {{package.price_amount | number : 2}}
@@ -140,14 +151,18 @@ div
                             p.no-margin Provide Item Values
                             p.no-margin As required by Customs
                           td.footable-visible(ng-hide="$ctrl.$stateParams.bucket==='ACTION_REQUIRED'"){{package.weight | number : 2}} KG
-                          td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'" )
-                            a(ng-click='$ctrl.viewPhotos($index, package)')
-                              u.text-blue Photos
+                          td.footable-visible(
+                          uib-tooltip="{{$ctrl.moment(package.created_at).fromNow()}} IST {{package.created_at | date:'h:mm a'}}"
+                          tooltip-placement='right'
+                          tooltip-append-to-body='true'
+                          ) {{package.created_at | date:'MMM d, y'}}
                           td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='ALL'" ng-bind='package.PackageState.State.name' )
+                          td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='MY_ORDERS'" ng-click="$ctrl.deletePackage(package.id)")
+                            i.m-t-sm.wrapper-xs.fa.fa-trash
                           td.footable-visible(ng-if="$ctrl.$stateParams.bucket==='READY_TO_SEND'")
                             .checkbox.no-margin
                               label.i-checks
-                                input(type='checkbox', ng-model = 'package.isChecked', ng-change='$ctrl.selectPackages()', ng-checked='all', value='')
+                                input(type='checkbox', ng-model = 'package.isChecked', ng-change='$ctrl.selectPackages()', value='')
                                 i
                         tr
                           form.form-validation(name="form" ng-submit='$ctrl.submitValue()')
@@ -155,11 +170,11 @@ div
                               table#DataTables_Table_1.table.table-bordered.m-b-none
                                 thead
                                   tr(role='row')
-                                    th.sorting_asc.text-u-c(style='width: 186px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Package Details
-                                    th.sorting.text-u-c(style='width: 242px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') QTY
-                                    th.sorting.text-u-c(style='width: 241px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Value per Unit
-                                    th.sorting.text-u-c(style='width: 130px;', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending')  Total Value
-                                tbody
+                                    th.sorting_asc.text-u-c(style='', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Rendering engine: activate to sort column ascending', aria-sort='ascending') Package Details
+                                    th.sorting.text-u-c(style='', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') QTY
+                                    th.sorting.text-u-c(style='', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Value per Unit
+                                    th.sorting.text-u-c(style=';', tabindex='0', aria-controls='DataTables_Table_2', rowspan='1', colspan='1', aria-label='Engine version: activate to sort column ascending')  Total Value
+                                tbody.scroll
                                   tr.odd(role='row' ng-repeat="item in package.PackageItems")
                                     td.item-v-align(ng-bind='item.name')
                                     td.item-v-align(ng-bind='item.quantity')
@@ -171,11 +186,13 @@ div
                                     td.item-v-align(ng-bind='item.quantity * item.price_amount | number: 2')
                                   tr
                                     td(colspan=8)
-                                      p.m-t-md
-                                        | **Values shown are obtained from the merchant invoices, when available. Researched values based on current market prices have been provided above for any items that arrived without invoices. The values should be updated to reflect the actual price paid for each item, and must be confirmed.
-                                      p.m-t-xs
-                                        button.no-padder.btn-link.text-warning.m-r-xs(ng-click='$ctrl.open(package.id, $index)') Add your notes
-                                        | to the package, this is for your use only, Shoppre will not review this area.
+                                      .col-md-12.col-xs12
+                                        p.m-t-md
+                                          | **Values shown are obtained from the merchant invoices, when available. Researched values based on current market prices have been provided above for any items that arrived without invoices. The values should be updated to reflect the actual price paid for each item, and must be confirmed.
+                                      .col-md-12.col-xs12
+                                        p.m-t-xs
+                                          button.no-padder.btn-link.text-warning.m-r-xs(ng-click='$ctrl.open(package.id, $index)') Add your notes
+                                          | to the package, this is for your use only, Shoppre will not review this area.
                                       .col-sm-5.pull-right.right-pad-0
                                         ul.nav.nav-pills.nav-sm.package-submit-ul
                                           li.m-r-xs.pull-right.ng-scope
@@ -406,7 +423,7 @@ div
                     a.summary-order(href="{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/faq" ,_target='blank')&nbsp; Click here to know more.
 
                   p **
-                    | Shoppre charges a small fee of INR 100 per package that you add to the final shipment
+                    | Shoppre charges a small fee of INR 50 per package that you add to the final shipment
                     | (when you have two or more packages to consolidate).
                     | This helps you in reducing shipping charges upto 60-80%.
                     a.summary-order(href="{{$ctrl.URLS.PREFIX}}www.{{$ctrl.URLS.DOMAIN}}/faq" _target='blank')&nbsp; Click here to know more.

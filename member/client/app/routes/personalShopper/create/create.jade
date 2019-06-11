@@ -1,0 +1,364 @@
+.col-md-12.ps-main
+  div.col-md-6.padding-5
+    h1.f-s-1.f-c-d-gray
+      | Place an Order
+    h12.f-s-10.f-c-d-gray
+      | Personal Shopper
+      span.f-c-gray  > Place an Order?
+
+  .clearfix
+  .ps-mainidiv(style='padding:0px')
+    div.no-padder
+      .wrapper.center-block
+        #accordion.panel-group(role='tablist', aria-multiselectable='true')
+          .panel.panel-default
+            #headingOne.panel-heading.active(role='tab', ng-click='$ctrl.toggleOrderTypeSection($ctrl.orderTypeSection)')
+              h4.panel-title
+                a(role='button', data-toggle='collapse', data-parent='#accordion', href='#collapseOne', aria-expanded='true', aria-controls='collapseOne')
+                  | Step 1 Order Type
+            #collapseOne.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingOne' ng-if="$ctrl.orderTypeSection")
+              .panel-body
+                div.no-padder
+                  .col-md-12.col-xs-12.no-padder
+                    .col-md-6.col-xs-6
+                      div
+                        .checkbox
+                          label.i-checks
+                            input(type='checkbox', value='' ng-model='$ctrl.self_purchased' ng-click ='$ctrl.assisted_purchased =false')
+                            i
+                            |                 Self Purchased
+                          i.fa.fa-info-circle.m-l-xs(
+                          uib-popover='DO YOU WANT TO PLACE THE ORDERS YOURSELF? \n'+
+                           'Make your purchase on different websites and choose COD as mode of payment,\n' +
+                           'Submit the payment to us immediately so that we can receive your parcels,\n' +
+                           'and we shall notify you!'
+                          popover-trigger="'mouseenter'"
+                          popover-placement='top'
+                          popover-append-to-body='true'
+                          )
+
+                      div.div-sp
+                        center
+                          h5.f-s-5.f-c-red  Self Purchased
+                          h6 ( DO YOU WANT TO PLACE THE ORDERS YOURSELF?)
+                          h1.f-s-1.f-c-blue  Price: 10%
+                    .col-md-6.col-xs-6
+                      div
+                        .checkbox
+                          label.i-checks
+                            input(type='checkbox', value='' ng-model='$ctrl.assisted_purchased' ng-click ='$ctrl.self_purchased = false')
+                            i
+                            |                 Assisted Purchase
+                          i.fa.fa-info-circle.m-l-xs(
+                          uib-popover='DO YOU WANT SHOPPRE TO PLACE THE ORDERS FOR YOU?\n' +
+                          'Fill up the order form,\n' +
+                          'All your items will go into the Shopping Cart,\n' +
+                          'Submit the payment to us,\n' +
+                          'and we shall process the purchase and notify you!'
+                          popover-trigger="'mouseenter'"
+                          popover-placement='top'
+                          popover-append-to-body='true'
+                          )
+                      div.div-ps
+                        center
+                          h5.f-s-5.f-c-blue  Assisted Purchase
+                          h6 ( DO YOU WANT SHOPPRE TO PLACE THE ORDERS FOR YOU? )
+                          h1.f-s-1.f-c-blue  Price: 7%
+                  .text-center
+                    br
+                    button.btn.btn-s-r.btn-b-r.btn-l.m-t-xs-md(ng-click='$ctrl.btnToggleCartSection($ctrl.cartSection)')
+                      | NEXT
+          .panel.panel-default
+            #headingTwo.panel-heading.active(role='tab', ng-click='$ctrl.toggleCartSection($ctrl.cartSection)')
+              h4.panel-title
+                a.collapsed(role='button', data-toggle='collapse', data-parent='#accordion', href='#collapseTwo', aria-expanded='false', aria-controls='collapseTwo')
+                  | Step 2 Add to Cart
+            #collapseTwo.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingTwo' ng-show="$ctrl.cartSection")
+              .panel-body
+                div.no-padder
+                  .col-md-12.no-padder
+                    form.form.form-validation.form-horizontal(
+                    name="newItemForm"
+                    novalidate
+                    ng-submit='$ctrl.create(newItemForm)'
+                    autocomplete='off'
+                    )
+                      .row
+                        .col-md-6.col-xs-12
+                          label.col-xs-12.input-group Item URL
+                            span.f-c-red *
+                            br
+                            input.input-group.form-control(type='text',
+                            ng-model='$ctrl.data.url',
+                            name='url'
+                            placeholder='eg: https://www.amazon.in/OnePlus-Mirror-Black-128GB'
+                            required
+                            )
+                            span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.url.$dirty && newItemForm.url.$invalid') Please Enter Item Link
+                        .col-md-2.col-xs-5
+                          label.col-xs-12.input-group Qty
+                            span.f-c-red *
+                            br
+                            input.input-group.form-control(type='number', max="1000", min="1",
+                            ng-model='$ctrl.data.quantity',
+                            placeholder='eg: 2',
+                            name='quantity'
+                            required
+                            )
+                            span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.quantity.$dirty && newItemForm.quantity.$invalid') Please Enter Quantity
+                        .col-md-3.col-xs-7
+                          label.f-c-d-gray.f-s-10 Name
+                            span.f-c-red *
+                            br
+                            input.input-group.form-control(type='text',
+                            ng-model='$ctrl.data.name',
+                            placeholder='eg: T-shirt'
+                            name='name'
+                            required
+                            )
+                            span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.name.$dirty && newItemForm.name.$invalid') Please Enter Product Name
+                        .col-md-1.col-xs-1
+                          br
+                      br
+                      .row
+                        .col-md-2.col-xs-6
+                          label.f-c-d-gray.f-s-10 Size
+                            br
+                            input.input-group.form-control(type='text',
+                            ng-model='$ctrl.data.size',
+                            name='size',
+                            placeholder='eg: M/L/S/32/36'
+                            )
+                            span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.size.$dirty && newItemForm.size.$invalid') Please Enter Size
+                        .col-md-2.col-xs-6
+                          label.f-c-d-gray.f-s-10 Color
+                            br
+                            input.input-group.form-control(type='text',
+                            ng-model='$ctrl.data.color',
+                            name='color',
+                            placeholder='eg: Blue')
+                            span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.color.$dirty && newItemForm.color.$invalid') Please Enter Color
+                        .col-md-2.col-xs-12
+                          label.col-xs-12.input-group  Item Price(In INR)
+                            span.f-c-red *
+                            br
+                            input.input-group.form-control(type='number', max="1000000", min="1",
+                            ng-model='$ctrl.data.price_amount',
+                            name='price_amount',
+                            placeholder='eg: ₹ 1050 '
+                            required
+                            )
+                            span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.price_amount.$dirty && newItemForm.price_amount.$invalid') Please Enter Price
+                        .col-md-4.col-xs-12(ng-if='$ctrl.assisted_purchased')
+                          label.col-xs-12.input-group If this item is not available (Choose an alternative)
+                            span.f-c-red *
+                            br
+                            select.selectpicker.form-control(name='if_item_unavailable', ng-model='$ctrl.data.if_item_unavailable' required)
+                              option(value='', selected='selected') ---------- Select ----------
+                              option(value='{{item.value}}', ng-repeat='item in $ctrl.if_item_unavailable', ng-bind='item.value')
+                            span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.if_item_unavailable.$dirty && newItemForm.if_item_unavailable.$invalid') Please Select Choice
+                          br
+                        .footer-line.left-padding-15.right-padding-20
+                          .line.line-dashed.b-b.m-t.m-b.pull-in.no-margin-left
+                      .row
+                        .col-md-2.col-xs-12
+                          br
+                          button.btn.btn-s-r.btn-b-b.btn-l.col-xs-10.col-xs-push-2(type='submit', ng-disabled="$ctrl.submitting || (!$ctrl.submitting && !newItemForm.$dirty)")
+                            | + Add More Items
+                        .col-md-3.col-xs-12
+                          br
+                          button.btn.btn-s-r.btn-b-r.btn-l.col-xs-10.col-xs-push-2(ng-click='$ctrl.btnToggleOptionsSection($ctrl.optionsSection)')
+                            | SAVE & NEXT
+                .packages-div(ng-repeat='psPackage in $ctrl.packageData')
+                  table.items(style='width:100%')
+                    tbody
+                      tr
+                        th Seller
+                        th Name
+                        th Quantity
+                        th Price
+                        th Total
+                        //th Edit
+                        th Delete
+                      tr(ng-repeat='item in psPackage.PackageItems')
+                        td(style='width:30%' ng-bind='psPackage.Store.name')
+                        td(ng-bind='item.name')
+                        td(ng-bind='item.quantity')
+                        td(ng-bind='item.price_amount')
+                        td(ng-bind='item.total_amount')
+                        //td
+                        //  a.fas.fa-edit(ng-click='$ctrl.editItem(item, psPackage.Store)')
+                        td
+                          a.fa.fa-trash(ng-click='$ctrl.deleteItem(item, psPackage)')
+          .panel.panel-default
+            #headingThree.panel-heading.active(role='tab', ng-click='$ctrl.toggleOptionsSection($ctrl.optionsSection)')
+              h4.panel-title
+                a.collapsed(role='button', data-toggle='collapse', data-parent='#accordion', href='#collapseThree', aria-expanded='false', aria-controls='collapseThree')
+                  | Step 3 Additional Options
+            #collapseThree.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingThree' ng-show="$ctrl.optionsSection")
+              .panel-body
+                div(ng-repeat='orderPackage in $ctrl.packageOptions')
+                  .col-md-12(style="border-bottom: 1px solid #ccd4d8;")
+                    .row
+                      .col-md-12
+                        label.f-c-blue.f-s-10(ng-bind='orderPackage.Store.name')
+                        br
+                    .row
+                      .col-md-3
+                        label.f-c-d-gray.f-s-10 Sales Tax charged by the seller
+                        br
+                        input.input-group.form-control(type='number', min="0", max="10000", ng-model='orderPackage.sales_tax', name='sales_tax', placeholder=' ₹10.5')
+                      .col-md-3
+                        label.f-c-d-gray.f-s-10 Delivery Charges to Bengaluru
+                        br
+                        input.input-group.form-control(type='number', min="0", max="10000", ng-model='orderPackage.delivery_charge', name='delivery_charge', placeholder=' ₹50')
+                      .col-md-6(ng-if='$ctrl.assisted_purchased')
+                        label.f-c-d-gray.f-s-10 Would it be OK to buy it if when we shop, the item cost has gone up by
+                          span.f-c-red *
+                          br
+                          select.selectpicker.form-control(name='buy_if_price_changed', ng-model='orderPackage.buy_if_price_changed' required)
+                            option(value='', selected='selected') ---------- Select ----------
+                            option(value='{{item}}', ng-repeat='item in $ctrl.purchasePriceOption', ng-bind='item')
+                    .row
+                      //.col-md-3(ng-if='$ctrl.assisted_purchased')
+                      //  label.f-c-d-gray.f-s-10 Promotional Code
+                      //  br
+                      //  input.input-group.form-control(type='text', ng-model='orderPackage.promo_code', name='promo_code', placeholder='ADCDSA12')
+                      .col-md-3(ng-if='$ctrl.assisted_purchased')
+                        label.f-c-d-gray.f-s-10  Instructions
+                        br
+                        input.input-group.form-control(type='text', ng-model='orderPackage.promo_info', name='', placeholder='Enter')
+                      //.col-md-3(ng-if='$ctrl.assisted_purchased')
+                      //  label.f-c-d-gray.f-s-10 If this promotion is not available
+                      //  br
+                      //  input.input-group.form-control(type='text', ng-model='orderPackage.if_promo_unavailable', name='if_promo_unavailable', placeholder='Enter')
+                    .row
+                      .col-md-4(ng-if='$ctrl.self_purchased')
+                        label.f-c-d-gray.f-s-10 Invoice
+                          span.text-danger *
+                          .btn-file-wrapper(ng-class="$ctrl.file[$index].$touched && $ctrl.file[$index].$valid ? 'input-file-danger':''" drag-drop-toggle ng-click= '$ctrl.index1 = $index')
+                            .btn-file
+                              span
+                                span.text-muted(ng-bind="$ctrl.file[$index].name")
+                              p.no-margin(ng-hide="($ctrl.file[$index].$touched && $ctrl.file[$index].$valid) || $ctrl.data.file[$index]")
+                                span.text-bold Choose a file
+                                |  or Drag it here.
+                              span.file-support(ng-hide="($ctrl.file[$index].$touched && $ctrl.file[$index].$valid) || $ctrl.data.file[$index]") Supported Formats: .png, .jpeg, .jpg, .bmp, .pdf'
+                              input.form-control(
+                              accept="image/*"
+                              type="file"
+                              ng-model='$ctrl.file[$index]'
+                              name='file'
+                              ngf-pattern="'.png,.jpeg,.jpg,.bmp,.pdf'"
+                              ngf-max-size="15MB"
+                              ngf-max-files="1"
+                              ngf-select='$ctrl.uploadingPhotos=true;'
+                              onclick="this.value = null"
+                              ng-image-compress
+                              image="myAwesomeImage"
+                              ctrl="$ctrl"
+                              upload-fn="$ctrl.startUpload"
+                              resize-max-height="1000"
+                              resize-max-width="1000"
+                              resize-quality="0.7"
+                              resize-type="image/jpg"
+                              required
+                              )
+                          span.wrapper-xs.text-xs.text-danger(ng-show='($ctrl.file[$index].$touched && $ctrl.file[$index].$valid) && $ctrl.clickUpload') Please choose file
+                          span.wrapper-xs.text-xs.text-danger(ng-show='($ctrl.file[$index].$touched && $ctrl.file[$index].$valid) && $ctrl.clickUpload') Please choose supported file
+                          span.wrapper-xs.text-xs.text-danger(ng-show='($ctrl.file[$index].$touched && $ctrl.file[$index].$valid) && $ctrl.clickUpload') Please choose supported file
+                      .col-xs-1.wrapper-sm.m-t-xs
+                        img.pull-left.m-r(
+                        ng-if='orderPackage.seller_invoice'
+                        ng-src='{{$ctrl.URLS.CDN + "/shoppre/" + orderPackage.seller_invoice}}'
+                        style='height: 85px;width: 80px;'
+                        )
+                    br
+                .col-md-6.col-xs-12
+                  br
+                  button.btn.btn-s-r.btn-b-b.btn-l.col-xs-10.col-xs-push-2(ng-click='$ctrl.updatePackageOption()')
+                    | SAVE
+                .col-md-4.col-xs-12.div-align-items-r
+                  br
+                  button.btn.btn-s-r.btn-b-r.btn-l.col-xs-10.col-xs-push-2(ng-click='$ctrl.btnToggleSummarySection($ctrl.summarySection)')
+                    | NEXT
+          .panel.panel-default
+            #headingFour.panel-heading.active(role='tab', ng-click='$ctrl.toggleSummarySection($ctrl.summarySection)')
+              h4.panel-title
+                a.collapsed(role='button', data-toggle='collapse', data-parent='#accordion', href='#collapseFour', aria-expanded='false', aria-controls='collapseThree')
+                  | Step 4 Summary
+            #collapseFour.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingThree' ng-show="$ctrl.summarySection")
+              .panel-body
+                div
+                  .col-md-12(style="padding: 0;")
+                    br
+                    .col-md-7.col-xs-12
+                      .packages-div(ng-repeat='psPackage in $ctrl.packageData')
+                        label.f-c-blue.f-s-10(ng-bind='psPackage.Store.name')
+                        br
+                        label.f-c-blue.f-s-10 Personal Shopper cost: {{psPackage.personal_shopper_cost}}
+                        table.items(style='width:100%')
+                          tbody
+                            tr
+                              th Name
+                              th Quantity
+                              th Price
+                              th Total
+                            tr(ng-repeat='item in psPackage.PackageItems')
+                              td(ng-bind='item.name')
+                              td(ng-bind='item.quantity')
+                              td(ng-bind='item.price_amount')
+                              td(ng-bind='item.total_amount')
+                    .col-md-5.col-xs-12(style="padding: 0;")
+                      .div-sum-ps
+                        .row
+                          .col-md-8.col-xs-8
+                            br
+                            label.f-c-blue.f-s-9 Each
+                          .col-md-4.col-xs-4
+                            br
+                            label.f-c-blue.f-s-9 Price
+                        br
+                        .row
+                          .col-md-8.col-xs-8
+                            label.f-c-gray.f-s-9 Sales Tax:
+                          .col-md-4.col-xs-4
+                            label.f-c-gray.f-s-9 ₹ {{$ctrl.saleTax}}
+                        .row
+                          .col-md-8.col-xs-8
+                            label.f-c-gray.f-s-9 Shipping to Bengaluru:
+                          .col-md-4.col-xs-4
+                            label.f-c-gray.f-s-9 ₹ {{$ctrl.deliveryCharge}}
+                        .row
+                          .col-md-8.col-xs-8
+                            label.f-c-gray.f-s-9 ItemTotal Cost:
+                          .col-md-4.col-xs-4
+                            label.f-c-gray.f-s-9 ₹ {{$ctrl.itemTotalCost}}
+                        .row
+                          .col-md-8.col-xs-8
+                            label.f-c-gray.f-s-9 Total Personal Shopper Cost:
+                          .col-md-4.col-xs-4
+                            label.f-c-gray.f-s-9 ₹ {{$ctrl.personalShopperCost}}
+                        .row
+                          .col-md-8.col-xs-8
+                            label.f-c-gray.f-s-9 Merchant Total:
+                          .col-md-4.col-xs-4
+                            label.f-c-gray.f-s-9 ₹ {{$ctrl.totalAmount}}
+                        br
+                        .row
+                          .col-md-8.col-xs-8
+                            label.f-c-blue.f-s-9 Estimated Total Cost:
+                          .col-md-4.col-xs-4
+                            label.f-c-blue.f-s-9 ₹ {{$ctrl.totalAmount}}
+                  .col-md-10.col-xs-12.div-align-items-r
+                    br
+                    button.btn.btn-s-r.btn-b-r.btn-l(ng-click='$ctrl.makePayment()')
+                      | Make Payment
+
+script(type='text/javascript').
+  $('.panel-collapse').on('show.bs.collapse', function () {
+    $(this).siblings('.panel-heading').addClass('active');
+  });
+  $('.panel-collapse').on('hide.bs.collapse', function () {
+    $(this).siblings('.panel-heading').removeClass('active');
+  });

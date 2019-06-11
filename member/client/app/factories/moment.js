@@ -1,4 +1,4 @@
-angular.module('qui.core')
+angular.module('uiGenApp')
   .factory('moment', [
     '$window',
     function Jobs($window) {

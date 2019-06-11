@@ -34,7 +34,7 @@ div
               )
               span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && documentForm.description.$dirty && documentForm.description.$invalid') Please enter document description
         .row
-          .col-md-4.col-sm-5.col-xs-5.no-padder-right
+          .col-md-4.col-sm-12.col-xs-12.no-padder-right
             .hbox
               label.col
                 | Document File
@@ -57,7 +57,7 @@ div
                     ctrl="$ctrl"
                     required
                     )
-                span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && !$ctrl.data.file && !documentForm.file.$invalid') Please choose file
+                span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && !$ctrl.file && !documentForm.file.$invalid') Please choose file
                 span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && documentForm.file.$invalid') Please choose supported file
                 span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && documentForm.file.$dirty && documentForm.file.$invalid') Please choose supported file
 
@@ -77,35 +77,35 @@ div
                 i.fa.fa-spin.fa-circle-o-notch
                 span.text-white &nbsp;&nbsp;Submitting...
         br
-      h1.m-l-md.font-thin.h3.no-margin
-        strong SUBMITTED DOCUMENTS LIST
-      hr
+      p.m-l-md.no-margin
+         | SUBMITTED DOCUMENTS LIST
+      hr.m-t-xs-md.no-margin-bottom
       .row
-        .col-md-12.no-padder-right
+        .col-md-12.col-lg-12
           table.table.m-b-none
             thead
               tr
                 th.col-xs-1 ID
-                th.col-xs-2 DATE
+                th.col-xs-4 DATE
                 th.col-xs-3 DESCRIPTION
-                th.col-xs-5 DOCUMENT
+                th.col-xs-3 DOC
                 th.col-xs-1 DELETE
 
-          .col-xs-12(style='padding: 10px;')
+          .col-xs-12(style='padding: 10px 0 10px 0;')
             .col-xs-12(ng-show='$ctrl.userDocuments.length === 0')
               td(colspan="5")
                 h2.text-center.text-muted No Document Details
 
             .col-xs-12.no-padder.bg-white.b-a.m-b-sm(ng-repeat='userDocument in $ctrl.userDocuments' )
               .col-xs-1.wrapper-sm.m-t-xs(ng-bind='userDocument.id')
-              .col-xs-2.wrapper-sm.m-t-xs {{ userDocument.created_at | date:'MMM d, y' }} IST {{ userDocument.created_at | date:'h:mm a' }}
+              .col-xs-4.wrapper-sm.m-t-xs {{ userDocument.created_at | date:'MMM d, y' }} IST {{ userDocument.created_at | date:'h:mm a' }}
               .col-xs-3.wrapper-sm.m-t-xs(ng-bind='userDocument.description')
-              .col-xs-5.wrapper-sm.m-t-xs
+              .col-xs-3.wrapper-sm.m-t-xs
                 .clearfix
                   a.pull-left.m-r.txt-underline(
                   ng-if='userDocument.object'
                   ng-href='{{$ctrl.URLS.CDN + "/shoppre/" + userDocument.object}}'
                   target='_blank'
-                  ) View Document
+                  ) View
               .col-xs-1.wrapper-sm.text-ellipsis.m-t-xs.fa.fa-trash.text-danger(ng-click="$ctrl.deleteDocument(userDocument.id, $index)")
 

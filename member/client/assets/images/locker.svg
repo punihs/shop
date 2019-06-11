@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 30 30">
+  <defs>
+    <linearGradient id="linear-gradient" x1="1" y1="0.202" x2="0.801" y2="0.928" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ffb900"/>
+      <stop offset="1" stop-color="#fc636b"/>
+    </linearGradient>
+  </defs>
+  <g id="ic_locker" transform="translate(0 -1)">
+    <circle id="Ellipse_353" data-name="Ellipse 353" cx="15" cy="15" r="15" transform="translate(0 1)" fill="url(#linear-gradient)"/>
+    <path id="baseline-meeting_room-24px" d="M11.556,5.333V17H3V15.444H4.556V3h7v.778h3.889V15.444H17V17H13.889V5.333ZM8.444,9.222v1.556H10V9.222Z" transform="translate(5 5)" fill="#fff"/>
+  </g>
+</svg>

@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('./../../app');
-const { WRONG_ADDRESS } = require('./emails/state-change/state-change.data');
+const { PAYMENT_REQUESTED } = require('./emails/state-change/state-change.data');
 
 describe('POST /api/shipments/notifications', () => {
   it('send Shipment emails', (done) => {
@@ -11,7 +11,7 @@ describe('POST /api/shipments/notifications', () => {
         after: 1,
         object: 'shipment',
         event: 'stateChange',
-        ...WRONG_ADDRESS,
+        ...PAYMENT_REQUESTED,
       })
       .expect(200)
       .then(() => {

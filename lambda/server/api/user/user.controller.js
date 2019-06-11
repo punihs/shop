@@ -1,5 +1,5 @@
 // - Do Not Access SQLDB here
-const event = require('../../conn/events');
+const event = require('../../../../../../silk/chat/server/conn/events');
 const { FROM_EMAIL } = require('../../config/environment');
 
 exports.notifications = (req, res) => {

@@ -1,0 +1,76 @@
+div
+  .hbox(style="position:relative")
+
+    // - Primary Header
+    .bg-white-only.w-full.b-b(style='position: fixed;z-index: 6;height: 40px;')
+      .pull-left.wrapper-sm.text-info
+        span.h4
+          i.fas.fa-rupee-sign.m-r-xs-md
+          | Payment Confirmation
+
+    // - Content Area
+    .bg-white.m-t-n-xs-md(style='min-height: 200px;')
+      .m-t-xxl(style='height: 1px;')
+      .hbox
+        .wrapper-md.bg-white-only.wrapper-parcel
+          .col-md-12.no-padder-left
+            .longblock.no-padder-top.p-l-lg(style="padding-top:0px")
+              .alert.alert-success.text-center.m-t-sm.m-b-xs
+                h4.no-margin-bottom Success! You have completed your ship request.
+              .col-md-12.no-padder-left
+                p.confirm
+                  | An email confirmation of your request has been sent to
+                  a.summary-order(href='javascript:void(0)')&nbsp; {{$ctrl.transaction.Customer.email}}
+                  | .
+              .no-padder-right.no-padder-left(ng-show = "$ctrl.transaction.payment_gateway_id == $ctrl.paymentGatewayWireID")
+                .wireoption
+                  p.info
+                    | We will process your order once your payment to the below bank account is confirmed. Kindly note that we currently
+                    strong.m-l-xs DO NOT ACCEPT WESTERN UNION MONEY TRANSFERS
+                    | .
+                    strong
+                      | Also, it may take up to 7 business days for the amount to reflect in our account, especially in case of International Wire Transfers.
+                    |  In such a case, we advise you to opt for an alternative payment method if your shipment is urgent or if you don’t want to be charged with storage cost. Please click here if you wish to
+                    a.summary-order.text-info(ui-sref='shipRequest.confirm({orderCode: $ctrl.transaction.object_id})')&nbsp; change the payment method.
+                  .bg-light.well.m-b-xs
+                    h4 Account Name:
+                      | {{$ctrl.account.account_name}}
+                    p Account Number:
+                      | {{$ctrl.account.account_number}}
+                    p Branch:
+                      | {{$ctrl.account.branch}}
+                    p IFS Code:
+                      | {{$ctrl.account.ifs_code}}
+                    p MICR Code:
+                      | {{$ctrl.account.micr_code}}
+                    p E-mail ID:
+                      | {{$ctrl.account.email_id}}
+                    p Address:
+                        | {{$ctrl.account.address}}
+                    p Swift Code:
+                        | {{$ctrl.account.swift_code}}
+              .col-sm-12.no-padder-left(ng-show = "$ctrl.transaction.payment_gateway_id === $ctrl.paymentGatewayCashID")
+                  p.info
+                    | We will process your order once your payment is confirmed. In such a case, we advise you to opt for an alternative payment method if your order is urgent or if you don’t want to be charged with storage cost. Please click here if you wish to
+                    a.summary-order.text-info(ui-sref='shipRequest.confirm({orderCode: $ctrl.transaction.object_id})')&nbsp; change the payment method.
+              .clearfix
+              .alert.alert-warning.text-center.m-b-xs.m-t-xs(role='alert')
+                h4
+                  | AFTER your payment has been confirmed, your order processed within 24 hours.
+                p
+                  | An email with your transaction information sent when payment gets completed.
+              .clearfix
+              .ship_points
+                a.btn.btn-info.m-t-xs(
+                  style='color:#fff'
+                  ng-if='$ctrl.transaction.status === "pending"'
+                  ng-click='$ctrl.continue()'
+                )
+                  | Click to Confirm
+
+                a.btn.btn-default.m-t-xs.m-l-md(
+
+                  type='submit',
+                  ui-sref='shipRequest.confirm({orderCode: $ctrl.transaction.object_id})'
+                )
+                  | Change payment Method

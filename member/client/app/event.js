@@ -1,10 +1,23 @@
 angular.module('uiGenApp')
   .run((
-    $rootScope, Auth, authService, AUTH_EVENTS, Session, $state, $window, URLS, User, $uibModal
-  ) => {
+    $rootScope, Auth, authService, AUTH_EVENTS, Session,
+    $state, $window, URLS, User, $uibModal, $location) => {
     // In Future: assign to variable to destroy during the $destroy event
     const location = $window.location;
+    if (!Session.isAuthenticated() && $location.search().otp) {
+      const continueURL = $location.absUrl().split('?')[0];
+      const { otp } = $location.search();
+      location.href = `${URLS.PARCEL}/api/users/authorise?otp=${otp}&continue=${continueURL}`;
+      return location.href;
+    }
+
     $rootScope.$on('$stateChangeStart', (event, next) => {
+      // if (!Session.isAuthenticated() && next.name !== 'access.oauth') {
+      //   const continueURL = $location.absUrl().split('?')[0];
+      //   location.href = `${URLS.LOGIN}/customer/login?continue=${continueURL}`;
+      //   return location.href;
+      // }
+
       if (!Session.isAuthenticated() && (next.name.split('.')[0] !== 'access')) {
         event.preventDefault();
         $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
@@ -17,9 +30,8 @@ angular.module('uiGenApp')
         event.preventDefault();
         return $state.go(User.userinfo.whatBlocked[0].state);
       }
-
       if (Session.isAuthenticated() && (next.name === 'access.oauth')) {
-        event.preventDefault();
+        // return $state.go('packages.index');
         return $state.go('packages.index');
       }
 

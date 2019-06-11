@@ -1,8 +1,9 @@
 
 const debug = require('debug');
 const {
-  User, AccessToken,
+  User,
 } = require('../../conn/sqldb');
+const { AccessToken } = require('./sequelize');
 
 const log = debug('components/oauth');
 

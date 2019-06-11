@@ -1,18 +1,38 @@
 angular
-  .module('qui.core')
+  .module('uiGenApp')
   .factory('AuthInterceptor', (Session, URLS) => ({
     request: (conf) => {
       const config = conf;
+
+      if (config.url[0] === '/') config.url = `${URLS.UI_URL}/api${config.url}`;
+
+      const engage = '#';
+      const pay = '$';
+      const courier = '%';
+      const login = '~';
+
+      const map = {
+        [engage]: URLS.ENGAGE,
+        [pay]: URLS.PAY,
+        [courier]: URLS.COURIER,
+        [login]: URLS.LOGIN,
+      };
+
+      const type = config.url[0];
+
+      const reverseMap = Object.keys(map).reduce((nxt, x) => Object.assign(nxt, { [x]: true }), {});
+      if (type === '~' && config.url[0] === '~') {
+        config.url = `${URLS.LOGIN}${config.url.substr(2)}`;
+      } else if (reverseMap[type]) {
+        config.url = `${map[type]}/api${config.url.substr(1)}`;
+      }
+
       if (!!conf.ignoreAuthModule) return conf;
 
       if (Session.isAuthenticated()) {
         config.headers.Authorization = `Bearer ${Session.getAccessToken()}`;
       }
 
-      if (config.url[0] === '#') config.url = `${URLS.CHICKEN_API}${config.url.substr(1)}`;
-      if (config.url[0] === '$') config.url = `${URLS.PAY_API}${config.url.substr(1)}`;
-      if (config.url[0] === '~') config.url = `${URLS.API}${config.url.substr(1)}`;
-      if (config.url[0] === '/') config.url = `${URLS.PARCEL_API}/api${config.url}`;
       return config;
     },
   }))

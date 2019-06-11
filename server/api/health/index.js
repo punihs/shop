@@ -1,7 +1,8 @@
 const express = require('express');
+
 const controller = require('./health.controller');
 
-const router = express.Router(); // eslint-disable-line new-cap
+const router = express.Router();
 
 router.all('/', controller.health);
 

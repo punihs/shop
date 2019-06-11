@@ -13,7 +13,7 @@ class ChangeStateController {
   }
 
   $onInit() {
-    this.states = this.Session.read('states');
+    this.states = this.Session.read('adminStates');
     this.today = new Date();
     this.ui = { checking: false };
     this.submitting = false;
@@ -40,11 +40,17 @@ class ChangeStateController {
   ok() {
     if (this.submitting) return;
     this.submitting = true;
+    const paymentConfirmed = 63;
     this
       .$http
       .put(`/packages/${this.pkg.id}/state`, this.data)
       .then(() => {
         this.$uibModalInstance.close(this.data);
+        if (this.data.state_id === paymentConfirmed) {
+          this
+            .$http
+            .put(`$/transactions/${this.pkg.transaction_id}?status=success`);
+        }
         this.submitting = false;
         return location.reload(true);
       })
@@ -66,7 +72,7 @@ class ChangeStateService {
   }
 
   $onInit() {
-    this.states = this.Session.read('states');
+    this.states = this.Session.read('adminStates');
   }
 
   open(pkg, stateId, customerId) {

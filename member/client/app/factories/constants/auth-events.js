@@ -1,4 +1,4 @@
-angular.module('qui.core')
+angular.module('uiGenApp')
   .constant('AUTH_EVENTS', {
     loginConfirmed: 'event:auth-loginConfirmed',
     loginCancelled: 'event:auth-loginCancelled',

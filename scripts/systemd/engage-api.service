@@ -1,0 +1,14 @@
+[Service]
+WorkingDirectory=/home/pulse/shoppre/parcel/engage
+ExecStart=/usr/local/bin/node server/app.js
+ExecReload=/usr/bin/kill -HUP $MAINPID
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=engage-api
+User=pulse
+Group=pulse
+EnvironmentFile=/home/pulse/shoppre/parcel/engage/.env
+
+[Install]
+WantedBy=multi-user.target

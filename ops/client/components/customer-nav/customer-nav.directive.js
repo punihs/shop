@@ -31,14 +31,14 @@ class CustomerNavController {
     this.customers = {
       shipments: [],
       packages: [],
-      // orders: [],
+      orders: [],
       customers: [],
     };
 
     this.collapse = {
       shipments: false,
       packages: false,
-      // orders: true,
+      orders: true,
       customers: false,
     };
 
@@ -50,7 +50,7 @@ class CustomerNavController {
         'id,name',
       ].join(),
     });
-    if (!fromSearch) this.params.virtual_address_code = 'SHPR-';
+    if (!fromSearch) this.params.virtual_address_code = 'SHPR';
   }
 
   changeSearchType(nextSearchType) {
@@ -154,8 +154,8 @@ class CustomerNavController {
   getLink(customerId, type) {
     const map = {
       customers: 'customer.view',
-      shipments: 'customer.shipments.index',
       packages: 'customer.packages.index',
+      orders: 'customer.orders.index',
     };
 
     const status = this.$state.params.bucket || 'ALL';

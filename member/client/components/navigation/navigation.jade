@@ -8,169 +8,35 @@ ul.nav
       i.fas.fa-th-large.text-white
       span.font-bold Dashboard
 
-  li(ng-class='$ctrl.active === "packages" ? "active" : ""')
-    a.auto(href='' ng-click='$ctrl.toggle("packages")')
-      span.pull-right.text-muted
-        i.fa.fa-fw.fa-angle-right.text
-      i.fas.fa-cubes.text-danger-dk
-      span.font-bold Packages
-    ul.nav.nav-sub.dk
-      li(ui-sref-active='active')
-        a(ui-sref='packages.index')
-          span In Locker
-      li(ui-sref-active='active')
-        a(
-          ui-sref='packages.create'
-          title='Alert Shoppre about my incoming Packages (Optional)'
-        )
-          span.text-white Your Orders
-
-  li(ng-class='$ctrl.active === "shipments" ? "active" : ""')
-    a.auto(href='' ng-click='$ctrl.toggle("shipments")')
-      span.pull-right.text-muted
-        i.fa.fa-fw.fa-angle-right.text
-      i.fas.fa-plane-departure.text-success-dker
-      span.font-bold Shipments
-    ul.nav.nav-sub.dk
-      li(ui-sref-active='active')
-        a.text-white(ui-sref='shipRequests.index')
-          span In Queue
-      li(ui-sref-active='active')
-        a(ui-sref='shipRequests.history')
-          span History
-
   li(ng-class='$ctrl.active === "personal-shopper" ? "active" : ""')
     a.text-white.auto(href='' ng-click='$ctrl.toggle("personal-shopper")')
       span.pull-right.text-muted
         i.fa.fa-fw.fa-angle-right.text
-      i.fas.fa-shopping-cart.text-success-dker
+      i.fas.fa-shopping-cart.text-white
       span.font-bold Personal Shopper
     ul.nav.nav-sub.dk
       li(ui-sref-active='active')
-        a.text-white(
-          title='We pay on your request'
-          target='_blank'
-          ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/personal-shopper'
-        )
-          span Cash on Delivery
+        a(ui-sref='personalShopper.workFlow')
+          span How It works
       li(ui-sref-active='active')
-        a(
-            title='We buy on your request'
-            target='_blank'
-            ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/personal-shopper'
-          )
-          span Assisted Purchase
-
-  li
-    a.auto(ui-sref='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/loyalty-points')
-      i.fas.fa-rupee-sign.text-warning-dker
-      span.font-bold My Loyalty Points
-
-  li(ng-class='$ctrl.active === "offers" ? "active" : ""')
-    a.auto(ng-click='$ctrl.toggle("offers")')
-      span.pull-right.text-muted
-        i.fa.fa-fw.fa-angle-right.text
-      i.fa.fa-gift.text-warning-dker
-      span.font-bold Offers
-    ul.nav.nav-sub.dk
+        a(ui-sref='personalShopper.create')
+          span Place an Order
       li(ui-sref-active='active')
-        a(
-          target='_blank'
-          href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/favorite-stores'
-        )
-          //b.label.bg-info.pull-right N
-          span Membership
-      li(ui-sref-active='active')
-        a(
-        target='_blank'
-        href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/browse-categories'
-        )
-          span Personal Shopper
-      li(ui-sref-active='active')
-        a(
-        target='_blank'
-        href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/browse-categories'
-        )
-          span Consolidation & Repackaging
-      li(ui-sref-active='active')
-        a(
-        target='_blank'
-        href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/browse-categories'
-        )
-          span Shipping
-  li(ng-class='$ctrl.active === "stores" ? "active" : ""')
-    a.auto(ng-click='$ctrl.toggle("stores")')
-      span.pull-right.text-muted
-        i.fa.fa-fw.fa-angle-right.text
-      i.fas.fa-store.text-info-dker
-      span.font-bold Stores
-    ul.nav.nav-sub.dk
-      li(ui-sref-active='active')
-        a(
-          target='_blank'
-          href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/favorite-stores'
-        )
-          //b.label.bg-info.pull-right N
-          span My Favourite
-      li(ui-sref-active='active')
-        a(
-        target='_blank'
-        href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/browse-categories'
-        )
-          span Popular
-      li(ui-sref-active='active')
-        a(
-        target='_blank'
-        href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/browse-categories'
-        )
-          span Facebook
-      li(ui-sref-active='active')
-        a(
-        target='_blank'
-        href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/browse-categories'
-        )
-          span Browse All
+        a(ui-sref='personalShopper.index')
+          span Order History
 
   li.line.dk
   li.hidden-folded.padder.m-t.m-b-sm.text-muted.text-xs
-    span Help
-  li
-    a(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/country-guide' target='_blank')
-      i.fas.fa-atlas.text-info
-      span.font-bold  Country Guides
-  li
-    a(ng-href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/services' target='_blank')
-      i.fas.fa-globe-americas.text-info
-      span.font-bold  Our Services
-  li
-    a.auto(target='_blank' ng-href='https://blog.{{App.URLS.DOMAIN}}')
-      i.fab.fa-blogger.text-info-dker
-      span.font-bold Blog
-
-  li.line.dk.hidden-folded
-  li.hidden-folded.padder.m-t.m-b-sm.text-muted.text-xs
     span Your Stuff
   li
-    a(ui-sref='users.preferences')
-      i.fas.fa-tasks.text-success-lter
-      span Shipping Preferences
-  li
     a(ui-sref='users.profile')
-      i.fas.fa-user-circle.text-success-lter
+      i.fas.fa-user-circle.text-white
       //b.badge.bg-success.pull-right 30%
-      span Profile
-  li
-    a(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/refer-a-friend')
-      i.fas.fa-user-friends.text-info-lter
-      span Refer a Friend
-  li
-    a(ui-sref='users.address-index')
-      i.fas.fa-address-book.text-info-lter
-      span Address Book
+      span.font-bold Profile
   li
     a(ui-sref='users.documents')
-      i.fas.fa-id-card.text-info-lter
-      span Documents
+      i.fas.fa-id-card.text-white
+      span.font-bold Documents
 
 
 

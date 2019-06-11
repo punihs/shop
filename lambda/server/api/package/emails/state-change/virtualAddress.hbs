@@ -4,8 +4,16 @@
       <tbody>
       <tr>
         <td valign="top" style="font:14px Arial,san-serif;padding:11px 0 14px 18px;width:280px;background-color:#efefef">
-          <a href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW" target="_blank" >
-            <img src="https://ci3.googleusercontent.com/proxy/DnwJ60uctkvDNpe9R-bEflUctIUxRMcrTKsWFudH2XSBhSnOpF7JEc22rWw5hUuZGPdDqwGe6Mx1OMHoZHdtZeItaq8qyiF9LxxPA655R3hx_6F_CgNRXF_gJ2V4W5ik9eZkeGQ3hoN8=s0-d-e1-ft#https://images-na.ssl-images-amazon.com/images/G/01/x-locale/cs/te/button-track.png"> </a>
+          {{#if INCOMING}}
+            <a href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW?otp={{otp}}" target="_blank" >
+              <img src="https://ci3.googleusercontent.com/proxy/DnwJ60uctkvDNpe9R-bEflUctIUxRMcrTKsWFudH2XSBhSnOpF7JEc22rWw5hUuZGPdDqwGe6Mx1OMHoZHdtZeItaq8qyiF9LxxPA655R3hx_6F_CgNRXF_gJ2V4W5ik9eZkeGQ3hoN8=s0-d-e1-ft#https://images-na.ssl-images-amazon.com/images/G/01/x-locale/cs/te/button-track.png"> </a>
+          {{else if PERSONAL_SHOPPER}}
+            <a href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}" target="_blank" >
+              <img src="https://email.shoppre.com/img/btn_order.png" alt=''></a>
+          {{else if COD}}
+            <a href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}" target="_blank" >
+              <img src="https://email.shoppre.com/img/btn_order.png" alt=''></a>
+          {{/if}}
         </td>
         <td
           valign="top"

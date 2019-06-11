@@ -4,11 +4,11 @@
   "name": "ShoppRe",
   "short_name": "Shoppre Parcel Forwarding",
   "icons": [{
-    "src": "http://cp.shoppre.com/ola-force/img_logomark@4x.png",
+    "src": "https://cp.shoppre.com/ola-force/img_logomark@4x.png",
     "sizes": "192x192",
     "type": "image/png"
   }, {
-    "src": "http://cp.shoppre.com/ola-force/img_logomark@512.png",
+    "src": "https://cp.shoppre.com/ola-force/img_logomark@512.png",
     "sizes": "512x512",
     "type": "image/png"
   }],

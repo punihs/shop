@@ -1,11 +1,12 @@
 class DocumentController {
   /* @ngInject*/
-  constructor(Page, $state, $stateParams, $http, toaster, URLS, S3) {
+  constructor(Page, $state, $stateParams, $http, toaster, URLS, S3, Session) {
     this.Page = Page;
     this.$http = $http;
     this.$state = $state;
     this.$stateParams = $stateParams;
     this.toaster = toaster;
+    this.Session = Session;
     this.URLS = URLS;
     this.S3 = S3;
 
@@ -14,6 +15,7 @@ class DocumentController {
 
   $onInit() {
     this.Number = Number;
+    this.file = {};
     this.submitting = false;
     this.data = {};
     this.userDocuments = [];
@@ -42,9 +44,10 @@ class DocumentController {
   }
 
   getUserDocuments() {
+    const id = this.Session.read('userinfo').id;
     this
       .$http
-      .get('/userDocuments')
+      .get(`/userDocuments?customer_id=${id}`)
       .then(({ data }) => {
         this.userDocuments = data;
       });
@@ -84,6 +87,9 @@ class DocumentController {
         };
         this.userDocuments.push(document);
         this.data = {};
+        this.file = {};
+        this.submitting = false;
+        this.reset(documentForm);
         this
           .toaster
           .pop('success', 'Document Uploaded Successfully.', '');
@@ -101,6 +107,11 @@ class DocumentController {
 
         this.error = err.data;
       });
+  }
+
+  reset(documentForm) {
+    this.data = {};
+    documentForm.$setPristine();
   }
 
   deleteDocument(documentId, index) {

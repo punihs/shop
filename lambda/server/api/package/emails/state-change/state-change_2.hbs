@@ -10,7 +10,7 @@
       <br><br>
       Please be patient while your package is undergoing several quality checks & documentation to ensure it is not
       damaged and is meeting the export quality requirements. And, further details would be updated in your <a
-      href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW">Dashboard</a> within 24 hours.
+      href="{{ENV.URLS_PARCEL}}/dashboard?otp={{otp}}">Dashboard</a> within 24 hours.
       <br>
       <br>
       Your package is shipped by <span class="il">{{pkg.Store.name}}</span> and the reference ID is {{pkg.invoice_code}}.
@@ -28,11 +28,11 @@
         that we've just received did not make the cost of the item(s) clear.
         <br>
         <br>
-        Hence, we request you to update the same in your <a href="{{ENV.URLS_PARCEL}}/packages?bucket=ACTION_REQUIRED">Dashboard</a>;
+        Hence, we request you to update the same in your <a href="{{ENV.URLS_PARCEL}}/dashboard?otp={{otp}}">Dashboard</a>;
         so that we can prepare to ship without any delay.
         <br>
         <br>
-        1. Visit your <a href="{{ENV.URLS_PARCEL}}/packages?bucket=ACTION_REQUIRED">Action Required</a> tab
+        1. Visit your <a href="{{ENV.URLS_PARCEL}}/packages?bucket=ACTION_REQUIRED&otp={{otp}}">Action Required</a> tab
         <br>
         2. Enter the price you paid for the item(s) in the field provided
         <br>
@@ -57,7 +57,7 @@
         <br>
         The steps are:
         <br>
-        1. Visit the <a href="https://staging-member.shoppre.com/locker?bucket=ACTION_REQUIRED">Action Required</a> tab on your Dashboard
+        1. Visit the <a href="{{ENV.URLS_PARCEL}}/packages?bucket=ACTION_REQUIRED&otp={{otp}}">Action Required</a> tab on your Dashboard
         2. Select “Upload Invoice”
         3. Choose the invoice from your computer & confirm
         <br>
@@ -89,8 +89,8 @@
         Cost of the Package:<span class="il">{{pkg.price_amount}}</span>
         <br>
         <br>
-        Feel free to <a href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND">Sign in </a>to your ShoppRe account & review/edit
-        the product costs or  <a href="{{ENV.URLS_PARCEL}}/users/preferences">View the Photo</a> of your packages at a discounted rate of
+        Feel free to <a href="{{ENV.URLS_WWW}}/customer/login">Sign in </a>to your ShoppRe account & review/edit
+        the product costs or  <a href="{{ENV.URLS_PARCEL}}/packages?bucket=READY_TO_SEND&otp={{otp}}">View the Photo</a> of your packages at a discounted rate of
         <strike>₹100</strike> ₹50, before making a request to ship.
       </p>
     </td>
@@ -103,7 +103,7 @@
         We're afraid the package with id:<span class="il">{{pkg.id}}</span> you purchased from <span class="il">{{pkg.Store.name}}</span> has arrived at our facility with a damage.
         <br>
         <br>
-        Go to your <a href="{{ENV.URLS_PARCEL}}/packages?bucket=IN_REVIEW">Dashboard</a> to let us know how to proceed. You can choose to Return or Discard the item.
+        Go to your <a href="{{ENV.URLS_PARCEL}}/dashboard?otp={{otp}}">Dashboard</a> to let us know how to proceed. You can choose to Return or Discard the item.
         <br>
         Do reach out to us at <a href="mail:support@shoppre.com">support@shoppre.com</a> in case of any query.
         <br>
@@ -207,14 +207,13 @@
         <br><br>
         To make sure that you get the best of our services, we'd like you to confirm some details of your request;
         <br>
-        1. Do you really intend to discard this package [ID]/item [Name] ?*
+        1. Do you really intend to discard this package [ID: {{pkg.id}} from {{pkg.Store.name}}] ?*
         <br><br>
         A. Yes
         <br>
         B. No
         <br><br>
         2. If Yes, may we know the reason for discarding it?
-        [text field]
         <br><br>
         We're waiting to hear back from you!
         <br>
@@ -276,94 +275,108 @@
         <br>
       </p> </td>
   </tr>
-{{else if ORDER_CREATED}}
+{{else if PAYMENT_COMPLETED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
-      <p style="margin:4px 20px 18px 20px;width:640px">
-        Customer Created Order. PackageId is<span class="il">{{pkg.id}}</span>.
-        <br>
-        <br>
-      </p> </td>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
+        <p style="margin:4px 20px 18px 20px;width:640px">
+            We'd like to acknowledge that you've chosen to make payment for your Personal Shopper Order <span class="il">{{pkg.order_code}}</span> via
+            <span class="il">{{paymentGateway.name}}</span>
+            and your order is successfully created on <span class="il">{{pkg.Store.name}}</span>.
+            <br><br>
+            Appreciate you paying up so soon!.
+        </p> </td>
   </tr>
 {{else if ORDER_CANCELLED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{actingUser.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Customer Cancelled Order. PackageId is<span class="il">{{pkg.id}}</span>.
-        <br>
-        <br>
+        We regret to inform you that the order <span class="il">{{pkg.order_code}}</span> you placed with our Personal Shopper has been cancelled as per your request,
+        A refund of Rs.<span class="il">{{pkg.sub_total}}</span> will be initiated in 48 hours to your bank account/wallet.
+        <br><br>
+        Please confirm the same on your ShoppRe <a href="{{ENV.URLS_PARCEL}}/dashboard?otp={{otp}}">Dashboard</a>.
       </p> </td>
   </tr>
-{{else if PAYMENT_INITIATED}}
+{{else if PRICE_CHANGED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Payment Intiated. PackageId is<span class="il">{{pkg.id}}</span>.
-        <br>
-        <br>
+        This is to inform you that the price of the item[s] in your order <span class="il">{{pkg.order_code}}</span> on <span class="il">{{pkg.Store.name}}</span> has been
+        increased to Amount.<br><br>
+        Since you have chosen to <span class="il">{{pkg.buy_if_price_changed}}</span> the item[s] when you placed the order in such a case; can we go ahead & proceed with <a href="{{ENV.URLS_PARCEL}}/personalShopper/index?otp={{otp}}">shopping/cancelling</a> this item?
+        <br><br>
+        Please confirm as soon as you can to avoid any delays.
       </p> </td>
   </tr>
 {{else if PAYMENT_FAILED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Payment Failed Please try again, PackageId is<span class="il">{{pkg.id}}</span>.
+        Unfortunately, your transaction attempt using your <span class="il">{{paymentGateway.name}}</span> to pay INR <span class="il">{{pkg.sub_total}}</span> for your Order ID <span class="il">{{pkg.order_code}}</span> has been failed.
         <br>
+        You can either <a href="{{ENV.URLS_PARCEL}}/personalShopper/{{pkg.order_code}}/confirm?otp={{otp}}">retry your payment</a> or <a href="{{ENV.URLS_PARCEL}}/personalShopper/{{pkg.order_code}}/confirm?otp={{otp}}">try another payment method</a>.
         <br>
+        In case if the amount has been deducted from your account, the same will be credited back within 7 working days.
+        <br><br>
+        Kindly contact us immediately in case you need help, to prevent any further delay.
       </p> </td>
   </tr>
-{{else if PAYMENT_COMPLETED}}
+{{else if PAYMENT_CONFIRMED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Payment Completed. PackageId is<span class="il">{{pkg.id}}</span>.
-        <br>
-        <br>
+        This is to inform you that we've received your payment on Personal Shopper Order <span class="il">{{pkg.order_code}}</span> via <span class="il">{{paymentGateway.name}}</span>,
+        and your order is being processed to the next step.
+        <br><br>
+        Appreciate you paying up so soon!
       </p> </td>
   </tr>
 {{else if ORDER_PLACED}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Order Placed Successfully. PackageId is<span class="il">{{pkg.id}}</span>.
-        <br>
-        <br>
+        We're so glad to inform you that your Personal Shopper Order <span class="il">{{pkg.order_code}}</span> has been successfully placed on <span class="il">{{pkg.Store.name}}</span>!
+        <br><br>
+        You can confirm & track the status of the same on your <a href="{{ENV.URLS_PARCEL}}/dashboard?otp={{otp}}">Dashboard</a>.
       </p> </td>
   </tr>
 {{else if OUT_OF_STOCK}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Items Are Out-of-stock. PackageId is<span class="il">{{pkg.id}}</span>.
-        <br>
-        <br>
+        We regret to inform you that the item(s) in your Personal Shopper Order <span class="il">{{pkg.order_code}}</span> went out of stock.
+        <br><br>
+        You can confirm the same on your <a href="{{ENV.URLS_PARCEL}}/dashboard?otp={{otp}}">Dashboard</a> under Order Details.The cost of the item(s) will be excluded from the final bill you have to pay.
       </p> </td>
   </tr>
 {{else if REFUNDED_TO_WALLET}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Package Refund Added to Wallet. PackageId is<span class="il">{{pkg.id}}</span>.
-        <br>
-        <br>
+        We had initiated the refund on <span class="il">{{pkg.order_code}}</span> on <span class="il">{{pkg.updated_at}}</span>;
+        and we found that the amount <span class="il">{{pkg.sub_total}}</span>
+        has reflected in your Wallet just now.
+        <br><br>
+        You can go to <a href="{{ENV.URLS_PARCEL}}/dashboard?otp={{otp}}">Dashboard</a> and confirm the same from your end.
       </p> </td>
   </tr>
 {{else if REFUNDED_TO_BANK_ACCOUNT}}
   <tr>
     <td colspan="2" style="width:640px">
-      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        Your Package Refund Added to Bank Account. PackageId is<span class="il">{{pkg.id}}</span>.
-        <br>
-        <br>
+        We had initiated the refund on <span class="il">{{pkg.order_code}}</span> on <span class="il">{{pkg.updated_at}}</span>;
+        and we found that the amount <span class="il">{{pkg.sub_total}}</span>
+        has reflected in your Bank Account just now.
+        <br><br>
+        You can go online and confirm the same from your end.
       </p> </td>
   </tr>
 {{else if AWAITING_PACKAGE}}
@@ -371,9 +384,45 @@
     <td colspan="2" style="width:640px">
       <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hello {{customer.first_name}},</p> <br>
       <p style="margin:4px 20px 18px 20px;width:640px">
-        We Are awaiting for your Packages. PackageId is<span class="il">{{pkg.id}}</span>.
+        We Are awaiting for your Packages. PackageId is<span class="il">{{pkg.order_code}}</span>.
         <br>
         <br>
       </p> </td>
+  </tr>
+{{else if ORDER_COMPLETED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        We're glad to let you know that all the items on your the Personal Shopper Order <span class="il">{{pkg.order_code}}</span> have arrived
+        here at our facility and are safe in your locker <span class="il">{{customer.virtual_address_code}}</span>.
+        <br><br>
+        You can go ahead, confirm the status and the order details & pay now to make a Ship Request.
+      </p> </td>
+  </tr>
+{{else if PACKAGE_STORAGE}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        This is to inform you that your package <span class="il">{{pkg.id}}</span> has left only a few days of FREE storage at our facility.
+        <br><br>
+        You will be charged an additional fee of Rs.<span class="il">{{packageStorageExceededCharge}}</span>/- per day until the day you make a ship request and pay for the shipment, when it expires.
+        <br><br>
+        Hope you'd hurry up!
+      </p> </td>
+  </tr>
+{{else if PACKAGE_STORAGE_EXCEEDED}}
+  <tr>
+    <td colspan="2" style="width:640px">
+      <p style="font:18px Arial,sans-serif;color:#cc6600;margin:15px 20px 0 20px">Hi {{customer.first_name}},</p> <br>
+      <p style="margin:4px 20px 18px 20px;width:640px">
+        This is to inform you that your package <span class="il">{{pkg.id}}</span> has exceeded the <span class="il">{{packageStorageLimit}}</span> days of FREE storage period at our facility.
+        <br><br>
+        You will be charged an additional fee of Rs.<span class="il">{{packageStorageExceededCharge}}</span>/- per day until the day you make a ship request and pay for the shipment.
+        <br><br>
+        Hope you'd hurry up!
+      </p>
+    </td>
   </tr>
 {{/if}}

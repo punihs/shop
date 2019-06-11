@@ -27,10 +27,10 @@
       {{else}}
         <tr>
           <td align="center" valign="top" style="width:150px;height:115px">
-            <a href="{{ENV.URLS_PARCEL}}/packages/{{shipmentDetails.id}}" style="margin:0 20px 0 0" title="ItemImage" target="_blank" ><img src="https://www.activebarcode.com/images/pictos/barcode1d.png"> </a> </td>
+            <a href="{{ENV.URLS_PARCEL}}/packages/{{shipment.id}}" style="margin:0 20px 0 0" title="ItemImage" target="_blank" ><img src="https://www.activebarcode.com/images/pictos/barcode1d.png"> </a> </td>
           <td align="center" style="color:#666;padding:10px 10px 0 10px;width:410px;height:115px">
             <p style="margin:0 0 0 7px;padding:0">
-              <a href="{{ENV.URLS_PARCEL}}/packages/{{shipmentDetails.id}}" style="font:14px Arial,sans-serif;text-decoration:none;color:#006699" target="_blank" >
+              <a href="{{ENV.URLS_PARCEL}}/packages/{{shipment.id}}" style="font:14px Arial,sans-serif;text-decoration:none;color:#006699" target="_blank" >
                 Shoppre Shipping Team processing your Shipment...
               </a>
             </p>
@@ -52,12 +52,12 @@
       <tbody>
       <tr>
         <br align="center" valign="top" style="width:150px;height:115px">
-        <b style=" font-size: 15px;"> Address:</b>  {{shipToAddress.line1}},  {{shipToAddress.line2}} </br>
-        <b style=" font-size: 15px;">City:</b>  {{shipToAddress.city}}</br>
-        <b style=" font-size: 15px;">State:</b>  {{shipToAddress.state}}</br>
-        <b style=" font-size: 15px;"> Country:</b>  {{shipToAddress.country}}</br>
-        <b style=" font-size: 15px;">  Pin Code: </b>  {{shipToAddress.pincode}}</br>
-        <b style=" font-size: 15px;">Phone: </b>  {{ shipToAddress.phone }}</br>
+        <b style=" font-size: 15px;"> Address:</b>  {{address.line1}},  {{address.line2}} </br>
+        <b style=" font-size: 15px;">City:</b>  {{address.city}}</br>
+        <b style=" font-size: 15px;">State:</b>  {{address.state}}</br>
+        <b style=" font-size: 15px;"> Country:</b>  {{address.country}}</br>
+        <b style=" font-size: 15px;">  Pin Code: </b>  {{address.pincode}}</br>
+        <b style=" font-size: 15px;">Phone: </b>  {{ address.phone }}</br>
         </td>
       </tr>
       <tr>

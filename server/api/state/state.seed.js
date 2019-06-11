@@ -7,7 +7,7 @@ const packageStates = [{
 }, {
   id: 43,
   name: 'Order Cancelled',
-  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+  config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
 }, {
   id: 44,
   name: 'Payment Initiated',
@@ -17,11 +17,11 @@ const packageStates = [{
   id: 45,
   name: 'Payment failed',
   // name: 'dispatched',
-  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+  config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
 }, {
   id: 46,
-  name: 'Payment Success',
-  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+  name: 'Payment Completed',
+  config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
 }, {
   id: 47,
   name: 'Awaiting Package',
@@ -121,7 +121,7 @@ const packageStates = [{
 }, {
   id: 57,
   name: 'Payment Confirmed',
-  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+  config: '{"color":"success","state_id":"Status","comments":"Instructions and Comments"}',
 }, {
   id: 58,
   name: 'Payment Confirmation on Hold',
@@ -247,6 +247,10 @@ const shipmentStates = [{
 }, {
   id: 60,
   name: 'Customer Document Resolved',
+  config: '{"color":"info","state_id":"Status","comments":"Instructions and Comments"}',
+}, {
+  id: 61,
+  name: 'Shipment Abandon',
   config: '{"color":"danger","state_id":"Status","comments":"Instructions and Comments"}',
 }].map(x => ({ ...x, type: SHIPMENT }));
 

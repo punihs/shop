@@ -1,22 +1,19 @@
 class AppController {
-  constructor(
-    $window, $uibModal, $state, $rootScope, URLS,
-    $http, $stateParams, Session, Page, socket,
-  ) {
-    const vm = this;
+  constructor($window, $uibModal, $state, $rootScope, URLS, $http, $stateParams, Session,
+    Page, socket, ONESIGNAL) {
     this.Page = Page;
     this.socket = socket;
-    vm.$stateParams = $stateParams;
-    vm.Session = Session;
+    this.$stateParams = $stateParams;
+    this.Session = Session;
 
-    vm.userinfo = this.Session.read('userinfo');
-    vm.states = this.Session.read('states');
-    vm.shipmentStates = this.Session.read('shipment-states');
+    this.adminUserinfo = this.Session.read('adminUserinfo');
+    this.states = this.Session.read('adminStates');
+    this.shipmentStates = this.Session.read('adminShipment-states');
 
-    vm.Math = Math;
-    vm.URLS = URLS;
+    this.Math = Math;
+    this.URLS = URLS;
     // config
-    vm.app = {
+    this.app = {
       name: 'OPS',
       version: '0.0.1',
       settings: {
@@ -34,12 +31,16 @@ class AppController {
       },
     };
 
-    if (this.Session.isAuthenticated()) {
+    const env = URLS.DOMAIN.endsWith('.com') ? 'production' : 'development';
+    const ENV = URLS.PREFIX.includes('staging') ? 'staging' : env;
+    const credentials = ONESIGNAL[ENV];
+
+    if (this.Session.isAuthenticated() && !URLS.DOMAIN.includes('test')) {
       const OneSignal = window.OneSignal || [];
       OneSignal.push(() => {
-        OneSignal.sendTag('key', this.userinfo.id);
+        OneSignal.sendTag('key', this.adminUserinfo.id);
         OneSignal.init({
-          appId: 'b7792635-0674-4e60-bef9-66d31b818a92',
+          appId: credentials,
           allowLocalhostAsSecureOrigin: true,
           autoRegister: true,
           notifyButton: {
@@ -61,7 +62,7 @@ class AppController {
       });
     }
 
-    vm.updateNavigationBar = (currentState, stateParams) => {
+    this.updateNavigationBar = (currentState, stateParams) => {
       let navbarHeaderColor = 'bg-primary';
       let navbarCollapseColor = 'bg-info';
       let asideColor = 'bg-info bg-gd-dk';
@@ -70,9 +71,9 @@ class AppController {
         navbarCollapseColor = stateParams.source === '0' ? 'bg-black' : 'bg-sea-green';
         asideColor = stateParams.source === '0' ? 'bg-black bg-gd-dk' : 'bg-sea-green bg-gd-dk';
       }
-      vm.app.settings.navbarHeaderColor = navbarHeaderColor;
-      vm.app.settings.navbarCollapseColor = navbarCollapseColor;
-      vm.app.settings.asideColor = asideColor;
+      this.app.settings.navbarHeaderColor = navbarHeaderColor;
+      this.app.settings.navbarCollapseColor = navbarCollapseColor;
+      this.app.settings.asideColor = asideColor;
     };
 
     // keeps track of state change and hides sidebar view for mobile
@@ -82,29 +83,28 @@ class AppController {
         previousState: from.name,
         currentState: to.name,
       });
-      vm.app.settings.offScreen = false;
-      vm.app.settings.mobileHeader = false;
-      vm.updateNavigationBar($rootScope.currentState, toParams);
+      this.app.settings.offScreen = false;
+      this.app.settings.mobileHeader = false;
+      this.updateNavigationBar($rootScope.currentState, toParams);
     });
 
-    vm.Page = Page; // Set Page title
-    vm.$state = $state;
+    this.Page = Page; // Set Page title
+    this.$state = $state;
 
-    vm.showCustomerSideBar = function showNavJobs() {
+    this.showCustomerSideBar = function showNavJobs() {
       return [
-        'packages.index',
+        'orders.index',
         'customer.view',
-        'customer.packages.index',
+        'customer.orders.index',
         'customer.packages.create',
+        'customer.packages.bulk',
         'customer.package.update',
         'shipments.index',
-        'shipment.packages.index',
         'customer.shipment.update',
         'customer.shipments.index',
+        'packages.bulk',
       ].includes($state.current.name);
     };
-
-    vm.hideExt = () => $window.parent.postMessage({ type: 'RESET' }, '*');
   }
 }
 

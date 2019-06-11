@@ -1,4 +1,3 @@
-
 module.exports = DataTypes => ({
   id: {
     type: DataTypes.INTEGER,
@@ -7,4 +6,6 @@ module.exports = DataTypes => ({
     allowNull: false,
     unique: true,
   },
+  key: DataTypes.STRING,
+  value: DataTypes.JSON,
 });

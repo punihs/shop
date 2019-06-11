@@ -1,8 +1,7 @@
-// const raven = Raven.config('https://71883f8963384e47a84bada0451462f1@sentry.io/1313557', {});
+// const raven = Raven.config('https://a4576e2b58fa419d9a76610db580a7b0@sentry.shoppre.com/5', {});
 //
-// if (localStorage.userinfo) {
-//   const user = JSON.parse(localStorage.userinfo);
-//   debugger
+// if (localStorage.adminUserinfo) {
+//   const user = JSON.parse(localStorage.adminUserinfo);
 //   raven.setUser({
 //     id: user.id,
 //     email: user.email,
@@ -18,18 +17,15 @@ angular
     'qui.components',
     'http-auth-interceptor',
   ])
-  .constant('MODULE_VERSION', '0.0.1')
+  .constant('MODULE_VERSION', '0.0.1');
 // this configs to initiated using provider
 angular.module('uiGenApp', [
   'qui.core',
   'ngAnimate',
   'ui.router',
   'ui.bootstrap',
-  'mwl.calendar',
-  'chart.js',
   'ngFileUpload',
   'angular-loading-bar',
-  'easypiechart',
   'scrollable-table',
   'naif.base64',
   'rzModule',
@@ -38,14 +34,15 @@ angular.module('uiGenApp', [
   'isteven-multi-select',
   'dndLists',
   'ngSanitize',
-  'ngCookies',
   'btford.socket-io',
   'ngIntlTelInput',
   'ngRaven',
 ])
-  .config(($urlRouterProvider, $locationProvider, ngIntlTelInputProvider, $ravenProvider) => {
-    const dev = location.href.includes('.test');
-    $ravenProvider.development(dev);
+  .config(($urlRouterProvider, $locationProvider, ngIntlTelInputProvider,
+           // $ravenProvider
+  ) => {
+    // const dev = location.href.includes('.test');
+    // $ravenProvider.development(true);
     ngIntlTelInputProvider.set({
       initialCountry: 'us',
       autoHideDialCode: true,
@@ -57,30 +54,30 @@ angular.module('uiGenApp', [
 
     $locationProvider.html5Mode(true);
   })
-  .factory('$exceptionHandler', function () {
-    return function errorCatcherHandler(exception, cause) {
-      console.error(exception.stack);
-      Raven.captureException(exception);
-      // do not rethrow the exception - breaks the digest cycle
-    };
+  .constant('ADDRESS', {
+    name: 'Indian shoppre LLP,',
+    line1: '#181, 1st Floor, 2nd Cross Rd,',
+    line2: '7th Main, 1st Block Koramangala,',
+    line3: 'Bengaluru, Karnataka,560034',
+    phone: '+91 9148351414',
   })
-  .factory('errorHttpInterceptor', ['$q', function ($q) {
-    return {
-      responseError: function responseError(rejection) {
-        Raven.captureException(new Error('HTTP response error'), {
-          extra: {
-            config: rejection.config,
-            status: rejection.status,
-          },
-        });
-        return $q.reject(rejection);
-      },
-    };
-  }])
-  .config(['$httpProvider', function ($httpProvider) {
-    $httpProvider.interceptors.push('errorHttpInterceptor');
-  }])
-
-  .constant('RENAMED_STATES', {
-  });
+  .constant('ONESIGNAL', {
+    development: '91cbfcb8-6ad5-4128-a0f6-a653eeeaac4c',
+    staging: '98049cea-88e2-49b5-b2a3-d6c5fe0d6dbf',
+    production: 'd0bf3fb3-1bd7-4ad8-9ba0-85ca0eb1273f',
+  })
+  // .factory('$exceptionHandler', () => (exception) => Raven.captureException(exception))
+  // .factory('errorHttpInterceptor', ($q) => ({
+  //   responseError: function responseError(rejection) {
+  //     Raven.captureException(new Error('HTTP response error'), {
+  //       extra: {
+  //         config: rejection.config,
+  //         status: rejection.status,
+  //       },
+  //     });
+  //
+  //     return $q.reject(rejection);
+  //   },
+  // }))
+  // .config($httpProvider => $httpProvider.interceptors.push('errorHttpInterceptor'));
 

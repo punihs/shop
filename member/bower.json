@@ -23,10 +23,15 @@
     "angular-base64-upload": "^0.1.23",
     "ng-intl-tel-input": "^2.0.0",
     "angular-raven": "^0.6.2",
-    "raven-js": "^3.27.0"
+    "raven-js": "^3.27.0",
+    "socket.io-client": "2.1.0",
+    "socket.io": "2.1.0",
+    "angular-socket-io": "0.7.0"
   },
   "resolutions": {
     "angular": "~1.4.8",
-    "angular-bootstrap": "2.5.0"
+    "angular-bootstrap": "2.5.0",
+    "socket.io-client": "2.1.0",
+    "socket.io": "2.1.0"
   }
 }

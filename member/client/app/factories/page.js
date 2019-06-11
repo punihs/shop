@@ -1,4 +1,4 @@
-angular.module('qui.core')
+angular.module('uiGenApp')
   .factory('Page', (Session) => {
     let title = '';
     let favicon = '/assets/images/logo.png';

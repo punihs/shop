@@ -1,4 +1,3 @@
-
 module.exports = DataTypes => ({
   id: {
     type: DataTypes.INTEGER,
@@ -41,4 +40,14 @@ module.exports = DataTypes => ({
   phone: DataTypes.STRING,
 
   secondary_phone: DataTypes.STRING,
+  is_courier_migrated: {
+    type: DataTypes.STRING,
+    defaultValue: 0,
+  },
+  referer: DataTypes.STRING,
+  first_visit: DataTypes.STRING,
+  utm_campaign: DataTypes.STRING,
+  utm_source: DataTypes.STRING,
+  utm_medium: DataTypes.STRING,
+  gcl_id: DataTypes.STRING,
 });

@@ -1,0 +1,162 @@
+.col-md-12.ps-main
+  div.col-md-6
+    h1.f-s-1.f-c-d-gray Order History
+    h12.f-s-10.f-c-d-gray
+      | Personal Shopper
+      span.f-c-gray  > Order History
+  div.col-md-6(style='padding-top: 20px;')
+    a(ui-sref='personalShopper.create')
+      button.btn-l.btn-b-r.btn-s-r.pull-right.f-s-9
+        | Place an Order
+  .clearfix
+  br
+  .wrapper-md.bg-white-only
+    ul.nav.nav-tabs(role='tablist')
+      li(ng-class='$ctrl.ps ? "ps-menu-active" : ""')
+        a(href='#', ng-class='$ctrl.ps ? "ps-menu-active" : ""',  ng-click="$ctrl.getList('assisted_purchased')")  Assisted Purchase
+      li(ng-class='$ctrl.cod ? "ps-menu-active" : ""')
+        a(href='#', ng-class='$ctrl.cod ? "ps-menu-active" : ""',  ng-click="$ctrl.getList('self_purchased')") Self Purchase
+    .clearfix
+  .wrapper-md.bg-white-only
+     .h5(ng-if='$ctrl.ps')
+       | You can Track your Old Personal Shopper Orders
+       span(ng-bind='" " + $ctrl.TITLE')
+       a.summary-order(
+       title='History'
+       target='_blank'
+       ng-href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/personal-shopper/history'
+       )
+         span - TRACK YOUR OLD ASSISTED PURCHASE ORDERS HERE
+     .h5(ng-if='$ctrl.cod')
+       | You can Track your Old Cod Orders
+       span(ng-bind='" " + $ctrl.TITLE')
+       a.summary-order(
+       title='History'
+       target='_blank'
+       ng-href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/personal-shopper/self/order/history'
+       )
+         span - TRACK YOUR OLD SELF PURCHASE ORDERS HERE
+  div.col-md-12.text-center.text-danger.bg-white-only.m-t-lg
+    alert.alert-warning(role='alert', ng-show='$ctrl.error')
+      h4.text-danger(style='margin-top: 10px; margin-bottom: 10px;') {{$ctrl.message}}
+  .clearfix
+  .ps-mainidiv(style='max-width: 100%;overflow-x: scroll;')
+    table#orders-history
+      thead
+        tr
+          th.footable-visible.footable-sortable
+            | ORDER NUMBER
+            span.footable-sort-indicator
+          th.footable-visible.footable-last-column.footable-sortable
+            | FROM/SELLER
+            span.footable-sort-indicator
+          th.footable-visible.footable-sortable
+            | ORDERED ON
+            span.footable-sort-indicator
+          th.footable-visible.footable-sortable
+            | ORDER TYPE
+            span.footable-sort-indicator
+          th.footable-visible.footable-last-column.footable-sortable
+            | TOTAL AMOUNT
+            span.footable-sort-indicator
+          th.footable-visible.footable-last-column.footable-sortable
+            | STATUS
+            span.footable-sort-indicator
+          th.footable-visible.footable-last-column.footable-sortable
+            | DETAILS
+            span.footable-sort-indicator
+
+      tbody.odd(ng-repeat="package in $ctrl.packages")
+        tr.footable-even(style='display: table-row;')
+          td.footable-visible {{package.order_code}}
+          td.footable-visible {{package.Store.name}}
+          td.footable-visible {{package.created_at | date:'MMM d, y'}} IST {{package.created_at | date:'h:mm a'}}
+          td.footable-visible {{package.package_type === '3' ? 'PERSONAL SHOPPER' : 'COD'}}
+          td.footable-visible {{package.sub_total | number: 2}}
+          td.footable-visible
+            div
+              div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.ORDER_CREATED')
+                p {{package.PackageState.State.name}}
+              div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.ORDER_CANCELLED')
+                p {{package.PackageState.State.name}}
+              div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.ORDER_COMPLETED')
+                p {{package.PackageState.State.name}}
+              div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.PAYMENT_COMPLETED')
+                span(ng-if="package.payment_status != 'success'")
+                  p Awaiting Payment
+                  p It might take upto 24 Hours to reflect your payments into our account.
+                  p
+                    a.summary-order(ng-click='$ctrl.retryPayment(package)') Change Payment Method
+                span(ng-if="package.payment_status === 'success' && (package.payment_gate_id == $ctrl.PAYMENT_GATEWAY.CARD || package.payment_gate_id == $ctrl.PAYMENT_GATEWAY.PAYPAL || $ctrl.package.payment_gate_id == $ctrl.PAYMENT_GATEWAY.PAYTM)")
+                  p Awaiting Payment
+                  p It might take upto 24 Hours to reflect your payments into our account.
+                span(ng-if="package.payment_status === 'success' && (package.payment_gate_id == $ctrl.PAYMENT_GATEWAY.WALLET)")
+                  p Awaiting Payment
+                  p It might take upto 24 Hours to confirm your payment from our team.
+              div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.ORDER_PLACED')
+                p {{package.PackageState.State.name}}
+              div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.REFUNDED_TO_WALLET')
+                p {{package.PackageState.State.name}}
+              div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.REFUNDED_TO_BANK_ACCOUNT')
+                p {{package.PackageState.State.name}}
+              div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.ORDER_DELETED')
+                p {{package.PackageState.State.name}}
+              div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.ORDER_PROCEED')
+                p In Review
+              div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.OTHER_ITEMS_PROCEED')
+                p In Review
+              div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.IN_TRANSIT')
+                p {{package.PackageState.State.name}}
+              div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.AWAITING_FOR_ORDER')
+                p {{package.PackageState.State.name}}
+              div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.PAYMENT_CONFIRMED')
+                p Payment Received
+                p(ng-if='package.totalHours < 1')
+                  a.summary-order(ng-click="$ctrl.cancel(package.id, $index)") Cancel Order
+                  i.fa.fa-info-circle.m-l-xs(
+                  uib-popover='Shoppre offers a one-hour window to cancel your  order. Once your order has been prepared, you can no longer cancel your order. The status will change to Order placed.'
+                  popover-trigger="'mouseenter'"
+                  popover-placement='top'
+                  popover-append-to-body='true'
+                  )
+              div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.PRICE_CHANGED')
+                p {{package.PackageState.State.name}}
+                  i.fa.fa-info-circle.m-l-xs(
+                  uib-popover='It seems the price(s) have gone up for some of your items. You can either ' +
+                  '(A). Cancel the whole order or ' +
+                  '(B). Proceed with the complete order, never mind the price change. ' +
+                  '(C). Proceed with the order, but cancel the items with increased prices or ' +
+                  'It is time to let us know, hurry up!   '
+                  popover-trigger="'mouseenter'"
+                  popover-placement='top'
+                  popover-append-to-body='true'
+                  )
+                p
+                  a.summary-order(ng-click="$ctrl.cancel(package.id, $index)") Cancel Order &nbsp;
+                  span / &nbsp;
+                  a.summary-order(ng-click="$ctrl.proceed(package.id, $index)") Proceed with Order &nbsp;
+                  span / &nbsp;
+                  a.summary-order(ng-click="$ctrl.itemsProceed(package.id, $index)") Proceed with Other Items
+              div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.PAYMENT_FAILED')
+                p
+                  //a.summary-order(ui-sref='transaction.create({id: package.id, amount: package.sub_total, object_id: package.id.toString(), customer_id: $ctrl.customerId, axis_banned: false, type: $ctrl.packageType})') Retry Payment
+                  a.summary-order(ng-click='$ctrl.retryPayment(package)') Retry Payment
+              div(ng-if='package.PackageState.state_id == $ctrl.PACKAGE_STATE_IDS.OUT_OF_STOCK')
+                p {{package.PackageState.State.name}}
+                  i.fa.fa-info-circle.m-l-xs(
+                  uib-popover='It seems some of the items from your order have gone Out of Stock with the Seller. You can either' +
+                  '(A). Cancel the whole order or' +
+                  '(B). Proceed with the order without the Out-of-Stock item(s). ' +
+                  'It is time to let us know, hurry up!   '
+                  popover-trigger="'mouseenter'"
+                  popover-placement='top'
+                  popover-append-to-body='true'
+                  )
+                p
+                  a.summary-order(ng-click="$ctrl.cancel(package.id, $index)") Cancel Order &nbsp;
+                  span / &nbsp;
+                  a.summary-order(ng-click="$ctrl.itemsProceed(package.id, $index)") Proceed with Other Items
+          td.footable-visibletr
+            a.text-danger(ui-sref='personalShopper.show({ id: package.order_code })') View Details
+    h3.text-center.text-info(ng-if='$ctrl.packages.length=== 0')
+      | No Orders

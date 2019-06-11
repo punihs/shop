@@ -12,15 +12,15 @@ angular.module('uiGenApp')
         return null;
       }
 
-      if (Session.isAuthenticated() && User.userinfo && User.userinfo.isBlocked
-          && (next.name !== User.userinfo.whatBlocked[0].state)) {
+      if (Session.isAuthenticated() && User.adminUserinfo && User.adminUserinfo.isBlocked
+          && (next.name !== User.adminUserinfo.whatBlocked[0].state)) {
         event.preventDefault();
-        return $state.go(User.userinfo.whatBlocked[0].state);
+        return $state.go(User.adminUserinfo.whatBlocked[0].state);
       }
 
       if (Session.isAuthenticated() && (next.name === 'access.oauth')) {
         event.preventDefault();
-        return $state.go('packages.index');
+        return $state.go('orders.index');
       }
 
       return $rootScope.$broadcast('show-announcement', next);

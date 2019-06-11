@@ -4,3 +4,4 @@ angular.module('uiGenApp')
     templateUrl: 'components/navigation/navigation.html',
     restrict: 'E',
   }));
+

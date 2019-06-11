@@ -14,8 +14,7 @@
       color: white;
     }
   }
-
-  .dropdown-menu {
+    .dropdown-menu {
     background-color: #069974;
   }
 
@@ -37,6 +36,11 @@
       background-color: #069974 !important;
       color: white;
     }
+  }
+
+
+  .bg-primary .nav > li > a:hover {
+    background-color: red !important;
   }
 
   .nav-menu-item:hover .title {
@@ -112,4 +116,7 @@
   #main_searchbar {
     background-color: #3a3a3a;
   }
+}
+.navi ul.nav li a {
+  padding: 10px 15px;
 }
