@@ -32,15 +32,11 @@ const db = {
 
   // - Customer Account
   // Shoppre.com - Inspired by MyUS.com
-  'Address', 'UserDocument', 'ShippingPreference', 'VirtualAddress',
+  'UserDocument',
 
   'Package', 'PackageCharge', 'PackageState', 'State', 'ActionableState', 'GroupState',
   'PackageItem',
   'PackageItemCategory',
-
-  'PhotoRequest',
-
-  'Shipment', 'ShipmentMeta', 'ShipmentState', 'AfterShipCarriers',
 
   // - Product
   'Store',

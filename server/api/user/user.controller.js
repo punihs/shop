@@ -6,8 +6,8 @@ const authorise = require('../../components/oauth/authorise');
 const { MASTER_TOKEN } = require('../../config/environment');
 
 const {
-  User, State, ActionableState, GroupState, Shipment, Country, Package, PackageState,
-  Locker, ShipmentState,
+  User, State, ActionableState, GroupState, Country, Package, PackageState,
+  Locker,
 } = require('../../conn/sqldb');
 const service = require('./user.service');
 
@@ -36,9 +36,6 @@ exports.index = async (req, res, next) => {
       include: [{
         model: Country,
         attributes: ['id', 'name', 'iso2'],
-      }, {
-        model: Shipment,
-        attributes: ['id'],
       }, {
         model: Package,
         attributes: ['id'],
@@ -121,7 +118,6 @@ exports.me = async (req, res, next) => {
 
 exports.states = async (req, res, next) => {
   try {
-    console.log('request', req.query, req.user);
     const groupId = Number(req.user.group_id) || 1;
 
     const states = await State
@@ -236,7 +232,9 @@ exports.show = async (req, res, next) => {
     // return res.json({ ...user.toJSON(), packageCount, personalShopperCount });
 
     if (user) {
-      return res.json({ status: 409, ...user.toJSON(), packageCount, personalShopperCount });
+      return res.json({
+        status: 409, ...user.toJSON(), packageCount, personalShopperCount,
+      });
     } else {
       return res.json({ status: 404 });
     }
@@ -281,7 +279,6 @@ const messagesMap = {
 
 exports.register = async (req, res, next) => {
   try {
-    console.log('Google Signup User data');
     const status = await service
       .signup({ body: req.body, next });
 
@@ -335,39 +332,7 @@ exports.count = async (req, res, next) => {
         },
       });
 
-    const shipmentInPackages = await Package
-      .count({
-        include: {
-          required: true,
-          model: Shipment,
-          attributes: ['id'],
-          include: [{
-            model: ShipmentState,
-            where: { state_id: PACKAGE_SHIPMENT_COUNT },
-          }],
-        },
-        where: {
-          customer_id: req.params.id,
-        },
-      });
-
-    const shipmentDelivered = await Package
-      .count({
-        include: {
-          required: true,
-          model: Shipment,
-          attributes: ['id'],
-          include: [{
-            model: ShipmentState,
-            where: { state_id: SHIPMENT_DELIVERED },
-          }],
-        },
-        where: {
-          customer_id: req.params.id,
-        },
-      });
-
-    return res.json({ packageCount, shipmentInPackages, shipmentDelivered });
+    return res.json({ packageCount });
   } catch (err) {
     return next(err);
   }

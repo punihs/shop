@@ -7,41 +7,6 @@ ul.nav
     a.auto(ui-sref='dashboard.index')
       i.fas.fa-th-large.text-white
       span.font-bold Dashboard
-  //li
-  //  a.auto(ui-sref='pricing.index')
-  //    i.fas.fa-usd-square.text-white
-  //    span.font-bold Pricing
-
-  li(ng-class='$ctrl.active === "packages" ? "active" : ""')
-    a.auto(href='' ng-click='$ctrl.toggle("packages")')
-      span.pull-right.text-muted
-        i.fa.fa-fw.fa-angle-right.text
-      i.fas.fa-cubes.text-white
-      span.font-bold Packages
-    ul.nav.nav-sub.dk
-      li(ui-sref-active='active')
-        a(ui-sref='packages.index')
-          span In Locker
-      li(ui-sref-active='active')
-        a(
-          ui-sref='packages.create'
-          title='Alert Shoppre about my incoming Packages (Optional)'
-        )
-          span.text-white Your Orders
-
-  li(ng-class='$ctrl.active === "shipments" ? "active" : ""')
-    a.auto(href='' ng-click='$ctrl.toggle("shipments")')
-      span.pull-right.text-muted
-        i.fa.fa-fw.fa-angle-right.text
-      i.fas.fa-plane-departure.text-white
-      span.font-bold Shipments
-    ul.nav.nav-sub.dk
-      li(ui-sref-active='active')
-        a.text-white(ui-sref='shipRequests.index')
-          span In Queue
-      li(ui-sref-active='active')
-        a(ui-sref='shipRequests.history')
-          span History
 
   li(ng-class='$ctrl.active === "personal-shopper" ? "active" : ""')
     a.text-white.auto(href='' ng-click='$ctrl.toggle("personal-shopper")')
@@ -59,142 +24,15 @@ ul.nav
       li(ui-sref-active='active')
         a(ui-sref='personalShopper.index')
           span Order History
-      //li(ui-sref-active='active')
-      //  a(ui-sref='personalShopper.balance')
-      //    span ShoppRe Balances
-
-
-  li(ng-class='$ctrl.active === "loyalty" ? "active" : ""')
-    a.auto(href='' ng-click='$ctrl.toggle("loyalty")')
-      span.pull-right.text-muted
-        i.fa.fa-fw.fa-angle-right.text
-      i.fas.fa-cubes.text-white
-      span.font-bold Loyalty Points
-    ul.nav.nav-sub.dk
-      li(ui-sref-active='active')
-        a.text-white(ui-sref='loyaltyPoints.rewards({ customer_id: $ctrl.user.id })')
-          span Loyalty History
-
-  li.hide(ng-class='$ctrl.active === "offers" ? "active" : ""')
-    a.auto(ng-click='$ctrl.toggle("offers")')
-      span.pull-right.text-muted
-        i.fa.fa-fw.fa-angle-right.text
-      i.fa.fa-gift.text-white
-      span.font-bold Offers
-    ul.nav.nav-sub.dk
-      li(ui-sref-active='active')
-        a(
-          target='_blank'
-          href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/favorite-stores'
-        )
-          //b.label.bg-info.pull-right N
-          span Membership
-      li(ui-sref-active='active')
-        a(
-        target='_blank'
-        href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/browse-categories'
-        )
-          span Personal Shopper
-      li(ui-sref-active='active')
-        a(
-        target='_blank'
-        href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/browse-categories'
-        )
-          span Consolidation & Repackaging
-      li(ui-sref-active='active')
-        a(
-        target='_blank'
-        href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/browse-categories'
-        )
-          span Shipping
-  li(ng-class='$ctrl.active === "stores" ? "active" : ""')
-    a.auto(ng-click='$ctrl.toggle("stores")')
-      span.pull-right.text-muted
-        i.fa.fa-fw.fa-angle-right.text
-      i.fas.fa-store.text-white
-      span.font-bold Stores
-    ul.nav.nav-sub.dk
-      li(ui-sref-active='active')
-        a(
-          target='_blank'
-          href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/favorite-stores'
-        )
-          //b.label.bg-info.pull-right N
-          span My Favourite
-      li(ui-sref-active='active')
-        a(
-        target='_blank'
-        href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/indian-online-stores'
-        )
-          span Popular
-      li(ui-sref-active='active')
-        a(
-        target='_blank'
-        href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/indian-online-stores'
-        )
-          span Facebook
-      li(ui-sref-active='active')
-        a(
-        target='_blank'
-        href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/indian-online-stores'
-        )
-          span Browse All
-  li.line.dk
-  li.hidden-folded.padder.m-t.m-b-sm.text-muted.text-xs
-    span Courier
-  li(ng-class='$ctrl.active === "Courier" ? "active" : ""')
-    a.auto(href='' ng-click='$ctrl.toggle("Courier")')
-      span.pull-right.text-muted
-        i.fa.fa-fw.fa-angle-right.text
-      i.fas.fa-truck-pickup.text-white
-      span.font-bold Courier
-    ul.nav.nav-sub.dk
-      li(ui-sref-active='active')
-        a(
-        target='_blank'
-        href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/schedule-pickup'
-        )
-          span Schedule Pickup
-      li(ui-sref-active='active' ng-controller = "AccessCourierController as $ctrl")
-        a.hv(uib-dropdown-toggle, ng-click= '$ctrl.accessCourier()')
-          span Access Courier
 
   li.line.dk
-  li.hidden-folded.padder.m-t.m-b-sm.text-muted.text-xs
-    span Help
-  li
-    a(ng-href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/country-guide' target='_blank')
-      i.fas.fa-atlas.text-white
-      span.font-bold  Country Guides
-  li
-    a(ng-href='{{App.URLS.PREFIX}}www.{{App.URLS.DOMAIN}}/services' target='_blank')
-      i.fas.fa-globe-americas.text-white
-      span.font-bold  Our Services
-  li
-    a.auto(target='_blank' ng-href='https://ship.{{App.URLS.DOMAIN}}')
-      i.fab.fa-blogger.text-white
-      span.font-bold Blog
-
-  li.line.dk.hidden-folded
   li.hidden-folded.padder.m-t.m-b-sm.text-muted.text-xs
     span Your Stuff
-  li
-    a(ui-sref='users.preferences')
-      i.fas.fa-tasks.text-white
-      span.font-bold Shipping Preferences
   li
     a(ui-sref='users.profile')
       i.fas.fa-user-circle.text-white
       //b.badge.bg-success.pull-right 30%
       span.font-bold Profile
-  li
-    a(ng-href='{{App.URLS.PREFIX}}myaccount.{{App.URLS.DOMAIN}}/refer-a-friend')
-      i.fas.fa-user-friends.text-white
-      span.font-bold Refer a Friend
-  li
-    a(ui-sref='users.address-index')
-      i.fas.fa-address-book.text-white
-      span.font-bold Address Book
   li
     a(ui-sref='users.documents')
       i.fas.fa-id-card.text-white

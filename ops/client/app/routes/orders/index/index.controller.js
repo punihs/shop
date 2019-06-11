@@ -26,6 +26,7 @@ class OrdersIndexController {
     ];
     this.ExcelDownload = ExcelDownload;
     this.states = this.Session.read('adminStates');
+    console.log({state: this.states});
     this.ChangeState = ChangeState;
     this.$onInit();
   }
@@ -118,17 +119,8 @@ class OrdersIndexController {
 
 
   loadPackages() {
-    if (this.$stateParams.bucket === 'Interview') {
-      this.params.interview_time = [
-        this.moment().startOf('day').toISOString(),
-        this.moment().startOf('day').add(1, 'months')
-          .toISOString(),
-      ].join(',');
-      this.params.fl += ',interview_time,interview_type';
-    } else {
       this.params.bucket = this.$stateParams.bucket.replace(' ', '_').toUpperCase();
       this.params.type = 'ORDER';
-    }
 
     const psType = this.$stateParams.type;
     let shopperType = '';
@@ -147,6 +139,7 @@ class OrdersIndexController {
       .get(`/packages?shopperType=${shopperType}`, { params: this.params })
       .then(({ data: { packages: current, total, oldfacets } }) => {
         const packages = current;
+        debugger;
 
         if (!packages.length && this.$rootScope.previousState === 'access.oauth') {
           this.$state.go('orders.index', { bucket: 'ALL' });
@@ -154,6 +147,7 @@ class OrdersIndexController {
         }
 
         this.packages.push(...packages);
+        console.log({ packages });
 
         this.total = total;
         // data has been loaded

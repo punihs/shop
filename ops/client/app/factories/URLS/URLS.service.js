@@ -25,6 +25,7 @@ angular.module('uiGenApp')
       ENGAGE: buildUrl('engage'),
       WWW: buildUrl('www'),
       COURIER: buildUrl('courier'),
+      SHOP: buildUrl('shop'),
 
       CDN: `${PREFIX}cdn.${DOMAIN}`,
 

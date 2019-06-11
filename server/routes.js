@@ -11,9 +11,7 @@ const logger = require('./components/logger');
 const authenticate = require('./components/oauth/authenticate');
 
 // - Routers
-const search = require('./api/search');
 const packages = require('./api/package');
-const afterShipCarriers = require('./api/afterShipCarriers');
 const personalShopperPackage = require('./api/package/personalShopperPackage');
 const packageItem = require('./api/packageItem');
 const packageItems = require('./api/package/item');
@@ -21,10 +19,7 @@ const packageCharge = require('./api/package/charge');
 const specialRequest = require('./api/package/specialRequest');
 const userShippingPreference = require('./api/user/shippingPreference');
 const packageItemCategory = require('./api/packageItemCategory');
-const shipment = require('./api/shipment');
-const shipmentPublic = require('./api/shipment/www');
 const transaction = require('./api/transaction');
-const shipmentPackage = require('./api/shipment/package');
 const address = require('./api/address');
 const user = require('./api/user');
 const userPublic = require('./api/user');
@@ -33,16 +28,12 @@ const country = require('./api/country');
 const health = require('./api/health');
 const store = require('./api/store');
 const userPackage = require('./api/user/package');
-const userShipment = require('./api/user/shipment');
 const follower = require('./api/package/follower');
-const shipmentFollower = require('./api/shipment/follower');
 const minio = require('./conn/minio/minio.route');
-const cron = require('./cron');
 
 module.exports = (app) => {
   app.use('/api/health', health);
   app.use('/api/minio', authenticate(), minio);
-  app.use('/api/search', search);
   app.use('/api/public/packages', personalShopperPackage);
   app.use(
     '/api/packages',
@@ -56,18 +47,8 @@ module.exports = (app) => {
   );
   app.use('/api/addresses', authenticate(), address);
   app.use('/api/transactions', transaction);
-  app.use('/api/public/shipments', shipment);
-  app.use(
-    '/api/shipments',
-    authenticate(),
-    shipment,
-    shipmentPackage,
-    shipmentFollower,
-  );
-  app.use('/api/www/shipments', shipmentPublic);
   app.use('/api/userDocuments', authenticate(), userDocument);
   app.use('/api/countries', country);
-  app.use('/api/afterShipCarriers', afterShipCarriers);
   app.use('/api/packageItems', authenticate(), packageItem);
   app.use('/api/packageItemCategories', authenticate(), packageItemCategory);
   app.use('/api/users/public', userPublic);
@@ -76,10 +57,8 @@ module.exports = (app) => {
     authenticate(),
     user,
     userPackage,
-    userShipment,
     userShippingPreference,
   );
-  app.use('/api/crons', cron);
   app.use('/api/stores', store);
   app.get('/secured', authenticate(), (req, res) => res.json({ name, version }));
 

@@ -17,23 +17,14 @@ $fa-font-path: "../bower_components/font-awesome/fonts";
 // Component styles are injected through grunt
 // injector
 @import 'directives/announcement-modal/announcement-modal.scss';
-@import 'directives/change-shipment-state/change-shipment-state.scss';
 @import 'directives/directive-header/directive-header.scss';
-@import 'directives/email-candidate/email-candidate.scss';
 @import 'directives/package-filter/package-filter.scss';
 @import 'directives/reapply/reapply.scss';
-@import 'directives/shipment-filter/shipment-filter.scss';
 @import 'naivgation.scss';
 @import 'routes/access/access.scss';
 @import 'routes/customers/customers.scss';
 @import 'routes/customers/list/list.scss';
-@import 'routes/customers/packages/bulk/bulk.scss';
-@import 'routes/customers/packages/create/create.scss';
-@import 'routes/customers/shipments/create/create.scss';
 @import 'routes/customers/view/view.scss';
-@import 'routes/packages/bulk/bulk.scss';
-@import 'routes/packages/packages.scss';
-@import 'routes/shipments/shipments.scss';
 @import '../components/footer/footer.scss';
 @import '../components/light-box/light-box.scss';
 @import '../components/navbar/navbar.scss';

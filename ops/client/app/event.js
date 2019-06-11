@@ -20,7 +20,7 @@ angular.module('uiGenApp')
 
       if (Session.isAuthenticated() && (next.name === 'access.oauth')) {
         event.preventDefault();
-        return $state.go('packages.index');
+        return $state.go('orders.index');
       }
 
       return $rootScope.$broadcast('show-announcement', next);

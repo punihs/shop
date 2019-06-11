@@ -93,16 +93,13 @@ class AppController {
 
     this.showCustomerSideBar = function showNavJobs() {
       return [
-        'packages.index',
         'orders.index',
         'customer.view',
-        'customer.packages.index',
         'customer.orders.index',
         'customer.packages.create',
         'customer.packages.bulk',
         'customer.package.update',
         'shipments.index',
-        'shipment.packages.index',
         'customer.shipment.update',
         'customer.shipments.index',
         'packages.bulk',

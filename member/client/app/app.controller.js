@@ -18,7 +18,7 @@ class AppController {
     this.userinfo = this.Session.read('userinfo');
     this.states = this.Session.read('states');
     this.app = {
-      name: 'Parcel',
+      name: 'Shopper',
       version: '0.0.1',
       settings: {
         themeID: 1,

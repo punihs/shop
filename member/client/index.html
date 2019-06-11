@@ -28,7 +28,6 @@
   <link rel="stylesheet" href="app/app.css">
   <!-- injector:css -->
   <link rel="stylesheet" href="app/css/source-sans-pro.css">
-  <link rel="stylesheet" href="app/routes/loyaltyPoints/loyaltyPoints/loyaltyPoints.css">
   <link rel="stylesheet" href="app/routes/personalShopper/index/index.css">
   <!-- endinjector -->
   <!-- endbuild -->
@@ -110,8 +109,6 @@
     ga('send', 'pageview');
   </script>
 
-
-
   <script src="https://courier-ops.shoppre.com/socket.io/socket.io.js"></script>
   <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -187,30 +184,20 @@
 <!-- build:js(.tmp) app/app.js -->
 <script src="app/app.js"></script>
 <!-- injector:js -->
-<script src="app/routes/comments/route.js"></script>
+<script src="app/routes/access/oauth/oauth.controller.js"></script>
 <script src="app/app.constant.js"></script>
-<script src="app/directives/add-comments/add-comments.service.js"></script>
-<script src="app/directives/address/address.service.js"></script>
-<script src="app/directives/change-shipment-state/change-shipment-state.service.js"></script>
 <script src="app/directives/change-state/change-state.service.js"></script>
 <script src="app/directives/click-tocopy/click-tocopy.controller.js"></script>
 <script src="app/directives/common.directive.js"></script>
 <script src="app/directives/confirm-dialog/confirm-dialog.service.js"></script>
-<script src="app/directives/courier-login-controller/courier-login-controller.js"></script>
 <script src="app/directives/directive-header/directive-header.directive.js"></script>
 <script src="app/directives/faq/faq.service.js"></script>
 <script src="app/directives/logout/logout.controller.js"></script>
 <script src="app/directives/notify-count/notify-count.directive.js"></script>
 <script src="app/directives/package-filter/package-filter.js"></script>
 <script src="app/directives/package-select/package-select.service.js"></script>
-<script src="app/directives/photos/photos.service.js"></script>
 <script src="app/directives/reauth/reauth.directive.js"></script>
-<script src="app/directives/shipment-filter/shipment-filter.js"></script>
-<script src="app/directives/special-request/special-request.controller.js"></script>
 <script src="app/directives/text-focus/text-focus.directive.js"></script>
-<script src="app/directives/upload-excel/upload-excel.service.js"></script>
-<script src="app/directives/viewPhotos/viewPhotos.controller.js"></script>
-<script src="app/directives/wire/wire.service.js"></script>
 <script src="app/event.js"></script>
 <script src="app/factories/ExcelDownload/ExcelDownload.service.js"></script>
 <script src="app/factories/S3.js"></script>
@@ -231,13 +218,11 @@
 <script src="app/factories/session.js"></script>
 <script src="app/factories/user.js"></script>
 <script src="app/routes/access/access.js"></script>
-<script src="app/routes/access/oauth/oauth.controller.js"></script>
-<script src="app/routes/comments/comments.controller.js"></script>
 <script src="app/app.controller.js"></script>
+<script src="app/routes/comments/comments.controller.js"></script>
+<script src="app/routes/comments/route.js"></script>
 <script src="app/routes/dashboard/index/index.controller.js"></script>
 <script src="app/routes/dashboard/route.js"></script>
-<script src="app/routes/loyaltyPoints/loyaltyPoints/loyaltyPoints.controller.js"></script>
-<script src="app/routes/loyaltyPoints/route.js"></script>
 <script src="app/routes/packages/create/create.controller.js"></script>
 <script src="app/routes/packages/index/index.controller.js"></script>
 <script src="app/routes/packages/route.js"></script>
@@ -249,17 +234,6 @@
 <script src="app/routes/personalShopper/transactions/response/show.controller.js"></script>
 <script src="app/routes/personalShopper/transactions/route.js"></script>
 <script src="app/routes/personalShopper/workFlow/workFlow.controller.js"></script>
-<script src="app/routes/pricing/partners/index.controller.js"></script>
-<script src="app/routes/pricing/routes.js"></script>
-<script src="app/routes/shipRequests/confirm/confirm.controller.js"></script>
-<script src="app/routes/shipRequests/create/create.controller.js"></script>
-<script src="app/routes/shipRequests/history/history.controller.js"></script>
-<script src="app/routes/shipRequests/index/index.controller.js"></script>
-<script src="app/routes/shipRequests/invoice/invoice.controller.js"></script>
-<script src="app/routes/shipRequests/response/response.controller.js"></script>
-<script src="app/routes/shipRequests/route.js"></script>
-<script src="app/routes/shipRequests/transactions/response/show.controller.js"></script>
-<script src="app/routes/shipRequests/transactions/route.js"></script>
 <script src="app/routes/transactions/create/create.controller.js"></script>
 <script src="app/routes/transactions/processing/processing.controller.js"></script>
 <script src="app/routes/transactions/response/response.controller.js"></script>
@@ -281,5 +255,14 @@
 <script src="components/socket/socket.service.js"></script>
 <!-- endinjector -->
 <!-- endbuild -->
+<script type='text/javascript'>
+  var pubID = '54240CL48886';
+  (function(d, t) {
+    var s = document.createElement('script');s.type = 'text/javascript';
+    s.async = true;s.src = (document.location.protocol == 'https:' ? 'https://cdn0.cuelinks.com/js/' : 'http://cdn0.cuelinks.com/js/')  + 'cuelinksv1.js';
+    document.getElementsByTagName('body')[0].appendChild(s);
+  }());
+</script>
+
 </body>
 </html>

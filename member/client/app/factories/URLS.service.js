@@ -3,7 +3,7 @@ angular.module('uiGenApp')
     const { host, protocol } = window.location;
     const PREFIX = `${protocol}//${host.substr(0, host.indexOf('-') + 1)}`;
     const DOMAIN = `${host.substr(host.indexOf('.') + 1)}`;
-    const PROJECT = 'parcel';
+    const PROJECT = 'shop';
 
     const buildUrl = (subdomain) => `${PREFIX}${subdomain}.${DOMAIN}`;
     const UI_URL = buildUrl(PROJECT);

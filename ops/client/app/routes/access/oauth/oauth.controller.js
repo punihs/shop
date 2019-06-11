@@ -23,7 +23,7 @@ class OAuthCtrl {
           // Used for updating session
           location.href = query.state
             ? `${location.origin}${query.state}`
-            : $state.href('packages.index', { absolute: true });
+            : $state.href('orders.index', { absolute: true });
         }))
       .catch(() => {
         const location = $window.location;

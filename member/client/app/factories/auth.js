@@ -89,9 +89,6 @@ angular.module('uiGenApp')
         $http
           .get('/users/states?type=PACKAGE')
           .then(response => Session.create('states', response.data)),
-        $http
-          .get('/users/states?type=SHIPMENT')
-          .then(response => Session.create('shipment-states', response.data)),
       ]);
 
       return authService;

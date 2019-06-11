@@ -9,7 +9,7 @@ const IS_DEV = env.NODE_ENV === 'development';
 const config = {
   all: {
     env: env.NODE_ENV,
-    port: env.PORT || 5007,
+    port: env.PORT || 4000,
     ip: env.IP || '0.0.0.0',
     root,
     FROM_EMAIL: process.env.FROM_EMAIL || 'support@shoppre.com',

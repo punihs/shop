@@ -154,7 +154,6 @@ class CustomerNavController {
   getLink(customerId, type) {
     const map = {
       customers: 'customer.view',
-      shipments: 'customer.shipments.index',
       packages: 'customer.packages.index',
       orders: 'customer.orders.index',
     };

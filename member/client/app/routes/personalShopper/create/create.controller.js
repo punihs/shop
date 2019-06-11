@@ -13,7 +13,7 @@ class CreateController {
   }
 
   $onInit() {
-    this.Page.setTitle('Shipment Request Create');
+    this.Page.setTitle('Create');
     this.uploadingPhotos = false;
     this.file = {};
     this.orderTypeSection = true;

@@ -21,17 +21,9 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.associate = (db) => {
-    User.hasMany(db.Address, {
-      foreignKey: 'customer_id',
-    });
-
     User.hasMany(db.Package, {
       foreignKey: 'customer_id',
     });
-    User.hasMany(db.Shipment, {
-      foreignKey: 'customer_id',
-    });
-    User.belongsTo(db.VirtualAddress);
     User.belongsTo(db.Country, {
       foreignKey: 'country_id',
     });

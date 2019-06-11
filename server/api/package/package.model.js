@@ -17,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'id',
     });
     Package.hasOne(db.Store);
-    Package.belongsTo(db.Shipment);
     Package.belongsTo(db.User, {
       foreignKey: 'customer_id',
       as: 'Customer',
@@ -31,7 +30,6 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Package.hasMany(db.PackageItem);
-    Package.hasMany(db.PhotoRequest);
     Package.hasMany(db.PackageState, {
       as: 'PackageStates',
       foreignKey: 'state_id',

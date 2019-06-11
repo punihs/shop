@@ -40,7 +40,7 @@ module.exports = function (grunt) {
     },
     express: {
       options: {
-        port: process.env.PORT || 80,
+        port: process.env.PORT || 4003,
       },
       dev: {
         options: {
@@ -56,7 +56,7 @@ module.exports = function (grunt) {
     },
     open: {
       server: {
-        url: 'http://parcel.shoppre.test',
+        url: 'http://shop.shoppre.test',
       },
     },
     watch: {
@@ -116,7 +116,7 @@ module.exports = function (grunt) {
         files: ['<%= yeoman.server %>/**/*.{js,json}'],
         tasks: ['express:dev', 'wait'],
         options: {
-          livereload: 12346,
+          livereload: 13446,
           spawn: false, // Without this option specified express won't be reloaded
         },
       },
@@ -174,7 +174,7 @@ module.exports = function (grunt) {
         options: {
           nodeArgs: ['--debug-brk'],
           env: {
-            PORT: process.env.PORT || 80,
+            PORT: process.env.PORT || 4003,
           },
           callback(nodemon) {
             nodemon.on('log', function (event) {

@@ -5,15 +5,10 @@ const _ = require('lodash');
 const {
   SUPPORT_EMAIL_ID, SUPPORT_EMAIL_FIRST_NAME, SUPPORT_EMAIL_LAST_NAME,
 } = require('../../config/environment');
-const cashback = require('../shipment/components/cashback');
 const transactionCtrl = require('../transaction/transaction.controller');
 
 const {
   APPS, GROUPS: { CUSTOMER, OPS },
-  SHIPMENT_STATE_IDS: {
-    PAYMENT_FAILED, PAYMENT_REQUESTED, PAYMENT_INITIATED,
-    PAYMENT_COMPLETED, PAYMENT_CONFIRMED, PACKAGING_REQUESTED, UPSTREAM_SHIPMENT_REQUEST_CREATED,
-  },
   PACKAGE_STATE_IDS: {
     PACKAGE_ITEMS_UPLOAD_PENDING, SPLIT_PACKAGE_PROCESSED, AWAITING_VERIFICATION, IN_REVIEW,
     ADDED_SHIPMENT, AWAITING_FOR_ORDER, ORDER_CREATED, RETURN_PICKUP_DONE,
@@ -41,7 +36,7 @@ const logger = require('../../components/logger');
 
 const {
   Package, Store, User, Locker, PackageState, PackageItem, PhotoRequest,
-  State, ShipmentState, Shipment, PackageCharge,
+  State, PackageCharge,
 } = require('../../conn/sqldb');
 
 const hookshot = require('./package.hookshot');
@@ -64,14 +59,17 @@ exports.index = async ({
     const { type } = query;
     const { shopperType } = query;
     const packageType = shopperType === 'cod' ? COD : PERSONAL_SHOPPER;
+    console.log({ type });
 
     if (type === 'ORDER') {
       BUCKET = BUCKETS.ORDER[actingUser.group_id];
+      console.log({ BUCKET });
     } else {
       BUCKET = BUCKETS.PACKAGE[actingUser.group_id];
     }
 
     const { bucket } = query;
+    console.log({ bucket });
     let orderSort = '';
     if (query.sort) {
       const [field, order] = query.sort.split(' ');
@@ -186,12 +184,8 @@ exports.index = async ({
         options.include[0].where.state_id = BUCKET[bucket];
       }
     }
-    const stateIds = [
-      PAYMENT_FAILED, PAYMENT_REQUESTED, PAYMENT_INITIATED,
-      PAYMENT_COMPLETED, PAYMENT_CONFIRMED, PACKAGING_REQUESTED, UPSTREAM_SHIPMENT_REQUEST_CREATED,
-    ];
 
-    const [packages, total, facets, queueCount, paymentCount, newfacets] = await Promise
+    const [packages, total, facets, newfacets] = await Promise
       .all([
         Package
           .findAll(options),
@@ -208,22 +202,6 @@ exports.index = async ({
             }],
             group: ['state_id'],
             raw: true,
-          }),
-        Shipment
-          .count({
-            where: { customer_id: actingUser.id },
-            include: [{
-              model: ShipmentState,
-              where: { state_id: stateIds },
-            }],
-          }),
-        Shipment
-          .count({
-            where: { customer_id: actingUser.id },
-            include: [{
-              model: ShipmentState,
-              where: { state_id: [PAYMENT_REQUESTED, PAYMENT_INITIATED] },
-            }],
           }),
         Package
           .findAll({
@@ -268,8 +246,6 @@ exports.index = async ({
       oldfacets: {
         state_id: kvmap(facets, 'state_id', 'cnt'),
       },
-      queueCount,
-      paymentCount,
     });
   } catch (err) {
     return next(err);
@@ -434,19 +410,6 @@ exports.updateState = async ({
     return next(err);
   }
 };
-
-
-exports.transaction = async (pkg) => {
-  const transaction = await cashback
-    .transaction({
-      object_id: pkg.order_code,
-      customer_id: pkg.customer_id,
-      transactionId: pkg.transaction_id,
-    });
-
-  return transaction;
-};
-
 
 exports.updatePackageOptions = async (body) => {
   body.forEach((item) => {

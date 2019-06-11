@@ -3,16 +3,16 @@ angular
   .factory('AuthInterceptor', (Session, URLS) => ({
     request: (conf) => {
       const config = conf;
-      if (config.url[0] === '/') config.url = `${URLS.PARCEL}/api${config.url}`;
+      if (config.url[0] === '/') config.url = `${URLS.SHOP}/api${config.url}`;
 
-      // const parcel = '*';
+      const parcel = '*';
       const engage = '#';
       const pay = '$';
       const login = '~';
       const courier = '&';
 
       const map = {
-        // [parcel]: URLS.PARCEL,
+        [parcel]: URLS.PARCEL,
         [engage]: URLS.ENGAGE,
         [pay]: URLS.PAY,
         [login]: URLS.LOGIN,
