@@ -57,8 +57,13 @@ class OrderShowController {
     this
       .$http
       .get(`/packages/${this.$stateParams.id}/items?type=ps`)
-      .then(({ data: packageItems }) => (this.packageItems.push(...packageItems)));
+      .then(({ data: packageItems }) => {
+        this.packageItems.push(...packageItems);
+        this.packageItems.map(x => (Object.assign(x, { itemStatus: x.status })));
+      });
 
+
+    console.log(this.packageItems);
     const transactionId = this.pkg.transaction_id;
 
     this.$http
@@ -77,13 +82,14 @@ class OrderShowController {
     this
       .$http
       .post('/packages', data)
-      .then((id) => {
+      .then(({ data: { id } }) => {
         const itemIds = [];
-        const packId = {};
+        let packId = 0;
         this.packageItems.map((key) => {
           if (key.isChecked) {
-            packId.pack_id = id;
+            packId = id;
             itemIds.push(key.id);
+            Object.assign(key, { package_id: id });
           }
 
           return null;
@@ -94,6 +100,14 @@ class OrderShowController {
           .$http
           .put(`/packages/${this.$stateParams.id}/items/0?type=ps`, { itemIds, packId })
           .then(() => {
+            this.packageItems.map((x) => {
+              if (itemIds.includes(x.id)) {
+                this.itemStatus.push(this.status[0]);
+                Object.assign(x, { status: this.status[0].id });
+                return Object.assign(x, { itemStatus: this.status[0].id });
+              }
+              return x;
+            });
             this
               .toaster
               .pop('success', 'Package Created Successfully.');
@@ -115,11 +129,17 @@ class OrderShowController {
     this.totalSelectedItems = count;
   }
 
-  updateItem(id, status) {
+  updateItem(id, status, index) {
     return this
       .$http
       .put(`/packages/personalShopperPackage/${id}/updateItem`, { status })
       .then(() => {
+        if (status === 'recieved') {
+          this.packageItems[index].itemStatus = 'recieved';
+        } else {
+          this.packageItems[index].itemStatus = status;
+        }
+
         this.toaster
           .pop('success', `#${id}Item Updated Successfully`);
         this.$state.go('order.show');
