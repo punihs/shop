@@ -279,7 +279,7 @@
                     strong  {{packageItem.note}}
                   .col-xs-12.text-ellipsis(ng-if = 'packageItem.status === "addedtopackage"')
                     span.text-blue Track Package - &nbsp;
-                      a.text-danger(ui-sref='package.show({ id: packageItem.package_id })' target="_blank") {{packageItem.package_id}}
+                      a.text-danger(href='{{$ctrl.URLS.PARCEL}}/admin/packages/{{packageItem.package_id}}' target="_blank") {{packageItem.package_id}}
             .col-xs-12.col-md-2.no-padder
               .m-none.wrapper-lg.w-full.w-auto-xs
                 .clearfix
@@ -299,10 +299,11 @@
             .col-xs-12.col-md-2.no-padder
               .m-none.wrapper-lg.w-full.w-auto-xs
                 button.col-xs-12.btn.btn-sm.btn-success.m-b-xs.text-u-c(
+                ng-if='packageItem.itemStatus !== "addedtopackage"'
                 type='submit',
-                ng-click="$ctrl.updateItem(packageItem.id, packageItem.status)"
+                ng-click="$ctrl.updateItem(packageItem.id, packageItem.status, $index)"
                 ) Save
-                .checkbox.no-margin.col-xs-5(ng-if='packageItem.status === "recieved"')
+                .checkbox.no-margin.col-xs-5(ng-if='packageItem.itemStatus === "recieved"')
                   label.i-checks
                     input(type='checkbox', ng-model = 'packageItem.isChecked', ng-change='$ctrl.selectItems()', ng-checked='all', value='')
                     i

@@ -131,44 +131,20 @@ exports.create = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const { type } = req.query;
     const { itemIds } = req.body;
-    let packageItem = {};
+    const packageItem = {};
 
     const options = {
       where: {},
     };
 
-    if (type !== 'ps') {
-      options.where.id = id;
-      packageItem = req.body;
-      packageItem.total = packageItem.price_amount * packageItem.quantity;
-    } else {
-      options.where.id = itemIds;
-      packageItem.package_id = req.body.packId.pack_id.data.id;
-      packageItem.status = 'addedtopackage';
-    }
+    options.where.id = itemIds;
+    packageItem.package_id = req.body.packId;
+    packageItem.status = 'addedtopackage';
+
 
     const status = await PackageItem
       .update(packageItem, { where: options.where });
-
-    const packageItemsList = await PackageItem
-      .find({
-        attributes: ['id', 'total_amount', 'package_id'],
-        where: { id },
-      });
-
-    const packageItemsAmount = await PackageItem
-      .sum('total_amount', { where: { package_id: packageItemsList.package_id } });
-
-    await Package
-      .update(
-        {
-          price_amount: packageItemsAmount,
-        },
-        { where: { id: packageItemsList.package_id } },
-      );
 
     return res.json(status);
   } catch (err) {
