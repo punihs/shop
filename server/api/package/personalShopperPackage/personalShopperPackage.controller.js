@@ -608,7 +608,7 @@ exports.destroyItem = async (req, res, next) => {
       .destroy({ where: { id: itemId } });
   }
 
-  const packageItems = await getPersonalShopperItems(customerId);
+  const packageItems = await getPersonalShopperItems(customerId, shopperType);
 
   return res.json(packageItems);
 };
