@@ -88,13 +88,13 @@
                           label.col-xs-12.input-group Item URL
                             span.f-c-red *
                             br
-                            input.input-group.form-control(type='text',
+                            input.input-group.form-control(type='url',
                             ng-model='$ctrl.data.url',
                             name='url'
                             placeholder='eg: https://www.amazon.in/OnePlus-Mirror-Black-128GB'
                             required
                             )
-                            span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.url.$dirty && newItemForm.url.$invalid') Please Enter Item Link
+                            span.wrapper-xs.text-xs.text-danger(ng-show='$ctrl.clickUpload && newItemForm.url.$dirty && !newItemForm.url.$valid') Please Enter Valid Item Link(http or https required)
                         .col-md-2.col-xs-5
                           label.col-xs-12.input-group Qty
                             span.f-c-red *

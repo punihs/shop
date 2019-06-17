@@ -7,6 +7,7 @@ const log = debug('s.personalShopperPackage.controller');
 const { updateState } = require('../package.service');
 const { getPersonalShopperItems } = require('../item/item.service');
 const { taskCreate } = require('../../../components/asana/asana');
+const customLogger = require('../../../components/logger/custom');
 
 const {
   PACKAGE_TYPES: {
@@ -72,7 +73,7 @@ exports.create = async (req, res, next) => {
 
   const checkPersonalShopperPackages = await Package
     .findOne({
-      attributes: ['id', 'customer_id', 'store_id', 'order_code'],
+      attributes: ['id', 'customer_id', 'store_id', 'order_code', 'total_quantity', 'price_amount'],
       where: {
         store_id: storeId,
         customer_id: customerId,
@@ -84,8 +85,7 @@ exports.create = async (req, res, next) => {
         where: {
           state_id: ORDER_CREATED,
         },
-      },
-      {
+      }, {
         model: PackageItem,
         attributes: ['id', 'quantity', 'package_order_code'],
       },
@@ -110,8 +110,15 @@ exports.create = async (req, res, next) => {
         where: { id: orderId },
       });
 
-    personalShopPackage.total_quantity = req.body.quantity + shopperPackage.total_quantity;
-    totalPrice = (req.body.quantity * price) + shopperPackage.price_amount;
+    customLogger.info(`1(query) - ${packageOrderCode} - shopperPackage: ${JSON.stringify(shopperPackage)}`);
+    customLogger.info(`2(latest) - ${packageOrderCode} - checkPersonalShopperPackages: ${JSON.stringify(checkPersonalShopperPackages)}`);
+
+    personalShopPackage.total_quantity = req.body.quantity +
+      checkPersonalShopperPackages.total_quantity;
+
+    totalPrice = (req.body.quantity * price) + checkPersonalShopperPackages.price_amount;
+
+    customLogger.info(`3 - ${packageOrderCode} - totalPrice: ${totalPrice}`);
 
     personalShopPackage.price_amount = totalPrice;
     let psCost = (psFee / 100) * totalPrice;
@@ -125,6 +132,7 @@ exports.create = async (req, res, next) => {
 
     personalShopPackage.personal_shopper_cost = psCost;
     personalShopPackage.sub_total = totalPrice + psCost;
+    customLogger.info(`4(Updated) - ${packageOrderCode} - personalShopPackage: ${JSON.stringify(personalShopPackage)}`);
 
     await Package
       .update(personalShopPackage, { where: { id: orderId } });
@@ -167,6 +175,8 @@ exports.create = async (req, res, next) => {
 
     personalShop = await Package
       .create(personalShopperPackage);
+
+    customLogger.info(`0 - Created - ${orderCode} - personalShopperPackage: ${JSON.stringify(personalShopperPackage)}`);
 
     shopPackageId = personalShop.id;
     shopPackageOrderCode = personalShop.order_code;
@@ -256,282 +266,6 @@ exports.create = async (req, res, next) => {
   });
 };
 
-
-exports.editItem = async (req, res, next) => {
-  let newQty = '';
-  let newPrice = '';
-  let shopPackageId = '';
-  let packageOrderCode = '';
-  let shopPackageOrderCode = '';
-  let totalPrice = '';
-  const price = req.body.price_amount;
-  const customerId = req.user.id;
-
-  const optionsItems = {
-    attributes: ['store_id', 'price_amount', 'total_quantity', 'personal_shopper_cost', 'sub_total'],
-    include: [{
-      model: PackageItem,
-      attributes: ['id', 'quantity', 'total_amount'],
-      where: {
-        id: req.params.id,
-      },
-    }],
-    limit: Number(req.query.limit) || 1,
-  };
-
-  const checkPersonalShopperItems = await Package
-    .find(optionsItems);
-
-  if (checkPersonalShopperItems) {
-    const newStoreId = req.body.store_id;
-
-    const checkPersonalShopperPackages = await Package
-      .find({
-        attributes: ['id', 'customer_id', 'store_id', 'order_code'],
-        where: {
-          customer_id: customerId,
-          store_id: newStoreId,
-          package_type: PERSONAL_SHOPPER,
-        },
-        include: [{
-          model: PackageState,
-          attributes: ['id', 'state_id'],
-          state_id: ORDER_CREATED,
-        }],
-        limit: Number(req.query.limit) || 1,
-      });
-
-    const oldStoreId = checkPersonalShopperItems.store_id;
-    let checkPersonalShopperOldPackages = '';
-
-    checkPersonalShopperOldPackages = await Package
-      .find({
-        attributes: ['id', 'customer_id', 'store_id', 'order_code', 'total_quantity'],
-        where: {
-          customer_id: customerId,
-          store_id: oldStoreId,
-          package_type: PERSONAL_SHOPPER,
-        },
-        include: [{
-          model: PackageState,
-          attributes: ['id', 'state_id'],
-          state_id: ORDER_CREATED,
-        }],
-        limit: Number(req.query.limit) || 1,
-      });
-
-    if (newStoreId === oldStoreId) {
-      if (checkPersonalShopperPackages) {
-        const orderId = checkPersonalShopperPackages.id;
-        packageOrderCode = checkPersonalShopperPackages.order_code;
-        const personalShopPackage = {};
-
-        const shopPackage = await Package
-          .findAll({
-            attributes: ['total_quantity', 'price_amount'],
-            where: { id: orderId },
-          });
-
-        newQty = (checkPersonalShopperPackages.total_quantity -
-          checkPersonalShopperItems.PackageItems[0].quantity) + req.body.quantity;
-        newPrice = checkPersonalShopperPackages.price_amount -
-          checkPersonalShopperItems.PackageItems[0].total_amount;
-        newPrice += req.body.quantity * price;
-
-        personalShopPackage.price_amount = newPrice;
-        personalShopPackage.total_quantity = newQty;
-        let psCost = (PERSONAL_SHOPPER_PERCENTAGE / 100) * newPrice;
-        psCost = Math.round(psCost);
-
-        if (psCost < 200) {
-          psCost = 200;
-        }
-
-        if (shopPackage.total_quantity > 15) {
-          psCost += (shopPackage.total_quantity - 15) * 50;
-        }
-
-        personalShopPackage.personal_shopper_cost = psCost;
-        personalShopPackage.sub_total = newPrice + psCost;
-
-        await Package
-          .update(personalShopPackage, { where: { id: orderId } });
-
-        shopPackageId = orderId;
-        shopPackageOrderCode = packageOrderCode;
-      }
-    } else {
-      const checkQty = checkPersonalShopperOldPackages.total_quantity -
-        checkPersonalShopperItems.PackageItems[0].quantity;
-
-      if (checkQty <= 0) {
-        await Package
-          .destroy({ where: { id: checkPersonalShopperOldPackages.id } });
-      } else {
-        const priceAmount = checkPersonalShopperItems.price_amount -
-          checkPersonalShopperItems.PackageItems[0].total_amount;
-        const totalQuantity = checkPersonalShopperItems.total_quantity -
-          checkPersonalShopperItems.PackageItems[0].quantity;
-        let psCost = (PERSONAL_SHOPPER_PERCENTAGE / 100) * priceAmount;
-        psCost = Math.round(psCost);
-
-        if (psCost < 200) {
-          psCost = 200;
-        }
-
-        if (checkPersonalShopperItems.total_quantity > 15) {
-          psCost += (checkPersonalShopperItems.total_quantity - 15) * 50;
-        }
-
-        const subTotal = priceAmount + psCost;
-
-        await Package
-          .update(
-            {
-              price_amount: priceAmount,
-              total_quantity: totalQuantity,
-              sub_total: subTotal,
-              personal_shopper_cost: psCost,
-            },
-            { where: { id: checkPersonalShopperOldPackages.id } },
-          );
-      }
-
-      const updatePersonalShopperPackages = await Package
-        .find({
-          attributes: ['id', 'customer_id', 'store_id', 'order_code'],
-          where: {
-            customer_id: customerId,
-            store_id: newStoreId,
-            package_type: PERSONAL_SHOPPER,
-          },
-          include: [{
-            model: PackageState,
-            attributes: ['id', 'state_id'],
-            where: {
-              state_id: ORDER_CREATED,
-            },
-          }],
-        });
-
-      log('Pkgs', updatePersonalShopperPackages);
-
-      if (updatePersonalShopperPackages) {
-        log(updatePersonalShopperPackages);
-        const orderId = updatePersonalShopperPackages.id;
-        packageOrderCode = updatePersonalShopperPackages.order_code;
-
-        const personalShopPackage = {};
-
-        const shopPackage = await Package
-          .findOne({
-            attributes: ['price_amount', 'total_quantity', 'id'],
-            where: { id: orderId },
-          });
-
-        newQty = shopPackage.total_quantity + req.body.quantity;
-        newPrice = shopPackage.price_amount;
-        newPrice += req.body.quantity * price;
-
-        personalShopPackage.price_amount = newPrice;
-        personalShopPackage.total_quantity = newQty;
-
-        let psCost = (PERSONAL_SHOPPER_PERCENTAGE / 100) * newPrice;
-        psCost = Math.round(psCost);
-
-        if (psCost < 200) {
-          psCost = 200;
-        }
-
-        if (shopPackage.total_quantity > 15) {
-          psCost += (shopPackage.total_quantity - 15) * 50;
-        }
-
-        personalShopPackage.personal_shopper_cost = psCost;
-        personalShopPackage.sub_total = newPrice + psCost;
-
-        await Package
-          .update(personalShopPackage, { where: { id: orderId } });
-
-        shopPackageId = orderId;
-        shopPackageOrderCode = packageOrderCode;
-      } else {
-        const personalShopperPackage = {};
-        personalShopperPackage.customer_id = customerId;
-        personalShopperPackage.store_id = newStoreId;
-        let orderCode = '';
-        let personalShopper = '';
-
-        do {
-          orderCode = `PS${customerId}${parseInt((Math.random() * (1000 - 100)) + 100, 10)}`;
-
-          // eslint-disable-next-line no-await-in-loop
-          personalShopper = await Package
-            .find({ where: { order_code: orderCode } });
-        }
-
-        while (personalShopper);
-        personalShopperPackage.order_code = orderCode;
-        personalShopperPackage.total_quantity = req.body.quantity;
-        totalPrice = req.body.quantity * price;
-        personalShopperPackage.price_amount = totalPrice;
-
-        let psCost = (PERSONAL_SHOPPER_PERCENTAGE / 100) * totalPrice;
-        psCost = Math.round(psCost);
-
-        if (psCost < 200) {
-          psCost = 200;
-        }
-
-        if (personalShopperPackage.total_quantity > 15) {
-          psCost += (personalShopperPackage.total_quantity - 15) * 50;
-        }
-
-        personalShopperPackage.personal_shopper_cost = psCost;
-
-        personalShopperPackage.sub_total = totalPrice + psCost;
-        personalShopperPackage.package_type = PERSONAL_SHOPPER;
-
-        const personalShop = await Package
-          .create(personalShopperPackage);
-
-        shopPackageId = personalShop.id;
-        shopPackageOrderCode = personalShop.order_code;
-
-        await updateState({
-          pkg: personalShop,
-          actingUser: req.user,
-          nextStateId: ORDER_CREATED,
-          comments: 'Order Created',
-          next,
-        });
-      }
-    }
-    const personalShopperItem = {};
-    personalShopperItem.package_id = shopPackageId;
-    personalShopperItem.package_order_code = shopPackageOrderCode;
-    personalShopperItem.store_type = req.body.store_type;
-    personalShopperItem.quantity = req.body.quantity;
-    personalShopperItem.url = req.body.url;
-    personalShopperItem.code = req.body.code;
-    personalShopperItem.name = req.body.name;
-    personalShopperItem.color = req.body.color;
-    personalShopperItem.size = req.body.size;
-    personalShopperItem.price_amount = price;
-    personalShopperItem.total_amount = price * req.body.quantity;
-    personalShopperItem.note = req.body.note;
-    personalShopperItem.if_item_unavailable = req.body.if_item_unavailable;
-    personalShopperItem.status = 'pending';
-
-    await PackageItem
-      .update(personalShopperItem, { where: { id: checkPersonalShopperItems.PackageItems[0].id } });
-
-    return res.json(personalShopperItem);
-  }
-
-  return res.json(checkPersonalShopperItems);
-};
-
 exports.destroyItem = async (req, res, next) => {
   const customerId = req.user.id;
   let newQty = '';
@@ -540,11 +274,12 @@ exports.destroyItem = async (req, res, next) => {
   const packageId = req.params.id;
   const { itemId } = req.params;
 
-  const { shopperType } = req.body;
+  const { shopperType } = req.query;
 
   const packageType = shopperType === 'cod' ? COD : PERSONAL_SHOPPER;
 
-  const psFee = packageType === 'PERSONAL_SHOPPER' ? PERSONAL_SHOPPER_PERCENTAGE : SELF_SHOPPER_PERCENTAGE;
+  const psFee = packageType === PERSONAL_SHOPPER ?
+    PERSONAL_SHOPPER_PERCENTAGE : SELF_SHOPPER_PERCENTAGE;
 
   const optionsItems = {
     attributes: ['id', 'price_amount', 'total_quantity', 'store_id', 'customer_id', 'order_code'],
@@ -612,40 +347,40 @@ exports.destroyItem = async (req, res, next) => {
 
   return res.json(packageItems);
 };
-
-exports.destroyOrder = async (req, res, next) => {
-  const customerId = req.user.id;
-  const orderId = req.params.id;
-
-  const options = {
-    attributes: ['id', 'customer_id', 'store_id'],
-    where: {
-      customer_id: customerId,
-      id: orderId,
-      package_type: PERSONAL_SHOPPER,
-    },
-    include: [{
-      model: PackageState,
-      attributes: ['id', 'state_id', 'package_id'],
-      state_id: ORDER_CREATED,
-    }],
-  };
-
-  const personalShopPackage = await Package
-    .find(options);
-
-  if (personalShopPackage) {
-    await updateState({
-      pkg: personalShopPackage,
-      actingUser: req.user,
-      nextStateId: ORDER_DELETED,
-      comments: 'Order Deleted',
-      next,
-    });
-  }
-
-  return res.json(personalShopPackage);
-};
+//
+// exports.destroyOrder = async (req, res, next) => {
+//   const customerId = req.user.id;
+//   const orderId = req.params.id;
+//
+//   const options = {
+//     attributes: ['id', 'customer_id', 'store_id'],
+//     where: {
+//       customer_id: customerId,
+//       id: orderId,
+//       package_type: PERSONAL_SHOPPER,
+//     },
+//     include: [{
+//       model: PackageState,
+//       attributes: ['id', 'state_id', 'package_id'],
+//       state_id: ORDER_CREATED,
+//     }],
+//   };
+//
+//   const personalShopPackage = await Package
+//     .find(options);
+//
+//   if (personalShopPackage) {
+//     await updateState({
+//       pkg: personalShopPackage,
+//       actingUser: req.user,
+//       nextStateId: ORDER_DELETED,
+//       comments: 'Order Deleted',
+//       next,
+//     });
+//   }
+//
+//   return res.json(personalShopPackage);
+// };
 
 exports.submitOptions = async (req, res) => {
   let subtotal = '';

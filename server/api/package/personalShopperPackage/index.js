@@ -5,8 +5,6 @@ const controllerService = require('./personalShopperPackage.service');
 
 const router = express.Router();
 router.post('/personalShopperPackage', controller.create);
-router.put('/personalShopperPackage/:id', controller.editItem);
-router.delete('/personalShopperPackage/:id/order', controller.destroyOrder);
 router.delete('/personalShopperPackage/:id/item/:itemId', controller.destroyItem);
 router.post('/personalShopperPackage/submitOptions', controller.submitOptions);
 router.put('/personalShopperPackage/:id/cancelOrder', controller.cancelOrder);

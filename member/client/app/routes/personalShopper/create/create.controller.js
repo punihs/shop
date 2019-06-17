@@ -314,8 +314,16 @@ class CreateController {
     const ok = c('Are you sure? Deleting your item');
     if (!ok) return null;
 
+    let shopperType = '';
+
+    if (this.self_purchased) {
+      shopperType = 'cod';
+    } else if (this.assisted_purchased) {
+      shopperType = 'ps';
+    }
+
     return this.$http
-      .delete(`/packages/personalShopperPackage/${psPackage.id}/item/${item.id}`)
+      .delete(`/packages/personalShopperPackage/${psPackage.id}/item/${item.id}?shopperType=${shopperType}`)
       .then(({ data: packageItems }) => {
         this.packageData = packageItems;
         this.packageOptions = packageItems;
@@ -434,7 +442,7 @@ class CreateController {
       .$http[method]('~~/api/authorise', data)
       .then(({ data: redirectUrl }) => {
         // const newTab = this.$window.open();
-        const cancelUrl = `${this.URLS.PARCEL}/personalShopper/create`;
+        const cancelUrl = `${this.URLS.UI_URL}/personalShopper/create`;
         this.$window.location.href =
           redirectUrl + `&id=${id}&amount=${this.totalAmount}&object_id=${id.toString()}&customer_id=${customerId}&axis_banned=false&type=${shopperType}&cancelUrl=${cancelUrl}`;
       });
